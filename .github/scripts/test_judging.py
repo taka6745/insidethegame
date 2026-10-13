@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from build_judging import CRITERIA, SIGNALS, aggregate, assess, digest, heatmap, inputs
+from build_judging import CRITERIA, SIGNALS, aggregate, assess, digest, heatmap, inputs, score_graph
 
 
 class JudgingTests(unittest.TestCase):
@@ -87,6 +87,31 @@ class JudgingTests(unittest.TestCase):
             heatmap([row], output, coverage=True)
             self.assertIn('player_identity = ◐', output.read_text())
             self.assertNotIn('player_identity = ?', output.read_text())
+
+    def test_score_graph_separates_unknowns_from_earned_points(self):
+        import xml.etree.ElementTree as ET
+        scores = dict.fromkeys(CRITERIA, 4)
+        rows = [
+            {'display_name': 'Complete', 'scores': scores, 'total': 80, 'state': 'current'},
+            {'display_name': 'Partial', 'scores': {**scores, 'impact': None}, 'total': None, 'state': 'current'},
+            {'display_name': 'Missing', 'scores': dict.fromkeys(CRITERIA), 'total': None, 'state': 'unavailable'},
+        ]
+        with tempfile.TemporaryDirectory() as folder:
+            output = Path(folder)/'scores.svg'
+            score_graph(rows, output)
+            root = ET.fromstring(output.read_text())
+            labels = list(root.itertext())
+            self.assertIn('80', labels)
+            self.assertIn('64 known + ?', labels)
+            self.assertIn('Unavailable', labels)
+            self.assertLess(labels.index('Complete'), labels.index('Incomplete / unavailable · not ranked'))
+            rects = root.findall('.//{http://www.w3.org/2000/svg}rect')
+            hatched = [r for r in rects if r.get('fill') == 'url(#unknown)']
+            self.assertEqual(len(hatched), 1)
+            self.assertEqual(float(hatched[0].get('width')), 128)  # One unknown 20-point criterion.
+            earned = [r for r in rects if r.get('height') == '27' and r not in hatched]
+            self.assertEqual(len(earned), 9)
+            self.assertTrue(all(float(r.get('width')) == 102.4 for r in earned))
 
 
 if __name__ == '__main__':

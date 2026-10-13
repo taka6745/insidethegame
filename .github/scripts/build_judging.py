@@ -112,6 +112,76 @@ def source_link(repo, evidence):
     return f"https://github.com/{repo['slug']}/blob/{repo['sha']}/{path}#L{evidence['line']}"
 
 
+def score_graph(rows, path):
+    """Stack earned criterion points; keep incomplete assessments out of the ranking."""
+    colours = ['#69baff', '#c2a4ff', '#73e3ae', '#f3c678', '#fa9dac']
+    complete = sorted((r for r in rows if r['total'] is not None),
+                      key=lambda r: (-r['total'], r['display_name'].casefold()))
+    incomplete = sorted((r for r in rows if r['total'] is None),
+                        key=lambda r: r['display_name'].casefold())
+    width, left, plot, step = 1160, 350, 640, 38
+    height = 198 + step * len(rows) + (40 if incomplete else 0)
+
+    def label(x, y, value, size=14, colour='#e5edf4', extra=''):
+        return f'<text x="{x}" y="{y}" fill="{colour}" font-size="{size}" {extra}>{escape(str(value))}</text>'
+
+    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
+             '<title id="title">Public repository evidence scores</title>',
+             '<desc id="desc">Stacked points from five equally weighted criteria. Incomplete assessments are separate; hatched points are unknown, not earned. No competitor code or demo was executed.</desc>',
+             '<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4" stroke="#64798b" stroke-width="2"/></pattern></defs>',
+             f'<rect width="{width}" height="{height}" rx="14" fill="#101e2b"/>',
+             '<g font-family="Arial, Helvetica, sans-serif">',
+             label(24, 34, 'Public repository evidence · points out of 100', 23),
+             label(24, 59, 'Source review, not tested performance or a prediction of winning. Each criterion contributes up to 20 points.', 13, '#a4bbc9')]
+    for i, name in enumerate(CRITERIA.values()):
+        x = 24 + i * 218
+        parts += [f'<rect x="{x}" y="78" width="14" height="14" rx="2" fill="{colours[i]}"/>',
+                  label(x + 22, 90, name, 13)]
+    for tick in range(0, 101, 20):
+        x = left + plot * tick / 100
+        parts += [label(x, 122, tick, 12, '#a4bbc9', 'text-anchor="middle"'),
+                  f'<line x1="{x}" x2="{x}" y1="132" y2="{height-46}" stroke="#263948" stroke-dasharray="2 6"/>']
+    y = 142
+    for group, title in [(complete, None), (incomplete, 'Incomplete / unavailable · not ranked')]:
+        if not group:
+            continue
+        if title:
+            parts += [f'<rect x="16" y="{y}" width="{width-32}" height="30" fill="#101e2b"/>', label(24, y + 20, title, 14, '#a4bbc9')]
+            y += 40
+        for row in group:
+            name = row['display_name']
+            shown = name if len(name) <= 40 else name[:37] + '…'
+            parts += ['<g>', f'<title>{escape(name)}</title>', label(24, y + 19, shown)]
+            known = [v for v in row['scores'].values() if v is not None]
+            if not known:
+                status = 'Unscored' if row['state'] == 'current' else row['state'].capitalize()
+                parts.append(label(left, y + 19, status, 13, '#a4bbc9'))
+            else:
+                x = left
+                for i, key in enumerate(CRITERIA):
+                    score = row['scores'][key]
+                    if score is None:
+                        continue
+                    points = 4 * score
+                    span = plot * points / 100
+                    parts += [f'<g><title>{escape(CRITERIA[key])}: {points:g}/20</title>',
+                              f'<rect x="{x:g}" y="{y}" width="{span:g}" height="27" fill="{colours[i]}"/>', '</g>']
+                    if points >= 8:
+                        parts.append(label(x + span / 2, y + 19, f'{points:g}', 12, '#0f172a', 'text-anchor="middle"'))
+                    x += span
+                missing = sum(v is None for v in row['scores'].values())
+                if missing:
+                    span = plot * missing / 5
+                    parts += [f'<rect x="{x:g}" y="{y}" width="{span:g}" height="27" fill="url(#unknown)"/>',
+                              label(1010, y + 19, f'{4*sum(known):g} known + ?', 13, '#a4bbc9')]
+                else:
+                    parts.append(label(x + 10, y + 19, f"{row['total']:g}", 15, '#e5edf4', 'font-weight="700"'))
+            parts.append('</g>')
+            y += step
+    parts += [label(24, height - 20, 'Hatching shows the possible 0–20 points per unscored criterion; it is not an awarded score.', 12, '#a4bbc9'), '</g></svg>']
+    path.write_text('\n'.join(parts) + '\n')
+
+
 def heatmap(rows, path, coverage=False):
     columns = SIGNALS if coverage else CRITERIA
     width, row_height = 1160, 36
@@ -178,7 +248,7 @@ def build(projects, audit, base, names=None):
     rows.sort(key=lambda r: (r['project']['title'].casefold(), r['repo']['slug']))
     (base/'data/review-queue.json').write_text(json.dumps({'rubric_version': ledger['rubric']['version'],
                                                        'entries': queue}, indent=2) + '\n')
-    heatmap(rows, base/'judging.svg')
+    score_graph(rows, base/'judging.svg')
     heatmap(rows, base/'brief-coverage.svg', coverage=True)
     states = Counter(r['state'] for r in rows)
     lines = ['## Evidence scores', '',
@@ -194,7 +264,24 @@ def build(projects, audit, base, names=None):
         score = f"{row['total']:g}" if row['total'] is not None else 'Incomplete' if records else row['state'].title()
         gap = ' / '.join(dict.fromkeys(r['main_gap'] for r in latest_reviews(records))) if records else 'No current assessment; see the review queue.'
         lines.append(f"| [{markdown(row['display_name'])}]({url}) | {score} | {markdown(gap)} |")
-    lines += ['', '</details>', '', '<details>', '<summary>Brief coverage, scoring method and named review evidence</summary>', '',
+    lines += ['', '</details>', '']
+    for key, name in CRITERIA.items():
+        lines += ['<details>', f'<summary>{name} · scores and evidence</summary>', '',
+                  'Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.', '',
+                  '| Project | /5 | Reviewer reasoning · pinned evidence |', '| --- | ---: | --- |']
+        for row in rows:
+            score = row['scores'][key]
+            reasons = []
+            for record in latest_reviews(row['records']):
+                criterion = record['criteria'][key]
+                label = markdown(record['reviewer_id'])
+                if criterion['evidence']:
+                    label = f"[{label}]({source_link(row['repo'], criterion['evidence'][0])})"
+                reasons.append(f"{label}: {markdown(criterion['rationale'])}")
+            value = '?' if score is None else f'{score:g}'
+            lines.append(f"| {markdown(row['display_name'])} | {value} | {'<br>'.join(reasons) or 'No current assessment.'} |")
+        lines += ['', '</details>', '']
+    lines += ['<details>', '<summary>Brief coverage, scoring method and named review evidence</summary>', '',
               '![Coverage of the description’s specific suggestions](brief-coverage.svg)', '',
               '**Core path:** coherent synthetic data → live ingestion → interpretation → explanation → screen → personalisation; live stories and recaps. '
               'Every review also records these eight core checks. Suggested features receive explicit coverage, not bonus points.', '',
