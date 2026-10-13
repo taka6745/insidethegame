@@ -48,11 +48,13 @@ def line(value):
 
 
 class Export:
-    def __init__(self, folder):
+    def __init__(self, folder, public_observations=True):
         self.folder = folder
         self.raw = gzip.open(folder / "raw.jsonl.gz", "wt", compresslevel=1)
-        self.observations = gzip.open(
-            folder / "observations.jsonl.gz", "wt", compresslevel=1
+        self.observations = (
+            gzip.open(folder / "observations.jsonl.gz", "wt", compresslevel=1)
+            if public_observations
+            else None
         )
         self.event_file = gzip.open(folder / "events.jsonl.gz", "wt", compresslevel=1)
         self.player_file = gzip.open(
@@ -282,7 +284,8 @@ class Export:
             self.ball_file,
             self.observations,
         ):
-            f.close()
+            if f is not None:
+                f.close()
         dump(self.folder / "passes.json", self.events.passes)
         result = {
             "frames": self.frames,
