@@ -45,6 +45,166 @@ These samples are fictional match events, generated CSVs, vendor-shaped examples
 </details>
 
 <details>
+<summary>Technology · scores and evidence</summary>
+
+Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.
+
+| Project | /5 | Reviewer reasoning · pinned evidence |
+| --- | ---: | --- |
+| GoalGetter | 2 | [repo-reviewer-1](https://github.com/Simplify4Me2/goal-getter/blob/8dd5884cf19122ceb55939759dd7a4d70a67ae8d/GoalGetter/GoalGetter.ApiService/Matches/SyntheticMatchGenerator.cs#L22): Seeded event generation, SSE transport and name tagging form a partial pipeline with test files. |
+| Match Storyteller | 1 | [repo-reviewer-2](https://github.com/faisalbasra/match-storyteller/blob/c6e3f564bd41cab896216ba563ec5ae3d4422aa5/README.md#L7): The repository explicitly contains a pre-implementation contract rather than application code. |
+| Matchday Crew | 3 | [repo-reviewer-2](https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/src/server.js#L165): Seeded event generation, incremental analysis, Foundry integration and focused orchestration tests form a coherent connected implementation. |
+| MatchLens — What-If Simulation | 2 | [repo-reviewer-2](https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/backend/app/main.py#L34): Immutable evidence, deterministic replay and source tests are connected, but generative AI and Microsoft runtime integration are explicitly absent. |
+| MatchMind AI — Beyond the Scoreline | 0 | [repo-reviewer-2](https://github.com/natagowai/matchmind-ai/blob/d9f6db5672daaaffc3bc896ebc52cb61b6901e02/src/MatchMind.Api/Program.cs#L22): Inspected application code is the default weather API and empty domain classes, not a match-intelligence implementation. |
+| MatchMind AI — Every Match Has a Personality | 2 | [repo-reviewer-2](https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/components/MatchDashboard.tsx#L127): Synthetic match UI and optional Azure rewrite are connected, but no tests and limited output validation are acknowledged gaps. |
+| MatchMind Studio — Broadcast &amp; Streaming | 2 | [repo-reviewer-2](https://github.com/HamzatAbdulazeez/matchmind-studio/blob/72d315da0e0fbce52d9fad7624998d4f95e37b80/src/app/api/match/stream/route.ts#L45): Synthetic replay, Azure generation and overlay paths are substantive, but the assistant fetch targets a route located outside Next app routing and no test suite was found. |
+| MatchMind — AI Broadcast Booth | 4 | [repo-reviewer-1](https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/backend/src/matchmind/agents/orchestrator.py#L542): Connected framework pipeline, explicit event statistics and failure tests support a strong static implementation. |
+| MSFT x EPL Hackathon | ? | No current assessment. |
+| MatchMind AI — AI Football Analyst | ? | [repo-reviewer-1](https://github.com/s70241963-afk/Sushmitha/blob/9f3eadf03749fb96fe241e4c7748d73412c1ca1e/README.md#L1): The repository points to external starter archives; their implementation was outside this SHA-pinned source audit. |
+| OmniPitch | ? | No current assessment. |
+| PitchPulse | ? | No current assessment. |
+| Pitchside | ? | No current assessment. |
+| ReactCoach 11 | 3 | [repo-reviewer-1](https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/crates/decision-engine/src/simulation/rollout.rs#L17): A bounded synthetic spatial simulator, validated replay and API-connected decision UI provide coherent static implementation. |
+| Second Story | 2 | [repo-reviewer-1](https://github.com/aj0khi/soccer-hackathon-project/blob/ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b/src/lib/simulation/generate-match.ts#L62): Synthetic generation and deterministic dashboard are connected, but independently sampled pass distance and hardcoded audience text weaken grounding. |
+| Shift11 | 2 | [repo-reviewer-2](https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/src/generator.py#L136): Formation-aware synthetic generation and deterministic momentum have source/tests, while AI, attribution and rendered application remain incomplete. |
+| SignalFlow | 1 | [repo-reviewer-1](https://github.com/kamal-saleh/SignalFlow/blob/75f55828892a0406fdeacccc536bb3ebf87e05e1/README.md#L9): README names a five-stage synthetic pipeline and Microsoft services without implementation. |
+| Tactix AI | 1 | [repo-reviewer-1](https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI/blob/115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5/README.md#L2): The repository contains only a short synthetic-match concept and licence, not an implementation. |
+| Touchline | 3 | [repo-reviewer-2](https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/server.mjs#L48): A connected synthetic engine, Azure adapter and targeted tests include a scoped recorded microbenchmark, though cloud inference is explicitly unverified. |
+| VendorIQ | 2 | [repo-reviewer-2](https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/agents/orchestrator.py#L150): Normalization, retry/failure handling and test files form a coherent data pipeline, but Microsoft runtime use and live fan personalisation were not located. |
+| Virtual Studio Crew | 4 | [repo-reviewer-1](https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/backend/src/Studio.Crew/StudioCrew.cs#L106): Seeded simulator, framework workflow, verified-card streaming and checked-in evaluation form strong inspectable implementation evidence. |
+| VYBE — Every Fan Belongs | 3 | [repo-reviewer-1](https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/api/vybe/main.py#L16): Replay API, deterministic factual rendering and malformed-model-output tests are connected to the UI. |
+
+</details>
+
+<details>
+<summary>Agent innovation · scores and evidence</summary>
+
+Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.
+
+| Project | /5 | Reviewer reasoning · pinned evidence |
+| --- | ---: | --- |
+| GoalGetter | 0 | [repo-reviewer-1](https://github.com/Simplify4Me2/goal-getter/blob/8dd5884cf19122ceb55939759dd7a4d70a67ae8d/GoalGetter/GoalGetter.ApiService/Endpoints/MatchEndpoints.cs#L12): The inspected service and UI implement deterministic replay only; no model or agent decisions were found. |
+| Match Storyteller | 1 | [repo-reviewer-2](https://github.com/faisalbasra/match-storyteller/blob/c6e3f564bd41cab896216ba563ec5ae3d4422aa5/README.md#L43): A single Agent Framework narrator is proposed but compatibility and implementation remain future work. |
+| Matchday Crew | 3 | [repo-reviewer-2](https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/src/agents/crew.js#L110): Separate model roles pass evidence and shared history through guarded retry/fallback and priority scheduling, without comparative agent-value results. |
+| MatchLens — What-If Simulation | 0 | [repo-reviewer-2](https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/backend/app/core.py#L136): The inspected system uses deterministic templates and linear scenario projection with no runtime AI/agent implementation. |
+| MatchMind AI — Beyond the Scoreline | 0 | [repo-reviewer-2](https://github.com/natagowai/matchmind-ai/blob/d9f6db5672daaaffc3bc896ebc52cb61b6901e02/src/MatchMind.Api/Program.cs#L22): No runtime AI or agent behavior exists in the inspected application entrypoints or domain scaffold. |
+| MatchMind AI — Every Match Has a Personality | 2 | [repo-reviewer-2](https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/lib/agents/orchestrator.ts#L40): The five named agents are deterministic staged functions and the cloud model only rewrites commentary. |
+| MatchMind Studio — Broadcast &amp; Streaming | 2 | [repo-reviewer-2](https://github.com/HamzatAbdulazeez/matchmind-studio/blob/72d315da0e0fbce52d9fad7624998d4f95e37b80/src/lib/ai/agent/route.ts#L54): A bounded tool-calling loop exists, but its route is under src/lib rather than src/app/api so the inspected assistant journey is disconnected. |
+| MatchMind — AI Broadcast Booth | 3 | [repo-reviewer-1](https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/backend/src/matchmind/agents/orchestrator.py#L580): Routing and specialised generation share state and recover to templates, but advantage over simpler orchestration is unmeasured. |
+| MSFT x EPL Hackathon | ? | No current assessment. |
+| MatchMind AI — AI Football Analyst | ? | [repo-reviewer-1](https://github.com/s70241963-afk/Sushmitha/blob/9f3eadf03749fb96fe241e4c7748d73412c1ca1e/README.md#L1): The repository points to external starter archives; their implementation was outside this SHA-pinned source audit. |
+| OmniPitch | ? | No current assessment. |
+| PitchPulse | ? | No current assessment. |
+| Pitchside | ? | No current assessment. |
+| ReactCoach 11 | 1 | [repo-reviewer-1](https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/crates/agents/src/lib.rs#L1): Agent roles are explicitly contracts for future work rather than model invocation. |
+| Second Story | 1 | [repo-reviewer-1](https://github.com/aj0khi/soccer-hackathon-project/blob/ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b/src/application/agents/orchestrate-match-intelligence.ts#L25): The named agents are synchronous deterministic functions; Foundry mapping is documentation/configuration rather than inspected model execution. |
+| Shift11 | 1 | [repo-reviewer-2](https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/README.md#L242): Agent Framework and Foundry are planned after deterministic analytics, with no runtime agent path in the inspected tree. |
+| SignalFlow | 1 | [repo-reviewer-1](https://github.com/kamal-saleh/SignalFlow/blob/75f55828892a0406fdeacccc536bb3ebf87e05e1/README.md#L13): Attention decisions are named but no decision mechanism or agent code is present. |
+| Tactix AI | 1 | [repo-reviewer-1](https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI/blob/115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5/README.md#L2): Multi-agent telemetry is asserted without roles, shared state or execution evidence in the repository. |
+| Touchline | 2 | [repo-reviewer-2](https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/vision.mjs#L4): Controlled synthetic pixel classification and grounded rewriting are implemented, while README explicitly states no genuine agent orchestration. |
+| VendorIQ | 2 | [repo-reviewer-2](https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/agents/orchestrator.py#L150): Named stages mostly run deterministic transforms, with optional entity/narrative AI escalation and explicit failure handling. |
+| Virtual Studio Crew | 3 | [repo-reviewer-1](https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/backend/src/Studio.Crew/StudioCrew.cs#L139): Specialised revision and publication decisions are implemented, but the reported comparison does not show final text outperforming drafts. |
+| VYBE — Every Fan Belongs | 2 | [repo-reviewer-1](https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/api/vybe/ai.py#L48): Azure optionally selects a constrained style; substantive agentic reasoning or orchestration is not present in this inspected path. |
+
+</details>
+
+<details>
+<summary>Impact · scores and evidence</summary>
+
+Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.
+
+| Project | /5 | Reviewer reasoning · pinned evidence |
+| --- | ---: | --- |
+| GoalGetter | 1 | [repo-reviewer-1](https://github.com/Simplify4Me2/goal-getter/blob/8dd5884cf19122ceb55939759dd7a4d70a67ae8d/GoalGetter/GoalGetter.Web/Components/Pages/Match.razor#L23): The event-list interface supplies names and coordinates but does not yet establish a meaningful fan or business outcome. |
+| Match Storyteller | 1 | [repo-reviewer-2](https://github.com/faisalbasra/match-storyteller/blob/c6e3f564bd41cab896216ba563ec5ae3d4422aa5/README.md#L11): Evidence-grounded fan/analyst storytelling is a plausible pitch with no product or user evidence. |
+| Matchday Crew | 2 | [repo-reviewer-2](https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/README.md#L136): Multilingual voice and player following address a concrete access/use case, but uptake and comprehension benefit are not measured. |
+| MatchLens — What-If Simulation | 2 | [repo-reviewer-2](https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/backend/app/core.py#L130): Evidence-backed pressing comparison is useful for a plausible analyst workflow, without user or adoption validation. |
+| MatchMind AI — Beyond the Scoreline | ? | [repo-reviewer-2](https://github.com/natagowai/matchmind-ai/blob/d9f6db5672daaaffc3bc896ebc52cb61b6901e02/README.md#L1): The two-line repository README supplies no assessable applicability evidence and the application is a template. |
+| MatchMind AI — Every Match Has a Personality | 2 | [repo-reviewer-2](https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/lib/agents/personalizationAgent.ts#L36): Casual/analyst and club modes express a concrete audience need without measured fan demand or outcome evidence. |
+| MatchMind Studio — Broadcast &amp; Streaming | 2 | [repo-reviewer-2](https://github.com/HamzatAbdulazeez/matchmind-studio/blob/72d315da0e0fbce52d9fad7624998d4f95e37b80/src/components/assistant-panel.tsx#L72): Producer explanations and player-aware recaps support a plausible use case without observed demand or outcome evidence. |
+| MatchMind — AI Broadcast Booth | 3 | [repo-reviewer-1](https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/frontend/lib/controller.dart#L52): Audience, language and player preferences provide a concrete match-explanation use case without evidence of uptake or League benefit. |
+| MSFT x EPL Hackathon | ? | No current assessment. |
+| MatchMind AI — AI Football Analyst | ? | [repo-reviewer-1](https://github.com/s70241963-afk/Sushmitha/blob/9f3eadf03749fb96fe241e4c7748d73412c1ca1e/README.md#L1): The repository points to external starter archives; their implementation was outside this SHA-pinned source audit. |
+| OmniPitch | ? | No current assessment. |
+| PitchPulse | ? | No current assessment. |
+| Pitchside | ? | No current assessment. |
+| ReactCoach 11 | 2 | [repo-reviewer-1](https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/README.md#L9): Explained tactical alternatives serve an identifiable coaching need, but real-football validity and a League/fan adoption path are unproven. |
+| Second Story | 2 | [repo-reviewer-1](https://github.com/aj0khi/soccer-hackathon-project/blob/ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b/src/lib/narrative/build-match-insight.ts#L40): A control-versus-danger explanation is concrete, but its fan and player claims can be independent of uploaded evidence. |
+| Shift11 | 2 | [repo-reviewer-2](https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/README.md#L7): Player-linked momentum is a concrete interpretability goal, but its fan usefulness and attribution claims remain unvalidated. |
+| SignalFlow | 1 | [repo-reviewer-1](https://github.com/kamal-saleh/SignalFlow/blob/75f55828892a0406fdeacccc536bb3ebf87e05e1/README.md#L7): Competing live stories are a plausible problem, but neither demand evidence nor business effect is supplied. |
+| Tactix AI | 1 | [repo-reviewer-1](https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI/blob/115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5/README.md#L2): Tactical insights and persona storytelling suggest a use case but do not establish a problem or benefit. |
+| Touchline | 2 | [repo-reviewer-2](https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/engine.mjs#L95): Fan/analyst/player filters offer a concrete explanation experience without measured comprehension or adoption outcomes. |
+| VendorIQ | 2 | [repo-reviewer-2](https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/README.md#L5): Cross-vendor normalization addresses a concrete developer workflow, while claimed production standard and audience benefits lack measured adoption. |
+| Virtual Studio Crew | 3 | [repo-reviewer-1](https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/backend/src/Studio.Crew/Viewers.cs#L49): Evidence-linked club/player/metric views give a concrete fan-facing use case, without measured adoption or commercial impact. |
+| VYBE — Every Fan Belongs | 3 | [repo-reviewer-1](https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/web/src/App.tsx#L207): Keyboard, speech and separate audience experiences address a concrete accessibility problem, while adoption and business uplift remain unsupported. |
+
+</details>
+
+<details>
+<summary>Experience · scores and evidence</summary>
+
+Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.
+
+| Project | /5 | Reviewer reasoning · pinned evidence |
+| --- | ---: | --- |
+| GoalGetter | 2 | [repo-reviewer-1](https://github.com/Simplify4Me2/goal-getter/blob/8dd5884cf19122ceb55939759dd7a4d70a67ae8d/GoalGetter/GoalGetter.Web/Components/Pages/Match.razor#L60): Start, error handling and live event-list rendering are connected, while explanation and personalisation are absent from this screen. |
+| Match Storyteller | 1 | [repo-reviewer-2](https://github.com/faisalbasra/match-storyteller/blob/c6e3f564bd41cab896216ba563ec5ae3d4422aa5/README.md#L29): Replay and two audience modes are clearly specified but no runnable UI exists. |
+| Matchday Crew | 3 | [repo-reviewer-2](https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/web/src/App.jsx#L81): React overlay connects live feed, voice, language/depth/player controls and halftime/fulltime recap with source tests. |
+| MatchLens — What-If Simulation | 2 | [repo-reviewer-2](https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/frontend/src/App.tsx#L4): The React UI connects evidence and scenario endpoints, but one fixed-team scenario and absent personalisation/recap limit the full journey. |
+| MatchMind AI — Beyond the Scoreline | 0 | [repo-reviewer-2](https://github.com/natagowai/matchmind-ai/blob/d9f6db5672daaaffc3bc896ebc52cb61b6901e02/src/matchmind-web/src/App.tsx#L19): The inspected frontend is the default Vite counter rather than a football experience. |
+| MatchMind AI — Every Match Has a Personality | 2 | [repo-reviewer-2](https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/components/MatchDashboard.tsx#L139): The dashboard connects live events and recap, but player mode prefixes a name and AI rewrites can bypass distinct casual/analyst local text. |
+| MatchMind Studio — Broadcast &amp; Streaming | 2 | [repo-reviewer-2](https://github.com/HamzatAbdulazeez/matchmind-studio/blob/72d315da0e0fbce52d9fad7624998d4f95e37b80/src/components/dashboard.tsx#L170): Replay and evidence panels are connected, while the prominent assistant endpoint and absent functioning-demo evidence limit the journey. |
+| MatchMind — AI Broadcast Booth | 3 | [repo-reviewer-1](https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/frontend/lib/controller.dart#L77): Playback, timed cards, audience preferences and recap state are connected in the frontend; demo usability was not observed. |
+| MSFT x EPL Hackathon | ? | No current assessment. |
+| MatchMind AI — AI Football Analyst | ? | [repo-reviewer-1](https://github.com/s70241963-afk/Sushmitha/blob/9f3eadf03749fb96fe241e4c7748d73412c1ca1e/README.md#L1): The repository points to external starter archives; their implementation was outside this SHA-pinned source audit. |
+| OmniPitch | ? | No current assessment. |
+| PitchPulse | ? | No current assessment. |
+| Pitchside | ? | No current assessment. |
+| ReactCoach 11 | 3 | [repo-reviewer-1](https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/apps/web/app/decision-lab.tsx#L28): Editable matchup scenarios and API-driven explanations provide a coherent interaction; live narrative and personalised recap remain unestablished. |
+| Second Story | 2 | [repo-reviewer-1](https://github.com/aj0khi/soccer-hackathon-project/blob/ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b/src/app/page.tsx#L60): Audience switching and data intake feed a dashboard, but the personalisation text is partly fixed and live timing is not established. |
+| Shift11 | 1 | [repo-reviewer-2](https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/README.md#L246): The timeline, pitch and audience modes are described without a frontend or API in the inspected tree. |
+| SignalFlow | 1 | [repo-reviewer-1](https://github.com/kamal-saleh/SignalFlow/blob/75f55828892a0406fdeacccc536bb3ebf87e05e1/README.md#L15): Intended attention scheduling is described without an interface or working-demo artifact in the repository. |
+| Tactix AI | 1 | [repo-reviewer-1](https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI/blob/115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5/README.md#L2): Persona-driven storytelling is named without an interface or demo artifact in the repository. |
+| Touchline | 3 | [repo-reviewer-2](https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/app.mjs#L35): Live replay, evidence, player modes, recap and timed editorial overlays have connected source and relevant tests. |
+| VendorIQ | 3 | [repo-reviewer-2](https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/frontend/src/App.jsx#L120): The inspected UI and streaming API connect sample selection, progress, corruption testing and completed reports. |
+| Virtual Studio Crew | 3 | [repo-reviewer-1](https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/frontend/src/components/FanView.tsx#L21): Multiple viewer panes, personalised overlays and commentary have connected source paths; functioning-demo clarity and timing were not observed. |
+| VYBE — Every Fan Belongs | 3 | [repo-reviewer-1](https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/web/src/App.tsx#L156): Personalised playback, captions, speech pacing and manual event navigation have connected source paths. |
+
+</details>
+
+<details>
+<summary>Category · scores and evidence</summary>
+
+Each score is out of 5 (up to 20 weighted points). Unknown stays unscored.
+
+| Project | /5 | Reviewer reasoning · pinned evidence |
+| --- | ---: | --- |
+| GoalGetter | ? | [repo-reviewer-1](https://github.com/Simplify4Me2/goal-getter/blob/8dd5884cf19122ceb55939759dd7a4d70a67ae8d/README.md#L1): No selected category or sufficient category-specific claim could be established. |
+| Match Storyteller | ? | [repo-reviewer-2](https://github.com/faisalbasra/match-storyteller/blob/c6e3f564bd41cab896216ba563ec5ae3d4422aa5/PRD.md#L31): No responsible category selection can be inferred because Foundry/Azure/multi-agent are explicitly excluded and the sole framework integration is conditional. |
+| Matchday Crew | 3 | [repo-reviewer-2](https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/src/agents/crew.js#L125): Multi-agent category is inferred and supported by Foundry specialist handoffs, shared state and recovery behavior covered by test files (not executed). |
+| MatchLens — What-If Simulation | ? | [repo-reviewer-2](https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/README.md#L67): Azure is described only as future deployment/provider work; no selected category or implemented category basis is established. |
+| MatchMind AI — Beyond the Scoreline | ? | [repo-reviewer-2](https://github.com/natagowai/matchmind-ai/blob/d9f6db5672daaaffc3bc896ebc52cb61b6901e02/README.md#L1): No declared category or substantive category-specific implementation was located. |
+| MatchMind AI — Every Match Has a Personality | 2 | [repo-reviewer-2](https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/README.md#L13): Multi-agent fit is inferred from the claimed pipeline, but specialist stages are deterministic and collective advantage is unproved. |
+| MatchMind Studio — Broadcast &amp; Streaming | 2 | [repo-reviewer-2](https://github.com/HamzatAbdulazeez/matchmind-studio/blob/72d315da0e0fbce52d9fad7624998d4f95e37b80/src/lib/ai/client.ts#L12): Foundry is inferred from the Azure OpenAI client and commentary integration; stronger platform-specific capabilities remain unverified. |
+| MatchMind — AI Broadcast Booth | 3 | [repo-reviewer-1](https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/backend/src/matchmind/agents/orchestrator.py#L580): Declared multi-agent category is supported by typed handoffs and recovery, without a single-agent comparison. |
+| MSFT x EPL Hackathon | ? | No current assessment. |
+| MatchMind AI — AI Football Analyst | ? | [repo-reviewer-1](https://github.com/s70241963-afk/Sushmitha/blob/9f3eadf03749fb96fe241e4c7748d73412c1ca1e/README.md#L1): The repository points to external starter archives; their implementation was outside this SHA-pinned source audit. |
+| OmniPitch | ? | No current assessment. |
+| PitchPulse | ? | No current assessment. |
+| Pitchside | ? | No current assessment. |
+| ReactCoach 11 | ? | [repo-reviewer-1](https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/README.md#L1): No official category selection was established from the inspected material. |
+| Second Story | 1 | [repo-reviewer-1](https://github.com/aj0khi/soccer-hackathon-project/blob/ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b/README.md#L23): The inferred Foundry category remains a documented mapping without substantive Foundry execution in the inspected pipeline. |
+| Shift11 | 1 | [repo-reviewer-2](https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/README.md#L242): Foundry is an inferred category based on the planned architecture, not implemented platform use. |
+| SignalFlow | 1 | [repo-reviewer-1](https://github.com/kamal-saleh/SignalFlow/blob/75f55828892a0406fdeacccc536bb3ebf87e05e1/README.md#L22): Foundry is named, but there is no inspectable category-specific implementation. |
+| Tactix AI | 1 | [repo-reviewer-1](https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI/blob/115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5/README.md#L2): The inferred multi-agent category is an assertion rather than inspectable collaboration. |
+| Touchline | 2 | [repo-reviewer-2](https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/infra/main.bicep#L44): Reassessed against the valid Azure Cloud Native category: Container Apps/logging/probes exist, but maxReplicas=1, in-memory state and unverified deployment limit scalable/resilient integration evidence. |
+| VendorIQ | 2 | [repo-reviewer-2](https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/README.md#L5): Multi-agent category is inferred from seven named stages, but most roles are deterministic processors without demonstrated agent advantage. |
+| Virtual Studio Crew | 3 | [repo-reviewer-1](https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/backend/src/Studio.Crew/StudioCrew.cs#L139): The inferred multi-agent category has specialised roles, retry loops and fallback, but no equal-budget single-agent superiority test. |
+| VYBE — Every Fan Belongs | 2 | [repo-reviewer-1](https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/api/vybe/ai.py#L30): The inferred Foundry category has an optional Azure model integration, but little evidence of platform-specific orchestration or development advantage. |
+
+</details>
+
+<details>
 <summary>Brief coverage, scoring method and named review evidence</summary>
 
 ![Coverage of the description’s specific suggestions](brief-coverage.svg)

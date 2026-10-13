@@ -1,364 +1,439 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="932" viewBox="0 0 1160 932" role="img" aria-labelledby="title desc">
-<title id="title">Public repository evidence · five equal criteria</title><desc id="desc">0–5 per criterion; ? unknown. Source review, not a working-demo test or predicted judge score.</desc>
-<rect width="1160" height="932" rx="14" fill="#101e2b"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="1074" viewBox="0 0 1160 1074" role="img" aria-labelledby="title desc">
+<title id="title">Public repository evidence scores</title>
+<desc id="desc">Stacked points from five equally weighted criteria. Incomplete assessments are separate; hatched points are unknown, not earned. No competitor code or demo was executed.</desc>
+<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4" stroke="#64798b" stroke-width="2"/></pattern></defs>
+<rect width="1160" height="1074" rx="14" fill="#101e2b"/>
 <g font-family="Arial, Helvetica, sans-serif">
-<text x="24" y="32" fill="#e5edf4" font-size="22" text-anchor="start">Public repository evidence · five equal criteria</text>
-<text x="24" y="57" fill="#a4bbc9" font-size="12" text-anchor="start">0–5 per criterion; ? unknown. Source review, not a working-demo test or predicted judge score.</text>
-<text x="425.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Technology</text>
-<text x="583.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Agent innovation</text>
-<text x="741.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Impact</text>
-<text x="899.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Experience</text>
-<text x="1057.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Category</text>
-<text x="24" y="127" fill="#e5edf4" font-size="14" text-anchor="start">GoalGetter</text>
-<g><title>Simplify4Me2/goal-getter: technology = 2</title><rect x="350.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="127" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="24" y="34" fill="#e5edf4" font-size="23" >Public repository evidence · points out of 100</text>
+<text x="24" y="59" fill="#a4bbc9" font-size="13" >Source review, not tested performance or a prediction of winning. Each criterion contributes up to 20 points.</text>
+<rect x="24" y="78" width="14" height="14" rx="2" fill="#69baff"/>
+<text x="46" y="90" fill="#e5edf4" font-size="13" >Technology</text>
+<rect x="242" y="78" width="14" height="14" rx="2" fill="#c2a4ff"/>
+<text x="264" y="90" fill="#e5edf4" font-size="13" >Agent innovation</text>
+<rect x="460" y="78" width="14" height="14" rx="2" fill="#73e3ae"/>
+<text x="482" y="90" fill="#e5edf4" font-size="13" >Impact</text>
+<rect x="678" y="78" width="14" height="14" rx="2" fill="#f3c678"/>
+<text x="700" y="90" fill="#e5edf4" font-size="13" >Experience</text>
+<rect x="896" y="78" width="14" height="14" rx="2" fill="#fa9dac"/>
+<text x="918" y="90" fill="#e5edf4" font-size="13" >Category</text>
+<text x="350.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">0</text>
+<line x1="350.0" x2="350.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<text x="478.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">20</text>
+<line x1="478.0" x2="478.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<text x="606.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">40</text>
+<line x1="606.0" x2="606.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<text x="734.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">60</text>
+<line x1="734.0" x2="734.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<text x="862.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">80</text>
+<line x1="862.0" x2="862.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<text x="990.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">100</text>
+<line x1="990.0" x2="990.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<g>
+<title>MatchMind — AI Broadcast Booth</title>
+<text x="24" y="161" fill="#e5edf4" font-size="14" >MatchMind — AI Broadcast Booth</text>
+<g><title>Technology: 16/20</title>
+<rect x="350" y="142" width="102.4" height="27" fill="#69baff"/>
+</g>
+<text x="401.2" y="161" fill="#0f172a" font-size="12" text-anchor="middle">16</text>
+<g><title>Agent innovation: 12/20</title>
+<rect x="452.4" y="142" width="76.8" height="27" fill="#c2a4ff"/>
+</g>
+<text x="490.79999999999995" y="161" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Impact: 12/20</title>
+<rect x="529.2" y="142" width="76.8" height="27" fill="#73e3ae"/>
+</g>
+<text x="567.5999999999999" y="161" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Experience: 12/20</title>
+<rect x="606" y="142" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="644.3999999999999" y="161" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 12/20</title>
+<rect x="682.8" y="142" width="76.8" height="27" fill="#fa9dac"/>
+</g>
+<text x="721.1999999999998" y="161" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<text x="769.5999999999998" y="161" fill="#e5edf4" font-size="15" font-weight="700">64</text>
+</g>
+<g>
+<title>Virtual Studio Crew</title>
+<text x="24" y="199" fill="#e5edf4" font-size="14" >Virtual Studio Crew</text>
+<g><title>Technology: 16/20</title>
+<rect x="350" y="180" width="102.4" height="27" fill="#69baff"/>
+</g>
+<text x="401.2" y="199" fill="#0f172a" font-size="12" text-anchor="middle">16</text>
+<g><title>Agent innovation: 12/20</title>
+<rect x="452.4" y="180" width="76.8" height="27" fill="#c2a4ff"/>
+</g>
+<text x="490.79999999999995" y="199" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Impact: 12/20</title>
+<rect x="529.2" y="180" width="76.8" height="27" fill="#73e3ae"/>
+</g>
+<text x="567.5999999999999" y="199" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Experience: 12/20</title>
+<rect x="606" y="180" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="644.3999999999999" y="199" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 12/20</title>
+<rect x="682.8" y="180" width="76.8" height="27" fill="#fa9dac"/>
+</g>
+<text x="721.1999999999998" y="199" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<text x="769.5999999999998" y="199" fill="#e5edf4" font-size="15" font-weight="700">64</text>
+</g>
+<g>
+<title>Matchday Crew</title>
+<text x="24" y="237" fill="#e5edf4" font-size="14" >Matchday Crew</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="218" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="237" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 12/20</title>
+<rect x="426.8" y="218" width="76.8" height="27" fill="#c2a4ff"/>
+</g>
+<text x="465.2" y="237" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Impact: 8/20</title>
+<rect x="503.6" y="218" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="529.2" y="237" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="554.8" y="218" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="593.2" y="237" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 12/20</title>
+<rect x="631.6" y="218" width="76.8" height="27" fill="#fa9dac"/>
+</g>
+<text x="670.0" y="237" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<text x="718.4" y="237" fill="#e5edf4" font-size="15" font-weight="700">56</text>
+</g>
+<g>
+<title>VYBE — Every Fan Belongs</title>
+<text x="24" y="275" fill="#e5edf4" font-size="14" >VYBE — Every Fan Belongs</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="256" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="426.8" y="256" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="452.40000000000003" y="275" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 12/20</title>
+<rect x="478" y="256" width="76.8" height="27" fill="#73e3ae"/>
+</g>
+<text x="516.4" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Experience: 12/20</title>
+<rect x="554.8" y="256" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="593.1999999999999" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="631.6" y="256" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="657.1999999999999" y="275" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="692.8" y="275" fill="#e5edf4" font-size="15" font-weight="700">52</text>
+</g>
+<g>
+<title>Touchline</title>
+<text x="24" y="313" fill="#e5edf4" font-size="14" >Touchline</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="294" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="426.8" y="294" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="452.40000000000003" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="478" y="294" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="503.6" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="529.2" y="294" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="567.6" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="606" y="294" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="631.6" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="667.2" y="313" fill="#e5edf4" font-size="15" font-weight="700">48</text>
+</g>
+<g>
+<title>VendorIQ</title>
+<text x="24" y="351" fill="#e5edf4" font-size="14" >VendorIQ</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="332" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="332" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="426.8" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="332" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="478.0" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="503.6" y="332" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="542.0" y="351" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="580.4" y="332" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="606.0" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="641.6" y="351" fill="#e5edf4" font-size="15" font-weight="700">44</text>
+</g>
+<g>
+<title>MatchMind AI — Every Match Has a Personality</title>
+<text x="24" y="389" fill="#e5edf4" font-size="14" >MatchMind AI — Every Match Has a Pers…</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="370" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="370" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="426.8" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="370" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<g><title>Simplify4Me2/goal-getter: agent_innovation = 0</title><rect x="508.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="127" fill="#718599" font-size="17" text-anchor="middle">0</text>
+<text x="478.0" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="503.6" y="370" width="51.2" height="27" fill="#f3c678"/>
 </g>
-<g><title>Simplify4Me2/goal-getter: impact = 1</title><rect x="666.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="127" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+<text x="529.1999999999999" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 8/20</title>
+<rect x="554.8" y="370" width="51.2" height="27" fill="#fa9dac"/>
 </g>
-<g><title>Simplify4Me2/goal-getter: experience = 2</title><rect x="824.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="127" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="580.4" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="616.0" y="389" fill="#e5edf4" font-size="15" font-weight="700">40</text>
 </g>
-<g><title>Simplify4Me2/goal-getter: category_fit = ?</title><rect x="982.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="127" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>MatchMind Studio — Broadcast &amp; Streaming</title>
+<text x="24" y="427" fill="#e5edf4" font-size="14" >MatchMind Studio — Broadcast &amp; Streaming</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="408" width="51.2" height="27" fill="#69baff"/>
 </g>
-<text x="24" y="163" fill="#e5edf4" font-size="14" text-anchor="start">Match Storyteller</text>
-<g><title>faisalbasra/match-storyteller: technology = 1</title><rect x="350.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+<text x="375.6" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="408" width="51.2" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>faisalbasra/match-storyteller: agent_innovation = 1</title><rect x="508.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+<text x="426.8" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="408" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<g><title>faisalbasra/match-storyteller: impact = 1</title><rect x="666.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+<text x="478.0" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="503.6" y="408" width="51.2" height="27" fill="#f3c678"/>
 </g>
-<g><title>faisalbasra/match-storyteller: experience = 1</title><rect x="824.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+<text x="529.1999999999999" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 8/20</title>
+<rect x="554.8" y="408" width="51.2" height="27" fill="#fa9dac"/>
 </g>
-<g><title>faisalbasra/match-storyteller: category_fit = ?</title><rect x="982.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="163" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="580.4" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="616.0" y="427" fill="#e5edf4" font-size="15" font-weight="700">40</text>
 </g>
-<text x="24" y="199" fill="#e5edf4" font-size="14" text-anchor="start">Matchday Crew</text>
-<g><title>timsheldon1/matchday-crew: technology = 3</title><rect x="350.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<g>
+<title>Second Story</title>
+<text x="24" y="465" fill="#e5edf4" font-size="14" >Second Story</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="446" width="51.2" height="27" fill="#69baff"/>
 </g>
-<g><title>timsheldon1/matchday-crew: agent_innovation = 3</title><rect x="508.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<text x="375.6" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="401.2" y="446" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>timsheldon1/matchday-crew: impact = 2</title><rect x="666.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="199" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Impact: 8/20</title>
+<rect x="426.8" y="446" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<g><title>timsheldon1/matchday-crew: experience = 3</title><rect x="824.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<text x="452.40000000000003" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="478" y="446" width="51.2" height="27" fill="#f3c678"/>
 </g>
-<g><title>timsheldon1/matchday-crew: category_fit = 3</title><rect x="982.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<text x="503.6" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 4/20</title>
+<rect x="529.2" y="446" width="25.6" height="27" fill="#fa9dac"/>
 </g>
-<text x="24" y="235" fill="#e5edf4" font-size="14" text-anchor="start">MatchLens — What-If Simulation</text>
-<g><title>vishnugovind10/matchlens: technology = 2</title><rect x="350.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="564.8000000000001" y="465" fill="#e5edf4" font-size="15" font-weight="700">32</text>
 </g>
-<g><title>vishnugovind10/matchlens: agent_innovation = 0</title><rect x="508.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="235" fill="#718599" font-size="17" text-anchor="middle">0</text>
+<g>
+<title>Shift11</title>
+<text x="24" y="503" fill="#e5edf4" font-size="14" >Shift11</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="484" width="51.2" height="27" fill="#69baff"/>
 </g>
-<g><title>vishnugovind10/matchlens: impact = 2</title><rect x="666.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="375.6" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="401.2" y="484" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>vishnugovind10/matchlens: experience = 2</title><rect x="824.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Impact: 8/20</title>
+<rect x="426.8" y="484" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<g><title>vishnugovind10/matchlens: category_fit = ?</title><rect x="982.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="235" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="452.40000000000003" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 4/20</title>
+<rect x="478" y="484" width="25.6" height="27" fill="#f3c678"/>
 </g>
-<text x="24" y="271" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Beyond the Scoreline</text>
-<g><title>natagowai/matchmind-ai: technology = 0</title><rect x="350.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+<g><title>Category: 4/20</title>
+<rect x="503.6" y="484" width="25.6" height="27" fill="#fa9dac"/>
 </g>
-<g><title>natagowai/matchmind-ai: agent_innovation = 0</title><rect x="508.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+<text x="539.2" y="503" fill="#e5edf4" font-size="15" font-weight="700">28</text>
 </g>
-<g><title>natagowai/matchmind-ai: impact = ?</title><rect x="666.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="271" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>SignalFlow</title>
+<text x="24" y="541" fill="#e5edf4" font-size="14" >SignalFlow</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="522" width="25.6" height="27" fill="#69baff"/>
 </g>
-<g><title>natagowai/matchmind-ai: experience = 0</title><rect x="824.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="522" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>natagowai/matchmind-ai: category_fit = ?</title><rect x="982.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="271" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="522" width="25.6" height="27" fill="#73e3ae"/>
 </g>
-<text x="24" y="307" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Every Match Has a Pe…</text>
-<g><title>swarupe7/microsoft_dev_hackathon: technology = 2</title><rect x="350.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="522" width="25.6" height="27" fill="#f3c678"/>
 </g>
-<g><title>swarupe7/microsoft_dev_hackathon: agent_innovation = 2</title><rect x="508.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Category: 4/20</title>
+<rect x="452.4" y="522" width="25.6" height="27" fill="#fa9dac"/>
 </g>
-<g><title>swarupe7/microsoft_dev_hackathon: impact = 2</title><rect x="666.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="488.0000000000001" y="541" fill="#e5edf4" font-size="15" font-weight="700">20</text>
 </g>
-<g><title>swarupe7/microsoft_dev_hackathon: experience = 2</title><rect x="824.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g>
+<title>Tactix AI</title>
+<text x="24" y="579" fill="#e5edf4" font-size="14" >Tactix AI</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="560" width="25.6" height="27" fill="#69baff"/>
 </g>
-<g><title>swarupe7/microsoft_dev_hackathon: category_fit = 2</title><rect x="982.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="560" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<text x="24" y="343" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind Studio — Broadcast &amp; Stre…</text>
-<g><title>HamzatAbdulazeez/matchmind-studio: technology = 2</title><rect x="350.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="560" width="25.6" height="27" fill="#73e3ae"/>
 </g>
-<g><title>HamzatAbdulazeez/matchmind-studio: agent_innovation = 2</title><rect x="508.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="560" width="25.6" height="27" fill="#f3c678"/>
 </g>
-<g><title>HamzatAbdulazeez/matchmind-studio: impact = 2</title><rect x="666.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<g><title>Category: 4/20</title>
+<rect x="452.4" y="560" width="25.6" height="27" fill="#fa9dac"/>
 </g>
-<g><title>HamzatAbdulazeez/matchmind-studio: experience = 2</title><rect x="824.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<text x="488.0000000000001" y="579" fill="#e5edf4" font-size="15" font-weight="700">20</text>
 </g>
-<g><title>HamzatAbdulazeez/matchmind-studio: category_fit = 2</title><rect x="982.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+<rect x="16" y="598" width="1128" height="30" fill="#101e2b"/>
+<text x="24" y="618" fill="#a4bbc9" font-size="14" >Incomplete / unavailable · not ranked</text>
+<g>
+<title>GoalGetter</title>
+<text x="24" y="657" fill="#e5edf4" font-size="14" >GoalGetter</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="638" width="51.2" height="27" fill="#69baff"/>
 </g>
-<text x="24" y="379" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind — AI Broadcast Booth</text>
-<g><title>ALISAEED-1/matchmind: technology = 4</title><rect x="350.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">4</text>
+<text x="375.6" y="657" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 0/20</title>
+<rect x="401.2" y="638" width="0" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>ALISAEED-1/matchmind: agent_innovation = 3</title><rect x="508.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="638" width="25.6" height="27" fill="#73e3ae"/>
 </g>
-<g><title>ALISAEED-1/matchmind: impact = 3</title><rect x="666.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<g><title>Experience: 8/20</title>
+<rect x="426.8" y="638" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="452.40000000000003" y="657" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<rect x="478" y="638" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="657" fill="#a4bbc9" font-size="13" >20 known + ?</text>
+</g>
+<g>
+<title>Match Storyteller</title>
+<text x="24" y="695" fill="#e5edf4" font-size="14" >Match Storyteller</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="676" width="25.6" height="27" fill="#69baff"/>
 </g>
-<g><title>ALISAEED-1/matchmind: experience = 3</title><rect x="824.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="676" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>ALISAEED-1/matchmind: category_fit = 3</title><rect x="982.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="676" width="25.6" height="27" fill="#73e3ae"/>
 </g>
-<text x="24" y="415" fill="#e5edf4" font-size="14" text-anchor="start">MSFT x EPL Hackathon</text>
-<g><title>zekariasasaminew/msft-x-epl-hackathon: technology = ?</title><rect x="350.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="676" width="25.6" height="27" fill="#f3c678"/>
 </g>
-<g><title>zekariasasaminew/msft-x-epl-hackathon: agent_innovation = ?</title><rect x="508.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<rect x="452.4" y="676" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="695" fill="#a4bbc9" font-size="13" >16 known + ?</text>
 </g>
-<g><title>zekariasasaminew/msft-x-epl-hackathon: impact = ?</title><rect x="666.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>MatchLens — What-If Simulation</title>
+<text x="24" y="733" fill="#e5edf4" font-size="14" >MatchLens — What-If Simulation</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="714" width="51.2" height="27" fill="#69baff"/>
 </g>
-<g><title>zekariasasaminew/msft-x-epl-hackathon: experience = ?</title><rect x="824.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="375.6" y="733" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 0/20</title>
+<rect x="401.2" y="714" width="0" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>zekariasasaminew/msft-x-epl-hackathon: category_fit = ?</title><rect x="982.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Impact: 8/20</title>
+<rect x="401.2" y="714" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<text x="24" y="451" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — AI Football Analyst</text>
-<g><title>s70241963-afk/Sushmitha: technology = ?</title><rect x="350.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="426.8" y="733" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="452.4" y="714" width="51.2" height="27" fill="#f3c678"/>
 </g>
-<g><title>s70241963-afk/Sushmitha: agent_innovation = ?</title><rect x="508.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="478.0" y="733" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<rect x="503.6" y="714" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="733" fill="#a4bbc9" font-size="13" >24 known + ?</text>
 </g>
-<g><title>s70241963-afk/Sushmitha: impact = ?</title><rect x="666.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>MatchMind AI — AI Football Analyst</title>
+<text x="24" y="771" fill="#e5edf4" font-size="14" >MatchMind AI — AI Football Analyst</text>
+<text x="350" y="771" fill="#a4bbc9" font-size="13" >Unscored</text>
 </g>
-<g><title>s70241963-afk/Sushmitha: experience = ?</title><rect x="824.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>MatchMind AI — Beyond the Scoreline</title>
+<text x="24" y="809" fill="#e5edf4" font-size="14" >MatchMind AI — Beyond the Scoreline</text>
+<g><title>Technology: 0/20</title>
+<rect x="350" y="790" width="0" height="27" fill="#69baff"/>
 </g>
-<g><title>s70241963-afk/Sushmitha: category_fit = ?</title><rect x="982.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Agent innovation: 0/20</title>
+<rect x="350" y="790" width="0" height="27" fill="#c2a4ff"/>
 </g>
-<text x="24" y="487" fill="#e5edf4" font-size="14" text-anchor="start">OmniPitch</text>
-<g><title>akashsv01/omnipitch: technology = ?</title><rect x="350.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Experience: 0/20</title>
+<rect x="350" y="790" width="0" height="27" fill="#f3c678"/>
 </g>
-<g><title>akashsv01/omnipitch: agent_innovation = ?</title><rect x="508.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<rect x="350" y="790" width="256" height="27" fill="url(#unknown)"/>
+<text x="1010" y="809" fill="#a4bbc9" font-size="13" >0 known + ?</text>
 </g>
-<g><title>akashsv01/omnipitch: impact = ?</title><rect x="666.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>MSFT x EPL Hackathon</title>
+<text x="24" y="847" fill="#e5edf4" font-size="14" >MSFT x EPL Hackathon</text>
+<text x="350" y="847" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
-<g><title>akashsv01/omnipitch: experience = ?</title><rect x="824.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>OmniPitch</title>
+<text x="24" y="885" fill="#e5edf4" font-size="14" >OmniPitch</text>
+<text x="350" y="885" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
-<g><title>akashsv01/omnipitch: category_fit = ?</title><rect x="982.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>PitchPulse</title>
+<text x="24" y="923" fill="#e5edf4" font-size="14" >PitchPulse</text>
+<text x="350" y="923" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
-<text x="24" y="523" fill="#e5edf4" font-size="14" text-anchor="start">PitchPulse</text>
-<g><title>sethmalefo-del/pitchpulse: technology = ?</title><rect x="350.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>Pitchside</title>
+<text x="24" y="961" fill="#e5edf4" font-size="14" >Pitchside</text>
+<text x="350" y="961" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
-<g><title>sethmalefo-del/pitchpulse: agent_innovation = ?</title><rect x="508.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g>
+<title>ReactCoach 11</title>
+<text x="24" y="999" fill="#e5edf4" font-size="14" >ReactCoach 11</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="980" width="76.8" height="27" fill="#69baff"/>
 </g>
-<g><title>sethmalefo-del/pitchpulse: impact = ?</title><rect x="666.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="388.4" y="999" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="426.8" y="980" width="25.6" height="27" fill="#c2a4ff"/>
 </g>
-<g><title>sethmalefo-del/pitchpulse: experience = ?</title><rect x="824.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="980" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<g><title>sethmalefo-del/pitchpulse: category_fit = ?</title><rect x="982.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="478.00000000000006" y="999" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="503.6" y="980" width="76.8" height="27" fill="#f3c678"/>
 </g>
-<text x="24" y="559" fill="#e5edf4" font-size="14" text-anchor="start">Pitchside</text>
-<g><title>aknotwell/Pitchside: technology = ?</title><rect x="350.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+<text x="542.0" y="999" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<rect x="580.4" y="980" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="999" fill="#a4bbc9" font-size="13" >36 known + ?</text>
 </g>
-<g><title>aknotwell/Pitchside: agent_innovation = ?</title><rect x="508.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
-</g>
-<g><title>aknotwell/Pitchside: impact = ?</title><rect x="666.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
-</g>
-<g><title>aknotwell/Pitchside: experience = ?</title><rect x="824.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
-</g>
-<g><title>aknotwell/Pitchside: category_fit = ?</title><rect x="982.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
-</g>
-<text x="24" y="595" fill="#e5edf4" font-size="14" text-anchor="start">ReactCoach 11</text>
-<g><title>devgupta-9/reactcoach-11: technology = 3</title><rect x="350.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="595" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>devgupta-9/reactcoach-11: agent_innovation = 1</title><rect x="508.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="595" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>devgupta-9/reactcoach-11: impact = 2</title><rect x="666.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="595" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>devgupta-9/reactcoach-11: experience = 3</title><rect x="824.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="595" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>devgupta-9/reactcoach-11: category_fit = ?</title><rect x="982.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="595" fill="#718599" font-size="17" text-anchor="middle">?</text>
-</g>
-<text x="24" y="631" fill="#e5edf4" font-size="14" text-anchor="start">Second Story</text>
-<g><title>aj0khi/soccer-hackathon-project: technology = 2</title><rect x="350.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>aj0khi/soccer-hackathon-project: agent_innovation = 1</title><rect x="508.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="631" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>aj0khi/soccer-hackathon-project: impact = 2</title><rect x="666.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>aj0khi/soccer-hackathon-project: experience = 2</title><rect x="824.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>aj0khi/soccer-hackathon-project: category_fit = 1</title><rect x="982.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="631" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<text x="24" y="667" fill="#e5edf4" font-size="14" text-anchor="start">Shift11</text>
-<g><title>achand280606/Shift11: technology = 2</title><rect x="350.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>achand280606/Shift11: agent_innovation = 1</title><rect x="508.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>achand280606/Shift11: impact = 2</title><rect x="666.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>achand280606/Shift11: experience = 1</title><rect x="824.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>achand280606/Shift11: category_fit = 1</title><rect x="982.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<text x="24" y="703" fill="#e5edf4" font-size="14" text-anchor="start">SignalFlow</text>
-<g><title>kamal-saleh/SignalFlow: technology = 1</title><rect x="350.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>kamal-saleh/SignalFlow: agent_innovation = 1</title><rect x="508.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>kamal-saleh/SignalFlow: impact = 1</title><rect x="666.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>kamal-saleh/SignalFlow: experience = 1</title><rect x="824.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>kamal-saleh/SignalFlow: category_fit = 1</title><rect x="982.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<text x="24" y="739" fill="#e5edf4" font-size="14" text-anchor="start">Tactix AI</text>
-<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: technology = 1</title><rect x="350.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: agent_innovation = 1</title><rect x="508.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: impact = 1</title><rect x="666.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: experience = 1</title><rect x="824.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: category_fit = 1</title><rect x="982.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
-</g>
-<text x="24" y="775" fill="#e5edf4" font-size="14" text-anchor="start">Touchline</text>
-<g><title>audioreworkvisions/touchline: technology = 3</title><rect x="350.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="775" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>audioreworkvisions/touchline: agent_innovation = 2</title><rect x="508.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>audioreworkvisions/touchline: impact = 2</title><rect x="666.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>audioreworkvisions/touchline: experience = 3</title><rect x="824.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="775" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>audioreworkvisions/touchline: category_fit = 2</title><rect x="982.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<text x="24" y="811" fill="#e5edf4" font-size="14" text-anchor="start">VendorIQ</text>
-<g><title>SeyiBuilds/VendorIQ: technology = 2</title><rect x="350.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>SeyiBuilds/VendorIQ: agent_innovation = 2</title><rect x="508.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>SeyiBuilds/VendorIQ: impact = 2</title><rect x="666.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>SeyiBuilds/VendorIQ: experience = 3</title><rect x="824.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="811" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>SeyiBuilds/VendorIQ: category_fit = 2</title><rect x="982.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<text x="24" y="847" fill="#e5edf4" font-size="14" text-anchor="start">Virtual Studio Crew</text>
-<g><title>timmytrace/pl-insights-engine: technology = 4</title><rect x="350.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">4</text>
-</g>
-<g><title>timmytrace/pl-insights-engine: agent_innovation = 3</title><rect x="508.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>timmytrace/pl-insights-engine: impact = 3</title><rect x="666.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>timmytrace/pl-insights-engine: experience = 3</title><rect x="824.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>timmytrace/pl-insights-engine: category_fit = 3</title><rect x="982.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<text x="24" y="883" fill="#e5edf4" font-size="14" text-anchor="start">VYBE — Every Fan Belongs</text>
-<g><title>Hapinam/vybe-ai: technology = 3</title><rect x="350.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="425.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>Hapinam/vybe-ai: agent_innovation = 2</title><rect x="508.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="583.0" y="883" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
-<g><title>Hapinam/vybe-ai: impact = 3</title><rect x="666.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="741.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>Hapinam/vybe-ai: experience = 3</title><rect x="824.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="899.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
-</g>
-<g><title>Hapinam/vybe-ai: category_fit = 2</title><rect x="982.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
-<text x="1057.0" y="883" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
-</g>
+<text x="24" y="1054" fill="#a4bbc9" font-size="12" >Hatching shows the possible 0–20 points per unscored criterion; it is not an awarded score.</text>
 </g></svg>
