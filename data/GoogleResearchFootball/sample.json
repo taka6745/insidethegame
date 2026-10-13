@@ -1,0 +1,849 @@
+{
+  "synthetic": true,
+  "upstream_commit": "3d9e754720a95621bba6475c4d3b0d56fe919014",
+  "frame": {
+    "kind": "frame",
+    "physics_ms": 1910,
+    "match_ms": 0,
+    "phase": 1,
+    "in_play": false,
+    "set_piece": false,
+    "score": [
+      0,
+      0
+    ],
+    "ball_position_m": [
+      0,
+      0,
+      0.109019011
+    ],
+    "ball_velocity_mps": [
+      0,
+      0,
+      0.0616395287
+    ],
+    "last_touch": null,
+    "game_mode": 0,
+    "owner": [
+      -1,
+      -1
+    ],
+    "players": [
+      {
+        "team": 0,
+        "index": 0,
+        "id": 0,
+        "position_m": [
+          -55,
+          0,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "body_facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 0,
+        "function": 1,
+        "animation_frame": 3,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 9498,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 1,
+        "id": 1,
+        "position_m": [
+          -2.75,
+          0,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "body_facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 7,
+        "function": 1,
+        "animation_frame": 2,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 670,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 2,
+        "id": 2,
+        "position_m": [
+          -0.550000012,
+          -18.3600254,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.0299429558,
+          0.999551594,
+          0
+        ],
+        "body_facing": [
+          0.0299429558,
+          0.999551594,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 9,
+        "function": 1,
+        "animation_frame": 23,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 3159,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 3,
+        "id": 3,
+        "position_m": [
+          -23.2099991,
+          16.6317692,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.812851429,
+          -0.582471132,
+          0
+        ],
+        "body_facing": [
+          0.812851429,
+          -0.582471132,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 2,
+        "function": 1,
+        "animation_frame": 23,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4891,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 4,
+        "id": 4,
+        "position_m": [
+          -27.5,
+          5.40005779,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.981260478,
+          -0.192685813,
+          0
+        ],
+        "body_facing": [
+          0.981260478,
+          -0.192685813,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 1,
+        "function": 1,
+        "animation_frame": 0,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4802,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 5,
+        "id": 5,
+        "position_m": [
+          -27.5,
+          -5.39997292,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.981261015,
+          0.192683086,
+          0
+        ],
+        "body_facing": [
+          0.981261015,
+          0.192683086,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 1,
+        "function": 1,
+        "animation_frame": 14,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4704,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 6,
+        "id": 6,
+        "position_m": [
+          -23.2099991,
+          -16.6317692,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.812851369,
+          0.582471192,
+          0
+        ],
+        "body_facing": [
+          0.812851369,
+          0.582471192,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 3,
+        "function": 1,
+        "animation_frame": 20,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4898,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 7,
+        "id": 7,
+        "position_m": [
+          -10.1316595,
+          8.97857189,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.748411655,
+          -0.663234472,
+          0
+        ],
+        "body_facing": [
+          0.748411655,
+          -0.663234472,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 10,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2140,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 8,
+        "id": 8,
+        "position_m": [
+          -14.7165709,
+          0,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "body_facing": [
+          1,
+          4.37113883e-08,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 9,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2270,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 9,
+        "id": 9,
+        "position_m": [
+          -10.1316595,
+          -8.97857189,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.748411477,
+          0.663234711,
+          0
+        ],
+        "body_facing": [
+          0.748411477,
+          0.663234711,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 2,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2110,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 0,
+        "index": 10,
+        "id": 10,
+        "position_m": [
+          -0.550000012,
+          18.3598557,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0.0299432818,
+          -0.999551594,
+          0
+        ],
+        "body_facing": [
+          0.0299432818,
+          -0.999551594,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 6,
+        "function": 1,
+        "animation_frame": 4,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 3061,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 0,
+        "id": 11,
+        "position_m": [
+          55,
+          0,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -1,
+          1.19248806e-08,
+          0
+        ],
+        "body_facing": [
+          -1,
+          -1.62920685e-07,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 0,
+        "function": 1,
+        "animation_frame": 14,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 9498,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 1,
+        "id": 12,
+        "position_m": [
+          0,
+          1.69919991,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -8.74227766e-08,
+          -1,
+          0
+        ],
+        "body_facing": [
+          -1.50995803e-07,
+          -1,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 7,
+        "function": 1,
+        "animation_frame": 15,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 500,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 2,
+        "id": 13,
+        "position_m": [
+          0,
+          -1.69919991,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          0,
+          1,
+          0
+        ],
+        "body_facing": [
+          0,
+          1,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 9,
+        "function": 1,
+        "animation_frame": 6,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 500,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 3,
+        "id": 14,
+        "position_m": [
+          23.2099991,
+          -16.6317692,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.812851012,
+          0.582471669,
+          0
+        ],
+        "body_facing": [
+          -0.812851131,
+          0.58247149,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 2,
+        "function": 1,
+        "animation_frame": 2,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4891,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 4,
+        "id": 15,
+        "position_m": [
+          27.5,
+          -5.40005779,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.981260359,
+          0.192686453,
+          0
+        ],
+        "body_facing": [
+          -0.981260419,
+          0.192686275,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 1,
+        "function": 1,
+        "animation_frame": 0,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4802,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 5,
+        "id": 16,
+        "position_m": [
+          27.5,
+          5.39997292,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.981261134,
+          -0.192682683,
+          0
+        ],
+        "body_facing": [
+          -0.981261134,
+          -0.192682743,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 1,
+        "function": 1,
+        "animation_frame": 21,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4704,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 6,
+        "id": 17,
+        "position_m": [
+          23.2099991,
+          16.6317692,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.812851608,
+          -0.582470834,
+          0
+        ],
+        "body_facing": [
+          -0.812851489,
+          -0.582471013,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 3,
+        "function": 1,
+        "animation_frame": 19,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 4898,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 7,
+        "id": 18,
+        "position_m": [
+          10.1316595,
+          -8.97857189,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.748411238,
+          0.663234949,
+          0
+        ],
+        "body_facing": [
+          -0.748411357,
+          0.66323483,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 12,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2140,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 8,
+        "id": 19,
+        "position_m": [
+          14.7165709,
+          0,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -1,
+          1.19248806e-08,
+          0
+        ],
+        "body_facing": [
+          -1,
+          -1.62920685e-07,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 23,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2270,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 9,
+        "id": 20,
+        "position_m": [
+          10.1316595,
+          8.97857189,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.748411715,
+          -0.663234413,
+          0
+        ],
+        "body_facing": [
+          -0.748411775,
+          -0.663234353,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 5,
+        "function": 1,
+        "animation_frame": 11,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 2110,
+        "last_touch_ms": 0
+      },
+      {
+        "team": 1,
+        "index": 10,
+        "id": 21,
+        "position_m": [
+          0.550000012,
+          -18.3598557,
+          0
+        ],
+        "velocity_mps": [
+          0,
+          0,
+          0
+        ],
+        "facing": [
+          -0.0299431067,
+          0.999551594,
+          0
+        ],
+        "body_facing": [
+          -0.0299432818,
+          0.999551594,
+          0
+        ],
+        "active": true,
+        "has_card": false,
+        "tired_factor": 0,
+        "role": 6,
+        "function": 1,
+        "animation_frame": 22,
+        "has_possession": false,
+        "possession_ms": 0,
+        "time_to_ball_ms": 3061,
+        "last_touch_ms": 0
+      }
+    ]
+  },
+  "pass": {
+    "physics_ms": 3550,
+    "match_ms": 27900,
+    "passer": [
+      1,
+      12
+    ],
+    "pass_type": "short_pass",
+    "intended_receiver": null,
+    "forced_receiver": null,
+    "start_position_m": [
+      -2.49522281,
+      3.65307665,
+      0.109999999
+    ],
+    "launch_velocity_mps": [
+      1.00045836,
+      15.3930798,
+      1.69681132
+    ],
+    "launch_speed_mps": 15.518601461309009,
+    "launch_speed_kmh": 55.86696526071243,
+    "direction_degrees": 86.28134638537763,
+    "elevation_degrees": 6.277298491223009,
+    "source_touch_id": 10,
+    "pass_id": 11,
+    "flight_path_m": 8.690517282281764,
+    "deflections": [],
+    "outcome": "completed",
+    "completed": true,
+    "receiver": [
+      1,
+      20
+    ],
+    "end_physics_ms": 4190,
+    "end_match_ms": 39420,
+    "end_position_m": [
+      -1.3853085,
+      12.2486525,
+      0.162136495
+    ],
+    "duration_s": 0.64,
+    "displacement_m": 8.666939134933738,
+    "mean_path_speed_mps": 13.578933253565255
+  }
+}

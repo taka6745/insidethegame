@@ -1,0 +1,327 @@
+{
+  "upstream_commit": "3d9e754720a95621bba6475c4d3b0d56fe919014",
+  "architecture": "aarch64",
+  "platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36",
+  "python": "3.11.2",
+  "cold_initialization_seconds": 0.719362584000919,
+  "rendering": false,
+  "telemetry_preserves_observed_trajectories": true,
+  "physics_tick_ms": 10,
+  "physics_ticks_per_agent_step": 10,
+  "scenario": "11_vs_11_stochastic",
+  "scenario_limit_agent_steps": 3000,
+  "synthetic": true,
+  "team_difficulty": {
+    "left": 1.0,
+    "right": 0.6
+  },
+  "coordinates": {
+    "origin": "pitch centre",
+    "pitch_m": [
+      110,
+      72
+    ],
+    "axes": "native engine x/y; z is height",
+    "team_direction": "left attacks +x, right attacks -x; verify against scenario"
+  },
+  "patch_sha256": "07bbe2357a28be47059763cc2a3330e95e250f183eeb1ef572505f8569f3b5cd",
+  "note": "Scenario clock is accelerated; 3000 steps is not 90 minutes of physical motion. Includes wrapper, observation hashing and export work, excludes startup/reset from per-game timings.",
+  "runs": [
+    {
+      "game": 1,
+      "seed": 42,
+      "mode": "headless_no_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "24ae10b1d74937d86043067ee3a22ec90d2c77987ca9646ffed56bef38f43346",
+      "wall_seconds": 19.76086959298118,
+      "reset_seconds": 0.03974879201268777,
+      "agent_steps_per_second": 151.86578636528822,
+      "score": [
+        1,
+        0
+      ]
+    },
+    {
+      "game": 1,
+      "seed": 42,
+      "mode": "verbose_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "24ae10b1d74937d86043067ee3a22ec90d2c77987ca9646ffed56bef38f43346",
+      "wall_seconds": 54.04494531601085,
+      "reset_seconds": 0.039016124996123835,
+      "agent_steps_per_second": 55.527857091030334,
+      "score": [
+        1,
+        0
+      ],
+      "frames": 32810,
+      "player_rows": 721820,
+      "touches": 478,
+      "physics_duration_s": 353.19,
+      "match_clock_end_s": 5401.8,
+      "event_counts": {
+        "play_started": 15,
+        "action_started": 464,
+        "ball_touch": 478,
+        "possession_change": 242,
+        "pass": 122,
+        "pass_result": 122,
+        "interfere_contact": 10,
+        "recovery": 60,
+        "shot": 8,
+        "clock_jump": 14,
+        "play_stopped": 14,
+        "game_mode_change": 26,
+        "goal": 1,
+        "deflect_contact": 1,
+        "sliding_contact": 2
+      },
+      "max_player_speed_mps": 8.09599706855746,
+      "max_ball_speed_mps": 42.84598386445581,
+      "completed_passes": 74,
+      "unresolved_passes": 0,
+      "files": {
+        "players.csv.gz": {
+          "bytes": 72154869,
+          "sha256": "26c8e8512f750fd409a126f79f8b389a501c4fa3ef69ac21e3030b118d17e647"
+        },
+        "ball.csv.gz": {
+          "bytes": 2642284,
+          "sha256": "f5ee79cde4d8d787a2b3ce9228593362aa394ee9ee0a3ec7b66cbbecec5a4fc3"
+        },
+        "raw.jsonl.gz": {
+          "bytes": 53254344,
+          "sha256": "d448f518c560dd80af764903d3dd8662363b3c0c2e359509a6d13d8ee795f6cb"
+        },
+        "passes.json": {
+          "bytes": 121876,
+          "sha256": "25cf326012cc024691bf7e690c0969f7a7ed9f1dfe58706a7d143aba68ab7e5b"
+        },
+        "events.jsonl.gz": {
+          "bytes": 76835,
+          "sha256": "c6a5ddb56c255875f35fe9f1a53cc4f32353268d9142c2084eb67d5f1d18eb6f"
+        },
+        "observations.jsonl.gz": {
+          "bytes": 5055186,
+          "sha256": "6dc3d10491a4b270d35673df9097b63e76612ae1edad94f7e109d54b91b80be8"
+        }
+      }
+    },
+    {
+      "game": 2,
+      "seed": 43,
+      "mode": "headless_no_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "11b77a289f6c0f10801b8de57f779f449ff3e277093e17adcf624f1ed990533f",
+      "wall_seconds": 19.528742633003276,
+      "reset_seconds": 0.04640495800413191,
+      "agent_steps_per_second": 153.67092784193673,
+      "score": [
+        1,
+        2
+      ]
+    },
+    {
+      "game": 2,
+      "seed": 43,
+      "mode": "verbose_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "11b77a289f6c0f10801b8de57f779f449ff3e277093e17adcf624f1ed990533f",
+      "wall_seconds": 69.18343969801208,
+      "reset_seconds": 0.04127049999078736,
+      "agent_steps_per_second": 43.37743270787721,
+      "score": [
+        1,
+        2
+      ],
+      "frames": 32930,
+      "player_rows": 724460,
+      "touches": 529,
+      "physics_duration_s": 355.19,
+      "match_clock_end_s": 5401.8,
+      "event_counts": {
+        "play_started": 17,
+        "action_started": 480,
+        "ball_touch": 529,
+        "possession_change": 245,
+        "pass": 164,
+        "pass_result": 164,
+        "recovery": 61,
+        "interfere_contact": 3,
+        "clock_jump": 16,
+        "play_stopped": 16,
+        "game_mode_change": 26,
+        "shot": 11,
+        "goal": 3,
+        "deflect_contact": 1
+      },
+      "max_player_speed_mps": 8.259187705645116,
+      "max_ball_speed_mps": 42.84563969578399,
+      "completed_passes": 69,
+      "unresolved_passes": 1,
+      "files": {
+        "players.csv.gz": {
+          "bytes": 72741942,
+          "sha256": "aa2020ecfb2dd2a8475903ac94b56eedfe6f400134e69510827207f07ca504af"
+        },
+        "ball.csv.gz": {
+          "bytes": 2644591,
+          "sha256": "8c63e43e7c23ed1e3151f874915942b5c33869f3937741e177d4b274f16d8fcd"
+        },
+        "raw.jsonl.gz": {
+          "bytes": 53616493,
+          "sha256": "7aabc7884be59eddad162bc9f7ce0e8862d06033ec58029f32bc3ff0a466ca95"
+        },
+        "passes.json": {
+          "bytes": 160144,
+          "sha256": "3690fbd87f8167930eef6ba3226969815ba89e10e4934f4787886db36505a0d3"
+        },
+        "events.jsonl.gz": {
+          "bytes": 83595,
+          "sha256": "64f5f5162f3ccc73c31c4b30137e794d310c6510c723b1a716f49c739c9a0892"
+        },
+        "observations.jsonl.gz": {
+          "bytes": 5077591,
+          "sha256": "417b4298c545b717b8b62b25d9af0b012bde8e34e98d757285dfb3c1c94b595a"
+        }
+      }
+    },
+    {
+      "game": 3,
+      "seed": 44,
+      "mode": "headless_no_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "6509139c7074067e26293f7042093f47952340e03f540dbcfef5dc6b71186ea3",
+      "wall_seconds": 19.486469716997817,
+      "reset_seconds": 0.045950875006383285,
+      "agent_steps_per_second": 154.0042934191545,
+      "score": [
+        3,
+        1
+      ]
+    },
+    {
+      "game": 3,
+      "seed": 44,
+      "mode": "verbose_export",
+      "agent_steps": 3001,
+      "completed": true,
+      "observation_sha256": "6509139c7074067e26293f7042093f47952340e03f540dbcfef5dc6b71186ea3",
+      "wall_seconds": 53.345430941000814,
+      "reset_seconds": 0.04389300002367236,
+      "agent_steps_per_second": 56.255989445826344,
+      "score": [
+        3,
+        1
+      ],
+      "frames": 31940,
+      "player_rows": 702680,
+      "touches": 504,
+      "physics_duration_s": 336.19,
+      "match_clock_end_s": 5401.8,
+      "event_counts": {
+        "play_started": 13,
+        "action_started": 484,
+        "ball_touch": 504,
+        "possession_change": 238,
+        "pass": 116,
+        "pass_result": 116,
+        "recovery": 63,
+        "interfere_contact": 4,
+        "shot": 8,
+        "goal": 4,
+        "clock_jump": 12,
+        "play_stopped": 12,
+        "game_mode_change": 16,
+        "deflect_contact": 1
+      },
+      "max_player_speed_mps": 8.782925930222222,
+      "max_ball_speed_mps": 42.84585321183495,
+      "completed_passes": 69,
+      "unresolved_passes": 0,
+      "files": {
+        "players.csv.gz": {
+          "bytes": 72195280,
+          "sha256": "56cd7de12a92664c37603824193e8cadb5ccc403d16fd630677ce11b24889690"
+        },
+        "ball.csv.gz": {
+          "bytes": 2644948,
+          "sha256": "a9dabd0b68a2e5ecea16ab6aee92c0fdc2531854c9b0f2df2d99cefcb337a7a7"
+        },
+        "raw.jsonl.gz": {
+          "bytes": 53079057,
+          "sha256": "07a9349a723d4d2da1cddac9c316787cf8aec1dab7afbedc2b898b29a946a174"
+        },
+        "passes.json": {
+          "bytes": 115041,
+          "sha256": "ac3115088b608163f676abee571fa33037a1e2ca7b1db4d35cf3e11c3d575617"
+        },
+        "events.jsonl.gz": {
+          "bytes": 77742,
+          "sha256": "3f01136e62bfb248343b5bcfd3a1337cfc344b6644a8fb4292c7af3c27be959c"
+        },
+        "observations.jsonl.gz": {
+          "bytes": 5068768,
+          "sha256": "bdd6a6f16b3737ebc5f71c2597de97438c2ae71408c3d9e69fe8d36b33c7b5b9"
+        }
+      }
+    }
+  ],
+  "median_wall_seconds": {
+    "headless_no_export": 19.528742633003276,
+    "verbose_export": 54.04494531601085
+  },
+  "branch_test": {
+    "snapshot_bytes": 103138,
+    "original": {
+      "sha256": "b3ba3db8332901517e4212b9c1cf7ff28318c596fe42383af60ba147824f45a1",
+      "records": 1014,
+      "last_ball_position_m": [
+        -28.7530193,
+        -20.2779274,
+        0.165616572
+      ],
+      "score": [
+        0,
+        0
+      ]
+    },
+    "repeated": {
+      "sha256": "b3ba3db8332901517e4212b9c1cf7ff28318c596fe42383af60ba147824f45a1",
+      "records": 1014,
+      "last_ball_position_m": [
+        -28.7530193,
+        -20.2779274,
+        0.165616572
+      ],
+      "score": [
+        0,
+        0
+      ]
+    },
+    "alternative": {
+      "sha256": "cca3e8308d2c444dcbc09c5be0aa5224de548f730a856493d92f1969ddb9c0bf",
+      "records": 1021,
+      "last_ball_position_m": [
+        -3.96490002,
+        -2.04398227,
+        1.06497192
+      ],
+      "score": [
+        0,
+        0
+      ]
+    },
+    "exact_replay": true,
+    "intervention_changes_trajectory": true,
+    "intervention": "Ball-owning team: two right-direction actions, eight shot actions, then built-in AI.",
+    "rollout_agent_steps": 100,
+    "external_controller": "stateless built-in-AI delegation"
+  },
+  "measurement_host": "Apple M4 / Docker ARM64"
+}

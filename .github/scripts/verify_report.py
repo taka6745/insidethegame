@@ -20,9 +20,10 @@ def main():
     assert sum(metrics['project_types'].values())==len(projects)
     assert sum(metrics['loc_buckets'].values())==metrics['unique_repos']
     inventory=json.loads((data/'datasets.json').read_text())
+    assert inventory['path_base']=='repository_root'
     for f in inventory['files']:
-        path=(data/f['file']).resolve()
-        assert path.is_relative_to(data.resolve()),'Dataset escaped its directory'
+        path=(ROOT/f['file']).resolve()
+        assert path.is_relative_to((ROOT/'data/synthetic').resolve()),'Dataset escaped its directory'
         body=path.read_bytes()
         assert len(body)==f['bytes'] and sha256(body).hexdigest()==f['sha256'],f['file']
     assert len(inventory['files'])==metrics['data_files']
@@ -34,7 +35,7 @@ def main():
         validate_record(record)
         assert record['assessment_id'] not in seen, 'Duplicate assessment'
         seen.add(record['assessment_id'])
-    for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').rglob('*.md'))]:
+    for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').rglob('*.md')),*sorted((ROOT/'data').rglob('README.md'))]:
         for target in re.findall(r'\]\(([^)]+)\)',path.read_text()):
             if target.startswith('https://'):continue
             file,_,anchor=target.partition('#')
@@ -43,6 +44,7 @@ def main():
     assert '(research/README.md)' in (ROOT/'README.md').read_text(),'Root generator lost research link'
     assert '(AGENTS.md)' in (ROOT/'README.md').read_text(),'Root generator lost assistant instructions'
     for file in (ROOT/'research').rglob('*.svg'):ET.parse(file)
+    for file in (ROOT/'data/GoogleResearchFootball').glob('*.svg'):ET.parse(file)
     print('Verified',len(projects),'projects,',metrics['unique_repos'],'repos,',
           metrics['data_files'],'data checksums, Markdown links and all graphics.')
 

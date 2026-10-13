@@ -55,7 +55,7 @@ The useful difference would be **consistent match behaviour and provable explana
 
 ## Google Research Football: generate and branch matches
 
-**Research option, not a selected engine.** Two AI-controlled teams can play automatically; we can capture state and restore a checkpoint to try a different action. Capabilities checked in source/docs **14 October 2026**; not yet run locally.
+**Working data experiment.** Two built-in AIs play headlessly; the exporter records native tracking and contacts, and a checkpoint can be replayed or branched. Tested **14 October 2026**. [Run it, inspect the benchmark and browse fields](../data/GoogleResearchFootball/README.md).
 
 ```mermaid
 flowchart LR
@@ -75,7 +75,7 @@ flowchart LR
 | --- | --- |
 | Automatic matches | Built-in AI; no policy training required to begin. The `v2` action set includes `action_builtin_ai`. [Source](https://github.com/google-research/football/blob/master/gfootball/env/football_action_set.py) |
 | Synthetic tracking | Player positions/movement, ball position/movement/ownership, score, cards and restart state. [Observations](https://github.com/google-research/football/blob/master/gfootball/doc/observation.md) |
-| Football events | Build an exporter for passes, recipients, shots, interceptions and tackles. Raw state is not a complete labelled event feed; instrument the engine where inference is ambiguous. |
+| Football events | Patched native touch callbacks export passes, recipients, shots and contact-based recoveries. Completion and heuristic labels are defined in the [exporter](../data/GoogleResearchFootball/README.md). |
 | Branching | `get_state()` / `set_state()` preserve and restore physics, random state and internal player state. Apply different actions, then continue the simulation. [API](https://github.com/google-research/football/blob/master/gfootball/doc/api.md) |
 | Video | Optional rendered frames from the same world. Rendering slows simulation; keep bulk generation headless when footage is unnecessary. [API](https://github.com/google-research/football/blob/master/gfootball/doc/api.md) |
 
@@ -102,7 +102,7 @@ Passing direction influences the engine's recipient selection; an exact recipien
 <details>
 <summary>Submission route and FIFA / EA FC comparison</summary>
 
-GRF's top-level code uses [Apache 2.0](https://github.com/google-research/football/blob/master/LICENSE); its bundled engine uses the [Unlicense](https://github.com/google-research/football/blob/master/third_party/gfootball_engine/LICENSE). Audit shipped assets, fonts and dependencies, preserve notices, and use fictional teams/appropriately licensed visuals. The [repository](https://github.com/google-research/football) was archived **19 August 2026**; installation, rendering, reproducibility and deployment remain to be tested.
+GRF's top-level code uses [Apache 2.0](https://github.com/google-research/football/blob/master/LICENSE); its bundled engine uses the [Unlicense](https://github.com/google-research/football/blob/master/third_party/gfootball_engine/LICENSE). Audit shipped assets, fonts and dependencies, preserve notices, and use fictional teams/appropriately licensed visuals. The [repository](https://github.com/google-research/football) was archived **19 August 2026**; headless installation and checkpoint replay are now tested locally. Rendering and deployment remain unverified.
 
 FIFA / EA FC extraction is a different route: [EA's agreement](https://www.ea.com/legal/user-agreement?isLocalized=true&setLocale=en-gb) restricts reverse engineering and source/data extraction except where authorised or permitted by law. Its [content policy](https://help.ea.com/en/articles/security-and-rules/ea-content-policy/) does not generally permit mined assets or third-party product integrations. Permission to publish gameplay is not blanket permission to extract or redistribute an engine.
 

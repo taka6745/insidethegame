@@ -246,7 +246,7 @@ def main():
         p=names.get(r['slug'],{'name':r['slug'],'summary':'New repo; needs a closer look.'})
         review=review_for(r,reviews)
         files=samples.get(r['slug'],[])
-        if files:label=f"[{len(files)} sample {'file' if len(files)==1 else 'files'}](data/{r['slug'].replace('/','__')}/)"
+        if files:label=f"[{len(files)} sample {'file' if len(files)==1 else 'files'}](../data/synthetic/{r['slug'].replace('/','__')}/)"
         elif r['status']!='ok':label='Cannot inspect'
         elif review['bucket'] in {'Synthetic generator','Synthetic scenarios'}:label='Generator only'
         elif review['bucket']=='Starter scaffold':label='No football data found'
@@ -262,7 +262,7 @@ def main():
     for f in inventory['files']:
         name=names.get(f['repo'],{}).get('name',f['repo'])
         label='/'.join(f['source_path'].split('/')[-3:])
-        report.append(f"| {md(name)} | [{md(label)}](data/{f['file']}) | "
+        report.append(f"| {md(name)} | [{md(label)}](../{f['file']}) | "
                       f"{f['records'] if f['records'] is not None else '—'} | [Original]({f['source_url']}) |")
     report+=['','</details>','','<details>','<summary>What data does each repo use?</summary>','',
               '| Project | Data source | Evidence |','| --- | --- | --- |']

@@ -4,7 +4,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__demo__mm-0003-red_card.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__demo__mm-0003-red_card.json",
       "source_path": "data/demo/mm-0003-red_card.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/demo/mm-0003-red_card.json",
       "also_at": [
@@ -19,7 +19,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__demo__mm-0004-comeback.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__demo__mm-0004-comeback.json",
       "source_path": "data/demo/mm-0004-comeback.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/demo/mm-0004-comeback.json",
       "also_at": [
@@ -34,7 +34,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__demo__mm-0020-late_winner.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__demo__mm-0020-late_winner.json",
       "source_path": "data/demo/mm-0020-late_winner.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/demo/mm-0020-late_winner.json",
       "also_at": [
@@ -49,7 +49,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__matches__mm-0003-red_card.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__matches__mm-0003-red_card.json",
       "source_path": "data/matches/mm-0003-red_card.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/matches/mm-0003-red_card.json",
       "also_at": [
@@ -64,7 +64,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__matches__mm-0004-comeback.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__matches__mm-0004-comeback.json",
       "source_path": "data/matches/mm-0004-comeback.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/matches/mm-0004-comeback.json",
       "also_at": [
@@ -79,7 +79,7 @@
     {
       "repo": "ALISAEED-1/matchmind",
       "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
-      "file": "ALISAEED-1__matchmind/data__matches__mm-0020-late_winner.json",
+      "file": "data/synthetic/ALISAEED-1__matchmind/data__matches__mm-0020-late_winner.json",
       "source_path": "data/matches/mm-0020-late_winner.json",
       "source_url": "https://github.com/ALISAEED-1/matchmind/blob/44fc6aa05a35d76995d7797a412868b4cc84df1e/data/matches/mm-0020-late_winner.json",
       "also_at": [
@@ -94,7 +94,7 @@
     {
       "repo": "Hapinam/vybe-ai",
       "sha": "c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1",
-      "file": "Hapinam__vybe-ai/demo-match.json",
+      "file": "data/synthetic/Hapinam__vybe-ai/demo-match.json",
       "source_path": "demo-match.json",
       "source_url": "https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/web/src/match.ts#L38",
       "also_at": [],
@@ -107,7 +107,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__opta_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__opta_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/opta_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/opta_match_sheet.json",
       "also_at": [],
@@ -120,7 +120,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__statsbomb_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__statsbomb_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/statsbomb_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/statsbomb_match_sheet.json",
       "also_at": [],
@@ -133,7 +133,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__wyscout_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__match_sheets__wyscout_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/wyscout_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/match_sheets/wyscout_match_sheet.json",
       "also_at": [],
@@ -146,7 +146,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__opta.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__opta.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/opta.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/opta.json",
       "also_at": [],
@@ -159,7 +159,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__statsbomb.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__statsbomb.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/statsbomb.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/statsbomb.json",
       "also_at": [],
@@ -172,7 +172,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__wyscout.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_CLEAN_001__wyscout.json",
       "source_path": "backend/data/sample_matches/PL_2025_CLEAN_001/wyscout.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_CLEAN_001/wyscout.json",
       "also_at": [],
@@ -185,7 +185,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__opta_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__opta_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/opta_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/opta_match_sheet.json",
       "also_at": [],
@@ -198,7 +198,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__statsbomb_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__statsbomb_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/statsbomb_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/statsbomb_match_sheet.json",
       "also_at": [],
@@ -211,7 +211,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__wyscout_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__match_sheets__wyscout_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/wyscout_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/match_sheets/wyscout_match_sheet.json",
       "also_at": [],
@@ -224,7 +224,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__opta.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__opta.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/opta.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/opta.json",
       "also_at": [],
@@ -237,7 +237,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__statsbomb.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__statsbomb.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/statsbomb.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/statsbomb.json",
       "also_at": [],
@@ -250,7 +250,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__wyscout.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_MESSY_001__wyscout.json",
       "source_path": "backend/data/sample_matches/PL_2025_MESSY_001/wyscout.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_MESSY_001/wyscout.json",
       "also_at": [],
@@ -263,7 +263,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__opta_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__opta_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/opta_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/opta_match_sheet.json",
       "also_at": [],
@@ -276,7 +276,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__statsbomb_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__statsbomb_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/statsbomb_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/statsbomb_match_sheet.json",
       "also_at": [],
@@ -289,7 +289,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__wyscout_match_sheet.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__match_sheets__wyscout_match_sheet.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/wyscout_match_sheet.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/match_sheets/wyscout_match_sheet.json",
       "also_at": [],
@@ -302,7 +302,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__opta.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__opta.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/opta.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/opta.json",
       "also_at": [],
@@ -315,7 +315,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__statsbomb.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__statsbomb.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/statsbomb.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/statsbomb.json",
       "also_at": [],
@@ -328,7 +328,7 @@
     {
       "repo": "SeyiBuilds/VendorIQ",
       "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
-      "file": "SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__wyscout.json",
+      "file": "data/synthetic/SeyiBuilds__VendorIQ/backend__data__sample_matches__PL_2025_PARTIAL_001__wyscout.json",
       "source_path": "backend/data/sample_matches/PL_2025_PARTIAL_001/wyscout.json",
       "source_url": "https://github.com/SeyiBuilds/VendorIQ/blob/5de174c243907cc1807cb8c91d01c108cade67fb/backend/data/sample_matches/PL_2025_PARTIAL_001/wyscout.json",
       "also_at": [],
@@ -341,7 +341,7 @@
     {
       "repo": "achand280606/Shift11",
       "sha": "af6d34bab55f70042cfae93efd637ab9067719da",
-      "file": "achand280606__Shift11/data__match_001.json",
+      "file": "data/synthetic/achand280606__Shift11/data__match_001.json",
       "source_path": "data/match_001.json",
       "source_url": "https://github.com/achand280606/Shift11/blob/af6d34bab55f70042cfae93efd637ab9067719da/data/match_001.json",
       "also_at": [],
@@ -354,7 +354,7 @@
     {
       "repo": "audioreworkvisions/touchline",
       "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
-      "file": "audioreworkvisions__touchline/data__synthetic-42.jsonl",
+      "file": "data/synthetic/audioreworkvisions__touchline/data__synthetic-42.jsonl",
       "source_path": "data/synthetic-42.jsonl",
       "source_url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/data/synthetic-42.jsonl",
       "also_at": [],
@@ -367,7 +367,7 @@
     {
       "repo": "devgupta-9/reactcoach-11",
       "sha": "df4a4b570998ae6dfc25c11b199f72db95eb264c",
-      "file": "devgupta-9__reactcoach-11/docs__examples__open-play-request.json",
+      "file": "data/synthetic/devgupta-9__reactcoach-11/docs__examples__open-play-request.json",
       "source_path": "docs/examples/open-play-request.json",
       "source_url": "https://github.com/devgupta-9/reactcoach-11/blob/df4a4b570998ae6dfc25c11b199f72db95eb264c/docs/examples/open-play-request.json",
       "also_at": [],
@@ -380,7 +380,7 @@
     {
       "repo": "s70241963-afk/Sushmitha",
       "sha": "9f3eadf03749fb96fe241e4c7748d73412c1ca1e",
-      "file": "s70241963-afk__Sushmitha/MatchMind_AI_Winning_Starter__data__synthetic_match_events.json",
+      "file": "data/synthetic/s70241963-afk__Sushmitha/MatchMind_AI_Winning_Starter__data__synthetic_match_events.json",
       "source_path": "MatchMind_AI_Winning_Starter/data/synthetic_match_events.json",
       "source_url": "https://github.com/user-attachments/files/33134983/MatchMind_AI_Winning_Starter_v2.zip#MatchMind_AI_Winning_Starter/data/synthetic_match_events.json",
       "also_at": [],
@@ -393,7 +393,7 @@
     {
       "repo": "s70241963-afk/Sushmitha",
       "sha": "9f3eadf03749fb96fe241e4c7748d73412c1ca1e",
-      "file": "s70241963-afk__Sushmitha/MatchMind_AI__data__synthetic_match_events.json",
+      "file": "data/synthetic/s70241963-afk__Sushmitha/MatchMind_AI__data__synthetic_match_events.json",
       "source_path": "MatchMind_AI/data/synthetic_match_events.json",
       "source_url": "https://github.com/user-attachments/files/33134971/MatchMind_AI_GitHub_Starter.zip#MatchMind_AI/data/synthetic_match_events.json",
       "also_at": [],
@@ -406,7 +406,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__sample__seed-7__events.jsonl",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__sample__seed-7__events.jsonl",
       "source_path": "data/sample/seed-7/events.jsonl",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/sample/seed-7/events.jsonl",
       "also_at": [],
@@ -419,7 +419,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__sample__seed-7__match.json",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__sample__seed-7__match.json",
       "source_path": "data/sample/seed-7/match.json",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/sample/seed-7/match.json",
       "also_at": [],
@@ -432,7 +432,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__events__seed-1.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__events__seed-1.csv",
       "source_path": "data/synthetic/events/seed-1.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/events/seed-1.csv",
       "also_at": [],
@@ -445,7 +445,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__events__seed-2.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__events__seed-2.csv",
       "source_path": "data/synthetic/events/seed-2.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/events/seed-2.csv",
       "also_at": [],
@@ -458,7 +458,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__events__seed-3.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__events__seed-3.csv",
       "source_path": "data/synthetic/events/seed-3.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/events/seed-3.csv",
       "also_at": [],
@@ -471,7 +471,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__events__seed-4.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__events__seed-4.csv",
       "source_path": "data/synthetic/events/seed-4.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/events/seed-4.csv",
       "also_at": [],
@@ -484,7 +484,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__events__seed-5.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__events__seed-5.csv",
       "source_path": "data/synthetic/events/seed-5.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/events/seed-5.csv",
       "also_at": [],
@@ -497,7 +497,7 @@
     {
       "repo": "timmytrace/pl-insights-engine",
       "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
-      "file": "timmytrace__pl-insights-engine/data__synthetic__matches.csv",
+      "file": "data/synthetic/timmytrace__pl-insights-engine/data__synthetic__matches.csv",
       "source_path": "data/synthetic/matches.csv",
       "source_url": "https://github.com/timmytrace/pl-insights-engine/blob/c14ab314639476e15ccd3f47380d0e783306170c/data/synthetic/matches.csv",
       "also_at": [],
@@ -510,7 +510,7 @@
     {
       "repo": "timsheldon1/matchday-crew",
       "sha": "374de95f4f7474c9a784e01a3ceafb2ce0a16ad5",
-      "file": "timsheldon1__matchday-crew/data__match-NNS-KLS-42.json",
+      "file": "data/synthetic/timsheldon1__matchday-crew/data__match-NNS-KLS-42.json",
       "source_path": "data/match-NNS-KLS-42.json",
       "source_url": "https://github.com/timsheldon1/matchday-crew/blob/374de95f4f7474c9a784e01a3ceafb2ce0a16ad5/data/match-NNS-KLS-42.json",
       "also_at": [],
@@ -523,7 +523,7 @@
     {
       "repo": "vishnugovind10/matchlens",
       "sha": "68c4caa0cdf38e36ac05f110882e6fb816dd322b",
-      "file": "vishnugovind10__matchlens/backend__data__synthetic_events.jsonl",
+      "file": "data/synthetic/vishnugovind10__matchlens/backend__data__synthetic_events.jsonl",
       "source_path": "backend/data/synthetic_events.jsonl",
       "source_url": "https://github.com/vishnugovind10/matchlens/blob/68c4caa0cdf38e36ac05f110882e6fb816dd322b/backend/data/synthetic_events.jsonl",
       "also_at": [],
@@ -534,5 +534,6 @@
       "repository_license": "NOASSERTION"
     }
   ],
-  "method": "Original committed bytes; duplicates deduplicated within each repo. VYBE static TS fixture extracted as JSON; starter ZIPs inspected without execution."
+  "method": "Original committed bytes; duplicates deduplicated within each repo. VYBE static TS fixture extracted as JSON; starter ZIPs inspected without execution.",
+  "path_base": "repository_root"
 }
