@@ -14,6 +14,18 @@ from schedule_window import active
 
 
 class RefreshTests(unittest.TestCase):
+    def test_refresh_preserves_application_readme_content(self):
+        before = '# App\n\nRun: npm start\n'
+        after = '\n## Development\nRun: npm test\n'
+        old = before + '<!-- competitors:start -->old<!-- competitors:end -->' + after
+        new = build_report.update_snapshot(old, 'new metrics')
+        self.assertTrue(new.startswith(before))
+        self.assertTrue(new.endswith(after))
+        self.assertIn('new metrics', new)
+        for invalid in ['# Missing markers', '<!-- competitors:end --><!-- competitors:start -->']:
+            with self.assertRaises(ValueError):
+                build_report.update_snapshot(invalid, 'new metrics')
+
     def test_schedule_stops_at_brisbane_date_and_year(self):
         self.assertTrue(active('schedule',datetime(2026,10,27,22,tzinfo=timezone.utc)))
         self.assertFalse(active('schedule',datetime(2026,10,28,14,tzinfo=timezone.utc)))

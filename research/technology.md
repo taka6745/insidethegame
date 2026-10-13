@@ -1,44 +1,37 @@
-# New technology we could actually use
+# Recent technology, repos and papers
 
-[← Research](README.md)
+[← Research](README.md) · [Business cases](cases.md)
 
-Checked **13 October 2026**. Recent release dates below come from the maintainer’s own release records, not popularity rankings. A release tag is evidence of publication, not proof that it works in our environment.
+![Recent developments](technology.svg)
 
-| Technology | What is recent / confirmed | What it could improve | Decision |
+Dates identify the event shown—not the last commit. Capabilities come from primary sources.
+
+## Big tech
+
+| Date (2026) | Source | Capability | Access |
 | --- | --- | --- | --- |
-| [Microsoft Agent Framework Python 1.21.0](https://github.com/microsoft/agent-framework/releases/tag/python-1.21.0) | Released **8 October 2026**. Recent work includes streamed-response policy handling and provider session isolation. | A Microsoft-native story workflow with controlled tools, state, and recoverable handoffs. | **Best core candidate.** Pin the version and validate our chosen provider and APIs. |
-| [AG-UI integration](https://learn.microsoft.com/en-us/agent-framework/integrations/ag-ui/) | Official Agent Framework integration for streamed agent state and interactive clients. Some SDK integration packages still use prerelease installation paths. | Show a story being considered, the evidence returned by tools, and a producer’s approval in the same UI. | **Useful if it reduces custom wiring.** It is not the broadcast overlay renderer by itself. |
-| [A2UI Python agent SDK 0.8.0](https://github.com/a2ui-project/a2ui/releases/tag/python/a2ui-agent-sdk/v0.8.0) | Released **8 October 2026**, with schema/catalog and validation changes. Documentation lists protocol 0.9.1 as current and 1.0 as a candidate. | Allowlisted, declarative evidence cards and controls that adapt to a viewer without generating executable UI code. | **One small experiment.** Recent breaking changes and protocol/package version differences make a big rewrite risky. |
-| [SAM 3.1](https://ai.meta.com/blog/segment-anything-model-3/) | Meta’s **27 March 2026** update improves multi-object video tracking through multiplexing. | A bounded demo tracking players in our own synthetic rendered clip. | **Optional research feature.** Segmentation does not identify real players or turn pixels into calibrated pass/shot speeds automatically. Benchmark our clip and hardware. |
-| [Foundry Local](https://learn.microsoft.com/en-us/azure/foundry-local/what-is-foundry-local) | Device-runtime documentation updated **4 August 2026**; supports local inference and multiple SDK languages. | A local commentary fallback, privacy-sensitive producer preview, or offline demonstration. | **Optional fallback.** Confirm model quality and platform support; this does not replace demonstrated cloud integration if that is our category. |
-| [Foundry Local on Azure Local](https://learn.microsoft.com/en-us/azure/azure-sovereign-clouds/private/foundry-local/whats-new) | **September 2026** preview update adds Kubernetes service-account authentication; prior updates cover local evaluation and multi-GPU serving. | A later private/edge production deployment path. | **Too much infrastructure for the first prototype.** This cluster product differs from the device runtime above. |
-| [Fabric Real-Time Intelligence](https://learn.microsoft.com/en-gb/fabric/real-time-intelligence/) / [Digital Twin Builder](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/digital-twin-builder/tutorial-0-introduction) | Streaming platform plus a documented **preview** for operational twin modelling. | Model matches, players, and event relationships; inspect time-series changes. | **Use only if the data model needs it.** An operational twin preview is not a ready-made football simulator. |
+| 06 Oct · announcement | [Google: EmbeddingGemma 2](https://blog.google/innovation-and-ai/technology/developers-tools/embeddinggemma-2/) | Text, image, audio and video in one search embedding. | Weights / model card |
+| 15 Sep · announcement | [Google: Gemini 3.8 Live](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/) | Live voice dialogue with parallel reasoning and tool use. | API |
+| 01 Sep · announcement | [Google: Agentic video](https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/) | Selects and inspects relevant video segments rather than fixed sampling. | API |
+| 26 Aug · announcement | [Google: Gemini 3.5 Transcribe](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5-transcribe/) | Real-time speech-to-text. | API |
 
-The [A2UI specification](https://github.com/a2ui-project/a2ui/blob/main/docs/public/index.md) and [renderer matrix](https://github.com/a2ui-project/a2ui/blob/main/docs/public/reference/renderers.md) must be checked together. A2UI is an interface-description format; AG-UI is an agent/client event protocol; MCP exposes tools; A2A connects agents. These roles are complementary, but using all four does not itself create a better product.
+## GitHub repos / releases
 
-## A small stack worth testing
+| Date (2026) | Source | Capability | Access |
+| --- | --- | --- | --- |
+| 08 Oct · release | [Microsoft: Agent Framework 1.21](https://github.com/microsoft/agent-framework/releases/tag/python-1.21.0) | Agent workflows; new streaming policy and session-isolation changes. | Python SDK |
+| 08 Oct · release | [A2UI / Google-origin: A2UI SDK 0.8](https://github.com/a2ui-project/a2ui/releases/tag/python/a2ui-agent-sdk/v0.8.0) | Declarative UI components; schema/catalog validation changes. | Python SDK |
+| 26 Aug · repo created | [AImageLab / Amazon Science: CounterVid](https://github.com/aimagelab/CounterVid) | Counterfactual video training against action/time hallucinations. | Code / HF data |
+| 13 Aug · repo created | [NVIDIA: Sports playbooks](https://github.com/NVIDIA/sports-intelligence-playbooks) | Sports video/audio annotation, fine-tuning and evaluation; tennis demo. | Code / recipes |
+| 15 Jul · repo created | [NVIDIA: NeMo-Speech.cpp](https://github.com/NVIDIA/NeMo-Speech.cpp) | Local speech recognition, translation, synthesis and speaker separation. | C++ runtime |
 
-Proposed implementation, not installed or benchmarked here:
+## Research papers
 
-| Responsibility | First choice |
-| --- | --- |
-| Original event generator, replay, statistics, and validation | Small deterministic code with a stable event schema. |
-| Story selection / wording | Microsoft Foundry model behind Agent Framework, with a constrained fact packet. |
-| Producer and fan interface | A few reusable cards, a pitch/timeline, evidence links, and audience controls. |
-| Streaming / approval state | AG-UI if a quick spike proves it simpler; otherwise a direct event stream. |
-| Hosted demo | Azure Container Apps, matching the hackathon’s [deployment learning session](https://developer.microsoft.com/en-us/reactor/series/S-1709/). |
-| Quality evidence | Repeatable synthetic scenarios; measured claim validity, latency, correction delay, and review time. |
+| Date (2026) | Source | Capability | Access |
+| --- | --- | --- | --- |
+| 24 Sep · publisher date | [Meta: MaD-RL](https://ai.meta.com/research/publications/mad-rl-matching-distributions-for-calibrating-llms-with-reinforcement-learning/) | Controls the distribution of generated answers during RL training. | Paper |
+| 06 Sep · publisher date | [Meta: Text-Audiobox](https://ai.meta.com/research/publications/alignment-free-text-audiobox-for-voice-dubbing-and-full-duplex-dialogue-synthesis/) | Voice dubbing and two-way dialogue without forced text/audio alignment. | Paper |
+| 26 Aug · revision | [Meta: S-EMBER v2](https://arxiv.org/abs/2607.02689) | Benchmarks answering and finding evidence in streaming video memory. | Paper / benchmark code |
+| 28 Jul · first submitted | [Google DeepMind: VIPE](https://arxiv.org/abs/2607.25537) | Changes visual prompts to improve video-model reasoning. | Paper / examples |
 
-Start with **one recent integration** that is visible in the demo. Keep a direct renderer and template fallback so SDK churn cannot break the entry. Use a purposeful second AI agent only if it demonstrably improves the outcome; analytics and rule validation remain ordinary code.
-
-## Quick adoption tests
-
-| Candidate | Pass condition before committing to it |
-| --- | --- |
-| Agent Framework + Foundry | Stream one evidence-grounded story and recover cleanly from a failed model/tool call. |
-| AG-UI / A2UI | Render one allowlisted evidence card, process an approval, and update it after a corrected event. Reject malformed output. |
-| SAM 3.1 | Track objects on a short original rendered clip and measure identity continuity and latency on our hardware. |
-| Foundry Local | Produce an acceptable constrained explanation offline on the actual demo machine. |
-| Fabric | Demonstrate a useful query/relationship that our simple event model cannot serve as clearly. |
-
-No current prices, account quotas, model access, deployment regions, or latency claims have been assumed. Verify those against the actual account when we select and build the entry. Novelty should be in the useful behaviour and evidence, not the number of new SDK names.
+S-EMBER first appeared in July; August is its revision. CounterVid’s repo is new in August; its paper dates to January. NeMo-Speech has a 12 October nightly build, distinct from its July repo creation. Papers and vendor benchmarks are not football-specific performance results.
