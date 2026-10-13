@@ -53,7 +53,7 @@ python3 data/GoogleResearchFootball/verify.py .local/grf-runs/<run>
 uvx --with matplotlib python data/GoogleResearchFootball/report.py .local/grf-runs/<run>
 ```
 
-[GitHub Actions](../../.github/workflows/football.yml) builds the engine, checks coordinates/events, exports a short run and verifies replay/branching on exporter changes. [Validation results](validation.json) include native frame intervals. Rendering/video and football realism have not been validated.
+[Validation results](validation.json) include native frame intervals. Rendering/video and football realism have not been validated.
 
 </details>
 
