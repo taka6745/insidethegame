@@ -27,14 +27,17 @@ def main():
         assert len(body)==f['bytes'] and sha256(body).hexdigest()==f['sha256'],f['file']
     assert len(inventory['files'])==metrics['data_files']
     for name in ['overview','types','loc','commits','data']:ET.parse(ROOT/'competitors'/f'{name}.svg')
-    for path in [ROOT/'README.md',ROOT/'competitors/README.md']:
+    for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').glob('*.md'))]:
         for target in re.findall(r'\]\(([^)]+)\)',path.read_text()):
             if target.startswith('https://'):continue
             file,_,anchor=target.partition('#')
             dest=(path.parent/file).resolve()
             assert dest.is_relative_to(ROOT.resolve()) and dest.exists(),target
+    assert '(research/README.md)' in (ROOT/'README.md').read_text(),'Root generator lost research link'
+    assert '(AGENTS.md)' in (ROOT/'README.md').read_text(),'Root generator lost assistant instructions'
+    for file in ['judging.svg','opportunity.svg']:ET.parse(ROOT/'research'/file)
     print('Verified',len(projects),'projects,',metrics['unique_repos'],'repos,',
-          metrics['data_files'],'data checksums, Markdown links and five graphics.')
+          metrics['data_files'],'data checksums, Markdown links and seven graphics.')
 
 
 if __name__=='__main__':main()

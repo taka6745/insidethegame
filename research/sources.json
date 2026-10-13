@@ -1,0 +1,232 @@
+{
+  "checked_on": "2026-10-13",
+  "timezone": "Australia/Brisbane",
+  "rule_commit": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+  "sources": [
+    {
+      "id": "rules",
+      "title": "Official rules",
+      "url": "https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md",
+      "publisher": "Microsoft",
+      "published_or_updated": "2026-10-13",
+      "checked_on": "2026-10-13",
+      "scope": "Pinned source: 9c6c99620b06b2b04dcf69a434cdf4d203d19eda; §§1–8 reviewed."
+    },
+    {
+      "id": "partnership",
+      "title": "Joint partnership announcement",
+      "url": "https://news.microsoft.com/source/2025/07/01/premier-league-and-microsoft-announce-five-year-strategic-partnership-to-personalize-the-fan-experience-with-ai-for-1-8-billion-people/",
+      "publisher": "Microsoft / Premier League",
+      "published_or_updated": "2025-07-01",
+      "checked_on": "2026-10-13",
+      "scope": "Four partnership areas; distinguish launched and planned features."
+    },
+    {
+      "id": "partner-product",
+      "title": "Microsoft partnership and Companion",
+      "url": "https://www.premierleague.com/en/about/partners/microsoft",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-06-30",
+      "checked_on": "2026-10-13",
+      "scope": "Official partner/product description; roadmapped additions are not verified deployed here."
+    },
+    {
+      "id": "governance",
+      "title": "League and club responsibilities",
+      "url": "https://www.premierleague.com/en/news/4679198/4322439",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-07-12",
+      "checked_on": "2026-10-13",
+      "scope": "League ownership, independent clubs, competition and central revenue scope."
+    },
+    {
+      "id": "studios",
+      "title": "In-house international media operations",
+      "url": "https://www.premierleague.com/es/news/4172032",
+      "publisher": "Premier League / IMG",
+      "published_or_updated": "2024-11-22",
+      "checked_on": "2026-10-13",
+      "scope": "Launch announced for 2026/27; current PL+ article corroborates Studios output."
+    },
+    {
+      "id": "pl-plus",
+      "title": "PL+ launches in Singapore",
+      "url": "https://www.premierleague.com/en/news/4687725/premier-league-launches-video-streaming-service-in-singapore",
+      "publisher": "Premier League",
+      "published_or_updated": "2026-08-12",
+      "checked_on": "2026-10-13",
+      "scope": "Launched product; 380 matches, viewing features, Studios programming."
+    },
+    {
+      "id": "rights",
+      "title": "Broadcast territories 2025–2028",
+      "url": "https://www.premierleague.com/es/news/3703577/premier-league-broadcast-deals-for-2025-2028",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-05-13",
+      "checked_on": "2026-10-13",
+      "scope": "Central distribution rights vary by territory."
+    },
+    {
+      "id": "reactor",
+      "title": "Hackathon implementation series",
+      "url": "https://developer.microsoft.com/en-us/reactor/series/S-1709/",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Current listed AKS / Container Apps webinar: 14 October 2026, 16:00–17:00 UTC."
+    },
+    {
+      "id": "opta",
+      "title": "Opta Vision",
+      "url": "https://www.statsperform.com/products/opta-vision/",
+      "publisher": "Stats Perform",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Product capabilities; no independent benchmark or feed access established."
+    },
+    {
+      "id": "genius",
+      "title": "Tracking and broadcast augmentation",
+      "url": "https://www.geniussports.com/content-hub/how-ai-transforms-the-live-sports-experience/",
+      "publisher": "Genius Sports",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Supplier capability claims; not a proof of our access to its data."
+    },
+    {
+      "id": "vizrt",
+      "title": "Viz Libero",
+      "url": "https://www.vizrt.com/products/viz-libero/",
+      "publisher": "Vizrt",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Production analysis and graphic capabilities."
+    },
+    {
+      "id": "wsc",
+      "title": "Cavaliers GenAI and in-app content expansion",
+      "url": "https://wsc-sports.com/blog/news/how-the-cleveland-cavaliers-are-building-a-scalable-fan-experience-with-genai/",
+      "publisher": "WSC Sports",
+      "published_or_updated": "2026-03-25",
+      "checked_on": "2026-10-13",
+      "scope": "Existing narrated/personalised content capability; another sport."
+    },
+    {
+      "id": "story-finder",
+      "title": "Bundesliga Data Story Finder",
+      "url": "https://aws.amazon.com/blogs/media/bundesliga-data-story-finder-delivering-fans-the-stories-they-love/",
+      "publisher": "AWS",
+      "published_or_updated": "2025-07-18",
+      "checked_on": "2026-10-13",
+      "scope": "Existing editorial narrative-finding analogue."
+    },
+    {
+      "id": "offside",
+      "title": "Semi-automated offside introduction",
+      "url": "https://www.premierleague.com/ar/news/4273447",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-04-01",
+      "checked_on": "2026-10-13",
+      "scope": "Introduction on 12 April 2025; PGMOL/Genius specialist partnership."
+    },
+    {
+      "id": "maf-release",
+      "title": "Agent Framework Python 1.21.0",
+      "url": "https://github.com/microsoft/agent-framework/releases/tag/python-1.21.0",
+      "publisher": "Microsoft",
+      "published_or_updated": "2026-10-08",
+      "checked_on": "2026-10-13",
+      "scope": "Release metadata and notes checked through GitHub API; not prerelease."
+    },
+    {
+      "id": "maf-overview",
+      "title": "Agent Framework architecture",
+      "url": "https://learn.microsoft.com/agent-framework/overview",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Agents, explicit workflows, sessions, tools, integrations."
+    },
+    {
+      "id": "ag-ui",
+      "title": "AG-UI integration",
+      "url": "https://learn.microsoft.com/en-us/agent-framework/integrations/ag-ui/",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Streaming agent/client protocol; exact package APIs need a version-pinned spike."
+    },
+    {
+      "id": "a2ui-release",
+      "title": "A2UI Python agent SDK 0.8.0",
+      "url": "https://github.com/a2ui-project/a2ui/releases/tag/python/a2ui-agent-sdk/v0.8.0",
+      "publisher": "A2UI maintainers",
+      "published_or_updated": "2026-10-08",
+      "checked_on": "2026-10-13",
+      "scope": "Release metadata and breaking catalog/schema changes checked."
+    },
+    {
+      "id": "a2ui-spec",
+      "title": "A2UI version status",
+      "url": "https://github.com/a2ui-project/a2ui/blob/main/docs/public/index.md",
+      "publisher": "A2UI maintainers",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "0.9.1 current; 1.0 candidate in inspected documentation."
+    },
+    {
+      "id": "a2ui-renderers",
+      "title": "A2UI renderer compatibility",
+      "url": "https://github.com/a2ui-project/a2ui/blob/main/docs/public/reference/renderers.md",
+      "publisher": "A2UI maintainers",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Renderer/protocol versions must be checked together."
+    },
+    {
+      "id": "sam31",
+      "title": "SAM 3.1 video tracking update",
+      "url": "https://ai.meta.com/blog/segment-anything-model-3/",
+      "publisher": "Meta",
+      "published_or_updated": "2026-03-27",
+      "checked_on": "2026-10-13",
+      "scope": "Model benchmark claims are not our football/hardware results."
+    },
+    {
+      "id": "local",
+      "title": "Device Foundry Local",
+      "url": "https://learn.microsoft.com/en-us/azure/foundry-local/what-is-foundry-local",
+      "publisher": "Microsoft",
+      "published_or_updated": "2026-08-04",
+      "checked_on": "2026-10-13",
+      "scope": "Documentation updated; local device runtime, not multi-user cluster service."
+    },
+    {
+      "id": "azure-local",
+      "title": "Foundry Local on Azure Local updates",
+      "url": "https://learn.microsoft.com/en-us/azure/azure-sovereign-clouds/private/foundry-local/whats-new",
+      "publisher": "Microsoft",
+      "published_or_updated": "2026-09",
+      "checked_on": "2026-10-13",
+      "scope": "Preview cluster deployment; separate from device runtime."
+    },
+    {
+      "id": "fabric",
+      "title": "Fabric streaming capabilities",
+      "url": "https://learn.microsoft.com/en-gb/fabric/real-time-intelligence/",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Platform capability; tenant access not checked."
+    },
+    {
+      "id": "twins",
+      "title": "Digital Twin Builder tutorial",
+      "url": "https://learn.microsoft.com/en-us/fabric/real-time-intelligence/digital-twin-builder/tutorial-0-introduction",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Preview operational analytics, not a football-specific simulator."
+    }
+  ]
+}
