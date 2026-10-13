@@ -51,7 +51,7 @@ def main():
     parts=[]
     nodes=[(28,85,'Competition','Fixtures · rules',COLORS[0]),(680,85,'Commercial','Rights · partners',COLORS[1]),(28,220,'Development','Academies · community',COLORS[3]),(680,220,'Media & fans','Studios · products',COLORS[2])]
     for x,y,title,sub,c in nodes:
-        parts += [line(500,190,x+146,y+46),box(x,y,292,95,c),text(x+146,y+38,title,22,c,'middle',700),text(x+146,y+65,sub,16,MUTED,'middle')]
+        parts += [line(500,190,x+292 if x<500 else x,y+46),box(x,y,292,95,c),text(x+146,y+38,title,22,c,'middle',700),text(x+146,y+65,sub,16,MUTED,'middle')]
     parts += [f'<circle cx="500" cy="190" r="84" fill="{BG}" stroke="{INK}"/>',text(500,185,'Premier',23,anchor='middle',weight=700),text(500,215,'League',23,anchor='middle',weight=700)]
     save('premier-league.svg','What the League looks after','The League coordinates competition, commercial rights, development and central media and fan products.',340,parts)
 
