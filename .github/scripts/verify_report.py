@@ -26,8 +26,15 @@ def main():
         body=path.read_bytes()
         assert len(body)==f['bytes'] and sha256(body).hexdigest()==f['sha256'],f['file']
     assert len(inventory['files'])==metrics['data_files']
-    for name in ['overview','types','loc','commits','data']:ET.parse(ROOT/'competitors'/f'{name}.svg')
-    for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').glob('*.md'))]:
+    for file in (ROOT/'competitors').glob('*.svg'):ET.parse(file)
+    from build_judging import validate_record
+    ledger=json.loads((data/'judgements.json').read_text())
+    seen=set()
+    for record in ledger['assessments']:
+        validate_record(record)
+        assert record['assessment_id'] not in seen, 'Duplicate assessment'
+        seen.add(record['assessment_id'])
+    for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').rglob('*.md'))]:
         for target in re.findall(r'\]\(([^)]+)\)',path.read_text()):
             if target.startswith('https://'):continue
             file,_,anchor=target.partition('#')
@@ -35,7 +42,7 @@ def main():
             assert dest.is_relative_to(ROOT.resolve()) and dest.exists(),target
     assert '(research/README.md)' in (ROOT/'README.md').read_text(),'Root generator lost research link'
     assert '(AGENTS.md)' in (ROOT/'README.md').read_text(),'Root generator lost assistant instructions'
-    for file in (ROOT/'research').glob('*.svg'):ET.parse(file)
+    for file in (ROOT/'research').rglob('*.svg'):ET.parse(file)
     print('Verified',len(projects),'projects,',metrics['unique_repos'],'repos,',
           metrics['data_files'],'data checksums, Markdown links and all graphics.')
 

@@ -26,6 +26,8 @@ Categories: overall awards; Foundry; enterprise; multi-agent; Azure cloud-native
 
 Player identification, pass quality, speed, video event detection and multilingual stories are suggested features. They are not each mandatory. No numeric Microsoft-stack percentage appears in the inspected rules. [Rules §§4.1/4.3–4.9/6.2](https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md)
 
+[Example reviews](ideas/README.md#the-review-harness) and [competitor scores](../competitors/README.md#evidence-scores) explicitly track these suggestions alongside the core pipeline. They use separate design and source-evidence scales; feature count adds no bonus points.
+
 ## What the brief points toward
 
 ![Microsoft challenge pipeline](challenge.svg)
