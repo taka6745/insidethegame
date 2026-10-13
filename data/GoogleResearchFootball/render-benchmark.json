@@ -1,0 +1,156 @@
+{
+  "synthetic": true,
+  "upstream_commit": "3d9e754720a95621bba6475c4d3b0d56fe919014",
+  "seed": 42,
+  "width": 3840,
+  "height": 2160,
+  "fps": 25,
+  "target_physics_play_seconds": 5400,
+  "clock_rate": 1,
+  "halftime_match_ms": 2700000,
+  "native_step_api": true,
+  "note": "Match clock pauses during restarts. Native dead-play time jumps remain explicit in telemetry and frame timestamps.",
+  "patch_sha256": {
+    "telemetry.patch": "07bbe2357a28be47059763cc2a3330e95e250f183eeb1ef572505f8569f3b5cd",
+    "render.patch": "3fcda43c006ac596c3093362fd8fff3bd569bf9253866a791cc2d54c8991e2f6"
+  },
+  "completed": true,
+  "graphics_renderer": "macOS native OpenGL (SDL accelerated context)",
+  "error": null,
+  "video_frames": 144390,
+  "video_seconds": 5775.6,
+  "processed_physics_seconds": 5775.6,
+  "in_play_physics_seconds": 5400.0,
+  "match_clock_seconds": 5400.04,
+  "start_match_clock_ms": 40,
+  "target_match_clock_ms": 5400040,
+  "clock_advances_checked": 539999,
+  "non_unit_clock_advances": 0,
+  "phases": [
+    1,
+    2
+  ],
+  "score": [
+    26,
+    8
+  ],
+  "initialization_seconds": 8.849109333008528,
+  "total_wall_seconds": 13156.34251466699,
+  "data_summary": {
+    "frames": 577560,
+    "player_rows": 12706320,
+    "touches": 11463,
+    "score": [
+      26,
+      8
+    ],
+    "physics_duration_s": 6120.29,
+    "match_clock_end_s": 5400.04,
+    "event_counts": {
+      "action_started": 8552,
+      "ball_touch": 11463,
+      "possession_change": 4486,
+      "pass": 2391,
+      "pass_result": 2391,
+      "interfere_contact": 149,
+      "recovery": 1172,
+      "shot": 130,
+      "clock_jump": 203,
+      "play_stopped": 204,
+      "game_mode_change": 338,
+      "play_started": 204,
+      "deflect_contact": 501,
+      "goal": 34,
+      "card_flag_change": 1,
+      "sliding_contact": 9,
+      "phase_change": 1
+    },
+    "max_player_speed_mps": 9.809238760790313,
+    "max_ball_speed_mps": 44.12284675155528,
+    "completed_passes": 1286,
+    "unresolved_passes": 1,
+    "files": {
+      "players.csv.gz": {
+        "bytes": 1311431136,
+        "sha256": "aaa7a472cf87dd1f790c8d016868ff174fe4d9818bb4ad00012d4a4e7b8ee5fa"
+      },
+      "ball.csv.gz": {
+        "bytes": 47426784,
+        "sha256": "54f92ae41bd387e734783c3847559085054f56e13266d5e914bee3f140b6b9d5"
+      },
+      "raw.jsonl.gz": {
+        "bytes": 964204288,
+        "sha256": "95ebf271cf062481e41010948ce20b5c82d7a718c68338ce8ed1d82dda5c2941"
+      },
+      "passes.json": {
+        "bytes": 2373745,
+        "sha256": "b62c4cf9e73cd22fa7b9096fc15f156bd2cb09cc29d16c1a39f28654f900d5ba"
+      },
+      "events.jsonl.gz": {
+        "bytes": 1472348,
+        "sha256": "8243e04183520707dfbd693432b52afc337d40f8f56704ba2d8c55d553f00026"
+      }
+    }
+  },
+  "measured_date": "2026-10-14",
+  "machine": "Apple M4",
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "output_directory": ".local/grf-runs/full-90m-4k",
+  "video_bytes": 14452464221,
+  "video_sha256": "6971a55d851508cadc8a6e653a4dd0844f06306f5117805d0bf38fde5a4c29b2",
+  "realism_note": "The built-in AI match scored 26-8. This is a capture and duration test, not a calibrated model of Premier League match statistics.",
+  "validation": {
+    "telemetry": {
+      "game": "data",
+      "frames": 577560,
+      "player_rows": 12706320,
+      "touches": 11463,
+      "passes": 2391,
+      "frame_intervals_ms": {
+        "10": 577356,
+        "1910": 168,
+        "410": 34,
+        "11910": 1
+      },
+      "match_intervals_ms": {
+        "10": 539999,
+        "0": 37560
+      },
+      "in_play_physics_seconds": 5400.0,
+      "first_phase_match_ms": {
+        "1": 50,
+        "2": 2700000
+      }
+    },
+    "video": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "hevc",
+          "width": 3840,
+          "height": 2160,
+          "avg_frame_rate": "25/1",
+          "nb_read_packets": "144390"
+        }
+      ],
+      "format": {
+        "duration": "5775.600000",
+        "size": "14452464221"
+      }
+    },
+    "mapped_frames": 144390,
+    "full_video_decode": {
+      "exit_code": 0,
+      "frames": 144390,
+      "errors": 0,
+      "ffmpeg_version": "9.0.2_1",
+      "visual_checks": [
+        "beginning",
+        "10 minutes",
+        "second half",
+        "end"
+      ]
+    }
+  }
+}

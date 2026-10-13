@@ -1,0 +1,84 @@
+--- a/third_party/gfootball_engine/src/main.hpp
++++ b/third_party/gfootball_engine/src/main.hpp
+@@ -71,6 +71,7 @@
+   std::string data_dir;
+   // How many physics animation steps are done per single environment step.
+   int physics_steps_per_frame = 10;
++  float match_duration = 0.027f; // 4.75 gives a 1:1 football clock.
+   int render_resolution_x = 1280;
+   int render_resolution_y = 720;
+   std::string updatePath(const std::string& path) {
+@@ -92,6 +93,7 @@
+   void ProcessState(EnvState* state) {
+     state->process(data_dir);
+     state->process(physics_steps_per_frame);
++    state->process(match_duration);
+     state->process(render_resolution_x);
+     state->process(render_resolution_y);
+   }
+--- a/third_party/gfootball_engine/src/game_env.cpp
++++ b/third_party/gfootball_engine/src/game_env.cpp
+@@ -108,7 +108,7 @@
+     GetGameConfig().data_dir = data_dir;
+   }
+   Properties* config = new Properties();
+-  config->Set("match_duration", 0.027);
++  config->Set("match_duration", game_config.match_duration);
+   char* font_file = getenv("GFOOTBALL_FONT");
+   if (font_file) {
+     DO_VALIDATION;
+--- a/third_party/gfootball_engine/ai.cpp
++++ b/third_party/gfootball_engine/ai.cpp
+@@ -162,6 +162,7 @@
+       .def_readwrite("render", &GameConfig::render)
+       .def_readwrite("physics_steps_per_frame",
+                      &GameConfig::physics_steps_per_frame)
++      .def_readwrite("match_duration", &GameConfig::match_duration)
+       .def_readwrite("render_resolution_x",
+                      &GameConfig::render_resolution_x)
+       .def_readwrite("render_resolution_y",
+--- a/gfootball/env/football_env_core.py
++++ b/gfootball/env/football_env_core.py
+@@ -75,6 +75,7 @@
+     env = libgame.GameEnv()
+     env.game_config.physics_steps_per_frame = self._config[
+         'physics_steps_per_frame']
++    env.game_config.match_duration = self._config._values.get('match_duration', 0.027)
+     env.game_config.render_resolution_x = self._config['render_resolution_x']
+     env.game_config.render_resolution_y = self._config['render_resolution_y']
+     return env
+--- a/third_party/gfootball_engine/src/systems/graphics/rendering/opengl_renderer3d.cpp
++++ b/third_party/gfootball_engine/src/systems/graphics/rendering/opengl_renderer3d.cpp
+@@ -397,8 +397,9 @@
+ 
+   window = SDL_CreateWindow("Google Research Football", SDL_WINDOWPOS_UNDEFINED,
+                             SDL_WINDOWPOS_UNDEFINED, context_width,
+-                            context_height, SDL_WINDOW_OPENGL);
++                            context_height, SDL_WINDOW_OPENGL | (getenv("GRF_HIDDEN_WINDOW") ? SDL_WINDOW_HIDDEN : 0));
+   context = SDL_GL_CreateContext(window);
++  SDL_GL_SetSwapInterval(0);
+ 
+   if (!context) {
+     DO_VALIDATION;
+--- a/third_party/gfootball_engine/CMakeLists.txt
++++ b/third_party/gfootball_engine/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.4)
++cmake_minimum_required(VERSION 3.10)
+ 
+ if(WIN32)
+   # Check for required Environment variables
+@@ -123,7 +123,12 @@
+ endif()
+ message("Using Boost.Python: ${BOOST_PYTHON_VERSION}")
+ 
+-FIND_PACKAGE(Boost REQUIRED COMPONENTS thread system filesystem ${BOOST_PYTHON_VERSION})
++if(APPLE)
++  FIND_PACKAGE(Boost REQUIRED COMPONENTS thread filesystem ${BOOST_PYTHON_VERSION})
++  add_library(Boost::system INTERFACE IMPORTED)
++else()
++  FIND_PACKAGE(Boost REQUIRED COMPONENTS thread system filesystem ${BOOST_PYTHON_VERSION})
++endif()
+ include_directories(${Boost_INCLUDE_DIRS})
+ 
+ include_directories(${PROJECT_SOURCE_DIR}/src)

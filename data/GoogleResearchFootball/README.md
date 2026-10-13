@@ -2,9 +2,41 @@
 
 [← Data](../README.md) · [Research context](../../research/data.md#google-research-football-generate-and-branch-matches) · [Example data](sample.json) · [Measured results](benchmark.json)
 
-**Two built-in AIs. 22 players. Every physics tick and ball touch.** Synthetic simulation data; no real match feed. Tested 14 October 2026 on Apple M4, native ARM64 Docker, CPU only.
+**Two built-in AIs. 22 players. Every physics tick and ball touch.** Synthetic simulation data; no real match feed. Tested 14 October 2026 on Apple M4: Docker for the headless benchmark, native macOS graphics for 4K.
 
-**Three full runs:** 97,680 frames · 2.15 million player rows · 402 passes · 401 MB compressed.
+## 4K with 90 minutes of actual play
+
+![Frame from the native 4K render](render-preview.jpg)
+
+```bash
+# Native macOS renderer; uses OpenGL and hardware HEVC encoding.
+data/GoogleResearchFootball/setup-native.sh
+data/GoogleResearchFootball/render.sh --seconds 5400
+```
+
+**3840 × 2160 · 25 fps · one-to-one match clock · halftime at 45:00.** Restarts pause the engine's match clock and add video time. The original benchmark below used an accelerated five-minute scenario.
+
+**Completed on Apple M4 in 3 h 39 m 16 s.** [Measured results](render-benchmark.json) · [Clock/render patch](render.patch) · [Renderer](render.py)
+
+| Actual play | Recorded video | Tracking | Passes |
+| --- | --- | --- | --- |
+| **90 min** · two 45-minute halves | **96 min 15.6 s** · 144,390 frames | **12.71 million** player rows · 100 Hz | **2,391** · 1,286 completed |
+
+The extra video time is stopped play. The match scored **26–8**: duration and capture work, but these AI settings are not calibrated to real football statistics.
+
+| Output | Use |
+| --- | --- |
+| `match.mp4` | Silent HEVC video; `match.partial.mp4` is the in-progress recording. |
+| `data/` | Matching 100 Hz native telemetry, positions, speeds and events. |
+| `frame-times.jsonl` | Video-frame → physics-time → match-clock mapping. |
+| `checkpoints/` | Native state every five match minutes, with frame and score metadata. |
+| `render.json` / `progress.json` | Configuration, timing, clock checks and completion/progress. |
+
+Use `--seconds 10` for a short clip or `--no-video` to exercise the real-duration simulation. Generated video/data stay under `.local/grf-runs/` and are not committed. This measured run is `full-90m-4k/`: 14.45 GB video + 2.33 GB telemetry.
+
+## Accelerated headless benchmark
+
+**Three accelerated scenario runs:** 97,680 frames · 2.15 million player rows · 402 passes · 401 MB compressed.
 
 ![Match generation speed and checkpoint branching](benchmark.svg)
 
@@ -50,10 +82,11 @@ python3 -m unittest discover -s data/GoogleResearchFootball -p 'test_*.py'
 docker run --rm --network none -v "$PWD/data/GoogleResearchFootball:/work:ro" \
   insidethegame-grf:research -m unittest -v test_engine test_events
 python3 data/GoogleResearchFootball/verify.py .local/grf-runs/<run>
+# Works for both headless exports and native rendered matches.
 uvx --with matplotlib python data/GoogleResearchFootball/report.py .local/grf-runs/<run>
 ```
 
-[Validation results](validation.json) include native frame intervals. Rendering/video and football realism have not been validated.
+[Validation results](validation.json) include native frame intervals. The [full-render verification](render-benchmark.json) checked all file hashes, 577,560 physics frames, 144,390 video frames, frame timestamps and both halves. Every video frame decoded without errors; beginning, middle and end frames were inspected. Football realism has not been statistically validated.
 
 </details>
 
@@ -62,6 +95,6 @@ uvx --with matplotlib python data/GoogleResearchFootball/report.py .local/grf-ru
 
 Pinned [Google Research Football source](https://github.com/google-research/football/tree/3d9e754720a95621bba6475c4d3b0d56fe919014), archived 19 August 2026. [Dockerfile](Dockerfile) pins Python dependencies; [telemetry.patch](telemetry.patch) adds optional, read-only C++ hooks. It leaves game decisions intact and keeps telemetry outside simulation snapshots.
 
-Google Research Football: Google LLC, [Apache 2.0](LICENSE.google). Gameplay Football engine: Bastiaan Konings Schuiling, [Unlicense](LICENSE.engine). Existing upstream notices remain in the image. No game art is exported. Review asset/dependency rights before shipping rendered video or an engine distribution; this test does not establish submission eligibility.
+Google Research Football: Google LLC, [Apache 2.0](LICENSE.google). Gameplay Football engine: Bastiaan Konings Schuiling, [Unlicense](LICENSE.engine). Existing upstream notices remain in the image. The 4K renderer includes upstream game art; exported telemetry contains no image assets. Review asset/dependency rights before shipping rendered video or an engine distribution; this test does not establish submission eligibility.
 
 </details>
