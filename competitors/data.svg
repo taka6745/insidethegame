@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="252" viewBox="0 0 1000 252" role="img" aria-labelledby="title desc">
+<title id="title">Data we actually collected</title><desc id="desc">Sample files collected: 10; Generator only: 4; Cannot inspect: 4; Plans / starter app only: 4</desc>
+<rect width="1000" height="252" rx="14" fill="#101e2b"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="28" y="36" font-size="23" fill="#edf5fa" font-weight="700">Data we actually collected</text>
+<text x="28" y="63" font-size="13" fill="#a4bbc9" >Files from source repos and starter ZIPs; static VYBE fixture extracted as JSON</text>
+<text x="28" y="106" font-size="14" fill="#edf5fa" >Sample files collected</text>
+<rect x="340" y="88" width="592" height="23" rx="4" fill="#192d3b"/>
+<rect x="340" y="88" width="592.00" height="23" rx="4" fill="#69baff"/>
+<text x="963" y="105" font-size="14" fill="#edf5fa" text-anchor="end" font-weight="700">10</text>
+<text x="28" y="140" font-size="14" fill="#edf5fa" >Generator only</text>
+<rect x="340" y="122" width="592" height="23" rx="4" fill="#192d3b"/>
+<rect x="340" y="122" width="236.80" height="23" rx="4" fill="#73e3ae"/>
+<text x="963" y="139" font-size="14" fill="#edf5fa" text-anchor="end" font-weight="700">4</text>
+<text x="28" y="174" font-size="14" fill="#edf5fa" >Cannot inspect</text>
+<rect x="340" y="156" width="592" height="23" rx="4" fill="#192d3b"/>
+<rect x="340" y="156" width="236.80" height="23" rx="4" fill="#f3c678"/>
+<text x="963" y="173" font-size="14" fill="#edf5fa" text-anchor="end" font-weight="700">4</text>
+<text x="28" y="208" font-size="14" fill="#edf5fa" >Plans / starter app only</text>
+<rect x="340" y="190" width="592" height="23" rx="4" fill="#192d3b"/>
+<rect x="340" y="190" width="236.80" height="23" rx="4" fill="#c2a4ff"/>
+<text x="963" y="207" font-size="14" fill="#edf5fa" text-anchor="end" font-weight="700">4</text>
+</g></svg>

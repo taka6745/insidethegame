@@ -1,0 +1,607 @@
+{
+  "126381": {
+    "name": "GoalGetter",
+    "summary": "Generates match events and serves them to a replay app.",
+    "source_hash": "4340fa90982080eabe2b28cca4851456bbbe653b48e109e7204ba7e89e36a619"
+  },
+  "126372": {
+    "name": "Match Storyteller",
+    "summary": "Plans a match replay with simple and detailed explanations.",
+    "source_hash": "6a9c9a2f91fa654a5303a78aa4d1119f59881d11526255deb985dcc35a3c132f"
+  },
+  "126465": {
+    "name": "Matchday Crew",
+    "summary": "Adds commentary and spoken recaps in English, Swahili, and Japanese.",
+    "source_hash": "2059fcd65ab633e68a12a01aa8fd2439cfeb946ddfc9ad2ecb7bf8ec6d950f26"
+  },
+  "126442": {
+    "name": "MatchLens — What-If Simulation",
+    "summary": "Shows changes in pressing and lets you explore what might happen next.",
+    "source_hash": "fcdca1b6d5238500f0ab6856c08a040e0e2ebc7f3076d582a6524bc6ab33793f"
+  },
+  "126324": {
+    "name": "MatchMind AI — AI Football Analyst",
+    "summary": "Starter ZIPs contain tiny synthetic matches and example match explanations.",
+    "source_hash": "59726c1fa9c34a687e1a3c2f8f5a072ccf7471c42a1f959f11fee7f479769ba6"
+  },
+  "126369": {
+    "name": "MatchMind AI — Beyond the Scoreline",
+    "summary": "Plans to explain why momentum changed; current code is a starter app.",
+    "source_hash": "a03232351c7883ad20d09698617d278a79519d9ca5b594e11df02ac78013a1ba"
+  },
+  "126423": {
+    "name": "MatchMind AI — Every Match Has a Personality",
+    "summary": "Lets you choose an entertaining, Hinglish, or tactical commentator.",
+    "source_hash": "867c9c1d19116b6b7e8c60a2a431d3c34f955081ea2edb9743e4ded04f15dea2"
+  },
+  "126443": {
+    "name": "MatchMind Studio — Broadcast & Streaming",
+    "summary": "Replays matches with shot maps, momentum, commentary, and multilingual recaps.",
+    "source_hash": "1ca22575d6c7cb046dcf481466f9755517ed0d538448ca0baa0a399af00b60ff"
+  },
+  "126341": {
+    "name": "MatchMind — AI Broadcast Booth",
+    "summary": "Shows checked match explanations in English, Urdu, and Arabic.",
+    "source_hash": "6dce79af61806377d088e9ca81304d96edc940353194a5b81bb6f43fc0964b34"
+  },
+  "126387": {
+    "name": "MSFT x EPL Hackathon",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "29f98c6b112c36a667d054a7041674d89adbccdd1c3807832296c58a7e9b85a1"
+  },
+  "126458": {
+    "name": "OmniPitch",
+    "summary": "Limited detail: Beyond the Score. Behind Every Play.",
+    "source_hash": "78d7dc2b6348fafb934c748b4108c33d7e4677e6db1cf9bf30e77deaec7444a8"
+  },
+  "126441": {
+    "name": "PitchPulse",
+    "summary": "Writes live commentary and recaps in different languages.",
+    "source_hash": "ffddb93d88eb1a13700cfc858877a773bf731b39ca7ab52a7b8c10d5ba3c906f"
+  },
+  "126348": {
+    "name": "Pitchside",
+    "summary": "Turns match events into graphics and commentary for different viewers.",
+    "source_hash": "e5b83e7fe63b09cb5a32e1aa2caaca5abdec09b5f0c0ae3aa13c5bdcb9752c7d"
+  },
+  "126351": {
+    "name": "ReactCoach 11",
+    "summary": "Lets you test a football move against an opponent’s response.",
+    "source_hash": "13f5f92e3d0ed44809ef2e17f5eb5405eb033d071190f650de6fc63b437895c1"
+  },
+  "126386": {
+    "name": "Second Story",
+    "summary": "Shows a simulated momentum swing and explains it.",
+    "source_hash": "b3bfd640150a26238acde996353f48744519031626ea1571040856c835be2d90"
+  },
+  "126361": {
+    "name": "Shift11",
+    "summary": "Identifies who helped turn the match and shows the evidence.",
+    "source_hash": "1f4335e2bc03bc64153e13f7086eca165f4c549fa5d3c7fd1b2e883c1b8bc31c"
+  },
+  "126358": {
+    "name": "SignalFlow",
+    "summary": "Chooses which match story a broadcaster should show next.",
+    "source_hash": "ad21997b027fcadb7ebcfaf45f05f5c79d28beeec2a496955322baa8bafd58ba"
+  },
+  "126456": {
+    "name": "Tactix AI",
+    "summary": "Plans tactical explanations and personalised commentary from match events.",
+    "source_hash": "dbf07d153949e9774b9bc5af0d37c3fd12257f5455db6dfd6bb22596d290b77e"
+  },
+  "126406": {
+    "name": "Touchline",
+    "summary": "Shows match events, their evidence, and different fan perspectives.",
+    "source_hash": "09f534cc198dc44199630103b71106b5fe9fce1864615b6a8af6abc69f721866"
+  },
+  "126448": {
+    "name": "VendorIQ",
+    "summary": "Converts different football-data formats into one readable format.",
+    "source_hash": "9b116cbce5e515fdb66af902b78160141318c3c33626c74642952244a736e10b"
+  },
+  "126365": {
+    "name": "Virtual Studio Crew",
+    "summary": "Checks match stories, then produces graphics, commentary, and spoken recaps.",
+    "source_hash": "2a313f9af3164c8f8dc4f2d3554eea564f13c7e8bba35f5e038b5499cbac2b5e"
+  },
+  "126450": {
+    "name": "VYBE — Every Fan Belongs",
+    "summary": "Lets children, analysts, and fans with accessibility needs watch differently.",
+    "source_hash": "766f371bdf4280a92df0815f46065c0a23cb83fe321904d7c0723db22ad7695f"
+  },
+  "126422": {
+    "name": "88 PLS Synthetic Match Insights",
+    "summary": "Work in progress; no concrete project description supplied.",
+    "source_hash": "4d213810412d2f20ee5a68b645417025872863f94f75e08f07133af65b8d460f"
+  },
+  "126321": {
+    "name": "Adrena",
+    "summary": "Limited detail: Match Intelligence.",
+    "source_hash": "cdadd415ffe20b6032043f1273d41e6ffe13a52300bf44d02498e25aec4bd265"
+  },
+  "126445": {
+    "name": "Agent XI",
+    "summary": "Uses several assistants to analyse teams, players, and matches.",
+    "source_hash": "3b9bd843a2c39494e0467142c679449378534f1c227db28383d43f11d8ff0455"
+  },
+  "126475": {
+    "name": "AI - Premier League",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "4b02839238afae1ff52c68bd850169f110a96db9ec09697388719f8a1f38d3e8"
+  },
+  "126331": {
+    "name": "Antifreeze Team - Rabona",
+    "summary": "Limited detail: Read the game. Direct the story.",
+    "source_hash": "269f4205eafa0406fac2c36fcdc9c8235f7f67b0ae0e12536846e7c3abbec600"
+  },
+  "126470": {
+    "name": "App",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "c534ee407263bdf133b73c2f6ca8cd2c36684cca302071baed7388ef50489903"
+  },
+  "126311": {
+    "name": "Audio Eyes",
+    "summary": "Helps blind fans hear ball position and ask match questions.",
+    "source_hash": "514b117163792b13443b09f26b2743b3c425be6c4f26ecd53e1be3c286350f52"
+  },
+  "126429": {
+    "name": "Between the Lines",
+    "summary": "Shows attacking patterns and player contributions hidden by the score.",
+    "source_hash": "42708a786240e14aeb8155e7ceaa38f432f57891e47c7945075ffc7e703301f0"
+  },
+  "126432": {
+    "name": "Blind-side",
+    "summary": "Helps blind fans follow ball position and match action through sound.",
+    "source_hash": "660eeafc4c6660f2fcd35a430c788b032d9e0f9f4736db73e819a65cdbbd0200"
+  },
+  "126457": {
+    "name": "Chalkboard",
+    "summary": "Writes commentary that links back to the match events.",
+    "source_hash": "520579b14bad604d118ec7ae86404a68f825e111bb127b01d5e5db119f071b87"
+  },
+  "126371": {
+    "name": "CoachView",
+    "summary": "Limited detail: Live match analysis.",
+    "source_hash": "5a0f0048e7516336a7e1b82895dc34c77755377f6a42bbaa25aa1a4b7a3a739d"
+  },
+  "126436": {
+    "name": "Control or Chaos",
+    "summary": "Checks live match explanations and translates them for fans.",
+    "source_hash": "a7eceb1aba7ecd24e8b5ab54aec4da9888ac8d6f76ec072ce1ca706e28f5d03f"
+  },
+  "126425": {
+    "name": "Control vs. Chaos",
+    "summary": "Shows when a team loses control and explains why.",
+    "source_hash": "55e725a458c334bda6271c953179d40d6a567744e132b07458958175006167a8"
+  },
+  "126394": {
+    "name": "CounterPress",
+    "summary": "Plans live explanations and match graphics in different languages.",
+    "source_hash": "b7b94a52f552e09acb6203706673fb1cacd69e3e71e6b693457e77ceec46432b"
+  },
+  "126452": {
+    "name": "CRONISTA",
+    "summary": "Writes bilingual match stories with clickable evidence.",
+    "source_hash": "ecfa8fb312e37822255ee5990f9ffc900ab236c0a381783a60d4dbfa754a76f9"
+  },
+  "126368": {
+    "name": "DataRed",
+    "summary": "Limited detail: The power of momentum.",
+    "source_hash": "733de54a5d4c60d50fb457c28e3ca30ed03cae3d85880c13fb13d2693bba6678"
+  },
+  "126419": {
+    "name": "Dinesh - Todo",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "cb3d77a4ce665b770cb22a32553f4bd7ef97d3d1818a8f5aa0bf77d1bb973368"
+  },
+  "126400": {
+    "name": "energy mgt",
+    "summary": "Limited detail: energy management; no features or implementation described.",
+    "source_hash": "db8b1275deb0d1eee50e68af1e4feacd80af7f0a785ed781f5952e86017994c6"
+  },
+  "126454": {
+    "name": "FantasyVerse",
+    "summary": "Connects live match moments to your fantasy football team.",
+    "source_hash": "c41782617b9f20c2d106b50dd98626e1181c1578bd731b4db4f5d37595b7e2f7"
+  },
+  "126335": {
+    "name": "Footbal AI",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "dc54bb5eaac81ad250c29eacce07c24fd438fba2aedcde55685440a74131ffed"
+  },
+  "126477": {
+    "name": "Footydata",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "11190e7d248c613c79274b09e148e9a69d8c026c5df1439fba3e47f24c2d5b25"
+  },
+  "126320": {
+    "name": "Game Co-Commentator",
+    "summary": "Limited detail: live-game commentary and insights.",
+    "source_hash": "4dc1dd9a2f024127a60904b54003389de9ebb4a2499424cb009fb264519ca8aa"
+  },
+  "126329": {
+    "name": "GamePulse",
+    "summary": "Limited detail: See what really happens in the game.",
+    "source_hash": "38c591e69be47c96600e19bb356b19f2e402dad022c80e2571f031ce213ce1e9"
+  },
+  "126472": {
+    "name": "Gantry",
+    "summary": "Plans to explain match events for broadcasters and fans.",
+    "source_hash": "37ca3e4ae808beda08bcf68cde017fe8f3e1b414266adf75a4b3c493c5c278c2"
+  },
+  "126424": {
+    "name": "GESPort",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "266a60dd7e011214a9f329aca2a69cde19872f268340ca22ed432138e20cdcee"
+  },
+  "126392": {
+    "name": "GhostPlay AI",
+    "summary": "Explains passing progress and the off-ball runs that create options.",
+    "source_hash": "e71c8ed6551abc0ce3df206f06ef040befbf5cdef6586ae57753fd40cccc833b"
+  },
+  "126399": {
+    "name": "Infinite Stadium",
+    "summary": "Replays a 2D match and lets fans ask questions about it.",
+    "source_hash": "fe4a4bf6ddaf7728e6e6cad80cdc28c0e938fa10963de93787f8aad9ecdd83bf"
+  },
+  "126343": {
+    "name": "Inside the Game",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "05fdd4bb251af4b0f20200df6d2ada4de3a4676735eca9d744cd8040c72b19ed"
+  },
+  "126362": {
+    "name": "inside the game",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "48d6b059e28fa43c6daf7216e16c63c13e720dee877e058480e479dd60c417e3"
+  },
+  "126402": {
+    "name": "Inside the Game",
+    "summary": "Limited detail: Real-time football intelligence from every moment on the pitch.",
+    "source_hash": "c90826561902f1dea491129c953d67dff6560341502301300cb2aff628a37a64"
+  },
+  "126455": {
+    "name": "Isagi's Eyes",
+    "summary": "Limited detail: spotting opportunities on the pitch.",
+    "source_hash": "c27194d33320a5101671a51863b74d42f6c51674f63d1e81e06613e15e088471"
+  },
+  "126330": {
+    "name": "KickSense AI",
+    "summary": "Limited detail: From every touch to every story.",
+    "source_hash": "a20756c099e771d3ae9f6d10b087248c7c1be7b65381b73f279c128b149267e8"
+  },
+  "126326": {
+    "name": "Larp",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "e03b77c56e1f49ff66fe83cb4436ef28ed79047f13b7b2185aaa5226b1531b00"
+  },
+  "126353": {
+    "name": "MatchDesk",
+    "summary": "Lets a producer approve explanations before they go on air.",
+    "source_hash": "c039347c8165be02ace9176c80db2731544c6cf8b36723d65e09c9bb4e18f9e0"
+  },
+  "126336": {
+    "name": "MatchDirector",
+    "summary": "Creates checked match graphics and recaps for different viewers.",
+    "source_hash": "c1420b27ccd8acacb23d776d735dd94cbcf111fba077c7ba8f59471f3082c09e"
+  },
+  "126418": {
+    "name": "MatchEyes",
+    "summary": "Explains changes in the match and shows the supporting events.",
+    "source_hash": "6dc820c23703d3e2b2f4038ee5dd0aeed9d531d180f258807abf14a0760cceb1"
+  },
+  "126333": {
+    "name": "MatchLens",
+    "summary": "Explains shifts in pressure, territory, and control.",
+    "source_hash": "5a738aedee863c3b443c771e730337afff9641e194d1e3940b66e438276c6ca1"
+  },
+  "126398": {
+    "name": "Matchmate",
+    "summary": "Lets fans ask questions about matches, clubs, and stadiums.",
+    "source_hash": "76a1d149cf65958223202ce6509327c703f879ae0816713b5f23c43e73d2c698"
+  },
+  "126388": {
+    "name": "MatchMind AI",
+    "summary": "Limited detail: Turning every match moment into explainable intelligence.",
+    "source_hash": "46d694751ee47d4e14b17f1b2651d4e9026e986cd11d7e320160ade66604630f"
+  },
+  "126363": {
+    "name": "MatchMind Studio — AI Broadcast Crew",
+    "summary": "Shows each fan different commentary and match highlights.",
+    "source_hash": "ef38d34dfc7b8834d3f0493e94cda5fdcc3b302ddbc70b845c34309aeedb9677"
+  },
+  "126463": {
+    "name": "MatchMind — Agentic Match Intelligence",
+    "summary": "Coordinates commentary, recaps, translation, and fan questions.",
+    "source_hash": "5bd9252123862f91931bcdefdc2c031c6e48cb6395d8ddd03e6df27ffad093d9"
+  },
+  "126449": {
+    "name": "MatchMind — Live Football Stories",
+    "summary": "Creates match graphics and recaps in each viewer’s language.",
+    "source_hash": "7d5e349438122f0a906d75e83492b98043dfba72024a0f77f621d651aa052ba9"
+  },
+  "126328": {
+    "name": "MatchOS",
+    "summary": "Tells each viewer a different story about the same match.",
+    "source_hash": "c0a6fdff705f10de7653b72475d5de421df56a35a0abf552530863bdcd6a1dd7"
+  },
+  "126352": {
+    "name": "MatchPulse",
+    "summary": "Explains match events and adapts the story to each fan.",
+    "source_hash": "131c3c8aadfe53ad9c3e1a29197be858bc65eb8aa061e29d9949104227c240e5"
+  },
+  "126379": {
+    "name": "MATCH⚽MINE",
+    "summary": "Explains what happened and what fans should watch for next.",
+    "source_hash": "b2a68a8f5830ff4dcb39354bf039e760f69e78fde203f3c57cc3d91d979465e1"
+  },
+  "126306": {
+    "name": "Msimulizi",
+    "summary": "Writes commentary and recaps in Swahili, English, and French.",
+    "source_hash": "7315cd4c2ec5540adb5d666d28b2dbcb4577ba3b0f1cc75bef8fcb3222d98f74"
+  },
+  "126366": {
+    "name": "mwx-footbal",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "689f475957cbd8558ecd0cf3b52331705fd8c0f681c9986c3702cc5c6e1231fb"
+  },
+  "126444": {
+    "name": "Narrative VAR",
+    "summary": "Checks whether a pundit’s match story is backed by the data.",
+    "source_hash": "b595d837cdc0f9193bc6815b86aeabb9a407349583bba462c5fc918a860705ce"
+  },
+  "126440": {
+    "name": "One Match, Many Matches",
+    "summary": "Explains the same match differently for beginners and experts.",
+    "source_hash": "b644d068f4ed67ecef425eec6b44e2b68e8ea1c3215a5805729fa7f0662b8414"
+  },
+  "126355": {
+    "name": "PetKingDom",
+    "summary": "A pet-products shop; unrelated to football.",
+    "source_hash": "2fddd142b9b759750506e9d40109d220d254ff9e7fbcd6f92838ffb2a6a7e11c"
+  },
+  "126467": {
+    "name": "PH-I",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "fd73d49bfadf4580ab7fc2e2e441a771ec08b413f2822e277305880b049c8383"
+  },
+  "126391": {
+    "name": "Pitch Ledger",
+    "summary": "Checks match claims before showing a story on screen.",
+    "source_hash": "27d2e1c13fa8cab7c8f3af27c91d55211ae03b5ea4ab43f046fbf24fa105a1f0"
+  },
+  "126334": {
+    "name": "PitchLens",
+    "summary": "Replays matches in 3D and explains turning points.",
+    "source_hash": "9914fcebb813651ce4f8102adce47d3a9d47ec792e80e5c2ff03d0ab696997b3"
+  },
+  "126420": {
+    "name": "PitchMind",
+    "summary": "Shows different match explanations to casual fans and analysts.",
+    "source_hash": "0b8f43c337f491148a20fa600e3cbc9b6e11c96240f793be593d712b5b09709f"
+  },
+  "126367": {
+    "name": "PitchPulse AI",
+    "summary": "Turns match events into commentary and recaps.",
+    "source_hash": "3d489fd46d6518413ffcdb6890fd9efc58d87d1ee91da9df8646b042fe5060a7"
+  },
+  "126350": {
+    "name": "Pitchside",
+    "summary": "Shows timed match graphics and commentary tailored to each fan.",
+    "source_hash": "3ac8fa3cb6536d12dff1fecbeaa417e2d5d5d0bd75fc9c3d6b4bd24c35da301f"
+  },
+  "126430": {
+    "name": "Pivot",
+    "summary": "Limited detail: Football Intelligence.",
+    "source_hash": "d84ddeb9b6fa936080e038e0c0d67a9ae534db9d8d6b1aab734bc0c0fbb7fc35"
+  },
+  "126325": {
+    "name": "Premier League Match Pulse AI",
+    "summary": "Explains synthetic match events for fans and studios.",
+    "source_hash": "24bfdf37bb424cd0103802d33819059ed53198c63dae5206f100093c861b62ba"
+  },
+  "126349": {
+    "name": "Premier League Studio Insights Project -- DD",
+    "summary": "Limited detail: Premier League Studio Insights.",
+    "source_hash": "5b27e801c3318c7c6896a7bb13db1879a5b70178d1b441172bee1aea5a0d5955"
+  },
+  "126428": {
+    "name": "PremierLeague Hackathon",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "b411331fdb6cc54660c6a64e123600445ca50c5eea64c89033e1dc8ed3877af5"
+  },
+  "126421": {
+    "name": "Proj",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "39b6a167808b49eb0a133b15ed753338f3a80bb2e57ff0c55532fb65f05cee4f"
+  },
+  "126464": {
+    "name": "Project Brigma",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "1d4c95dfa12f578c0306d3a9f1801510095d11230ddfd3b08d0d52080c3df9ef"
+  },
+  "126354": {
+    "name": "Pulse",
+    "summary": "Lets fans explore a replay and check the evidence behind explanations.",
+    "source_hash": "94157ba172b58e6b3c468a5991fc7f5a6b7d67566924084dd82dab53369d9e31"
+  },
+  "126446": {
+    "name": "qdqdq",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "0240de046c7751e00fe4a4b2bf4dbb6c792324e2621c6dad020895d73ba4c72e"
+  },
+  "126374": {
+    "name": "Risk Radar",
+    "summary": "Predicts a player’s next risky move and checks whether it happens.",
+    "source_hash": "17e0ae4f59a4c457c18fbfb07c82acf82f31846a8777581dc75e01eb340c1ebd"
+  },
+  "126309": {
+    "name": "Sauti",
+    "summary": "Offers commentary suited to language, knowledge, and accessibility needs.",
+    "source_hash": "8395082e3ec5b737f6ec7b9560b036cc94d0d40557cf95d00a2ab9d26bce57fd"
+  },
+  "126312": {
+    "name": "Second Guess",
+    "summary": "Lets fans replay a moment and try a different decision.",
+    "source_hash": "3c775cf35812743e8d4372551aa97a74afab443d490d1460a838eeaf8e36663b"
+  },
+  "126378": {
+    "name": "SecondTouch",
+    "summary": "Adds tactical explanations beside the match you are watching.",
+    "source_hash": "184ad950c97a8a1be8541c988b2625f8ab1efe12853aecde74836e4e105240a3"
+  },
+  "126359": {
+    "name": "Shield",
+    "summary": "Highlights defensive work and teaches young players how to copy it.",
+    "source_hash": "54cc36edbf44ef2b8663014ea7314973ecdc465bb5d321925e04e1d21263f9a3"
+  },
+  "126384": {
+    "name": "Sisyphus Engine",
+    "summary": "Shows when chasing the ball tires a team and changes control.",
+    "source_hash": "822e4307b4d2bd0ae6a000fdf8b9fd74bf367364886a2628e80909d14956458c"
+  },
+  "126431": {
+    "name": "Snap ⚽️",
+    "summary": "Limited detail: computer vision and sports analytics keywords; no features described.",
+    "source_hash": "e04263eb3d0365302dfb885e70560e41f904bba2f76131fc7ae86d631db89318"
+  },
+  "126315": {
+    "name": "Soccalytics",
+    "summary": "Analyses match videos to help with coaching and scouting.",
+    "source_hash": "3a7ced693cdbae8863a5548b5f15cd819e1e326a9dc51c0c96895b7449acb043"
+  },
+  "126478": {
+    "name": "Soccer Image Processing",
+    "summary": "Limited detail: Image processing.",
+    "source_hash": "8db8546328aeadf49d580aac4487373922bf586fbe9d4ac735cc633fddad5216"
+  },
+  "126377": {
+    "name": "SportyFy",
+    "summary": "Limited detail: insights from synthetic matches.",
+    "source_hash": "8847993b20f24555d5fd7af01db57fbc909d5e49e1e88772a6e32f3de8274d20"
+  },
+  "126403": {
+    "name": "SyncComm",
+    "summary": "Limited detail: AI powered football insights.",
+    "source_hash": "dd414cc61b407a21dae8211996fa175c60fe89e6c3e0b227e45c6a8410d78685"
+  },
+  "126356": {
+    "name": "Tactiq",
+    "summary": "Explains pressure, momentum, and which players influence the match.",
+    "source_hash": "174abb18079cc766d60ffecfb8980ee380efc3c61550a95dd6a76942eb4d8f0f"
+  },
+  "126434": {
+    "name": "TactIQ",
+    "summary": "Explains how substitutions and formation changes affect a match.",
+    "source_hash": "7076b352df8a3edf50ad74b18f6a8bd4d0d2a18103a2acac36c10384fc2ac72d"
+  },
+  "126453": {
+    "name": "TactIQ",
+    "summary": "Explains tactical changes for broadcast studios.",
+    "source_hash": "7dd969b6846d3bf7fc45c8c914f8b5a84405e4b4b795e54ac9658d29022dc379"
+  },
+  "126322": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "6d4e37060098fb9ba7314e72dd2b8f598c45bb0b433b1f572e7805fab709ed91"
+  },
+  "126327": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "f7b630b576502b0faf282c39f9e936049f935f5832b2604d88210c7d5785be53"
+  },
+  "126342": {
+    "name": "tbd",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "0bb54f062473b99531687c307d2f394d42996db524ac4b82a6ac9760fc52cc0d"
+  },
+  "126412": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "6d4e37060098fb9ba7314e72dd2b8f598c45bb0b433b1f572e7805fab709ed91"
+  },
+  "126437": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "6d4e37060098fb9ba7314e72dd2b8f598c45bb0b433b1f572e7805fab709ed91"
+  },
+  "126476": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "b4e4a8cd933dfce7059e09552bc41ad0d8d9e6cd102f4b6112b2d56b8dc7c56b"
+  },
+  "126479": {
+    "name": "TBD",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "f7b630b576502b0faf282c39f9e936049f935f5832b2604d88210c7d5785be53"
+  },
+  "126347": {
+    "name": "test",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "962c9c9786b61f7f407daddd8ba9180c42688afc0d989978fe2b17f8f5c84465"
+  },
+  "126473": {
+    "name": "The Gallery",
+    "summary": "Checks match stories before a producer puts them on screen.",
+    "source_hash": "4eb87005d4d134ac3a557a9d4fcd8995e5bc56d1c9126fd5abf1cdbe714d2f32"
+  },
+  "126469": {
+    "name": "The Gallery — AI Broadcast Crew",
+    "summary": "Creates checked commentary in each fan’s language.",
+    "source_hash": "69ef55ff6f84bf14ad37a908b6e261fdc96ec1f1ae63adaab0ec5638c6555804"
+  },
+  "126360": {
+    "name": "THE HALF-TIME LAB",
+    "summary": "Lets fans choose a half-time plan and simulate the second half.",
+    "source_hash": "0574b780ab7070d47cf24d8f975d3370f1b25d6097c1267a223cc8f5f4a02c95"
+  },
+  "126468": {
+    "name": "the start of something big",
+    "summary": "Football-history concept; the submission does not explain a concrete product or implementation.",
+    "source_hash": "a05265467bb0a271d4b52ea2539fe35487ee26107b8a98b1fda4e2ba94470177"
+  },
+  "126435": {
+    "name": "TOUCH LINE.",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "308a6591e2764b0c5b4054d4ce13b20f599d94003e3671687403a3d050090f83"
+  },
+  "126397": {
+    "name": "Touchline Signal",
+    "summary": "Simulates matches and previews explanations beside the replay.",
+    "source_hash": "5cce15c815bfd1310ed15812fb16d08beeefb577d8d92b21efcead5da446522c"
+  },
+  "126474": {
+    "name": "TouchlineAI",
+    "summary": "Turns match events into tactical explanations for broadcasts.",
+    "source_hash": "82a6e693cf7a65cbb75dca4bd3cf876fda668af8982017407b24d5723a81f49d"
+  },
+  "126451": {
+    "name": "TouchlineLens",
+    "summary": "Shows pressure, shots, and tactical changes as the match unfolds.",
+    "source_hash": "72978379e02f668652ac8b8a16e0d2e6f06a3e83a5601524ba9709f1ac2866f0"
+  },
+  "126307": {
+    "name": "Ultimate PL Experience",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "2fe907259069be1a59a8fa758e4906cc9afb68f0ec01f80d9a43855b23444a86"
+  },
+  "126310": {
+    "name": "Untitled",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "0d59f6c4e0521d376c923beb9fb30d80db195e56d6f2de3d0dd989cfad26c08d"
+  },
+  "126390": {
+    "name": "WhyLine",
+    "summary": "Explains why a moment mattered, with links to the evidence.",
+    "source_hash": "e357143aa5233af991822613c3a566ef0d054c6f9a3631ebca8f0bb9ec74d847"
+  },
+  "126376": {
+    "name": "Will Figure out a name before submission",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "bdeed919066aac916828d82aea1656eda9fce26722b11d529ff7e343e5e23675"
+  },
+  "126447": {
+    "name": "xPlain Live",
+    "summary": "Limited detail: Expected vs. actual, explained live.",
+    "source_hash": "87a54ec0403a5e8bd53a89f419d3c0e919b01c167b802947264f01e2816ca768"
+  }
+}

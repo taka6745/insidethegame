@@ -1,0 +1,221 @@
+{
+  "matchId": "SYN-00007",
+  "seed": 7,
+  "competition": "Synthetic League",
+  "venue": "The Ashvale Ground",
+  "weather": "Clear, 14\u00B0C",
+  "home": {
+    "side": "home",
+    "name": "Harbour Town",
+    "shortName": "HBT",
+    "colour": "#f49d37",
+    "formation": "4-3-3",
+    "starters": [
+      {
+        "id": "H01",
+        "name": "Kwame Ulloa",
+        "number": 1,
+        "position": "GK"
+      },
+      {
+        "id": "H02",
+        "name": "Gabriel Rossi",
+        "number": 28,
+        "position": "RB"
+      },
+      {
+        "id": "H03",
+        "name": "Nico Bakker",
+        "number": 3,
+        "position": "RCB"
+      },
+      {
+        "id": "H04",
+        "name": "Felix Adeyemi",
+        "number": 38,
+        "position": "LCB"
+      },
+      {
+        "id": "H05",
+        "name": "Rafael Asante",
+        "number": 33,
+        "position": "LB"
+      },
+      {
+        "id": "H06",
+        "name": "Leon Kovac",
+        "number": 34,
+        "position": "CDM"
+      },
+      {
+        "id": "H07",
+        "name": "Elias Fofana",
+        "number": 18,
+        "position": "RCM"
+      },
+      {
+        "id": "H08",
+        "name": "Dario Castell",
+        "number": 36,
+        "position": "LCM"
+      },
+      {
+        "id": "H09",
+        "name": "Theo Fofana",
+        "number": 17,
+        "position": "RW"
+      },
+      {
+        "id": "H10",
+        "name": "Tomas Oduya",
+        "number": 6,
+        "position": "ST"
+      },
+      {
+        "id": "H11",
+        "name": "Jamal Yilmaz",
+        "number": 32,
+        "position": "LW"
+      }
+    ],
+    "bench": [
+      {
+        "id": "H12",
+        "name": "Elias Castell",
+        "number": 13,
+        "position": "GK"
+      },
+      {
+        "id": "H13",
+        "name": "Viktor Strand",
+        "number": 29,
+        "position": "CB"
+      },
+      {
+        "id": "H14",
+        "name": "Zane Ulloa",
+        "number": 12,
+        "position": "CM"
+      },
+      {
+        "id": "H15",
+        "name": "Idris Hale",
+        "number": 31,
+        "position": "W"
+      },
+      {
+        "id": "H16",
+        "name": "Zane Marsh",
+        "number": 2,
+        "position": "ST"
+      }
+    ]
+  },
+  "away": {
+    "side": "away",
+    "name": "Saltmarsh City",
+    "shortName": "SMC",
+    "colour": "#76b041",
+    "formation": "4-3-3",
+    "starters": [
+      {
+        "id": "A01",
+        "name": "Udo Yilmaz",
+        "number": 1,
+        "position": "GK"
+      },
+      {
+        "id": "A02",
+        "name": "Malik Oduya",
+        "number": 33,
+        "position": "RB"
+      },
+      {
+        "id": "A03",
+        "name": "Femi Duarte",
+        "number": 28,
+        "position": "RCB"
+      },
+      {
+        "id": "A04",
+        "name": "Pavel Duarte",
+        "number": 8,
+        "position": "LCB"
+      },
+      {
+        "id": "A05",
+        "name": "Jamal Petrov",
+        "number": 26,
+        "position": "LB"
+      },
+      {
+        "id": "A06",
+        "name": "Luca Novak",
+        "number": 14,
+        "position": "CDM"
+      },
+      {
+        "id": "A07",
+        "name": "Gabriel Mensah",
+        "number": 30,
+        "position": "RCM"
+      },
+      {
+        "id": "A08",
+        "name": "Rafael Marsh",
+        "number": 2,
+        "position": "LCM"
+      },
+      {
+        "id": "A09",
+        "name": "Viktor Holm",
+        "number": 19,
+        "position": "RW"
+      },
+      {
+        "id": "A10",
+        "name": "Udo Jansen",
+        "number": 6,
+        "position": "ST"
+      },
+      {
+        "id": "A11",
+        "name": "Nico Yilmaz",
+        "number": 5,
+        "position": "LW"
+      }
+    ],
+    "bench": [
+      {
+        "id": "A12",
+        "name": "Rafael Holm",
+        "number": 13,
+        "position": "GK"
+      },
+      {
+        "id": "A13",
+        "name": "Hugo Hale",
+        "number": 35,
+        "position": "CB"
+      },
+      {
+        "id": "A14",
+        "name": "Gabriel Vance",
+        "number": 15,
+        "position": "CM"
+      },
+      {
+        "id": "A15",
+        "name": "Ilan Quarry",
+        "number": 3,
+        "position": "W"
+      },
+      {
+        "id": "A16",
+        "name": "Femi Petrov",
+        "number": 34,
+        "position": "ST"
+      }
+    ]
+  }
+}

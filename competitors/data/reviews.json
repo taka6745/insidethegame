@@ -1,0 +1,326 @@
+{
+  "ALISAEED-1/matchmind": {
+    "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Seeded Python possession-chain simulator with fictional clubs and three committed story fixtures. No Kaggle/Hugging Face loader found.",
+    "evidence": [
+      {
+        "path": "backend/src/matchmind/generator/simulator.py",
+        "line": 103,
+        "finding": "Uses random.Random(seed) for match generation."
+      },
+      {
+        "path": "backend/src/matchmind/generator/__init__.py",
+        "line": 48,
+        "finding": "Three shipped seeded match scenarios are defined locally."
+      }
+    ]
+  },
+  "HamzatAbdulazeez/matchmind-studio": {
+    "sha": "72d315da0e0fbce52d9fad7624998d4f95e37b80",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "TypeScript seeded generator is the default. An adapter can load a user-provided JSON file; its presence does not establish an official dataset source.",
+    "evidence": [
+      {
+        "path": "src/lib/data/synthetic.ts",
+        "line": 39,
+        "finding": "generateMatch creates fictional teams and randomised events."
+      },
+      {
+        "path": "src/lib/data/adapter.ts",
+        "line": 7,
+        "finding": "The adapter chooses a local file or synthetic generation."
+      }
+    ]
+  },
+  "Hapinam/vybe-ai": {
+    "sha": "c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Fixed synthetic fixture",
+    "detail": "A hard-coded Aurora FC versus Harbor United fixture drives replay. Optional Azure AI writes narration; it does not supply the match dataset.",
+    "evidence": [
+      {
+        "path": "apps/web/src/match.ts",
+        "line": 39,
+        "finding": "Local fixture defines fictional teams and explicit event rows."
+      },
+      {
+        "path": "README.md",
+        "line": 24,
+        "finding": "Documents a local synthetic fixture without an external sports API."
+      }
+    ]
+  },
+  "SeyiBuilds/VendorIQ": {
+    "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Ships locally generated samples in Opta-, StatsBomb-, and Wyscout-shaped formats. Vendor schemas and supported uploads are not proof of downloaded vendor datasets. No Kaggle/Hugging Face loader found.",
+    "evidence": [
+      {
+        "path": "backend/data/generators/synthetic_match_generator.py",
+        "line": 2,
+        "finding": "Generator exports one synthetic ground-truth timeline into three vendor shapes."
+      },
+      {
+        "path": "README.md",
+        "line": 55,
+        "finding": "Three synthetic sample matches are shipped; Wyscout-shaped imports are also described."
+      }
+    ]
+  },
+  "Simplify4Me2/goal-getter": {
+    "sha": "8dd5884cf19122ceb55939759dd7a4d70a67ae8d",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "C# generator uses the fixture ID as its random seed and a locally defined fictional squad. The repository is early, rather than a live external-data integration.",
+    "evidence": [
+      {
+        "path": "GoalGetter/GoalGetter.ApiService/Matches/SyntheticMatchGenerator.cs",
+        "line": 22,
+        "finding": "Events are generated with new Random(fixture.MatchId)."
+      },
+      {
+        "path": "GoalGetter/GoalGetter.ApiService/Matches/FixtureCatalog.cs",
+        "line": 19,
+        "finding": "The single fixture and its player names are defined in source."
+      }
+    ]
+  },
+  "achand280606/Shift11": {
+    "sha": "af6d34bab55f70042cfae93efd637ab9067719da",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Python seeded scenario generator produces formation-aware events and writes data/match_001.json. No external tracking dataset is consumed in the inspected source.",
+    "evidence": [
+      {
+        "path": "src/generator.py",
+        "line": 136,
+        "finding": "generate_match accepts a seed and synthetic formation/scenario settings."
+      },
+      {
+        "path": "docs/GENERATOR_SETUP.md",
+        "line": 12,
+        "finding": "The documented command writes the generated local match file."
+      }
+    ]
+  },
+  "aj0khi/soccer-hackathon-project": {
+    "sha": "ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "TypeScript generator produces a seeded momentum-shift scenario. The optional Event Hubs adapter is a transport integration, not evidence of an external football dataset.",
+    "evidence": [
+      {
+        "path": "src/lib/simulation/generate-match.ts",
+        "line": 43,
+        "finding": "generateSyntheticMatch creates seeded event sequences."
+      },
+      {
+        "path": "README.md",
+        "line": 26,
+        "finding": "The local generator remains available alongside the optional Event Hubs adapter."
+      }
+    ]
+  },
+  "audioreworkvisions/touchline": {
+    "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Custom seeded JavaScript simulator creates fictional events and illustrative player tracking. The committed JSONL sample is its output. Vision uses the synthetic renderer rather than real broadcast footage.",
+    "evidence": [
+      {
+        "path": "dist/engine.mjs",
+        "line": 14,
+        "finding": "generateMatch builds a seeded event stream."
+      },
+      {
+        "path": "docs/DATA-CARD.md",
+        "line": 5,
+        "finding": "Data card explains synthetic provenance and explicitly excludes real match feeds."
+      },
+      {
+        "path": "docs/DATA-CARD.md",
+        "line": 43,
+        "finding": "Vision reads rendered pixel arrays; player identity uses synthetic colours."
+      }
+    ]
+  },
+  "devgupta-9/reactcoach-11": {
+    "sha": "df4a4b570998ae6dfc25c11b199f72db95eb264c",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic scenarios",
+    "detail": "Rust engine uses editable fictional player profiles and deterministic spatial scenarios; it also replays locally supplied synthetic match events. It is not trained on a football dataset.",
+    "evidence": [
+      {
+        "path": "crates/decision-engine/src/simulation/mod.rs",
+        "line": 1,
+        "finding": "Spatial rollout uses explicitly synthetic physical conventions."
+      },
+      {
+        "path": "crates/decision-engine/examples/open_play.rs",
+        "line": 1,
+        "finding": "The example serialises a fictional demo request."
+      },
+      {
+        "path": "crates/match-engine/src/lib.rs",
+        "line": 1,
+        "finding": "Event replay states that no external sports feeds are used."
+      }
+    ]
+  },
+  "faisalbasra/match-storyteller": {
+    "sha": "c6e3f564bd41cab896216ba563ec5ae3d4422aa5",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Planned synthetic",
+    "detail": "Planning documents propose seeded synthetic fixtures and a Python statistics reducer. No implemented data pipeline or dataset is present.",
+    "evidence": [
+      {
+        "path": "README.md",
+        "line": 7,
+        "finding": "Repository explicitly describes planning / pre-implementation status."
+      },
+      {
+        "path": "README.md",
+        "line": 42,
+        "finding": "Planned match-data layer is a seeded synthetic fixture."
+      }
+    ]
+  },
+  "kamal-saleh/SignalFlow": {
+    "sha": "75f55828892a0406fdeacccc536bb3ebf87e05e1",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Planned synthetic",
+    "detail": "README-only attention-engine concept listing synthetic match data; no source, generator, or dataset is present.",
+    "evidence": [
+      {
+        "path": "README.md",
+        "line": 25,
+        "finding": "Synthetic football data is listed as proposed technology."
+      }
+    ]
+  },
+  "natagowai/matchmind-ai": {
+    "sha": "d9f6db5672daaaffc3bc896ebc52cb61b6901e02",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Starter scaffold",
+    "detail": "The inspected API contains the default weather-forecast example and the frontend is a starter React/Vite interface. No football ingestion, generator, or dataset was found in source.",
+    "evidence": [
+      {
+        "path": "src/MatchMind.Api/Program.cs",
+        "line": 22,
+        "finding": "Default /weatherforecast endpoint returns randomly generated weather."
+      },
+      {
+        "path": "src/matchmind-web/src/App.tsx",
+        "line": 7,
+        "finding": "Frontend is a starter app, rather than match-data integration."
+      }
+    ]
+  },
+  "s70241963-afk/Sushmitha": {
+    "sha": "9f3eadf03749fb96fe241e4c7748d73412c1ca1e",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Fixed synthetic fixture",
+    "detail": "Two starter ZIPs include small synthetic JSON matches: one has 5 events, the other 8. These are example fixtures, not a real football dataset. Attachments were inspected without running their code.",
+    "evidence": [
+      {
+        "path": "README.md",
+        "line": 1,
+        "finding": "Starter code is linked as attachments, outside the repository tree."
+      }
+    ]
+  },
+  "swarupe7/microsoft_dev_hackathon": {
+    "sha": "bfc977ae91dc3b822ea3aef88f4f705942c898cd",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "In-browser event generator uses Math.random and locally defined fictional teams. It is stochastic, rather than a reproducible seeded generator, despite a seeded-looking comment.",
+    "evidence": [
+      {
+        "path": "lib/match/engine.ts",
+        "line": 44,
+        "finding": "chance() and player selection call Math.random."
+      },
+      {
+        "path": "lib/match/teams.ts",
+        "line": 6,
+        "finding": "Fictional club names and players are local source constants."
+      }
+    ]
+  },
+  "timmytrace/pl-insights-engine": {
+    "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "C# MatchSimulator generates events and tracking from integer seeds. Shipped CSV/JSONL data is generated locally; Azure AI narrates the derived facts.",
+    "evidence": [
+      {
+        "path": "backend/src/Studio.Engine/MatchSimulator.cs",
+        "line": 96,
+        "finding": "The simulator initialises its own seeded random generator."
+      },
+      {
+        "path": "data/synthetic/README.md",
+        "line": 3,
+        "finding": "Data card documents generated fictional matches and reproducible CSV/JSONL exports."
+      }
+    ]
+  },
+  "timsheldon1/matchday-crew": {
+    "sha": "374de95f4f7474c9a784e01a3ceafb2ce0a16ad5",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Node generator uses a match/club/seed key and ships one generated JSON sample. AI agents add interpretation and multilingual speech, rather than sourcing match data.",
+    "evidence": [
+      {
+        "path": "src/generator.js",
+        "line": 39,
+        "finding": "generateMatch creates its RNG from match seed and fictional club identifiers."
+      },
+      {
+        "path": "README.md",
+        "line": 22,
+        "finding": "CLI generates a local JSON match and streams those events."
+      }
+    ]
+  },
+  "vasureddyuppunuri/Inside--the-game-Tactix-AI": {
+    "sha": "115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Planned synthetic",
+    "detail": "README and licence only. The description proposes synthetic telemetry, but no data implementation or dataset is present.",
+    "evidence": [
+      {
+        "path": "README.md",
+        "line": 2,
+        "finding": "Only the intended synthetic-event concept is described."
+      }
+    ]
+  },
+  "vishnugovind10/matchlens": {
+    "sha": "68c4caa0cdf38e36ac05f110882e6fb816dd322b",
+    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "bucket": "Fixed synthetic fixture",
+    "detail": "Loads a committed JSONL sequence with fictional Arsenal/Liverpool events. Explanations use a deterministic fallback; what-if results are conditional synthetic projections.",
+    "evidence": [
+      {
+        "path": "backend/app/core.py",
+        "line": 12,
+        "finding": "DATA_PATH points to the local synthetic_events.jsonl fixture."
+      },
+      {
+        "path": "backend/app/core.py",
+        "line": 81,
+        "finding": "load_events reads that JSONL file."
+      },
+      {
+        "path": "README.md",
+        "line": 65,
+        "finding": "Fixture provenance and its baseline/high-press phases are documented."
+      }
+    ]
+  }
+}

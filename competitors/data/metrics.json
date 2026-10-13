@@ -1,0 +1,1598 @@
+{
+  "exported_at": "2026-10-13T05:15:10+00:00",
+  "github_checked_at": "2026-10-13T05:15:27+00:00",
+  "projects": 121,
+  "linked_projects": 22,
+  "unique_repos": 22,
+  "project_types": {
+    "Unspecified": 31,
+    "Match explanations": 33,
+    "Accessible audio": 4,
+    "Tactical analytics": 16,
+    "Coaching & what-if": 7,
+    "Other project": 2,
+    "Fantasy engagement": 1,
+    "Broadcast production": 15,
+    "Match event pipeline": 1,
+    "Conversational companion": 2,
+    "Match replay": 3,
+    "Narrative verification": 3,
+    "Video & scouting": 2,
+    "Data normalisation": 1
+  },
+  "loc_buckets": {
+    "5k–14.9k": 3,
+    "1k–4.9k": 8,
+    "Unknown": 4,
+    "1–999": 3,
+    "0": 4
+  },
+  "data_buckets": {
+    "Synthetic generator": 10,
+    "Fixed synthetic fixture": 3,
+    "Unavailable": 4,
+    "Synthetic scenarios": 1,
+    "Planned synthetic": 3,
+    "Starter scaffold": 1
+  },
+  "catalogue": [
+    {
+      "id": "126422",
+      "name": "88 PLS Synthetic Match Insights",
+      "summary": "Work in progress; no concrete project description supplied.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126321",
+      "name": "Adrena",
+      "summary": "Limited detail: Match Intelligence.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126445",
+      "name": "Agent XI",
+      "summary": "Uses several assistants to analyse teams, players, and matches.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126475",
+      "name": "AI - Premier League",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126331",
+      "name": "Antifreeze Team - Rabona",
+      "summary": "Limited detail: Read the game. Direct the story.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126470",
+      "name": "App",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126311",
+      "name": "Audio Eyes",
+      "summary": "Helps blind fans hear ball position and ask match questions.",
+      "category": "Accessible audio",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126429",
+      "name": "Between the Lines",
+      "summary": "Shows attacking patterns and player contributions hidden by the score.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126432",
+      "name": "Blind-side",
+      "summary": "Helps blind fans follow ball position and match action through sound.",
+      "category": "Accessible audio",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126457",
+      "name": "Chalkboard",
+      "summary": "Writes commentary that links back to the match events.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126371",
+      "name": "CoachView",
+      "summary": "Limited detail: Live match analysis.",
+      "category": "Coaching & what-if",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126436",
+      "name": "Control or Chaos",
+      "summary": "Checks live match explanations and translates them for fans.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126425",
+      "name": "Control vs. Chaos",
+      "summary": "Shows when a team loses control and explains why.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126394",
+      "name": "CounterPress",
+      "summary": "Plans live explanations and match graphics in different languages.",
+      "category": "Match explanations",
+      "tags": [
+        "Multilingual"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126452",
+      "name": "CRONISTA",
+      "summary": "Writes bilingual match stories with clickable evidence.",
+      "category": "Match explanations",
+      "tags": [
+        "Multilingual",
+        "Evidence-backed"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126368",
+      "name": "DataRed",
+      "summary": "Limited detail: The power of momentum.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126419",
+      "name": "Dinesh - Todo",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126400",
+      "name": "energy mgt",
+      "summary": "Limited detail: energy management; no features or implementation described.",
+      "category": "Other project",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126454",
+      "name": "FantasyVerse",
+      "summary": "Connects live match moments to your fantasy football team.",
+      "category": "Fantasy engagement",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126335",
+      "name": "Footbal AI",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126477",
+      "name": "Footydata",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126320",
+      "name": "Game Co-Commentator",
+      "summary": "Limited detail: live-game commentary and insights.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126329",
+      "name": "GamePulse",
+      "summary": "Limited detail: See what really happens in the game.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126472",
+      "name": "Gantry",
+      "summary": "Plans to explain match events for broadcasters and fans.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126424",
+      "name": "GESPort",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126392",
+      "name": "GhostPlay AI",
+      "summary": "Explains passing progress and the off-ball runs that create options.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126381",
+      "name": "GoalGetter",
+      "summary": "Generates match events and serves them to a replay app.",
+      "category": "Match event pipeline",
+      "tags": [
+        "Replay"
+      ],
+      "repo_urls": [
+        "https://github.com/Simplify4Me2/goal-getter"
+      ],
+      "repositories": [
+        {
+          "slug": "Simplify4Me2/goal-getter",
+          "url": "https://github.com/Simplify4Me2/goal-getter",
+          "commits": 26,
+          "source_lines": 1359,
+          "loc_bucket": "1k–4.9k",
+          "sha": "8dd5884cf19122ceb55939759dd7a4d70a67ae8d",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126399",
+      "name": "Infinite Stadium",
+      "summary": "Replays a 2D match and lets fans ask questions about it.",
+      "category": "Conversational companion",
+      "tags": [
+        "Replay"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126343",
+      "name": "Inside the Game",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126362",
+      "name": "inside the game",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126402",
+      "name": "Inside the Game",
+      "summary": "Limited detail: Real-time football intelligence from every moment on the pitch.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126455",
+      "name": "Isagi's Eyes",
+      "summary": "Limited detail: spotting opportunities on the pitch.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126330",
+      "name": "KickSense AI",
+      "summary": "Limited detail: From every touch to every story.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126326",
+      "name": "Larp",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126372",
+      "name": "Match Storyteller",
+      "summary": "Plans a match replay with simple and detailed explanations.",
+      "category": "Match replay",
+      "tags": [
+        "Replay"
+      ],
+      "repo_urls": [
+        "https://github.com/faisalbasra/match-storyteller"
+      ],
+      "repositories": [
+        {
+          "slug": "faisalbasra/match-storyteller",
+          "url": "https://github.com/faisalbasra/match-storyteller",
+          "commits": 1,
+          "source_lines": 0,
+          "loc_bucket": "0",
+          "sha": "c6e3f564bd41cab896216ba563ec5ae3d4422aa5",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126465",
+      "name": "Matchday Crew",
+      "summary": "Adds commentary and spoken recaps in English, Swahili, and Japanese.",
+      "category": "Match explanations",
+      "tags": [
+        "Multi-agent",
+        "Multilingual"
+      ],
+      "repo_urls": [
+        "https://github.com/timsheldon1/matchday-crew"
+      ],
+      "repositories": [
+        {
+          "slug": "timsheldon1/matchday-crew",
+          "url": "https://github.com/timsheldon1/matchday-crew",
+          "commits": 7,
+          "source_lines": 3786,
+          "loc_bucket": "1k–4.9k",
+          "sha": "374de95f4f7474c9a784e01a3ceafb2ce0a16ad5",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126353",
+      "name": "MatchDesk",
+      "summary": "Lets a producer approve explanations before they go on air.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126336",
+      "name": "MatchDirector",
+      "summary": "Creates checked match graphics and recaps for different viewers.",
+      "category": "Broadcast production",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126418",
+      "name": "MatchEyes",
+      "summary": "Explains changes in the match and shows the supporting events.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126333",
+      "name": "MatchLens",
+      "summary": "Explains shifts in pressure, territory, and control.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126442",
+      "name": "MatchLens — What-If Simulation",
+      "summary": "Shows changes in pressing and lets you explore what might happen next.",
+      "category": "Coaching & what-if",
+      "tags": [
+        "Predictive / what-if"
+      ],
+      "repo_urls": [
+        "https://github.com/vishnugovind10/matchlens"
+      ],
+      "repositories": [
+        {
+          "slug": "vishnugovind10/matchlens",
+          "url": "https://github.com/vishnugovind10/matchlens",
+          "commits": 3,
+          "source_lines": 247,
+          "loc_bucket": "1–999",
+          "sha": "68c4caa0cdf38e36ac05f110882e6fb816dd322b",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126398",
+      "name": "Matchmate",
+      "summary": "Lets fans ask questions about matches, clubs, and stadiums.",
+      "category": "Conversational companion",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126388",
+      "name": "MatchMind AI",
+      "summary": "Limited detail: Turning every match moment into explainable intelligence.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126324",
+      "name": "MatchMind AI — AI Football Analyst",
+      "summary": "Starter ZIPs contain tiny synthetic matches and example match explanations.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/s70241963-afk/Sushmitha.git"
+      ],
+      "repositories": [
+        {
+          "slug": "s70241963-afk/Sushmitha",
+          "url": "https://github.com/s70241963-afk/Sushmitha",
+          "commits": 2,
+          "source_lines": 0,
+          "loc_bucket": "0",
+          "sha": "9f3eadf03749fb96fe241e4c7748d73412c1ca1e",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126369",
+      "name": "MatchMind AI — Beyond the Scoreline",
+      "summary": "Plans to explain why momentum changed; current code is a starter app.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/natagowai/matchmind-ai"
+      ],
+      "repositories": [
+        {
+          "slug": "natagowai/matchmind-ai",
+          "url": "https://github.com/natagowai/matchmind-ai",
+          "commits": 2,
+          "source_lines": 451,
+          "loc_bucket": "1–999",
+          "sha": "d9f6db5672daaaffc3bc896ebc52cb61b6901e02",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126423",
+      "name": "MatchMind AI — Every Match Has a Personality",
+      "summary": "Lets you choose an entertaining, Hinglish, or tactical commentator.",
+      "category": "Tactical analytics",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [
+        "https://github.com/swarupe7/microsoft_dev_hackathon"
+      ],
+      "repositories": [
+        {
+          "slug": "swarupe7/microsoft_dev_hackathon",
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon",
+          "commits": 2,
+          "source_lines": 3275,
+          "loc_bucket": "1k–4.9k",
+          "sha": "bfc977ae91dc3b822ea3aef88f4f705942c898cd",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126363",
+      "name": "MatchMind Studio — AI Broadcast Crew",
+      "summary": "Shows each fan different commentary and match highlights.",
+      "category": "Broadcast production",
+      "tags": [
+        "Multi-agent"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126443",
+      "name": "MatchMind Studio — Broadcast & Streaming",
+      "summary": "Replays matches with shot maps, momentum, commentary, and multilingual recaps.",
+      "category": "Broadcast production",
+      "tags": [
+        "Multilingual",
+        "Replay"
+      ],
+      "repo_urls": [
+        "https://github.com/HamzatAbdulazeez/matchmind-studio"
+      ],
+      "repositories": [
+        {
+          "slug": "HamzatAbdulazeez/matchmind-studio",
+          "url": "https://github.com/HamzatAbdulazeez/matchmind-studio",
+          "commits": 3,
+          "source_lines": 3610,
+          "loc_bucket": "1k–4.9k",
+          "sha": "72d315da0e0fbce52d9fad7624998d4f95e37b80",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126463",
+      "name": "MatchMind — Agentic Match Intelligence",
+      "summary": "Coordinates commentary, recaps, translation, and fan questions.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126341",
+      "name": "MatchMind — AI Broadcast Booth",
+      "summary": "Shows checked match explanations in English, Urdu, and Arabic.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/ALISAEED-1/matchmind"
+      ],
+      "repositories": [
+        {
+          "slug": "ALISAEED-1/matchmind",
+          "url": "https://github.com/ALISAEED-1/matchmind",
+          "commits": 29,
+          "source_lines": 9576,
+          "loc_bucket": "5k–14.9k",
+          "sha": "44fc6aa05a35d76995d7797a412868b4cc84df1e",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126449",
+      "name": "MatchMind — Live Football Stories",
+      "summary": "Creates match graphics and recaps in each viewer’s language.",
+      "category": "Match explanations",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126328",
+      "name": "MatchOS",
+      "summary": "Tells each viewer a different story about the same match.",
+      "category": "Match explanations",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126352",
+      "name": "MatchPulse",
+      "summary": "Explains match events and adapts the story to each fan.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126379",
+      "name": "MATCH⚽MINE",
+      "summary": "Explains what happened and what fans should watch for next.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126387",
+      "name": "MSFT x EPL Hackathon",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/zekariasasaminew/msft-x-epl-hackathon"
+      ],
+      "repositories": [
+        {
+          "slug": "zekariasasaminew/msft-x-epl-hackathon",
+          "url": "https://github.com/zekariasasaminew/msft-x-epl-hackathon",
+          "commits": null,
+          "source_lines": null,
+          "loc_bucket": "Unknown",
+          "sha": null,
+          "status": "unavailable"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126306",
+      "name": "Msimulizi",
+      "summary": "Writes commentary and recaps in Swahili, English, and French.",
+      "category": "Match explanations",
+      "tags": [
+        "Multilingual"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126366",
+      "name": "mwx-footbal",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126444",
+      "name": "Narrative VAR",
+      "summary": "Checks whether a pundit’s match story is backed by the data.",
+      "category": "Narrative verification",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126458",
+      "name": "OmniPitch",
+      "summary": "Limited detail: Beyond the Score. Behind Every Play.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/akashsv01/omnipitch"
+      ],
+      "repositories": [
+        {
+          "slug": "akashsv01/omnipitch",
+          "url": "https://github.com/akashsv01/omnipitch",
+          "commits": null,
+          "source_lines": null,
+          "loc_bucket": "Unknown",
+          "sha": null,
+          "status": "unavailable"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126440",
+      "name": "One Match, Many Matches",
+      "summary": "Explains the same match differently for beginners and experts.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126355",
+      "name": "PetKingDom",
+      "summary": "A pet-products shop; unrelated to football.",
+      "category": "Other project",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126467",
+      "name": "PH-I",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126391",
+      "name": "Pitch Ledger",
+      "summary": "Checks match claims before showing a story on screen.",
+      "category": "Narrative verification",
+      "tags": [
+        "Evidence-backed",
+        "Personalised"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126334",
+      "name": "PitchLens",
+      "summary": "Replays matches in 3D and explains turning points.",
+      "category": "Tactical analytics",
+      "tags": [
+        "Replay"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126420",
+      "name": "PitchMind",
+      "summary": "Shows different match explanations to casual fans and analysts.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126441",
+      "name": "PitchPulse",
+      "summary": "Writes live commentary and recaps in different languages.",
+      "category": "Match explanations",
+      "tags": [
+        "Multilingual"
+      ],
+      "repo_urls": [
+        "https://github.com/sethmalefo-del/pitchpulse.git"
+      ],
+      "repositories": [
+        {
+          "slug": "sethmalefo-del/pitchpulse",
+          "url": "https://github.com/sethmalefo-del/pitchpulse.git",
+          "commits": null,
+          "source_lines": null,
+          "loc_bucket": "Unknown",
+          "sha": null,
+          "status": "unavailable"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126367",
+      "name": "PitchPulse AI",
+      "summary": "Turns match events into commentary and recaps.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126348",
+      "name": "Pitchside",
+      "summary": "Turns match events into graphics and commentary for different viewers.",
+      "category": "Match explanations",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [
+        "https://github.com/aknotwell/Pitchside"
+      ],
+      "repositories": [
+        {
+          "slug": "aknotwell/Pitchside",
+          "url": "https://github.com/aknotwell/Pitchside",
+          "commits": null,
+          "source_lines": null,
+          "loc_bucket": "Unknown",
+          "sha": null,
+          "status": "unavailable"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126350",
+      "name": "Pitchside",
+      "summary": "Shows timed match graphics and commentary tailored to each fan.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126430",
+      "name": "Pivot",
+      "summary": "Limited detail: Football Intelligence.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126325",
+      "name": "Premier League Match Pulse AI",
+      "summary": "Explains synthetic match events for fans and studios.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126349",
+      "name": "Premier League Studio Insights Project -- DD",
+      "summary": "Limited detail: Premier League Studio Insights.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126428",
+      "name": "PremierLeague Hackathon",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126421",
+      "name": "Proj",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126464",
+      "name": "Project Brigma",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126354",
+      "name": "Pulse",
+      "summary": "Lets fans explore a replay and check the evidence behind explanations.",
+      "category": "Match replay",
+      "tags": [
+        "Evidence-backed",
+        "Replay"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126446",
+      "name": "qdqdq",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126351",
+      "name": "ReactCoach 11",
+      "summary": "Lets you test a football move against an opponent’s response.",
+      "category": "Coaching & what-if",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/devgupta-9/reactcoach-11"
+      ],
+      "repositories": [
+        {
+          "slug": "devgupta-9/reactcoach-11",
+          "url": "https://github.com/devgupta-9/reactcoach-11",
+          "commits": 35,
+          "source_lines": 3929,
+          "loc_bucket": "1k–4.9k",
+          "sha": "df4a4b570998ae6dfc25c11b199f72db95eb264c",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126374",
+      "name": "Risk Radar",
+      "summary": "Predicts a player’s next risky move and checks whether it happens.",
+      "category": "Narrative verification",
+      "tags": [
+        "Predictive / what-if"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126309",
+      "name": "Sauti",
+      "summary": "Offers commentary suited to language, knowledge, and accessibility needs.",
+      "category": "Accessible audio",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126312",
+      "name": "Second Guess",
+      "summary": "Lets fans replay a moment and try a different decision.",
+      "category": "Coaching & what-if",
+      "tags": [
+        "Replay",
+        "Predictive / what-if"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126386",
+      "name": "Second Story",
+      "summary": "Shows a simulated momentum swing and explains it.",
+      "category": "Tactical analytics",
+      "tags": [
+        "Predictive / what-if"
+      ],
+      "repo_urls": [
+        "https://github.com/aj0khi/soccer-hackathon-project"
+      ],
+      "repositories": [
+        {
+          "slug": "aj0khi/soccer-hackathon-project",
+          "url": "https://github.com/aj0khi/soccer-hackathon-project",
+          "commits": 17,
+          "source_lines": 1426,
+          "loc_bucket": "1k–4.9k",
+          "sha": "ef18fe8b86ff0ea76aeaf59e040203c63f4cbf2b",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126378",
+      "name": "SecondTouch",
+      "summary": "Adds tactical explanations beside the match you are watching.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126359",
+      "name": "Shield",
+      "summary": "Highlights defensive work and teaches young players how to copy it.",
+      "category": "Coaching & what-if",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126361",
+      "name": "Shift11",
+      "summary": "Identifies who helped turn the match and shows the evidence.",
+      "category": "Tactical analytics",
+      "tags": [
+        "Evidence-backed"
+      ],
+      "repo_urls": [
+        "https://github.com/achand280606/Shift11"
+      ],
+      "repositories": [
+        {
+          "slug": "achand280606/Shift11",
+          "url": "https://github.com/achand280606/Shift11",
+          "commits": 15,
+          "source_lines": 1483,
+          "loc_bucket": "1k–4.9k",
+          "sha": "af6d34bab55f70042cfae93efd637ab9067719da",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126358",
+      "name": "SignalFlow",
+      "summary": "Chooses which match story a broadcaster should show next.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/kamal-saleh/SignalFlow"
+      ],
+      "repositories": [
+        {
+          "slug": "kamal-saleh/SignalFlow",
+          "url": "https://github.com/kamal-saleh/SignalFlow",
+          "commits": 1,
+          "source_lines": 0,
+          "loc_bucket": "0",
+          "sha": "75f55828892a0406fdeacccc536bb3ebf87e05e1",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126384",
+      "name": "Sisyphus Engine",
+      "summary": "Shows when chasing the ball tires a team and changes control.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126431",
+      "name": "Snap ⚽️",
+      "summary": "Limited detail: computer vision and sports analytics keywords; no features described.",
+      "category": "Video & scouting",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126315",
+      "name": "Soccalytics",
+      "summary": "Analyses match videos to help with coaching and scouting.",
+      "category": "Coaching & what-if",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126478",
+      "name": "Soccer Image Processing",
+      "summary": "Limited detail: Image processing.",
+      "category": "Video & scouting",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126377",
+      "name": "SportyFy",
+      "summary": "Limited detail: insights from synthetic matches.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126403",
+      "name": "SyncComm",
+      "summary": "Limited detail: AI powered football insights.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126356",
+      "name": "Tactiq",
+      "summary": "Explains pressure, momentum, and which players influence the match.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126434",
+      "name": "TactIQ",
+      "summary": "Explains how substitutions and formation changes affect a match.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126453",
+      "name": "TactIQ",
+      "summary": "Explains tactical changes for broadcast studios.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126456",
+      "name": "Tactix AI",
+      "summary": "Plans tactical explanations and personalised commentary from match events.",
+      "category": "Tactical analytics",
+      "tags": [
+        "Personalised"
+      ],
+      "repo_urls": [
+        "https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI.git"
+      ],
+      "repositories": [
+        {
+          "slug": "vasureddyuppunuri/Inside--the-game-Tactix-AI",
+          "url": "https://github.com/vasureddyuppunuri/Inside--the-game-Tactix-AI",
+          "commits": 1,
+          "source_lines": 0,
+          "loc_bucket": "0",
+          "sha": "115fb2ce05d9bff0e5fd5ca9e0113e8ad3157be5",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126322",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126327",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126342",
+      "name": "tbd",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126412",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126437",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126476",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126479",
+      "name": "TBD",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126347",
+      "name": "test",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126473",
+      "name": "The Gallery",
+      "summary": "Checks match stories before a producer puts them on screen.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126469",
+      "name": "The Gallery — AI Broadcast Crew",
+      "summary": "Creates checked commentary in each fan’s language.",
+      "category": "Broadcast production",
+      "tags": [
+        "Multi-agent"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126360",
+      "name": "THE HALF-TIME LAB",
+      "summary": "Lets fans choose a half-time plan and simulate the second half.",
+      "category": "Coaching & what-if",
+      "tags": [
+        "Predictive / what-if"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126468",
+      "name": "the start of something big",
+      "summary": "Football-history concept; the submission does not explain a concrete product or implementation.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126435",
+      "name": "TOUCH LINE.",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126406",
+      "name": "Touchline",
+      "summary": "Shows match events, their evidence, and different fan perspectives.",
+      "category": "Match explanations",
+      "tags": [
+        "Evidence-backed"
+      ],
+      "repo_urls": [
+        "https://github.com/audioreworkvisions/touchline"
+      ],
+      "repositories": [
+        {
+          "slug": "audioreworkvisions/touchline",
+          "url": "https://github.com/audioreworkvisions/touchline",
+          "commits": 2,
+          "source_lines": 567,
+          "loc_bucket": "1–999",
+          "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126397",
+      "name": "Touchline Signal",
+      "summary": "Simulates matches and previews explanations beside the replay.",
+      "category": "Match replay",
+      "tags": [
+        "Replay",
+        "Predictive / what-if"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126474",
+      "name": "TouchlineAI",
+      "summary": "Turns match events into tactical explanations for broadcasts.",
+      "category": "Broadcast production",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126451",
+      "name": "TouchlineLens",
+      "summary": "Shows pressure, shots, and tactical changes as the match unfolds.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126307",
+      "name": "Ultimate PL Experience",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126310",
+      "name": "Untitled",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126448",
+      "name": "VendorIQ",
+      "summary": "Converts different football-data formats into one readable format.",
+      "category": "Data normalisation",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/SeyiBuilds/VendorIQ"
+      ],
+      "repositories": [
+        {
+          "slug": "SeyiBuilds/VendorIQ",
+          "url": "https://github.com/SeyiBuilds/VendorIQ",
+          "commits": 53,
+          "source_lines": 8695,
+          "loc_bucket": "5k–14.9k",
+          "sha": "5de174c243907cc1807cb8c91d01c108cade67fb",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126365",
+      "name": "Virtual Studio Crew",
+      "summary": "Checks match stories, then produces graphics, commentary, and spoken recaps.",
+      "category": "Broadcast production",
+      "tags": [
+        "Multi-agent",
+        "Personalised"
+      ],
+      "repo_urls": [
+        "https://github.com/timmytrace/pl-insights-engine"
+      ],
+      "repositories": [
+        {
+          "slug": "timmytrace/pl-insights-engine",
+          "url": "https://github.com/timmytrace/pl-insights-engine",
+          "commits": 17,
+          "source_lines": 6786,
+          "loc_bucket": "5k–14.9k",
+          "sha": "c14ab314639476e15ccd3f47380d0e783306170c",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126450",
+      "name": "VYBE — Every Fan Belongs",
+      "summary": "Lets children, analysts, and fans with accessibility needs watch differently.",
+      "category": "Accessible audio",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/Hapinam/vybe-ai"
+      ],
+      "repositories": [
+        {
+          "slug": "Hapinam/vybe-ai",
+          "url": "https://github.com/Hapinam/vybe-ai",
+          "commits": 71,
+          "source_lines": 1151,
+          "loc_bucket": "1k–4.9k",
+          "sha": "c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1",
+          "status": "ok"
+        }
+      ],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126390",
+      "name": "WhyLine",
+      "summary": "Explains why a moment mattered, with links to the evidence.",
+      "category": "Match explanations",
+      "tags": [
+        "Evidence-backed"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126376",
+      "name": "Will Figure out a name before submission",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126447",
+      "name": "xPlain Live",
+      "summary": "Limited detail: Expected vs. actual, explained live.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    }
+  ],
+  "data_files": 40,
+  "repos_with_samples": 10,
+  "data_bytes": 8575191,
+  "collected_data_buckets": {
+    "Sample files collected": 10,
+    "Generator only": 4,
+    "Cannot inspect": 4,
+    "Plans / starter app only": 4
+  },
+  "commit_buckets": {
+    "21–50 commits": 3,
+    "1–5 commits": 9,
+    "51+ commits": 2,
+    "6–20 commits": 4,
+    "Unknown": 4
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "match": {
+    "match_id": "SYN-2026-001",
+    "home_team": "North City",
+    "away_team": "United FC",
+    "score": "1-1",
+    "current_minute": 75,
+    "status": "LIVE \u2022 SYNTHETIC"
+  },
+  "metric_windows": {
+    "United FC": {
+      "before": {
+        "minute_range": "60-65",
+        "possession_pct": 48,
+        "attacks": 14,
+        "left_side_attacks": 5,
+        "shots": 1
+      },
+      "after": {
+        "minute_range": "71-75",
+        "possession_pct": 63,
+        "attacks": 21,
+        "left_side_attacks": 11,
+        "shots": 4
+      }
+    }
+  },
+  "events": [
+    {
+      "event_id": "EVT-61",
+      "minute": 61,
+      "team": "North City",
+      "event_type": "possession",
+      "description": "North City controlled the opening of the window.",
+      "significant": false
+    },
+    {
+      "event_id": "EVT-67",
+      "minute": 67,
+      "team": "United FC",
+      "event_type": "press",
+      "description": "United FC increased pressure after a midfield recovery.",
+      "significant": true
+    },
+    {
+      "event_id": "EVT-70",
+      "minute": 70,
+      "team": "United FC",
+      "event_type": "attack",
+      "description": "United FC began creating repeated attacks from the left side.",
+      "significant": true
+    },
+    {
+      "event_id": "EVT-73",
+      "minute": 73,
+      "team": "United FC",
+      "event_type": "shot",
+      "description": "United FC produced a shot after sustained left-side pressure.",
+      "significant": true
+    },
+    {
+      "event_id": "EVT-75",
+      "minute": 75,
+      "team": "United FC",
+      "event_type": "shot",
+      "description": "United FC created another shot during the momentum swing.",
+      "significant": true
+    }
+  ]
+}

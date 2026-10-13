@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="246" viewBox="0 0 1000 246" role="img" aria-labelledby="title desc">
+<title id="title">Inside the Game competitors</title>
+<desc id="desc">121 projects, 22 listed repositories, 40 data files from 10 competitors.</desc>
+<rect width="1000" height="246" rx="14" fill="#101e2b"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="28" y="34" font-size="13" fill="#a4bbc9" letter-spacing="2" font-weight="700">INSIDE THE GAME / COMPETITORS</text>
+<rect x="28" y="56" width="296" height="138" rx="8" fill="#192d3b"/>
+<rect x="28" y="56" width="296" height="4" rx="2" fill="#69baff"/>
+<text x="48" y="124" font-size="52" fill="#69baff" font-weight="700">121</text>
+<text x="48" y="163" font-size="16" fill="#edf5fa" >Projects</text>
+<rect x="352" y="56" width="296" height="138" rx="8" fill="#192d3b"/>
+<rect x="352" y="56" width="296" height="4" rx="2" fill="#73e3ae"/>
+<text x="372" y="124" font-size="52" fill="#73e3ae" font-weight="700">22</text>
+<text x="372" y="163" font-size="16" fill="#edf5fa" >Listed repos</text>
+<rect x="676" y="56" width="296" height="138" rx="8" fill="#192d3b"/>
+<rect x="676" y="56" width="296" height="4" rx="2" fill="#f3c678"/>
+<text x="696" y="124" font-size="52" fill="#f3c678" font-weight="700">40</text>
+<text x="696" y="163" font-size="16" fill="#edf5fa" >Data files collected</text>
+<text x="28" y="225" font-size="13" fill="#a4bbc9" >Sample data from 10 competitors · daily refresh through 28 October 2026</text>
+</g></svg>

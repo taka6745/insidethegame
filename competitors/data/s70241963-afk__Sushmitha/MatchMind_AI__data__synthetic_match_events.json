@@ -1,0 +1,166 @@
+{
+  "match": {
+    "match_id": "synthetic-001",
+    "home_team": "North City",
+    "away_team": "United FC",
+    "home_score": 1,
+    "away_score": 1,
+    "status": "live"
+  },
+  "events": [
+    {
+      "event_id": "e001",
+      "match_id": "synthetic-001",
+      "minute": 60,
+      "team": "North City",
+      "player": "Player N1",
+      "event_type": "dangerous_attack",
+      "zone": "central",
+      "outcome": "created_chance"
+    },
+    {
+      "event_id": "e002",
+      "match_id": "synthetic-001",
+      "minute": 62,
+      "team": "North City",
+      "player": "Player N2",
+      "event_type": "shot_on_target",
+      "zone": "central",
+      "outcome": "saved"
+    },
+    {
+      "event_id": "e003",
+      "match_id": "synthetic-001",
+      "minute": 66,
+      "team": "United FC",
+      "player": "Player U1",
+      "event_type": "possession_change",
+      "zone": "left",
+      "outcome": "won"
+    },
+    {
+      "event_id": "e004",
+      "match_id": "synthetic-001",
+      "minute": 68,
+      "team": "United FC",
+      "player": "Player U2",
+      "event_type": "pass",
+      "zone": "left",
+      "outcome": "complete"
+    },
+    {
+      "event_id": "e005",
+      "match_id": "synthetic-001",
+      "minute": 70,
+      "team": "United FC",
+      "player": "Player U3",
+      "event_type": "dangerous_attack",
+      "zone": "left",
+      "outcome": "created_chance"
+    },
+    {
+      "event_id": "e006",
+      "match_id": "synthetic-001",
+      "minute": 72,
+      "team": "United FC",
+      "player": "Player U4",
+      "event_type": "shot_on_target",
+      "zone": "left",
+      "outcome": "saved"
+    },
+    {
+      "event_id": "e007",
+      "match_id": "synthetic-001",
+      "minute": 74,
+      "team": "United FC",
+      "player": "Player U5",
+      "event_type": "dangerous_attack",
+      "zone": "left",
+      "outcome": "created_chance"
+    },
+    {
+      "event_id": "e008",
+      "match_id": "synthetic-001",
+      "minute": 75,
+      "team": "United FC",
+      "player": "Player U6",
+      "event_type": "shot",
+      "zone": "central",
+      "outcome": "blocked"
+    }
+  ],
+  "metrics": [
+    {
+      "minute": 60,
+      "team": "United FC",
+      "possession_pct": 48,
+      "attacks": 14,
+      "shots": 1,
+      "shots_on_target": 0,
+      "passes": 188,
+      "tackles": 6,
+      "pressure_score": 42,
+      "left_side_attacks": 5
+    },
+    {
+      "minute": 65,
+      "team": "United FC",
+      "possession_pct": 51,
+      "attacks": 16,
+      "shots": 1,
+      "shots_on_target": 0,
+      "passes": 202,
+      "tackles": 6,
+      "pressure_score": 45,
+      "left_side_attacks": 6
+    },
+    {
+      "minute": 70,
+      "team": "United FC",
+      "possession_pct": 54,
+      "attacks": 18,
+      "shots": 3,
+      "shots_on_target": 1,
+      "passes": 216,
+      "tackles": 7,
+      "pressure_score": 50,
+      "left_side_attacks": 8
+    },
+    {
+      "minute": 75,
+      "team": "United FC",
+      "possession_pct": 63,
+      "attacks": 21,
+      "shots": 4,
+      "shots_on_target": 2,
+      "passes": 231,
+      "tackles": 7,
+      "pressure_score": 58,
+      "left_side_attacks": 11
+    },
+    {
+      "minute": 60,
+      "team": "North City",
+      "possession_pct": 52,
+      "attacks": 16,
+      "shots": 2,
+      "shots_on_target": 1,
+      "passes": 201,
+      "tackles": 5,
+      "pressure_score": 48,
+      "left_side_attacks": 7
+    },
+    {
+      "minute": 75,
+      "team": "North City",
+      "possession_pct": 37,
+      "attacks": 10,
+      "shots": 1,
+      "shots_on_target": 0,
+      "passes": 160,
+      "tackles": 6,
+      "pressure_score": 39,
+      "left_side_attacks": 4
+    }
+  ]
+}
