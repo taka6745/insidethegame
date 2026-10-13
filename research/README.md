@@ -9,6 +9,7 @@
 | Explore | Question |
 | --- | --- |
 | [Data: events, tracking or video?](data.md) | What inputs would support the brief? |
+| [Simulated matches + what-if replays](data.md#google-research-football-generate-and-branch-matches) | Can an open football engine generate data and replay alternatives? Checked 14 October. |
 | [Business cases](cases.md) | Where is there evidence of something to improve? |
 | [The League](business.md) | What does it control, and where is the value? |
 | [Fans](fans.md) | What does it already offer fans? |
