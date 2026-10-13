@@ -1,0 +1,111 @@
+{
+  "scenario_version": "open_play_spatial_v1",
+  "assessed_player": {
+    "id": "synthetic-forward-9",
+    "label": "Forward 9",
+    "description": "Fast, combination-focused attacker with less reliable close control",
+    "traits": {
+      "acceleration": 92,
+      "technique": 63,
+      "passing": 85,
+      "finishing": 68,
+      "anticipation": 75,
+      "positioning": 70,
+      "reactions": 78,
+      "goalkeeping": 9,
+      "composure": 72
+    },
+    "synthetic": true
+  },
+  "opponent": {
+    "id": "synthetic-centreback-4",
+    "label": "Centre-back 4",
+    "description": "Strong anticipation and positioning, less acceleration",
+    "traits": {
+      "acceleration": 69,
+      "technique": 68,
+      "passing": 72,
+      "finishing": 38,
+      "anticipation": 94,
+      "positioning": 94,
+      "reactions": 83,
+      "goalkeeping": 20,
+      "composure": 90
+    },
+    "synthetic": true
+  },
+  "supporting_teammate": {
+    "id": "synthetic-support-001",
+    "label": "Fictional supporting teammate",
+    "description": "Fast, combination-focused attacker with less reliable close control",
+    "traits": {
+      "acceleration": 92,
+      "technique": 63,
+      "passing": 85,
+      "finishing": 68,
+      "anticipation": 75,
+      "positioning": 70,
+      "reactions": 78,
+      "goalkeeping": 9,
+      "composure": 72
+    },
+    "synthetic": true
+  },
+  "initial_state": {
+    "elapsed_ms": 0,
+    "assessed": {
+      "position_mm": {
+        "x": 45000,
+        "y": 34000
+      },
+      "velocity_mm_s": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "opponent": {
+      "position_mm": {
+        "x": 52000,
+        "y": 36500
+      },
+      "velocity_mm_s": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "teammate": {
+      "position_mm": {
+        "x": 57000,
+        "y": 26000
+      },
+      "velocity_mm_s": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "ball": {
+      "position_mm": {
+        "x": 45000,
+        "y": 34000
+      },
+      "velocity_mm_s": {
+        "x": 0,
+        "y": 0
+      },
+      "possession": {
+        "kind": "owned",
+        "owner": "assessed"
+      }
+    },
+    "current_action": "wide_right"
+  },
+  "config": {
+    "pitch": {
+      "length_mm": 105000,
+      "width_mm": 68000
+    },
+    "tick_ms": 100,
+    "duration_ms": 4000,
+    "adaptation_at_ms": 1200
+  }
+}

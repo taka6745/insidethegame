@@ -15,6 +15,7 @@ from audit_repos import git
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT/'competitors/data'
+SAMPLES = ROOT/'data/synthetic'
 LIMIT = 32_000_000
 
 
@@ -55,14 +56,14 @@ def save(repo,content,path,url,seen,kind='Committed sample'):
     if digest in seen:
         seen[digest]['also_at'].append(url)
         return
-    directory=DATA/repo['slug'].replace('/','__')
-    directory.mkdir(exist_ok=True)
+    directory=SAMPLES/repo['slug'].replace('/','__')
+    directory.mkdir(parents=True,exist_ok=True)
     name=path.replace('/','__')
     destination=directory/name
     destination.write_bytes(content)
     try:rows=record_count(content,destination.suffix.lower())
     except (ValueError,UnicodeError):raise RuntimeError('Invalid sample data: '+repo['slug']+'/'+path)
-    seen[digest]={'repo':repo['slug'],'sha':repo['sha'],'file':str(destination.relative_to(DATA)),
+    seen[digest]={'repo':repo['slug'],'sha':repo['sha'],'file':str(destination.relative_to(ROOT)),
                   'source_path':path,'source_url':url,'also_at':[],'sha256':digest,
                   'bytes':len(content),'records':rows,'kind':kind,
                   'repository_license':repo.get('license')}
@@ -114,7 +115,7 @@ def main():
                         source=url+'#'+quote(member.filename,safe='/')
                         save(repo,content,member.filename,source,seen,'Starter ZIP sample')
         records.extend(seen.values())
-    inventory={'collected_at':audit['checked_at'],'files':records,
+    inventory={'path_base':'repository_root','collected_at':audit['checked_at'],'files':records,
                'method':'Original committed bytes; duplicates deduplicated within each repo. '
                         'VYBE static TS fixture extracted as JSON; starter ZIPs inspected without execution.'}
     (DATA/'datasets.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')

@@ -19,4 +19,7 @@ This repo holds the hackathon project, its research and competitor data. Applica
 - Validate reports: `python3 .github/scripts/verify_report.py`.
 - Test automation: `python3 -m unittest discover -s .github/scripts -p 'test_*.py'`.
 
+- Generate synthetic matches: `data/GoogleResearchFootball/run.sh --games 3` (Docker). Outputs are ignored under `.local/grf-runs/`.
+- Test exporter logic: `python3 -m unittest discover -s data/GoogleResearchFootball -p 'test_*.py'`. Native integration tests run in the Docker image; see [simulator](data/GoogleResearchFootball/README.md).
+
 Keep application-specific run and test commands here as code is added. The current automation layout does not prescribe the application's structure.

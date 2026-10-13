@@ -66,6 +66,20 @@ class RefreshTests(unittest.TestCase):
             self.assertFalse(collect_data.candidate(path),path)
         self.assertEqual(collect_data.record_count(b'{"Events":[{},{}]}','.json'),2)
 
+    def test_collected_samples_keep_bytes_and_root_relative_provenance(self):
+        with tempfile.TemporaryDirectory() as name:
+            root=Path(name);seen={};body=b'{"events":[{"synthetic":true}]}\n'
+            repo={'slug':'owner/example','sha':'abc123','license':'MIT'}
+            with patch.object(collect_data,'ROOT',root),patch.object(collect_data,'SAMPLES',root/'data/synthetic'):
+                collect_data.save(repo,body,'data/events.json','https://example.test/source',seen)
+                collect_data.save(repo,body,'data/copy.json','https://example.test/copy',seen)
+            self.assertEqual(len(seen),1)
+            record=next(iter(seen.values()))
+            self.assertEqual(record['file'],'data/synthetic/owner__example/data__events.json')
+            self.assertEqual((root/record['file']).read_bytes(),body)
+            self.assertEqual(record['repository_license'],'MIT')
+            self.assertEqual(record['also_at'],['https://example.test/copy'])
+
     def test_failed_export_keeps_previous_data_and_refreshes_repos(self):
         with tempfile.TemporaryDirectory() as name:
             data=Path(name)

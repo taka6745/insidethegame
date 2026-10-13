@@ -1,0 +1,150 @@
+diff --git a/third_party/gfootball_engine/ai.cpp b/third_party/gfootball_engine/ai.cpp
+index dfd73e0..3efb376 100644
+--- a/third_party/gfootball_engine/ai.cpp
++++ b/third_party/gfootball_engine/ai.cpp
+@@ -135,6 +135,8 @@ BOOST_PYTHON_MODULE(_gameplayfootball) {
+   class_<GameEnv_Python>("GameEnv")
+       .def("start_game", &GameEnv_Python::start_game)
+       .def("get_info", &GameEnv_Python::get_info)
++      .def_readwrite("telemetry_enabled", &GameEnv_Python::telemetry_enabled)
++      .def("drain_telemetry", &GameEnv_Python::drain_telemetry)
+       .def("get_frame", &GameEnv_Python::get_frame_python)
+       .def("perform_action", &GameEnv_Python::action)
+       .def("sticky_action_state", &GameEnv_Python::sticky_action_state)
+diff --git a/third_party/gfootball_engine/src/game_env.cpp b/third_party/gfootball_engine/src/game_env.cpp
+index 8718dbe..9f12c97 100644
+--- a/third_party/gfootball_engine/src/game_env.cpp
++++ b/third_party/gfootball_engine/src/game_env.cpp
+@@ -22,6 +22,8 @@
+ #include <ctime>
+ #include <iostream>
+ #include <ratio>
++#include <sstream>
++#include <iomanip>
+ 
+ #include "ai/ai_keyboard.hpp"
+ #include "file.h"
+@@ -34,6 +36,7 @@ void GameEnv::do_step(int count) {
+   while (count--) {
+     DO_VALIDATION;
+     context->gameTask->ProcessPhase();
++    if (telemetry_enabled) record_telemetry();
+   }
+   if (context->gameTask->GetMatch()->IsInPlay()) {
+     DoValidation(__LINE__, __FILE__);
+@@ -394,3 +397,78 @@ void GameEnv::reset(ScenarioConfig& game_config, bool animations) {
+   }
+   GetGameTask()->StartMatch(animations);
+ }
++
++// InsideTheGame instrumentation. Read-only, native metre/metre-per-second values.
++// Undo temporary mirrors, then rotate the right team's baseline into world space.
++void GameEnv::record_telemetry(Player* touched, int touch_type) {
++  auto match = GetGameTask()->GetMatch();
++  if (!match) return;
++  auto vec = [](std::ostream& o, Vector3 v, bool mirrored) {
++    if (mirrored) v.Mirror();
++    o << '[' << v.coords[0] << ',' << v.coords[1] << ',' << v.coords[2] << ']';
++  };
++  auto id = [](std::ostream& o, Player* p) {
++    if (!p) { o << "null"; return; }
++    o << '[' << p->GetTeamID() << ',' << p->GetStableID() << ']';
++  };
++  std::ostringstream o;
++  o << std::setprecision(9) << "{\"kind\":\"" << (touched ? "touch" : "frame")
++    << "\",\"physics_ms\":" << match->GetActualTime_ms()
++    << ",\"match_ms\":" << match->GetMatchTime_ms()
++    << ",\"phase\":" << int(match->GetMatchPhase())
++    << ",\"in_play\":" << (match->IsInPlay() ? "true" : "false")
++    << ",\"set_piece\":" << (match->IsInSetPiece() ? "true" : "false")
++    << ",\"score\":[" << match->GetScore(0) << ',' << match->GetScore(1) << ']'
++    << ",\"ball_position_m\":";
++  vec(o, match->GetBall()->Predict(0), match->isBallMirrored());
++  o << ",\"ball_velocity_mps\":";
++  vec(o, match->GetBall()->GetMovement(), match->isBallMirrored());
++  o << ",\"last_touch\":"; id(o, match->GetLastTouchPlayer());
++  if (touched) {
++    o << ",\"player\":"; id(o, touched);
++    o << ",\"touch_type\":" << touch_type
++      << ",\"function\":" << int(touched->GetCurrentFunctionType());
++    auto& command = touched->GetCurrentAnim()->originatingCommand;
++    o << ",\"requested_function\":" << int(command.desiredFunctionType)
++      << ",\"target_player\":";
++    id(o, command.useTouchInfo ? command.touchInfo.targetPlayer : nullptr);
++    o << ",\"forced_target_player\":";
++    id(o, command.useTouchInfo ? command.touchInfo.forcedTargetPlayer : nullptr);
++  } else {
++    auto info = get_info();
++    o << ",\"game_mode\":" << int(info.game_mode)
++      << ",\"owner\":[" << info.ball_owned_team << ',' << info.ball_owned_player << ']'
++      << ",\"players\":[";
++    bool first = true;
++    for (int team_id = 0; team_id < 2; ++team_id) {
++      auto team = match->GetTeam(team_id);
++      std::vector<Player*> players;
++      team->GetAllPlayers(players);
++      for (size_t index = 0; index < players.size(); ++index) {
++        auto p = players[index];
++        if (!p->CastHumanoid()) continue;
++        if (!first) o << ',';
++        first = false;
++        o << "{\"team\":" << team_id << ",\"index\":" << index
++          << ",\"id\":" << p->GetStableID() << ",\"position_m\":";
++        vec(o, p->GetPosition(), team->isMirrored() != (team_id == 1));
++        o << ",\"velocity_mps\":"; vec(o, p->GetMovement(), team->isMirrored() != (team_id == 1));
++        o << ",\"facing\":"; vec(o, p->GetDirectionVec(), team->isMirrored() != (team_id == 1));
++        o << ",\"body_facing\":"; vec(o, p->GetBodyDirectionVec(), team->isMirrored() != (team_id == 1));
++        o << ",\"active\":" << (p->IsActive() ? "true" : "false")
++          << ",\"has_card\":" << (p->HasCards() ? "true" : "false")
++          << ",\"tired_factor\":" << 1 - p->GetFatigueFactorInv()
++          << ",\"role\":" << int(p->GetFormationEntry().role)
++          << ",\"function\":" << int(p->GetCurrentFunctionType())
++          << ",\"animation_frame\":" << p->GetFrameNum()
++          << ",\"has_possession\":" << (p->HasPossession() ? "true" : "false")
++          << ",\"possession_ms\":" << p->GetPossessionDuration_ms()
++          << ",\"time_to_ball_ms\":" << p->GetTimeNeededToGetToBall_ms()
++          << ",\"last_touch_ms\":" << p->GetLastTouchTime_ms() << '}';
++      }
++    }
++    o << ']';
++  }
++  o << '}';
++  telemetry.push_back(o.str());
++}
+diff --git a/third_party/gfootball_engine/src/game_env.hpp b/third_party/gfootball_engine/src/game_env.hpp
+index c6aa8fd..f962dcf 100644
+--- a/third_party/gfootball_engine/src/game_env.hpp
++++ b/third_party/gfootball_engine/src/game_env.hpp
+@@ -48,6 +48,12 @@ struct GameEnv {
+ 
+   // Get the current state of the game (observation).
+   SharedInfo get_info();
++  // InsideTheGame: observational telemetry, excluded from simulation snapshots.
++  bool telemetry_enabled = false;
++  StringVector telemetry;
++  StringVector drain_telemetry() { StringVector result; result.swap(telemetry); return result; }
++  void record_telemetry(Player* touched = nullptr, int touch_type = -1);
++
+ 
+   // Get the current rendered frame.
+   screenshoot get_frame();
+diff --git a/third_party/gfootball_engine/src/onthepitch/team.cpp b/third_party/gfootball_engine/src/onthepitch/team.cpp
+index 60127c1..7ac5042 100755
+--- a/third_party/gfootball_engine/src/onthepitch/team.cpp
++++ b/third_party/gfootball_engine/src/onthepitch/team.cpp
+@@ -17,6 +17,7 @@
+ // so don't ask. to be used for inspiration :)
+ 
+ #include "team.hpp"
++#include "../game_env.hpp"
+ 
+ #include "../gamedefines.hpp"
+ #include "../main.hpp"
+@@ -263,6 +264,7 @@ void Team::SetLastTouchPlayer(Player *player, e_TouchType touchType) {
+   player->SetLastTouchTime_ms(match->GetActualTime_ms());
+   player->SetLastTouchType(touchType);
+   match->SetLastTouchTeamID(GetID(), touchType);
++  if (GetGame()->telemetry_enabled) GetGame()->record_telemetry(player, touchType);
+ }
+ 
+ void Team::ResetSituation(const Vector3 &focusPos) {
