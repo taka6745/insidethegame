@@ -35,9 +35,9 @@ def main():
             assert dest.is_relative_to(ROOT.resolve()) and dest.exists(),target
     assert '(research/README.md)' in (ROOT/'README.md').read_text(),'Root generator lost research link'
     assert '(AGENTS.md)' in (ROOT/'README.md').read_text(),'Root generator lost assistant instructions'
-    for file in ['judging.svg','opportunity.svg']:ET.parse(ROOT/'research'/file)
+    for file in (ROOT/'research').glob('*.svg'):ET.parse(file)
     print('Verified',len(projects),'projects,',metrics['unique_repos'],'repos,',
-          metrics['data_files'],'data checksums, Markdown links and seven graphics.')
+          metrics['data_files'],'data checksums, Markdown links and all graphics.')
 
 
 if __name__=='__main__':main()

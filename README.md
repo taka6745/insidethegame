@@ -1,10 +1,12 @@
 # Inside the Game
 
-Research for our hackathon entry: the brief, the business opportunity, the competitors, and the data we can inspect.
+The hackathon project: research, competitor data and, as development progresses, application code.
 
-→ [What should we build?](research/README.md) · [Working instructions for AI assistants](AGENTS.md)
+→ [Research](research/README.md) · [Business cases](research/cases.md) · [Judging](research/brief.md) · [Recent technology](research/technology.md) · [AI instructions](AGENTS.md)
 
-![Research direction](research/opportunity.svg)
+![How fan demand connects to League value](research/business.svg)
+
+<!-- competitors:start -->
 
 ![Current competitor snapshot](competitors/overview.svg)
 
@@ -13,3 +15,5 @@ Research for our hackathon entry: the brief, the business opportunity, the compe
 → [Competitors, repo activity, and their data](competitors/README.md) · [Raw project list](competitors/data/projects.json)
 
 [GitHub Actions](https://github.com/taka6745/insidethegame/actions/workflows/competitors.yml) refreshes the list, metrics, data files, and graphics daily at **8 am Brisbane through 28 October 2026**. Expired login requests produce a visible failure and keep the last successful project export.
+
+<!-- competitors:end -->

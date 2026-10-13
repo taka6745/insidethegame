@@ -123,7 +123,18 @@ def review_for(repo, reviews):
     return {**review, 'current': review['sha'] == repo['sha']}
 
 
+def update_snapshot(readme, content):
+    start, end = '<!-- competitors:start -->', '<!-- competitors:end -->'
+    if readme.count(start) != 1 or readme.count(end) != 1:
+        raise ValueError('README needs one competitor snapshot marker pair')
+    before, rest = readme.split(start)
+    _, after = rest.split(end)
+    return before + start + '\n\n' + content.strip() + '\n\n' + end + after
+
+
 def main():
+    from build_research import main as build_research
+    build_research()
     projects = json.loads((DATA/'projects.json').read_text())
     audit = json.loads((DATA/'repositories.json').read_text())
     snapshot = json.loads((DATA/'snapshot.json').read_text())
@@ -206,15 +217,7 @@ def main():
                    collected_data_buckets=dict(source_buckets),commit_buckets=dict(commit_counts))
     (DATA/'metrics.json').write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+'\n')
     overview_graphic(len(items),len(audit['repositories']),len(inventory['files']),len(samples))
-    root=f"""# Inside the Game
-
-Research for our hackathon entry: the brief, the business opportunity, the competitors, and the data we can inspect.
-
-→ [What should we build?](research/README.md) · [Working instructions for AI assistants](AGENTS.md)
-
-![Research direction](research/opportunity.svg)
-
-![Current competitor snapshot](competitors/overview.svg)
+    root=f"""![Current competitor snapshot](competitors/overview.svg)
 
 **{len(inventory['files'])} data files collected from {len(samples)} competitors.** The initial inspected samples are synthetic; no real match dataset or Kaggle/Hugging Face dataset use was verified.
 
@@ -222,7 +225,8 @@ Research for our hackathon entry: the brief, the business opportunity, the compe
 
 [GitHub Actions](https://github.com/taka6745/insidethegame/actions/workflows/competitors.yml) refreshes the list, metrics, data files, and graphics daily at **8 am Brisbane through 28 October 2026**. Expired login requests produce a visible failure and keep the last successful project export.
 """
-    (ROOT/'README.md').write_text(root)
+    readme=ROOT/'README.md'
+    readme.write_text(update_snapshot(readme.read_text(),root))
     report=['# Competitors','','[← Home](../README.md) · [Project JSON](data/projects.json) · [CSV](data/projects.csv)', '',
             '![Overview](overview.svg)','',
             f"**{len(inventory['files'])} files · {len(samples)} competitors with data · {metrics['data_bytes']/1_000_000:.1f} MB.**",'',

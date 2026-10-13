@@ -8,7 +8,7 @@
       "title": "Official rules",
       "url": "https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md",
       "publisher": "Microsoft",
-      "published_or_updated": "2026-10-13",
+      "published_or_updated": null,
       "checked_on": "2026-10-13",
       "scope": "Pinned source: 9c6c99620b06b2b04dcf69a434cdf4d203d19eda; §§1–8 reviewed."
     },
@@ -130,105 +130,6 @@
       "scope": "Introduction on 12 April 2025; PGMOL/Genius specialist partnership."
     },
     {
-      "id": "maf-release",
-      "title": "Agent Framework Python 1.21.0",
-      "url": "https://github.com/microsoft/agent-framework/releases/tag/python-1.21.0",
-      "publisher": "Microsoft",
-      "published_or_updated": "2026-10-08",
-      "checked_on": "2026-10-13",
-      "scope": "Release metadata and notes checked through GitHub API; not prerelease."
-    },
-    {
-      "id": "maf-overview",
-      "title": "Agent Framework architecture",
-      "url": "https://learn.microsoft.com/agent-framework/overview",
-      "publisher": "Microsoft",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "Agents, explicit workflows, sessions, tools, integrations."
-    },
-    {
-      "id": "ag-ui",
-      "title": "AG-UI integration",
-      "url": "https://learn.microsoft.com/en-us/agent-framework/integrations/ag-ui/",
-      "publisher": "Microsoft",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "Streaming agent/client protocol; exact package APIs need a version-pinned spike."
-    },
-    {
-      "id": "a2ui-release",
-      "title": "A2UI Python agent SDK 0.8.0",
-      "url": "https://github.com/a2ui-project/a2ui/releases/tag/python/a2ui-agent-sdk/v0.8.0",
-      "publisher": "A2UI maintainers",
-      "published_or_updated": "2026-10-08",
-      "checked_on": "2026-10-13",
-      "scope": "Release metadata and breaking catalog/schema changes checked."
-    },
-    {
-      "id": "a2ui-spec",
-      "title": "A2UI version status",
-      "url": "https://github.com/a2ui-project/a2ui/blob/main/docs/public/index.md",
-      "publisher": "A2UI maintainers",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "0.9.1 current; 1.0 candidate in inspected documentation."
-    },
-    {
-      "id": "a2ui-renderers",
-      "title": "A2UI renderer compatibility",
-      "url": "https://github.com/a2ui-project/a2ui/blob/main/docs/public/reference/renderers.md",
-      "publisher": "A2UI maintainers",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "Renderer/protocol versions must be checked together."
-    },
-    {
-      "id": "sam31",
-      "title": "SAM 3.1 video tracking update",
-      "url": "https://ai.meta.com/blog/segment-anything-model-3/",
-      "publisher": "Meta",
-      "published_or_updated": "2026-03-27",
-      "checked_on": "2026-10-13",
-      "scope": "Model benchmark claims are not our football/hardware results."
-    },
-    {
-      "id": "local",
-      "title": "Device Foundry Local",
-      "url": "https://learn.microsoft.com/en-us/azure/foundry-local/what-is-foundry-local",
-      "publisher": "Microsoft",
-      "published_or_updated": "2026-08-04",
-      "checked_on": "2026-10-13",
-      "scope": "Documentation updated; local device runtime, not multi-user cluster service."
-    },
-    {
-      "id": "azure-local",
-      "title": "Foundry Local on Azure Local updates",
-      "url": "https://learn.microsoft.com/en-us/azure/azure-sovereign-clouds/private/foundry-local/whats-new",
-      "publisher": "Microsoft",
-      "published_or_updated": "2026-09",
-      "checked_on": "2026-10-13",
-      "scope": "Preview cluster deployment; separate from device runtime."
-    },
-    {
-      "id": "fabric",
-      "title": "Fabric streaming capabilities",
-      "url": "https://learn.microsoft.com/en-gb/fabric/real-time-intelligence/",
-      "publisher": "Microsoft",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "Platform capability; tenant access not checked."
-    },
-    {
-      "id": "twins",
-      "title": "Digital Twin Builder tutorial",
-      "url": "https://learn.microsoft.com/en-us/fabric/real-time-intelligence/digital-twin-builder/tutorial-0-introduction",
-      "publisher": "Microsoft",
-      "published_or_updated": null,
-      "checked_on": "2026-10-13",
-      "scope": "Preview operational analytics, not a football-specific simulator."
-    },
-    {
       "id": "community",
       "title": "Premier League Foundation and community programmes",
       "url": "https://www.premierleague.com/en/footballandcommunity/morethanagame/premier-league-foundation",
@@ -236,6 +137,217 @@
       "published_or_updated": null,
       "checked_on": "2026-10-13",
       "scope": "League-supported charity/community role; current Foundation name, formerly Charitable Fund."
+    },
+    {
+      "id": "embeddinggemma2",
+      "title": "EmbeddingGemma 2",
+      "url": "https://blog.google/innovation-and-ai/technology/developers-tools/embeddinggemma-2/",
+      "publisher": "Google",
+      "published_or_updated": "2026-10-06",
+      "date_basis": "announcement",
+      "checked_on": "2026-10-13",
+      "scope": "Text, image, audio and video in one search embedding. Access: Weights / model card"
+    },
+    {
+      "id": "maf121",
+      "title": "Agent Framework 1.21",
+      "url": "https://github.com/microsoft/agent-framework/releases/tag/python-1.21.0",
+      "publisher": "Microsoft",
+      "published_or_updated": "2026-10-08",
+      "date_basis": "release",
+      "checked_on": "2026-10-13",
+      "scope": "Agent workflows; new streaming policy and session-isolation changes. Access: Python SDK"
+    },
+    {
+      "id": "a2ui08",
+      "title": "A2UI SDK 0.8",
+      "url": "https://github.com/a2ui-project/a2ui/releases/tag/python/a2ui-agent-sdk/v0.8.0",
+      "publisher": "A2UI / Google-origin",
+      "published_or_updated": "2026-10-08",
+      "date_basis": "release",
+      "checked_on": "2026-10-13",
+      "scope": "Declarative UI components; schema/catalog validation changes. Access: Python SDK"
+    },
+    {
+      "id": "geminilive38",
+      "title": "Gemini 3.8 Live",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+      "publisher": "Google",
+      "published_or_updated": "2026-09-15",
+      "date_basis": "announcement",
+      "checked_on": "2026-10-13",
+      "scope": "Live voice dialogue with parallel reasoning and tool use. Access: API"
+    },
+    {
+      "id": "geminivideo",
+      "title": "Agentic video",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-agentic-video-in-gemini/",
+      "publisher": "Google",
+      "published_or_updated": "2026-09-01",
+      "date_basis": "announcement",
+      "checked_on": "2026-10-13",
+      "scope": "Selects and inspects relevant video segments rather than fixed sampling. Access: API"
+    },
+    {
+      "id": "transcribe35",
+      "title": "Gemini 3.5 Transcribe",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5-transcribe/",
+      "publisher": "Google",
+      "published_or_updated": "2026-08-26",
+      "date_basis": "announcement",
+      "checked_on": "2026-10-13",
+      "scope": "Real-time speech-to-text. Access: API"
+    },
+    {
+      "id": "nvidiasports",
+      "title": "Sports playbooks",
+      "url": "https://github.com/NVIDIA/sports-intelligence-playbooks",
+      "publisher": "NVIDIA",
+      "published_or_updated": "2026-08-13",
+      "date_basis": "repo created",
+      "checked_on": "2026-10-13",
+      "scope": "Sports video/audio annotation, fine-tuning and evaluation; tennis demo. Access: Code / recipes"
+    },
+    {
+      "id": "nemospeech",
+      "title": "NeMo-Speech.cpp",
+      "url": "https://github.com/NVIDIA/NeMo-Speech.cpp",
+      "publisher": "NVIDIA",
+      "published_or_updated": "2026-07-15",
+      "date_basis": "repo created",
+      "checked_on": "2026-10-13",
+      "scope": "Local speech recognition, translation, synthesis and speaker separation. Access: C++ runtime"
+    },
+    {
+      "id": "countervid",
+      "title": "CounterVid",
+      "url": "https://github.com/aimagelab/CounterVid",
+      "publisher": "AImageLab / Amazon Science",
+      "published_or_updated": "2026-08-26",
+      "date_basis": "repo created",
+      "checked_on": "2026-10-13",
+      "scope": "Counterfactual video training against action/time hallucinations. Access: Code / HF data"
+    },
+    {
+      "id": "textab",
+      "title": "Text-Audiobox",
+      "url": "https://ai.meta.com/research/publications/alignment-free-text-audiobox-for-voice-dubbing-and-full-duplex-dialogue-synthesis/",
+      "publisher": "Meta",
+      "published_or_updated": "2026-09-06",
+      "date_basis": "publisher date",
+      "checked_on": "2026-10-13",
+      "scope": "Voice dubbing and two-way dialogue without forced text/audio alignment. Access: Paper"
+    },
+    {
+      "id": "madrl",
+      "title": "MaD-RL",
+      "url": "https://ai.meta.com/research/publications/mad-rl-matching-distributions-for-calibrating-llms-with-reinforcement-learning/",
+      "publisher": "Meta",
+      "published_or_updated": "2026-09-24",
+      "date_basis": "publisher date",
+      "checked_on": "2026-10-13",
+      "scope": "Controls the distribution of generated answers during RL training. Access: Paper"
+    },
+    {
+      "id": "vipe",
+      "title": "VIPE",
+      "url": "https://arxiv.org/abs/2607.25537",
+      "publisher": "Google DeepMind",
+      "published_or_updated": "2026-07-28",
+      "date_basis": "first submitted",
+      "checked_on": "2026-10-13",
+      "scope": "Changes visual prompts to improve video-model reasoning. Access: Paper / examples"
+    },
+    {
+      "id": "sember",
+      "title": "S-EMBER v2",
+      "url": "https://arxiv.org/abs/2607.02689",
+      "publisher": "Meta",
+      "published_or_updated": "2026-08-26",
+      "date_basis": "revision",
+      "checked_on": "2026-10-13",
+      "scope": "Benchmarks answering and finding evidence in streaming video memory. Access: Paper / benchmark code"
+    },
+    {
+      "id": "yougov",
+      "title": "VAR viewing experience",
+      "url": "https://yougov.com/en-gb/articles/54860-premier-league-fans-still-say-var-is-working-badly",
+      "publisher": "YouGov",
+      "published_or_updated": "2026-05-29",
+      "checked_on": "2026-10-13",
+      "scope": "Regular PL viewers; dissatisfaction is not evidence that explanations alone will solve it."
+    },
+    {
+      "id": "deloitte",
+      "title": "Digital Media Trends 2026",
+      "url": "https://www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-consumption-habits-survey.html",
+      "publisher": "Deloitte",
+      "published_or_updated": "2026-03",
+      "checked_on": "2026-10-13",
+      "scope": "US survey fieldwork Oct–Nov 2025; 32% sports-fan highlight preference, 22% entertainment-fan stated streaming intention; distinct populations."
+    },
+    {
+      "id": "app",
+      "title": "Official fan platforms",
+      "url": "https://www.premierleague.com/en/news/4337361/premier-league-launches-new-fan-facing-platforms-as-part-of-digital-transformation",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-07-01",
+      "checked_on": "2026-10-13",
+      "scope": "myPL, Radio, voting, quizzes, archives and fan content."
+    },
+    {
+      "id": "companion",
+      "title": "Companion FAQ",
+      "url": "https://www.premierleague.com/en/news/4345260/what-is-the-premier-league-companion",
+      "publisher": "Premier League",
+      "published_or_updated": "2025-07-01",
+      "checked_on": "2026-10-13",
+      "scope": "Published product features; not a live product test."
+    },
+    {
+      "id": "adobe",
+      "title": "Adobe partnership",
+      "url": "https://www.premierleague.com/en/news/4353014/adobe-and-the-premier-league-kick-off-a-creative-revolution-for-global-fanbase",
+      "publisher": "Premier League / Adobe",
+      "published_or_updated": "2025-07-10",
+      "checked_on": "2026-10-13",
+      "scope": "Announced creativity, fan data and marketing capabilities; do not assume all roadmap features shipped."
+    },
+    {
+      "id": "fpl",
+      "title": "What is FPL?",
+      "url": "https://www.premierleague.com/en/news/4359395/what-is-fantasy-premier-league",
+      "publisher": "Premier League",
+      "published_or_updated": "2026-08-09",
+      "checked_on": "2026-10-13",
+      "scope": "Explains fantasy as a reason to follow other clubs’ fixtures."
+    },
+    {
+      "id": "events",
+      "title": "Denver fan festival",
+      "url": "https://www.premierleague.com/en/news/4690118/denver-to-host-13th-premier-league-mornings-live-fan-festival",
+      "publisher": "Premier League",
+      "published_or_updated": "2026-08-21",
+      "checked_on": "2026-10-13",
+      "scope": "Fan events and watch parties."
+    },
+    {
+      "id": "studio-brief",
+      "title": "Hackathon landing and judging brief",
+      "url": "https://innovationstudio.microsoft.com/hackathons/insidethegamedeveloperhackathon/home",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Read in signed-in browser 13 October. Category descriptions, requirements, rubric; no submission or registration changes."
+    },
+    {
+      "id": "playlists",
+      "title": "Resource playlists",
+      "url": "https://github.com/microsoft/insidethegamehackathon/blob/main/RESOURCE%20PLAYLISTS.md",
+      "publisher": "Microsoft",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Copilot, Foundry, agents, workflows and data foundations."
     }
   ]
 }
