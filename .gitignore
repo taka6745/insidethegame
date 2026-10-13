@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+*request*.txt
+*curl*.txt
+projects-export/
