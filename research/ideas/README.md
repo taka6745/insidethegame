@@ -43,9 +43,9 @@ flowchart LR
   X --> V{Evidence stable?}
   V -->|Yes| C[Show supported contrast]
   V -->|No| D[Show disagreement]
-  style O fill:#dcfce7,stroke:#16a34a
-  style X fill:#e0e7ff,stroke:#6366f1
-  style V fill:#fef3c7,stroke:#d97706
+  style O fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  style X fill:#e0e7ff,stroke:#6366f1,color:#0f172a
+  style V fill:#fef3c7,stroke:#d97706,color:#0f172a
 ```
 
 | Design | Full target |
@@ -93,9 +93,9 @@ flowchart LR
   P --> W
   A --> R[Question recap]
   E -->|Correction| K
-  style Q fill:#dbeafe,stroke:#2563eb
-  style E fill:#dcfce7,stroke:#16a34a
-  style W fill:#fef3c7,stroke:#d97706
+  style Q fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  style E fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  style W fill:#fef3c7,stroke:#d97706,color:#0f172a
 ```
 
 | Design | Full target |
@@ -171,9 +171,9 @@ flowchart LR
   C --> J[Three separate reviewers]
   J --> R[Critique + full-scope revision]
   R --> S[Rescore + preserve dissent]
-  style E fill:#dbeafe,stroke:#2563eb
-  style J fill:#fef3c7,stroke:#d97706
-  style S fill:#dcfce7,stroke:#16a34a
+  style E fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  style J fill:#fef3c7,stroke:#d97706,color:#0f172a
+  style S fill:#dcfce7,stroke:#16a34a,color:#0f172a
 ```
 
 | 20% each | Strong-design test |
