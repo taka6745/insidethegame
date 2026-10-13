@@ -208,13 +208,15 @@ def main():
     overview_graphic(len(items),len(audit['repositories']),len(inventory['files']),len(samples))
     root=f"""# Inside the Game
 
-A simple view of the hackathon competitors: what they are building, how much code they have, and the data we can inspect.
+Research for our hackathon entry: the brief, the business opportunity, the competitors, and the data we can inspect.
+
+→ [What should we build?](research/README.md) · [Working instructions for AI assistants](AGENTS.md)
+
+![Research direction](research/opportunity.svg)
 
 ![Current competitor snapshot](competitors/overview.svg)
 
 **{len(inventory['files'])} data files collected from {len(samples)} competitors.** The initial inspected samples are synthetic; no real match dataset or Kaggle/Hugging Face dataset use was verified.
-
-![Project types](competitors/types.svg)
 
 → [Competitors, repo activity, and their data](competitors/README.md) · [Raw project list](competitors/data/projects.json)
 

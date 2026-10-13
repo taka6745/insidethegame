@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="334" viewBox="0 0 1000 334" role="img" aria-labelledby="title desc">
+  <title id="title">Five equally weighted judging criteria</title>
+  <desc id="desc">Stage one checks theme and technology fit. Stage two scores technical implementation, agent design and innovation, real-world impact, user experience and presentation, and category fit at 20 percent each.</desc>
+  <rect width="1000" height="334" rx="14" fill="#101e2b"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="28" y="36" font-size="23" font-weight="700" fill="#edf5fa">Judges score the whole product</text>
+    <text x="28" y="63" font-size="13" fill="#a4bbc9">Official rules · Stage 1: fit / viability gate · Stage 2: five equal weights</text>
+    <g font-size="15" fill="#edf5fa">
+      <text x="28" y="111">Technical implementation</text>
+      <text x="28" y="152">Agent design &amp; innovation</text>
+      <text x="28" y="193">Real-world usefulness</text>
+      <text x="28" y="234">UX &amp; presentation</text>
+      <text x="28" y="275">Category fit</text>
+    </g>
+    <rect x="340" y="91" width="572" height="27" rx="4" fill="#69baff"/>
+    <rect x="340" y="132" width="572" height="27" rx="4" fill="#73e3ae"/>
+    <rect x="340" y="173" width="572" height="27" rx="4" fill="#f3c678"/>
+    <rect x="340" y="214" width="572" height="27" rx="4" fill="#c2a4ff"/>
+    <rect x="340" y="255" width="572" height="27" rx="4" fill="#fa9dac"/>
+    <g font-size="16" font-weight="700" fill="#edf5fa" text-anchor="end">
+      <text x="969" y="111">20%</text><text x="969" y="152">20%</text>
+      <text x="969" y="193">20%</text><text x="969" y="234">20%</text><text x="969" y="275">20%</text>
+    </g>
+    <text x="28" y="316" font-size="12" fill="#a4bbc9">Checked 13 October 2026 · Simplified labels · Tie-breaking starts with technical implementation</text>
+  </g>
+</svg>
