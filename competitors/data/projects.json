@@ -88,7 +88,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -193,7 +193,7 @@
     "coverImage": {
       "id": "178950",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0b7a00d2-5a8c-472a-ad9f-9dbdb0c9c845-1791570468773/a9c6cdfd-72d2-466d-8db1-7b8239e0fb60_1791570559763?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=G%2Fd0BVD%2FLlgu%2BCmp0OzpSXMyhkfSAa2iBQXT9%2FCHc1o%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0b7a00d2-5a8c-472a-ad9f-9dbdb0c9c845-1791570468773/a9c6cdfd-72d2-466d-8db1-7b8239e0fb60_1791570559763?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=k%2BziD4y4lJIpCMU40T4%2BIu5hgzlqRoCH1qS5Jj%2B8qsQ%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -293,7 +293,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -380,7 +380,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -509,7 +509,7 @@
     "coverImage": {
       "id": "178981",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0a39dddc-f070-4299-a598-f618824e03cc-1791568341134/17c6fbf6-c9e7-4c8f-a0b5-0bcaf2953d6f_1791629875775?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=8rM%2Bpmn6Kf3%2BXGNlybswvS4cYCmuzkPQaoKOhxBOTF4%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0a39dddc-f070-4299-a598-f618824e03cc-1791568341134/17c6fbf6-c9e7-4c8f-a0b5-0bcaf2953d6f_1791629875775?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5rnXjLdp4Xf3gy9G8d1ilzvciERB8iinbRdO7F%2BceRM%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -629,7 +629,7 @@
     "coverImage": {
       "id": "178871",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-100db422-5ccc-4ba1-a466-5867f18407fb-1791463542260/084d166b-e6c1-4a8f-ae51-6ddc9df01fee_1791463739610?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2jQHhlZrTFgl5dpYdJ%2Bu6eCTenoen7xV2sdIMumVZXw%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-100db422-5ccc-4ba1-a466-5867f18407fb-1791463542260/084d166b-e6c1-4a8f-ae51-6ddc9df01fee_1791463739610?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=s3964UN7BA74Ftxpe6MWFnZuIBjswnzlG2c%2FjbP%2FxDU%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -719,7 +719,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -834,7 +834,7 @@
     "coverImage": {
       "id": "178977",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e7301301-acbf-47c8-8a8f-cd2dea34e24f-1791609810985/ef04894d-83ce-43fc-b35d-2ca9ccc6d49e_1791609969823?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Eq5ZCPs%2Fi3apR%2FnGMAzs%2FXKh7MB9lQBGCRf8oqxGPTM%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e7301301-acbf-47c8-8a8f-cd2dea34e24f-1791609810985/ef04894d-83ce-43fc-b35d-2ca9ccc6d49e_1791609969823?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=jByGW2rNY9gFZgWGxp1RMXpHpDI73s0urG7QI3b0%2BbI%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -926,7 +926,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1013,7 +1013,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1152,7 +1152,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1275,7 +1275,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1400,7 +1400,7 @@
     "coverImage": {
       "id": "178988",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-9ca79092-e1f9-41fb-be43-6d2dd466768a-1791666886153/9f9ae0e9-b27e-4dbd-a299-a7d374b035b0_1791669593000?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=FyMAFvUZf480GY%2FNE3m8JqKh7PVWU5UlUHXplApHYyI%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-9ca79092-e1f9-41fb-be43-6d2dd466768a-1791666886153/9f9ae0e9-b27e-4dbd-a299-a7d374b035b0_1791669593000?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=QpwbNINcMGos8NHf3UPqSnpaB55sZl66QG%2FgNxIjiEU%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -1496,7 +1496,7 @@
     "coverImage": {
       "id": "178984",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-ed7d8439-f3d2-41b3-bfc3-54303d9e9be2-1791617940339/52023df0-7907-4b80-96f0-001f31e2c270_1791635804394?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=9OJYfF1MHB8HGBxXNghgAz5HxpX8AFVYNyLjlnfTbwE%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-ed7d8439-f3d2-41b3-bfc3-54303d9e9be2-1791617940339/52023df0-7907-4b80-96f0-001f31e2c270_1791635804394?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=HAE%2Bqr%2Ba59xV7peI3M0AN1L5xlJOF%2BKAVvmTTVj0vaU%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -1586,7 +1586,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1693,7 +1693,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1852,7 +1852,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -1959,7 +1959,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -2088,7 +2088,7 @@
     "coverImage": {
       "id": "178989",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-3984501f-d702-49ed-bc40-ea940e706668-1791669848180/60ca3495-8a6c-4d2f-8671-fbb6db6aa25f_1791670159593?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=MGiZxjDQXhHyDiPuEx%2FoFHnDWocnAiZBIW72N1Mj4JY%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-3984501f-d702-49ed-bc40-ea940e706668-1791669848180/60ca3495-8a6c-4d2f-8671-fbb6db6aa25f_1791670159593?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=RivH6puJPnwEyJRnXr9PaOBbaQvqVngqpZPKIqB0p0A%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -2182,7 +2182,7 @@
     "coverImage": {
       "id": "178941",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-fe2dc167-78f9-4256-baa1-659ea0c48934-1791551687275/74b03124-970e-4db2-b082-aed57c63526d_1791561330908?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=atS%2BW1%2FxX4gyNJwqODNSQnU%2Fqf0C2FWBJpuF6ndpgb8%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-fe2dc167-78f9-4256-baa1-659ea0c48934-1791551687275/74b03124-970e-4db2-b082-aed57c63526d_1791561330908?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=7g5Dxw27o3pqhEB5qziNc40Kb9%2FF6Z4nFegy%2FXkkqmA%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -2268,7 +2268,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -2363,7 +2363,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -2450,7 +2450,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -2559,7 +2559,7 @@
     "coverImage": {
       "id": "179010",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-6124e6b1-655c-4d46-a7a9-5e04c78bca78-1791566744676/92ae6fed-5738-440f-8ad9-3709a64af01d_1791859587000?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=6U3qQgsg5WX8ONonE7gj1%2F0HWW3dLI42Ul04ICUNSlo%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-6124e6b1-655c-4d46-a7a9-5e04c78bca78-1791566744676/92ae6fed-5738-440f-8ad9-3709a64af01d_1791859587000?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=%2FvnliZmHvsw5pKOOxtsNSIQFMHAeoFujWXySjgG9j5I%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -2713,7 +2713,7 @@
     "coverImage": {
       "id": "178787",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-a4027ad4-2e3a-42a1-af77-aabadf56f804-1791313856113/05d211b5-6e17-4d24-b4d8-46274f3a64fe_1791314135239?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=sx57ZBeeiAQgoXKcvEJeFizdE0BJquRDISNKEnY99I4%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-a4027ad4-2e3a-42a1-af77-aabadf56f804-1791313856113/05d211b5-6e17-4d24-b4d8-46274f3a64fe_1791314135239?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=EbzbCgJb89ZIy3WTkAbSIDqi%2BZdlWffZQOFRASI%2FOUw%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -2879,7 +2879,7 @@
     "coverImage": {
       "id": "178851",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-d17b12e6-89a7-4555-a902-01ab7b0944fd-1791436867829/bd79f18f-dad0-440e-976d-523d1fccbaec_1791443790566?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=jcjqDqGT1EzTT8LfAkbPZN8j%2FOJsRC6o4g9atsokfj8%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-d17b12e6-89a7-4555-a902-01ab7b0944fd-1791436867829/bd79f18f-dad0-440e-976d-523d1fccbaec_1791443790566?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=EbiJJR7q7yGOgpyxYlhtC%2Fvij6GqgY%2FTnWATziYk7vs%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -2965,7 +2965,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -3056,7 +3056,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -3143,7 +3143,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -3260,7 +3260,7 @@
     "coverImage": {
       "id": "178909",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-687d362b-f8d9-4961-871b-abea85d3ccc7-1791531039822/ef4f75f2-f8ed-4a80-aeb8-92e7790de363_1791531096361?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=GsQbzPfQzk1NT61k4ecR3hQTr6hcrvzWhtjQKuvhpXs%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-687d362b-f8d9-4961-871b-abea85d3ccc7-1791531039822/ef4f75f2-f8ed-4a80-aeb8-92e7790de363_1791531096361?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=b8Tg5ulN5qfuUaLaFeiwRvfCaDYBpWTZsTbfS4mKxvU%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -3358,7 +3358,7 @@
     "coverImage": {
       "id": "178867",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-faa86551-a4b8-4f39-977b-01f67aeb5b9f-1791457287787/7f712434-4e5e-41fe-96c3-b97774101b8f_1791457395918?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Wj46Zc0OyMf2285UTEJgpySASLx71l2NWnUBj6texks%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-faa86551-a4b8-4f39-977b-01f67aeb5b9f-1791457287787/7f712434-4e5e-41fe-96c3-b97774101b8f_1791457395918?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=myJ5Nbf9KjodhLGIDu%2B%2FpMCQWl1b%2FGvxnpuo6MuabYo%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -3490,7 +3490,7 @@
     "coverImage": {
       "id": "178887",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e8ccb47b-4e4e-4d8b-97b9-7b93ae57a2f3-1791496271814/bcf93f27-8183-44f0-8dbd-70fa509072ba_1791496486823?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=gGl7Ma%2FT2wZCwf9zAu4LccKS6dQ0mvVvp4y8oEheeTk%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e8ccb47b-4e4e-4d8b-97b9-7b93ae57a2f3-1791496271814/bcf93f27-8183-44f0-8dbd-70fa509072ba_1791496486823?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=lwHCXJTiS6hQTcGgFA0BnMvG7oexa%2F0WmmKa6YNwnP0%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -3584,7 +3584,7 @@
     "coverImage": {
       "id": "178914",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-efed84c0-154d-4e9a-a3e9-7a7b005dcb21-1791433649789/eea71abb-02e2-406b-b0aa-3b2264a12bf8_1791535483470?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=DvLaKiByxgGuJdojSTONwWGZo24%2Bz%2FYvNvMj6cPyNA8%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-efed84c0-154d-4e9a-a3e9-7a7b005dcb21-1791433649789/eea71abb-02e2-406b-b0aa-3b2264a12bf8_1791535483470?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=4DIJpjOhY14g8lkBv6KTvNrq%2Fy6YgrZX5sL8D38Mgu8%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -3680,7 +3680,7 @@
     "coverImage": {
       "id": "178952",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-1e63d7dd-3fd2-4e48-8685-71ec8c8a5b1e-1791503807891/fdc44f01-2c41-4c65-b153-f96b672e3a42_1791571120956?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=ynK9YyKifA1i8QfZeAq1XKpGS4CB%2Bly86dSuCW2DeDY%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-1e63d7dd-3fd2-4e48-8685-71ec8c8a5b1e-1791503807891/fdc44f01-2c41-4c65-b153-f96b672e3a42_1791571120956?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=de3wgxhmbntdJksWq9mgh0k3KiuvubeantT9FC%2Bsftw%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -3766,7 +3766,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -3823,7 +3823,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -3926,7 +3926,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4051,7 +4051,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Sl8Dp5NzmQwfcyTkcQUjS7o%2BsNTzP8xWGFYlGQ833dU%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4160,7 +4160,7 @@
     "coverImage": {
       "id": "178844",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-88c0ad5c-ac8e-4065-b8ba-1f79bb767cb3-1791440644988/41fb9f31-2c9c-45d8-be68-24e53a5c7d3e_1791440685934?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Wt6UPnA%2FK08KLzAsC8vXSnJlAMNZCnMADAEWv7ztqsg%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-88c0ad5c-ac8e-4065-b8ba-1f79bb767cb3-1791440644988/41fb9f31-2c9c-45d8-be68-24e53a5c7d3e_1791440685934?sv=2026-10-06&st=2026-10-13T05%3A20%3A26Z&se=2026-10-13T05%3A21%3A26Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A26Z&ske=2026-10-13T05%3A21%3A26Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=L4wtIz5LLg9biIhujuffUfxYsx%2F9B6pHJR4ShbYsGwg%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -4260,7 +4260,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4347,7 +4347,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4438,7 +4438,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4553,7 +4553,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4640,7 +4640,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4761,7 +4761,7 @@
     "coverImage": {
       "id": "178824",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0e5bbb41-fc78-46fb-8e35-0a19b0ecab0a-1791386004624/1b3d03ea-5c29-4bb7-95bd-d90825d5af1a_1791387287577?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=oldr0UDkjG2D%2F5OPy5Kh9Q73d%2BiSWes3r51hi%2Bxgoqo%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-0e5bbb41-fc78-46fb-8e35-0a19b0ecab0a-1791386004624/1b3d03ea-5c29-4bb7-95bd-d90825d5af1a_1791387287577?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=uX7COlWTWKzMXKEe5wZIz1sBT8yIGc8ILHzWOVttCCo%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -4855,7 +4855,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -4946,7 +4946,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5045,7 +5045,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5140,7 +5140,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5271,7 +5271,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A31Z&se=2026-10-13T05%3A15%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A31Z&ske=2026-10-13T05%3A15%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=E11tmchwBFLdlufPBYydSBNflS7Rp1ukZn0jBD9uZJM%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A27Z&se=2026-10-13T05%3A21%3A27Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A27Z&ske=2026-10-13T05%3A21%3A27Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=1%2BHjDd19px1wXWwRPju%2B08%2F%2Fby2nvkp2nh%2F4zwd7r74%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5428,7 +5428,7 @@
     "coverImage": {
       "id": "178985",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b943e956-dff7-426a-858f-251e70a08033-1791638248219/d94c1605-fb24-423d-853c-7f5d137f0c9a_1791639682481?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=SwrYywtKbxMmNkILxNU8rFZbzcfTa16FG3QRMB3c7IQ%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b943e956-dff7-426a-858f-251e70a08033-1791638248219/d94c1605-fb24-423d-853c-7f5d137f0c9a_1791639682481?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=0IQ1M72PqZlIAvGLPh4VSuWk082K%2F05JSlzQ%2Fg9fT1c%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -5562,7 +5562,7 @@
     "coverImage": {
       "id": "178815",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e162a8fb-47ea-43c7-9164-6e145cc6f74b-1791374159272/0d0f7ccc-4bea-4b4c-9e6c-f16c10c8a625_1791374594109?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=x46Sbywovd%2F5KQyR7ZtKcqmkEvKRdESHX9LIrQKiIuQ%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e162a8fb-47ea-43c7-9164-6e145cc6f74b-1791374159272/0d0f7ccc-4bea-4b4c-9e6c-f16c10c8a625_1791374594109?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=LcyDYBkeo13dxHU1xx7ROkkry0gnSn0A8nAQjamMc58%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -5646,7 +5646,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5745,7 +5745,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -5846,7 +5846,7 @@
     "coverImage": {
       "id": "178882",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e22a3136-c4c7-4e53-95ee-f0e976201adb-1791479438028/6b90ad7d-5ee3-49b7-913d-b14f53fd2301_1791486377342?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=gyNC6Rh2WdGUSdb8YEwSD3eMa9G%2FShY%2FVkiHctfYAJg%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e22a3136-c4c7-4e53-95ee-f0e976201adb-1791479438028/6b90ad7d-5ee3-49b7-913d-b14f53fd2301_1791486377342?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=ehLXnBmSLNePaBIQWJUFHpZOnAAZjAj8KlwdDc4qYkk%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -5930,7 +5930,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6017,7 +6017,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6104,7 +6104,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6215,7 +6215,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6334,7 +6334,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6421,7 +6421,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6508,7 +6508,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6625,7 +6625,7 @@
     "coverImage": {
       "id": "178916",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-ccd29f86-9226-45f6-b307-18b6c23f62b0-1791535363030/0200a8fb-a6d8-4320-a2e5-bdab3ae45e89_1791536413246?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=udHZJYRDspliDYZRBVv2tLmR6RT%2F8EEL8%2FVg6Ev%2Fu30%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-ccd29f86-9226-45f6-b307-18b6c23f62b0-1791535363030/0200a8fb-a6d8-4320-a2e5-bdab3ae45e89_1791536413246?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=taWpm2UtWhjIhU2y0XnO%2FJqMF1Av%2FxHmpwlITtVMSW8%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -6729,7 +6729,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6828,7 +6828,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -6945,7 +6945,7 @@
     "coverImage": {
       "id": "178883",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-292e17de-5e48-44c8-b813-b17676c84d24-1791483552717/b99d17ae-fe6e-4e27-94f8-07ef2acada5c_1791487059898?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=xLvkdUniYRlHV4Nha8qyC6ZO0vi02Ucmo6kp3nc63gI%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-292e17de-5e48-44c8-b813-b17676c84d24-1791483552717/b99d17ae-fe6e-4e27-94f8-07ef2acada5c_1791487059898?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=8%2BbUr8fnBLb2Zy8vObwjufTU95C9VzCoNv0Ot1fEMFM%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -7029,7 +7029,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7146,7 +7146,7 @@
     "coverImage": {
       "id": "178993",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-02ba54a3-e93d-439a-833c-499b1d09c94c-1791736607170/e828c05c-cea9-4300-9728-6019625b0d7a_1791737647612?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=MsH3WZcmyUDbuv54YeYWyC6cdCJ2dwG%2Fo9n29H97sqk%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-02ba54a3-e93d-439a-833c-499b1d09c94c-1791736607170/e828c05c-cea9-4300-9728-6019625b0d7a_1791737647612?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=hX9kSkRNm8iXoQBy7ANKTSpmbExIE7CnMq%2BjJvBGrIw%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -7272,7 +7272,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7387,7 +7387,7 @@
     "coverImage": {
       "id": "178994",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-25e5af6e-3ff3-437b-80df-94c9e053b5c6-1791656952880/38fcc4d0-d669-430e-b3e2-98fbfbd40bfe_1791739297375?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=YTg9aoLe4mJtcoykbhMf5ymw8T%2BcmuyF0oxjRiFgc1k%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-25e5af6e-3ff3-437b-80df-94c9e053b5c6-1791656952880/38fcc4d0-d669-430e-b3e2-98fbfbd40bfe_1791739297375?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=a9GdGf6x%2FMz3t7OfgAfHys%2Fi6skACOkw0LIbAjSQY3I%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -7477,7 +7477,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7602,7 +7602,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7701,7 +7701,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7824,7 +7824,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -7923,7 +7923,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8012,7 +8012,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8099,7 +8099,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8186,7 +8186,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8283,7 +8283,7 @@
     "coverImage": {
       "id": "178995",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e964aa5a-2b7e-4b9f-afee-67f340d5f388-1791748994503/a4be9862-ef37-425a-aa5f-ee6aee30966d_1791749075951?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=tockqtwwxPx%2B6zKGcSOYSnqrfFJonv%2FtwEbxvW7K5mg%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-e964aa5a-2b7e-4b9f-afee-67f340d5f388-1791748994503/a4be9862-ef37-425a-aa5f-ee6aee30966d_1791749075951?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=JnFzD9sj60Zw7xeObu%2ByTabQCUn60J%2Bzkb18eotFt5I%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -8415,7 +8415,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8536,7 +8536,7 @@
     "coverImage": {
       "id": "178898",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-c933948e-4473-46a2-8450-aca909738849-1791521653717/c75700fc-a62c-4d2a-b064-b9f8d7c4d8ec_1791522212198?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=7EZu%2FFTcmcnD2eGA%2BAobQ8%2BgZIWs%2BEdrk0%2FEXfD2AvE%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-c933948e-4473-46a2-8450-aca909738849-1791521653717/c75700fc-a62c-4d2a-b064-b9f8d7c4d8ec_1791522212198?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=sHnCQ8rkjYiE9vDuUIcQgJeGZEza1TBrJFMjKjd5sMc%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -8650,7 +8650,7 @@
     "coverImage": {
       "id": "178843",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-971fcb14-950c-409d-8bb8-f9830b2a12e4-1791440450164/1209f4cb-bfa5-4fc8-a29c-ccaffa8d9d7f_1791440555513?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=biF4hTFmTlMJxVXftnQ7ClPKVR7rWDCAi5USoLiZD5Y%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-971fcb14-950c-409d-8bb8-f9830b2a12e4-1791440450164/1209f4cb-bfa5-4fc8-a29c-ccaffa8d9d7f_1791440555513?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=CZqUUmGQV7c0TVfPrSpQQNyXe6BnmIWVzZ%2BpfU5ePNg%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -8712,7 +8712,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -8821,7 +8821,7 @@
     "coverImage": {
       "id": "178860",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-93a93ecd-e842-4305-a773-e3a72bd13af8-1791449952118/2bf4d9d6-c7c2-4b67-98a3-303897f525bf_1791452129604?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=mZCVj6bseyJgl4Zi9VlzcAD6Uapdi%2FC7eRjFDmj2trI%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-93a93ecd-e842-4305-a773-e3a72bd13af8-1791449952118/2bf4d9d6-c7c2-4b67-98a3-303897f525bf_1791452129604?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=VLZ3%2BSvrWoOPQ9FUwUvymYY%2F%2FQPvQWIYN1Adgb7j%2FVc%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -8943,7 +8943,7 @@
     "coverImage": {
       "id": "178858",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-29ca50d5-6ad9-4749-8c95-23da8030c4bf-1791449240577/d29a32e7-591a-49c1-ac3a-80e4d6b7cae4_1791449290458?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=vSsjruvtSnleLIIeEHHHQ7ycaAnxgVE2ZsKodRym%2Fy0%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-29ca50d5-6ad9-4749-8c95-23da8030c4bf-1791449240577/d29a32e7-591a-49c1-ac3a-80e4d6b7cae4_1791449290458?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=XmGykSDXyIoq1iPOqafrUa%2FfGsMlZRYcMVZAR%2FsPUq4%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -9033,7 +9033,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -9124,7 +9124,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -9233,7 +9233,7 @@
     "coverImage": {
       "id": "178987",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-dcdc1b1a-a08a-4268-9f98-ed239a19ba9e-1791658862097/4fea7397-0fc4-4e5d-8491-cf31e0724b76_1791658925859?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=8T4QvdiH6sJ22DOdFrjj3gf0togZ8NjpSJ85r6wpoVc%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-dcdc1b1a-a08a-4268-9f98-ed239a19ba9e-1791658862097/4fea7397-0fc4-4e5d-8491-cf31e0724b76_1791658925859?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=vM%2Bu70uz%2FUlchQvBTIhMCXjB3Z9d10CsS%2BnqjldSh80%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -9387,7 +9387,7 @@
     "coverImage": {
       "id": "178786",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-05f308ca-328a-4118-85d0-f0930cee114f-1791312422846/49c9eb5b-d27b-46a7-a9d3-0f68c8f8adbb_1791312999564?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=4n4%2BhwTpRI8kXFyL5fV4SMT6YjanRIzQOw8PZ9szArs%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-05f308ca-328a-4118-85d0-f0930cee114f-1791312422846/49c9eb5b-d27b-46a7-a9d3-0f68c8f8adbb_1791312999564?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=X2wsHvyyR0AxGBNwzVakzIXBon2LsJzan%2FztztDwV2k%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -9497,7 +9497,7 @@
     "coverImage": {
       "id": "179009",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-247f5f7a-f3d1-4aeb-b307-e09af9275b36-1791798419166/08cea170-3233-4897-b8d9-f9a8eaea726e_1791818213430?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=jnDM%2BKEr7WNIHp%2FMpOnwaN%2FByy46pzOXyuEcuJTR2OA%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-247f5f7a-f3d1-4aeb-b307-e09af9275b36-1791798419166/08cea170-3233-4897-b8d9-f9a8eaea726e_1791818213430?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=M8qSMWw9PzhJAa68HChIbml9Dn1Ob957lOHtMLJpyA0%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -9581,7 +9581,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -9686,7 +9686,7 @@
     "coverImage": {
       "id": "178796",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-87087e67-fee6-46cf-a159-cbd6e2330f93-1791335475952/277d00c4-d37c-4705-9f52-1e6b4aecfe67_1791335571221?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Ljeim8RkRW%2FVgR1%2FG6Fum2fXt%2BtlXUdENdWPqzRvIWE%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-87087e67-fee6-46cf-a159-cbd6e2330f93-1791335475952/277d00c4-d37c-4705-9f52-1e6b4aecfe67_1791335571221?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=3j6Uc4k%2BY%2FIhZ7Yg0BAdhs5tbcnVQ6zdK%2BKVit4m6%2FI%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -9784,7 +9784,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -9845,7 +9845,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -9936,7 +9936,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10035,7 +10035,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10126,7 +10126,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10259,7 +10259,7 @@
     "coverImage": {
       "id": "179002",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b293a7f5-81ea-4d79-8c90-7d43083fb186-1791802785756/f79d9ad6-6481-423f-b981-52918f1c24ac_1791812227105?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=96vxFHv6PzoBO7rNpZJnixAVTce5nztYFd%2FYvVq9dT8%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b293a7f5-81ea-4d79-8c90-7d43083fb186-1791802785756/f79d9ad6-6481-423f-b981-52918f1c24ac_1791812227105?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Ky3EteTueQseCh5Zqh9zN7Kzre2hyY7%2FHaZ9HWHt1As%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -10345,7 +10345,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10468,7 +10468,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A36Z&se=2026-10-13T05%3A15%3A36Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A36Z&ske=2026-10-13T05%3A15%3A36Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=5g7wyF%2FkYx0sCEOtCtalZ1vLdlqTs75pKVEcwpmFI90%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A30Z&se=2026-10-13T05%3A21%3A30Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A30Z&ske=2026-10-13T05%3A21%3A30Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=WrxahB2oMP9a6w2s8K7CllhRrWF3HJRzJCOraEV%2F880%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10575,7 +10575,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10670,7 +10670,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10797,7 +10797,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -10884,7 +10884,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11005,7 +11005,7 @@
     "coverImage": {
       "id": "178990",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-d42e49fa-7dc4-4e11-882d-9bb54b588c17-1791623185986/aedbd8e8-540b-4823-9365-5d0f47253f13_1791706944129?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=fQ4TlxAY%2FN28aRR0TBHbj0sld%2BaVkFcz6CQQ8%2Fh74xw%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-d42e49fa-7dc4-4e11-882d-9bb54b588c17-1791623185986/aedbd8e8-540b-4823-9365-5d0f47253f13_1791706944129?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=tGQu5N%2FGvAp3ic8RPpFE%2FnmiBDyWLsY%2FfO7v5GLAP3I%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -11091,7 +11091,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11194,7 +11194,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11289,7 +11289,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11404,7 +11404,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11507,7 +11507,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11580,7 +11580,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11667,7 +11667,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11770,7 +11770,7 @@
     "coverImage": {
       "id": "179014",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-3e4dda14-395f-48ec-b9c3-6fd85dacd5ab-1791812638052/7f41dc28-c990-47a8-bd72-e9849a7479b7_1791862065505?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=Q45xra16bJiHAa%2BLSpzDQ23zJEwtm%2BcnTSzdifvUr98%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-3e4dda14-395f-48ec-b9c3-6fd85dacd5ab-1791812638052/7f41dc28-c990-47a8-bd72-e9849a7479b7_1791862065505?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=RSQLmLHUp0pontz74JjpY2IckvkbdbeKlhiHTxGcj14%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -11854,7 +11854,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -11941,7 +11941,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -12078,7 +12078,7 @@
     "coverImage": {
       "id": "178840",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b57967de-22b0-4907-bcc1-49aaace1d0b2-1791437548084/ed7fd69a-2014-4579-a41e-a1ff514482d2_1791437793798?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=MM9Q%2FAgBgBWlVUuFrq%2Fw7LdoqTEy6b48wHxbERE7bUM%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-b57967de-22b0-4907-bcc1-49aaace1d0b2-1791437548084/ed7fd69a-2014-4579-a41e-a1ff514482d2_1791437793798?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=tpafH0Je%2BZVRjzVTUsleeKnfLmpqtYDWpKSB%2FpLIzjg%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
@@ -12210,7 +12210,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -12357,7 +12357,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -12444,7 +12444,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -12501,7 +12501,7 @@
       "name": "The Synthetic Match Insights Engine for Premier League Studio",
       "imageSrc": {
         "mediaData": {
-          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=2E2W25Qh58EPpek%2F17f8LRszKUjFKBMoDfCmkZDeunU%3D",
+          "image_url": "https://hackboxpmeproduction.blob.core.windows.net/hackathon-2eaedc15-51cb-419d-b520-2213ceeecb34-1788550026092/af98d788-c67d-47ee-bf5f-606aa0298797_1790576221616?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=snGETN8A%2Fq81%2FKm%2FY7riY4el77zqs5ifQc1JWpR193w%3D",
           "__typename": "MediaData"
         },
         "__typename": "ExecutiveChallengeImageSource"
@@ -12638,7 +12638,7 @@
     "coverImage": {
       "id": "178782",
       "mediaData": {
-        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-5b0a7a59-7755-4d93-a8dc-8707d73dc469-1791304166576/e2eff92c-0a35-4158-ab3c-7af11a085702_1791304340623?sv=2026-10-06&st=2026-10-13T05%3A14%3A40Z&se=2026-10-13T05%3A15%3A40Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A14%3A40Z&ske=2026-10-13T05%3A15%3A40Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=SeJKDNyfQvUN4InzI0h%2BxFSL5EXKd5NQ8%2F5JUzWeVlo%3D",
+        "image_url": "https://hackboxpmeproduction.blob.core.windows.net/proj-5b0a7a59-7755-4d93-a8dc-8707d73dc469-1791304166576/e2eff92c-0a35-4158-ab3c-7af11a085702_1791304340623?sv=2026-10-06&st=2026-10-13T05%3A20%3A31Z&se=2026-10-13T05%3A21%3A31Z&skoid=4fec1579-ad60-4829-98b1-c37115c9dd25&sktid=975f013f-7f24-47e8-a7d3-abc4752bf346&skt=2026-10-13T05%3A20%3A31Z&ske=2026-10-13T05%3A21%3A31Z&sks=b&skv=2026-10-06&sr=b&sp=r&sig=xj47FPb3gnfIusSkGq%2FDKbq2cl854iWpAeH7J1bd7ZQ%3D",
         "__typename": "MediaData"
       },
       "__typename": "ProjectSearchCoverImage"
