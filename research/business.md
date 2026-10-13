@@ -22,7 +22,9 @@ The partnership facts come from the [joint announcement](https://news.microsoft.
 
 | Organisation / team | Relevant responsibility | A useful prototype could help with |
 | --- | --- | --- |
-| Premier League | Runs the competition and league rules, distributes central revenues, and sells central broadcast rights. | Consistent match information and partner-ready content across the competition. |
+| Premier League | Runs the competition and league rules, distributes central revenues, sells central broadcast rights, and sets standards for clubs. | Consistent match information and partner-ready content across the competition. |
+| League governance / standards | Club-operation requirements cover safeguarding, supporter relations, broadcaster access, stadium infrastructure, and academies. | Reliable information and administrative workflows; these are broader league roles than the published hackathon brief. |
+| Community programmes / Premier League Foundation | Funds club charities and programmes for schools, young people, and communities. | Accessible football explanation or learning modes; intended users would still need to validate them. |
 | Premier League Studios | International content production and distribution, brought in-house for 2026/27. | Finding and explaining stories, producer approval, reusable output for markets. |
 | Premier League digital products | App, website, Companion, FPL, and the Singapore PL+ service. | Clearer personalised match experiences within existing products. |
 | Broadcasters / regional partners | Local presentation and distribution under their rights arrangements. | Localisation, feed timing, graphics integration, and editorial control. |
@@ -30,7 +32,7 @@ The partnership facts come from the [joint announcement](https://news.microsoft.
 | Microsoft | Cloud/AI platform and organisational-technology partner; selects the hackathon judges. | A credible, reproducible workload that uses its platform well and can be operationalised. |
 | Data / graphics suppliers | Tracking, event feeds, visualisation, and specialist integrations. | Adapters and validated evidence packets, rather than assuming access to their proprietary feeds. |
 
-League/club scope: [governance](https://www.premierleague.com/en/news/4679198/4322439). Media production: [in-house announcement](https://www.premierleague.com/es/news/4172032). Current distribution examples: [PL+ launch](https://www.premierleague.com/en/news/4687725/premier-league-launches-video-streaming-service-in-singapore) and [broadcast rights](https://www.premierleague.com/es/news/3703577/premier-league-broadcast-deals-for-2025-2028). Microsoft scope: [partnership](https://www.premierleague.com/en/about/partners/microsoft) and [rules §2](https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md#2-promotion-entities-and-administrator).
+League/club scope: [governance](https://www.premierleague.com/en/news/4679198/4322439). Community activity: [Premier League Foundation](https://www.premierleague.com/en/footballandcommunity/morethanagame/premier-league-foundation). Media production: [in-house announcement](https://www.premierleague.com/es/news/4172032). Current distribution examples: [PL+ launch](https://www.premierleague.com/en/news/4687725/premier-league-launches-video-streaming-service-in-singapore) and [broadcast rights](https://www.premierleague.com/es/news/3703577/premier-league-broadcast-deals-for-2025-2028). Microsoft scope: [partnership](https://www.premierleague.com/en/about/partners/microsoft) and [rules §2](https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md#2-promotion-entities-and-administrator).
 
 This makes a production/fan-experience prototype a closer route to the published challenge than a club recruitment tool. That is a fit assessment, not a claim that recruitment research has no value.
 

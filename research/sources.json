@@ -227,6 +227,15 @@
       "published_or_updated": null,
       "checked_on": "2026-10-13",
       "scope": "Preview operational analytics, not a football-specific simulator."
+    },
+    {
+      "id": "community",
+      "title": "Premier League Foundation and community programmes",
+      "url": "https://www.premierleague.com/en/footballandcommunity/morethanagame/premier-league-foundation",
+      "publisher": "Premier League",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "League-supported charity/community role; current Foundation name, formerly Charitable Fund."
     }
   ]
 }
