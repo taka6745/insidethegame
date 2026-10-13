@@ -174,7 +174,7 @@ def main():
                'data_buckets':dict(data_counts), 'catalogue':items}
     (DATA/'metrics.json').write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+'\n')
     with (DATA/'catalogue.csv').open('w',encoding='utf-8-sig',newline='') as f:
-        w=csv.writer(f);w.writerow(['id','name','category','tags','summary','repo_urls','data_claim'])
+        w=csv.writer(f,lineterminator='\n');w.writerow(['id','name','category','tags','summary','repo_urls','data_claim'])
         for p in items:
             row=[p['id'],p['name'],p['category'],'; '.join(p['tags']),p['summary'],
                  '; '.join(p['repo_urls']),p['data_claim']]

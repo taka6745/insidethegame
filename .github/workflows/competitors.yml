@@ -9,7 +9,7 @@ on:
         default: false
   schedule:
     # 22:00 UTC = 08:00 Brisbane on the following day, 13–28 October.
-    # schedule_window.py also checks the year to prevent annual reruns.
+    # The date guard also checks the year to prevent annual report refreshes.
     - cron: '0 22 12-27 10 *'
 
 permissions:
