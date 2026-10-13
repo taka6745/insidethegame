@@ -49,6 +49,7 @@ def main():
             "font.family": "DejaVu Sans",
             "font.size": 11,
             "svg.fonttype": "none",
+            "svg.hashsalt": "insidethegame-grf",
             "text.color": "#dce8f0",
             "axes.labelcolor": "#dce8f0",
             "xtick.color": "#9cb0c0",
@@ -132,7 +133,13 @@ def main():
         color="#9cb0c0",
     )
     fig.subplots_adjust(left=0.17, right=0.93, top=0.86, bottom=0.1, hspace=0.48)
-    fig.savefig(dest / "benchmark.svg", facecolor=fig.get_facecolor())
+    fig.savefig(
+        dest / "benchmark.svg", facecolor=fig.get_facecolor(), metadata={"Date": None}
+    )
+    svg = dest / "benchmark.svg"
+    svg.write_text(
+        "\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n"
+    )
     fig.savefig(args.run / "benchmark.png", dpi=160, facecolor=fig.get_facecolor())
     plt.close(fig)
 
