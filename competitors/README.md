@@ -237,7 +237,7 @@ Commit and LOC numbers measure size and activity, not whether a product works. L
 <details>
 <summary>Refresh and measurement details</summary>
 
-Project export: **2026-10-13T05:20:49+00:00** · status: **ok**. GitHub checked: **2026-10-13 05:20:58 UTC**.
+Project export: **2026-10-13T05:20:49+00:00** · status: **ok**. GitHub checked: **2026-10-13 05:43:24 UTC**.
 
 Types are inferred from what a project does. Commit counts include merges on the default branch. LOC includes comments and tests; dense single-line code counts as one line. Data-source reviews link to the SHA inspected; changed repos are flagged for re-review. Collected files retain original bytes and SHA-256 checksums in [datasets.json](data/datasets.json). VYBE is extracted from its static TypeScript fixture; ZIP samples are marked in the manifest.
 
