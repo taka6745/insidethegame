@@ -1,0 +1,69 @@
+{
+  "rubric_version": "itg-rubric-v2",
+  "entries": [
+    {
+      "project_id": "126458",
+      "name": "OmniPitch",
+      "repository": "akashsv01/omnipitch",
+      "state": "unavailable",
+      "input_key": "e5aad3b091bf86c5249bdcebb7695f6a451dbf3d539dbe34a079c06c3c197dc2",
+      "inputs": {
+        "project_id": "126458",
+        "repository": "akashsv01/omnipitch",
+        "repository_sha": null,
+        "description_sha256": "ccbf10f7251702bbe533e66e6aa99cb60575d6b1cd89dfeb7c55be3baf9eb46c",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    },
+    {
+      "project_id": "126348",
+      "name": "Pitchside",
+      "repository": "aknotwell/Pitchside",
+      "state": "unavailable",
+      "input_key": "6954398223aed88a4bd92982944e42c48c6e42d6b808708eae324606373cd87b",
+      "inputs": {
+        "project_id": "126348",
+        "repository": "aknotwell/pitchside",
+        "repository_sha": null,
+        "description_sha256": "8fcc86450fd3fb302d8ba1d7a05d7f1c8de57f47bc5b5cc517dcb112969a0bf2",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    },
+    {
+      "project_id": "126441",
+      "name": "PitchPulse",
+      "repository": "sethmalefo-del/pitchpulse",
+      "state": "unavailable",
+      "input_key": "09fe9b7dd23d3af5217b3b898acea2f3a7e8bc450cdec0389163b575b5c5d543",
+      "inputs": {
+        "project_id": "126441",
+        "repository": "sethmalefo-del/pitchpulse",
+        "repository_sha": null,
+        "description_sha256": "db834e6d854a1d1399789d2e5055c84acef941d5d113d6376c6b7a0a370e0254",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    },
+    {
+      "project_id": "126387",
+      "name": "MSFT x EPL Hackathon",
+      "repository": "zekariasasaminew/msft-x-epl-hackathon",
+      "state": "unavailable",
+      "input_key": "8644c8d4b2e5ea0d84bdbddfea96fa1e0be52b19fa824949ad1cdf81c958ae98",
+      "inputs": {
+        "project_id": "126387",
+        "repository": "zekariasasaminew/msft-x-epl-hackathon",
+        "repository_sha": null,
+        "description_sha256": "38d2d55b5966ae8e6aa169b9fc5d10aea0db1d68a07dbfa4a4668da038e92e8e",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    }
+  ]
+}

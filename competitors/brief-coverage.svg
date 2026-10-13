@@ -1,0 +1,699 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="932" viewBox="0 0 1160 932" role="img" aria-labelledby="title desc">
+<title id="title">Description signals · inspected source</title><desc id="desc">● implemented  ◐ partial  ◇ specified  — not found  ? unknown; suggestions are not extra points</desc>
+<rect width="1160" height="932" rx="14" fill="#101e2b"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="24" y="32" fill="#e5edf4" font-size="22" text-anchor="start">Description signals · inspected source</text>
+<text x="24" y="57" fill="#a4bbc9" font-size="12" text-anchor="start">● implemented  ◐ partial  ◇ specified  — not found  ? unknown; suggestions are not extra points</text>
+<text x="385.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Player ID</text>
+<text x="464.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Player speed</text>
+<text x="543.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Pass quality</text>
+<text x="622.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Ball speed</text>
+<text x="701.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Video events</text>
+<text x="780.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Pressure</text>
+<text x="859.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Player/club</text>
+<text x="938.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Depth</text>
+<text x="1017.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Languages</text>
+<text x="1096.5" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Timed overlay</text>
+<text x="24" y="127" fill="#e5edf4" font-size="14" text-anchor="start">GoalGetter</text>
+<g><title>Simplify4Me2/goal-getter: player_identity = ●</title><rect x="350.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="127" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: player_speed_distance = —</title><rect x="429.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: pass_quality = —</title><rect x="508.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: ball_shot_speed = —</title><rect x="587.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: video_auto_eventing = —</title><rect x="666.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: pressure_control_rhythm = —</title><rect x="745.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: player_club_modes = —</title><rect x="824.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: analyst_casual_modes = —</title><rect x="903.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: multilingual = —</title><rect x="982.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: synchronised_overlays = —</title><rect x="1061.0" y="106" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="127" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="163" fill="#e5edf4" font-size="14" text-anchor="start">Match Storyteller</text>
+<g><title>faisalbasra/match-storyteller: player_identity = ◇</title><rect x="350.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="163" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>faisalbasra/match-storyteller: player_speed_distance = —</title><rect x="429.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: pass_quality = —</title><rect x="508.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: ball_shot_speed = —</title><rect x="587.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: video_auto_eventing = —</title><rect x="666.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: pressure_control_rhythm = —</title><rect x="745.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: player_club_modes = ◇</title><rect x="824.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="163" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>faisalbasra/match-storyteller: analyst_casual_modes = ◇</title><rect x="903.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="163" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>faisalbasra/match-storyteller: multilingual = —</title><rect x="982.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>faisalbasra/match-storyteller: synchronised_overlays = —</title><rect x="1061.0" y="142" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="163" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="199" fill="#e5edf4" font-size="14" text-anchor="start">Matchday Crew</text>
+<g><title>timsheldon1/matchday-crew: player_identity = ●</title><rect x="350.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: player_speed_distance = ◐</title><rect x="429.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="199" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>timsheldon1/matchday-crew: pass_quality = ●</title><rect x="508.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: ball_shot_speed = ◐</title><rect x="587.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="199" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>timsheldon1/matchday-crew: video_auto_eventing = —</title><rect x="666.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="199" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>timsheldon1/matchday-crew: pressure_control_rhythm = ●</title><rect x="745.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: player_club_modes = ●</title><rect x="824.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: analyst_casual_modes = ●</title><rect x="903.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: multilingual = ●</title><rect x="982.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="199" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timsheldon1/matchday-crew: synchronised_overlays = ◐</title><rect x="1061.0" y="178" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="199" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<text x="24" y="235" fill="#e5edf4" font-size="14" text-anchor="start">MatchLens — What-If Simulation</text>
+<g><title>vishnugovind10/matchlens: player_identity = —</title><rect x="350.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: player_speed_distance = —</title><rect x="429.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: pass_quality = —</title><rect x="508.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: ball_shot_speed = —</title><rect x="587.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: video_auto_eventing = —</title><rect x="666.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: pressure_control_rhythm = ●</title><rect x="745.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="235" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>vishnugovind10/matchlens: player_club_modes = —</title><rect x="824.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: analyst_casual_modes = —</title><rect x="903.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: multilingual = —</title><rect x="982.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="235" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vishnugovind10/matchlens: synchronised_overlays = ◐</title><rect x="1061.0" y="214" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="235" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<text x="24" y="271" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Beyond the Scoreline</text>
+<g><title>natagowai/matchmind-ai: player_identity = —</title><rect x="350.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: player_speed_distance = —</title><rect x="429.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: pass_quality = —</title><rect x="508.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: ball_shot_speed = —</title><rect x="587.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: video_auto_eventing = —</title><rect x="666.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: pressure_control_rhythm = —</title><rect x="745.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: player_club_modes = —</title><rect x="824.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: analyst_casual_modes = —</title><rect x="903.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: multilingual = —</title><rect x="982.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>natagowai/matchmind-ai: synchronised_overlays = —</title><rect x="1061.0" y="250" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="271" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="307" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Every Match Has a Pe…</text>
+<g><title>swarupe7/microsoft_dev_hackathon: player_identity = ●</title><rect x="350.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="307" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: player_speed_distance = —</title><rect x="429.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="307" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: pass_quality = ◐</title><rect x="508.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="307" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: ball_shot_speed = —</title><rect x="587.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="307" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: video_auto_eventing = —</title><rect x="666.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="307" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: pressure_control_rhythm = ●</title><rect x="745.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="307" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: player_club_modes = ◐</title><rect x="824.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="307" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: analyst_casual_modes = ◐</title><rect x="903.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="307" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: multilingual = ◐</title><rect x="982.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="307" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: synchronised_overlays = ●</title><rect x="1061.0" y="286" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="307" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<text x="24" y="343" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind Studio — Broadcast &amp; Stre…</text>
+<g><title>HamzatAbdulazeez/matchmind-studio: player_identity = ●</title><rect x="350.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: player_speed_distance = ◐</title><rect x="429.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="343" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: pass_quality = ●</title><rect x="508.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: ball_shot_speed = ◐</title><rect x="587.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="343" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: video_auto_eventing = —</title><rect x="666.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="343" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: pressure_control_rhythm = ●</title><rect x="745.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: player_club_modes = ●</title><rect x="824.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: analyst_casual_modes = ●</title><rect x="903.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: multilingual = ●</title><rect x="982.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: synchronised_overlays = ●</title><rect x="1061.0" y="322" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="343" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<text x="24" y="379" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind — AI Broadcast Booth</text>
+<g><title>ALISAEED-1/matchmind: player_identity = ◐</title><rect x="350.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="379" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>ALISAEED-1/matchmind: player_speed_distance = ◐</title><rect x="429.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="379" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>ALISAEED-1/matchmind: pass_quality = ●</title><rect x="508.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: ball_shot_speed = ●</title><rect x="587.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: video_auto_eventing = —</title><rect x="666.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="379" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>ALISAEED-1/matchmind: pressure_control_rhythm = ●</title><rect x="745.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: player_club_modes = ●</title><rect x="824.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: analyst_casual_modes = ●</title><rect x="903.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: multilingual = ●</title><rect x="982.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>ALISAEED-1/matchmind: synchronised_overlays = ●</title><rect x="1061.0" y="358" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<text x="24" y="415" fill="#e5edf4" font-size="14" text-anchor="start">MSFT x EPL Hackathon</text>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: player_identity = ?</title><rect x="350.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: player_speed_distance = ?</title><rect x="429.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: pass_quality = ?</title><rect x="508.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: ball_shot_speed = ?</title><rect x="587.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: video_auto_eventing = ?</title><rect x="666.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: pressure_control_rhythm = ?</title><rect x="745.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: player_club_modes = ?</title><rect x="824.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: analyst_casual_modes = ?</title><rect x="903.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: multilingual = ?</title><rect x="982.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: synchronised_overlays = ?</title><rect x="1061.0" y="394" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="415" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="451" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — AI Football Analyst</text>
+<g><title>s70241963-afk/Sushmitha: player_identity = ?</title><rect x="350.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: player_speed_distance = ?</title><rect x="429.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: pass_quality = ?</title><rect x="508.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: ball_shot_speed = ?</title><rect x="587.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: video_auto_eventing = ?</title><rect x="666.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: pressure_control_rhythm = ?</title><rect x="745.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: player_club_modes = ?</title><rect x="824.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: analyst_casual_modes = ?</title><rect x="903.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: multilingual = ?</title><rect x="982.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: synchronised_overlays = ?</title><rect x="1061.0" y="430" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="451" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="487" fill="#e5edf4" font-size="14" text-anchor="start">OmniPitch</text>
+<g><title>akashsv01/omnipitch: player_identity = ?</title><rect x="350.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: player_speed_distance = ?</title><rect x="429.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: pass_quality = ?</title><rect x="508.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: ball_shot_speed = ?</title><rect x="587.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: video_auto_eventing = ?</title><rect x="666.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: pressure_control_rhythm = ?</title><rect x="745.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: player_club_modes = ?</title><rect x="824.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: analyst_casual_modes = ?</title><rect x="903.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: multilingual = ?</title><rect x="982.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: synchronised_overlays = ?</title><rect x="1061.0" y="466" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="487" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="523" fill="#e5edf4" font-size="14" text-anchor="start">PitchPulse</text>
+<g><title>sethmalefo-del/pitchpulse: player_identity = ?</title><rect x="350.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: player_speed_distance = ?</title><rect x="429.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: pass_quality = ?</title><rect x="508.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: ball_shot_speed = ?</title><rect x="587.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: video_auto_eventing = ?</title><rect x="666.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: pressure_control_rhythm = ?</title><rect x="745.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: player_club_modes = ?</title><rect x="824.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: analyst_casual_modes = ?</title><rect x="903.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: multilingual = ?</title><rect x="982.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: synchronised_overlays = ?</title><rect x="1061.0" y="502" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="523" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="559" fill="#e5edf4" font-size="14" text-anchor="start">Pitchside</text>
+<g><title>aknotwell/Pitchside: player_identity = ?</title><rect x="350.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: player_speed_distance = ?</title><rect x="429.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: pass_quality = ?</title><rect x="508.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: ball_shot_speed = ?</title><rect x="587.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: video_auto_eventing = ?</title><rect x="666.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: pressure_control_rhythm = ?</title><rect x="745.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: player_club_modes = ?</title><rect x="824.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: analyst_casual_modes = ?</title><rect x="903.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: multilingual = ?</title><rect x="982.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: synchronised_overlays = ?</title><rect x="1061.0" y="538" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="559" fill="#c0cbd5" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="595" fill="#e5edf4" font-size="14" text-anchor="start">ReactCoach 11</text>
+<g><title>devgupta-9/reactcoach-11: player_identity = ●</title><rect x="350.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="595" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: player_speed_distance = ◐</title><rect x="429.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="595" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: pass_quality = ◐</title><rect x="508.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="595" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: ball_shot_speed = —</title><rect x="587.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="595" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: video_auto_eventing = —</title><rect x="666.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="595" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: pressure_control_rhythm = —</title><rect x="745.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="595" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: player_club_modes = ◐</title><rect x="824.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="595" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: analyst_casual_modes = ◇</title><rect x="903.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="595" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: multilingual = ◇</title><rect x="982.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="595" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: synchronised_overlays = —</title><rect x="1061.0" y="574" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="595" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="631" fill="#e5edf4" font-size="14" text-anchor="start">Second Story</text>
+<g><title>aj0khi/soccer-hackathon-project: player_identity = ◐</title><rect x="350.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: player_speed_distance = —</title><rect x="429.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="631" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: pass_quality = ◐</title><rect x="508.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: ball_shot_speed = ◐</title><rect x="587.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: video_auto_eventing = —</title><rect x="666.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="631" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: pressure_control_rhythm = ◐</title><rect x="745.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: player_club_modes = ◐</title><rect x="824.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: analyst_casual_modes = ◐</title><rect x="903.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: multilingual = —</title><rect x="982.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="631" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: synchronised_overlays = ◐</title><rect x="1061.0" y="610" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="631" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<text x="24" y="667" fill="#e5edf4" font-size="14" text-anchor="start">Shift11</text>
+<g><title>achand280606/Shift11: player_identity = ◐</title><rect x="350.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="667" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>achand280606/Shift11: player_speed_distance = —</title><rect x="429.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="667" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>achand280606/Shift11: pass_quality = ◐</title><rect x="508.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="667" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>achand280606/Shift11: ball_shot_speed = —</title><rect x="587.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="667" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>achand280606/Shift11: video_auto_eventing = —</title><rect x="666.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="667" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>achand280606/Shift11: pressure_control_rhythm = ●</title><rect x="745.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="667" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>achand280606/Shift11: player_club_modes = ◇</title><rect x="824.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>achand280606/Shift11: analyst_casual_modes = ◇</title><rect x="903.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">◇</text>
+</g>
+<g><title>achand280606/Shift11: multilingual = —</title><rect x="982.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="667" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>achand280606/Shift11: synchronised_overlays = —</title><rect x="1061.0" y="646" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="667" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="703" fill="#e5edf4" font-size="14" text-anchor="start">SignalFlow</text>
+<g><title>kamal-saleh/SignalFlow: player_identity = —</title><rect x="350.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: player_speed_distance = —</title><rect x="429.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: pass_quality = —</title><rect x="508.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: ball_shot_speed = —</title><rect x="587.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: video_auto_eventing = —</title><rect x="666.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: pressure_control_rhythm = —</title><rect x="745.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: player_club_modes = —</title><rect x="824.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: analyst_casual_modes = —</title><rect x="903.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: multilingual = —</title><rect x="982.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: synchronised_overlays = —</title><rect x="1061.0" y="682" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="703" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="739" fill="#e5edf4" font-size="14" text-anchor="start">Tactix AI</text>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: player_identity = —</title><rect x="350.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: player_speed_distance = —</title><rect x="429.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: pass_quality = —</title><rect x="508.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: ball_shot_speed = —</title><rect x="587.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: video_auto_eventing = —</title><rect x="666.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: pressure_control_rhythm = —</title><rect x="745.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: player_club_modes = —</title><rect x="824.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: analyst_casual_modes = —</title><rect x="903.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: multilingual = —</title><rect x="982.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: synchronised_overlays = —</title><rect x="1061.0" y="718" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="739" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="775" fill="#e5edf4" font-size="14" text-anchor="start">Touchline</text>
+<g><title>audioreworkvisions/touchline: player_identity = ●</title><rect x="350.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: player_speed_distance = ◐</title><rect x="429.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="775" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>audioreworkvisions/touchline: pass_quality = ●</title><rect x="508.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: ball_shot_speed = ◐</title><rect x="587.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="775" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>audioreworkvisions/touchline: video_auto_eventing = ◐</title><rect x="666.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="775" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>audioreworkvisions/touchline: pressure_control_rhythm = ●</title><rect x="745.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: player_club_modes = ●</title><rect x="824.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: analyst_casual_modes = ●</title><rect x="903.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: multilingual = ●</title><rect x="982.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>audioreworkvisions/touchline: synchronised_overlays = ●</title><rect x="1061.0" y="754" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="775" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<text x="24" y="811" fill="#e5edf4" font-size="14" text-anchor="start">VendorIQ</text>
+<g><title>SeyiBuilds/VendorIQ: player_identity = ◐</title><rect x="350.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="811" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: player_speed_distance = —</title><rect x="429.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: pass_quality = ◐</title><rect x="508.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="811" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: ball_shot_speed = —</title><rect x="587.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: video_auto_eventing = —</title><rect x="666.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: pressure_control_rhythm = —</title><rect x="745.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: player_club_modes = —</title><rect x="824.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: analyst_casual_modes = —</title><rect x="903.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: multilingual = —</title><rect x="982.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: synchronised_overlays = —</title><rect x="1061.0" y="790" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="811" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<text x="24" y="847" fill="#e5edf4" font-size="14" text-anchor="start">Virtual Studio Crew</text>
+<g><title>timmytrace/pl-insights-engine: player_identity = ●</title><rect x="350.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: player_speed_distance = ●</title><rect x="429.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: pass_quality = ●</title><rect x="508.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: ball_shot_speed = ●</title><rect x="587.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: video_auto_eventing = —</title><rect x="666.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="847" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: pressure_control_rhythm = ●</title><rect x="745.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: player_club_modes = ●</title><rect x="824.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: analyst_casual_modes = ●</title><rect x="903.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: multilingual = ●</title><rect x="982.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: synchronised_overlays = ●</title><rect x="1061.0" y="826" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<text x="24" y="883" fill="#e5edf4" font-size="14" text-anchor="start">VYBE — Every Fan Belongs</text>
+<g><title>Hapinam/vybe-ai: player_identity = ◐</title><rect x="350.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="385.5" y="883" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>Hapinam/vybe-ai: player_speed_distance = —</title><rect x="429.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="464.5" y="883" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Hapinam/vybe-ai: pass_quality = —</title><rect x="508.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="543.5" y="883" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Hapinam/vybe-ai: ball_shot_speed = —</title><rect x="587.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="622.5" y="883" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Hapinam/vybe-ai: video_auto_eventing = —</title><rect x="666.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="701.5" y="883" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Hapinam/vybe-ai: pressure_control_rhythm = ◐</title><rect x="745.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="780.5" y="883" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+<g><title>Hapinam/vybe-ai: player_club_modes = —</title><rect x="824.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="859.5" y="883" fill="#718599" font-size="17" text-anchor="middle">—</text>
+</g>
+<g><title>Hapinam/vybe-ai: analyst_casual_modes = ●</title><rect x="903.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="938.5" y="883" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>Hapinam/vybe-ai: multilingual = ●</title><rect x="982.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1017.5" y="883" fill="#73e3ae" font-size="17" text-anchor="middle">●</text>
+</g>
+<g><title>Hapinam/vybe-ai: synchronised_overlays = ◐</title><rect x="1061.0" y="862" width="71.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1096.5" y="883" fill="#f3c678" font-size="17" text-anchor="middle">◐</text>
+</g>
+</g></svg>

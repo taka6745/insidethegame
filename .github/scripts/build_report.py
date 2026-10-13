@@ -140,6 +140,7 @@ def main():
     snapshot = json.loads((DATA/'snapshot.json').read_text())
     editorial = json.loads((DATA/'editorial.json').read_text())
     reviews = json.loads((DATA/'reviews.json').read_text())
+    from build_judging import build as build_judging
     repos = {r.get('listed_url',r['url']).lower().removesuffix('.git'):r for r in audit['repositories']}
     # Also resolve originally listed aliases / casing to the audited canonical repository.
     from audit_repos import slug_from_url
@@ -160,6 +161,7 @@ def main():
                                      text(p.get('description'))+' '+text(p.get('tagline')),re.I)
                                     else 'Not specified'})
     items.sort(key=lambda p:(p['name'].casefold(),p['id']))
+    judging = build_judging(projects, audit, BASE, {p['id']: p['name'] for p in items})
     type_counts = Counter(p['category'] for p in items)
     size_counts = Counter(r['loc_bucket'] for r in audit['repositories'])
     data_counts = Counter(review_for(r,reviews)['bucket'] if
@@ -232,6 +234,7 @@ def main():
             f"**{len(inventory['files'])} files · {len(samples)} competitors with data · {metrics['data_bytes']/1_000_000:.1f} MB.**",'',
             'These samples are fictional match events, generated CSVs, vendor-shaped examples, and demo scenarios. '
             'No real match dataset or Kaggle/Hugging Face dataset use was verified in the initial readable repos.','',
+            judging,
             '## What they are building','','![Project types](types.svg)','',
             '## Repositories','','![Commits](commits.svg)','','![Code size](loc.svg)','',
             '| Project | What it does | Commits | LOC bucket | Data |',
@@ -293,7 +296,7 @@ def main():
               '[Refresh scripts](../.github/scripts/) · [Structured metrics](data/metrics.json) · '
               '[Reviewed sources](data/reviews.json) · [GitHub audit](data/repositories.json)','', '</details>','']
     (BASE/'README.md').write_text('\n'.join(report))
-    print('Generated two READMEs, metrics, CSV and five SVG graphics.')
+    print('Generated competitor READMEs, metrics, CSV, cached review queue and seven SVG graphics.')
 
 
 if __name__ == '__main__':

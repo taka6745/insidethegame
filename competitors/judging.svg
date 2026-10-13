@@ -1,0 +1,364 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="932" viewBox="0 0 1160 932" role="img" aria-labelledby="title desc">
+<title id="title">Public repository evidence · five equal criteria</title><desc id="desc">0–5 per criterion; ? unknown. Source review, not a working-demo test or predicted judge score.</desc>
+<rect width="1160" height="932" rx="14" fill="#101e2b"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="24" y="32" fill="#e5edf4" font-size="22" text-anchor="start">Public repository evidence · five equal criteria</text>
+<text x="24" y="57" fill="#a4bbc9" font-size="12" text-anchor="start">0–5 per criterion; ? unknown. Source review, not a working-demo test or predicted judge score.</text>
+<text x="425.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Technology</text>
+<text x="583.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Agent innovation</text>
+<text x="741.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Impact</text>
+<text x="899.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Experience</text>
+<text x="1057.0" y="92" fill="#a4bbc9" font-size="11" text-anchor="middle">Category</text>
+<text x="24" y="127" fill="#e5edf4" font-size="14" text-anchor="start">GoalGetter</text>
+<g><title>Simplify4Me2/goal-getter: technology = 2</title><rect x="350.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="127" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: agent_innovation = 0</title><rect x="508.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="127" fill="#718599" font-size="17" text-anchor="middle">0</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: impact = 1</title><rect x="666.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="127" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: experience = 2</title><rect x="824.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="127" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>Simplify4Me2/goal-getter: category_fit = ?</title><rect x="982.0" y="106" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="127" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="163" fill="#e5edf4" font-size="14" text-anchor="start">Match Storyteller</text>
+<g><title>faisalbasra/match-storyteller: technology = 1</title><rect x="350.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>faisalbasra/match-storyteller: agent_innovation = 1</title><rect x="508.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>faisalbasra/match-storyteller: impact = 1</title><rect x="666.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>faisalbasra/match-storyteller: experience = 1</title><rect x="824.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="163" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>faisalbasra/match-storyteller: category_fit = ?</title><rect x="982.0" y="142" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="163" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="199" fill="#e5edf4" font-size="14" text-anchor="start">Matchday Crew</text>
+<g><title>timsheldon1/matchday-crew: technology = 3</title><rect x="350.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timsheldon1/matchday-crew: agent_innovation = 3</title><rect x="508.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timsheldon1/matchday-crew: impact = 2</title><rect x="666.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="199" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>timsheldon1/matchday-crew: experience = 3</title><rect x="824.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timsheldon1/matchday-crew: category_fit = 3</title><rect x="982.0" y="178" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="199" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<text x="24" y="235" fill="#e5edf4" font-size="14" text-anchor="start">MatchLens — What-If Simulation</text>
+<g><title>vishnugovind10/matchlens: technology = 2</title><rect x="350.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>vishnugovind10/matchlens: agent_innovation = 0</title><rect x="508.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="235" fill="#718599" font-size="17" text-anchor="middle">0</text>
+</g>
+<g><title>vishnugovind10/matchlens: impact = 2</title><rect x="666.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>vishnugovind10/matchlens: experience = 2</title><rect x="824.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="235" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>vishnugovind10/matchlens: category_fit = ?</title><rect x="982.0" y="214" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="235" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="271" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Beyond the Scoreline</text>
+<g><title>natagowai/matchmind-ai: technology = 0</title><rect x="350.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+</g>
+<g><title>natagowai/matchmind-ai: agent_innovation = 0</title><rect x="508.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+</g>
+<g><title>natagowai/matchmind-ai: impact = ?</title><rect x="666.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="271" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>natagowai/matchmind-ai: experience = 0</title><rect x="824.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="271" fill="#718599" font-size="17" text-anchor="middle">0</text>
+</g>
+<g><title>natagowai/matchmind-ai: category_fit = ?</title><rect x="982.0" y="250" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="271" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="307" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — Every Match Has a Pe…</text>
+<g><title>swarupe7/microsoft_dev_hackathon: technology = 2</title><rect x="350.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: agent_innovation = 2</title><rect x="508.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: impact = 2</title><rect x="666.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: experience = 2</title><rect x="824.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>swarupe7/microsoft_dev_hackathon: category_fit = 2</title><rect x="982.0" y="286" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="307" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<text x="24" y="343" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind Studio — Broadcast &amp; Stre…</text>
+<g><title>HamzatAbdulazeez/matchmind-studio: technology = 2</title><rect x="350.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: agent_innovation = 2</title><rect x="508.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: impact = 2</title><rect x="666.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: experience = 2</title><rect x="824.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>HamzatAbdulazeez/matchmind-studio: category_fit = 2</title><rect x="982.0" y="322" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="343" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<text x="24" y="379" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind — AI Broadcast Booth</text>
+<g><title>ALISAEED-1/matchmind: technology = 4</title><rect x="350.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="379" fill="#73e3ae" font-size="17" text-anchor="middle">4</text>
+</g>
+<g><title>ALISAEED-1/matchmind: agent_innovation = 3</title><rect x="508.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>ALISAEED-1/matchmind: impact = 3</title><rect x="666.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>ALISAEED-1/matchmind: experience = 3</title><rect x="824.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>ALISAEED-1/matchmind: category_fit = 3</title><rect x="982.0" y="358" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="379" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<text x="24" y="415" fill="#e5edf4" font-size="14" text-anchor="start">MSFT x EPL Hackathon</text>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: technology = ?</title><rect x="350.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: agent_innovation = ?</title><rect x="508.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: impact = ?</title><rect x="666.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: experience = ?</title><rect x="824.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>zekariasasaminew/msft-x-epl-hackathon: category_fit = ?</title><rect x="982.0" y="394" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="415" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="451" fill="#e5edf4" font-size="14" text-anchor="start">MatchMind AI — AI Football Analyst</text>
+<g><title>s70241963-afk/Sushmitha: technology = ?</title><rect x="350.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: agent_innovation = ?</title><rect x="508.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: impact = ?</title><rect x="666.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: experience = ?</title><rect x="824.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>s70241963-afk/Sushmitha: category_fit = ?</title><rect x="982.0" y="430" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="451" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="487" fill="#e5edf4" font-size="14" text-anchor="start">OmniPitch</text>
+<g><title>akashsv01/omnipitch: technology = ?</title><rect x="350.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: agent_innovation = ?</title><rect x="508.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: impact = ?</title><rect x="666.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: experience = ?</title><rect x="824.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>akashsv01/omnipitch: category_fit = ?</title><rect x="982.0" y="466" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="487" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="523" fill="#e5edf4" font-size="14" text-anchor="start">PitchPulse</text>
+<g><title>sethmalefo-del/pitchpulse: technology = ?</title><rect x="350.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: agent_innovation = ?</title><rect x="508.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: impact = ?</title><rect x="666.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: experience = ?</title><rect x="824.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>sethmalefo-del/pitchpulse: category_fit = ?</title><rect x="982.0" y="502" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="523" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="559" fill="#e5edf4" font-size="14" text-anchor="start">Pitchside</text>
+<g><title>aknotwell/Pitchside: technology = ?</title><rect x="350.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: agent_innovation = ?</title><rect x="508.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: impact = ?</title><rect x="666.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: experience = ?</title><rect x="824.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<g><title>aknotwell/Pitchside: category_fit = ?</title><rect x="982.0" y="538" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="559" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="595" fill="#e5edf4" font-size="14" text-anchor="start">ReactCoach 11</text>
+<g><title>devgupta-9/reactcoach-11: technology = 3</title><rect x="350.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="595" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: agent_innovation = 1</title><rect x="508.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="595" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: impact = 2</title><rect x="666.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="595" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: experience = 3</title><rect x="824.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="595" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>devgupta-9/reactcoach-11: category_fit = ?</title><rect x="982.0" y="574" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="595" fill="#718599" font-size="17" text-anchor="middle">?</text>
+</g>
+<text x="24" y="631" fill="#e5edf4" font-size="14" text-anchor="start">Second Story</text>
+<g><title>aj0khi/soccer-hackathon-project: technology = 2</title><rect x="350.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: agent_innovation = 1</title><rect x="508.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="631" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: impact = 2</title><rect x="666.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: experience = 2</title><rect x="824.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="631" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>aj0khi/soccer-hackathon-project: category_fit = 1</title><rect x="982.0" y="610" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="631" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<text x="24" y="667" fill="#e5edf4" font-size="14" text-anchor="start">Shift11</text>
+<g><title>achand280606/Shift11: technology = 2</title><rect x="350.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>achand280606/Shift11: agent_innovation = 1</title><rect x="508.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>achand280606/Shift11: impact = 2</title><rect x="666.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="667" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>achand280606/Shift11: experience = 1</title><rect x="824.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>achand280606/Shift11: category_fit = 1</title><rect x="982.0" y="646" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="667" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<text x="24" y="703" fill="#e5edf4" font-size="14" text-anchor="start">SignalFlow</text>
+<g><title>kamal-saleh/SignalFlow: technology = 1</title><rect x="350.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: agent_innovation = 1</title><rect x="508.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: impact = 1</title><rect x="666.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: experience = 1</title><rect x="824.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>kamal-saleh/SignalFlow: category_fit = 1</title><rect x="982.0" y="682" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="703" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<text x="24" y="739" fill="#e5edf4" font-size="14" text-anchor="start">Tactix AI</text>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: technology = 1</title><rect x="350.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: agent_innovation = 1</title><rect x="508.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: impact = 1</title><rect x="666.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: experience = 1</title><rect x="824.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<g><title>vasureddyuppunuri/Inside--the-game-Tactix-AI: category_fit = 1</title><rect x="982.0" y="718" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="739" fill="#859baf" font-size="17" text-anchor="middle">1</text>
+</g>
+<text x="24" y="775" fill="#e5edf4" font-size="14" text-anchor="start">Touchline</text>
+<g><title>audioreworkvisions/touchline: technology = 3</title><rect x="350.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="775" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>audioreworkvisions/touchline: agent_innovation = 2</title><rect x="508.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>audioreworkvisions/touchline: impact = 2</title><rect x="666.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>audioreworkvisions/touchline: experience = 3</title><rect x="824.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="775" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>audioreworkvisions/touchline: category_fit = 2</title><rect x="982.0" y="754" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="775" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<text x="24" y="811" fill="#e5edf4" font-size="14" text-anchor="start">VendorIQ</text>
+<g><title>SeyiBuilds/VendorIQ: technology = 2</title><rect x="350.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: agent_innovation = 2</title><rect x="508.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: impact = 2</title><rect x="666.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: experience = 3</title><rect x="824.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="811" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>SeyiBuilds/VendorIQ: category_fit = 2</title><rect x="982.0" y="790" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="811" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<text x="24" y="847" fill="#e5edf4" font-size="14" text-anchor="start">Virtual Studio Crew</text>
+<g><title>timmytrace/pl-insights-engine: technology = 4</title><rect x="350.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="847" fill="#73e3ae" font-size="17" text-anchor="middle">4</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: agent_innovation = 3</title><rect x="508.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: impact = 3</title><rect x="666.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: experience = 3</title><rect x="824.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>timmytrace/pl-insights-engine: category_fit = 3</title><rect x="982.0" y="826" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="847" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<text x="24" y="883" fill="#e5edf4" font-size="14" text-anchor="start">VYBE — Every Fan Belongs</text>
+<g><title>Hapinam/vybe-ai: technology = 3</title><rect x="350.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="425.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>Hapinam/vybe-ai: agent_innovation = 2</title><rect x="508.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="583.0" y="883" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+<g><title>Hapinam/vybe-ai: impact = 3</title><rect x="666.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="741.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>Hapinam/vybe-ai: experience = 3</title><rect x="824.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="899.0" y="883" fill="#69baff" font-size="17" text-anchor="middle">3</text>
+</g>
+<g><title>Hapinam/vybe-ai: category_fit = 2</title><rect x="982.0" y="862" width="150.0" height="29" rx="4" fill="#192d3b"/>
+<text x="1057.0" y="883" fill="#c2a4ff" font-size="17" text-anchor="middle">2</text>
+</g>
+</g></svg>

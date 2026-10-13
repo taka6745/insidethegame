@@ -15,5 +15,6 @@
 | [Existing technology](landscape.md) | Which capabilities already exist? |
 | [Recent tech, repos and papers](technology.md) | What changed in July–October? |
 | [Microsoft judging](brief.md) | What are we being scored on? |
+| [Example ideas + independent challenges](ideas/README.md) | How do ambitious concepts stand up to the brief and fan demand? |
 
 [Source dates and links](sources.json)
