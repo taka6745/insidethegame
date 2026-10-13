@@ -2,7 +2,7 @@
 
 The hackathon project: research, competitor data and, as development progresses, application code.
 
-→ [Research](research/README.md) · [Business cases](research/cases.md) · [Judging](research/brief.md) · [Recent technology](research/technology.md) · [AI instructions](AGENTS.md)
+→ [Research](research/README.md) · [Business cases](research/cases.md) · [Judging](research/brief.md) · [Recent technology](research/technology.md) · [Data approach](research/data.md) · [AI instructions](AGENTS.md)
 
 ![How fan demand connects to League value](research/business.svg)
 

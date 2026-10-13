@@ -348,6 +348,69 @@
       "published_or_updated": null,
       "checked_on": "2026-10-13",
       "scope": "Copilot, Foundry, agents, workflows and data foundations."
+    },
+    {
+      "id": "skillcorner",
+      "title": "SkillCorner open data",
+      "url": "https://github.com/SkillCorner/opendata",
+      "publisher": "SkillCorner",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Real tracking and dynamic events; repo MIT. Schema reference, not synthetic entry data."
+    },
+    {
+      "id": "metrica",
+      "title": "Metrica sample data",
+      "url": "https://github.com/metrica-sports/sample-data",
+      "publisher": "Metrica Sports",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Real synchronized events/tracking; public attribution requested; broad reuse terms unverified."
+    },
+    {
+      "id": "statsbomb",
+      "title": "Hudl open data",
+      "url": "https://github.com/hudl/open-data",
+      "publisher": "Hudl / StatsBomb",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Real events and selected 360 snapshots; inspect data-specific LICENSE.pdf before reuse."
+    },
+    {
+      "id": "grf",
+      "title": "Google Research Football",
+      "url": "https://github.com/google-research/football",
+      "publisher": "Google Research",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "State and rendering simulator; archived 19 August 2026; code Apache 2.0, check assets separately."
+    },
+    {
+      "id": "soccersynth",
+      "title": "SoccerSynth-Detection data",
+      "url": "https://zenodo.org/records/20839314",
+      "publisher": "Haobin Qin",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Published 25 June 2026; synthetic images/boxes, not full trajectories; dataset licence unverified."
+    },
+    {
+      "id": "soccertrack",
+      "title": "SoccerTrack v2",
+      "url": "https://atomscott.github.io/SoccerTrack-v2/",
+      "publisher": "SoccerTrack authors",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "Real panoramic amateur-match video and annotations; dataset CC BY 4.0, code MIT."
+    },
+    {
+      "id": "physicsvideo",
+      "title": "World Models Last Exam in Physics",
+      "url": "https://arxiv.org/abs/2610.08791",
+      "publisher": "Paper authors",
+      "published_or_updated": null,
+      "checked_on": "2026-10-13",
+      "scope": "First submitted 6 October 2026; general physics video-generation benchmark, not football."
     }
   ]
 }

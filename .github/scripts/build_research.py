@@ -81,6 +81,13 @@ def main():
     parts += [text(28,191,'Synthetic events',15,MUTED),text(416,191,'Why it matters',15,MUTED),text(804,191,'For this fan',15,MUTED)]
     save('challenge.svg','Microsoft’s five-stage brief','Synthetic events flow through ingestion, interpretation, explanation, rendering and personalisation. Source: official rules section 4.1.',218,parts)
 
+    parts=[text(28,66,'One fictional match • shared IDs, units and clock',14,MUTED)]
+    parts += [box(28,115,230,115,COLORS[0]),text(143,160,'Synthetic match',23,COLORS[0],'middle',700),text(143,192,'State + events',17,MUTED,'middle')]
+    for y,label,c in [(100,'Statistics + evidence',COLORS[1]),(195,'Positions → replay',COLORS[2])]:
+        parts += [line(258,172,325,y+32,arrow=True),box(340,y,300,64,c),text(490,y+40,label,20,c,'middle',700)]
+    parts += [line(640,132,700,172,arrow=True),line(640,227,700,172,arrow=True),box(715,115,257,115,COLORS[3]),text(843,158,'Fan experience',22,COLORS[3],'middle',700),text(843,190,'Overlay · story · recap',16,MUTED,'middle'),text(28,299,'Tracking supports movement claims • expected answers stay separate from live inputs',14,MUTED)]
+    save('match-data.svg','Facts first, then the experience','A coherent synthetic match provides events and state. Metrics and evidence support stories; time-aligned tracking drives a visual replay. The fan experience combines them.',324,parts)
+
     data=json.loads((OUT/'technology.json').read_text())['items']
     start=date(2026,7,1); end=date(2026,10,31)
     def tx(d): return 300+(date.fromisoformat(d)-start).days/(end-start).days*610
