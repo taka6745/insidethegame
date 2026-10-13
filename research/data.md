@@ -53,6 +53,63 @@ VYBE’s collected demo has 31 sparse events and no coordinates. MatchMind’s r
 
 The useful difference would be **consistent match behaviour and provable explanations**, beyond simply having synthetic JSON.
 
+## Google Research Football: generate and branch matches
+
+**Research option, not a selected engine.** Two AI-controlled teams can play automatically; we can capture state and restore a checkpoint to try a different action. Capabilities checked in source/docs **14 October 2026**; not yet run locally.
+
+```mermaid
+flowchart LR
+  G[AI vs AI match] --> D[State + event exporter]
+  G --> V[Optional video]
+  G --> S[Save checkpoint]
+  S --> A[Original action]
+  S --> B[Different pass or run]
+  A --> C[Compare outcomes + replay]
+  B --> C
+  style G fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  style S fill:#fef3c7,stroke:#d97706,color:#0f172a
+  style C fill:#dcfce7,stroke:#16a34a,color:#0f172a
+```
+
+| Capability | Available / work needed |
+| --- | --- |
+| Automatic matches | Built-in AI; no policy training required to begin. The `v2` action set includes `action_builtin_ai`. [Source](https://github.com/google-research/football/blob/master/gfootball/env/football_action_set.py) |
+| Synthetic tracking | Player positions/movement, ball position/movement/ownership, score, cards and restart state. [Observations](https://github.com/google-research/football/blob/master/gfootball/doc/observation.md) |
+| Football events | Build an exporter for passes, recipients, shots, interceptions and tackles. Raw state is not a complete labelled event feed; instrument the engine where inference is ambiguous. |
+| Branching | `get_state()` / `set_state()` preserve and restore physics, random state and internal player state. Apply different actions, then continue the simulation. [API](https://github.com/google-research/football/blob/master/gfootball/doc/api.md) |
+| Video | Optional rendered frames from the same world. Rendering slows simulation; keep bulk generation headless when footage is unnecessary. [API](https://github.com/google-research/football/blob/master/gfootball/doc/api.md) |
+
+**Example:** save before a midfielder's pass → replay the original → restore → attempt another passing direction → let both teams respond. Compare possession retained, pressure escaped and chances created. These would be **simulated alternatives**, not proof of real-world outcomes.
+
+<details>
+<summary>What to save, how to test it, and useful fan experiences</summary>
+
+| Save / build | Why |
+| --- | --- |
+| Checkpoints + action log + pinned engine/configuration | An event JSON row cannot reconstruct hidden state. Replay from the preceding checkpoint to the desired instant; verify restore/replay equivalence. |
+| External controller state | Custom agents may have memory or randomness outside the engine snapshot; save that separately. |
+| Step → event mapping; original and branch IDs | Link a displayed moment to its checkpoint and distinguish each alternative from the original. |
+| Coordinates, step timing and units | Raw coordinates are normalised; movement vectors are displacement per step. Calibrate before reporting metres or km/h. |
+| Event definitions + validation fixtures | A requested pass is not necessarily an executed or completed pass. Check exporter labels against engine signals and replay. |
+| Varied response policies / plausible interventions | Repeating the identical restored state and actions does not create independent evidence. Report assumptions and distributions before claiming an alternative is better. |
+
+Passing direction influences the engine's recipient selection; an exact recipient or a whole-team instruction such as “press higher” may require additional control logic. The snapshot is opaque, not a freely editable tactical JSON object. [Action semantics](https://github.com/google-research/football/blob/master/gfootball/doc/observation.md)
+
+**Possible experiences:** inspect why a passing lane opened; play an alternative for a few seconds; follow a player through a replay; test a video-only event detector against hidden simulator truth. These are examples, not a product commitment. An engine-generated world still needs football-realism checks and meaningful fan-facing intelligence to satisfy the brief.
+
+</details>
+
+<details>
+<summary>Submission route and FIFA / EA FC comparison</summary>
+
+GRF's top-level code uses [Apache 2.0](https://github.com/google-research/football/blob/master/LICENSE); its bundled engine uses the [Unlicense](https://github.com/google-research/football/blob/master/third_party/gfootball_engine/LICENSE). Audit shipped assets, fonts and dependencies, preserve notices, and use fictional teams/appropriately licensed visuals. The [repository](https://github.com/google-research/football) was archived **19 August 2026**; installation, rendering, reproducibility and deployment remain to be tested.
+
+FIFA / EA FC extraction is a different route: [EA's agreement](https://www.ea.com/legal/user-agreement?isLocalized=true&setLocale=en-gb) restricts reverse engineering and source/data extraction except where authorised or permitted by law. Its [content policy](https://help.ea.com/en/articles/security-and-rules/ea-content-policy/) does not generally permit mined assets or third-party product integrations. Permission to publish gameplay is not blanket permission to extract or redistribute an engine.
+
+The [hackathon rules](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md) require rights to submitted material and working judging access. An open simulator offers a clearer licensing path, not an automatic eligibility guarantee. Our new contribution would be the exporter, intelligence and audience experience; credit existing components.
+
+</details>
+
 ## Useful sources
 
 | Source | Data / role | Constraint |
