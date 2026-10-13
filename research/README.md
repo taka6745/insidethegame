@@ -8,6 +8,7 @@
 
 | Explore | Question |
 | --- | --- |
+| [Data: events, tracking or video?](data.md) | What inputs would support the brief? |
 | [Business cases](cases.md) | Where is there evidence of something to improve? |
 | [The League](business.md) | What does it control, and where is the value? |
 | [Fans](fans.md) | What does it already offer fans? |
