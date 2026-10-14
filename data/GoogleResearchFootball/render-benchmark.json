@@ -152,5 +152,32 @@
         "end"
       ]
     }
+  },
+  "sharing": {
+    "video_720p": {
+      "file": "match-720p.mp4",
+      "bytes": 480327784,
+      "sha256": "d57130f5fc06aa336ea7a6eb46c6b30054c65b404bb65a6e640cf96b2947cc01",
+      "codec": "HEVC",
+      "width": 1280,
+      "height": 720,
+      "fps": 25,
+      "frames": 144390,
+      "seconds": 5775.6,
+      "encoder": "libx265",
+      "preset": "medium",
+      "crf": 28
+    },
+    "data_zip": {
+      "archive": "data-lossless.zip",
+      "bytes": 1895253518,
+      "sha256": "425aa0d4ad57daaf7c18e75becc0e93791142e6e96c9fc48ee21f1525ef426fc",
+      "elapsed_seconds": 539.6447230000049,
+      "verified_with": "unzip -p; SHA-256, bytes and lines match every source's uncompressed contents"
+    },
+    "unpacked_data_bytes": 8530370061,
+    "source_files_verified": 46,
+    "total_download_bytes": 2375581302,
+    "preservation": "Exact decompressed CSV/JSON bytes, all rows, columns and precision; binary checkpoints preserved."
   }
 }
