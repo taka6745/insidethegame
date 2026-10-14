@@ -13,6 +13,12 @@ def main():
     data=ROOT/'competitors/data'
     projects=json.loads((data/'projects.json').read_text())
     metrics=json.loads((data/'metrics.json').read_text())
+    audit=json.loads((data/'repositories.json').read_text())
+    snapshot=json.loads((data/'snapshot.json').read_text())
+    assert snapshot['project_count']==len(projects),'Snapshot count mismatch'
+    assert metrics['unique_repos']==len(audit['repositories']),'Repository count mismatch'
+    assert metrics['readable_repos']==sum(r['status']=='ok' for r in audit['repositories']),'Readable repository count mismatch'
+    assert metrics['github_checked_at']==audit['checked_at'],'GitHub audit date mismatch'
     ids=[p['id'] for p in metrics['catalogue']]
     assert len(ids)==len(set(ids))==len(projects),'Project coverage mismatch'
     assert set(ids)=={str(p['id']) for p in projects},'Missing project'
