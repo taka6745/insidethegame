@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-13T09:07:24+00:00",
+  "checked_at": "2026-10-14T00:49:14+00:00",
   "commit_scope": "all ancestors of the observed default-branch HEAD",
   "loc_method": "nonblank source lines including comments and tests; excludes dependencies, builds, generated declarations, lockfiles, datasets, and docs",
   "repositories": [
@@ -3123,20 +3123,20 @@
       "listed_url": "https://github.com/audioreworkvisions/touchline",
       "slug": "audioreworkvisions/touchline",
       "status": "ok",
-      "commits": 2,
-      "source_lines": 567,
-      "test_lines": 96,
+      "commits": 4,
+      "source_lines": 850,
+      "test_lines": 149,
       "loc_bucket": "1\u2013999",
       "license": null,
       "default_branch": "main",
       "description": null,
-      "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
-      "last_commit_at": "2026-10-09T18:03:51Z",
-      "app_lines": 471,
+      "sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+      "last_commit_at": "2026-10-13T10:28:20Z",
+      "app_lines": 701,
       "language_lines": {
-        ".mjs": 456,
-        ".html": 17,
-        ".css": 9,
+        ".mjs": 736,
+        ".html": 18,
+        ".css": 11,
         ".bicep": 85
       },
       "files": [
@@ -3198,11 +3198,11 @@
         },
         {
           "path": ".env.example",
-          "bytes": 275
+          "bytes": 406
         },
         {
           "path": ".gitignore",
-          "bytes": 71
+          "bytes": 89
         },
         {
           "path": "Dockerfile",
@@ -3215,6 +3215,10 @@
         {
           "path": "Start-Touchline.cmd",
           "bytes": 322
+        },
+        {
+          "path": "audio-replay.mjs",
+          "bytes": 4201
         },
         {
           "path": "data/player-pulse-42-p10.json",
@@ -3238,7 +3242,7 @@
         },
         {
           "path": "dist/app.mjs",
-          "bytes": 22795
+          "bytes": 29213
         },
         {
           "path": "dist/engine.mjs",
@@ -3246,7 +3250,7 @@
         },
         {
           "path": "dist/index.html",
-          "bytes": 12927
+          "bytes": 14663
         },
         {
           "path": "dist/player-pulse.mjs",
@@ -3258,7 +3262,7 @@
         },
         {
           "path": "dist/style.css",
-          "bytes": 23494
+          "bytes": 24937
         },
         {
           "path": "dist/vision.mjs",
@@ -3266,11 +3270,11 @@
         },
         {
           "path": "docs/API.md",
-          "bytes": 3064
+          "bytes": 4864
         },
         {
           "path": "docs/ARCHITECTURE.md",
-          "bytes": 5974
+          "bytes": 7059
         },
         {
           "path": "docs/AZURE-SETUP.md",
@@ -3295,6 +3299,10 @@
         {
           "path": "docs/PLAYER-PULSE.md",
           "bytes": 4787
+        },
+        {
+          "path": "docs/PODCAST.md",
+          "bytes": 2256
         },
         {
           "path": "docs/PROJEKT-DE.md",
@@ -3329,6 +3337,10 @@
           "bytes": 274
         },
         {
+          "path": "podcast.mjs",
+          "bytes": 6475
+        },
+        {
           "path": "scripts/benchmark.mjs",
           "bytes": 1091
         },
@@ -3341,8 +3353,20 @@
           "bytes": 762
         },
         {
+          "path": "scripts/produce-podcast.mjs",
+          "bytes": 4538
+        },
+        {
           "path": "server.mjs",
-          "bytes": 7668
+          "bytes": 11941
+        },
+        {
+          "path": "speech.mjs",
+          "bytes": 2318
+        },
+        {
+          "path": "tests/audio-replay.test.mjs",
+          "bytes": 878
         },
         {
           "path": "tests/engine.test.mjs",
@@ -3357,8 +3381,16 @@
           "bytes": 3390
         },
         {
+          "path": "tests/podcast.test.mjs",
+          "bytes": 2048
+        },
+        {
           "path": "tests/server.test.mjs",
-          "bytes": 2005
+          "bytes": 3604
+        },
+        {
+          "path": "tests/speech.test.mjs",
+          "bytes": 1214
         },
         {
           "path": "tests/vision.test.mjs",
@@ -3371,133 +3403,133 @@
           "path": "dist/app.mjs",
           "line": 3,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/app.mjs#L3"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/app.mjs#L3"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "dist/app.mjs",
-          "line": 59,
+          "line": 65,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/app.mjs#L59"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/app.mjs#L65"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "dist/app.mjs",
-          "line": 58,
+          "line": 64,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/app.mjs#L58"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/app.mjs#L64"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "dist/engine.mjs",
           "line": 14,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/engine.mjs#L14"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/engine.mjs#L14"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "dist/engine.mjs",
           "line": 26,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/engine.mjs#L26"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/engine.mjs#L26"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "dist/vision.mjs",
           "line": 2,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/dist/vision.mjs#L2"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/dist/vision.mjs#L2"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "docs/API.md",
-          "line": 27,
+          "line": 29,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/API.md#L27"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/API.md#L29"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/ARCHITECTURE.md",
           "line": 29,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/ARCHITECTURE.md#L29"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/ARCHITECTURE.md#L29"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "docs/ARCHITECTURE.md",
+          "line": 54,
+          "source_code": false,
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/ARCHITECTURE.md#L54"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/DATA-CARD.md",
           "line": 5,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/DATA-CARD.md#L5"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/DATA-CARD.md#L5"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/DATA-CARD.md",
           "line": 11,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/DATA-CARD.md#L11"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/DATA-CARD.md#L11"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/DATA-CARD.md",
           "line": 15,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/DATA-CARD.md#L15"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/DATA-CARD.md#L15"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/EVALUATION.md",
           "line": 32,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/EVALUATION.md#L32"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/EVALUATION.md#L32"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "docs/PROJEKT-DE.md",
           "line": 35,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/PROJEKT-DE.md#L35"
-        },
-        {
-          "signal": "Synthetic generator candidate",
-          "path": "docs/SUBMISSION-EN.md",
-          "line": 21,
-          "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/docs/SUBMISSION-EN.md#L21"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/docs/PROJEKT-DE.md#L35"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "scripts/export-data.mjs",
           "line": 2,
           "source_code": true,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/scripts/export-data.mjs#L2"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/scripts/export-data.mjs#L2"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "tests/server.test.mjs",
           "line": 6,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/tests/server.test.mjs#L6"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/tests/server.test.mjs#L6"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "tests/server.test.mjs",
           "line": 7,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/tests/server.test.mjs#L7"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/tests/server.test.mjs#L7"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "tests/server.test.mjs",
           "line": 9,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/tests/server.test.mjs#L9"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/tests/server.test.mjs#L9"
         },
         {
           "signal": "Fixture / replay candidate",
           "path": "tests/server.test.mjs",
-          "line": 11,
+          "line": 13,
           "source_code": false,
-          "url": "https://github.com/audioreworkvisions/touchline/blob/0ad664372d762ad83f1e18aaa05b41c74a2cd0fa/tests/server.test.mjs#L11"
+          "url": "https://github.com/audioreworkvisions/touchline/blob/648179a97a99bb4974a089cfd87dd2e1e66acaa2/tests/server.test.mjs#L13"
         }
       ]
     },
@@ -5116,15 +5148,15 @@
       "listed_url": "https://github.com/swarupe7/microsoft_dev_hackathon",
       "slug": "swarupe7/microsoft_dev_hackathon",
       "status": "ok",
-      "commits": 2,
+      "commits": 4,
       "source_lines": 3275,
       "test_lines": 0,
       "loc_bucket": "1k\u20134.9k",
       "license": null,
       "default_branch": "main",
       "description": null,
-      "sha": "bfc977ae91dc3b822ea3aef88f4f705942c898cd",
-      "last_commit_at": "2026-10-10T12:43:11Z",
+      "sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+      "last_commit_at": "2026-10-13T16:08:11Z",
       "app_lines": 3275,
       "language_lines": {
         ".ts": 1786,
@@ -5136,6 +5168,10 @@
         {
           "path": ".env.example",
           "bytes": 411
+        },
+        {
+          "path": ".github/workflows/azure-webapps-node.yml",
+          "bytes": 2922
         },
         {
           "path": ".gitignore",
@@ -5304,42 +5340,42 @@
           "path": "README.md",
           "line": 7,
           "source_code": false,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/README.md#L7"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/README.md#L7"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "lib/ai/generateCommentary.ts",
           "line": 9,
           "source_code": true,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/lib/ai/generateCommentary.ts#L9"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/lib/ai/generateCommentary.ts#L9"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "lib/ai/generateCommentary.ts",
           "line": 174,
           "source_code": true,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/lib/ai/generateCommentary.ts#L174"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/lib/ai/generateCommentary.ts#L174"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "lib/match/engine.ts",
           "line": 198,
           "source_code": true,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/lib/match/engine.ts#L198"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/lib/match/engine.ts#L198"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "package-lock.json",
           "line": 3569,
           "source_code": false,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/package-lock.json#L3569"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/package-lock.json#L3569"
         },
         {
           "signal": "Synthetic generator candidate",
           "path": "package-lock.json",
           "line": 4048,
           "source_code": false,
-          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/bfc977ae91dc3b822ea3aef88f4f705942c898cd/package-lock.json#L4048"
+          "url": "https://github.com/swarupe7/microsoft_dev_hackathon/blob/7204630cc4a048b7a57dd46ab6fb21367ebd2c52/package-lock.json#L4048"
         }
       ]
     },

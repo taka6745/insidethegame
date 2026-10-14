@@ -1,6 +1,6 @@
 {
   "exported_at": "2026-10-13T05:20:49+00:00",
-  "github_checked_at": "2026-10-13T09:07:24+00:00",
+  "github_checked_at": "2026-10-14T00:49:14+00:00",
   "projects": 121,
   "linked_projects": 22,
   "unique_repos": 22,
@@ -28,9 +28,10 @@
     "0": 4
   },
   "data_buckets": {
-    "Synthetic generator": 10,
+    "Synthetic generator": 8,
     "Fixed synthetic fixture": 3,
     "Unavailable": 4,
+    "Changed; re-review needed": 2,
     "Synthetic scenarios": 1,
     "Planned synthetic": 3,
     "Starter scaffold": 1
@@ -591,10 +592,10 @@
         {
           "slug": "swarupe7/microsoft_dev_hackathon",
           "url": "https://github.com/swarupe7/microsoft_dev_hackathon",
-          "commits": 2,
+          "commits": 4,
           "source_lines": 3275,
           "loc_bucket": "1k–4.9k",
-          "sha": "bfc977ae91dc3b822ea3aef88f4f705942c898cd",
+          "sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
           "status": "ok"
         }
       ],
@@ -1415,10 +1416,10 @@
         {
           "slug": "audioreworkvisions/touchline",
           "url": "https://github.com/audioreworkvisions/touchline",
-          "commits": 2,
-          "source_lines": 567,
+          "commits": 4,
+          "source_lines": 850,
           "loc_bucket": "1–999",
-          "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
+          "sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
           "status": "ok"
         }
       ],

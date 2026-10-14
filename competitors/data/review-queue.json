@@ -34,6 +34,22 @@
       }
     },
     {
+      "project_id": "126406",
+      "name": "Touchline",
+      "repository": "audioreworkvisions/touchline",
+      "state": "stale",
+      "input_key": "ec3294b7f39f5c9c221b094c0c3092b8c44ecd5630e6e92851ad38885a22f80d",
+      "inputs": {
+        "project_id": "126406",
+        "repository": "audioreworkvisions/touchline",
+        "repository_sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+        "description_sha256": "a89d4aaa298650b1a70507f575ae463f79e8c2b4a00dfdacd90b03d0b8eb4fda",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    },
+    {
       "project_id": "126441",
       "name": "PitchPulse",
       "repository": "sethmalefo-del/pitchpulse",
@@ -44,6 +60,22 @@
         "repository": "sethmalefo-del/pitchpulse",
         "repository_sha": null,
         "description_sha256": "db834e6d854a1d1399789d2e5055c84acef941d5d113d6376c6b7a0a370e0254",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      }
+    },
+    {
+      "project_id": "126423",
+      "name": "MatchMind AI: Every Match Has a Personality\n",
+      "repository": "swarupe7/microsoft_dev_hackathon",
+      "state": "stale",
+      "input_key": "6c959387ad9f936b9e0ea21edd97493b19e4b29dbf40ff1378fc7fbb69edc722",
+      "inputs": {
+        "project_id": "126423",
+        "repository": "swarupe7/microsoft_dev_hackathon",
+        "repository_sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+        "description_sha256": "d062eeeae35e6828f51e1ef072a132b2c17ab21a1870c051c1e2bcbb49540fcd",
         "rubric_version": "itg-rubric-v2",
         "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
         "track": "repository_evidence"
