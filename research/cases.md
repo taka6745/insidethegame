@@ -1,31 +1,46 @@
-# Where improvement has a business case
+# What they ask for — and why it matters
 
-[← Research](README.md) · [Microsoft brief](brief.md) · [Existing products](fans.md)
+[← Research](README.md) · [Full brief + judging](brief.md) · [Existing fan products](fans.md)
 
-![Evidence of fan demand and friction](demand.svg)
+![The brief leads through fan benefits to audience demand](business.svg)
 
-| Concrete situation | Evidence of need | Microsoft asks for | League value to measure |
-| --- | --- | --- | --- |
-| A fan wants their player's story, not just the match's goals. | **Survey:** 32% of US sports fans want team/athlete-specific highlights and commentary. [1] | Player-focused modes, favourite clubs/players, recaps. | Viewing across more fixtures; repeat visits. |
-| A returning fan needs relevant content to watch next. | **Survey:** 22% of US entertainment fans say better AI recommendations would increase their streaming use. [1] | Tailored experiences and contextual narratives. | Archive/replay starts; returning viewers. |
-| A viewer loses enjoyment during disputed decisions. | **PL survey:** 72% say VAR reduces enjoyment; 68% want changes. [2] | Explain key moments; synchronised graphics. **Indirect fit.** | Decision comprehension; viewing satisfaction. |
+**The business case ends at audience demand:** make the football worth following for more people, more often. Each proposed benefit below needs testing against the existing experience.
 
-These are demand signals, not measured revenue gains. The VAR survey does not establish that explanations alone fix the problem. Recommendation interest is broader entertainment evidence, not a PL-specific finding.
-
-## Improvements named by Microsoft
-
-| Concrete situation | Published need | League outcome to test |
+| Ask in the brief [1] | Concrete gap to address | Why the League would care · test |
 | --- | --- | --- |
-| A casual fan sees pressure numbers but cannot tell why the match changed. | Different experiences for analysts/casual fans; explain control, pressure and rhythm. [3] | Understanding the match; continued viewing. |
-| A fan follows a match in a less familiar language. | Native-language access and multilingual narratives. [3, 4] | Comprehension and repeat use by language. |
+| Explain pressure, control and rhythm | A viewer sees possession rise but cannot tell what changed tactically. | Make play between goals worth following · comprehension, then continued viewing. |
+| Follow a player or club | A goals-only recap misses a favourite midfielder's contribution. | Give that fan a reason to follow the whole performance · player-mode use, return visits, additional fixtures watched. |
+| Different casual / analyst modes | Jargon loses a newcomer; a basic summary gives an analyst little insight. | Serve both audiences with the same match · understanding and retention, separately by mode. |
+| Stories in multiple languages | A fan can see the action but cannot comfortably follow its explanation. | Reduce a language barrier to following the League · comprehension and repeat viewing by language. |
+| Timely overlays and automatic recaps | A late explanation misses the moment; a score-only catch-up misses the story. | Help viewers join or rejoin the match · time to understand, recap-to-live continuation. |
 
-These are explicit improvement goals; public evidence here does not quantify the current PL experience gap. Companion, myPL and overlays already exist—[the baseline matters](fans.md).
+<details>
+<summary>How strong is the evidence?</summary>
 
-**Business connection:** greater viewing and repeat interest can support rights, sponsorship and PL+ subscription value. Each case still needs a measurable improvement over the existing experience.
+- **Stated need:** all five asks are explicit in the brief. The concrete gaps above illustrate those asks; their frequency among PL viewers is not measured here. [1]
+- **Fan demand:** 32% of US sports fans surveyed want highlights/commentary tailored to their teams or athletes. This supports player/club relevance, not a claimed PL viewing uplift. [2]
+- **League direction:** the partnership names personalisation, live insights and native-language access. These are published goals, not proof that the current products fail. [3]
+- **Still to establish:** whether each change improves actual viewing over existing Companion, myPL, commentary and overlays. Measure behaviour as well as stated preference.
 
-### Sources
+</details>
 
-1. [Deloitte, Digital Media Trends 2026](https://www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-consumption-habits-survey.html): US survey, fieldwork October–November 2025; stated preferences, not observed uplift.
-2. [YouGov, 29 May 2026](https://yougov.com/en-gb/articles/54860-premier-league-fans-still-say-var-is-working-badly): regular Premier League viewers.
-3. [Microsoft rules §4.1](https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md#41-hackathon-challenge): audience modes, explanations, player focus and languages.
-4. [Microsoft–PL partnership](https://news.microsoft.com/source/2025/07/01/premier-league-and-microsoft-announce-five-year-strategic-partnership-to-personalize-the-fan-experience-with-ai-for-1-8-billion-people/): global and native-language fan access.
+<details>
+<summary>Why the specific data and engineering suggestions matter</summary>
+
+| Brief detail [1] | What it enables |
+| --- | --- |
+| Player labels; speed and distance | Identify who made a run and show the effort behind it. |
+| Pass distance, accuracy and difficulty; ball / shot speed | Explain execution and difficulty instead of counting actions. |
+| Video auto-eventing | Produce those inputs as play happens; value depends on accurate, timely stories reaching viewers. |
+| Timed, machine-readable graphics | Put the explanation beside the action it describes. |
+| Football-realistic synthetic events | Demonstrate the complete experience without a supplied real-match feed. |
+
+These support the experience; adding every suggested feature does not itself establish impact. Judging also examines implementation, agent innovation, usability and category fit. [Full criteria](brief.md).
+
+</details>
+
+**Sources · checked 14 October 2026**
+
+1. [Microsoft rules §4.1](https://github.com/microsoft/insidethegamehackathon/blob/9c6c99620b06b2b04dcf69a434cdf4d203d19eda/OFFICIAL%20RULES.md#41-hackathon-challenge): explicit experience and data requirements.
+2. [Deloitte, Digital Media Trends 2026](https://www.deloitte.com/us/en/insights/industry/technology/digital-media-trends-consumption-habits-survey.html): US survey, October–November 2025 fieldwork; stated preference.
+3. [Microsoft–Premier League announcement, 1 July 2025](https://news.microsoft.com/source/2025/07/01/premier-league-and-microsoft-announce-five-year-strategic-partnership-to-personalize-the-fan-experience-with-ai-for-1-8-billion-people/): fan experience and language goals.

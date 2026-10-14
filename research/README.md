@@ -2,15 +2,15 @@
 
 [← Home](../README.md) · [Competitors](../competitors/README.md) · [AI instructions](../AGENTS.md)
 
-**Checked 13 October 2026.**
+**Brief-to-benefit mapping checked 14 October 2026.** Other source dates are recorded below.
 
-![League business](business.svg)
+![What Microsoft asks for and why it matters](business.svg)
 
 | Explore | Question |
 | --- | --- |
 | [Data: events, tracking or video?](data.md) | What inputs would support the brief? |
 | [Simulated matches + what-if replays](data.md#google-research-football-generate-and-branch-matches) | Can an open football engine generate data and replay alternatives? Checked 14 October. |
-| [Business cases](cases.md) | Where is there evidence of something to improve? |
+| [Business cases](cases.md) | What do they ask for, what improves, and why care? |
 | [The League](business.md) | What does it control, and where is the value? |
 | [Fans](fans.md) | What does it already offer fans? |
 | [Existing technology](landscape.md) | Which capabilities already exist? |
