@@ -4,7 +4,7 @@ The hackathon project: research, competitor data and, as development progresses,
 
 → [Research](research/README.md) · [Business cases](research/cases.md) · [Judging](research/brief.md) · [Example ideas](research/ideas/README.md) · [Recent technology](research/technology.md) · [Data approach](research/data.md) · [Data & simulator](data/README.md) · [AI instructions](AGENTS.md)
 
-![How fan demand connects to League value](research/business.svg)
+![What Microsoft asks for, the fan benefit, and audience demand](research/business.svg)
 
 <!-- competitors:start -->
 

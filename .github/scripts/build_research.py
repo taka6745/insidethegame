@@ -35,18 +35,33 @@ def save(name, title, desc, height, parts):
 
 
 def main():
-    parts = [text(28, 64, 'Business logic • the arrows describe a hypothesis, not measured uplift', 14, MUTED)]
-    for x,y,w,h,c,title,sub in [
-        (28,110,210,120,COLORS[0],'Fan relevance','Understand · care'),
-        (315,110,245,120,COLORS[1],'Audience demand','Watch · return · explore'),
-        (670,85,300,50,COLORS[2],'Media rights',''),
-        (670,150,300,50,COLORS[3],'Partner reach',''),
-        (670,215,300,50,COLORS[4],'PL+ subscriptions','')]:
-        parts += [box(x,y,w,h,c),text(x+w/2,y+32 if h==50 else y+48,title,21,c,'middle',700)]
-        if sub: parts.append(text(x+w/2,y+79,sub,15,MUTED,'middle'))
-    parts += [line(238,170,305,170,arrow=True)]
-    for y in [110,175,240]: parts += [line(560,170,600,170),line(600,170,600,y),line(600,y,660,y,arrow=True)]
-    save('business.svg','Why the League would care','Fan relevance may increase watching and return visits, supporting media rights, partner reach and PL+ subscriptions.',292,parts)
+    parts = [text(28, 66, 'Official asks → viewing improvements → audience demand', 15, MUTED)]
+    parts += [text(28, 103, 'MICROSOFT ASKS FOR', 12, MUTED, weight=700),
+              text(365, 103, 'WHY THAT MATTERS TO A FAN', 12, MUTED, weight=700)]
+    rows = [
+        ('Explain pressure & rhythm', 'Understand the turning point'),
+        ('Player / club focus', 'See the story I care about'),
+        ('Casual / analyst modes', 'Follow at my level'),
+        ('Multilingual stories', 'Follow in my language'),
+        ('Live overlays & recaps', 'Catch up; stay with the match'),
+    ]
+    for i, (ask, benefit) in enumerate(rows):
+        y = 118 + i * 65
+        c = COLORS[i]
+        parts += [box(28, y, 285, 47, c), text(43, y+29, ask, 18, c, weight=700),
+                  line(314, y+24, 350, y+24, arrow=True),
+                  text(365, y+29, benefit, 17), line(630, y+24, 687, y+24)]
+    parts += [line(687,142,687,402), line(687,272,722,272,arrow=True),
+              box(734,184,238,178,COLORS[0]),
+              text(853,219,'Audience demand',22,COLORS[0],'middle',700),
+              text(853,252,'Keep watching',18,anchor='middle'),
+              text(853,284,'Come back',18,anchor='middle'),
+              text(853,316,'Follow more matches',18,anchor='middle'),
+              text(28,464,'Benefits and viewing gains are hypotheses to test. Sources and evidence: research/cases.md.',13,MUTED)]
+    save('business.svg','What they want — and why it matters',
+         'Five explicit asks in Microsoft rules section 4.1 connect to fan benefits. '
+         'All paths end at audience demand: continued viewing, return visits and interest in more matches. '
+         'These are testable benefits, not established gains.',486,parts)
 
     parts=[]
     nodes=[(28,85,'Competition','Fixtures · rules',COLORS[0]),(680,85,'Commercial','Rights · partners',COLORS[1]),(28,220,'Development','Academies · community',COLORS[3]),(680,220,'Media & fans','Studios · products',COLORS[2])]
