@@ -3,7 +3,7 @@
   "rubric": {
     "version": "itg-rubric-v2",
     "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
-    "rules_checked_at": "2026-10-13",
+    "rules_checked_at": "2026-10-14",
     "track": "repository_evidence",
     "weights": {
       "technology": 20,
@@ -6458,6 +6458,2173 @@
       "supersedes": "eaf34b4613d97d58f992e3cd92841ad04c60992a180690f715ff60f686e0984f",
       "adjudicated_by": "root-source-review",
       "assessment_id": "356f248ca5ae3525c0deb4d6bb338d046ae06571275a6337dcecca321180460d"
+    },
+    {
+      "slug": "audioreworkvisions/touchline",
+      "sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+      "project_id": "126406",
+      "reviewer_id": "repo-refresh-primary",
+      "category": {
+        "name": "Best Azure Cloud Native Integration",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "infra/main.bicep",
+            "line": 44,
+            "level": "source"
+          },
+          {
+            "path": "infra/main.bicep",
+            "line": 85,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Synthetic ingest, evidence-grounded narration and UI now connect to Azure Speech and audio replay. Podcast code validates duration and decoding, but no generated audio or deployed-cloud result is committed.",
+          "evidence": [
+            {
+              "path": "server.mjs",
+              "line": 47,
+              "level": "source"
+            },
+            {
+              "path": "server.mjs",
+              "line": 56,
+              "level": "source"
+            },
+            {
+              "path": "speech.mjs",
+              "line": 17,
+              "level": "source"
+            },
+            {
+              "path": "scripts/produce-podcast.mjs",
+              "line": 63,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "agent_innovation": {
+          "score": 2,
+          "rationale": "The new replay and podcast select events deterministically and call speech synthesis. They extend delivery without adding agent planning, tool choice or specialist collaboration.",
+          "evidence": [
+            {
+              "path": "audio-replay.mjs",
+              "line": 15,
+              "level": "source"
+            },
+            {
+              "path": "podcast.mjs",
+              "line": 35,
+              "level": "source"
+            },
+            {
+              "path": "README.md",
+              "line": 42,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Player/team audio selection and spatial spoken context address screen-free following, alongside fan/analyst explanation. Accessibility listening tests and fan comprehension outcomes remain unmeasured.",
+          "evidence": [
+            {
+              "path": "audio-replay.mjs",
+              "line": 19,
+              "level": "source"
+            },
+            {
+              "path": "podcast.mjs",
+              "line": 40,
+              "level": "source"
+            },
+            {
+              "path": "docs/PODCAST.md",
+              "line": 35,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Replay chapters, speech controls, evidence links and timed visual overlays are connected in source, with new reproducibility/goal-preservation tests. No listening or usability results justify a higher anchor.",
+          "evidence": [
+            {
+              "path": "dist/app.mjs",
+              "line": 19,
+              "level": "source"
+            },
+            {
+              "path": "dist/app.mjs",
+              "line": 50,
+              "level": "source"
+            },
+            {
+              "path": "dist/app.mjs",
+              "line": 71,
+              "level": "source"
+            },
+            {
+              "path": "tests/podcast.test.mjs",
+              "line": 5,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "category_fit": {
+          "score": 2,
+          "rationale": "Azure Container Apps infrastructure and service adapters are present, but single-replica/in-memory state remains and the Bicep container configuration omits the newly required Speech settings.",
+          "evidence": [
+            {
+              "path": "infra/main.bicep",
+              "line": 72,
+              "level": "source"
+            },
+            {
+              "path": "infra/main.bicep",
+              "line": 85,
+              "level": "source"
+            },
+            {
+              "path": "server.mjs",
+              "line": 29,
+              "level": "source"
+            },
+            {
+              "path": "docs/EVALUATION.md",
+              "line": 38,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        }
+      },
+      "coverage": {
+        "synthetic_truth": "partial",
+        "ingest_live": "implemented",
+        "interpret": "implemented",
+        "explain_why": "implemented",
+        "render_on_screen": "implemented",
+        "personalise": "implemented",
+        "live_narrative": "implemented",
+        "automated_recap": "implemented",
+        "player_identity": "implemented",
+        "player_speed_distance": "partial",
+        "pass_quality": "implemented",
+        "ball_shot_speed": "partial",
+        "video_auto_eventing": "partial",
+        "pressure_control_rhythm": "implemented",
+        "player_club_modes": "implemented",
+        "analyst_casual_modes": "implemented",
+        "multilingual": "implemented",
+        "synchronised_overlays": "implemented"
+      },
+      "coverage_evidence": [
+        {
+          "path": "docs/DATA-CARD.md",
+          "line": 11,
+          "level": "claim",
+          "note": "Tracking remains separate from event geometry; no new football data source."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 11,
+          "level": "source",
+          "note": "Geometric pass speed/difficulty; not independent shot-speed measurement."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 68,
+          "level": "source",
+          "note": "Validated ingest and deterministic state/statistics."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 88,
+          "level": "source",
+          "note": "Three-language explanations, fan/analyst depth, filtering, timed overlays and recap."
+        },
+        {
+          "path": "dist/vision.mjs",
+          "line": 9,
+          "level": "source",
+          "note": "Controlled colour-frame tracking and transfers; not broadcast video."
+        },
+        {
+          "path": "audio-replay.mjs",
+          "line": 19,
+          "level": "source",
+          "note": "Audio team/player selection falls back to general events when no focused event exists."
+        },
+        {
+          "path": "podcast.mjs",
+          "line": 49,
+          "level": "source",
+          "note": "Podcast explicitly retains all generated goals and available lead-up events."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "Audio delivery expanded; independent tracking, controlled-colour vision, absent agent orchestration and unverified cloud/audio outcomes remain.",
+      "fan_business": "Screen-free following and relevant explanations have concrete source mechanisms; audience demand, listening quality and comprehension improvement are not demonstrated.",
+      "inspected_paths": [
+        "README.md",
+        "docs/PODCAST.md",
+        "podcast.mjs",
+        "audio-replay.mjs",
+        "speech.mjs",
+        "scripts/produce-podcast.mjs",
+        "server.mjs",
+        "dist/app.mjs",
+        "dist/engine.mjs",
+        "dist/vision.mjs",
+        "docs/DATA-CARD.md",
+        "docs/EVALUATION.md",
+        "infra/main.bicep",
+        "tests/podcast.test.mjs",
+        "tests/audio-replay.test.mjs"
+      ],
+      "inputs": {
+        "project_id": "126406",
+        "repository": "audioreworkvisions/touchline",
+        "repository_sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+        "description_sha256": "a89d4aaa298650b1a70507f575ae463f79e8c2b4a00dfdacd90b03d0b8eb4fda",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "Touchline · audioreworkvisions/touchline · 648179a · repo-v2 · repo-refresh-primary · 2026-10-14",
+      "limitations": [
+        "Pinned-source review only; no competitor execution or functioning-demo inspection.",
+        "External audio and deployment outputs were not available in the inspected pinned tree."
+      ],
+      "changes_since_previous": "17 changed files add Azure Speech, filtered chapter replay and a German podcast producer. Existing simulator and data card are unchanged. Scores remain 3/2/2/3/2 after examining the new paths; more features alone do not demonstrate stronger impact or agent design.",
+      "supersedes": "48822059e23fce2f00c3f87229c266ef6a55ee773bdc8539f2f0e73ea658303c",
+      "input_key": "ec3294b7f39f5c9c221b094c0c3092b8c44ecd5630e6e92851ad38885a22f80d",
+      "assessment_id": "c99b17071239def31bc4df5a33f850b99d8d67e7933c4889fabeb135d5782a79"
+    },
+    {
+      "slug": "swarupe7/microsoft_dev_hackathon",
+      "sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+      "project_id": "126423",
+      "reviewer_id": "repo-refresh-primary",
+      "category": {
+        "name": "Best Multi-Agent System",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "README.md",
+            "line": 13,
+            "level": "claim"
+          },
+          {
+            "path": "lib/agents/orchestrator.ts",
+            "line": 40,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 2,
+          "rationale": "New Azure deployment template has no recorded execution or engine tests. Model output lacks fact checking; recap also attributes aggregate shots/tackles to one team/player without filtering, weakening factual explanations.",
+          "evidence": [
+            {
+              "path": ".github/workflows/azure-webapps-node.yml",
+              "line": 45,
+              "level": "source"
+            },
+            {
+              "path": ".github/workflows/azure-webapps-node.yml",
+              "line": 72,
+              "level": "source"
+            },
+            {
+              "path": "lib/ai/generateCommentary.ts",
+              "line": 231,
+              "level": "source"
+            },
+            {
+              "path": "README.md",
+              "line": 64,
+              "level": "claim"
+            },
+            {
+              "path": "lib/agents/recap.ts",
+              "line": 22,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "agent_innovation": {
+          "score": 2,
+          "rationale": "Five named stages remain deterministic function calls over a shared board; separate Azure commentary rewriting does not establish adaptive agent coordination or collective advantage.",
+          "evidence": [
+            {
+              "path": "lib/agents/orchestrator.ts",
+              "line": 40,
+              "level": "source"
+            },
+            {
+              "path": "lib/ai/generateCommentary.ts",
+              "line": 174,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Host voice, fan depth and club/player modes target comprehension and relevance, but player focus is a label on the general insight and no measured fan-demand or benefit evidence appears.",
+          "evidence": [
+            {
+              "path": "lib/agents/personalizationAgent.ts",
+              "line": 36,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/personalizationAgent.ts",
+              "line": 58,
+              "level": "source"
+            },
+            {
+              "path": "lib/match/hosts.ts",
+              "line": 63,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "experience": {
+          "score": 2,
+          "rationale": "The UI connects live events, commentary and recap, but model/rules API replies overwrite casual/analyst distinctions, and recap reads only the retained 80 events rather than the full match.",
+          "evidence": [
+            {
+              "path": "components/MatchDashboard.tsx",
+              "line": 139,
+              "level": "source"
+            },
+            {
+              "path": "lib/match/engine.ts",
+              "line": 123,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/recap.ts",
+              "line": 12,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        },
+        "category_fit": {
+          "score": 2,
+          "rationale": "The inferred Multi-Agent category still has explicit stage handoffs but no planning, autonomous coordination or comparison showing an advantage over a single sequential pipeline.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "line": 13,
+              "level": "claim"
+            },
+            {
+              "path": "lib/agents/orchestrator.ts",
+              "line": 43,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code, tests or deployment executed. Runtime and user outcomes remain unverified."
+        }
+      },
+      "coverage": {
+        "synthetic_truth": "partial",
+        "ingest_live": "implemented",
+        "interpret": "implemented",
+        "explain_why": "partial",
+        "render_on_screen": "implemented",
+        "personalise": "partial",
+        "live_narrative": "implemented",
+        "automated_recap": "partial",
+        "player_identity": "implemented",
+        "player_speed_distance": "not_found",
+        "pass_quality": "partial",
+        "ball_shot_speed": "not_found",
+        "video_auto_eventing": "not_found",
+        "pressure_control_rhythm": "implemented",
+        "player_club_modes": "partial",
+        "analyst_casual_modes": "partial",
+        "multilingual": "partial",
+        "synchronised_overlays": "partial"
+      },
+      "coverage_evidence": [
+        {
+          "path": "lib/match/engine.ts",
+          "line": 44,
+          "level": "source",
+          "note": "Unseeded random synthetic events; no physical trajectory or realistic calibration."
+        },
+        {
+          "path": "lib/match/engine.ts",
+          "line": 201,
+          "level": "source",
+          "note": "Live synthetic ticks, typed player events and statistics."
+        },
+        {
+          "path": "lib/match/engine.ts",
+          "line": 131,
+          "level": "source",
+          "note": "All generated passes are completed; distance/difficulty are absent."
+        },
+        {
+          "path": "lib/match/pitchPositions.ts",
+          "line": 82,
+          "level": "source",
+          "note": "Illustrative sinusoidal player markers, not tracked speeds."
+        },
+        {
+          "path": "lib/agents/tacticalState.ts",
+          "line": 13,
+          "level": "source",
+          "note": "Pressure, possession/control and tempo heuristics."
+        },
+        {
+          "path": "lib/agents/personalizationAgent.ts",
+          "line": 58,
+          "level": "source",
+          "note": "Player selection prefixes general insight instead of filtering to player actions."
+        },
+        {
+          "path": "components/MatchDashboard.tsx",
+          "line": 139,
+          "level": "source",
+          "note": "API text overrides distinct casual/analyst narratives."
+        },
+        {
+          "path": "lib/match/hosts.ts",
+          "line": 63,
+          "level": "source",
+          "note": "Hinglish templates mix English insight fields, rather than full translation."
+        },
+        {
+          "path": "lib/match/engine.ts",
+          "line": 123,
+          "level": "source",
+          "note": "Only 80 recent events retained, so automated recap can miss early goals."
+        },
+        {
+          "path": "lib/agents/overlay.ts",
+          "line": 18,
+          "level": "source",
+          "note": "Packet has a match timestamp but no display duration/feed synchronization; UI copies JSON."
+        },
+        {
+          "path": "lib/agents/recap.ts",
+          "line": 22,
+          "level": "source",
+          "note": "Recap counts shots across both teams then attributes a flurry to the latest shooting team; it similarly attributes tackles across players to the latest tackler. Explanation facts can therefore be wrong."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "New deployment template does not close factual validation, full-match recap, personalisation or autonomous-agent gaps; recap explanations can misattribute mixed-team/player events.",
+      "fan_business": "Distinct host styles may help fans follow play; no controlled comprehension, return-viewing or demand evidence in the pinned source.",
+      "inspected_paths": [
+        "README.md",
+        ".github/workflows/azure-webapps-node.yml",
+        "lib/agents/orchestrator.ts",
+        "lib/agents/personalizationAgent.ts",
+        "lib/ai/generateCommentary.ts",
+        "lib/agents/overlay.ts",
+        "lib/agents/recap.ts",
+        "lib/agents/tacticalState.ts",
+        "lib/agents/insightAgent.ts",
+        "lib/match/engine.ts",
+        "lib/match/hosts.ts",
+        "lib/match/teams.ts",
+        "lib/match/pitchPositions.ts",
+        "components/MatchDashboard.tsx",
+        "app/api/overlay/route.ts"
+      ],
+      "inputs": {
+        "project_id": "126423",
+        "repository": "swarupe7/microsoft_dev_hackathon",
+        "repository_sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+        "description_sha256": "d062eeeae35e6828f51e1ef072a132b2c17ab21a1870c051c1e2bcbb49540fcd",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "MatchMind AI: Every Match Has a Personality · swarupe7/microsoft_dev_hackathon · 7204630 · repo-v2 · repo-refresh-primary · 2026-10-14",
+      "limitations": [
+        "Pinned-source review only; no competitor execution or functioning-demo inspection.",
+        "External audio and deployment outputs were not available in the inspected pinned tree."
+      ],
+      "changes_since_previous": "Only the Azure Web App workflow changed. Numeric scores remain 2/2/2/2/2. Reinspection corrects two previously generous coverage labels: automated recap and synchronised overlays are partial because of the 80-event limit and packet-only timing. Independent source challenge also confirms explain_why is partial: recap makes unsupported team/player attributions from mixed event aggregates.",
+      "supersedes": "89a0324396552a6c8dd16e5f0a2cf7ed778bfbcbd17f33a11399ed93236d82d9",
+      "input_key": "6c959387ad9f936b9e0ea21edd97493b19e4b29dbf40ff1378fc7fbb69edc722",
+      "assessment_id": "19390dd3de9aac447b553584a2fbf867813e2c503b704ac300f1ce59e621d7dc",
+      "challenge_resolution": {
+        "challenger_id": "repo-refresh-challenger",
+        "finding": "Recap shot/tackle attribution can be false because totals are not restricted to the named team/player.",
+        "action": "Rechecked pinned recap.ts lines 22-44; explain_why changed to partial and technology rationale clarified; numeric scores unchanged."
+      }
+    },
+    {
+      "slug": "JinYi123456/floodlight",
+      "sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+      "project_id": "126495",
+      "reviewer_id": "repo-refresh-primary",
+      "category": {
+        "name": "Best Multi-Agent System",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "packages/agents/src/crew.ts",
+            "line": 219,
+            "level": "source"
+          },
+          {
+            "path": "packages/agents/src/runtime.ts",
+            "line": 62,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Simulator, tracking, event analysis, cue compilation and synthetic-pixel perception are connected and have fixtures/tests. However the app precomputes the match, and verification admits final-state numbers into earlier evidence packs.",
+          "evidence": [
+            {
+              "path": "packages/dataset/src/pipeline.ts",
+              "line": 46,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 175,
+              "level": "source"
+            },
+            {
+              "path": "packages/vision/test/vision.test.ts",
+              "line": 95,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "agent_innovation": {
+          "score": 3,
+          "rationale": "Custom task runtime coordinates analyst drafting, verifier-guided revision, commentator calls and deterministic fallbacks. This is substantive orchestration, but no controlled comparison establishes its advantage; Director and Personalizer remain rules/templates.",
+          "evidence": [
+            {
+              "path": "packages/agents/src/runtime.ts",
+              "line": 62,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 267,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 308,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Audience variants, evidence-linked moments and player-follow camera address understanding and relevance. Committed technical fixtures do not demonstrate actual fan demand, comprehension or sustained viewing.",
+          "evidence": [
+            {
+              "path": "apps/web/src/state/derive.ts",
+              "line": 167,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/ui/ProgramMonitor.tsx",
+              "line": 396,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/ui/MatchPack.tsx",
+              "line": 50,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Clock-driven cues, retraction-aware stories, 3D player following and multilingual depth variants form a connected experience. Club preference is stored but no downstream club-selection effect was located; recaps are mostly a moment feed/stat pack.",
+          "evidence": [
+            {
+              "path": "packages/cuesheet/src/compiler.ts",
+              "line": 24,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/state/derive.ts",
+              "line": 31,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/ui/ModeConsole.tsx",
+              "line": 80,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/ui/MatchPack.tsx",
+              "line": 50,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "category_fit": {
+          "score": 3,
+          "rationale": "Custom crew has retries, revision feedback and distinct analyst/commentator tasks. Submission claims Microsoft Agent Framework/MCP, but inspected orchestration is custom; Foundry is an optional adapter and shipped studio recordings use Featherless.",
+          "evidence": [
+            {
+              "path": "packages/agents/src/runtime.ts",
+              "line": 53,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/providers.ts",
+              "line": 91,
+              "level": "source"
+            },
+            {
+              "path": "tools/record-studio-voice.ts",
+              "line": 117,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        }
+      },
+      "coverage": {
+        "synthetic_truth": "implemented",
+        "ingest_live": "partial",
+        "interpret": "implemented",
+        "explain_why": "partial",
+        "render_on_screen": "implemented",
+        "personalise": "partial",
+        "live_narrative": "partial",
+        "automated_recap": "partial",
+        "player_identity": "implemented",
+        "player_speed_distance": "implemented",
+        "pass_quality": "implemented",
+        "ball_shot_speed": "implemented",
+        "video_auto_eventing": "partial",
+        "pressure_control_rhythm": "implemented",
+        "player_club_modes": "partial",
+        "analyst_casual_modes": "implemented",
+        "multilingual": "implemented",
+        "synchronised_overlays": "implemented"
+      },
+      "coverage_evidence": [
+        {
+          "path": "data/freeplay-2026/DATA_CARD.md",
+          "line": 10,
+          "level": "source",
+          "note": "Fictional seeded match exports; no real football dataset."
+        },
+        {
+          "path": "packages/simulator/src/tracking.ts",
+          "line": 144,
+          "level": "source",
+          "note": "Ball path reconstructed from synthetic event geometry; player movement is a bounded model."
+        },
+        {
+          "path": "packages/simulator/src/simulator.ts",
+          "line": 422,
+          "level": "source",
+          "note": "Pass difficulty and completion probabilities are implemented."
+        },
+        {
+          "path": "packages/engine/src/engine.ts",
+          "line": 666,
+          "level": "source",
+          "note": "Player frame ingestion accumulates distance, speed and sprint triggers."
+        },
+        {
+          "path": "packages/dataset/src/pipeline.ts",
+          "line": 46,
+          "level": "source",
+          "note": "Whole event stream and tracking processed before narration; live UI is replay, not demonstrated live inference."
+        },
+        {
+          "path": "packages/agents/src/crew.ts",
+          "line": 175,
+          "level": "source",
+          "note": "Allowed-number pack includes final score/state as well as candidate-time values; numeric membership is not full temporal or semantic verification."
+        },
+        {
+          "path": "apps/web/src/pipeline/match.worker.ts",
+          "line": 100,
+          "level": "source",
+          "note": "Browser substitutes recorded studio voice after generating template moments."
+        },
+        {
+          "path": "apps/web/src/state/derive.ts",
+          "line": 167,
+          "level": "source",
+          "note": "Persona/language variant selection is implemented."
+        },
+        {
+          "path": "apps/web/src/ui/ModeConsole.tsx",
+          "line": 80,
+          "level": "source",
+          "note": "Club selection control exists; no downstream use located beyond preference state. Player ID separately drives the camera."
+        },
+        {
+          "path": "apps/web/src/ui/ProgramMonitor.tsx",
+          "line": 396,
+          "level": "source",
+          "note": "Camera can follow selected player."
+        },
+        {
+          "path": "apps/web/src/ui/MatchPack.tsx",
+          "line": 50,
+          "level": "source",
+          "note": "Time-bounded statistical pack exists, but no dedicated automated narrative-recap function found."
+        },
+        {
+          "path": "packages/vision/test/vision.test.ts",
+          "line": 95,
+          "level": "test_file",
+          "note": "Tests evaluate controlled synthetic colour-render frames, not arbitrary broadcast video."
+        },
+        {
+          "path": "packages/cuesheet/src/compiler.ts",
+          "line": 24,
+          "level": "source",
+          "note": "Cue onset/expiry, slots and evidence feed on-screen graphics."
+        }
+      ],
+      "theme_technology": "concern",
+      "main_gap": "Precomputed replay and studio recordings; broad fact-verification claims exceed numeric/entity checks. Club relevance and narrative recap are partial, and Microsoft Framework/MCP claims are not supported by inspected integration.",
+      "fan_business": "Explaining events and following a chosen player are concrete benefits; no measured fan comprehension, retention or demand evidence found.",
+      "inspected_paths": [
+        "README.md",
+        "data/freeplay-2026/DATA_CARD.md",
+        "packages/dataset/src/pipeline.ts",
+        "packages/simulator/src/simulator.ts",
+        "packages/simulator/src/tracking.ts",
+        "packages/simulator/test/calibration.test.ts",
+        "packages/engine/src/engine.ts",
+        "packages/agents/src/crew.ts",
+        "packages/agents/src/runtime.ts",
+        "packages/agents/src/providers.ts",
+        "packages/agents/src/verifier.ts",
+        "packages/agents/test/agents.test.ts",
+        "packages/cuesheet/src/compiler.ts",
+        "packages/vision/src/index.ts",
+        "packages/vision/test/vision.test.ts",
+        "apps/web/src/pipeline/match.worker.ts",
+        "apps/web/src/state/derive.ts",
+        "apps/web/src/state/store.ts",
+        "apps/web/src/ui/MatchPack.tsx",
+        "apps/web/src/ui/ModeConsole.tsx",
+        "apps/web/src/ui/ProgramMonitor.tsx",
+        "tools/record-studio-voice.ts"
+      ],
+      "inputs": {
+        "project_id": "126495",
+        "repository": "jinyi123456/floodlight",
+        "repository_sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+        "description_sha256": "ac5dda67410fab1c6e9c4de8c371adf00ec77d91082445f13d80bd6f5a81f544",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "Floodlight · JinYi123456/floodlight · eae2606 · repo-v2 · repo-refresh-primary · 2026-10-14",
+      "limitations": [
+        "Pinned-source review only; no competitor code, tests or external demo executed.",
+        "Public submission claims checked against current source; runtime, deployment and fan outcomes remain unverified."
+      ],
+      "input_key": "0a57bac379501207082ad463e13c7dc67246b1c4f498fc7512bc8b4b585e92ad",
+      "assessment_id": "d833a946903f7cbce2110f7dca7f8028f7a400ea3b7e7e7d20d3653e07ff5110"
+    },
+    {
+      "slug": "mberry19932025/PRO-VISION",
+      "sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+      "project_id": "126501",
+      "reviewer_id": "repo-refresh-primary",
+      "category": {
+        "name": "Best Use of Microsoft Foundry",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "competition-app/README.md",
+            "line": 30,
+            "level": "claim"
+          },
+          {
+            "path": "competition-app/src/director.js",
+            "line": 26,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Canonical app connects deterministic data, bounded replay, evidence-checked Azure/Foundry calls, quota controls and failure fallbacks with source tests. Historical evaluation outputs belong to older versions and do not establish current production quality.",
+          "evidence": [
+            {
+              "path": "competition-app/src/backend.js",
+              "line": 58,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/director.js",
+              "line": 31,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/tests/director.test.mjs",
+              "line": 22,
+              "level": "test_file"
+            },
+            {
+              "path": "README.md",
+              "line": 58,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "agent_innovation": {
+          "score": 3,
+          "rationale": "Match Director uses one model-selected allowlisted tool to choose a past moment, executes it against server-generated data, then asks for an evidence-linked explanation. Concrete bounded tool use is present; broader autonomous collaboration and comparative benefits are not demonstrated.",
+          "evidence": [
+            {
+              "path": "competition-app/src/director.js",
+              "line": 4,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/director.js",
+              "line": 31,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/tests/director.test.mjs",
+              "line": 22,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Conversation, contextual questions and personal memory-card exports provide concrete fan interactions. No fan study or demand evidence shows that these improve understanding, repeat viewing or purchase intent.",
+          "evidence": [
+            {
+              "path": "competition-app/src/core.js",
+              "line": 33,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 98,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 103,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Replay, event citations, team/player filters, fan/coach wording and English/Spanish recaps connect to memory-card exports. Browser/media usability and live response quality remain unverified; no synchronized broadcast-overlay path in the current app was located.",
+          "evidence": [
+            {
+              "path": "competition-app/src/client.js",
+              "line": 21,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/client.js",
+              "line": 44,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/client.js",
+              "line": 84,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 103,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        },
+        "category_fit": {
+          "score": 3,
+          "rationale": "Foundry/Azure-compatible chat and function calling are implemented with constrained tools, guards and optional native Foundry Local. Current live deployment is claimed but not independently checked, and shared small quotas may restrict access.",
+          "evidence": [
+            {
+              "path": "competition-app/src/director.js",
+              "line": 26,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/backend.js",
+              "line": 40,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/README.md",
+              "line": 70,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned-source review only; competitor code/tests and external demos not executed. Repository claims and fixtures do not establish production performance or fan outcomes."
+        }
+      },
+      "coverage": {
+        "synthetic_truth": "partial",
+        "ingest_live": "partial",
+        "interpret": "implemented",
+        "explain_why": "implemented",
+        "render_on_screen": "implemented",
+        "personalise": "implemented",
+        "live_narrative": "partial",
+        "automated_recap": "implemented",
+        "player_identity": "implemented",
+        "player_speed_distance": "not_found",
+        "pass_quality": "partial",
+        "ball_shot_speed": "not_found",
+        "video_auto_eventing": "not_found",
+        "pressure_control_rhythm": "partial",
+        "player_club_modes": "implemented",
+        "analyst_casual_modes": "implemented",
+        "multilingual": "implemented",
+        "synchronised_overlays": "not_found"
+      },
+      "coverage_evidence": [
+        {
+          "path": "competition-app/src/core.js",
+          "line": 2,
+          "level": "source",
+          "note": "Seeded 180-event generator, two fictional clubs and ten players; no physical or timing calibration."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 71,
+          "level": "source",
+          "note": "Pre-generated records advance by replay timer, not an external live ingest feed."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 22,
+          "level": "source",
+          "note": "Pass distance, event-count pressures and same-possession context; no pass difficulty or speed."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 54,
+          "level": "source",
+          "note": "Tentative tactical explanations and fan/coach variants."
+        },
+        {
+          "path": "competition-app/src/narrative.js",
+          "line": 4,
+          "level": "source",
+          "note": "Basic citation/unsupported-claim checks; no full semantic truth proof."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 31,
+          "level": "source",
+          "note": "Selected event player label; ball-action schematic, not full tracking."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 71,
+          "level": "source",
+          "note": "Time-bounded local recap in English/Spanish."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 84,
+          "level": "source",
+          "note": "Recap receives only events through current replay cursor."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 83,
+          "level": "source",
+          "note": "Local action commentary during replay; cloud interpretation remains explicit/on demand."
+        },
+        {
+          "path": "competition-app/src/director.js",
+          "line": 7,
+          "level": "source",
+          "note": "Team/player filtering and past-only moment selection."
+        },
+        {
+          "path": "competition-app/README.md",
+          "line": 24,
+          "level": "claim",
+          "note": "Current app expressly excludes video recognition/tracking/live external feed; no current timed overlay renderer found."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "Sparse uncalibrated replay; no tracking/speed/video pipeline or synchronized overlays. Source supports bounded Azure tools, but current live quality, real-browser usability and fan outcomes remain unverified.",
+      "fan_business": "Evidence questions and personal keepsakes offer specific fan value; demand, comprehension and commercial impact are unmeasured.",
+      "inspected_paths": [
+        "README.md",
+        "competition-app/README.md",
+        "competition-app/docs/ARCHITECTURE.md",
+        "competition-app/docs/AI-EVALUATION.md",
+        "competition-app/docs/COMPETITION-PACK.md",
+        "competition-app/src/core.js",
+        "competition-app/src/client.js",
+        "competition-app/src/backend.js",
+        "competition-app/src/director.js",
+        "competition-app/src/narrative.js",
+        "competition-app/tests/director.test.mjs",
+        "docs/THIRD-PARTY.md"
+      ],
+      "inputs": {
+        "project_id": "126501",
+        "repository": "mberry19932025/pro-vision",
+        "repository_sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+        "description_sha256": "0d06374f33318b4faf00acb1749307a0424b2c23cdb5d354d11b539fd9862923",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "PRO-VISION AI · mberry19932025/PRO-VISION · 74cbde4 · repo-v2 · repo-refresh-primary · 2026-10-14",
+      "limitations": [
+        "Pinned-source review only; no competitor code, tests or external demo executed.",
+        "Public submission claims checked against current source; runtime, deployment and fan outcomes remain unverified."
+      ],
+      "input_key": "dc77227c9061085e8e014502681ff0d4eab97fe0c0d1b75be021d5aa0c4a1e02",
+      "assessment_id": "da03788c78adaef64d6e89f542c330b16b5631493a18e88248d9e70d371724bf"
+    },
+    {
+      "slug": "audioreworkvisions/touchline",
+      "sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+      "project_id": "126406",
+      "reviewer_id": "repo-refresh-challenger",
+      "category": {
+        "name": "Best Azure Cloud Native Integration",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "infra/main.bicep",
+            "line": 44,
+            "level": "source"
+          },
+          {
+            "path": "infra/main.bicep",
+            "line": 85,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Connected SSE ingestion, validated event state, guarded Azure rewrite and Player Pulse tests support implementation. Recorded timing excludes transport, rendering and models; no cloud runtime proof.",
+          "evidence": [
+            {
+              "path": "server.mjs",
+              "line": 37,
+              "level": "source"
+            },
+            {
+              "path": "narrator.mjs",
+              "line": 18,
+              "level": "source"
+            },
+            {
+              "path": "tests/player-pulse.test.mjs",
+              "line": 7,
+              "level": "test_file"
+            },
+            {
+              "path": "docs/benchmark.json",
+              "line": 8,
+              "level": "recorded_result"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "agent_innovation": {
+          "score": 2,
+          "rationale": "Grounded language rewriting and pixel-only transfer detection exist, but orchestration is explicitly absent. Adding a deterministic player index does not establish agent autonomy or measured advantage.",
+          "evidence": [
+            {
+              "path": "narrator.mjs",
+              "line": 11,
+              "level": "source"
+            },
+            {
+              "path": "dist/vision.mjs",
+              "line": 9,
+              "level": "source"
+            },
+            {
+              "path": "README.md",
+              "line": 42,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Minute-matched player history and evidence-linked index changes target a concrete fan question; audio replay adds access options. Comprehension and repeat viewing remain unmeasured, and historical baselines are invented.",
+          "evidence": [
+            {
+              "path": "dist/player-pulse.mjs",
+              "line": 47,
+              "level": "source"
+            },
+            {
+              "path": "audio-replay.mjs",
+              "line": 15,
+              "level": "source"
+            },
+            {
+              "path": "docs/EVALUATION.md",
+              "line": 46,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Player tracking, attributed index changes, recap, audience modes and timed overlays form connected interactions. Inspectable UI source and tests support them; screenshots or independent full-session usability results were not established.",
+          "evidence": [
+            {
+              "path": "dist/pulse-ui.mjs",
+              "line": 12,
+              "level": "source"
+            },
+            {
+              "path": "dist/engine.mjs",
+              "line": 95,
+              "level": "source"
+            },
+            {
+              "path": "tests/player-pulse.test.mjs",
+              "line": 34,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "category_fit": {
+          "score": 2,
+          "rationale": "Azure Container Apps, probes and logging provide partial cloud-native fit; single-replica in-memory state and expressly unperformed deployment/inference checks limit scalable and resilient integration evidence.",
+          "evidence": [
+            {
+              "path": "infra/main.bicep",
+              "line": 80,
+              "level": "source"
+            },
+            {
+              "path": "infra/main.bicep",
+              "line": 85,
+              "level": "source"
+            },
+            {
+              "path": "docs/EVALUATION.md",
+              "line": 38,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        }
+      },
+      "coverage": {
+        "ingest_live": "implemented",
+        "pass_quality": "implemented",
+        "interpret": "implemented",
+        "automated_recap": "implemented",
+        "live_narrative": "implemented",
+        "player_identity": "implemented",
+        "pressure_control_rhythm": "implemented",
+        "multilingual": "implemented",
+        "video_auto_eventing": "partial",
+        "analyst_casual_modes": "implemented",
+        "render_on_screen": "implemented",
+        "player_speed_distance": "partial",
+        "synthetic_truth": "partial",
+        "personalise": "implemented",
+        "synchronised_overlays": "implemented",
+        "explain_why": "implemented",
+        "ball_shot_speed": "partial",
+        "player_club_modes": "implemented"
+      },
+      "coverage_evidence": [
+        {
+          "path": "dist/engine.mjs",
+          "line": 14,
+          "level": "source",
+          "note": "Seeded synthetic events exist, but post-generated random tracking does not share event geometry; synthetic_truth and motion remain partial."
+        },
+        {
+          "path": "server.mjs",
+          "line": 37,
+          "level": "source",
+          "note": "Timestamped SSE replay and external event ingestion routes."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 68,
+          "level": "source",
+          "note": "Validation, statistics, pressure clusters and evidence-linked explanations."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 88,
+          "level": "source",
+          "note": "German, English and Spanish fan/analyst text; club/player filters, timed overlays and recap."
+        },
+        {
+          "path": "dist/engine.mjs",
+          "line": 11,
+          "level": "source",
+          "note": "Pass distance, duration-based speed and heuristic difficulty; shot flight speed is not represented."
+        },
+        {
+          "path": "dist/player-pulse.mjs",
+          "line": 47,
+          "level": "source",
+          "note": "Selected-player same-minute synthetic history and recent tracking."
+        },
+        {
+          "path": "dist/pulse-ui.mjs",
+          "line": 12,
+          "level": "source",
+          "note": "On-screen player index and evidence interactions."
+        },
+        {
+          "path": "dist/vision.mjs",
+          "line": 9,
+          "level": "source",
+          "note": "Controlled-colour frames yield positions and transfers; this lab is separate from the full event simulation."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "No genuine agent orchestration or verified cloud inference; synthetic player paths and historical actions lack consistent team-match geometry, and fan benefit is unmeasured.",
+      "fan_business": "Player-specific context and audio can aid following a match, but no fan study, adoption or repeat-viewing evidence supports a higher impact score.",
+      "inspected_paths": [
+        "README.md",
+        "docs/EVALUATION.md",
+        "docs/DATA-CARD.md",
+        "docs/PLAYER-PULSE.md",
+        "docs/benchmark.json",
+        "narrator.mjs",
+        "dist/player-pulse.mjs",
+        "dist/pulse-ui.mjs",
+        "dist/engine.mjs",
+        "dist/vision.mjs",
+        "infra/main.bicep",
+        "tests/player-pulse.test.mjs",
+        "server.mjs",
+        "audio-replay.mjs"
+      ],
+      "inputs": {
+        "project_id": "126406",
+        "repository": "audioreworkvisions/touchline",
+        "repository_sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+        "description_sha256": "a89d4aaa298650b1a70507f575ae463f79e8c2b4a00dfdacd90b03d0b8eb4fda",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "Touchline · audioreworkvisions/touchline · 648179a · repo-v2 · repo-refresh-challenger",
+      "limitations": [
+        "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation.",
+        "Independent current-source challenge; earlier ledger schema/history was visible, but the concurrent primary output was not consulted.",
+        "Same model family may share biases."
+      ],
+      "input_key": "ec3294b7f39f5c9c221b094c0c3092b8c44ecd5630e6e92851ad38885a22f80d",
+      "assessment_id": "193de7733f81f9f6eb732b5ee8dc2054abddc586d8229c45b117677740dbfced"
+    },
+    {
+      "slug": "swarupe7/microsoft_dev_hackathon",
+      "sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+      "project_id": "126423",
+      "reviewer_id": "repo-refresh-challenger",
+      "category": {
+        "name": "Best Multi-Agent System",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "README.md",
+            "line": 13,
+            "level": "claim"
+          },
+          {
+            "path": "lib/agents/orchestrator.ts",
+            "line": 40,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 2,
+          "rationale": "Dashboard, event counters and optional Azure client connect, but events are truncated to 80 before recap and model text is accepted without fact validation. Automated tests remain a README next step.",
+          "evidence": [
+            {
+              "path": "lib/match/engine.ts",
+              "line": 123,
+              "level": "source"
+            },
+            {
+              "path": "lib/ai/generateCommentary.ts",
+              "line": 238,
+              "level": "source"
+            },
+            {
+              "path": "README.md",
+              "line": 64,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "agent_innovation": {
+          "score": 2,
+          "rationale": "Five functions pass a board sequentially; language generation is a separate rewrite. Source offers partial staged orchestration, without agent tool use, planning or demonstrated collective advantage.",
+          "evidence": [
+            {
+              "path": "lib/agents/orchestrator.ts",
+              "line": 40,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/insightAgent.ts",
+              "line": 9,
+              "level": "source"
+            },
+            {
+              "path": "lib/ai/generateCommentary.ts",
+              "line": 174,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Hosts and club framing address understandable audience preferences, but no measured fan benefit supports impact. Player mode follows the latest actor and adds a generic relevance assertion.",
+          "evidence": [
+            {
+              "path": "components/MatchDashboard.tsx",
+              "line": 95,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/personalizationAgent.ts",
+              "line": 58,
+              "level": "source"
+            },
+            {
+              "path": "lib/match/hosts.ts",
+              "line": 5,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "experience": {
+          "score": 2,
+          "rationale": "Animated pitch and evidence UI add concrete presentation, but pitch positions are illustrative, player focus cannot persist on a chosen player, and cloud commentary bypasses casual/analyst text. Full-match recap loses older events.",
+          "evidence": [
+            {
+              "path": "lib/match/pitchPositions.ts",
+              "line": 82,
+              "level": "source"
+            },
+            {
+              "path": "components/MatchDashboard.tsx",
+              "line": 139,
+              "level": "source"
+            },
+            {
+              "path": "lib/match/engine.ts",
+              "line": 123,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/recap.ts",
+              "line": 12,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "category_fit": {
+          "score": 2,
+          "rationale": "Multi-agent category is inferred from the declared pipeline. Named deterministic specialists and shared state are present, but do not establish autonomous collaboration or superiority over a single workflow.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "line": 13,
+              "level": "claim"
+            },
+            {
+              "path": "lib/agents/orchestrator.ts",
+              "line": 44,
+              "level": "source"
+            },
+            {
+              "path": "lib/agents/narrativeAgent.ts",
+              "line": 20,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        }
+      },
+      "coverage": {
+        "ingest_live": "implemented",
+        "pass_quality": "partial",
+        "interpret": "implemented",
+        "automated_recap": "partial",
+        "live_narrative": "implemented",
+        "player_identity": "implemented",
+        "pressure_control_rhythm": "implemented",
+        "multilingual": "partial",
+        "video_auto_eventing": "not_found",
+        "analyst_casual_modes": "partial",
+        "render_on_screen": "implemented",
+        "player_speed_distance": "not_found",
+        "synthetic_truth": "partial",
+        "personalise": "partial",
+        "synchronised_overlays": "partial",
+        "explain_why": "partial",
+        "ball_shot_speed": "not_found",
+        "player_club_modes": "partial"
+      },
+      "coverage_evidence": [
+        {
+          "path": "lib/match/engine.ts",
+          "line": 44,
+          "level": "source",
+          "note": "Unseeded random fictional events and all-successful passes limit football-realistic reproducibility; event counters still ingest and update."
+        },
+        {
+          "path": "lib/match/types.ts",
+          "line": 32,
+          "level": "source",
+          "note": "Names/IDs and zones exist; no measured coordinates, player/ball speed or video ingestion fields."
+        },
+        {
+          "path": "lib/agents/tacticalState.ts",
+          "line": 9,
+          "level": "source",
+          "note": "Pressure/control/tempo heuristics exist."
+        },
+        {
+          "path": "components/MatchDashboard.tsx",
+          "line": 83,
+          "level": "source",
+          "note": "Local event ticking drives on-screen pitch, live insights and narrative."
+        },
+        {
+          "path": "lib/match/pitchPositions.ts",
+          "line": 142,
+          "level": "source",
+          "note": "Arrow is drawn between successive actors regardless of event type; not pass-quality or ball-flight evidence."
+        },
+        {
+          "path": "lib/agents/personalizationAgent.ts",
+          "line": 36,
+          "level": "source",
+          "note": "Audience/club text partially varies, but player text asserts involvement without selecting player-specific evidence."
+        },
+        {
+          "path": "components/MatchDashboard.tsx",
+          "line": 139,
+          "level": "source",
+          "note": "Same remote text replaces local casual and analyst variants."
+        },
+        {
+          "path": "lib/match/hosts.ts",
+          "line": 63,
+          "level": "source",
+          "note": "Hinglish templates exist but do not establish full multilingual storytelling."
+        },
+        {
+          "path": "lib/agents/overlay.ts",
+          "line": 18,
+          "level": "source",
+          "note": "Packet has match clock but no onset/expiry/render scheduling contract; synchronized overlay coverage is partial."
+        },
+        {
+          "path": "lib/match/engine.ts",
+          "line": 123,
+          "level": "source",
+          "note": "Only 80 latest events remain for recap; full-match recap is partial."
+        },
+        {
+          "path": "lib/agents/recap.ts",
+          "line": 22,
+          "level": "source",
+          "note": "Shot counts across teams become a last-team chance-flurry claim; tackles across players become a last-player recoveries claim, weakening explainability."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "Full-match recap drops early events; model text lacks factual validation; latest-actor focus and generic pitch motion do not meet persistent player-following or measured movement suggestions.",
+      "fan_business": "Personality, club tone and plain-language explanations are plausible fan benefits; no demonstrated comprehension, demand or viewing uplift. More UI is not impact evidence.",
+      "inspected_paths": [
+        "README.md",
+        "lib/agents/orchestrator.ts",
+        "lib/agents/personalizationAgent.ts",
+        "lib/agents/overlay.ts",
+        "lib/agents/recap.ts",
+        "lib/ai/generateCommentary.ts",
+        "lib/match/engine.ts",
+        "lib/match/pitchPositions.ts",
+        "lib/match/types.ts",
+        "lib/agents/tacticalState.ts",
+        "components/MatchDashboard.tsx",
+        "lib/agents/insightAgent.ts",
+        "lib/agents/narrativeAgent.ts",
+        "lib/match/hosts.ts"
+      ],
+      "inputs": {
+        "project_id": "126423",
+        "repository": "swarupe7/microsoft_dev_hackathon",
+        "repository_sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+        "description_sha256": "d062eeeae35e6828f51e1ef072a132b2c17ab21a1870c051c1e2bcbb49540fcd",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "MatchMind AI: Every Match Has a Personality · swarupe7/microsoft_dev_hackathon · 7204630 · repo-v2 · repo-refresh-challenger",
+      "limitations": [
+        "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation.",
+        "Independent current-source challenge; earlier ledger schema/history was visible, but the concurrent primary output was not consulted.",
+        "Same model family may share biases."
+      ],
+      "input_key": "6c959387ad9f936b9e0ea21edd97493b19e4b29dbf40ff1378fc7fbb69edc722",
+      "assessment_id": "823b329d4d346834584a470b3f2d65ee125a8156170dc4aac4e0462a2965ec86"
+    },
+    {
+      "slug": "JinYi123456/floodlight",
+      "sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+      "project_id": "126495",
+      "reviewer_id": "repo-refresh-challenger",
+      "category": {
+        "name": "Best Multi-Agent System",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "packages/agents/src/crew.ts",
+            "line": 219,
+            "level": "source"
+          },
+          {
+            "path": "packages/agents/src/crew.ts",
+            "line": 308,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Substantial connected simulator, interpretation, vision, cue compiler and tested fallback paths exist. Full-match precomputation exposes future VAR outcomes in the replay score; declared Agent Framework/MCP use is not evidenced in the custom runtime and manifests.",
+          "evidence": [
+            {
+              "path": "packages/dataset/src/pipeline.ts",
+              "line": 41,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/pipeline/match.worker.ts",
+              "line": 130,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/package.json",
+              "line": 14,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/providers.ts",
+              "line": 91,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "agent_innovation": {
+          "score": 3,
+          "rationale": "Analyst drafts, verifier-guided revision, commentator dispatch and provider circuit breaking form a connected crew. Director decisions and audience variants are deterministic; lexical fact gates cannot establish every claim as true.",
+          "evidence": [
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 243,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 271,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 330,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/verifier.ts",
+              "line": 53,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Audience variants and event-linked interpretation address comprehension and production needs. No fan-demand, comprehension, retention or business outcome evaluation is present in inspected evidence; vision metrics do not establish audience value.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "line": 31,
+              "level": "claim"
+            },
+            {
+              "path": "apps/web/src/ui/InsightPanel.tsx",
+              "line": 128,
+              "level": "source"
+            },
+            {
+              "path": "packages/vision/test/vision.test.ts",
+              "line": 94,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Clocked overlays, evidence inspection, player camera focus and languages support a connected viewing experience. Future rundown/VAR information undermines spoiler-safe claims, and no dedicated automated recap implementation was located.",
+          "evidence": [
+            {
+              "path": "packages/cuesheet/src/compiler.ts",
+              "line": 81,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/state/derive.ts",
+              "line": 67,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/pipeline/match.worker.ts",
+              "line": 135,
+              "level": "source"
+            },
+            {
+              "path": "apps/web/src/ui/MatchPack.tsx",
+              "line": 50,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "category_fit": {
+          "score": 3,
+          "rationale": "Custom multi-role orchestration includes verifiable failure/rewrite tests and recorded draft artifacts, supporting inferred multi-agent fit. Microsoft Agent Framework/MCP claims remain unsupported; no measured collaborative advantage or live Microsoft deployment was established.",
+          "evidence": [
+            {
+              "path": "packages/agents/src/crew.ts",
+              "line": 271,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/test/agents.test.ts",
+              "line": 177,
+              "level": "test_file"
+            },
+            {
+              "path": "packages/agents/package.json",
+              "line": 14,
+              "level": "source"
+            },
+            {
+              "path": "packages/agents/src/providers.ts",
+              "line": 91,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        }
+      },
+      "coverage": {
+        "explain_why": "partial",
+        "synchronised_overlays": "implemented",
+        "multilingual": "implemented",
+        "player_identity": "implemented",
+        "player_club_modes": "partial",
+        "pass_quality": "implemented",
+        "interpret": "implemented",
+        "player_speed_distance": "implemented",
+        "analyst_casual_modes": "implemented",
+        "ingest_live": "partial",
+        "live_narrative": "implemented",
+        "personalise": "partial",
+        "automated_recap": "not_found",
+        "video_auto_eventing": "partial",
+        "ball_shot_speed": "implemented",
+        "pressure_control_rhythm": "implemented",
+        "render_on_screen": "implemented",
+        "synthetic_truth": "partial"
+      },
+      "coverage_evidence": [
+        {
+          "path": "data/comeback-2026/DATA_CARD.md",
+          "line": 10,
+          "level": "claim",
+          "note": "Original fictional seeded events, authored scenarios and MIT provenance; no real football dataset is claimed."
+        },
+        {
+          "path": "packages/simulator/test/calibration.test.ts",
+          "line": 7,
+          "level": "test_file",
+          "note": "20 seeded matches tested against internal ranges; not independent football realism validation."
+        },
+        {
+          "path": "packages/dataset/src/pipeline.ts",
+          "line": 46,
+          "level": "source",
+          "note": "All events/frames are interpreted before narration; application uses precomputed replay rather than established incremental live inference."
+        },
+        {
+          "path": "packages/engine/src/engine.ts",
+          "line": 334,
+          "level": "source",
+          "note": "Pass accuracy/difficulty and event-derived speed feed the interpreter."
+        },
+        {
+          "path": "packages/engine/src/engine.ts",
+          "line": 668,
+          "level": "source",
+          "note": "Tracking computes player distance/speed/sprint thresholds."
+        },
+        {
+          "path": "packages/simulator/src/tracking.ts",
+          "line": 243,
+          "level": "source",
+          "note": "Ball flight is interpolated with clamped duration while retaining heuristic speed; physical consistency remains bounded."
+        },
+        {
+          "path": "packages/agents/src/crew.ts",
+          "line": 175,
+          "level": "source",
+          "note": "Evidence pack includes both at-time score and end-state score/control, weakening temporal claim gating."
+        },
+        {
+          "path": "packages/agents/src/verifier.ts",
+          "line": 63,
+          "level": "source",
+          "note": "Unbound numeric vocabulary with 6-percent tolerance is not semantic verification."
+        },
+        {
+          "path": "packages/vision/test/vision.test.ts",
+          "line": 95,
+          "level": "test_file",
+          "note": "Synthetic colour detector tested on marquee 90-second window, not general incoming video."
+        },
+        {
+          "path": "packages/cuesheet/src/compiler.ts",
+          "line": 81,
+          "level": "source",
+          "note": "Machine-readable slots, timings, priority and expiry are implemented."
+        },
+        {
+          "path": "apps/web/src/ui/ModeConsole.tsx",
+          "line": 80,
+          "level": "source",
+          "note": "Club/player controls exist; club relevance filtering was not located in consuming display logic."
+        },
+        {
+          "path": "apps/web/src/ui/ProgramMonitor.tsx",
+          "line": 396,
+          "level": "source",
+          "note": "Player selection affects monitor focus."
+        },
+        {
+          "path": "apps/web/src/ui/InsightPanel.tsx",
+          "line": 128,
+          "level": "source",
+          "note": "Persona/language variants affect displayed insight."
+        },
+        {
+          "path": "apps/web/src/ui/MatchPack.tsx",
+          "line": 50,
+          "level": "source",
+          "note": "Time-bounded statistics and shot maps exist; dedicated recap/catch-up implementation not located by repository source search."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "Precomputation leaks future VAR decisions; numeric/name gates do not prove claim meaning. Submission claims Agent Framework, MCP and spoiler-safe recaps without matching inspected implementations.",
+      "fan_business": "Explaining events differently for fans and analysts is plausible value. Synthetic vision accuracy and large feature breadth are not measured fan demand or business impact.",
+      "inspected_paths": [
+        "README.md",
+        "package.json",
+        "packages/agents/package.json",
+        "packages/agents/src/crew.ts",
+        "packages/agents/src/runtime.ts",
+        "packages/agents/src/verifier.ts",
+        "packages/agents/src/providers.ts",
+        "packages/agents/test/agents.test.ts",
+        "packages/dataset/src/pipeline.ts",
+        "packages/simulator/src/tracking.ts",
+        "packages/simulator/src/calibration.ts",
+        "packages/simulator/test/calibration.test.ts",
+        "packages/vision/test/vision.test.ts",
+        "packages/cuesheet/src/compiler.ts",
+        "packages/engine/src/engine.ts",
+        "data/comeback-2026/DATA_CARD.md",
+        "apps/web/src/ui/MatchPack.tsx",
+        "apps/web/src/ui/ModeConsole.tsx",
+        "apps/web/src/ui/InsightPanel.tsx",
+        "apps/web/src/ui/MomentRail.tsx",
+        "apps/web/src/ui/ProgramMonitor.tsx",
+        "apps/web/src/state/derive.ts",
+        "apps/web/src/pipeline/match.worker.ts"
+      ],
+      "inputs": {
+        "project_id": "126495",
+        "repository": "jinyi123456/floodlight",
+        "repository_sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+        "description_sha256": "ac5dda67410fab1c6e9c4de8c371adf00ec77d91082445f13d80bd6f5a81f544",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "Floodlight · JinYi123456/floodlight · eae2606 · repo-v2 · repo-refresh-challenger",
+      "limitations": [
+        "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation.",
+        "Independent current-source challenge; earlier ledger schema/history was visible, but the concurrent primary output was not consulted.",
+        "Same model family may share biases."
+      ],
+      "input_key": "0a57bac379501207082ad463e13c7dc67246b1c4f498fc7512bc8b4b585e92ad",
+      "assessment_id": "78b1f2d62f338105afa3d28235ebd3b44ad476888419b4257aa184e897f5dd02"
+    },
+    {
+      "slug": "mberry19932025/PRO-VISION",
+      "sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+      "project_id": "126501",
+      "reviewer_id": "repo-refresh-challenger",
+      "category": {
+        "name": "Best Azure Cloud Native Integration",
+        "basis": "inferred",
+        "evidence": [
+          {
+            "path": "README.md",
+            "line": 47,
+            "level": "claim"
+          },
+          {
+            "path": "competition-app/src/backend.js",
+            "line": 63,
+            "level": "source"
+          }
+        ]
+      },
+      "criteria": {
+        "technology": {
+          "score": 3,
+          "rationale": "Canonical app connects deterministic facts, bounded Azure tool calls, evidence validation, usage controls and relevant mocked integration tests. Public deployment/live-call claims are not independent runtime evidence, and full football simulation is limited to 180 actions by ten players.",
+          "evidence": [
+            {
+              "path": "competition-app/src/director.js",
+              "line": 20,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/backend.js",
+              "line": 60,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/tests/director.test.mjs",
+              "line": 24,
+              "level": "test_file"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 7,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "agent_innovation": {
+          "score": 3,
+          "rationale": "A concrete two-step tool workflow selects a bounded recorded moment, inspects evidence and requests an explanation, with argument checks and fallback. It is a single-model workflow, not multi-agent collaboration; no comparative benefit is measured.",
+          "evidence": [
+            {
+              "path": "competition-app/src/director.js",
+              "line": 30,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/director.js",
+              "line": 41,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/tests/director.test.mjs",
+              "line": 34,
+              "level": "test_file"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "impact": {
+          "score": 2,
+          "rationale": "Conversation, recorded player comparisons and personal memory cards target concrete fan activities. No measured demand, comprehension benefit, card sharing or repeat-use evidence supports stronger impact.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "line": 14,
+              "level": "claim"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 98,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 39,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "experience": {
+          "score": 3,
+          "rationale": "Replay, source IDs, audience/language choices, bounded recaps and downloadable cards are connected in source. Phone/media/download testing is explicitly pending; two-call AI workflow can take up to 55 seconds and is not continuous live narration.",
+          "evidence": [
+            {
+              "path": "competition-app/src/client.js",
+              "line": 66,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/client.js",
+              "line": 84,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/core.js",
+              "line": 103,
+              "level": "source"
+            },
+            {
+              "path": "competition-app/src/director.js",
+              "line": 25,
+              "level": "source"
+            },
+            {
+              "path": "README.md",
+              "line": 55,
+              "level": "claim"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        },
+        "category_fit": {
+          "score": 2,
+          "rationale": "Azure App Service and model integration support an inferred Cloud Native category, but the documented single-instance usage ledger, shared visitor caps and no demonstrated distributed resilience limit category evidence.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "line": 47,
+              "level": "claim"
+            },
+            {
+              "path": "README.md",
+              "line": 49,
+              "level": "claim"
+            },
+            {
+              "path": "competition-app/src/backend.js",
+              "line": 60,
+              "level": "source"
+            }
+          ],
+          "uncertainty": "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation."
+        }
+      },
+      "coverage": {
+        "explain_why": "implemented",
+        "synchronised_overlays": "not_found",
+        "multilingual": "implemented",
+        "player_identity": "implemented",
+        "player_club_modes": "implemented",
+        "pass_quality": "partial",
+        "interpret": "implemented",
+        "player_speed_distance": "not_found",
+        "analyst_casual_modes": "implemented",
+        "ingest_live": "partial",
+        "live_narrative": "implemented",
+        "personalise": "implemented",
+        "automated_recap": "implemented",
+        "video_auto_eventing": "not_found",
+        "ball_shot_speed": "not_found",
+        "pressure_control_rhythm": "partial",
+        "render_on_screen": "implemented",
+        "synthetic_truth": "partial"
+      },
+      "coverage_evidence": [
+        {
+          "path": "competition-app/src/core.js",
+          "line": 2,
+          "level": "source",
+          "note": "Deterministic fictional 180-event sequence; ten players, no tracking, force-selected outcomes and 30-second action intervals limit football realism."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 71,
+          "level": "source",
+          "note": "Pre-generated event replay advances locally; no external live ingest route was established."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 22,
+          "level": "source",
+          "note": "Time-bounded statistics, pass distance and pressure-cluster interpretation."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 54,
+          "level": "source",
+          "note": "Evidence-linked why explanations and distinct fan/coach templates."
+        },
+        {
+          "path": "competition-app/src/director.js",
+          "line": 7,
+          "level": "source",
+          "note": "Tool selection enforces replay time and team/player preferences."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 35,
+          "level": "source",
+          "note": "On-screen selected moment and evidence rendering."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 70,
+          "level": "source",
+          "note": "Template live commentary and speech readout."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 71,
+          "level": "source",
+          "note": "Automated local fan/coach recap in English/Spanish."
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "line": 26,
+          "level": "source",
+          "note": "Pass distance/completion are represented, but pass difficulty is absent."
+        },
+        {
+          "path": "README.md",
+          "line": 43,
+          "level": "claim",
+          "note": "No tracking, speed or video recognition; personal video-frame cards are not auto-eventing."
+        },
+        {
+          "path": "competition-app/src/narrative.js",
+          "line": 14,
+          "level": "source",
+          "note": "Unsupported speed/intent claims are screened lexically, not semantically."
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "line": 84,
+          "level": "source",
+          "note": "Recap uses current prefix; no timed production-overlay contract was located."
+        }
+      ],
+      "theme_technology": "supported",
+      "main_gap": "Sparse synthetic sequence lacks tracking, speed and auto-eventing; explicit AI requests and a 55-second Director budget do not establish live narrative latency. Shared quotas can restrict judge access.",
+      "fan_business": "Exploration and keepsakes could encourage engagement, but no observed fan demand, comprehension, sharing or retention results were found; garment production remains a concept.",
+      "inspected_paths": [
+        "README.md",
+        "competition-app/README.md",
+        "competition-app/docs/AI-EVALUATION.md",
+        "competition-app/docs/COMPETITION-BLOCKERS.md",
+        "competition-app/src/core.js",
+        "competition-app/src/director.js",
+        "competition-app/src/narrative.js",
+        "competition-app/src/client.js",
+        "competition-app/src/backend.js",
+        "competition-app/tests/director.test.mjs"
+      ],
+      "inputs": {
+        "project_id": "126501",
+        "repository": "mberry19932025/pro-vision",
+        "repository_sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+        "description_sha256": "0d06374f33318b4faf00acb1749307a0424b2c23cdb5d354d11b539fd9862923",
+        "rubric_version": "itg-rubric-v2",
+        "rules_sha": "9c6c99620b06b2b04dcf69a434cdf4d203d19eda",
+        "track": "repository_evidence"
+      },
+      "reviewed_at": "2026-10-14",
+      "round": 1,
+      "name": "PRO-VISION AI · mberry19932025/PRO-VISION · 74cbde4 · repo-v2 · repo-refresh-challenger",
+      "limitations": [
+        "Pinned source only; no competitor code or tests executed, no runtime/demo or fan outcomes verified. Self-reported checks are not independent validation.",
+        "Independent current-source challenge; earlier ledger schema/history was visible, but the concurrent primary output was not consulted.",
+        "Same model family may share biases."
+      ],
+      "input_key": "dc77227c9061085e8e014502681ff0d4eab97fe0c0d1b75be021d5aa0c4a1e02",
+      "assessment_id": "bf0e8f8af66d0db0ee6b851ad58d88804d785fd003d4f81d0b9d20e48cc88d6f"
     }
   ]
 }

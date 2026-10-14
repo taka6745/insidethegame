@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-14T00:49:14+00:00",
+  "checked_at": "2026-10-14T01:49:30+00:00",
   "commit_scope": "all ancestors of the observed default-branch HEAD",
   "loc_method": "nonblank source lines including comments and tests; excludes dependencies, builds, generated declarations, lockfiles, datasets, and docs",
   "repositories": [
@@ -1119,6 +1119,693 @@
           "line": 379,
           "source_code": true,
           "url": "https://github.com/Hapinam/vybe-ai/blob/c1fd57d1ba206be9b78fabcee1dcbabc771ecbc1/apps/web/src/App.tsx#L379"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/JinYi123456/floodlight",
+      "listed_url": "https://github.com/JinYi123456/floodlight",
+      "slug": "JinYi123456/floodlight",
+      "status": "ok",
+      "commits": 28,
+      "source_lines": 14054,
+      "test_lines": 1147,
+      "loc_bucket": "5k\u201314.9k",
+      "license": "MIT",
+      "default_branch": "main",
+      "description": null,
+      "sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+      "last_commit_at": "2026-10-14T01:35:56Z",
+      "app_lines": 12907,
+      "language_lines": {
+        ".html": 13,
+        ".tsx": 2155,
+        ".ts": 9996,
+        ".css": 1890
+      },
+      "files": [
+        {
+          "path": ".dockerignore",
+          "bytes": 68
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "bytes": 1415
+        },
+        {
+          "path": ".gitignore",
+          "bytes": 188
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1067
+        },
+        {
+          "path": "README.md",
+          "bytes": 9441
+        },
+        {
+          "path": "apps/web/index.html",
+          "bytes": 503
+        },
+        {
+          "path": "apps/web/package.json",
+          "bytes": 657
+        },
+        {
+          "path": "apps/web/public/recordings/comeback.json",
+          "bytes": 102300
+        },
+        {
+          "path": "apps/web/public/recordings/derby.json",
+          "bytes": 123096
+        },
+        {
+          "path": "apps/web/public/recordings/freeplay.json",
+          "bytes": 55289
+        },
+        {
+          "path": "apps/web/public/recordings/siege.json",
+          "bytes": 90716
+        },
+        {
+          "path": "apps/web/src/App.tsx",
+          "bytes": 808
+        },
+        {
+          "path": "apps/web/src/main.tsx",
+          "bytes": 236
+        },
+        {
+          "path": "apps/web/src/pipeline/client.ts",
+          "bytes": 7006
+        },
+        {
+          "path": "apps/web/src/pipeline/match.worker.ts",
+          "bytes": 9883
+        },
+        {
+          "path": "apps/web/src/pipeline/protocol.ts",
+          "bytes": 2653
+        },
+        {
+          "path": "apps/web/src/state/derive.ts",
+          "bytes": 5985
+        },
+        {
+          "path": "apps/web/src/state/store.ts",
+          "bytes": 5637
+        },
+        {
+          "path": "apps/web/src/styles.css",
+          "bytes": 36136
+        },
+        {
+          "path": "apps/web/src/ui/ControlRoom.tsx",
+          "bytes": 7342
+        },
+        {
+          "path": "apps/web/src/ui/InsightPanel.tsx",
+          "bytes": 10325
+        },
+        {
+          "path": "apps/web/src/ui/Launch.tsx",
+          "bytes": 3751
+        },
+        {
+          "path": "apps/web/src/ui/MatchPack.tsx",
+          "bytes": 17139
+        },
+        {
+          "path": "apps/web/src/ui/ModeConsole.tsx",
+          "bytes": 4482
+        },
+        {
+          "path": "apps/web/src/ui/MomentRail.tsx",
+          "bytes": 2720
+        },
+        {
+          "path": "apps/web/src/ui/Preparing.tsx",
+          "bytes": 1603
+        },
+        {
+          "path": "apps/web/src/ui/ProgramMonitor.tsx",
+          "bytes": 24677
+        },
+        {
+          "path": "apps/web/src/ui/VisionLab.tsx",
+          "bytes": 13034
+        },
+        {
+          "path": "apps/web/src/ui/audio.ts",
+          "bytes": 11882
+        },
+        {
+          "path": "apps/web/src/ui/catalog.ts",
+          "bytes": 2056
+        },
+        {
+          "path": "apps/web/src/ui/commentary.ts",
+          "bytes": 9204
+        },
+        {
+          "path": "apps/web/src/ui/kinds.ts",
+          "bytes": 1237
+        },
+        {
+          "path": "apps/web/src/ui/pitchTexture.ts",
+          "bytes": 3305
+        },
+        {
+          "path": "apps/web/src/ui/players3d.ts",
+          "bytes": 5832
+        },
+        {
+          "path": "apps/web/tsconfig.json",
+          "bytes": 211
+        },
+        {
+          "path": "apps/web/vite.config.ts",
+          "bytes": 249
+        },
+        {
+          "path": "data/comeback-2026/DATA_CARD.md",
+          "bytes": 3296
+        },
+        {
+          "path": "data/comeback-2026/candidates.jsonl",
+          "bytes": 8366
+        },
+        {
+          "path": "data/comeback-2026/cues.json",
+          "bytes": 41888
+        },
+        {
+          "path": "data/comeback-2026/events.csv",
+          "bytes": 256575
+        },
+        {
+          "path": "data/comeback-2026/events.jsonl",
+          "bytes": 635755
+        },
+        {
+          "path": "data/comeback-2026/match.json",
+          "bytes": 2950
+        },
+        {
+          "path": "data/comeback-2026/moments.csv",
+          "bytes": 10291
+        },
+        {
+          "path": "data/comeback-2026/moments.jsonl",
+          "bytes": 20958
+        },
+        {
+          "path": "data/comeback-2026/players.csv",
+          "bytes": 3692
+        },
+        {
+          "path": "data/derby-2026/DATA_CARD.md",
+          "bytes": 3352
+        },
+        {
+          "path": "data/derby-2026/candidates.jsonl",
+          "bytes": 10282
+        },
+        {
+          "path": "data/derby-2026/cues.json",
+          "bytes": 47296
+        },
+        {
+          "path": "data/derby-2026/events.csv",
+          "bytes": 257922
+        },
+        {
+          "path": "data/derby-2026/events.jsonl",
+          "bytes": 639590
+        },
+        {
+          "path": "data/derby-2026/match.json",
+          "bytes": 2944
+        },
+        {
+          "path": "data/derby-2026/moments.csv",
+          "bytes": 12531
+        },
+        {
+          "path": "data/derby-2026/moments.jsonl",
+          "bytes": 25302
+        },
+        {
+          "path": "data/derby-2026/players.csv",
+          "bytes": 3716
+        },
+        {
+          "path": "data/freeplay-2026/DATA_CARD.md",
+          "bytes": 3217
+        },
+        {
+          "path": "data/freeplay-2026/candidates.jsonl",
+          "bytes": 4585
+        },
+        {
+          "path": "data/freeplay-2026/cues.json",
+          "bytes": 20329
+        },
+        {
+          "path": "data/freeplay-2026/events.csv",
+          "bytes": 263292
+        },
+        {
+          "path": "data/freeplay-2026/events.jsonl",
+          "bytes": 655937
+        },
+        {
+          "path": "data/freeplay-2026/match.json",
+          "bytes": 2941
+        },
+        {
+          "path": "data/freeplay-2026/moments.csv",
+          "bytes": 5691
+        },
+        {
+          "path": "data/freeplay-2026/moments.jsonl",
+          "bytes": 11489
+        },
+        {
+          "path": "data/freeplay-2026/players.csv",
+          "bytes": 3644
+        },
+        {
+          "path": "data/siege-2026/DATA_CARD.md",
+          "bytes": 3225
+        },
+        {
+          "path": "data/siege-2026/candidates.jsonl",
+          "bytes": 7443
+        },
+        {
+          "path": "data/siege-2026/cues.json",
+          "bytes": 30477
+        },
+        {
+          "path": "data/siege-2026/events.csv",
+          "bytes": 263029
+        },
+        {
+          "path": "data/siege-2026/events.jsonl",
+          "bytes": 657069
+        },
+        {
+          "path": "data/siege-2026/match.json",
+          "bytes": 2910
+        },
+        {
+          "path": "data/siege-2026/moments.csv",
+          "bytes": 9048
+        },
+        {
+          "path": "data/siege-2026/moments.jsonl",
+          "bytes": 18667
+        },
+        {
+          "path": "data/siege-2026/players.csv",
+          "bytes": 3668
+        },
+        {
+          "path": "package-lock.json",
+          "bytes": 73950
+        },
+        {
+          "path": "package.json",
+          "bytes": 1089
+        },
+        {
+          "path": "packages/agents/package.json",
+          "bytes": 349
+        },
+        {
+          "path": "packages/agents/src/crew.ts",
+          "bytes": 15452
+        },
+        {
+          "path": "packages/agents/src/index.ts",
+          "bytes": 137
+        },
+        {
+          "path": "packages/agents/src/providers.ts",
+          "bytes": 5289
+        },
+        {
+          "path": "packages/agents/src/runtime.ts",
+          "bytes": 5190
+        },
+        {
+          "path": "packages/agents/src/templates.ts",
+          "bytes": 12148
+        },
+        {
+          "path": "packages/agents/src/verifier.ts",
+          "bytes": 4929
+        },
+        {
+          "path": "packages/agents/test/agents.test.ts",
+          "bytes": 8561
+        },
+        {
+          "path": "packages/core/package.json",
+          "bytes": 255
+        },
+        {
+          "path": "packages/core/src/index.ts",
+          "bytes": 97
+        },
+        {
+          "path": "packages/core/src/math.ts",
+          "bytes": 3230
+        },
+        {
+          "path": "packages/core/src/pitch.ts",
+          "bytes": 1589
+        },
+        {
+          "path": "packages/core/src/rng.ts",
+          "bytes": 3087
+        },
+        {
+          "path": "packages/core/src/types.ts",
+          "bytes": 7921
+        },
+        {
+          "path": "packages/core/test/math.test.ts",
+          "bytes": 1643
+        },
+        {
+          "path": "packages/core/test/rng.test.ts",
+          "bytes": 2996
+        },
+        {
+          "path": "packages/cuesheet/package.json",
+          "bytes": 386
+        },
+        {
+          "path": "packages/cuesheet/src/compiler.ts",
+          "bytes": 10233
+        },
+        {
+          "path": "packages/cuesheet/src/index.ts",
+          "bytes": 28
+        },
+        {
+          "path": "packages/cuesheet/test/cuesheet.test.ts",
+          "bytes": 5320
+        },
+        {
+          "path": "packages/dataset/package.json",
+          "bytes": 502
+        },
+        {
+          "path": "packages/dataset/src/cli.ts",
+          "bytes": 2401
+        },
+        {
+          "path": "packages/dataset/src/exporters.ts",
+          "bytes": 10623
+        },
+        {
+          "path": "packages/dataset/src/index.ts",
+          "bytes": 57
+        },
+        {
+          "path": "packages/dataset/src/pipeline.ts",
+          "bytes": 3643
+        },
+        {
+          "path": "packages/dataset/test/dataset.test.ts",
+          "bytes": 4657
+        },
+        {
+          "path": "packages/engine/package.json",
+          "bytes": 379
+        },
+        {
+          "path": "packages/engine/src/analysis.ts",
+          "bytes": 4262
+        },
+        {
+          "path": "packages/engine/src/engine.ts",
+          "bytes": 32970
+        },
+        {
+          "path": "packages/engine/src/index.ts",
+          "bytes": 54
+        },
+        {
+          "path": "packages/engine/test/engine.test.ts",
+          "bytes": 6478
+        },
+        {
+          "path": "packages/simulator/package.json",
+          "bytes": 317
+        },
+        {
+          "path": "packages/simulator/src/calibration.ts",
+          "bytes": 7177
+        },
+        {
+          "path": "packages/simulator/src/data.ts",
+          "bytes": 7376
+        },
+        {
+          "path": "packages/simulator/src/index.ts",
+          "bytes": 195
+        },
+        {
+          "path": "packages/simulator/src/positions.ts",
+          "bytes": 4410
+        },
+        {
+          "path": "packages/simulator/src/scenarios.ts",
+          "bytes": 4801
+        },
+        {
+          "path": "packages/simulator/src/simulator.ts",
+          "bytes": 43482
+        },
+        {
+          "path": "packages/simulator/src/squad.ts",
+          "bytes": 5032
+        },
+        {
+          "path": "packages/simulator/src/tracking.ts",
+          "bytes": 21491
+        },
+        {
+          "path": "packages/simulator/test/calibration.test.ts",
+          "bytes": 1270
+        },
+        {
+          "path": "packages/simulator/test/determinism.test.ts",
+          "bytes": 5976
+        },
+        {
+          "path": "packages/simulator/test/tracking.test.ts",
+          "bytes": 2732
+        },
+        {
+          "path": "packages/vision/package.json",
+          "bytes": 360
+        },
+        {
+          "path": "packages/vision/src/detect.ts",
+          "bytes": 13796
+        },
+        {
+          "path": "packages/vision/src/events.ts",
+          "bytes": 25643
+        },
+        {
+          "path": "packages/vision/src/index.ts",
+          "bytes": 2153
+        },
+        {
+          "path": "packages/vision/src/raster.ts",
+          "bytes": 10135
+        },
+        {
+          "path": "packages/vision/src/track.ts",
+          "bytes": 3268
+        },
+        {
+          "path": "packages/vision/test/vision.test.ts",
+          "bytes": 6626
+        },
+        {
+          "path": "services/api/Dockerfile",
+          "bytes": 477
+        },
+        {
+          "path": "services/api/package.json",
+          "bytes": 433
+        },
+        {
+          "path": "services/api/src/server.ts",
+          "bytes": 9591
+        },
+        {
+          "path": "services/api/test/api.test.ts",
+          "bytes": 4525
+        },
+        {
+          "path": "tools/record-studio-voice.ts",
+          "bytes": 4670
+        },
+        {
+          "path": "tsconfig.base.json",
+          "bytes": 814
+        },
+        {
+          "path": "tsconfig.json",
+          "bytes": 188
+        },
+        {
+          "path": "vitest.config.ts",
+          "bytes": 225
+        }
+      ],
+      "evidence": [
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 33,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L33"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 47,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L47"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 129,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L129"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 134,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L134"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 139,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L139"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 159,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L159"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "README.md",
+          "line": 164,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/README.md#L164"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "apps/web/public/recordings/siege.json",
+          "line": 1172,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/apps/web/public/recordings/siege.json#L1172"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "apps/web/public/recordings/siege.json",
+          "line": 1181,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/apps/web/public/recordings/siege.json#L1181"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "apps/web/src/pipeline/match.worker.ts",
+          "line": 7,
+          "source_code": true,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/apps/web/src/pipeline/match.worker.ts#L7"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "apps/web/src/pipeline/match.worker.ts",
+          "line": 76,
+          "source_code": true,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/apps/web/src/pipeline/match.worker.ts#L76"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "apps/web/src/pipeline/match.worker.ts",
+          "line": 81,
+          "source_code": true,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/apps/web/src/pipeline/match.worker.ts#L81"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "packages/dataset/test/dataset.test.ts",
+          "line": 95,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/packages/dataset/test/dataset.test.ts#L95"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 41,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L41"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 47,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L47"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 53,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L53"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 58,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L58"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 71,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L71"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "services/api/test/api.test.ts",
+          "line": 87,
+          "source_code": false,
+          "url": "https://github.com/JinYi123456/floodlight/blob/eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56/services/api/test/api.test.ts#L87"
         }
       ]
     },
@@ -4141,6 +4828,632 @@
         }
       ],
       "evidence": []
+    },
+    {
+      "url": "https://github.com/mberry19932025/PRO-VISION",
+      "listed_url": "https://github.com/mberry19932025/PRO-VISION",
+      "slug": "mberry19932025/PRO-VISION",
+      "status": "ok",
+      "commits": 37,
+      "source_lines": 2801,
+      "test_lines": 813,
+      "loc_bucket": "1k\u20134.9k",
+      "license": null,
+      "default_branch": "main",
+      "description": null,
+      "sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+      "last_commit_at": "2026-10-13T20:39:01Z",
+      "app_lines": 1988,
+      "language_lines": {
+        ".html": 431,
+        ".sh": 9,
+        ".mjs": 1144,
+        ".js": 1147,
+        ".css": 70
+      },
+      "files": [
+        {
+          "path": ".dockerignore",
+          "bytes": 77
+        },
+        {
+          "path": ".env.example",
+          "bytes": 456
+        },
+        {
+          "path": ".github/workflows/main_provision-mberry-demo.yml",
+          "bytes": 1872
+        },
+        {
+          "path": ".gitignore",
+          "bytes": 78
+        },
+        {
+          "path": "Dockerfile",
+          "bytes": 267
+        },
+        {
+          "path": "Open PRO-VISION AI.command",
+          "bytes": 289
+        },
+        {
+          "path": "README.md",
+          "bytes": 5604
+        },
+        {
+          "path": "competition-app/.env.example",
+          "bytes": 251
+        },
+        {
+          "path": "competition-app/.gitignore",
+          "bytes": 76
+        },
+        {
+          "path": "competition-app/.openai/hosting.json",
+          "bytes": 91
+        },
+        {
+          "path": "competition-app/AZURE-HOSTING.md",
+          "bytes": 2162
+        },
+        {
+          "path": "competition-app/README.md",
+          "bytes": 8247
+        },
+        {
+          "path": "competition-app/docs/AI-EVALUATION.md",
+          "bytes": 2671
+        },
+        {
+          "path": "competition-app/docs/ARCHITECTURE.md",
+          "bytes": 2253
+        },
+        {
+          "path": "competition-app/docs/COMPETITION-BLOCKERS.md",
+          "bytes": 1603
+        },
+        {
+          "path": "competition-app/docs/COMPETITION-PACK.md",
+          "bytes": 2284
+        },
+        {
+          "path": "competition-app/docs/DEMO-READINESS.md",
+          "bytes": 4662
+        },
+        {
+          "path": "competition-app/docs/DEMO-SCRIPT.md",
+          "bytes": 1461
+        },
+        {
+          "path": "competition-app/docs/SUBMISSION-CHECKLIST.md",
+          "bytes": 1483
+        },
+        {
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "bytes": 113300
+        },
+        {
+          "path": "competition-app/package-lock.json",
+          "bytes": 1459
+        },
+        {
+          "path": "competition-app/package.json",
+          "bytes": 635
+        },
+        {
+          "path": "competition-app/scripts/build.sh",
+          "bytes": 366
+        },
+        {
+          "path": "competition-app/scripts/compile.mjs",
+          "bytes": 930
+        },
+        {
+          "path": "competition-app/scripts/dev.mjs",
+          "bytes": 3055
+        },
+        {
+          "path": "competition-app/scripts/evaluate-local.mjs",
+          "bytes": 1378
+        },
+        {
+          "path": "competition-app/scripts/foundry.mjs",
+          "bytes": 1381
+        },
+        {
+          "path": "competition-app/scripts/standalone.mjs",
+          "bytes": 1278
+        },
+        {
+          "path": "competition-app/scripts/usage-guard.mjs",
+          "bytes": 1791
+        },
+        {
+          "path": "competition-app/scripts/validate-artifact.mjs",
+          "bytes": 953
+        },
+        {
+          "path": "competition-app/src/backend.js",
+          "bytes": 9791
+        },
+        {
+          "path": "competition-app/src/bootstrap.js",
+          "bytes": 826
+        },
+        {
+          "path": "competition-app/src/brand.svg",
+          "bytes": 508
+        },
+        {
+          "path": "competition-app/src/client.js",
+          "bytes": 39845
+        },
+        {
+          "path": "competition-app/src/core.js",
+          "bytes": 20149
+        },
+        {
+          "path": "competition-app/src/director.js",
+          "bytes": 6937
+        },
+        {
+          "path": "competition-app/src/index.html",
+          "bytes": 18196
+        },
+        {
+          "path": "competition-app/src/narrative.js",
+          "bytes": 3625
+        },
+        {
+          "path": "competition-app/src/sports.js",
+          "bytes": 4512
+        },
+        {
+          "path": "competition-app/src/styles.css",
+          "bytes": 27978
+        },
+        {
+          "path": "competition-app/tests/bootstrap.test.mjs",
+          "bytes": 1157
+        },
+        {
+          "path": "competition-app/tests/client.test.mjs",
+          "bytes": 29899
+        },
+        {
+          "path": "competition-app/tests/core.test.mjs",
+          "bytes": 13722
+        },
+        {
+          "path": "competition-app/tests/director.test.mjs",
+          "bytes": 4692
+        },
+        {
+          "path": "competition-app/tests/narrative.test.mjs",
+          "bytes": 2746
+        },
+        {
+          "path": "competition-app/tests/sports.test.mjs",
+          "bytes": 3188
+        },
+        {
+          "path": "competition-app/tests/usage-guard.test.mjs",
+          "bytes": 1895
+        },
+        {
+          "path": "competition-app/worker/index.js",
+          "bytes": 158441
+        },
+        {
+          "path": "docs/ARCHITECTURE.md",
+          "bytes": 7650
+        },
+        {
+          "path": "docs/AZURE-SETUP.md",
+          "bytes": 2436
+        },
+        {
+          "path": "docs/AZURE-WORKFLOW-PROPOSED.yml",
+          "bytes": 2461
+        },
+        {
+          "path": "docs/BUILD-BRIEF.md",
+          "bytes": 7928
+        },
+        {
+          "path": "docs/CLEAN-INSTALL.md",
+          "bytes": 1715
+        },
+        {
+          "path": "docs/DEMO-NARRATION.md",
+          "bytes": 3028
+        },
+        {
+          "path": "docs/DEMO.md",
+          "bytes": 2406
+        },
+        {
+          "path": "docs/EVALUATION.md",
+          "bytes": 16076
+        },
+        {
+          "path": "docs/FREE-ENTRY-PLAN.md",
+          "bytes": 2013
+        },
+        {
+          "path": "docs/HOSTING.md",
+          "bytes": 5304
+        },
+        {
+          "path": "docs/JUDGE-TEST-BUILD.md",
+          "bytes": 3850
+        },
+        {
+          "path": "docs/MEMORIES.md",
+          "bytes": 2600
+        },
+        {
+          "path": "docs/ORGANIZER-QUESTION.md",
+          "bytes": 1158
+        },
+        {
+          "path": "docs/PITCH.md",
+          "bytes": 2519
+        },
+        {
+          "path": "docs/SUBMISSION.md",
+          "bytes": 2597
+        },
+        {
+          "path": "docs/THIRD-PARTY.md",
+          "bytes": 1273
+        },
+        {
+          "path": "docs/ci-workflow-example.yml",
+          "bytes": 546
+        },
+        {
+          "path": "docs/evaluation/clean-install.json",
+          "bytes": 9675
+        },
+        {
+          "path": "docs/evaluation/focused-editor-trial.json",
+          "bytes": 9493
+        },
+        {
+          "path": "docs/evaluation/language-guard.json",
+          "bytes": 9222
+        },
+        {
+          "path": "docs/evaluation/live-audience-prompts.json",
+          "bytes": 2863
+        },
+        {
+          "path": "docs/evaluation/live-cache.json",
+          "bytes": 8823
+        },
+        {
+          "path": "docs/evaluation/live-compact-prompt.json",
+          "bytes": 2977
+        },
+        {
+          "path": "docs/evaluation/live-current.json",
+          "bytes": 6572
+        },
+        {
+          "path": "docs/evaluation/live-final-guards.json",
+          "bytes": 3069
+        },
+        {
+          "path": "docs/evaluation/live-phi-3_5-mini.json",
+          "bytes": 4348
+        },
+        {
+          "path": "docs/evaluation/live-timing.json",
+          "bytes": 3023
+        },
+        {
+          "path": "docs/evaluation/plain-output-final.json",
+          "bytes": 9179
+        },
+        {
+          "path": "docs/evaluation/plain-output.json",
+          "bytes": 9628
+        },
+        {
+          "path": "docs/evaluation/review-final.json",
+          "bytes": 9870
+        },
+        {
+          "path": "docs/evaluation/review-round-1.json",
+          "bytes": 14112
+        },
+        {
+          "path": "docs/evaluation/structured-output.json",
+          "bytes": 7719
+        },
+        {
+          "path": "index.html",
+          "bytes": 10369
+        },
+        {
+          "path": "package-lock.json",
+          "bytes": 1503
+        },
+        {
+          "path": "package.json",
+          "bytes": 1215
+        },
+        {
+          "path": "scripts/build.mjs",
+          "bytes": 646
+        },
+        {
+          "path": "scripts/doctor.mjs",
+          "bytes": 1824
+        },
+        {
+          "path": "scripts/evaluate.mjs",
+          "bytes": 1554
+        },
+        {
+          "path": "scripts/local-ai-preview.mjs",
+          "bytes": 1541
+        },
+        {
+          "path": "scripts/measure-ai.mjs",
+          "bytes": 1465
+        },
+        {
+          "path": "scripts/measure-cache.mjs",
+          "bytes": 1121
+        },
+        {
+          "path": "scripts/offline.mjs",
+          "bytes": 1999
+        },
+        {
+          "path": "scripts/pages.mjs",
+          "bytes": 606
+        },
+        {
+          "path": "scripts/verify-release.mjs",
+          "bytes": 1423
+        },
+        {
+          "path": "server.mjs",
+          "bytes": 4233
+        },
+        {
+          "path": "src/api.js",
+          "bytes": 4597
+        },
+        {
+          "path": "src/app.js",
+          "bytes": 14902
+        },
+        {
+          "path": "src/azure-generator.mjs",
+          "bytes": 1731
+        },
+        {
+          "path": "src/events.js",
+          "bytes": 5660
+        },
+        {
+          "path": "src/local-generator.mjs",
+          "bytes": 2671
+        },
+        {
+          "path": "src/local-model-worker.mjs",
+          "bytes": 1473
+        },
+        {
+          "path": "src/memories.js",
+          "bytes": 7524
+        },
+        {
+          "path": "src/stories.js",
+          "bytes": 13740
+        },
+        {
+          "path": "src/workflow.js",
+          "bytes": 1437
+        },
+        {
+          "path": "style.css",
+          "bytes": 19530
+        },
+        {
+          "path": "tests/azure-generator.test.mjs",
+          "bytes": 2544
+        },
+        {
+          "path": "tests/events.test.mjs",
+          "bytes": 2566
+        },
+        {
+          "path": "tests/fixtures/local-worker.mjs",
+          "bytes": 286
+        },
+        {
+          "path": "tests/fixtures/startup-worker.mjs",
+          "bytes": 85
+        },
+        {
+          "path": "tests/local-worker.test.mjs",
+          "bytes": 1116
+        },
+        {
+          "path": "tests/memories.test.mjs",
+          "bytes": 2417
+        },
+        {
+          "path": "tests/offline.test.mjs",
+          "bytes": 2511
+        },
+        {
+          "path": "tests/server.test.mjs",
+          "bytes": 2746
+        },
+        {
+          "path": "tests/stories.test.mjs",
+          "bytes": 9255
+        },
+        {
+          "path": "tests/workflow.test.mjs",
+          "bytes": 2894
+        }
+      ],
+      "evidence": [
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/AZURE-HOSTING.md",
+          "line": 3,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/AZURE-HOSTING.md#L3"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/README.md",
+          "line": 48,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/README.md#L48"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/docs/ARCHITECTURE.md",
+          "line": 7,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/docs/ARCHITECTURE.md#L7"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/docs/COMPETITION-PACK.md",
+          "line": 11,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/docs/COMPETITION-PACK.md#L11"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/docs/COMPETITION-PACK.md",
+          "line": 17,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/docs/COMPETITION-PACK.md#L17"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/docs/DEMO-SCRIPT.md",
+          "line": 3,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/docs/DEMO-SCRIPT.md#L3"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 49,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L49"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 146,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L146"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 197,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L197"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 204,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L204"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 276,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L276"
+        },
+        {
+          "signal": "Synthetic generator candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 286,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L286"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/output/PRO-VISION-AI-Demo.html",
+          "line": 288,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/output/PRO-VISION-AI-Demo.html#L288"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/src/client.js",
+          "line": 87,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/src/client.js#L87"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/client.test.mjs",
+          "line": 257,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/client.test.mjs#L257"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/core.test.mjs",
+          "line": 27,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/core.test.mjs#L27"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/core.test.mjs",
+          "line": 39,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/core.test.mjs#L39"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/core.test.mjs",
+          "line": 102,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/core.test.mjs#L102"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/core.test.mjs",
+          "line": 106,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/core.test.mjs#L106"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "competition-app/tests/director.test.mjs",
+          "line": 28,
+          "source_code": false,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/competition-app/tests/director.test.mjs#L28"
+        },
+        {
+          "signal": "Fixture / replay candidate",
+          "path": "src/app.js",
+          "line": 59,
+          "source_code": true,
+          "url": "https://github.com/mberry19932025/PRO-VISION/blob/74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded/src/app.js#L59"
+        }
+      ]
     },
     {
       "url": "https://github.com/natagowai/matchmind-ai",

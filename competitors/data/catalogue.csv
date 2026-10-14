@@ -2,7 +2,7 @@
 126422,88 PLS Synthetic Match Insights,Unspecified,,Work in progress; no concrete project description supplied.,,Not specified
 126321,Adrena,Match explanations,,Limited detail: Match Intelligence.,,Not specified
 126445,Agent XI,Match explanations,,"Uses several assistants to analyse teams, players, and matches.",,Not specified
-126475,AI - Premier League,Unspecified,,No clear project idea supplied yet.,,Not specified
+126475,AI — Premier League,Coaching & what-if,,Turns public match events into opponent scouting briefs and coaching plans.,,Not specified
 126331,Antifreeze Team - Rabona,Match explanations,,Limited detail: Read the game. Direct the story.,,Not specified
 126470,App,Unspecified,,No clear project idea supplied yet.,,Not specified
 126311,Audio Eyes,Accessible audio,,Helps blind fans hear ball position and ask match questions.,,Synthetic described
@@ -17,7 +17,10 @@
 126368,DataRed,Tactical analytics,,Limited detail: The power of momentum.,,Not specified
 126419,Dinesh - Todo,Unspecified,,No clear project idea supplied yet.,,Not specified
 126400,energy mgt,Other project,,Limited detail: energy management; no features or implementation described.,,Not specified
+126502,FansReel,Match explanations,,Simplifies match data so fans can share stories with friends and family.,,Not specified
+126497,Fantasy Vision,Fantasy engagement,,Fantasy-focused viewing experience; features not specified.,,Not specified
 126454,FantasyVerse,Fantasy engagement,,Connects live match moments to your fantasy football team.,,Synthetic described
+126495,Floodlight,Broadcast production,Personalised; Broadcast overlays,"Directs live match stories, tactical overlays and personalised recaps.",https://github.com/JinYi123456/floodlight,Synthetic described
 126335,Footbal AI,Unspecified,,No clear project idea supplied yet.,,Not specified
 126477,Footydata,Unspecified,,No clear project idea supplied yet.,,Not specified
 126320,Game Co-Commentator,Match explanations,,Limited detail: live-game commentary and insights.,,Not specified
@@ -31,8 +34,10 @@
 126362,inside the game,Unspecified,,No clear project idea supplied yet.,,Not specified
 126402,Inside the Game,Match explanations,,Limited detail: Real-time football intelligence from every moment on the pitch.,,Not specified
 126455,Isagi's Eyes,Tactical analytics,,Limited detail: spotting opportunities on the pitch.,,Not specified
+126494,Kickers,Match explanations,,Explains synthetic matches through live stories and automatic recaps.,,Synthetic described
 126330,KickSense AI,Match explanations,,Limited detail: From every touch to every story.,,Not specified
 126326,Larp,Unspecified,,No clear project idea supplied yet.,,Not specified
+126487,Match Story,Match explanations,,Football analysis app; features not specified.,,Not specified
 126372,Match Storyteller,Match replay,Replay,Plans a match replay with simple and detailed explanations.,https://github.com/faisalbasra/match-storyteller,Synthetic described
 126465,Matchday Crew,Match explanations,Multi-agent; Multilingual,"Adds commentary and spoken recaps in English, Swahili, and Japanese.",https://github.com/timsheldon1/matchday-crew,Synthetic described
 126353,MatchDesk,Broadcast production,,Lets a producer approve explanations before they go on air.,,Synthetic described
@@ -55,10 +60,12 @@
 126379,MATCH⚽MINE,Match explanations,,Explains what happened and what fans should watch for next.,,Synthetic described
 126387,MSFT x EPL Hackathon,Unspecified,,No clear project idea supplied yet.,https://github.com/zekariasasaminew/msft-x-epl-hackathon,Not specified
 126306,Msimulizi,Match explanations,Multilingual,"Writes commentary and recaps in Swahili, English, and French.",,Synthetic described
+126496,MTLstrikers,Match explanations,,"Turns synthetic matches into explanations, live stories and recaps.",,Synthetic described
 126366,mwx-footbal,Unspecified,,No clear project idea supplied yet.,,Not specified
 126444,Narrative VAR,Narrative verification,,Checks whether a pundit’s match story is backed by the data.,,Synthetic described
 126458,OmniPitch,Unspecified,,Limited detail: Beyond the Score. Behind Every Play.,https://github.com/akashsv01/omnipitch,Not specified
 126440,"One Match, Many Matches",Match explanations,,Explains the same match differently for beginners and experts.,,Synthetic described
+126482,Overlap,Unspecified,,No clear project idea supplied yet.,,Not specified
 126355,PetKingDom,Other project,,A pet-products shop; unrelated to football.,,Not specified
 126467,PH-I,Unspecified,,No clear project idea supplied yet.,,Not specified
 126391,Pitch Ledger,Narrative verification,Evidence-backed; Personalised,Checks match claims before showing a story on screen.,,Synthetic described
@@ -66,12 +73,19 @@
 126420,PitchMind,Broadcast production,,Shows different match explanations to casual fans and analysts.,,Synthetic described
 126441,PitchPulse,Match explanations,Multilingual,Writes live commentary and recaps in different languages.,https://github.com/sethmalefo-del/pitchpulse.git,Synthetic described
 126367,PitchPulse AI,Match explanations,,Turns match events into commentary and recaps.,,Not specified
+126499,PitchPulse — AI Broadcast Director,Broadcast production,Multi-agent,"Coordinates agents to check stats, explain moments and choose live graphics.",,Synthetic described
 126348,Pitchside,Match explanations,Personalised,Turns match events into graphics and commentary for different viewers.,https://github.com/aknotwell/Pitchside,Synthetic described
 126350,Pitchside,Match explanations,,Shows timed match graphics and commentary tailored to each fan.,,Synthetic described
+126503,PitchSignal,Broadcast production,Personalised; Broadcast overlays,Checks tactical stories against match events before showing personalised overlays.,,Synthetic described
+126493,PitchVision AI,Tactical analytics,,Turns synthetic events into live tactical commentary and match recaps.,,Synthetic described
 126430,Pivot,Match explanations,,Limited detail: Football Intelligence.,,Not specified
+126498,PL-1-test,Unspecified,,No clear project idea supplied yet.,,Not specified
+126485,Player Scouting,Video & scouting,,Finds similar players using deep learning.,,Not specified
+126486,Player Scouting,Video & scouting,,Finds similar players using deep learning.,,Not specified
 126325,Premier League Match Pulse AI,Broadcast production,,Explains synthetic match events for fans and studios.,,Synthetic described
 126349,Premier League Studio Insights Project -- DD,Broadcast production,,Limited detail: Premier League Studio Insights.,,Not specified
 126428,PremierLeague Hackathon,Unspecified,,No clear project idea supplied yet.,,Not specified
+126501,PRO-VISION AI,Unspecified,,Answers match questions and turns selected moments into fan memory cards.,https://github.com/mberry19932025/PRO-VISION,Not specified
 126421,Proj,Unspecified,,No clear project idea supplied yet.,,Not specified
 126464,Project Brigma,Unspecified,,No clear project idea supplied yet.,,Not specified
 126354,Pulse,Match replay,Evidence-backed; Replay,Lets fans explore a replay and check the evidence behind explanations.,,Synthetic described
@@ -106,6 +120,7 @@
 126473,The Gallery,Broadcast production,,Checks match stories before a producer puts them on screen.,,Synthetic described
 126469,The Gallery — AI Broadcast Crew,Broadcast production,Multi-agent,Creates checked commentary in each fan’s language.,,Synthetic described
 126360,THE HALF-TIME LAB,Coaching & what-if,Predictive / what-if,Lets fans choose a half-time plan and simulate the second half.,,Synthetic described
+126492,The Ninety Labs,Accessible audio,Evidence-backed; Broadcast overlays,Extracts events from synthetic video for verified overlays and accessible audio.,,Synthetic described
 126468,the start of something big,Match explanations,,Football-history concept; the submission does not explain a concrete product or implementation.,,Not specified
 126435,TOUCH LINE.,Unspecified,,No clear project idea supplied yet.,,Not specified
 126406,Touchline,Match explanations,Evidence-backed,"Shows match events, their evidence, and different fan perspectives.",https://github.com/audioreworkvisions/touchline,Not specified

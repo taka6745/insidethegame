@@ -1,37 +1,37 @@
 {
-  "exported_at": "2026-10-13T05:20:49+00:00",
-  "github_checked_at": "2026-10-14T00:49:14+00:00",
-  "projects": 121,
-  "linked_projects": 22,
-  "unique_repos": 22,
+  "exported_at": "2026-10-14T01:49:11+00:00",
+  "github_checked_at": "2026-10-14T01:49:30+00:00",
+  "projects": 136,
+  "linked_projects": 24,
+  "unique_repos": 24,
+  "readable_repos": 20,
   "project_types": {
-    "Unspecified": 31,
-    "Match explanations": 33,
-    "Accessible audio": 4,
-    "Tactical analytics": 16,
-    "Coaching & what-if": 7,
+    "Unspecified": 33,
+    "Match explanations": 37,
+    "Coaching & what-if": 8,
+    "Accessible audio": 5,
+    "Tactical analytics": 17,
     "Other project": 2,
-    "Fantasy engagement": 1,
-    "Broadcast production": 15,
+    "Fantasy engagement": 2,
+    "Broadcast production": 18,
     "Match event pipeline": 1,
     "Conversational companion": 2,
     "Match replay": 3,
     "Narrative verification": 3,
-    "Video & scouting": 2,
+    "Video & scouting": 4,
     "Data normalisation": 1
   },
   "loc_buckets": {
-    "5k–14.9k": 3,
-    "1k–4.9k": 8,
+    "5k–14.9k": 4,
+    "1k–4.9k": 9,
     "Unknown": 4,
     "1–999": 3,
     "0": 4
   },
   "data_buckets": {
-    "Synthetic generator": 8,
+    "Synthetic generator": 12,
     "Fixed synthetic fixture": 3,
     "Unavailable": 4,
-    "Changed; re-review needed": 2,
     "Synthetic scenarios": 1,
     "Planned synthetic": 3,
     "Starter scaffold": 1
@@ -69,9 +69,9 @@
     },
     {
       "id": "126475",
-      "name": "AI - Premier League",
-      "summary": "No clear project idea supplied yet.",
-      "category": "Unspecified",
+      "name": "AI — Premier League",
+      "summary": "Turns public match events into opponent scouting briefs and coaching plans.",
+      "category": "Coaching & what-if",
       "tags": [],
       "repo_urls": [],
       "repositories": [],
@@ -223,6 +223,26 @@
       "data_claim": "Not specified"
     },
     {
+      "id": "126502",
+      "name": "FansReel",
+      "summary": "Simplifies match data so fans can share stories with friends and family.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126497",
+      "name": "Fantasy Vision",
+      "summary": "Fantasy-focused viewing experience; features not specified.",
+      "category": "Fantasy engagement",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
       "id": "126454",
       "name": "FantasyVerse",
       "summary": "Connects live match moments to your fantasy football team.",
@@ -230,6 +250,31 @@
       "tags": [],
       "repo_urls": [],
       "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126495",
+      "name": "Floodlight",
+      "summary": "Directs live match stories, tactical overlays and personalised recaps.",
+      "category": "Broadcast production",
+      "tags": [
+        "Personalised",
+        "Broadcast overlays"
+      ],
+      "repo_urls": [
+        "https://github.com/JinYi123456/floodlight"
+      ],
+      "repositories": [
+        {
+          "slug": "JinYi123456/floodlight",
+          "url": "https://github.com/JinYi123456/floodlight",
+          "commits": 28,
+          "source_lines": 14054,
+          "loc_bucket": "5k–14.9k",
+          "sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+          "status": "ok"
+        }
+      ],
       "data_claim": "Synthetic described"
     },
     {
@@ -379,6 +424,16 @@
       "data_claim": "Not specified"
     },
     {
+      "id": "126494",
+      "name": "Kickers",
+      "summary": "Explains synthetic matches through live stories and automatic recaps.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
       "id": "126330",
       "name": "KickSense AI",
       "summary": "Limited detail: From every touch to every story.",
@@ -393,6 +448,16 @@
       "name": "Larp",
       "summary": "No clear project idea supplied yet.",
       "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126487",
+      "name": "Match Story",
+      "summary": "Football analysis app; features not specified.",
+      "category": "Match explanations",
       "tags": [],
       "repo_urls": [],
       "repositories": [],
@@ -749,6 +814,16 @@
       "data_claim": "Synthetic described"
     },
     {
+      "id": "126496",
+      "name": "MTLstrikers",
+      "summary": "Turns synthetic matches into explanations, live stories and recaps.",
+      "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
       "id": "126366",
       "name": "mwx-footbal",
       "summary": "No clear project idea supplied yet.",
@@ -799,6 +874,16 @@
       "repo_urls": [],
       "repositories": [],
       "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126482",
+      "name": "Overlap",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
     },
     {
       "id": "126355",
@@ -890,6 +975,18 @@
       "data_claim": "Not specified"
     },
     {
+      "id": "126499",
+      "name": "PitchPulse — AI Broadcast Director",
+      "summary": "Coordinates agents to check stats, explain moments and choose live graphics.",
+      "category": "Broadcast production",
+      "tags": [
+        "Multi-agent"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
       "id": "126348",
       "name": "Pitchside",
       "summary": "Turns match events into graphics and commentary for different viewers.",
@@ -924,10 +1021,63 @@
       "data_claim": "Synthetic described"
     },
     {
+      "id": "126503",
+      "name": "PitchSignal",
+      "summary": "Checks tactical stories against match events before showing personalised overlays.",
+      "category": "Broadcast production",
+      "tags": [
+        "Personalised",
+        "Broadcast overlays"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
+      "id": "126493",
+      "name": "PitchVision AI",
+      "summary": "Turns synthetic events into live tactical commentary and match recaps.",
+      "category": "Tactical analytics",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
       "id": "126430",
       "name": "Pivot",
       "summary": "Limited detail: Football Intelligence.",
       "category": "Match explanations",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126498",
+      "name": "PL-1-test",
+      "summary": "No clear project idea supplied yet.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126485",
+      "name": "Player Scouting",
+      "summary": "Finds similar players using deep learning.",
+      "category": "Video & scouting",
+      "tags": [],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126486",
+      "name": "Player Scouting",
+      "summary": "Finds similar players using deep learning.",
+      "category": "Video & scouting",
       "tags": [],
       "repo_urls": [],
       "repositories": [],
@@ -961,6 +1111,28 @@
       "tags": [],
       "repo_urls": [],
       "repositories": [],
+      "data_claim": "Not specified"
+    },
+    {
+      "id": "126501",
+      "name": "PRO-VISION AI",
+      "summary": "Answers match questions and turns selected moments into fan memory cards.",
+      "category": "Unspecified",
+      "tags": [],
+      "repo_urls": [
+        "https://github.com/mberry19932025/PRO-VISION"
+      ],
+      "repositories": [
+        {
+          "slug": "mberry19932025/PRO-VISION",
+          "url": "https://github.com/mberry19932025/PRO-VISION",
+          "commits": 37,
+          "source_lines": 2801,
+          "loc_bucket": "1k–4.9k",
+          "sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+          "status": "ok"
+        }
+      ],
       "data_claim": "Not specified"
     },
     {
@@ -1382,6 +1554,19 @@
       "data_claim": "Synthetic described"
     },
     {
+      "id": "126492",
+      "name": "The Ninety Labs",
+      "summary": "Extracts events from synthetic video for verified overlays and accessible audio.",
+      "category": "Accessible audio",
+      "tags": [
+        "Evidence-backed",
+        "Broadcast overlays"
+      ],
+      "repo_urls": [],
+      "repositories": [],
+      "data_claim": "Synthetic described"
+    },
+    {
       "id": "126468",
       "name": "the start of something big",
       "summary": "Football-history concept; the submission does not explain a concrete product or implementation.",
@@ -1580,17 +1765,17 @@
       "data_claim": "Not specified"
     }
   ],
-  "data_files": 40,
-  "repos_with_samples": 10,
-  "data_bytes": 8575191,
+  "data_files": 72,
+  "repos_with_samples": 11,
+  "data_bytes": 12515468,
   "collected_data_buckets": {
-    "Sample files collected": 10,
-    "Generator only": 4,
+    "Sample files collected": 11,
+    "Generator only": 5,
     "Cannot inspect": 4,
     "Plans / starter app only": 4
   },
   "commit_buckets": {
-    "21–50 commits": 3,
+    "21–50 commits": 5,
     "1–5 commits": 9,
     "51+ commits": 2,
     "6–20 commits": 4,

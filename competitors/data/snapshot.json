@@ -1,7 +1,9 @@
 {
   "hackathon_id": "34887",
-  "exported_at": "2026-10-13T05:20:49+00:00",
-  "refresh_status": "export_failed",
-  "last_attempt_at": "2026-10-14T00:49:04+00:00",
-  "project_count": 121
+  "exported_at": "2026-10-14T01:49:11+00:00",
+  "refresh_status": "ok",
+  "last_attempt_at": "2026-10-14T01:49:11+00:00",
+  "project_count": 136,
+  "catalogue_count_note": "Brave catalogue header showed 137; search UI and fully paginated API both returned 136. Difference unexplained; export includes all 136 returned projects.",
+  "catalogue_count_checked_at": "2026-10-14T01:49:11+00:00"
 }

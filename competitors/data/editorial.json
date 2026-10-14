@@ -125,9 +125,9 @@
     "source_hash": "3b9bd843a2c39494e0467142c679449378534f1c227db28383d43f11d8ff0455"
   },
   "126475": {
-    "name": "AI - Premier League",
-    "summary": "No clear project idea supplied yet.",
-    "source_hash": "4b02839238afae1ff52c68bd850169f110a96db9ec09697388719f8a1f38d3e8"
+    "name": "AI — Premier League",
+    "summary": "Turns public match events into opponent scouting briefs and coaching plans.",
+    "source_hash": "982196860a83ed8091cb001e587d8cf3c28464f9aac17fde70312449b3a44fee"
   },
   "126331": {
     "name": "Antifreeze Team - Rabona",
@@ -603,5 +603,80 @@
     "name": "xPlain Live",
     "summary": "Limited detail: Expected vs. actual, explained live.",
     "source_hash": "87a54ec0403a5e8bd53a89f419d3c0e919b01c167b802947264f01e2816ca768"
+  },
+  "126496": {
+    "name": "MTLstrikers",
+    "summary": "Turns synthetic matches into explanations, live stories and recaps.",
+    "source_hash": "b38a96203dda9b0be7d39d95420aa3f8d294a3865f0f9563413370b383ee835e"
+  },
+  "126495": {
+    "name": "Floodlight",
+    "summary": "Directs live match stories, tactical overlays and personalised recaps.",
+    "source_hash": "73e0402298ee891c01cdd3d79945323d028602ab29d028fecf8b30202a7c08c5"
+  },
+  "126501": {
+    "name": "PRO-VISION AI",
+    "summary": "Answers match questions and turns selected moments into fan memory cards.",
+    "source_hash": "4c03486437bb3156eeb65dc47c4e74fbb520e43c6c76b0a509c8b205eeff9b60"
+  },
+  "126499": {
+    "name": "PitchPulse — AI Broadcast Director",
+    "summary": "Coordinates agents to check stats, explain moments and choose live graphics.",
+    "source_hash": "6e76baf586b7d20952e61e5837455eaf84aacfa0b650c6a865fcc810d09b1343"
+  },
+  "126503": {
+    "name": "PitchSignal",
+    "summary": "Checks tactical stories against match events before showing personalised overlays.",
+    "source_hash": "96468dd185f43bd736c713751176fdf60db6c2e9759b122f6a4508e4b5d384c5"
+  },
+  "126486": {
+    "name": "Player Scouting",
+    "summary": "Finds similar players using deep learning.",
+    "source_hash": "73dcb2bdf27a87bb26049ff9a4ff2aa5dd40652b5dc1e6ac01add4eeca891298"
+  },
+  "126493": {
+    "name": "PitchVision AI",
+    "summary": "Turns synthetic events into live tactical commentary and match recaps.",
+    "source_hash": "835ae9dfd858e538b91a63335d700b0c91856d6d293cccc9efc18976f8cdd0bf"
+  },
+  "126502": {
+    "name": "FansReel",
+    "summary": "Simplifies match data so fans can share stories with friends and family.",
+    "source_hash": "2b27d6ce724ab4ef872df399a537057550eda7c9263475fcfb12fa1b1a6268e4"
+  },
+  "126494": {
+    "name": "Kickers",
+    "summary": "Explains synthetic matches through live stories and automatic recaps.",
+    "source_hash": "a89b8930d17a20015fd6f5f0b39b9b8d56d43e96e0401c9dde930c1d67ee72c9"
+  },
+  "126487": {
+    "name": "Match Story",
+    "summary": "Football analysis app; features not specified.",
+    "source_hash": "b270c7b88a1dbe4033994f5405ef3bbd7e5d0946743bb00ce43f4e4f4064e3e2"
+  },
+  "126482": {
+    "name": "Overlap",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "4ace5a9a71e5d24d338ce0575d713c8baf1730ae89b94c90bb1698959c6a5819"
+  },
+  "126492": {
+    "name": "The Ninety Labs",
+    "summary": "Extracts events from synthetic video for verified overlays and accessible audio.",
+    "source_hash": "3be5fbc017bb704c1f9dd8e34edc00d189b79982ec9846e7c6705d1dac0272a1"
+  },
+  "126498": {
+    "name": "PL-1-test",
+    "summary": "No clear project idea supplied yet.",
+    "source_hash": "f0dcb730324fbc4d51f38256de2db7c403d8a7b982990e4e62a78ba27795e4be"
+  },
+  "126497": {
+    "name": "Fantasy Vision",
+    "summary": "Fantasy-focused viewing experience; features not specified.",
+    "source_hash": "0a8f1e11812c7e974211eda4add57f4e89aca75af9e336a402d306cceb75a6ed"
+  },
+  "126485": {
+    "name": "Player Scouting",
+    "summary": "Finds similar players using deep learning.",
+    "source_hash": "bd989fb376f0f8867d0b3e573d9ba7f5e639e699d4b697c2868565ad2f75e98b"
   }
 }

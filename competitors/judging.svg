@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="1074" viewBox="0 0 1160 1074" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="1150" viewBox="0 0 1160 1150" role="img" aria-labelledby="title desc">
 <title id="title">Public repository evidence scores</title>
 <desc id="desc">Stacked points from five equally weighted criteria. Incomplete assessments are separate; hatched points are unknown, not earned. No competitor code or demo was executed.</desc>
 <defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2,2 l4,-4 M0,8 l8,-8 M6,10 l4,-4" stroke="#64798b" stroke-width="2"/></pattern></defs>
-<rect width="1160" height="1074" rx="14" fill="#101e2b"/>
+<rect width="1160" height="1150" rx="14" fill="#101e2b"/>
 <g font-family="Arial, Helvetica, sans-serif">
 <text x="24" y="34" fill="#e5edf4" font-size="23" >Public repository evidence · points out of 100</text>
 <text x="24" y="59" fill="#a4bbc9" font-size="13" >Source review, not tested performance or a prediction of winning. Each criterion contributes up to 20 points.</text>
@@ -17,17 +17,17 @@
 <rect x="896" y="78" width="14" height="14" rx="2" fill="#fa9dac"/>
 <text x="918" y="90" fill="#e5edf4" font-size="13" >Category</text>
 <text x="350.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">0</text>
-<line x1="350.0" x2="350.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="350.0" x2="350.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <text x="478.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">20</text>
-<line x1="478.0" x2="478.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="478.0" x2="478.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <text x="606.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">40</text>
-<line x1="606.0" x2="606.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="606.0" x2="606.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <text x="734.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">60</text>
-<line x1="734.0" x2="734.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="734.0" x2="734.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <text x="862.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">80</text>
-<line x1="862.0" x2="862.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="862.0" x2="862.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <text x="990.0" y="122" fill="#a4bbc9" font-size="12" text-anchor="middle">100</text>
-<line x1="990.0" x2="990.0" y1="132" y2="1028" stroke="#263948" stroke-dasharray="2 6"/>
+<line x1="990.0" x2="990.0" y1="132" y2="1104" stroke="#263948" stroke-dasharray="2 6"/>
 <g>
 <title>MatchMind — AI Broadcast Booth</title>
 <text x="24" y="161" fill="#e5edf4" font-size="14" >MatchMind — AI Broadcast Booth</text>
@@ -79,8 +79,8 @@
 <text x="769.5999999999998" y="199" fill="#e5edf4" font-size="15" font-weight="700">64</text>
 </g>
 <g>
-<title>Matchday Crew</title>
-<text x="24" y="237" fill="#e5edf4" font-size="14" >Matchday Crew</text>
+<title>Floodlight</title>
+<text x="24" y="237" fill="#e5edf4" font-size="14" >Floodlight</text>
 <g><title>Technology: 12/20</title>
 <rect x="350" y="218" width="76.8" height="27" fill="#69baff"/>
 </g>
@@ -104,296 +104,386 @@
 <text x="718.4" y="237" fill="#e5edf4" font-size="15" font-weight="700">56</text>
 </g>
 <g>
-<title>VYBE — Every Fan Belongs</title>
-<text x="24" y="275" fill="#e5edf4" font-size="14" >VYBE — Every Fan Belongs</text>
+<title>Matchday Crew</title>
+<text x="24" y="275" fill="#e5edf4" font-size="14" >Matchday Crew</text>
 <g><title>Technology: 12/20</title>
 <rect x="350" y="256" width="76.8" height="27" fill="#69baff"/>
 </g>
 <text x="388.4" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
-<g><title>Agent innovation: 8/20</title>
-<rect x="426.8" y="256" width="51.2" height="27" fill="#c2a4ff"/>
+<g><title>Agent innovation: 12/20</title>
+<rect x="426.8" y="256" width="76.8" height="27" fill="#c2a4ff"/>
 </g>
-<text x="452.40000000000003" y="275" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Impact: 12/20</title>
-<rect x="478" y="256" width="76.8" height="27" fill="#73e3ae"/>
+<text x="465.2" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Impact: 8/20</title>
+<rect x="503.6" y="256" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<text x="516.4" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<text x="529.2" y="275" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
 <g><title>Experience: 12/20</title>
 <rect x="554.8" y="256" width="76.8" height="27" fill="#f3c678"/>
 </g>
-<text x="593.1999999999999" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
-<g><title>Category: 8/20</title>
-<rect x="631.6" y="256" width="51.2" height="27" fill="#fa9dac"/>
+<text x="593.2" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 12/20</title>
+<rect x="631.6" y="256" width="76.8" height="27" fill="#fa9dac"/>
 </g>
-<text x="657.1999999999999" y="275" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<text x="692.8" y="275" fill="#e5edf4" font-size="15" font-weight="700">52</text>
+<text x="670.0" y="275" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<text x="718.4" y="275" fill="#e5edf4" font-size="15" font-weight="700">56</text>
+</g>
+<g>
+<title>PRO-VISION AI</title>
+<text x="24" y="313" fill="#e5edf4" font-size="14" >PRO-VISION AI</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="294" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 12/20</title>
+<rect x="426.8" y="294" width="76.8" height="27" fill="#c2a4ff"/>
+</g>
+<text x="465.2" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Impact: 8/20</title>
+<rect x="503.6" y="294" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="529.2" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="554.8" y="294" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="593.2" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 10/20</title>
+<rect x="631.6" y="294" width="64" height="27" fill="#fa9dac"/>
+</g>
+<text x="663.6" y="313" fill="#0f172a" font-size="12" text-anchor="middle">10</text>
+<text x="705.6" y="313" fill="#e5edf4" font-size="15" font-weight="700">54</text>
+</g>
+<g>
+<title>VYBE — Every Fan Belongs</title>
+<text x="24" y="351" fill="#e5edf4" font-size="14" >VYBE — Every Fan Belongs</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="332" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="351" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="426.8" y="332" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="452.40000000000003" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 12/20</title>
+<rect x="478" y="332" width="76.8" height="27" fill="#73e3ae"/>
+</g>
+<text x="516.4" y="351" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Experience: 12/20</title>
+<rect x="554.8" y="332" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="593.1999999999999" y="351" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="631.6" y="332" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="657.1999999999999" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="692.8" y="351" fill="#e5edf4" font-size="15" font-weight="700">52</text>
+</g>
+<g>
+<title>Touchline</title>
+<text x="24" y="389" fill="#e5edf4" font-size="14" >Touchline</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="370" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="389" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="426.8" y="370" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="452.40000000000003" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="478" y="370" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="503.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="529.2" y="370" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="567.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="606" y="370" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="631.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="667.2" y="389" fill="#e5edf4" font-size="15" font-weight="700">48</text>
 </g>
 <g>
 <title>VendorIQ</title>
-<text x="24" y="313" fill="#e5edf4" font-size="14" >VendorIQ</text>
-<g><title>Technology: 8/20</title>
-<rect x="350" y="294" width="51.2" height="27" fill="#69baff"/>
-</g>
-<text x="375.6" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 8/20</title>
-<rect x="401.2" y="294" width="51.2" height="27" fill="#c2a4ff"/>
-</g>
-<text x="426.8" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Impact: 8/20</title>
-<rect x="452.4" y="294" width="51.2" height="27" fill="#73e3ae"/>
-</g>
-<text x="478.0" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 12/20</title>
-<rect x="503.6" y="294" width="76.8" height="27" fill="#f3c678"/>
-</g>
-<text x="542.0" y="313" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
-<g><title>Category: 8/20</title>
-<rect x="580.4" y="294" width="51.2" height="27" fill="#fa9dac"/>
-</g>
-<text x="606.0" y="313" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<text x="641.6" y="313" fill="#e5edf4" font-size="15" font-weight="700">44</text>
-</g>
-<g>
-<title>MatchMind Studio — Broadcast &amp; Streaming</title>
-<text x="24" y="351" fill="#e5edf4" font-size="14" >MatchMind Studio — Broadcast &amp; Streaming</text>
-<g><title>Technology: 8/20</title>
-<rect x="350" y="332" width="51.2" height="27" fill="#69baff"/>
-</g>
-<text x="375.6" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 8/20</title>
-<rect x="401.2" y="332" width="51.2" height="27" fill="#c2a4ff"/>
-</g>
-<text x="426.8" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Impact: 8/20</title>
-<rect x="452.4" y="332" width="51.2" height="27" fill="#73e3ae"/>
-</g>
-<text x="478.0" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 8/20</title>
-<rect x="503.6" y="332" width="51.2" height="27" fill="#f3c678"/>
-</g>
-<text x="529.1999999999999" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Category: 8/20</title>
-<rect x="554.8" y="332" width="51.2" height="27" fill="#fa9dac"/>
-</g>
-<text x="580.4" y="351" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<text x="616.0" y="351" fill="#e5edf4" font-size="15" font-weight="700">40</text>
-</g>
-<g>
-<title>Second Story</title>
-<text x="24" y="389" fill="#e5edf4" font-size="14" >Second Story</text>
-<g><title>Technology: 8/20</title>
-<rect x="350" y="370" width="51.2" height="27" fill="#69baff"/>
-</g>
-<text x="375.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 4/20</title>
-<rect x="401.2" y="370" width="25.6" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 8/20</title>
-<rect x="426.8" y="370" width="51.2" height="27" fill="#73e3ae"/>
-</g>
-<text x="452.40000000000003" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 8/20</title>
-<rect x="478" y="370" width="51.2" height="27" fill="#f3c678"/>
-</g>
-<text x="503.6" y="389" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Category: 4/20</title>
-<rect x="529.2" y="370" width="25.6" height="27" fill="#fa9dac"/>
-</g>
-<text x="564.8000000000001" y="389" fill="#e5edf4" font-size="15" font-weight="700">32</text>
-</g>
-<g>
-<title>Shift11</title>
-<text x="24" y="427" fill="#e5edf4" font-size="14" >Shift11</text>
+<text x="24" y="427" fill="#e5edf4" font-size="14" >VendorIQ</text>
 <g><title>Technology: 8/20</title>
 <rect x="350" y="408" width="51.2" height="27" fill="#69baff"/>
 </g>
 <text x="375.6" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 4/20</title>
-<rect x="401.2" y="408" width="25.6" height="27" fill="#c2a4ff"/>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="408" width="51.2" height="27" fill="#c2a4ff"/>
 </g>
+<text x="426.8" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
 <g><title>Impact: 8/20</title>
-<rect x="426.8" y="408" width="51.2" height="27" fill="#73e3ae"/>
+<rect x="452.4" y="408" width="51.2" height="27" fill="#73e3ae"/>
 </g>
-<text x="452.40000000000003" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 4/20</title>
-<rect x="478" y="408" width="25.6" height="27" fill="#f3c678"/>
+<text x="478.0" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="503.6" y="408" width="76.8" height="27" fill="#f3c678"/>
 </g>
-<g><title>Category: 4/20</title>
-<rect x="503.6" y="408" width="25.6" height="27" fill="#fa9dac"/>
+<text x="542.0" y="427" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Category: 8/20</title>
+<rect x="580.4" y="408" width="51.2" height="27" fill="#fa9dac"/>
 </g>
-<text x="539.2" y="427" fill="#e5edf4" font-size="15" font-weight="700">28</text>
-</g>
-<g>
-<title>SignalFlow</title>
-<text x="24" y="465" fill="#e5edf4" font-size="14" >SignalFlow</text>
-<g><title>Technology: 4/20</title>
-<rect x="350" y="446" width="25.6" height="27" fill="#69baff"/>
-</g>
-<g><title>Agent innovation: 4/20</title>
-<rect x="375.6" y="446" width="25.6" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 4/20</title>
-<rect x="401.2" y="446" width="25.6" height="27" fill="#73e3ae"/>
-</g>
-<g><title>Experience: 4/20</title>
-<rect x="426.8" y="446" width="25.6" height="27" fill="#f3c678"/>
-</g>
-<g><title>Category: 4/20</title>
-<rect x="452.4" y="446" width="25.6" height="27" fill="#fa9dac"/>
-</g>
-<text x="488.0000000000001" y="465" fill="#e5edf4" font-size="15" font-weight="700">20</text>
-</g>
-<g>
-<title>Tactix AI</title>
-<text x="24" y="503" fill="#e5edf4" font-size="14" >Tactix AI</text>
-<g><title>Technology: 4/20</title>
-<rect x="350" y="484" width="25.6" height="27" fill="#69baff"/>
-</g>
-<g><title>Agent innovation: 4/20</title>
-<rect x="375.6" y="484" width="25.6" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 4/20</title>
-<rect x="401.2" y="484" width="25.6" height="27" fill="#73e3ae"/>
-</g>
-<g><title>Experience: 4/20</title>
-<rect x="426.8" y="484" width="25.6" height="27" fill="#f3c678"/>
-</g>
-<g><title>Category: 4/20</title>
-<rect x="452.4" y="484" width="25.6" height="27" fill="#fa9dac"/>
-</g>
-<text x="488.0000000000001" y="503" fill="#e5edf4" font-size="15" font-weight="700">20</text>
-</g>
-<rect x="16" y="522" width="1128" height="30" fill="#101e2b"/>
-<text x="24" y="542" fill="#a4bbc9" font-size="14" >Incomplete / unavailable · not ranked</text>
-<g>
-<title>GoalGetter</title>
-<text x="24" y="581" fill="#e5edf4" font-size="14" >GoalGetter</text>
-<g><title>Technology: 8/20</title>
-<rect x="350" y="562" width="51.2" height="27" fill="#69baff"/>
-</g>
-<text x="375.6" y="581" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 0/20</title>
-<rect x="401.2" y="562" width="0" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 4/20</title>
-<rect x="401.2" y="562" width="25.6" height="27" fill="#73e3ae"/>
-</g>
-<g><title>Experience: 8/20</title>
-<rect x="426.8" y="562" width="51.2" height="27" fill="#f3c678"/>
-</g>
-<text x="452.40000000000003" y="581" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<rect x="478" y="562" width="128" height="27" fill="url(#unknown)"/>
-<text x="1010" y="581" fill="#a4bbc9" font-size="13" >20 known + ?</text>
-</g>
-<g>
-<title>Match Storyteller</title>
-<text x="24" y="619" fill="#e5edf4" font-size="14" >Match Storyteller</text>
-<g><title>Technology: 4/20</title>
-<rect x="350" y="600" width="25.6" height="27" fill="#69baff"/>
-</g>
-<g><title>Agent innovation: 4/20</title>
-<rect x="375.6" y="600" width="25.6" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 4/20</title>
-<rect x="401.2" y="600" width="25.6" height="27" fill="#73e3ae"/>
-</g>
-<g><title>Experience: 4/20</title>
-<rect x="426.8" y="600" width="25.6" height="27" fill="#f3c678"/>
-</g>
-<rect x="452.4" y="600" width="128" height="27" fill="url(#unknown)"/>
-<text x="1010" y="619" fill="#a4bbc9" font-size="13" >16 known + ?</text>
-</g>
-<g>
-<title>MatchLens — What-If Simulation</title>
-<text x="24" y="657" fill="#e5edf4" font-size="14" >MatchLens — What-If Simulation</text>
-<g><title>Technology: 8/20</title>
-<rect x="350" y="638" width="51.2" height="27" fill="#69baff"/>
-</g>
-<text x="375.6" y="657" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Agent innovation: 0/20</title>
-<rect x="401.2" y="638" width="0" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 8/20</title>
-<rect x="401.2" y="638" width="51.2" height="27" fill="#73e3ae"/>
-</g>
-<text x="426.8" y="657" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 8/20</title>
-<rect x="452.4" y="638" width="51.2" height="27" fill="#f3c678"/>
-</g>
-<text x="478.0" y="657" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<rect x="503.6" y="638" width="128" height="27" fill="url(#unknown)"/>
-<text x="1010" y="657" fill="#a4bbc9" font-size="13" >24 known + ?</text>
-</g>
-<g>
-<title>MatchMind AI — AI Football Analyst</title>
-<text x="24" y="695" fill="#e5edf4" font-size="14" >MatchMind AI — AI Football Analyst</text>
-<text x="350" y="695" fill="#a4bbc9" font-size="13" >Unscored</text>
-</g>
-<g>
-<title>MatchMind AI — Beyond the Scoreline</title>
-<text x="24" y="733" fill="#e5edf4" font-size="14" >MatchMind AI — Beyond the Scoreline</text>
-<g><title>Technology: 0/20</title>
-<rect x="350" y="714" width="0" height="27" fill="#69baff"/>
-</g>
-<g><title>Agent innovation: 0/20</title>
-<rect x="350" y="714" width="0" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Experience: 0/20</title>
-<rect x="350" y="714" width="0" height="27" fill="#f3c678"/>
-</g>
-<rect x="350" y="714" width="256" height="27" fill="url(#unknown)"/>
-<text x="1010" y="733" fill="#a4bbc9" font-size="13" >0 known + ?</text>
+<text x="606.0" y="427" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="641.6" y="427" fill="#e5edf4" font-size="15" font-weight="700">44</text>
 </g>
 <g>
 <title>MatchMind AI — Every Match Has a Personality</title>
-<text x="24" y="771" fill="#e5edf4" font-size="14" >MatchMind AI — Every Match Has a Pers…</text>
-<text x="350" y="771" fill="#a4bbc9" font-size="13" >Stale</text>
+<text x="24" y="465" fill="#e5edf4" font-size="14" >MatchMind AI — Every Match Has a Pers…</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="446" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="446" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="426.8" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="446" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="478.0" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="503.6" y="446" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="529.1999999999999" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 8/20</title>
+<rect x="554.8" y="446" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="580.4" y="465" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="616.0" y="465" fill="#e5edf4" font-size="15" font-weight="700">40</text>
+</g>
+<g>
+<title>MatchMind Studio — Broadcast &amp; Streaming</title>
+<text x="24" y="503" fill="#e5edf4" font-size="14" >MatchMind Studio — Broadcast &amp; Streaming</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="484" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 8/20</title>
+<rect x="401.2" y="484" width="51.2" height="27" fill="#c2a4ff"/>
+</g>
+<text x="426.8" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="484" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="478.0" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="503.6" y="484" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="529.1999999999999" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 8/20</title>
+<rect x="554.8" y="484" width="51.2" height="27" fill="#fa9dac"/>
+</g>
+<text x="580.4" y="503" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<text x="616.0" y="503" fill="#e5edf4" font-size="15" font-weight="700">40</text>
+</g>
+<g>
+<title>Second Story</title>
+<text x="24" y="541" fill="#e5edf4" font-size="14" >Second Story</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="522" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="541" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="401.2" y="522" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 8/20</title>
+<rect x="426.8" y="522" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="452.40000000000003" y="541" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="478" y="522" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="503.6" y="541" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Category: 4/20</title>
+<rect x="529.2" y="522" width="25.6" height="27" fill="#fa9dac"/>
+</g>
+<text x="564.8000000000001" y="541" fill="#e5edf4" font-size="15" font-weight="700">32</text>
+</g>
+<g>
+<title>Shift11</title>
+<text x="24" y="579" fill="#e5edf4" font-size="14" >Shift11</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="560" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="579" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="401.2" y="560" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 8/20</title>
+<rect x="426.8" y="560" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="452.40000000000003" y="579" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 4/20</title>
+<rect x="478" y="560" width="25.6" height="27" fill="#f3c678"/>
+</g>
+<g><title>Category: 4/20</title>
+<rect x="503.6" y="560" width="25.6" height="27" fill="#fa9dac"/>
+</g>
+<text x="539.2" y="579" fill="#e5edf4" font-size="15" font-weight="700">28</text>
+</g>
+<g>
+<title>SignalFlow</title>
+<text x="24" y="617" fill="#e5edf4" font-size="14" >SignalFlow</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="598" width="25.6" height="27" fill="#69baff"/>
+</g>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="598" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="598" width="25.6" height="27" fill="#73e3ae"/>
+</g>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="598" width="25.6" height="27" fill="#f3c678"/>
+</g>
+<g><title>Category: 4/20</title>
+<rect x="452.4" y="598" width="25.6" height="27" fill="#fa9dac"/>
+</g>
+<text x="488.0000000000001" y="617" fill="#e5edf4" font-size="15" font-weight="700">20</text>
+</g>
+<g>
+<title>Tactix AI</title>
+<text x="24" y="655" fill="#e5edf4" font-size="14" >Tactix AI</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="636" width="25.6" height="27" fill="#69baff"/>
+</g>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="636" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="636" width="25.6" height="27" fill="#73e3ae"/>
+</g>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="636" width="25.6" height="27" fill="#f3c678"/>
+</g>
+<g><title>Category: 4/20</title>
+<rect x="452.4" y="636" width="25.6" height="27" fill="#fa9dac"/>
+</g>
+<text x="488.0000000000001" y="655" fill="#e5edf4" font-size="15" font-weight="700">20</text>
+</g>
+<rect x="16" y="674" width="1128" height="30" fill="#101e2b"/>
+<text x="24" y="694" fill="#a4bbc9" font-size="14" >Incomplete / unavailable · not ranked</text>
+<g>
+<title>GoalGetter</title>
+<text x="24" y="733" fill="#e5edf4" font-size="14" >GoalGetter</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="714" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="733" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 0/20</title>
+<rect x="401.2" y="714" width="0" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="714" width="25.6" height="27" fill="#73e3ae"/>
+</g>
+<g><title>Experience: 8/20</title>
+<rect x="426.8" y="714" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="452.40000000000003" y="733" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<rect x="478" y="714" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="733" fill="#a4bbc9" font-size="13" >20 known + ?</text>
+</g>
+<g>
+<title>Match Storyteller</title>
+<text x="24" y="771" fill="#e5edf4" font-size="14" >Match Storyteller</text>
+<g><title>Technology: 4/20</title>
+<rect x="350" y="752" width="25.6" height="27" fill="#69baff"/>
+</g>
+<g><title>Agent innovation: 4/20</title>
+<rect x="375.6" y="752" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 4/20</title>
+<rect x="401.2" y="752" width="25.6" height="27" fill="#73e3ae"/>
+</g>
+<g><title>Experience: 4/20</title>
+<rect x="426.8" y="752" width="25.6" height="27" fill="#f3c678"/>
+</g>
+<rect x="452.4" y="752" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="771" fill="#a4bbc9" font-size="13" >16 known + ?</text>
+</g>
+<g>
+<title>MatchLens — What-If Simulation</title>
+<text x="24" y="809" fill="#e5edf4" font-size="14" >MatchLens — What-If Simulation</text>
+<g><title>Technology: 8/20</title>
+<rect x="350" y="790" width="51.2" height="27" fill="#69baff"/>
+</g>
+<text x="375.6" y="809" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Agent innovation: 0/20</title>
+<rect x="401.2" y="790" width="0" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 8/20</title>
+<rect x="401.2" y="790" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="426.8" y="809" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 8/20</title>
+<rect x="452.4" y="790" width="51.2" height="27" fill="#f3c678"/>
+</g>
+<text x="478.0" y="809" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<rect x="503.6" y="790" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="809" fill="#a4bbc9" font-size="13" >24 known + ?</text>
+</g>
+<g>
+<title>MatchMind AI — AI Football Analyst</title>
+<text x="24" y="847" fill="#e5edf4" font-size="14" >MatchMind AI — AI Football Analyst</text>
+<text x="350" y="847" fill="#a4bbc9" font-size="13" >Unscored</text>
+</g>
+<g>
+<title>MatchMind AI — Beyond the Scoreline</title>
+<text x="24" y="885" fill="#e5edf4" font-size="14" >MatchMind AI — Beyond the Scoreline</text>
+<g><title>Technology: 0/20</title>
+<rect x="350" y="866" width="0" height="27" fill="#69baff"/>
+</g>
+<g><title>Agent innovation: 0/20</title>
+<rect x="350" y="866" width="0" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Experience: 0/20</title>
+<rect x="350" y="866" width="0" height="27" fill="#f3c678"/>
+</g>
+<rect x="350" y="866" width="256" height="27" fill="url(#unknown)"/>
+<text x="1010" y="885" fill="#a4bbc9" font-size="13" >0 known + ?</text>
 </g>
 <g>
 <title>MSFT x EPL Hackathon</title>
-<text x="24" y="809" fill="#e5edf4" font-size="14" >MSFT x EPL Hackathon</text>
-<text x="350" y="809" fill="#a4bbc9" font-size="13" >Unavailable</text>
-</g>
-<g>
-<title>OmniPitch</title>
-<text x="24" y="847" fill="#e5edf4" font-size="14" >OmniPitch</text>
-<text x="350" y="847" fill="#a4bbc9" font-size="13" >Unavailable</text>
-</g>
-<g>
-<title>PitchPulse</title>
-<text x="24" y="885" fill="#e5edf4" font-size="14" >PitchPulse</text>
-<text x="350" y="885" fill="#a4bbc9" font-size="13" >Unavailable</text>
-</g>
-<g>
-<title>Pitchside</title>
-<text x="24" y="923" fill="#e5edf4" font-size="14" >Pitchside</text>
+<text x="24" y="923" fill="#e5edf4" font-size="14" >MSFT x EPL Hackathon</text>
 <text x="350" y="923" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
 <g>
-<title>ReactCoach 11</title>
-<text x="24" y="961" fill="#e5edf4" font-size="14" >ReactCoach 11</text>
-<g><title>Technology: 12/20</title>
-<rect x="350" y="942" width="76.8" height="27" fill="#69baff"/>
-</g>
-<text x="388.4" y="961" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
-<g><title>Agent innovation: 4/20</title>
-<rect x="426.8" y="942" width="25.6" height="27" fill="#c2a4ff"/>
-</g>
-<g><title>Impact: 8/20</title>
-<rect x="452.4" y="942" width="51.2" height="27" fill="#73e3ae"/>
-</g>
-<text x="478.00000000000006" y="961" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
-<g><title>Experience: 12/20</title>
-<rect x="503.6" y="942" width="76.8" height="27" fill="#f3c678"/>
-</g>
-<text x="542.0" y="961" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
-<rect x="580.4" y="942" width="128" height="27" fill="url(#unknown)"/>
-<text x="1010" y="961" fill="#a4bbc9" font-size="13" >36 known + ?</text>
+<title>OmniPitch</title>
+<text x="24" y="961" fill="#e5edf4" font-size="14" >OmniPitch</text>
+<text x="350" y="961" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
 <g>
-<title>Touchline</title>
-<text x="24" y="999" fill="#e5edf4" font-size="14" >Touchline</text>
-<text x="350" y="999" fill="#a4bbc9" font-size="13" >Stale</text>
+<title>PitchPulse</title>
+<text x="24" y="999" fill="#e5edf4" font-size="14" >PitchPulse</text>
+<text x="350" y="999" fill="#a4bbc9" font-size="13" >Unavailable</text>
 </g>
-<text x="24" y="1054" fill="#a4bbc9" font-size="12" >Hatching shows the possible 0–20 points per unscored criterion; it is not an awarded score.</text>
+<g>
+<title>Pitchside</title>
+<text x="24" y="1037" fill="#e5edf4" font-size="14" >Pitchside</text>
+<text x="350" y="1037" fill="#a4bbc9" font-size="13" >Unavailable</text>
+</g>
+<g>
+<title>ReactCoach 11</title>
+<text x="24" y="1075" fill="#e5edf4" font-size="14" >ReactCoach 11</text>
+<g><title>Technology: 12/20</title>
+<rect x="350" y="1056" width="76.8" height="27" fill="#69baff"/>
+</g>
+<text x="388.4" y="1075" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<g><title>Agent innovation: 4/20</title>
+<rect x="426.8" y="1056" width="25.6" height="27" fill="#c2a4ff"/>
+</g>
+<g><title>Impact: 8/20</title>
+<rect x="452.4" y="1056" width="51.2" height="27" fill="#73e3ae"/>
+</g>
+<text x="478.00000000000006" y="1075" fill="#0f172a" font-size="12" text-anchor="middle">8</text>
+<g><title>Experience: 12/20</title>
+<rect x="503.6" y="1056" width="76.8" height="27" fill="#f3c678"/>
+</g>
+<text x="542.0" y="1075" fill="#0f172a" font-size="12" text-anchor="middle">12</text>
+<rect x="580.4" y="1056" width="128" height="27" fill="url(#unknown)"/>
+<text x="1010" y="1075" fill="#a4bbc9" font-size="13" >36 known + ?</text>
+</g>
+<text x="24" y="1130" fill="#a4bbc9" font-size="12" >Hatching shows the possible 0–20 points per unscored criterion; it is not an awarded score.</text>
 </g></svg>

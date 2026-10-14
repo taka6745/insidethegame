@@ -19,7 +19,7 @@ RULES = [
     ('Accessible audio', r'blind|visually impaired|spatial audio|low.vision|accessib'),
     ('Fantasy engagement', r'fantasy'),
     ('Coaching & what-if', r'coach|what.if|simulat.*(alternative|decision)|half.time lab|decision.fit|teaches young'),
-    ('Video & scouting', r'computer vision|scouting|training footage|image processing'),
+    ('Video & scouting', r'computer vision|scouting|training footage|image processing|events from.*video'),
     ('Conversational companion', r'conversational|conversation|talk to|ask questions|companion.*answers'),
     ('Narrative verification', r'narrative var|checks whether|audited|fact.check|checks evidence|human approval'),
     ('Broadcast production', r'broadcast|producer|studio|overlay|production'),
@@ -95,20 +95,20 @@ def graphic(title, subtitle, rows, filename):
     (BASE/filename).write_text('\n'.join(parts)+'\n')
 
 
-def overview_graphic(projects, repos, files, sampled_repos):
+def overview_graphic(projects, repos, readable, files, sampled_repos):
     parts=['<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="246" viewBox="0 0 1000 246" role="img" aria-labelledby="title desc">',
            '<title id="title">Inside the Game competitors</title>',
-           f'<desc id="desc">{projects} projects, {repos} listed repositories, {files} data files from {sampled_repos} competitors.</desc>',
+           f'<desc id="desc">{projects} projects, {repos} listed repositories, {readable} readable repositories, {files} data files from {sampled_repos} competitors.</desc>',
            '<rect width="1000" height="246" rx="14" fill="#101e2b"/>',
            '<g font-family="Arial, Helvetica, sans-serif">',
            svg_text(28,34,'INSIDE THE GAME / COMPETITORS',13,'#a4bbc9','letter-spacing="2" font-weight="700"')]
-    for i,(value,label) in enumerate([(projects,'Projects'),(repos,'Listed repos'),(files,'Data files collected')]):
-        x=28+i*324
-        parts += [f'<rect x="{x}" y="56" width="296" height="138" rx="8" fill="#192d3b"/>',
-                  f'<rect x="{x}" y="56" width="296" height="4" rx="2" fill="{COLORS[i]}"/>',
+    for i,(value,label) in enumerate([(projects,'Projects'),(repos,'Listed repos'),(readable,'Readable repos'),(files,'Data files')]):
+        x=28+i*242
+        parts += [f'<rect x="{x}" y="56" width="218" height="138" rx="8" fill="#192d3b"/>',
+                  f'<rect x="{x}" y="56" width="218" height="4" rx="2" fill="{COLORS[i]}"/>',
                   svg_text(x+20,124,value,52,COLORS[i],'font-weight="700"'),
                   svg_text(x+20,163,label,16)]
-    parts += [svg_text(28,225,f'Sample data from {sampled_repos} competitors · daily refresh through 28 October 2026',13,'#a4bbc9'),'</g></svg>']
+    parts += [svg_text(28,225,f'Sample data from {sampled_repos} competitors · manually refreshed; source dates below',13,'#a4bbc9'),'</g></svg>']
     (BASE/'overview.svg').write_text('\n'.join(parts)+'\n')
 
 
@@ -183,6 +183,7 @@ def main():
              ('Repo links unavailable',sum(r['status']!='ok' for r in audit['repositories']))], 'overview.svg')
     metrics = {'exported_at':snapshot['exported_at'], 'github_checked_at':audit['checked_at'],
                'projects':len(items), 'linked_projects':linked, 'unique_repos':len(audit['repositories']),
+               'readable_repos':sum(r['status']=='ok' for r in audit['repositories']),
                'project_types':dict(type_counts), 'loc_buckets':dict(size_counts),
                'data_buckets':dict(data_counts), 'catalogue':items}
     (DATA/'metrics.json').write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+'\n')
@@ -218,19 +219,32 @@ def main():
                    data_bytes=sum(f['bytes'] for f in inventory['files']),
                    collected_data_buckets=dict(source_buckets),commit_buckets=dict(commit_counts))
     (DATA/'metrics.json').write_text(json.dumps(metrics,ensure_ascii=False,indent=2)+'\n')
-    overview_graphic(len(items),len(audit['repositories']),len(inventory['files']),len(samples))
+    overview_graphic(len(items),len(audit['repositories']),metrics['readable_repos'],len(inventory['files']),len(samples))
+    (ROOT/'data/synthetic/README.md').write_text(f'''# Collected synthetic data
+
+[← Data](../README.md) · [Browse files by competitor](../../competitors/README.md#their-data) · [Sources, licences and checksums](../../competitors/data/datasets.json)
+
+**{len(inventory['files'])} files from {len(samples)} public competitor repositories.** Fictional matches, generated events and demo fixtures; no verified real match dataset in this collection.
+
+Files are grouped by `owner__repository`. The inventory records source commits, URLs, SHA-256 checksums and repository licences. Original bytes are preserved except the labelled VYBE fixture extracted from TypeScript. ZIP samples are labelled too. Missing reuse licences remain unknown.
+
+The manual competitor refresh collects files without executing competitor code. These are reference samples, separate from our [GRF-generated matches](../GoogleResearchFootball/README.md).
+''')
+    freshness = (f"Project list: **{snapshot['exported_at'][:10]}** · GitHub: **{stamp[:10]}**. "
+                 + ('Project list refresh failed; newer projects may be missing.' if snapshot['refresh_status'] != 'ok' else '')).strip()
     root=f"""![Current competitor snapshot](competitors/overview.svg)
 
 **{len(inventory['files'])} data files collected from {len(samples)} competitors.** The initial inspected samples are synthetic; no real match dataset or Kaggle/Hugging Face dataset use was verified.
 
 → [Competitors, repo activity, and their data](competitors/README.md) · [Raw project list](competitors/data/projects.json)
 
-[GitHub Actions](https://github.com/taka6745/insidethegame/actions/workflows/competitors.yml) refreshes the list, metrics, data files, and graphics daily at **8 am Brisbane through 28 October 2026**. Expired login requests produce a visible failure and keep the last successful project export.
+{freshness} [Manual refresh](competitors/README.md#refresh). The scheduled Action was removed because its saved login expired.
 """
     readme=ROOT/'README.md'
     readme.write_text(update_snapshot(readme.read_text(),root))
     report=['# Competitors','','[← Home](../README.md) · [Project JSON](data/projects.json) · [CSV](data/projects.csv)', '',
             '![Overview](overview.svg)','',
+            freshness,'',
             f"**{len(inventory['files'])} files · {len(samples)} competitors with data · {metrics['data_bytes']/1_000_000:.1f} MB.**",'',
             'These samples are fictional match events, generated CSVs, vendor-shaped examples, and demo scenarios. '
             'No real match dataset or Kaggle/Hugging Face dataset use was verified in the initial readable repos.','',
@@ -279,9 +293,10 @@ def main():
         if not p['repo_urls']:
             url='https://innovationstudio.microsoft.com/hackathons/insidethegamedeveloperhackathon/project/'+p['id']
             report.append(f"| [{md(p['name'])}]({url}) | {md(p['category'])} | {md(p['summary'])} |")
-    report+=['','</details>','','<details>','<summary>Refresh and measurement details</summary>','',
+    report+=['','</details>','','<a id="refresh"></a>','<details>','<summary>Refresh and measurement details</summary>','',
               f"Project export: **{snapshot['exported_at']}** · status: **{snapshot['refresh_status']}**. "
               f"GitHub checked: **{stamp}**.",'',
+              snapshot.get('catalogue_count_note',''),'',
               'Types are inferred from what a project does. Commit counts include merges on the default branch. '
               'LOC includes comments and tests; dense single-line code counts as one line. '
               'Data-source reviews link to the SHA inspected; changed repos are flagged for re-review. '
@@ -291,8 +306,9 @@ def main():
               'Keep copied requests in the ignored `.local/` directory.','',
               '```bash','python3 .github/scripts/refresh.py --search-request .local/search-request.txt \\',
               '  --detail-request .local/detail-request.txt','```','',
-              'The workflow uses encrypted `INNOVATION_SEARCH_CURL` and `INNOVATION_DETAIL_CURL` secrets. '
-              'Replace them with fresh copied requests if the session expires. Manual runs remain available after 28 October.','',
+              'The scheduled Action was removed after its saved login expired. '
+              'Replace the local request files when needed; `--repos-only` refreshes known repositories without updating the project list. '
+              'The scripts queue new or changed evidence for review; they do not invent scores.','',
               '[Refresh scripts](../.github/scripts/) · [Structured metrics](data/metrics.json) · '
               '[Reviewed sources](data/reviews.json) · [GitHub audit](data/repositories.json)','', '</details>','']
     (BASE/'README.md').write_text('\n'.join(report))

@@ -126,10 +126,10 @@
     ]
   },
   "audioreworkvisions/touchline": {
-    "sha": "0ad664372d762ad83f1e18aaa05b41c74a2cd0fa",
-    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "sha": "648179a97a99bb4974a089cfd87dd2e1e66acaa2",
+    "reviewed_at": "2026-10-14T00:00:00+00:00",
     "bucket": "Synthetic generator",
-    "detail": "Custom seeded JavaScript simulator creates fictional events and illustrative player tracking. The committed JSONL sample is its output. Vision uses the synthetic renderer rather than real broadcast footage.",
+    "detail": "Seeded JavaScript events and independent illustrative player tracking remain unchanged. New audio replay and podcast scripts consume the same synthetic match; Azure Speech creates audio, not football event data. No real match feed or external dataset is introduced.",
     "evidence": [
       {
         "path": "dist/engine.mjs",
@@ -145,6 +145,11 @@
         "path": "docs/DATA-CARD.md",
         "line": 43,
         "finding": "Vision reads rendered pixel arrays; player identity uses synthetic colours."
+      },
+      {
+        "path": "scripts/produce-podcast.mjs",
+        "line": 27,
+        "finding": "Podcast consumes generateMatch(seed), then synthesizes its text with Azure Speech."
       }
     ]
   },
@@ -234,10 +239,10 @@
     ]
   },
   "swarupe7/microsoft_dev_hackathon": {
-    "sha": "bfc977ae91dc3b822ea3aef88f4f705942c898cd",
-    "reviewed_at": "2026-10-13T05:02:27+00:00",
+    "sha": "7204630cc4a048b7a57dd46ab6fb21367ebd2c52",
+    "reviewed_at": "2026-10-14T00:00:00+00:00",
     "bucket": "Synthetic generator",
-    "detail": "In-browser event generator uses Math.random and locally defined fictional teams. It is stochastic, rather than a reproducible seeded generator, despite a seeded-looking comment.",
+    "detail": "Unseeded in-browser Math.random event generator and fictional local teams are unchanged. The only new file is an Azure deployment workflow, not a data source. The UI retains only the last 80 events; pitch markers are illustrative positions rather than tracking measurements.",
     "evidence": [
       {
         "path": "lib/match/engine.ts",
@@ -248,6 +253,16 @@
         "path": "lib/match/teams.ts",
         "line": 6,
         "finding": "Fictional club names and players are local source constants."
+      },
+      {
+        "path": "lib/match/engine.ts",
+        "line": 123,
+        "finding": "Only the last 80 generated events are retained in match state."
+      },
+      {
+        "path": "lib/match/pitchPositions.ts",
+        "line": 82,
+        "finding": "Sinusoidal marker offsets supply illustrative motion, not player tracking."
       }
     ]
   },
@@ -320,6 +335,57 @@
         "path": "README.md",
         "line": 65,
         "finding": "Fixture provenance and its baseline/high-press phases are documented."
+      }
+    ]
+  },
+  "JinYi123456/floodlight": {
+    "sha": "eae2606fcc3f3949aee3de1b9d5e9d7d1b16bc56",
+    "reviewed_at": "2026-10-14T00:00:00+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Seeded TypeScript simulator with fictional clubs/players and authored storylines; exports four scenarios as JSONL/CSV plus cues and player statistics. Tracking and rendered colour frames are generated from the simulation. No Kaggle/Hugging Face or real football input found. Data card states MIT for exports. Featherless/Foundry are narration providers, not match datasets.",
+    "evidence": [
+      {
+        "path": "data/freeplay-2026/DATA_CARD.md",
+        "line": 10,
+        "finding": "Explicit synthetic provenance with no scraped or derived real football rows."
+      },
+      {
+        "path": "data/freeplay-2026/DATA_CARD.md",
+        "line": 92,
+        "finding": "Exports explicitly covered by repository MIT license."
+      },
+      {
+        "path": "packages/simulator/src/tracking.ts",
+        "line": 144,
+        "finding": "Synthetic ball paths reconstructed from event geometry."
+      }
+    ]
+  },
+  "mberry19932025/PRO-VISION": {
+    "sha": "74cbde4746c9c095a9ccc51c9dff4bc6b2d1bded",
+    "reviewed_at": "2026-10-14T00:00:00+00:00",
+    "bucket": "Synthetic generator",
+    "detail": "Canonical competition-app uses a seeded JavaScript generator for 180 fictional events at 30-second intervals, two clubs and ten players. No external match dataset or tracking feed found. User photos/video frames are optional personal card media, not match evidence. Root nine-event prototype is archived. No repository source license was located; preserve attribution and do not infer reuse permission.",
+    "evidence": [
+      {
+        "path": "competition-app/src/core.js",
+        "line": 2,
+        "finding": "Seeded local generator with hard-coded fictional names and original event fields."
+      },
+      {
+        "path": "competition-app/README.md",
+        "line": 48,
+        "finding": "Coordinates, fixed event cadence and no tracking/speed inference explicitly documented."
+      },
+      {
+        "path": "competition-app/src/core.js",
+        "line": 109,
+        "finding": "Personal card media is labelled not evidence of a real match."
+      },
+      {
+        "path": "docs/THIRD-PARTY.md",
+        "line": 11,
+        "finding": "Historical licensing notes explicitly decline to assign a source license."
       }
     ]
   }
