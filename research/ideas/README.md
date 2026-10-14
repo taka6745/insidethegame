@@ -17,14 +17,7 @@ These outcomes are **hypotheses**, not forecasts. [PL+ Singapore](https://www.pr
 
 **No new example earned 90+.** Best new result: **Together 76**; the earlier accessible-commentary example remains **80**. Greater ambition did not establish stronger demand or originality.
 
-```mermaid
-xychart-beta horizontal
-  title "Design potential /100 · line = 90-point ambition"
-  x-axis ["Together", "Race", "Suspense", "Read"]
-  y-axis "Score" 0 --> 100
-  bar [76, 72, 68, 64]
-  line [90, 90, 90, 90]
-```
+![Independently challenged example design scores](../ideas.svg)
 
 Three independent reviewer contexts, followed by one revision and re-challenge. **Design potential, not delivered performance or win probability.** Criterion medians give Together **76**, Race **72**, Suspense **68**, Read **64**; raw totals and disagreements are below.
 

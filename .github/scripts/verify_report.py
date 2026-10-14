@@ -4,6 +4,8 @@ from hashlib import sha256
 import json
 from pathlib import Path
 import re
+import subprocess
+from urllib.parse import unquote
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -41,12 +43,23 @@ def main():
         validate_record(record)
         assert record['assessment_id'] not in seen, 'Duplicate assessment'
         seen.add(record['assessment_id'])
+    # A file on disk is not enough: README targets must also ship in Git.
+    tracked=set(subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0'))
     for path in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'competitors/README.md',*sorted((ROOT/'research').rglob('*.md')),*sorted((ROOT/'data').rglob('README.md'))]:
         for target in re.findall(r'\]\(([^)]+)\)',path.read_text()):
-            if target.startswith('https://'):continue
+            prefix='https://github.com/taka6745/insidethegame/blob/main/'
+            if target.startswith(prefix):
+                base=ROOT
+                target=target[len(prefix):]
+            elif target.startswith('https://'):
+                continue
+            else:
+                base=path.parent
             file,_,anchor=target.partition('#')
-            dest=(path.parent/file).resolve()
-            assert dest.is_relative_to(ROOT.resolve()) and dest.exists(),target
+            dest=(base/unquote(file)).resolve() if file else path.resolve()
+            assert dest.is_relative_to(ROOT.resolve()) and dest.exists(),f'{path}: {target}'
+            relative=dest.relative_to(ROOT).as_posix()
+            assert relative in tracked or (dest.is_dir() and any(p.startswith(relative+'/') for p in tracked)),f'Link target not tracked in Git: {relative}'
     assert '(research/README.md)' in (ROOT/'README.md').read_text(),'Root generator lost research link'
     assert '(AGENTS.md)' in (ROOT/'README.md').read_text(),'Root generator lost assistant instructions'
     for file in (ROOT/'research').rglob('*.svg'):ET.parse(file)
