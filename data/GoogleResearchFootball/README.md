@@ -34,6 +34,17 @@ The extra video time is stopped play. The match scored **26–8**: duration and 
 
 Use `--seconds 10` for a short clip or `--no-video` to exercise the real-duration simulation. Generated video/data stay under `.local/grf-runs/` and are not committed. This measured run is `full-90m-4k/`: 14.45 GB video + 2.33 GB telemetry.
 
+## Share the match
+
+**480 MB 720p video + 1.90 GB data ZIP = 2.38 GB.** [Measured sizes and hashes](render-benchmark.json)
+
+The standard ZIP opens to normal CSV/JSON files, timestamps and checkpoints (**8.53 GB unpacked**). Every source's uncompressed bytes were verified with the system's `unzip`; all rows and precision are preserved. The originals stay intact.
+
+```bash
+python3 data/GoogleResearchFootball/pack.py \
+  .local/grf-runs/full-90m-4k .local/grf-runs/full-90m-4k/data-lossless.zip
+```
+
 ## Accelerated headless benchmark
 
 **Three accelerated scenario runs:** 97,680 frames · 2.15 million player rows · 402 passes · 401 MB compressed.
