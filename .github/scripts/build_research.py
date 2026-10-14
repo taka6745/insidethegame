@@ -103,6 +103,55 @@ def main():
     parts += [line(640,132,700,172,arrow=True),line(640,227,700,172,arrow=True),box(715,115,257,115,COLORS[3]),text(843,158,'Fan experience',22,COLORS[3],'middle',700),text(843,190,'Overlay · story · recap',16,MUTED,'middle'),text(28,299,'Tracking supports movement claims • expected answers stay separate from live inputs',14,MUTED)]
     save('match-data.svg','Facts first, then the experience','A coherent synthetic match provides events and state. Metrics and evidence support stories; time-aligned tracking drives a visual replay. The fan experience combines them.',324,parts)
 
+    # The example scores remain on their design scale, separate from repo evidence.
+    parts=[text(28,66,'Four fan jobs · independently challenged design scores /100 · examples only',14,MUTED)]
+    for i,(name,job,score) in enumerate([
+        ('Together','Watch with a newcomer',76),
+        ('Race','Follow your club across matches',72),
+        ('Suspense','Catch up without spoilers',68),
+        ('Read','Learn to read the play',64),
+    ]):
+        y=110+i*62; c=COLORS[i]
+        parts += [text(28,y,name,19,c,weight=700),text(28,y+22,job,14,MUTED),
+                  f'<rect x="345" y="{y-17}" width="550" height="27" rx="4" fill="#263d4c"/>',
+                  f'<rect x="345" y="{y-17}" width="{score*5.5}" height="27" rx="4" fill="{c}"/>',
+                  text(355+score*5.5,y+3,str(score),17,weight=700)]
+    x=345+90*5.5
+    parts += [f'<path d="M{x} 80 V318" stroke="{INK}" stroke-dasharray="5 5"/>',
+              text(x,340,'90 ambition',13,MUTED,'middle'),
+              text(28,370,'Scores compare designs, not built products. Fan demand and impact still need testing.',14,MUTED)]
+    save('ideas.svg','Different ways to make the match matter',
+         'Together 76, Race 72, Suspense 68, Read 64. Independently challenged example designs; none reached the 90-point ambition.',394,parts)
+
+    render=json.loads((ROOT/'data/GoogleResearchFootball/render-benchmark.json').read_text())
+    parts=[text(28,66,'One AI-vs-AI run · synchronized video and telemetry · measured '+render['measured_date'],14,MUTED)]
+    stats=[(str(round(render['in_play_physics_seconds']/60))+' min','Actual play'),
+           (str(render['width'])+' × '+str(render['height']),'Video at '+str(render['fps'])+' fps'),
+           (f"{render['data_summary']['player_rows']/1_000_000:.2f}M",'Player rows')]
+    for i,(value,label) in enumerate(stats):
+        x=28+i*322; c=COLORS[i]
+        parts += [box(x,91,300,106,c),text(x+150,137,value,30,c,'middle',700),text(x+150,170,label,16,MUTED,'middle')]
+    for i,(label,c) in enumerate([('Save match state',COLORS[0]),('Change an action',COLORS[1]),('Compare the replay',COLORS[2])]):
+        x=28+i*322
+        parts += [box(x,233,275,52,c),text(x+137,266,label,19,c,'middle',700)]
+        if i<2: parts.append(line(x+279,259,x+313,259,arrow=True))
+    score='–'.join(map(str,render['score']))
+    parts += [text(28,321,'Separate checkpoint test passed. Full-match score '+score+': capture verified; football realism needs work.',14,MUTED)]
+    save('simulator.svg','Synthetic football we can inspect and replay',
+         'The measured full run has 90 minutes of actual play, 4K video at 25 fps and 12.71 million player rows. A separate checkpoint test reproduced an original rollout and changed its trajectory after intervention.',347,parts)
+
+    parts=[text(28,66,'Working rules for assistants in this codebase',14,MUTED)]
+    for i,(title,sub,c) in enumerate([
+        ('Inspect','Preserve local work',COLORS[0]),('Build','Small, reusable code',COLORS[1]),
+        ('Verify','Test actual output',COLORS[2]),('Report','Evidence + limits',COLORS[3]),
+    ]):
+        x=28+i*242
+        parts += [box(x,94,213,91,c),text(x+106,132,title,23,c,'middle',700),text(x+106,162,sub,15,MUTED,'middle')]
+        if i<3: parts.append(line(x+215,139,x+237,139,arrow=True))
+    parts += [text(28,222,'Credentials stay local · data keeps provenance · example ideas do not choose the product',14,MUTED)]
+    save('working.svg','How we work in this repo',
+         'Inspect and preserve local work, build small reusable code, verify actual output, report evidence and limits. Keep secrets local and preserve data provenance. Examples do not select a product.',248,parts)
+
     data=json.loads((OUT/'technology.json').read_text())['items']
     start=date(2026,7,1); end=date(2026,10,31)
     def tx(d): return 300+(date.fromisoformat(d)-start).days/(end-start).days*610

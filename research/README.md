@@ -1,21 +1,45 @@
 # Premier League research
 
-[← Home](../README.md) · [Competitors](../competitors/README.md) · [AI instructions](../AGENTS.md)
+[← Home](../README.md) · [Competitors](../competitors/README.md)
 
-**Brief-to-benefit mapping checked 14 October 2026.** Other source dates are recorded below.
+## What they ask for
 
-![What Microsoft asks for and why it matters](business.svg)
+[![Five stages from synthetic events to a personalised experience](challenge.svg)](brief.md)
 
-| Explore | Question |
-| --- | --- |
-| [Data: events, tracking or video?](data.md) | What inputs would support the brief? |
-| [Simulated matches + what-if replays](data.md#google-research-football-generate-and-branch-matches) | Can an open football engine generate data and replay alternatives? Checked 14 October. |
-| [Business cases](cases.md) | What do they ask for, what improves, and why care? |
-| [The League](business.md) | What does it control, and where is the value? |
-| [Fans](fans.md) | What does it already offer fans? |
-| [Existing technology](landscape.md) | Which capabilities already exist? |
-| [Recent tech, repos and papers](technology.md) | What changed in July–October? |
-| [Microsoft judging](brief.md) | What are we being scored on? |
-| [Example ideas + independent challenges](ideas/README.md) | How do ambitious concepts stand up to the brief and fan demand? |
+[Official requirements and judging](brief.md)
 
-[Source dates and links](sources.json)
+## Why it matters
+
+[![Brief requirements lead to fan benefits and audience demand](business.svg)](cases.md)
+
+[Business cases and evidence](cases.md) · [What the League controls](business.md) · [Existing fan experiences](fans.md)
+
+## How it is judged
+
+[![Five equal judging weights](judging.svg)](brief.md)
+
+[Criteria, submission checklist and deadlines](brief.md)
+
+## Example ideas
+
+[![Four fan jobs and challenged design scores](ideas.svg)](ideas/README.md)
+
+[Examples, independent challenges and the review harness](ideas/README.md)
+
+## Recent technology
+
+[![Technology timeline: July to October 2026](technology.svg)](technology.md)
+
+[New releases, repos and papers](technology.md) · [Existing technology](landscape.md)
+
+## Data and simulation
+
+[![One fictional match supports evidence and replay](match-data.svg)](data.md)
+
+[Which data supports which claims](data.md)
+
+[![Measured synthetic match capture and replay branching](simulator.svg)](../data/README.md)
+
+[Working simulator](../data/GoogleResearchFootball/README.md) · [Collected datasets](../data/README.md)
+
+Brief-to-benefit mapping checked **14 October 2026**. [Source dates and links](sources.json).

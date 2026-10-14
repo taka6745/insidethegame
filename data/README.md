@@ -2,6 +2,10 @@
 
 [← Home](../README.md)
 
+[![Measured synthetic match capture and replay branching](../research/simulator.svg)](GoogleResearchFootball/README.md)
+
+[Run the simulator and inspect the results](GoogleResearchFootball/README.md)
+
 | Folder | What's here |
 | --- | --- |
 | [GoogleResearchFootball](GoogleResearchFootball/README.md) | Run AI-vs-AI matches, including 90 minutes of play in 4K; export tracking, touches and pass outcomes; test alternative actions. |
