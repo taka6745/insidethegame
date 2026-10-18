@@ -907,3 +907,18 @@ dialog .muted {
 .plan-result summary { cursor: pointer; font-size: 12px; }
 .plan-result details pre { max-height: 260px; overflow: auto; }
 .plan-result form { margin-top: 14px; }
+
+/* Removable question workspace: shared replay, independent conversation. */
+.workspace-tabs { display:flex; gap:8px; padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid var(--border, #303239); }
+.workspace-tabs [aria-selected="true"] { color:#c7ff80; background:#252c22; }
+.chat-profile-row { display:flex; gap:5px; align-items:center; }
+.chat-profile-row select { min-width:0; }
+.chat-messages { max-height:530px; min-height:160px; overflow-y:auto; margin:20px 0; padding-right:5px; }
+.chat-user { border-left:2px solid #a3c875; padding:9px 12px; margin:18px 0 10px; color:#e6e9df; background:#242922; border-radius:3px; }
+.chat-answer { margin:0 0 24px; font-size:13px; line-height:1.6; }
+.chat-answer p { white-space:pre-wrap; margin:0 0 8px; }
+.chat-answer small, .chat-evidence { color:#929b90; font-size:10px; }
+.chat-evidence { margin:5px 0; }
+.chat-offer { border:1px solid #3e4936; background:#1e241b; border-radius:9px; padding:12px; display:grid; grid-template-columns:1fr auto; gap:8px; margin-top:12px; }
+.chat-offer span { font-size:12px; }.chat-offer strong { font-size:22px; }.chat-offer button { grid-column:1 / -1; }
+[hidden] { display:none !important; }

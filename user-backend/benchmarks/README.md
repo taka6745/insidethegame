@@ -1,5 +1,15 @@
 # Filter checks, outside pytest
 
+The separate [question conversation check](question_cases.json) has ten fixed prompts: standard/custom stats, a follow-up, clarification, a time boundary, recap drill-down, general football and unavailable data. Finish a **fresh default recording** in the lab, then run:
+
+```sh
+PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --output .local/benchmarks/questions-unique-run-name.json
+```
+
+This explicitly calls the configured local model through the running API and takes over the Chelsea demo profile's chat session. Use a different profile in the browser. It never starts replay or clicks Track. Automatic checks cover status/source/known values; manually review every explanation and generated rule. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
+
+Run it from the repository root with the backend Python environment activated (dependencies from `user-backend/requirements.txt`), and keep replay/Track unchanged during the check. Failed HTTP/model attempts remain in the output file. It also verifies that answering did not add live calculations.
+
 ```text
 100 hand-authored cases ──→ independent event/revision answers
          │                           ↑ compare every delivery
@@ -15,7 +25,7 @@
 ./dev benchmark agents  # explicitly calls your configured local development model
 ```
 
-All commands use Docker and write ignored results to `.local/benchmarks/`. They do not change the lab, its recording or saved rules. Agent checks need the [local model configuration](../docs/local-llm.md). No automatic model fallback to fixture answers. Run before merging a model/prompt change, not in normal pytest or CI.
+The `./dev benchmark` commands use Docker and write ignored results to `.local/benchmarks/`. They do not change the lab, its recording or saved rules. Agent checks need the [local model configuration](../docs/local-llm.md). No automatic model fallback to fixture answers. Run before merging a model/prompt change, not in normal pytest or CI.
 
 ## Correctness
 

@@ -7,6 +7,7 @@
     <title>Inside the Game · Event lab</title>
     <link rel="stylesheet" href="/styles.css">
     <script type="module" src="/controller.js"></script>
+    <script type="module" src="/chat-controller.js"></script>
   </head>
   <body>
     <header class="topbar">
@@ -21,6 +22,11 @@
       <div id="notice" class="notice" role="alert" hidden></div>
       <div class="workspace">
         <aside class="setup panel">
+          <div class="workspace-tabs" role="tablist" aria-label="Workspace">
+            <button class="button ghost" role="tab" data-workspace-tab="rule-workspace" aria-selected="true">Build filters</button>
+            <button class="button ghost" role="tab" data-workspace-tab="question-workspace" aria-selected="false">Questions</button>
+          </div>
+          <section id="rule-workspace">
           <div class="section-heading"><h2>What are we tracking?</h2></div>
           <p class="muted">Define your metric before the recording starts.</p>
           <label for="presets">Ready-made requests</label>
@@ -46,6 +52,19 @@
             </form>
           </div>
           <div class="boundary-note"><span>↳</span><p>The agent prepares a structured rule once. Live events update the value without another model call.</p></div>
+          </section>
+          <section id="question-workspace" hidden>
+            <h2>Ask the match.</h2>
+            <label for="chat-profile">Demo profile</label>
+            <div class="chat-profile-row"><select id="chat-profile"><option>Loading…</option></select><button id="chat-reconnect" class="button ghost" type="button">Reconnect</button></div>
+            <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+            <form id="chat-form">
+              <label for="chat-prompt">Your question</label>
+              <textarea id="chat-prompt" rows="3" maxlength="2000" placeholder="How is the match going?"></textarea>
+              <p id="chat-status" class="model-status">Connecting…</p>
+              <button id="chat-send" class="button primary full" type="submit" disabled>Ask ↗</button>
+            </form>
+          </section>
         </aside>
         <section class="match-area">
           <section class="match panel" aria-labelledby="match-heading">

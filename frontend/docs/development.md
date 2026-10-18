@@ -25,3 +25,7 @@ Run `./dev up backend` from the repo root, then open **http://localhost:18020**.
 Run small client tests with `cd frontend && npm test` (Node 20+; no npm install). Browser checks should cover adding a preset, preparing a rule, forward replay, changed cards, rule inspection, model/API errors and an explicit new run. Keep untrusted model/event content as text, never HTML.
 
 The lab polls every 700 ms; this is a development transport, not the production live-delivery design. New runs and calculations share one lab session across connected browsers.
+
+## Questions tab
+
+Select a demo profile, ask a match/football question and optionally Track an offered custom stat. Chat and offers restore on refresh. Reconnect takes over the profile from another tab. New run starts a separate conversation. The local model/fixture label is explicit; replay keeps running during answers. [Backend contract and limits](../../user-backend/docs/question-agent.md).
