@@ -95,15 +95,6 @@ export class QuestionView {
           "chat-meta",
         ),
       );
-    if (turn.reply.evidence?.length)
-      article.append(
-        node(
-          this.document,
-          "div",
-          turn.reply.evidence.map((evidence) => evidence.label).join(" · "),
-          "chat-meta",
-        ),
-      );
     for (const offer of turn.offers) {
       const card = node(this.document, "div", "", "offer");
       card.append(
