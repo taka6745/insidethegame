@@ -16,9 +16,9 @@ class Diagram:
             '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="#5d7185"/></marker></defs>',
             '<style>text{font-family:Arial,Helvetica,sans-serif} .title{font-size:32px;font-weight:700} .body{font-size:16px} .small{font-size:14px}</style>',
             f'<rect width="{width}" height="{height}" fill="white"/>']
-        self.text('INSIDE THE GAME  /  SERVICE PLAN',36,35,13,BLUE,True)
+        self.text('INSIDE THE GAME',36,35,13,BLUE,True)
         self.text(title,36,83,32,INK,True)
-        self.text(subtitle,36,115,17,MUTED)
+        # Keep descriptive prose in accessible SVG metadata, not on the canvas.
     def text(self,s,x,y,size=16,color=INK,bold=False,anchor='start'):
         self.parts.append(f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{700 if bold else 400}" text-anchor="{anchor}">{escape(s)}</text>')
     def rect(self,x,y,w,h,fill=PALE,stroke=LINE,dash=False):
@@ -60,101 +60,101 @@ class Diagram:
     def note(self,s,y,color=MUTED):self.text(s,36,y,16,color)
     def save(self):
         self.parts.append(f'<path d="M36,{self.h-50} H{self.w-36}" stroke="{LINE}"/>')
-        self.text('PLANNED  /  18 OCT 2026  /  Solid = calls or data flow · dashed = messages or labelled Phase 2',36,self.h-25,12,MUTED)
+        self.text('PLANNED · Solid: data / calls · Dashed: messages / Phase 2',36,self.h-25,12,MUTED)
         self.parts.append('</svg>')
         p=ROOT/self.path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('\n'.join(self.parts)+'\n')
 
 # Root overview: five owners, with live and historical data paths separated.
 d=Diagram('architecture.svg','Five services. One live match.','Shared match intelligence; personal questions and stat cards. No narrative workflow per viewer.',1440,760)
 xs=[36,320,604,888,1172];w=232
-items=[('Data generation',['Replay existing match','Synthetic events + footage'],'python',BLUE),('ETL',['Events + match statistics','Azure SQL · GraphQL'],'stream',BLUE),('Narrative engine',['Shared context → 12 buckets','Foundry · Cosmos DB'],'agent',PURPLE),('User backend',['Questions · stats · profiles','Container Apps · PostgreSQL'],'containers',BLUE),('Frontend',['Video · cards · two tabs','Hosting / framework TBD'],'screen',GREEN)]
+items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Azure SQL · GraphQL'],'stream',BLUE),('Narrative engine',['12 audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
 for x,(title,notes,ic,col) in zip(xs,items):d.card(x,245,w,205,title,notes,ic,col)
 for i,label in enumerate(['Event Hubs','Facts + triggers','Narratives','Live UI']):
  d.arrow([(xs[i]+w,345),(xs[i+1],345)],label,(xs[i]+w+xs[i+1])/2,320,dash=i==2)
-d.arrow([(436,245),(436,175),(1004,175),(1004,245)],'Live match events · Event Hubs',720,168,True)
-d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'History + stats · ETL GraphQL',720,503)
-d.text('Narrative delivery: Service Bus for new entries · Narrative GraphQL for history',36,575,16,PURPLE)
+d.arrow([(436,245),(436,175),(1004,175),(1004,245)],'Live · Event Hubs',720,168,True)
+d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'History · GraphQL',720,503)
+d.text('Narratives: Service Bus live · GraphQL history',36,575,16,PURPLE)
 d.arrow([(950,245),(950,214),(790,214),(790,245)],'Bucket presence',870,207,True)
-d.note('Each service owns its storage. The browser receives application data through the user backend.',625)
-d.note('PHASE 2  ·  Jev semantic follows  ·  requested clips  ·  playback-aware stats and narratives',663,GREY)
+
+d.note('PHASE 2 · Jev · clips · rewind',663,GREY)
 d.save()
 
 # Data input is a replay tool, not a resurrected match simulator.
 d=Diagram('data-generation/architecture.svg','Data generation','Prepare a saved synthetic match and replay its events into the demo.')
-d.card(60,200,300,200,'Existing match',['Events + matching footage','Keep provenance and source IDs'],'file')
-d.card(510,200,300,200,'Replay adapter',['Pace events for the demo','Publishing code still to build'],'python')
-d.card(960,200,300,200,'Azure Event Hubs',['Timestamped match events','Input to ETL + user backend'],'events')
+d.card(60,200,300,200,'Existing match',['Events + footage'],'file')
+d.card(510,200,300,200,'Replay adapter',['Timed replay'],'python')
+d.card(960,200,300,200,'Azure Event Hubs',['ETL + user backend'],'events')
 d.arrow([(360,300),(510,300)],'read')
 d.arrow([(810,300),(960,300)],'publish')
 d.rect(60,475,1200,130)
-d.icon('screen',85,510,45);d.text('Existing footage → frontend video source',155,520,21,INK,True)
-d.text('The replay clock and video timeline need an agreed mapping. The exact match file and serving method are open.',155,554,16,MUTED)
-d.note('Original GRF simulator: legacy/data/GoogleResearchFootball/  ·  Existing ignored outputs stay in .local/.',655)
+d.icon('screen',85,510,45);d.text('Footage → frontend',155,520,21,INK,True)
+
+
 d.save()
 
 # ETL implementation boundary.
-d=Diagram('etl/architecture.svg','ETL: events into usable match data','One Stream Analytics job stores raw events, key events and per-minute statistics.')
-for x,title,notes,ic in [(30,'Event Hubs',['Replay input','Shared live event source'],'events'),(290,'Stream Analytics',['Raw + key-event branches','Per-team minute deltas'],'stream'),(550,'Azure SQL',['rawEvents · keyEvents','minuteStats · as-of view'],'sql'),(810,'Data API builder',['Container App','GraphQL history + stats'],'graphql')]:
+d=Diagram('etl/architecture.svg','ETL','One Stream Analytics job stores raw events, key events and per-minute statistics.')
+for x,title,notes,ic in [(30,'Event Hubs',['Match events'],'events'),(290,'Stream Analytics',['Filter + aggregate'],'stream'),(550,'Azure SQL',['Events + stats'],'sql'),(810,'Data API builder',['GraphQL'],'graphql')]:
  d.card(x,200,220,190,title,notes,ic)
 d.card(1070,200,220,190,'Consumers',['Narrative engine','User backend'],'containers')
 for x in [250,510,770,1030]:d.arrow([(x,292),(x+40,292)])
-d.card(550,470,300,155,'Service Bus',['MinuteClosed + KeyEventDetected'],'bus')
+d.card(550,470,300,155,'Service Bus',['Minutes + key events'],'bus')
 d.arrow([(400,390),(400,545),(550,545)],'notify',455,533,True)
-d.arrow([(850,545),(1180,545),(1180,390)],'match notifications',1010,533,True)
-d.note('GraphQL reads stored match facts. User-generated stat functions run in the user backend, never here.',666)
+d.arrow([(850,545),(1180,545),(1180,390)],'triggers',1010,533,True)
+
 d.save()
 
 # Narrative shared memory and per-bucket authors.
-d=Diagram('narrative-engine/architecture.svg','Narrative engine: shared facts, bucket stories','Python on Azure Container Apps · Microsoft Agent Framework · Foundry model calls',1440,850)
-d.card(36,180,250,180,'Match inputs',['GraphQL facts + key ledger','Service Bus triggers'],'graphql')
-d.card(366,180,290,180,'Shared context',['Minute summariser','Scheduled context compressor'],'agent',PURPLE)
-d.card(736,180,290,180,'Narrative author',['One call per active bucket','Up to 12 versions per step'],'foundry',PURPLE)
-d.card(1106,180,298,180,'Publish',['Bucket narrative + stat choices','Service Bus → user backend'],'bus')
+d=Diagram('narrative-engine/architecture.svg','Narrative engine','Python on Azure Container Apps · Microsoft Agent Framework · Foundry model calls',1440,850)
+d.card(36,180,250,180,'Match inputs',['Facts + triggers'],'graphql')
+d.card(366,180,290,180,'Shared context',['Summarise → compress'],'agent',PURPLE)
+d.card(736,180,290,180,'Narrative author',['Up to 12 buckets'],'foundry',PURPLE)
+d.card(1106,180,298,180,'Publish',['Narratives + stat choices'],'bus')
 d.arrow([(286,270),(366,270)])
 d.arrow([(656,270),(736,270)])
 d.arrow([(1026,270),(1106,270)])
 d.rect(366,430,660,166)
 d.icon('cosmos',393,470,66)
 d.text('Azure Cosmos DB',490,475,23,BLUE,True)
-d.text('Context blocks · narratives · match checkpoints',490,512,17,MUTED)
-d.text('Narrative-owned GraphQL serves history to the user backend.',490,550,15,MUTED)
+d.text('Context · narratives · checkpoints',490,512,17,MUTED)
+d.text('History → GraphQL',490,550,15,MUTED)
 d.arrow([(511,360),(511,430)],both=True)
 d.arrow([(881,430),(881,360)],both=True)
 d.arrow([(1255,360),(1255,512),(1026,512)],'save',1145,500)
 d.rect(36,635,1368,98,'#f5f1fb','#dfd4ed')
-d.text('WHEN TO RUN',58,665,13,PURPLE,True)
-d.text('Every minute: summarise   ·   Due by context rules: compress   ·   Key event or 10-minute gap: author',58,696,17,INK)
-d.note('Keep the exact key-event ledger alongside compressed context. Questions from viewers never trigger authoring.',772)
+d.text('TRIGGERS',58,665,13,PURPLE,True)
+d.text('1 min → summary     ·     Key event / 10 min → narrative',58,696,17,INK)
+
 d.save()
 
 # User backend internals with an explicit separate executor boundary.
-d=Diagram('user-backend/architecture.svg','User backend: answer, calculate, deliver','One Python app on Azure Container Apps; generated code runs in an isolated executor.',1440,1000)
-d.card(36,190,255,190,'Upstream data',['Event Hubs: live events','GraphQL: history + stats'],'graphql')
-d.card(376,190,290,190,'Question + coding',['Agent Framework + Foundry','Goal → function → test'],'agent',PURPLE)
-d.card(766,190,290,190,'Viewer delivery',['Chat API + live connection','Profiles · pins · bucket routing'],'containers')
-d.card(1156,190,248,190,'Frontend',['Questions + actions','Answers + live updates'],'screen')
+d=Diagram('user-backend/architecture.svg','User backend','One Python app on Azure Container Apps; generated code runs in an isolated executor.',1440,1000)
+d.card(36,190,255,190,'Upstream data',['Event Hubs · GraphQL'],'graphql')
+d.card(376,190,290,190,'Question + coding',['Goal → code → test'],'agent',PURPLE)
+d.card(766,190,290,190,'Viewer delivery',['Chat + live updates'],'containers')
+d.card(1156,190,248,190,'Frontend',[],'screen')
 d.arrow([(291,280),(376,280)])
 d.arrow([(666,280),(766,280)],'result',716,267)
 d.arrow([(1056,280),(1156,280)],both=True)
-d.card(36,470,255,190,'Narrative input',['Service Bus: new narratives','GraphQL: backlog'],'bus')
-d.card(376,470,290,190,'Isolated executor',['Fixed Python libraries','Read-only GraphQL helper'],'code',PURPLE)
-d.card(766,470,290,190,'Shared stat engine',['GraphQL history + live events','Equivalent requests reuse work'],'chart',GREEN)
-d.card(1156,470,248,190,'PostgreSQL',['Accounts DB','Match App DB'],'postgres')
+d.card(36,470,255,190,'Narrative input',['Service Bus · GraphQL'],'bus')
+d.card(376,470,290,190,'Isolated executor',['Python · read-only data'],'code',PURPLE)
+d.card(766,470,290,190,'Shared stat engine',['Shared calculations'],'chart',GREEN)
+d.card(1156,470,248,190,'PostgreSQL',['Accounts · Match App'],'postgres')
 d.arrow([(521,380),(521,470)],'test / run',574,431,both=True)
 d.arrow([(666,565),(766,565)],'values',716,551)
 d.arrow([(911,470),(911,380)],'cards',948,432)
 d.arrow([(1278,470),(1278,420),(1020,420),(1020,380)])
-d.text('Routes to viewer delivery ↑',163,643,14,BLUE,anchor='middle')
-d.text('Narrative deduplication stays upstream.',36,700,16,MUTED)
-d.text('Pin a custom stat → replace the lowest-priority default. Up to 3 repairs before reporting failure.',376,700,16,MUTED)
-for x,title,notes in [(36,'Jev semantic follows',['Check new narratives on arrival']),(506,'Replay resolver',['Return source IDs + clip timestamps']),(976,'Playback-aware state',['Rewind stats, narratives and answers'])]:
+d.text('→ Viewer delivery',163,643,14,BLUE,anchor='middle')
+
+
+for x,title,notes in [(36,'Jev follows',[]),(506,'Clip resolver',[]),(976,'Playback state',[])]:
  d.card(x,767,428,116,title,notes,color=GREY,dash=True)
 d.note('PHASE 2 ONLY',742,GREY)
 d.save()
 
 # Product interface, not a frontend framework decision.
-d=Diagram('frontend/architecture.svg','Frontend: one match, one companion','Application data comes from the user backend. Video comes from the footage source.',1320,870)
-d.card(36,190,245,180,'Demo profile',['Supported team + fan style','One active session'],'users')
+d=Diagram('frontend/architecture.svg','Frontend','Application data comes from the user backend. Video comes from the footage source.',1320,870)
+d.card(36,190,245,180,'Demo profile',['Team + fan style'],'users')
 d.arrow([(281,280),(361,280)],'select')
 d.rect(361,180,680,430,'white',LINE)
 d.text('MATCH VIEW',385,215,14,BLUE,True)
@@ -162,17 +162,17 @@ d.rect(385,235,360,210,'#eef5fb','#bfdaee');d.icon('screen',533,298,60)
 d.text('Live footage',565,413,18,BLUE,True,'middle')
 d.rect(765,235,252,210,'#f5f1fb','#dfd4ed')
 d.text('Agent  |  Narratives',891,273,18,PURPLE,True,'middle')
-d.text('Questions + replies',891,319,16,MUTED,anchor='middle')
-d.text('Bucket feed + backlog',891,349,16,MUTED,anchor='middle')
-d.text('Optional custom stat pins',891,394,15,MUTED,anchor='middle')
+d.text('Chat',891,319,16,MUTED,anchor='middle')
+d.text('Feed + history',891,349,16,MUTED,anchor='middle')
+
 for x,title in [(385,'Default stat'),(601,'Default stat'),(817,'Custom pin')]:
  d.rect(x,474,200,102,'#f0f6f4' if title=='Custom pin' else PALE,LINE)
  d.icon('chart',x+18,497,36);d.text(title,x+72,530,16,INK,True)
-d.card(1110,190,174,180,'Backend',['Actions + chat','Live updates'],'containers')
+d.card(1110,190,174,180,'Backend',['API + live'],'containers')
 d.arrow([(1041,280),(1110,280)],both=True)
-d.text('Illustrative card count; pinning replaces a slot.',385,642,15,MUTED)
+d.text('Pin → replace a default',385,642,15,MUTED)
 d.rect(36,693,1248,84,'#f7f9fc',GREY,True)
 d.text('PHASE 2',58,725,13,GREY,True)
-d.text('Requested clips · pause / rewind · stats and narratives follow playback position',58,752,17,GREY)
+d.text('Clips · pause · rewind',58,752,17,GREY)
 d.save()
 print('Rendered overview + five service SVGs.')
