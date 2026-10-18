@@ -25,6 +25,7 @@ LOCAL_LLM_TIMEOUT_SECONDS=60
 AGENT_PLAN_TIMEOUT_SECONDS=60
 AGENT_MAX_REPAIRS=3
 AGENT_GOAL_OUTPUT_MODE=prompt
+AGENT_DATA_SKILL=off
 ```
 
 Never commit this file or log its contents. The model/chain choice is configuration; the adapter neither chooses providers nor changes server routing. Switch back to `fixture` to work without a model server. Restart the backend after changing environment values.
@@ -58,6 +59,8 @@ SDK response_format + model context → strict local validation
 The schema is generated from the current typed models, not maintained as a second hand-written list. Changing a field updates the contract on the next process start; tests check new fields, bounds, defaults and inherited validators. Every strict wire field is required: `[]` means unrestricted arrays, `null` means unused nullable constraints. Contract/prompt hashes in evaluations identify the exact version tested. Deploy code and contract together and rerun the relevant gold cases and provider compatibility checks. Future nested model fields and arbitrary-key maps fail contract construction until explicitly supported, preventing provider/local validation drift. New operators still need compiler/executor support and tests; changing a schema alone cannot add a capability. Vendor feed-key changes belong in the event adapter, which preserves the internal event model.
 
 **A valid schema does not prove correct meaning.** A model can emit a perfectly valid first-half restriction the viewer never requested. Keep semantic gold tests, clarification checks and model-strength comparisons separate from format checks. [Measured schema study](../benchmarks/results/schema-study.md).
+
+The optional [event-data skill](data-skill.md) replaces fixed feed mappings with a versioned adapter-supplied dictionary and generated event types. Set `AGENT_DATA_SKILL=feed` to evaluate it; the default is `off`. It explains data semantics, without supplying fixture events or gold answers.
 
 For model selection, use the [pinned-model comparison](../benchmarks/README.md#compare-pinned-models-and-prompt-variants). It checks reported model identities, prompt/schema hashes, clarification outcomes, tokens and latency. A fallback chain is not a fixed model; a provider's model name is evidence of routing, not independent verification of its weights. Keep routing choices in the ignored configuration and inspect the [measured comparison](../benchmarks/results/model-strength.md) before choosing a smaller model.
 

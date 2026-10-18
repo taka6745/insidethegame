@@ -17,6 +17,7 @@ Run **`./dev up backend`**, then **`./dev test backend`** after changes. No mode
 | Shared index | 100,000 distinct rules; fixed probe bound and relevant candidate counts; equivalent-rule reuse |
 | Filter lab | Real Postgres registration, late backfill, versions, restart, reset and API validation |
 | Local-model workflow | Goal/coder contracts, semantic constraints, sample-event checks, repair limits, timeouts and fixture mode |
+| Data reference | Generated types, missing-definition rejection, profile substitution, isolated request context and independent transfer-oracle mutation checks |
 
 `tests/` runs domain checks plus real-Postgres tests in isolated schemas. `backend/smoke.py` checks separate Docker services through their network interfaces. `backend/lab_smoke.py` checks the frontend proxy and all 26 presets through 35 deliveries, then resets the lab. These checks modify the synthetic demos; don't run them while someone is using the lab.
 

@@ -13,11 +13,14 @@ import subprocess
 from backend.adapters.events import OptaInspiredAdapter
 from backend.adapters.llm import LocalJsonModel
 from backend.agents.compiler import StructuredRuleCompiler
+from backend.agents.data_skill import EventDataSkill
+from backend.agents.semantics import GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS
 from backend.agents.orchestrator import GoalAgent
 from backend.agents.settings import AgentSettings
 from backend.agents.workflow import RuleWorkflow
 from .conversation_eval import evaluate_conversation
 from .correctness import COHORTS, FIXTURE, evaluate_rule, gold_check
+from .data_transfer_cases import remap_fixture
 from .model_observer import ModelObserver, digest, pin_verification
 
 BASELINE = Path(__file__).with_name('prompts') / 'goal-baseline.txt'
@@ -56,7 +59,9 @@ def load_models(path):
 
 
 def variant_order(case_index, variants=('baseline', 'current')):
-    ordered = ('baseline', 'current', 'schema') if case_index % 2 == 0 else ('schema', 'current', 'baseline')
+    ordered = ('baseline', 'current', 'schema', 'skill', 'schema_skill', 'skill_added', 'schema_skill_added')
+    if case_index % 2:
+        ordered = ordered[::-1]
     return tuple(variant for variant in ordered if variant in variants)
 
 
@@ -72,11 +77,19 @@ def build_workflow(model_config, variant, case_timeout, observer, candidate_inst
         agent.schema = json.loads(BASELINE_SCHEMA.read_text())
     elif variant == 'schema':
         agent = GoalAgent(model, response_mode='schema')
+    elif variant in {'skill', 'schema_skill', 'skill_added', 'schema_skill_added'}:
+        structured = variant.startswith('schema')
+        instructions = ((STRUCTURED_GOAL_INSTRUCTIONS if structured else GOAL_INSTRUCTIONS)
+                        if variant.endswith('_added') else None)
+        agent = GoalAgent(model, response_mode='schema' if structured else 'prompt', instructions=instructions,
+                          data_skill=EventDataSkill(OptaInspiredAdapter().data_reference()))
     elif candidate_instructions is not None:
         agent = GoalAgent(model, instructions=candidate_instructions, compact_contract=True)
     else:
         agent = GoalAgent(model)
     metadata = {'prompt_sha256': digest(agent.instructions), 'schema_sha256': digest(agent.schema)}
+    if variant in {'skill', 'schema_skill', 'skill_added', 'schema_skill_added'}:
+        metadata['data_skill_sha256'] = agent.data_skill.fingerprint
     return RuleWorkflow(agent, StructuredRuleCompiler(), source='local', timeout_seconds=case_timeout,
                         max_repairs=AgentSettings.from_env().max_repairs), metadata
 
@@ -175,9 +188,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--models-config', type=Path, required=True)
     parser.add_argument('--env-file', type=Path)
-    parser.add_argument('--cohort', choices=['balanced', 'baseline', 'transfer'], default='balanced')
+    parser.add_argument('--cohort', choices=['balanced', 'baseline', 'transfer', 'data-transfer'], default='balanced')
     parser.add_argument('--case-id', action='append')
-    parser.add_argument('--variants', nargs='+', choices=['baseline', 'current', 'schema'], default=['baseline', 'current'])
+    parser.add_argument('--variants', nargs='+', choices=['baseline', 'current', 'schema', 'skill', 'schema_skill',
+                                                        'skill_added', 'schema_skill_added'], default=['baseline', 'current'])
     parser.add_argument('--candidate-prompt', type=Path, help='Override current instructions; retain compact schema')
     parser.add_argument('--limit', type=int)
     parser.add_argument('--concurrency', type=int, choices=range(1, 9), default=2)
@@ -202,6 +216,8 @@ def main():
     if args.limit:
         selected = selected[:args.limit]
     scenario = json.loads(FIXTURE.read_text())
+    if args.cohort == 'data-transfer':
+        scenario = remap_fixture(scenario)
     events = [OptaInspiredAdapter().adapt(raw) for raw in scenario['events']]
     gold = gold_check(scenario, events, selected)
     if any(not row['ok'] for row in gold):
