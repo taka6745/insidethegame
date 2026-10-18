@@ -21,7 +21,7 @@ flowchart LR
 | File | Resources |
 | --- | --- |
 | `messaging.tf` | Event Hubs stream + independent consumers; Service Bus topics/subscriptions. |
-| `databases.tf` | Azure SQL, Cosmos containers, Postgres server with two databases. |
+| `databases.tf`, `etl-stats.tf` | Azure SQL history, separate ETL/narrative Cosmos stores, Postgres with two user databases. |
 | `main.tf` | Resource group, logs and Container Apps environment. |
 | `tests/design.tftest.hcl` | Account-free checks of service boundaries. |
 
@@ -31,4 +31,6 @@ Real deployment will require an Azure account, subscription, provider registrati
 
 LocalStack's [Azure Terraform integration](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/) is a separate optional route. It requires [LocalStack authentication](https://docs.localstack.cloud/azure/getting-started/auth-token/), emulator endpoints and compatible provider configuration. It has not been wired or tested here. Microsoft's individual emulators do not implement Terraform's Azure control plane.
 
-**Plan update:** ETL now owns a Cosmos DB store for standard stat state as well as SQL event history, both behind its GraphQL API. The existing Cosmos resources cover narrative memory; ETL Cosmos resources and GraphQL routing still need implementation. No infrastructure was deployed by this design update.
+ETL Cosmos ownership is included in the foundation: `standardStats`, partitioned by `/matchId`, in a separate ETL account. SQL retains event history. The ETL Azure writers and GraphQL routing remain to build. No infrastructure has been deployed. Match partitioning serves shared match data, not a database read per viewer; validate hot-partition throughput before choosing production capacity.
+
+See [deployment readiness](deployment-readiness.md) for the concrete gaps between the runnable demo and an Azure release.

@@ -21,7 +21,7 @@ class PreparedStat(Wire):
 class MatchAnswer(Wire):
     route: Literal['match']
     text: str = Field(min_length=1,max_length=1800)
-    evidence_ids: list[str] = Field(max_length=20)
+    evidence_ids: list[str] = Field(min_length=1, max_length=20)
 
 class FootballAnswer(Wire):
     route: Literal['football']
@@ -49,6 +49,8 @@ class QuestionDecision(Wire):
                 raise ValueError('Prepared statistic does not exist in this question')
             return QuestionDraft(answer_kind='statistic',status='answer',selected_offer_id=decision.offer_id,text='Statistic calculated.',evidence_ids=['offer:'+decision.offer_id])
         if isinstance(decision,MatchAnswer):
+            if any(identifier not in tools.evidence for identifier in decision.evidence_ids):
+                raise ValueError('Match answer cites unavailable evidence')
             return QuestionDraft(answer_kind='match',status='answer',text=decision.text,evidence_ids=decision.evidence_ids)
         if isinstance(decision,FootballAnswer):
             return QuestionDraft(answer_kind='football',status='answer',text=decision.text)

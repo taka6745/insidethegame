@@ -121,3 +121,22 @@ def test_paired_variants_change_data_knowledge_not_output_schema(monkeypatch):
         assert new.orchestrator.response_mode == old.orchestrator.response_mode
         if with_skill.endswith('_added'):
             assert old_meta['prompt_sha256'] == new_meta['prompt_sha256']
+
+
+def test_request_reference_replaces_startup_skill_without_leaking_between_requests():
+    original = OptaInspiredAdapter().data_reference()
+    replacement = {**original, 'contract_id': 'replacement-feed'}
+    seen = []
+    class Capture:
+        async def complete(self, system, payload):
+            seen.append(payload['data_skill']['feed_reference'])
+            return {'status': 'unsupported', 'message': 'Test capture'}
+    agent = GoalAgent(Capture(), data_skill=EventDataSkill(original))
+    async def run():
+        await agent.define('Count touches', {'match_id':'m', 'data_reference':replacement})
+        await agent.define('Count touches', {'match_id':'m'})
+    asyncio.run(run())
+    assert seen[0]['contract_id'] == 'replacement-feed'
+    assert seen[1]['contract_id'] == original['contract_id']
+    seen[0]['events']['touch'] = 'mutated by request'
+    assert replacement['events']['touch'] == original['events']['touch']

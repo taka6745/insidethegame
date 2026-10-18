@@ -242,8 +242,10 @@ def test_planner_receives_entity_catalogue_not_future_events_or_preset_answers()
         service, _ = await setup(planner=planner)
         outcome = await service.plan("Track corners")
         assert outcome["status"] == "clarification" and outcome["conversation_id"]
-        assert set(planner.context) == {"match_id", "players", "teams", "standard_stats"}
+        assert set(planner.context) == {"match_id", "players", "teams", "standard_stats", "data_reference"}
         assert planner.context["standard_stats"] == []
+        assert planner.context["data_reference"] == service.source.data_reference()
+        assert all(isinstance(description, str) for description in planner.context["data_reference"]["events"].values())
     asyncio.run(run())
 
 
@@ -310,4 +312,31 @@ def test_clarification_options_are_preserved_for_ordinal_answers():
         first = await service.plan("Track his headers")
         await service.plan("The second one", first["conversation_id"])
         assert planner.history[1]["content"] == "Which player?\nOptions:\n1. Mbappe\n2. Palmer\n3. Colwill"
+    asyncio.run(run())
+
+
+def test_live_player_total_becomes_unavailable_then_recovers_after_attribution_correction():
+    from backend.models.events import Event
+
+    async def run():
+        service, repository = await setup()
+        event = Event(event_id='uncertain-goal', match_id=service.source.match_id,
+                      event_type='goal', team_id='chelsea', match_time_seconds=60)
+        service.source.events = (event, event.model_copy(update={'revision': 2, 'player_id': 'palmer'}))
+        rule = Rule(match_id=service.source.match_id, predicates=(
+            {'field': 'event_type', 'op': 'eq', 'value': 'goal'},
+            {'field': 'player_id', 'op': 'eq', 'value': 'palmer'},
+        ))
+        initial = await service.register(rule, 'Palmer goals')
+        assert initial['value'] == 0 and initial['complete']
+        await service.advance()
+        uncertain = (await service.state())['calculations'][0]
+        assert uncertain['value'] is None and not uncertain['available']
+        with pytest.raises(RuleError, match='attribution'):
+            await service.register(rule, 'Palmer goals')
+        await service.advance()
+        resolved = (await service.state())['calculations'][0]
+        assert resolved['value'] == 1 and resolved['complete']
+        # Persisted accumulator remains numeric; uncertainty is presentation metadata.
+        assert repository.rows[initial['id']]['result']['value'] == 1
     asyncio.run(run())

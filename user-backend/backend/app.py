@@ -18,6 +18,9 @@ from .routes.viewers import viewer_router
 
 
 def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None, enable_product=False):
+    if enable_product and lab and questions and narrative_connection:
+        raise ValueError("Service Bus ingress currently serves only the legacy viewer harness; "
+                         "the product demo requires its GraphQL checkpoint adapter")
     if not 1 <= slots <= 4:
         raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
     store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])

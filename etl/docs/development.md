@@ -9,7 +9,7 @@ The runnable adapter lives in `demo_etl/`. HTTP routes call `MatchService`; repo
 
 **Run:** `uvicorn demo_etl.app:from_env --factory --port 8000` from this folder. Set `ETL_HISTORY_DATABASE_URL`, `ETL_STATS_DATABASE_URL` to two local PostgreSQL databases and `DEMO_RECORDING_PATH` to the generated recording. Docker uses the same entry point. See root development commands for the integrated stack.
 
-**Test:** install `requirements-test.txt`, then `PYTHONPATH=. pytest tests`. Set `ETL_TEST_HISTORY_DATABASE_URL` and `ETL_TEST_STATS_DATABASE_URL` to disposable PostgreSQL databases to include persistence/restart tests. Unit tests use repository doubles; they do not claim database coverage.
+**Test:** install `requirements-test.txt`, then `PYTHONPATH=. pytest tests`. Set `ETL_TEST_HISTORY_DATABASE_URL` and `ETL_TEST_STATS_DATABASE_URL` to disposable PostgreSQL databases to include persistence/restart tests. Unit tests use repository doubles; they do not claim database coverage. Docker builds use `--target runtime` for the service and `--target test` for pytest; the runtime excludes tests and test dependencies.
 
 **Inspect:** history DB views `raw_recording_events` (unaltered source JSON), `raw_event_history` (observed canonical deliveries); stats DB view `standard_stats` (per snapshot/team/metric). Full recordings are stored once. History deliveries are stored once per run; snapshots retain watermarks, not duplicate event arrays.
 

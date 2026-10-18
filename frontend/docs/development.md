@@ -66,3 +66,9 @@ Run from the repository root. The read-only mount serves `/media/simulator.mp4` 
 The backend's shared replay clock drives `match/video.js`. Aligned footage starts/resumes with replay, corrects drift on new clock anchors, pauses on disconnect and stops at full-time. It does not loop or allow independent seeking. Browser autoplay restrictions may require a click or Enter/Space. Removing the mount preserves the data-only demo and shows the unavailable-player state. Rewind, clips and per-viewer delayed playback remain phase 2.
 
 The recording is simulated football with illustrative named lineups and generic abilities, not an actual Premier League fixture. Production footage should use a media delivery service/CDN, not user-backend fan-out.
+
+## Proxy deployment settings
+
+The image renders nginx configuration at startup. `BACKEND_UPSTREAM` defaults to `backend:8000`; `NGINX_RESOLVER` defaults to Docker's `127.0.0.11`. Set both to the real reachable HTTP backend host/port and DNS resolver outside Compose. Never carry the Docker resolver into Azure. The configured upstream uses HTTP; terminate ingress TLS at the trusted gateway and provide a private route to the backend. A TLS-only upstream needs a separate HTTPS proxy configuration with certificate verification.
+
+Check the actual image template with `docker build -t itg-frontend-proxy-test frontend` then `node frontend/tools/test-proxy.mjs` from the root. The opt-in Docker check renders both defaults and custom settings, runs `nginx -T`, and verifies native nginx variables survive substitution. See [cloud prerequisites](../../terraform/deployment-readiness.md).

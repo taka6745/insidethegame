@@ -207,3 +207,18 @@ def test_recording_persistence_failure_does_not_replace_current_source(store, mo
                         headers={"X-Recording-Filename": "replacement.json"})
         assert client.get("/lab/state").json() == before
         assert lab.source.filename == "filter-lab.json"
+
+
+def test_etl_owned_recording_rejects_upload_before_changing_the_shared_run(store):
+    lab = make_lab(store)
+    lab.recording_editable = False
+    with TestClient(create_app(store, lab=lab)) as client:
+        before = client.get('/lab/state').json()
+        assert client.get('/lab/scenario').json()['recording_editable'] is False
+        # Same valid recording, different byte hash: ETL still owns its exact bytes.
+        content = json.dumps(lab.source.spec, indent=3).encode()
+        response = client.post('/lab/recording', content=content)
+        assert response.status_code == 409
+        assert response.json()['code'] == 'recording_owned_by_etl'
+        assert client.get('/lab/state').json() == before
+        assert client.post('/lab/recording/default').status_code == 200

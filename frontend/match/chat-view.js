@@ -1,5 +1,5 @@
 import { node, keyedList } from "./dom.js";
-import { clock, number } from "./format.js";
+import { clock, statValue } from "./format.js";
 
 export class QuestionView {
   constructor(document) {
@@ -103,7 +103,7 @@ export class QuestionView {
       const card = node(this.document, "div", "", "offer");
       card.append(
         node(this.document, "span", offer.label),
-        node(this.document, "strong", number(offer.value)),
+        node(this.document, "strong", statValue(offer)),
       );
       const button = node(
         this.document,

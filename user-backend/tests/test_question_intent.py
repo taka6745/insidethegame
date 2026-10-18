@@ -108,7 +108,7 @@ def test_stat_followup_passes_original_conversation_to_existing_planner():
         async def route(self, prompt, context):
             return QuestionIntent(route="statistic")
 
-    payload = SimpleNamespace(snapshot=SimpleNamespace(match_id="m", clock_seconds=4000, period=2), players=[], teams=[])
+    payload = SimpleNamespace(snapshot=SimpleNamespace(match_id="m", clock_seconds=4000, period=2), players=[], teams=[], data_reference={})
     history = [
         {"user": "How many team shots?", "reply": {"text": "5 team shots"}},
         {"user": "How many headed shots by the striker?", "reply": {
@@ -137,7 +137,7 @@ def test_rules_reference_is_included_only_for_general_football(route):
             assert context["football_reference"], "The reference must be a real versioned document"
         decision = {"route": route, "text": "A short grounded explanation."}
         if route == "match":
-            decision["evidence_ids"] = []
+            decision["evidence_ids"] = ["recap:observed"]
         return httpx.Response(200, json={
             "id": "answer", "object": "chat.completion", "created": 0, "model": "test",
             "choices": [{"index": 0, "finish_reason": "stop", "message": {
@@ -145,7 +145,7 @@ def test_rules_reference_is_included_only_for_general_football(route):
         })
 
     agent = QuestionAgent(LocalJsonModel("http://fake/v1", "test", transport=httpx.MockTransport(respond)), router=Router())
-    reply = asyncio.run(agent.answer("Explain this", {}, SimpleNamespace()))
+    reply = asyncio.run(agent.answer("Explain this", {}, SimpleNamespace(evidence={"recap:observed": {}})))
     assert reply.answer_kind == route
 
 

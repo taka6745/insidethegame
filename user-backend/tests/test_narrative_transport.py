@@ -45,3 +45,12 @@ def test_backend_has_no_neutral_framing_or_audience_authoring_routes(client):
     assert client.post('/dev/neutral-narratives', json={}).status_code == 404
     assert client.put('/dev/audiences', json={}).status_code == 404
     assert client.get('/audiences').status_code == 404
+
+
+def test_product_rejects_legacy_service_bus_ingress_before_startup():
+    import pytest
+    from backend.app import create_app
+
+    with pytest.raises(ValueError, match="legacy viewer harness"):
+        create_app(enable_product=True, lab=object(), questions=object(),
+                   narrative_connection="local-test-connection")

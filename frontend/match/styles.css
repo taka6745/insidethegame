@@ -393,11 +393,11 @@ option {
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(105px, 1fr));
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
 }
 .stat-card {
   padding: 12px 13px;

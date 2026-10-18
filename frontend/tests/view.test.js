@@ -49,3 +49,23 @@ test('recording metadata uses the loaded filename and real delivery counts', () 
     assert.equal(nodes.get('recording-meta').textContent, 'Synthetic fixture · Opta-inspired · 45 deliveries · 42 events');
   } finally { globalThis.document = original; }
 });
+
+test('ETL-owned recordings disable lab uploads without disabling replay', () => {
+  const nodes = new Map();
+  const original = globalThis.document;
+  globalThis.document = { getElementById: id => {
+    if (!nodes.has(id)) nodes.set(id, { textContent: '', replaceChildren() {} });
+    return nodes.get(id);
+  }};
+  try {
+    const view = new LabView();
+    view.scenario({ teams: [], presets: [], recording_editable: false });
+    view.controls({ status: 'ready', llm: { configured: true } }, false);
+    assert.equal(nodes.get('load-recording').disabled, true);
+    assert.equal(nodes.get('start').disabled, false);
+    assert.match(nodes.get('recording-meta').textContent, /Source managed by ETL/);
+    view.scenario({ teams: [], presets: [], recording_editable: true });
+    view.controls({ status: 'ready' }, false);
+    assert.equal(nodes.get('load-recording').disabled, false);
+  } finally { globalThis.document = original; }
+});
