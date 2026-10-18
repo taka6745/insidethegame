@@ -107,6 +107,56 @@ services:
       PYTHONUNBUFFERED: "1"
     # Tooling only: no credentials for real Azure and no Docker socket.
 
+  backend:
+    build: {context: ../user-backend, target: runtime}
+    profiles: [backend]
+    ports: ["127.0.0.1:18000:8000"]
+    environment: &backend-env
+      BACKEND_MODE: fixture
+      ENABLE_DEV_FEED: "1"
+      ACCOUNTS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/accounts
+      MATCH_APP_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/matchapp
+      ETL_GRAPHQL_URL: http://fake-etl:8000/graphql
+      NARRATIVE_GRAPHQL_URL: http://fake-narrative:8000/graphql
+    depends_on:
+      postgres: {condition: service_healthy}
+      fake-etl: {condition: service_healthy}
+      fake-narrative: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=5)"]
+      interval: 3s
+      timeout: 6s
+      retries: 20
+
+  fake-etl:
+    build: {context: ../user-backend, target: runtime}
+    profiles: [backend]
+    command: [uvicorn, "backend.fakes:from_env", --factory, --host, "0.0.0.0", --port, "8000"]
+    environment:
+      FAKE_ROLE: etl
+      BACKEND_NOTIFY_URL: http://backend:8000
+    ports: ["127.0.0.1:18010:8000"]
+    healthcheck: &fake-health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 3s
+      timeout: 6s
+      retries: 20
+
+  fake-narrative:
+    build: {context: ../user-backend, target: runtime}
+    profiles: [backend]
+    command: [uvicorn, "backend.fakes:from_env", --factory, --host, "0.0.0.0", --port, "8000"]
+    environment:
+      FAKE_ROLE: narrative
+      BACKEND_NOTIFY_URL: http://backend:8000
+    ports: ["127.0.0.1:18011:8000"]
+    healthcheck: *fake-health
+
+  backend-tests:
+    build: {context: ../user-backend, target: test}
+    profiles: [tools]
+    environment: *backend-env
+
 volumes:
   postgres-data:
   sql-data:

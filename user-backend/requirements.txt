@@ -1,0 +1,7 @@
+fastapi==0.143.3
+uvicorn==0.54.0
+websockets==17.2
+psycopg[binary]==3.3.6
+httpx==0.28.1
+graphql-core==3.3.0
+anyio==4.15.1

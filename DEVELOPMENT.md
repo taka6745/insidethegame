@@ -11,6 +11,16 @@
 
 `up` waits for the integration checks to pass. Use `./dev test` to rerun them later.
 
+For the **runnable user-backend harness**, use:
+
+```sh
+./dev up backend        # Postgres + API + fake ETL/narratives, then tests
+./dev reset backend     # fresh synthetic match; saved pins/preferences stay
+./dev replay backend    # send the key moments to connected viewers
+```
+
+[Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md) · [Synthetic events](user-backend/fixtures/README.md). This profile needs no Azure login or emulator EULA acceptance. `./dev test backend` reruns the backend tests and live replay.
+
 For messaging, SQL and GraphQL, first review the [Microsoft licence links](local/README.md#licences), then:
 
 ```sh
@@ -30,7 +40,7 @@ ACCEPT_EULA=Y ./dev up azure
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | One live match, cards and two chat tabs. |
 
-The stack is **development infrastructure**, not the finished app. Tests use three explicit synthetic fixtures. They do not run Stream Analytics, generate narratives, execute custom stat code or launch a frontend.
+The stack is **development infrastructure plus a fixture-mode backend**, not the finished app. The base/Azure checks use tiny synthetic probes; the backend profile has a longer key-moment scenario. Neither runs Stream Analytics, generates narratives, executes generated stat code or launches a frontend.
 
 ## Work independently
 
