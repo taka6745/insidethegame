@@ -5,3 +5,7 @@
 !fixtures/**
 !tests/**
 !pytest.ini
+!benchmarks/*.py
+!benchmarks/prompts/*.txt
+**/__pycache__
+**/*.pyc

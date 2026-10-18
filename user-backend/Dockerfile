@@ -13,6 +13,7 @@ FROM runtime AS test
 USER root
 RUN pip install --no-cache-dir -r requirements-test.txt
 COPY tests ./tests
+COPY benchmarks ./benchmarks
 COPY pytest.ini ./
 USER 65532:65532
 CMD ["pytest", "-q", "-p", "no:cacheprovider"]

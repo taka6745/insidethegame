@@ -84,3 +84,5 @@ This is one model run with bounded timeouts, not proof of language-understanding
 **Follow-up measurements:** [Agent interpretation and clarification improvements](agents-improved.md) · [Filter optimisation comparison](optimization.md). Original measurements above remain unchanged.
 
 [Balanced wording and clarification evaluation](agents-balanced.md): 30 matched intents in three wording bands, plus 10 unsupported controls.
+
+[Model strength and prompt comparison](model-strength.md): pinned model groups, shorter contracts, response identity checks and a separate transfer cohort.

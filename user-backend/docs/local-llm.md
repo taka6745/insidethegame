@@ -42,6 +42,10 @@ Goal definition retries once for transient failures or invalid output. Coding al
 
 The goal schema enumerates supported events and outcomes; feed semantics define headed contacts, shot attempts, half boundaries and strict/inclusive time windows. `PlanOutcome` reports model-call count and stage timings. These help diagnose latency; goal validation still does not prove the user’s meaning was understood. The separate evaluation checks known intentions and values independently.
 
+The model-facing contract inlines schema references and omits titles/default annotations while preserving types, enums, bounds and required fields. Four decision shapes make nesting explicit. `goal_failure_reasons` records safe retry categories (such as `goal_schema`), never rejected output or provider error text. A timeout leaves these diagnostics `null` when the workflow cannot recover them. Compilation and validation still use the same typed domain models.
+
+For model selection, use the [pinned-model comparison](../benchmarks/README.md#compare-pinned-models-and-prompt-variants). It checks reported model identities, prompt/schema hashes, clarification outcomes, tokens and latency. A fallback chain is not a fixed model; a provider's model name is evidence of routing, not independent verification of its weights. Keep routing choices in the ignored configuration and inspect the [measured comparison](../benchmarks/results/model-strength.md) before choosing a smaller model.
+
 A narrow first-turn check asks which player an unresolved “his” or “her” refers to without spending a model call. It does not infer or repair the metric. Follow-up answers preserve the full request and displayed options; the model must retain earlier constraints unless the viewer explicitly changes them. This remains evaluated language understanding, not a guarantee against semantic mistakes.
 
 Lab continuation: `POST /lab/plan` accepts `prompt` and optional `conversation_id`. The server keeps the transcript; clients cannot inject assistant messages. Conversations are bounded and ephemeral, not durable or authenticated production sessions. See [the lab guide](filter-lab.md).
