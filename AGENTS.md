@@ -7,6 +7,7 @@ This hackathon application has a runnable user-backend fixture harness and plann
 - Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work.
 - The detailed sections of `legacy/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
 - Preserve original example prompts in `narrative-engine/prompts/`. Resolve their output contracts before implementation.
+- The narrative engine owns audience definitions and bucket framing. The user backend receives already-bucketed narratives and routes them without rewriting.
 - User questions never trigger the shared narrative workflow. Narrative history uses the narrative service's GraphQL API; live narratives use Service Bus.
 - Live match events reach the user backend through one shared Event Hubs consumer for the demo match. History and computed stats use ETL GraphQL.
 - ETL owns standard stat calculations and stores current stats in its Cosmos DB; event history stays in ETL Azure SQL. The backend accesses both through ETL GraphQL, never direct DB connections. Reuse existing stats before generating custom calculations; ordinary cards must not fetch raw history or recalculate standard stats.

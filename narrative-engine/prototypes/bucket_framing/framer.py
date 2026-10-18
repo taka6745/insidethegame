@@ -1,5 +1,5 @@
 """One shared Agent Framework call per bounded batch of audience variants."""
-from ..models.narratives import FramingResponse
+from .models import FramingResponse
 
 FRAMING_VERSION = 'neutral-framing-v2'
 INSTRUCTIONS = '''Rewrite the supplied neutral match narrative for each requested audience.

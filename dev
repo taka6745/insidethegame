@@ -18,7 +18,6 @@ check() {
   if [[ "$1" == backend ]]; then
     compose run --rm --build --no-deps backend-tests
     compose run --rm --no-deps backend-tests python -m backend.smoke
-    compose run --rm --no-deps backend-tests python -m backend.narrative_smoke
     compose run --rm --no-deps backend-tests python -m backend.lab_smoke
   else
     compose run --rm --build --no-deps tools python local/check.py "$1"

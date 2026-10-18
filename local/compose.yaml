@@ -122,12 +122,6 @@ services:
       BACKEND_MODE: fixture
       ENABLE_DEV_FEED: "1"
       ENABLE_FILTER_LAB: "1"
-      ENABLE_NARRATIVE_FRAMING: "1"
-      NARRATIVE_FRAMING_MODE: ${NARRATIVE_FRAMING_MODE:-fixture}
-      NARRATIVE_BATCH_SIZE: ${NARRATIVE_BATCH_SIZE:-4}
-      NARRATIVE_MAX_VARIANTS: ${NARRATIVE_MAX_VARIANTS:-48}
-      NARRATIVE_TIMEOUT_SECONDS: ${NARRATIVE_TIMEOUT_SECONDS:-60}
-      NARRATIVE_MAX_OUTPUT_TOKENS: ${NARRATIVE_MAX_OUTPUT_TOKENS:-6000}
       ACCOUNTS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/accounts
       MATCH_APP_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/matchapp
       ETL_GRAPHQL_URL: http://fake-etl:8000/graphql
