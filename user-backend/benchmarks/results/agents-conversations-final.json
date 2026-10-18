@@ -1,0 +1,1556 @@
+{
+  "cohort": "quality",
+  "fixture_sha256": "348a339fcfac735019b0bef96fcf2649ecad208043abd40363b1f55a246a9e43",
+  "gold": [
+    {
+      "id": "quality-stat-001",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-002",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-003",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-004",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-005",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-006",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-007",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-008",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-009",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-010",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-011",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-012",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-013",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-014",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-015",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-016",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-017",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-018",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-019",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-020",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-021",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-022",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-023",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-024",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-025",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-026",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-027",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-028",
+      "ok": true,
+      "final_value": 8.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-029",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-030",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-031",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-032",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-033",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-034",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-035",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-036",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-037",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-038",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-039",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-040",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-041",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-042",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-043",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-044",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-045",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-046",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-047",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-048",
+      "ok": true,
+      "final_value": 60.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-049",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-050",
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-051",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-052",
+      "ok": true,
+      "final_value": 13.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-053",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-054",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-055",
+      "ok": true,
+      "final_value": 40.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-056",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-057",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-058",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-059",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-060",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-061",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-062",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-063",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-064",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-065",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-066",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-067",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-068",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-069",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-070",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-071",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-072",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-073",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-074",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-075",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-076",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-077",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-078",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-079",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-080",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-081",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-082",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-083",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-084",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-085",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-086",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-087",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-088",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-089",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-090",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-091",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-092",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-093",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-094",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-095",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-096",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-097",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-098",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-099",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "quality-stat-100",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-01",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-02",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-03",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-04",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-05",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-06",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-07",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-08",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-09",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-10",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-11",
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-12",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "agent_calls": true,
+  "max_repairs": 3,
+  "cases_sha256": "e02e2bc1849ba9c68fe93e09b2d173fee0f956b01082c41e22609739a17e3978",
+  "quality_cases_sha256": "4ca10da447d4bb82f3933ce4df109daf2a17ca8275582cf790c28c9e747aba22",
+  "agent_source_sha256": "ff522a71ebe0e5b94ddc09e10f06d95baa7bbd2883f471087cba255a2cf77dee",
+  "agents": [
+    {
+      "id": "conversation-01",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.772,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 0.358,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "question": "Which player in this match do you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 7.406,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.402,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count all headed contacts by Kylian Mbapp\u00e9 across all event types in the whole match",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-02",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 13.644,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 7.94,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.938
+          },
+          "question": "Which team do you mean by \"our\"?"
+        },
+        {
+          "status": "ready",
+          "seconds": 5.696,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.694,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count corners for Chelsea for the whole match",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-03",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 15.383,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 7.671,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.669
+          },
+          "question": "Whose goals would you like to track? Please specify a team or a player from the match."
+        },
+        {
+          "status": "ready",
+          "seconds": 7.697,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.688,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count goals for Real Madrid in the whole match",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-04",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.939,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 0.002,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "question": "Which player in this match do you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 10.928,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.924,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count Cole Palmer's completed right-footed passes in this whole match",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": "right_foot",
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "right_foot"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-06",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 14.635,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 6.577,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.575
+          },
+          "question": "Arsenal is not playing in this match. Which team's corners would you like to track?"
+        },
+        {
+          "status": "ready",
+          "seconds": 8.051,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.048,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners for the whole match",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-05",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.111,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 13.18,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 13.175
+          },
+          "question": "Please clarify whether the boundary minutes 60 and 70 are inclusive or exclusive for the time window 'between minute 60 and 70'."
+        },
+        {
+          "status": "ready",
+          "seconds": 13.923,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 13.919,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count corners for Chelsea between minute 60 (exclusive) and minute 70 (inclusive).",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": 4200.0,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-08",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.681,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 0.002,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "question": "Which player in this match do you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 9.672,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.669,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count Courtois's saves for the whole game",
+        "operation": "count",
+        "event_types": [
+          "save"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "courtois"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "save"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "courtois"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-07",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 28.513,
+      "model_calls": 3,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 19.264,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 19.262
+          },
+          "question": "Haaland is not in the player list for this match. Which player did you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 9.242,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.239,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Mbapp\u00e9's headed contacts across all event types in the whole match",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-09",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 15.83,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 6.904,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.902
+          },
+          "question": "Who does 'their' refer to? Please specify the player or team."
+        },
+        {
+          "status": "ready",
+          "seconds": 8.918,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.915,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count first-half headed contacts for both teams, including stoppage time",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-10",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.905,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 0.002,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "question": "Which player in this match do you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 17.896,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 17.893,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count all cards (any colour) received by Levi Colwill for the whole match.",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "colwill"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "colwill"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-11",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.834,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 11.849,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.847
+          },
+          "question": "Which team does 'our team' refer to for tracking completed pass distance?"
+        },
+        {
+          "status": "ready",
+          "seconds": 15.978,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 15.975,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Chelsea's total completed pass distance in metres across the whole match",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "conversation-12",
+      "quality": "clarification",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.003,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 0.001,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "question": "Which player in this match do you mean?"
+        },
+        {
+          "status": "ready",
+          "seconds": 18.994,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 18.991,
+            "compile_validate": 0.0
+          }
+        }
+      ],
+      "goal": {
+        "description": "Count Kylian Mbapp\u00e9's headed shot attempts, including goals, for the entire match.",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "case_timeout_seconds": 45.0,
+  "suite_timeout_seconds": 240.0,
+  "concurrency": 2
+}

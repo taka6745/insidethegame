@@ -1,21 +1,22 @@
 """Semantic targets stay separate from generated implementation rules."""
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from backend.models.rules import Rule
+from backend.models.events import EventType
 
 
 class Goal(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     description: str = Field(min_length=1, max_length=500)
     operation: Literal["count", "sum"] = "count"
-    event_types: tuple[str, ...] = ()
+    event_types: tuple[EventType, ...] = ()
     team_ids: tuple[str, ...] = ()
     player_ids: tuple[str, ...] = ()
     body_part: Literal["head", "left_foot", "right_foot", "foot", "other", "hand"] | None = None
     period: int | None = Field(default=None, ge=1, le=5)
-    outcome: str | None = None
+    outcome: Literal["success", "failure", "saved", "off_target", "blocked", "red", "yellow"] | None = None
     after_seconds: float | None = Field(default=None, ge=0, le=12000)
     from_seconds: float | None = Field(default=None, ge=0, le=12000)
     before_seconds: float | None = Field(default=None, ge=0, le=12000)
@@ -58,10 +59,24 @@ class Goal(BaseModel):
         return Rule(match_id=match_id, operation=self.operation, predicates=terms, sum_field=self.sum_field)
 
 
+class ConversationMessage(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=2000)
+
+
+class Clarification(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    question: str = Field(min_length=1, max_length=500)
+    options: list[Annotated[str, Field(min_length=1, max_length=200)]] = Field(default_factory=list, max_length=5)
+    missing_fields: list[Literal["player", "team", "metric", "time_window"]] = Field(default_factory=list)
+
+
 class GoalDecision(BaseModel):
     model_config = ConfigDict(extra="forbid")
     status: Literal["custom", "reuse", "clarification", "unsupported"]
     goal: Goal | None = None
+    clarification: Clarification | None = None
     standard_stat_id: str | None = None
     message: str = Field(default="", max_length=1000)
 
@@ -71,6 +86,10 @@ class GoalDecision(BaseModel):
             raise ValueError("A custom calculation needs a goal")
         if self.status == "reuse" and not self.standard_stat_id:
             raise ValueError("Reuse requires an existing stat ID")
+        if self.status == "clarification":
+            if self.clarification is None:
+                self.clarification = Clarification(question=self.message or "Which statistic would you like to track?")
+            self.message = self.clarification.question
         return self
 
 
@@ -79,6 +98,9 @@ class PlanOutcome(BaseModel):
     source: Literal["fixture", "local"]
     goal: Goal | None = None
     rule: Rule | None = None
+    clarification: Clarification | None = None
     standard_stat_id: str | None = None
     attempts: int = 0
     message: str = ""
+    model_calls: int | None = None
+    stage_seconds: dict[str, float] = Field(default_factory=dict)

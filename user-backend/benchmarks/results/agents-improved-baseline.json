@@ -1,0 +1,7037 @@
+{
+  "cohort": "baseline",
+  "fixture_sha256": "348a339fcfac735019b0bef96fcf2649ecad208043abd40363b1f55a246a9e43",
+  "gold": [
+    {
+      "id": "stat-001",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-002",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-003",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-004",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-005",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-006",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-007",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-008",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-009",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-010",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-011",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-012",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-013",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-014",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-015",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-016",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-017",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-018",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-019",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-020",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-021",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-022",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-023",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-024",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-025",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-026",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-027",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-028",
+      "ok": true,
+      "final_value": 8.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-029",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-030",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-031",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-032",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-033",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-034",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-035",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-036",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-037",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-038",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-039",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-040",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-041",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-042",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-043",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-044",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-045",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-046",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-047",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-048",
+      "ok": true,
+      "final_value": 60.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-049",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-050",
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-051",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-052",
+      "ok": true,
+      "final_value": 13.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-053",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-054",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-055",
+      "ok": true,
+      "final_value": 40.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-056",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-057",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-058",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-059",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-060",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-061",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-062",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-063",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-064",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-065",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-066",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-067",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-068",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-069",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-070",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-071",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-072",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-073",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-074",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-075",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-076",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-077",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-078",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-079",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-080",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-081",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-082",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-083",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-084",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-085",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-086",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-087",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-088",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-089",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-090",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-091",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-092",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-093",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-094",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-095",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-096",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-097",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-098",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-099",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-100",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "agent_calls": true,
+  "max_repairs": 3,
+  "cases_sha256": "e02e2bc1849ba9c68fe93e09b2d173fee0f956b01082c41e22609739a17e3978",
+  "quality_cases_sha256": "4ca10da447d4bb82f3933ce4df109daf2a17ca8275582cf790c28c9e747aba22",
+  "agent_source_sha256": "bf02c43d3f0ab9d61da8e40eba545f626b365b840057eb5d1349c7d8874a92cc",
+  "agents": [
+    {
+      "id": "stat-004",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.53,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.521,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.06,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headed touches (headers) made by all players in the match",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-001",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.766,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.758,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.748,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all recorded headed touches by Mbapp\u00e9",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-003",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.268,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.26,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.814,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Mbapp\u00e9 headed touches in the first half, including stoppage time",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-002",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.127,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 10.121,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.69,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of headed touches by Kylian Mbapp\u00e9 in the second half",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-007",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.476,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 17.469,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 17.466,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Mbapp\u00e9 headed shot attempts including headed goals",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-008",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 28.472,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 28.464,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 28.461,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of passes by Kylian Mbapp\u00e9 made with the head.",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-010",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 1.65,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 1.642,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.639,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Headed goals by Cole Palmer",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-011",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.829,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 0.821,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.818,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count headed clearances by Levi Colwill",
+        "operation": "count",
+        "event_types": [
+          "clearance"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "colwill"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "clearance"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "colwill"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-006",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 37.16,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 37.153,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 37.15,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headed touches by Madrid players in the match.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-009",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 24.878,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 24.871,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 24.868,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Kylian Mbapp\u00e9's goals scored with the head in the whole match.",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-005",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 45.002,
+      "model_calls": null,
+      "turns": [
+        {
+          "status": "failed",
+          "seconds": 45.002,
+          "model_calls": null,
+          "stage_seconds": {},
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-014",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.92,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.912,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.901,
+            "compile_validate": 0.002
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Kylian Mbapp\u00e9's off-target headed shots in the match.",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": "off_target",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "off_target"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-013",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 30.845,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 30.838,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 30.835,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Kylian Mbapp\u00e9 headed shots that were saved.",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-017",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.649,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.64,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.636,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headed contacts after 75:00, excluding 75:00.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4500.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4500.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-012",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 45.002,
+      "model_calls": null,
+      "turns": [
+        {
+          "status": "failed",
+          "seconds": 45.002,
+          "model_calls": null,
+          "stage_seconds": {},
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-015",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 45.002,
+      "model_calls": null,
+      "turns": [
+        {
+          "status": "failed",
+          "seconds": 45.002,
+          "model_calls": null,
+          "stage_seconds": {},
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-020",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.997,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.99,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.987,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headers in the second half",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-016",
+      "quality": "average",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 45.002,
+      "model_calls": null,
+      "turns": [
+        {
+          "status": "failed",
+          "seconds": 45.002,
+          "model_calls": null,
+          "stage_seconds": {},
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-021",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.581,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.574,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.571,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners awarded after minute 60",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-018",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 29.715,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 29.708,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 29.704,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headed contacts by either team from 75:00 inclusive.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 4500.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 4500.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-022",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.862,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.855,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.852,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners from 60 minutes inclusive",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 3600.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-023",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.318,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.31,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.307,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners awarded after 60 minutes for all teams",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-024",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.616,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.61,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.606,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all corners awarded in the match",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-026",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.778,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.771,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.768,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners awarded to Madrid",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-025",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.948,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.94,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.938,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corner events for Chelsea",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-028",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.257,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.25,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.247,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners in the second half",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 8.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-027",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.809,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.802,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.798,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "first half corners",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-019",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 45.002,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 44.995,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 44.993,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all first-half headed touches by either team.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-029",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.873,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.866,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.863,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners after 70 minutes",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4200.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-032",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.541,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.534,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.531,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners through 60:00 including that second",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": 3600.0,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-030",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.518,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.511,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.507,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners after 60 through 70 inclusive",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": 4200.0,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-031",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 13.008,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 13.001,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.998,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of corners before 60 minutes",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": 3600.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-034",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.291,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.284,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.281,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners awarded after 90 minutes (5400 seconds) for both teams",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 5400.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 5400.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-033",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 12.8,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 12.793,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.79,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners from 60:00 inclusive until 60:01 exclusive",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 3600.0,
+        "before_seconds": 3601.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 3601.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-038",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.999,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 3.992,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 3.989,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all corner kicks taken from the 67th minute onwards (inclusive)",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 4020.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 4020.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-037",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.988,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.981,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.977,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea corners before 30 minutes",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": 1800.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 1800.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-036",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.03,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 10.022,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.019,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of corners taken by Madrid after 70 minutes",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4200.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-035",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 12.381,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 12.374,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.371,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea's corners in the second half after 90:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": 5400.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 5400.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-039",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.69,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.683,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.679,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners from 60 up to but not including 61 minutes",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 3600.0,
+        "before_seconds": 3660.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 3660.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-041",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.179,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.171,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.167,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all pass events",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-040",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.15,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.143,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.14,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count corners after 88:00 but before 90:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 5280.0,
+        "from_seconds": null,
+        "before_seconds": 5400.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 5280.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 5400.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-043",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.997,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.99,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.987,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of failed passes by Chelsea",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "failure",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-044",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.838,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.831,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.828,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Kylian Mbapp\u00e9's passes",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-045",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.66,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.652,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.648,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of passes by Cole Palmer",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-042",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 13.746,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 13.738,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 13.734,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Chelsea completed passes",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-046",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.909,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 4.903,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.897,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all completed passes in the match",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-048",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.78,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.773,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.769,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Total recorded pass distance, both teams, in metres",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 60.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-049",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.929,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.922,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.918,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Sum of Chelsea's total pass distance in metres across all outcomes",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-047",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.147,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.14,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.137,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all failed passes in the match",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "failure",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-050",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.797,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.79,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.787,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Sum of successful pass distance in metres for Chelsea",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-051",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.841,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.833,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.83,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Total distance of Chelsea's failed passes in metres",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "failure",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-052",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.537,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.53,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.527,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Kylian Mbapp\u00e9 headed pass distance in metres",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 13.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-054",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.442,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.435,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.432,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Sum of distance in metres for completed passes in the second half",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-053",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.367,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.36,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.357,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Total pass distance in metres for Cole Palmer",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-056",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.691,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.683,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.68,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count passes from either team after 70:00",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4200.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-058",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.375,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.368,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.365,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of right foot passes",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "right_foot",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "right_foot"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-057",
+      "quality": "average",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 9.054,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 9.054,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.052
+          },
+          "question": "Whose passes are you interested in before 30 minutes?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "stat-055",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 15.608,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 15.608,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 15.591
+          },
+          "question": "Which player or team's first-half pass distance in metres would you like to query?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "stat-059",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.695,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.688,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.685,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count completed right-foot passes by Palmer",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": "right_foot",
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "right_foot"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-061",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.367,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.357,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.351,
+            "compile_validate": 0.001
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Goals by either team",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-060",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.949,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.942,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.939,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Sum of pass distances in metres for Cole Palmer in the second half",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-062",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.783,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.776,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.764,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of goals scored by Chelsea",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-065",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.771,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 3.763,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 3.76,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count goals in the first half",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-063",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.03,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.023,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.021,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of goals scored by Madrid",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-064",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.235,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.228,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.223,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Goals scored in the second half",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-066",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.277,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.27,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.267,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all headed goals",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-067",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.92,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.913,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.91,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "All shot attempts including goals",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-069",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.624,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.617,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.613,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of saved shots for both teams",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-068",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 12.091,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 12.084,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.082,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Mbapp\u00e9 shot attempts including goals",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-073",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.028,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.02,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.017,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all card events",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-070",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 12.249,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 12.242,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.239,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of off-target shots in the match",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "off_target",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "off_target"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-072",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.231,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.224,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.22,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of saved shots by Mbapp\u00e9 in the second half",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": null,
+        "period": 2,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-075",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.611,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 3.604,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 3.601,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count yellow cards for both teams",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "yellow",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "yellow"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-074",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.701,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.693,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.689,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of red cards shown during the match",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "red",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "red"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-076",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.125,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 7.117,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.113,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of red cards for Chelsea",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "red",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "red"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-071",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.619,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 23.61,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 23.606,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Right foot shot attempts including goals by Kylian Mbapp\u00e9",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "right_foot",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "right_foot"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-077",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.104,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.097,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.093,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of yellow cards for Madrid",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "yellow",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "yellow"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-081",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.154,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.147,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.144,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count all saves",
+        "operation": "count",
+        "event_types": [
+          "save"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "save"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-078",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.846,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 18.837,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 18.834,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of cards received by Camavinga",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "camavinga"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "camavinga"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-079",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.341,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 20.332,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 20.329,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count the total number of cards (yellow and red) received by Levi Colwill",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "colwill"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "colwill"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-080",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 16.173,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 16.165,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 16.162,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of cards awarded after 60 minutes",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-082",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.101,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.094,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.092,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of saves by Courtois",
+        "operation": "count",
+        "event_types": [
+          "save"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "courtois"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "save"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "courtois"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-083",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.994,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.987,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.984,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of fouls committed by Chelsea players",
+        "operation": "count",
+        "event_types": [
+          "foul"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "foul"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-086",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.294,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.286,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.284,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Cole Palmer interceptions",
+        "operation": "count",
+        "event_types": [
+          "interception"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "interception"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-085",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.164,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.157,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.155,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count Chelsea interceptions",
+        "operation": "count",
+        "event_types": [
+          "interception"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "interception"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-084",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.962,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 11.955,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.952,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count the fouls committed by Cole Palmer",
+        "operation": "count",
+        "event_types": [
+          "foul"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "foul"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-088",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.052,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.045,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.041,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of successful tackles by Chelsea",
+        "operation": "count",
+        "event_types": [
+          "tackle"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-087",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.256,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.249,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.245,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of tackles by Levi Colwill",
+        "operation": "count",
+        "event_types": [
+          "tackle"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "colwill"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "colwill"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-089",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.827,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.82,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.809,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count clearances made by Chelsea players",
+        "operation": "count",
+        "event_types": [
+          "clearance"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "clearance"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-090",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.158,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.151,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.148,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Chelsea clearances in the first half including added time",
+        "operation": "count",
+        "event_types": [
+          "clearance"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "clearance"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-092",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.498,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.491,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.48,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Chelsea second-half tackles, clearances and interceptions combined",
+        "operation": "count",
+        "event_types": [
+          "tackle",
+          "clearance",
+          "interception"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle",
+              "clearance",
+              "interception"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-091",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.022,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 10.015,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.012,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Chelsea tackles, clearances and interceptions combined",
+        "operation": "count",
+        "event_types": [
+          "tackle",
+          "clearance",
+          "interception"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle",
+              "clearance",
+              "interception"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-093",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.377,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.37,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.356,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of touch events by Kylian Mbapp\u00e9",
+        "operation": "count",
+        "event_types": [
+          "touch"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "touch"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-094",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.723,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.716,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.712,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Kylian Mbapp\u00e9's headed touches after 80 minutes",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4800.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4800.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-096",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.413,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 5.406,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.403,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count goal and card events combined",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "card"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-095",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.902,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.894,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.891,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Cole Palmer's goal and pass events combined",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-097",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.818,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 6.81,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.807,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Chelsea goals or corners in the second half",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-098",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.103,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 9.094,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.091,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Madrid headed touches through 10:00 inclusive",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": 600.0,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-099",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.919,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 8.912,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.908,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Palmer completed pass metres since 80:00 inclusive",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": 4800.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 4800.0
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "negative-02",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 4.54,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 4.54,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.539
+          },
+          "question": "Which team's corners would you like to track?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "stat-100",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 13.667,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "ready",
+          "seconds": 13.66,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 13.657,
+            "compile_validate": 0.0
+          },
+          "question": null
+        }
+      ],
+      "goal": {
+        "description": "Count of Kylian Mbapp\u00e9's headed touches after 60:00 and before 75:00",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": 4500.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 4500.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "negative-03",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 6.232,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 6.232,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.23
+          },
+          "question": "Who is 'they' and what metric represents pressure for you?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification",
+        "unsupported"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "negative-04",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 8.757,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 8.757,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.756
+          },
+          "question": "Erling Haaland is not in the player list for this match. Which player's headers would you like to track?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "negative-01",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 17.651,
+      "model_calls": 2,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 17.651,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 17.649
+          },
+          "question": "Which player's headers would you like to track?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "negative-05",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 8.461,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 8.461,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.459
+          },
+          "question": "Arsenal is not in this match. Which team's corners would you like to track?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "negative-08",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 3.309,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 3.309,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 3.306
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-07",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 8.71,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 8.71,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.709
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-09",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 8.152,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 8.152,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.15
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-12",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 5.672,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 5.672,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.67
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-10",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 14.323,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 14.323,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 14.321
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-06",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 24.156,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "clarification",
+          "seconds": 24.156,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 24.154
+          },
+          "question": "Rolling or continuously sliding windows are unsupported. Do you mean the static last 5 minutes of the match (85:00 to 90:00)?"
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "negative-11",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 11.901,
+      "model_calls": 1,
+      "turns": [
+        {
+          "status": "unsupported",
+          "seconds": 11.901,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.9
+          },
+          "question": null
+        }
+      ],
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    }
+  ],
+  "case_timeout_seconds": 45.0,
+  "suite_timeout_seconds": 900.0,
+  "concurrency": 4
+}

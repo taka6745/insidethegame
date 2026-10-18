@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { LabView } from '../lab/view.js';
 
 test('reuse response displays its explanation without an Add action or fabricated rule', () => {
-  const nodes = new Map(['plan-result', 'plan-message', 'plan-rule', 'add-plan'].map(id => [id, { textContent: '', hidden: false }]));
+  const nodes = new Map(['plan-result', 'plan-message', 'plan-rule', 'add-plan', 'plan-options', 'reply-form', 'reply-label', 'plan-rule-details'].map(id => [id, { textContent: '', hidden: false }]));
   const original = globalThis.document;
   globalThis.document = { getElementById: id => nodes.get(id) };
   try {
@@ -12,6 +12,19 @@ test('reuse response displays its explanation without an Add action or fabricate
     assert.equal(nodes.get('plan-message').textContent, 'ETL already provides this standard stat.');
     assert.equal(nodes.get('plan-rule').textContent, '');
     assert.equal(nodes.get('plan-rule').hidden, true);
+    assert.equal(nodes.get('add-plan').hidden, true);
+  } finally { globalThis.document = original; }
+});
+
+test('clarification shows question and reply form without an executable rule', () => {
+  const nodes = new Map(['plan-result', 'plan-message', 'plan-rule', 'add-plan', 'plan-options', 'reply-form', 'reply-label', 'plan-rule-details'].map(id => [id, { textContent: '', hidden: false }]));
+  const original = globalThis.document;
+  globalThis.document = { getElementById: id => nodes.get(id) };
+  try {
+    new LabView().plan({ status: 'clarification', conversation_id: 'opaque', clarification: { question: 'Which player?', options: ['Mbappe', 'Palmer'] } });
+    assert.equal(nodes.get('plan-message').textContent, 'Which player?');
+    assert.equal(nodes.get('plan-options').textContent, 'Mbappe · Palmer');
+    assert.equal(nodes.get('reply-form').hidden, false);
     assert.equal(nodes.get('add-plan').hidden, true);
   } finally { globalThis.document = original; }
 });

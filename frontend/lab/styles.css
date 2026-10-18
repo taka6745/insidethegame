@@ -902,3 +902,8 @@ dialog .muted {
     transition: none!important;
   }
 }
+
+.plan-result details { margin: 12px 0; }
+.plan-result summary { cursor: pointer; font-size: 12px; }
+.plan-result details pre { max-height: 260px; overflow: auto; }
+.plan-result form { margin-top: 14px; }

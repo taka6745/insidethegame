@@ -8,6 +8,43 @@ const deferred = () => {
   return { promise, resolve };
 };
 
+test('follow-up sends server conversation ID and uses clarified goal as card label', async () => {
+  const calls = [];
+  const plans = [
+    { status: 'clarification', conversation_id: 'c1', message: 'Which player?' },
+    { status: 'ready', conversation_id: 'c1', goal: { description: 'Mbappe headed shots after 60 minutes' }, rule: { operation: 'count' } },
+    { status: 'unsupported', message: 'Not available' },
+  ];
+  const lab = new FilterLab({ plan: async (...args) => { calls.push(args); return plans.shift(); } }, { plan() {} });
+  await lab.requestPlan('Track his headed shots after 60 minutes');
+  assert.equal(lab.prepared, null);
+  await lab.requestPlan('Mbappe', true);
+  assert.deepEqual(calls[1], ['Mbappe', 'c1']);
+  assert.equal(lab.planLabel, 'Mbappe headed shots after 60 minutes');
+  assert.deepEqual(lab.prepared, { operation: 'count' });
+  await lab.requestPlan('Track pressure');
+  assert.deepEqual(calls[2], ['Track pressure', null]);
+  assert.equal(lab.conversationId, null);
+  assert.equal(lab.prepared, null);
+});
+
+test('long goal descriptions fit the API card label limit', async () => {
+  const description = 'A detailed statistic '.repeat(20);
+  const lab = new FilterLab({ plan: async () => ({ status: 'ready', goal: { description }, rule: {} }) }, { plan() {} });
+  await lab.requestPlan('Track corners');
+  assert.equal(lab.planLabel, description.slice(0, 160));
+});
+
+test('a failed follow-up preserves retry UI unless the conversation expired', async () => {
+  const rendered = [];
+  const lab = new FilterLab({}, { error() {}, controls() {}, plan: plan => rendered.push(plan) });
+  lab.conversationId = 'c1';
+  await lab.action('plan', async () => { throw new Error('Network unavailable'); });
+  assert.equal(rendered.at(-1).conversation_id, 'c1');
+  await lab.action('plan', async () => { throw Object.assign(new Error('Expired'), { code: 'conversation_expired' }); });
+  assert.equal(rendered.at(-1).conversation_id, null);
+});
+
 test('old event response cannot overwrite a newer event or rule inspection', async () => {
   const first = deferred();
   const second = deferred();

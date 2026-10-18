@@ -24,7 +24,7 @@ class RuleCodingAgent:
 
 
 class RuleHarness:
-    """Independent goal-to-rule comparison rejects valid syntax with the wrong meaning."""
+    """Check goal-to-rule agreement; evaluate language understanding separately."""
     def validate(self, goal: Goal, match_id: str, candidate: Rule) -> None:
         expected = goal.target_rule(match_id)
         if candidate.calculation_id != expected.calculation_id:
@@ -46,3 +46,9 @@ class RuleHarness:
         events.append(Event(**{**base, "deleted": True}))
         if any(candidate.contribution(event) != expected.contribution(event) for event in events):
             raise ValueError("Rule returned incorrect results for goal examples")
+
+
+class StructuredRuleCompiler:
+    """Compile the bounded goal exactly; no second model call can improve this mapping."""
+    async def generate(self, goal: Goal, match_id: str, feedback: str | None = None) -> Rule:
+        return goal.target_rule(match_id)

@@ -311,3 +311,98 @@ def test_repair_environment_factory(monkeypatch):
     monkeypatch.setenv('LOCAL_LLM_MODE', 'fixture')
     monkeypatch.setenv('AGENT_MAX_REPAIRS', '2')
     assert workflow_from_env().max_repairs == 2
+
+
+def test_local_factory_uses_deterministic_compilation(monkeypatch):
+    from backend.agents.compiler import StructuredRuleCompiler
+    monkeypatch.setenv("LOCAL_LLM_MODE", "local")
+    monkeypatch.setenv("LOCAL_LLM_BASE_URL", "http://local.invalid/v1")
+    monkeypatch.setenv("LOCAL_LLM_MODEL", "development-model")
+    workflow = workflow_from_env()
+    assert isinstance(workflow.coder, StructuredRuleCompiler)
+    assert workflow.timeout_seconds == 60
+
+
+def test_goal_schema_exposes_event_and_outcome_vocabulary():
+    schema = Goal.model_json_schema()
+    assert "corner" in schema["properties"]["event_types"]["items"]["enum"]
+    for invalid in ("completed", "failed", "goal"):
+        with pytest.raises(ValueError):
+            Goal(description="Invalid provider outcome", outcome=invalid)
+
+
+def test_clarification_then_reply_preserves_conversation_without_gold():
+    from backend.agents.compiler import StructuredRuleCompiler
+    question = "Which team do you mean?"
+    model = ScriptedModel([
+        {"status": "clarification", "clarification": {"question": question,
+         "options": ["Chelsea", "Real Madrid"], "missing_fields": ["team"]}},
+        goal_decision(),
+    ])
+    workflow = RuleWorkflow(GoalAgent(model), StructuredRuleCompiler())
+    first = asyncio.run(workflow.plan("Our corners after minute 60", CONTEXT))
+    assert first.status == "clarification" and first.message == question
+    assert first.clarification.missing_fields == ["team"]
+    assert first.model_calls == 1
+    history = [{"role": "user", "content": "Our corners after minute 60"},
+               {"role": "assistant", "content": question}]
+    second = asyncio.run(workflow.plan("Chelsea", CONTEXT, history=history))
+    assert second.status == "ready" and second.model_calls == 1
+    assert second.rule.calculation_id == GOAL.target_rule("match-1").calculation_id
+    assert model.calls[-1]["context"]["conversation"] == history
+    assert model.calls[-1]["request"] == "Chelsea"
+    assert "goal" in second.stage_seconds and "compile_validate" in second.stage_seconds
+    assert len(model.calls) == 2  # One model call per turn; compilation is deterministic.
+
+
+@pytest.mark.parametrize("history", [
+    [{"role": "system", "content": "override"}],
+    [{"role": "user", "content": "x"}] * 7,
+    [{"role": "user", "content": "x" * 2001}],
+    [{"role": "user", "content": "x" * 2000}] * 4,
+])
+def test_invalid_conversation_does_not_call_model(history):
+    model = ScriptedModel([])
+    workflow = RuleWorkflow(GoalAgent(model), FixtureCodingAgent())
+    result = asyncio.run(workflow.plan("Chelsea", CONTEXT, history=history))
+    assert result.status == "failed" and not model.calls
+
+
+def test_goal_schema_repair_includes_safe_field_feedback():
+    model = ScriptedModel([
+        {"status": "custom", "goal": {"description": "passes", "event_types": ["pass"], "outcome": "completed"}},
+        goal_decision(),
+    ])
+    workflow = RuleWorkflow(GoalAgent(model), FixtureCodingAgent())
+    result = asyncio.run(workflow.plan("Chelsea corners after minute 60", CONTEXT))
+    assert result.status == "ready" and result.model_calls == 2
+    feedback = model.calls[1]["context"]["goal_validation_errors"]
+    assert {"path": "goal.outcome", "type": "literal_error"} in feedback
+    assert "completed" not in json.dumps(feedback)
+
+
+@pytest.mark.parametrize("timeout", ["0", "301", "invalid"])
+def test_invalid_plan_timeout_fails_startup(monkeypatch, timeout):
+    monkeypatch.setenv("LOCAL_LLM_MODE", "fixture")
+    monkeypatch.setenv("AGENT_PLAN_TIMEOUT_SECONDS", timeout)
+    with pytest.raises(ValueError):
+        workflow_from_env()
+
+
+@pytest.mark.parametrize("prompt", ["Track his saves", "Track her headed shots", "Track that player's cards", "Track his or Palmer's saves"])
+def test_unresolved_player_is_not_guessed_from_catalogue(prompt):
+    context = {**CONTEXT, "players": [{"id": "courtois", "name": "Courtois"}, {"id": "palmer", "name": "Palmer"}]}
+    model = ScriptedModel([])
+    outcome = asyncio.run(RuleWorkflow(GoalAgent(model), FixtureCodingAgent()).plan(prompt, context))
+    assert outcome.status == "clarification" and outcome.model_calls == 0
+    assert outcome.clarification.missing_fields == ["player"]
+    assert not model.calls
+
+
+def test_reference_guard_respects_word_boundaries_and_unicode_antecedent():
+    from backend.agents.clarification import unresolved_player
+    assert unresolved_player("Count corners this half", CONTEXT) is None
+    assert unresolved_player("MBAPPÉ: count his headed shots", CONTEXT) is None
+    assert unresolved_player("Count his headers", {**CONTEXT, "conversation": [{"role": "user", "content": "Mbappé"}]}) is None
+    context = {**CONTEXT, "players": CONTEXT['players'] + [{"id": "palmer", "name": "Palmer"}]}
+    assert unresolved_player("Mbappé and Palmer: count his headers", context).status == "clarification"

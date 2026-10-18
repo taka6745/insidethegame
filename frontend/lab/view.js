@@ -39,9 +39,14 @@ export class LabView {
 
   plan(result) {
     el('plan-result').hidden = false;
-    text('plan-message', result.message || result.goal?.description || (typeof result.goal === 'string' ? result.goal : '') || (result.rule ? 'Your rule is ready. Review it, then add it.' : 'The planner could not prepare this filter.'));
+    text('plan-message', result.clarification?.question || (result.status === 'ready' ? result.goal?.description : '') || result.message || result.goal?.description || (typeof result.goal === 'string' ? result.goal : '') || (result.rule ? 'Your rule is ready. Review it, then add it.' : 'The planner could not prepare this filter.'));
+    text('plan-options', (result.clarification?.options || []).join(' · '));
+    el('reply-form').hidden = !result.conversation_id;
+    text('reply-label', result.status === 'clarification' ? 'Your answer' : 'Want to adjust this request?');
     text('plan-rule', result.rule ? JSON.stringify(result.rule, null, 2) : '');
     el('plan-rule').hidden = !result.rule;
+    el('plan-rule-details').hidden = !result.rule;
+    el('plan-rule-details').open = false;
     el('add-plan').hidden = !result.rule;
   }
 
@@ -59,6 +64,8 @@ export class LabView {
     el('prepare').disabled = !ready || busy || running || finished || failed || !state?.llm?.configured;
     el('add-plan').disabled = !ready || busy || running || finished || failed;
     el('prompt').disabled = busy || running || finished;
+    el('reply').disabled = busy || running || finished;
+    el('send-reply').disabled = !ready || busy || running || finished || failed;
     el('presets').disabled = !this.presetCount || busy || running || finished;
     text('prepare', busy === 'plan' ? 'Preparing your rule…' : 'Prepare request ↗');
     text('start', running ? 'Replay running…' : finished ? 'Replay finished' : '▶ Start replay');

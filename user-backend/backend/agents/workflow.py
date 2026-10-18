@@ -5,16 +5,16 @@ import os
 from agent_framework import WorkflowBuilder
 
 from backend.adapters.llm import LocalJsonModel
-from .compiler import RuleCodingAgent, RuleHarness
+from .compiler import StructuredRuleCompiler, RuleHarness
 from .fixtures import FixtureCodingAgent, FixtureGoalAgent
-from .models import PlanOutcome
+from .models import ConversationMessage, PlanOutcome
 from .settings import AgentSettings
 from .orchestrator import GoalAgent
 from .workflow_steps import DefineGoal, GenerateRule, PlanningRequest, ValidateRule
 
 
 class RuleWorkflow:
-    def __init__(self, orchestrator, coder, source="local", harness=None, timeout_seconds=150, max_repairs=3):
+    def __init__(self, orchestrator, coder, source="local", harness=None, timeout_seconds=60, max_repairs=3):
         self.orchestrator, self.coder = orchestrator, coder
         self.source = source
         self.harness = harness or RuleHarness()
@@ -33,12 +33,19 @@ class RuleWorkflow:
                 .add_edge(validate, code)
                 .build())
 
-    async def plan(self, prompt: str, match_context: dict) -> PlanOutcome:
+    async def plan(self, prompt: str, match_context: dict, history: list[dict] | None = None) -> PlanOutcome:
         if not prompt.strip() or len(prompt) > 2000 or not match_context.get("match_id"):
             return PlanOutcome(status="failed", source=self.source, message="Provide a request and an active match.")
         try:
+            messages = [ConversationMessage.model_validate(row) for row in (history or [])]
+            if len(messages) > 6 or sum(len(row.content) for row in messages) > 6000:
+                raise ValueError("Conversation too long")
+        except ValueError:
+            return PlanOutcome(status="failed", source=self.source, message="Start a new calculation request.")
+        context = {**match_context, "conversation": [row.model_dump() for row in messages]}
+        try:
             async with asyncio.timeout(self.timeout_seconds):
-                result = await self.build().run(PlanningRequest(prompt, match_context))
+                result = await self.build().run(PlanningRequest(prompt, context))
                 outputs = result.get_outputs()
                 if len(outputs) != 1 or not isinstance(outputs[0], PlanOutcome):
                     return PlanOutcome(status="failed", source=self.source, message="The agent workflow returned no validated result.")
@@ -50,9 +57,12 @@ class RuleWorkflow:
 def workflow_from_env() -> RuleWorkflow:
     mode = os.getenv("LOCAL_LLM_MODE", "fixture")
     max_repairs = AgentSettings.from_env().max_repairs
+    timeout = float(os.getenv("AGENT_PLAN_TIMEOUT_SECONDS", "60"))
+    if not 1 <= timeout <= 300:
+        raise ValueError("AGENT_PLAN_TIMEOUT_SECONDS must be between 1 and 300")
     if mode == "fixture":
-        return RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture", max_repairs=max_repairs)
+        return RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture", max_repairs=max_repairs, timeout_seconds=timeout)
     if mode == "local":
         return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal")),
-                            RuleCodingAgent(LocalJsonModel.from_env(name="rule_coder")), source="local", max_repairs=max_repairs)
+                            StructuredRuleCompiler(), source="local", max_repairs=max_repairs, timeout_seconds=timeout)
     raise ValueError("LOCAL_LLM_MODE must be fixture or local")

@@ -32,6 +32,6 @@ Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development
 - `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.
 - `python3 .github/scripts/render_architecture.py` and `python3 .github/scripts/render_development.py`: regenerate SVGs; visually inspect.
 
-Local fixtures are explicit test inputs, not a production ETL or LLM implementation. Never execute generated code inside the API; the current coding harness uses test doubles, and an isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup.
+Local fixtures are explicit test inputs, not a production ETL or LLM implementation. Never execute generated code inside the API; the local agent workflow interprets goals using Microsoft Agent Framework and compiles a bounded rule DSL deterministically; fixture mode uses doubles. An arbitrary-code isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup.
 
 Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.

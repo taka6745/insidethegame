@@ -80,3 +80,5 @@ This is one model run with bounded timeouts, not proof of language-understanding
 [All agent results](agents.json) · [Cases and expected timelines](cases.json)
 
 [Run the harness](../README.md) · [Raw performance results](performance.json)
+
+**Follow-up measurements:** [Agent interpretation and clarification improvements](agents-improved.md) · [Filter optimisation comparison](optimization.md). Original measurements above remain unchanged.

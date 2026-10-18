@@ -48,7 +48,7 @@ def lab_router(service):
 
     @router.post("/plan")
     async def plan(body: PlanRequest):
-        return await service.plan(body.prompt)
+        return await service.plan(body.prompt, body.conversation_id)
 
     @router.post("/replay/start")
     async def start(body: StartReplay):

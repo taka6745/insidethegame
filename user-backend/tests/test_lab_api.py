@@ -17,6 +17,36 @@ def make_lab(store):
                             RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture"))
 
 
+def test_clarification_round_trip_and_expiry_over_http(store):
+    from backend.agents.models import Clarification, Goal, PlanOutcome
+
+    class Planner:
+        async def plan(self, prompt, context, history=None):
+            if not history:
+                return PlanOutcome(status="clarification", source="fixture", clarification=Clarification(
+                    question="Which player?", options=["Mbappe"], missing_fields=["player"]))
+            assert history[0]["content"] == "Track his headed shots"
+            assert history[1]["content"] == "Which player?\nOptions:\n1. Mbappe"
+            assert prompt == "Mbappe"
+            goal = Goal(description="Mbappe headed attempts", player_ids=("mbappe",),
+                        event_types=("shot", "goal"), body_part="head")
+            return PlanOutcome(status="ready", source="fixture", goal=goal, rule=goal.target_rule(context["match_id"]))
+
+    lab = make_lab(store)
+    lab.planner = Planner()
+    with TestClient(create_app(store, lab=lab)) as client:
+        first = client.post("/lab/plan", json={"prompt": "Track his headed shots"}).json()
+        assert first["status"] == "clarification" and first["rule"] is None
+        reply = {"prompt": "Mbappe", "conversation_id": first["conversation_id"]}
+        second = client.post("/lab/plan", json=reply).json()
+        assert second["status"] == "ready"
+        assert second["goal"]["player_ids"] == ["mbappe"]
+        assert client.get("/lab/state").json()["calculations"] == []
+        assert client.post("/lab/plan", json={**reply, "history": []}).status_code == 422
+        client.post("/lab/reset")
+        assert client.post("/lab/plan", json=reply).status_code == 409
+
+
 def test_all_presets_replay_and_restore_from_postgres(store):
     lab = make_lab(store)
     with TestClient(create_app(store, lab=lab)) as client:

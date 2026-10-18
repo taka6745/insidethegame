@@ -16,7 +16,8 @@ Files must be UTF-8 JSON, at most **2 MiB**, with `synthetic: true`, `match_id`,
 
 ```mermaid
 flowchart LR
-  Ask["Your request"] --> Goal["Goal agent"] --> Code["Rule agent"] --> Test["Validate + test"]
+  Ask["Your request"] --> Goal["Goal agent"] --> Code["Deterministic compiler"] --> Test["Validate + test"]
+  Goal -->|"Missing detail"| Reply["Clarify with viewer"] --> Goal
   Test --> Rules[("Shared rules + values\nPostgres")]
   Feed["Synthetic events"] --> Adapter["Event adapter"] --> Index["Shared index"]
   Rules --> Index
@@ -40,8 +41,8 @@ The [26 examples](../fixtures/filter-lab.md) use 35 synthetic deliveries, includ
 | `adapters/replay_source.py` | Disposable event source and observed history; exposes no future events to the UI. |
 | `models/recording.py` | Validate recording metadata, entity lists and preset rules. |
 | `models/rules.py` | Validate, normalize and evaluate typed count/sum rules. |
-| `services/filter_engine.py` | Share equivalent rules, index candidates, apply event deltas and corrections. |
-| `agents/` + `adapters/llm.py` | Define a goal, generate a rule, validate it and allow up to three repairs. |
+| `services/filter_engine.py` + `time_index.py` | Share predicate families, index clock windows, apply event deltas and corrections. |
+| `agents/` + `adapters/llm.py` | Interpret or clarify a goal, compile a bounded rule, validate it. |
 | `repositories/lab.py` | Store rule definitions, values, versions and replay position in Match App Postgres. |
 | `services/lab.py` | Coordinate replay, persistence, planning and restore. |
 | `routes/lab.py` | Validate HTTP requests and call the service. |
@@ -50,13 +51,15 @@ The [26 examples](../fixtures/filter-lab.md) use 35 synthetic deliveries, includ
 
 Paths in this table are relative to `backend/`, except `frontend/lab/` at the repo root.
 
-The index uses fixed field combinations to find candidate rules. A fresh event takes at most **64 index probes**, regardless of total rule count; a correction can take 128. It still evaluates every candidate. Broad rules that all match remain expensive. Tests register **100,000 distinct filters** and assert candidate counts; this is not a production throughput claim.
+The index uses fixed field combinations to find predicate families. A fresh event takes at most **64 compound-index probes**; a correction can take 128. Identical non-clock predicates are evaluated once per family, with a clock-window index selecting matching rules. Returning changed values still costs work proportional to the number of changed rules; dense workloads remain expensive. Tests register **100,000 distinct filters** and assert candidate counts; this is not a production throughput claim.
 
 Registration backfills from the already-observed event prefix once. Later events update accumulators, not full-history queries. Values and replay position commit together before the browser can read them. Restart reconstructs the index from persisted rules and the recorded prefix, then waits for Start.
 
 ## Model and production boundaries
 
-Default mode uses documented fixture phrases. [Local LLM mode](local-llm.md) runs the goal and coding roles through a configurable model endpoint. Both paths produce the same validated JSON rules. Microsoft Agent Framework runs the typed workflow and, in local mode, both agents. Arbitrary Python and regex execution are not enabled.
+Default mode uses documented fixture phrases. [Local LLM mode](local-llm.md) uses a Microsoft Agent Framework goal agent, then deterministic compilation and validation inside the SDK workflow. The optional model-based coding agent remains available for experiments; the local default needs only one successful model call per turn. Arbitrary Python and regex execution are not enabled.
+
+**Clarifications and corrections:** a request can return a question instead of a rule. Answer in the reply box; the original request and the agent question stay in server-held context. A ready rule can also be revised before adding. New requests start fresh. Conversations expire after 15 minutes, a backend restart, recording change or New run, and allow at most three exchanges. The cache holds at most 100 conversations; it is not production chat storage.
 
 This is one shared, unauthenticated development run in one backend process. The UI polls committed state every 700 ms. Per-viewer subscriptions, broker consumers, a durable delivery outbox and a coordinated ETL-history/live cutoff remain to build. The earlier profile/pin harness remains separate from this lab.
 

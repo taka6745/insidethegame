@@ -65,3 +65,29 @@ Render a shareable Markdown/SVG report from local results:
 ```sh
 PYTHONPATH=user-backend python -m benchmarks.report --agents .local/benchmarks/agents/report.json
 ```
+
+## Agent interpretation and clarification
+
+The original 112-case corpus and its recorded result stay unchanged. Run both
+cohorts when comparing an agent change:
+
+```sh
+./dev benchmark agents --cohort baseline
+./dev benchmark agents --cohort quality
+```
+
+`quality` has 100 readable viewer requests covering the same independent gold
+rules, the 12 original negative prompts, and 12 two-turn clarification cases.
+Only after the model asks a question does the harness send the prewritten user
+reply. Failing to clarify an ambiguous request is a failure even if a guess would
+happen to give the right answer. Expected rules and revision weights never enter
+agent prompts. Mixed-quality original wording remains in `baseline`.
+
+Reports include each turn's status/latency, model-call counts, returned goal and
+rule, and goal/compilation timings. Timed-out call counts are unknown, not zero.
+A whole-match gold trace checks every event prefix; exact rule identity catches
+constraints that accidentally match this fixture. **Compiler validation proves
+that the rule preserves the interpreted goal; the independent gold evaluation
+checks whether that interpretation matches the request.** Neither proves model
+accuracy for unseen users. A clearer corpus is reported separately from a
+same-corpus comparison; it cannot replace the original score.

@@ -19,7 +19,7 @@ The diagram and components below describe the target architecture; the [developm
 | Component | Role |
 | --- | --- |
 | Azure Container Apps | Python API, agents, shared calculations and live delivery. |
-| Microsoft Agent Framework + Foundry | Question agent defines the goal; coding agent writes and tests a function. Models TBD. |
+| Microsoft Agent Framework + Foundry | Goal agent interprets/clarifies; deterministic compiler builds bounded rules. Foundry deployment planned. |
 | Azure PostgreSQL Flexible Server | Accounts and Match App databases on one server. |
 | Isolated executor | Fixed Python libraries; controlled read-only GraphQL. Sandbox technology TBD. |
 
@@ -29,7 +29,7 @@ The diagram and components below describe the target architecture; the [developm
 
 **Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience-presence feedback is an [open design question](../narrative-engine/design-notes.md#open-question-audience-presence); questions never drive narrative generation.
 
-Custom stats follow **goal → write → test → calculate → optional pin**. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
+Custom stats follow **interpret / clarify → compile → validate → calculate → optional pin**. The local default uses one successful model call per turn; the model-based rule coder remains optional. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 
 One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
 
