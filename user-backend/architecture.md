@@ -118,6 +118,10 @@ First reuse an ETL-provided statistic if its meaning and time scope match. Other
 
 Equivalent requests with the same match, entities, filters and time range **reuse one calculation**. Each viewer's pin points to that shared calculation; it does not start an identical worker or upstream event subscription. How equivalent generated functions are recognised remains to be designed; do not assume similar wording proves equivalence.
 
+### Proposed rule storage and execution
+
+See the [focused diagram and lifecycle](docs/custom-calculations.md): Match App stores validated rule definitions, calculation state and viewer subscriptions. Registration activates a calculation worker; history initializes its value and relevant live events update it. A changed value is saved and routed to subscribed viewers. The worker is part of the user-backend system; ETL does not host viewer rules or create a publication per custom stat. This execution detail is proposed, not yet implemented.
+
 ### Live data path
 
 Use a shared match-event subscription for active custom calculations, rather than one upstream subscription per viewer. GraphQL supplies computed stats for ordinary context and a historical route to actual events for custom calculations.
