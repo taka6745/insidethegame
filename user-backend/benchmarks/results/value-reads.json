@@ -1,0 +1,10 @@
+{
+  "registered_rules": 100000,
+  "requested_reads": 1000000,
+  "measured_reads": 1000000,
+  "seconds": 1.736833585,
+  "mean_ns_per_read": 1736.833585,
+  "reads_per_second": 575760.4002112845,
+  "peak_rss_mb": 455.0625,
+  "scope": "Engine.get plus value access, ID lookup loop included; no subscribers, serialization or network"
+}

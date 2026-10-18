@@ -1,0 +1,6 @@
+{
+  "rules_checked": 100,
+  "deliveries": 14018,
+  "passed": true,
+  "scope": "Final full-match totals against independent scalar interpreter; no model calls"
+}

@@ -288,3 +288,26 @@ def test_concurrent_workflow_requests_do_not_share_match_context():
     for i, result in enumerate(results):
         assert result.status == "ready" and result.rule.match_id == f"match-{i}"
         assert result.goal.player_ids == (f"player-{i}",)
+
+
+@pytest.mark.parametrize('repairs', [0, 1, 3, 5])
+def test_configurable_repair_budget(repairs):
+    model = ScriptedModel([goal_decision()] + [{}] * (repairs + 1))
+    workflow = RuleWorkflow(GoalAgent(model), RuleCodingAgent(model), max_repairs=repairs)
+    result = asyncio.run(workflow.plan('Track corners', CONTEXT))
+    assert result.status == 'failed' and result.attempts == repairs + 1
+    assert len(model.calls) == repairs + 2
+
+
+@pytest.mark.parametrize('value', ['-1', '21', 'invalid', '1.5'])
+def test_invalid_repair_environment_fails_at_startup(monkeypatch, value):
+    monkeypatch.setenv('LOCAL_LLM_MODE', 'fixture')
+    monkeypatch.setenv('AGENT_MAX_REPAIRS', value)
+    with pytest.raises(ValueError, match='AGENT_MAX_REPAIRS'):
+        workflow_from_env()
+
+
+def test_repair_environment_factory(monkeypatch):
+    monkeypatch.setenv('LOCAL_LLM_MODE', 'fixture')
+    monkeypatch.setenv('AGENT_MAX_REPAIRS', '2')
+    assert workflow_from_env().max_repairs == 2

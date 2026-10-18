@@ -23,6 +23,7 @@ LOCAL_LLM_BASE_URL=<development API base ending in /v1>
 LOCAL_LLM_MODEL=<configured model or server-side fallback chain>
 LOCAL_LLM_API_KEY=<local credential if required>
 LOCAL_LLM_TIMEOUT_SECONDS=120
+AGENT_MAX_REPAIRS=3
 ```
 
 Never commit this file or log its contents. The model/chain choice is configuration; the adapter neither chooses providers nor changes server routing. Switch back to `fixture` to work without a model server. Restart the backend after changing environment values.
@@ -36,3 +37,5 @@ Pinned dependencies: `agent-framework-core==1.22.0`, `agent-framework-openai==1.
 Tests use scripted responses, including incorrect-but-valid rules, repairs, exhaustion, unknown entities, unavailable models and standard-stat reuse. Live model calls are optional development checks, not part of the repeatable suite.
 
 Goal definition retries once for transient failures or invalid output. Coding allows an initial attempt plus three repairs. Both stages share a 150-second deadline; authentication failures stop immediately in either agent. Diagnostic logs contain only failure categories/status codes, never model response bodies or credentials.
+
+`AGENT_MAX_REPAIRS` is the backend-wide coding repair budget (0–20, default 3), excluding the initial attempt. Compose sets it at the backend service level; override with `AGENT_MAX_REPAIRS=5 ./dev up backend`. Invalid values fail startup. Goal definition still has one transient retry and the overall deadline still applies. [Opt-in agent evaluation and algorithm benchmarks](../benchmarks/README.md) are separate from pytest.

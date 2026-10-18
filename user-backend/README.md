@@ -29,8 +29,10 @@ The diagram and components below describe the target architecture; the [developm
 
 **Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience-presence feedback is an [open design question](../narrative-engine/design-notes.md#open-question-audience-presence); questions never drive narrative generation.
 
-Custom stats follow **goal → write → test → calculate → optional pin**. Allow up to three repairs. Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
+Custom stats follow **goal → write → test → calculate → optional pin**. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 
 One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
 
 [Custom-rule storage and execution](docs/custom-calculations.md) · [Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
+
+[Opt-in correctness and performance harness](benchmarks/README.md): 100 hand-authored stat cases plus negative prompts; 100–100m unique-filter stress tiers, bounded by time and memory. Excluded from normal pytest.
