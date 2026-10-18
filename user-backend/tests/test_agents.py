@@ -147,13 +147,19 @@ def test_every_fixture_preset_can_be_planned_without_a_model():
         assert result.rule.calculation_id == Rule.model_validate(preset["rule"]).calculation_id
 
 
+def completion(content, finish_reason="stop"):
+    return {"id": "test-completion", "object": "chat.completion", "created": 1,
+            "model": "development-model", "choices": [{"index": 0, "finish_reason": finish_reason,
+            "message": {"role": "assistant", "content": content}}]}
+
+
 def test_local_adapter_request_and_single_json_object():
     def respond(request):
         payload = json.loads(request.content)
         assert payload["model"] == "development-model"
         assert request.headers["authorization"] == "Bearer test-secret"
         assert request.url.path == "/v1/chat/completions"
-        return httpx.Response(200, json={"choices": [{"message": {"content": '```json\n{"ok": true}\n```'}}]})
+        return httpx.Response(200, json=completion('```json\n{"ok": true}\n```'))
     model = LocalJsonModel("http://local.invalid/v1", "development-model", "test-secret", transport=httpx.MockTransport(respond))
     assert asyncio.run(model.complete("JSON only", {"request": "synthetic"})) == {"ok": True}
 
@@ -170,7 +176,7 @@ def test_local_adapter_redacts_failed_responses(status, body):
 
 def test_local_adapter_classifies_truncated_output():
     model = LocalJsonModel("http://local.invalid/v1", "model", transport=httpx.MockTransport(
-        lambda _: httpx.Response(200, json={"choices": [{"finish_reason": "length", "message": {"content": ""}}]})))
+        lambda _: httpx.Response(200, json=completion("", "length"))))
     with pytest.raises(ModelError) as failure:
         asyncio.run(model.complete("", {}))
     assert failure.value.reason == "truncated_output" and failure.value.retryable
@@ -194,3 +200,91 @@ def test_factory_requires_explicit_valid_mode(monkeypatch):
     monkeypatch.setenv("LOCAL_LLM_MODE", "typo")
     with pytest.raises(ValueError):
         workflow_from_env()
+
+
+def test_framework_agents_and_workflow_repair_end_to_end(monkeypatch):
+    from agent_framework import Agent, Workflow
+    runs, requests = [], []
+    original_run = Agent.run
+
+    def observe_run(self, *args, **kwargs):
+        runs.append(self.name)
+        return original_run(self, *args, **kwargs)
+
+    monkeypatch.setattr(Agent, "run", observe_run)
+
+    def respond(request):
+        body = json.loads(request.content)
+        payload = json.loads(body["messages"][-1]["content"])
+        requests.append(payload)
+        if "decision_schema" in payload:
+            response = goal_decision()
+        elif payload["validation_feedback"] is None:
+            response = Goal(description="Wrong: all corners", event_types=("corner",)).target_rule("match-1").model_dump(mode="json")
+        else:
+            response = GOAL.target_rule("match-1").model_dump(mode="json")
+        return httpx.Response(200, json=completion(json.dumps(response)))
+
+    transport = httpx.MockTransport(respond)
+    workflow = RuleWorkflow(
+        GoalAgent(LocalJsonModel("http://local.invalid/v1", "development-model", transport=transport, name="question_goal")),
+        RuleCodingAgent(LocalJsonModel("http://local.invalid/v1", "development-model", transport=transport, name="rule_coder")))
+    assert isinstance(workflow.build(), Workflow)
+    result = asyncio.run(workflow.plan("Track Chelsea corners after 60 minutes", CONTEXT))
+    assert result.status == "ready" and result.attempts == 2
+    assert result.rule.calculation_id == GOAL.target_rule("match-1").calculation_id
+    assert runs == ["question_goal", "rule_coder", "rule_coder"]
+    assert "preserve" in requests[-1]["validation_feedback"]
+
+
+def test_framework_has_no_hidden_transport_retries():
+    calls = []
+
+    def respond(request):
+        calls.append(request)
+        return httpx.Response(429, json={"error": "private response"})
+
+    model = LocalJsonModel("http://local.invalid/v1", "model", transport=httpx.MockTransport(respond))
+    with pytest.raises(ModelError) as failure:
+        asyncio.run(model.complete("JSON only", {}))
+    assert len(calls) == 1
+    assert failure.value.reason == "http_429" and failure.value.retryable
+
+
+def test_framework_transport_error_is_redacted():
+    def respond(request):
+        raise httpx.ConnectError("private endpoint and credential", request=request)
+    model = LocalJsonModel("http://local.invalid/v1", "model", transport=httpx.MockTransport(respond))
+    with pytest.raises(ModelError) as failure:
+        asyncio.run(model.complete("JSON only", {}))
+    assert failure.value.reason == "transport_error"
+    assert "private" not in str(failure.value)
+
+
+def test_coding_auth_failure_stops_without_three_repairs():
+    result, model = run([goal_decision(), ModelError("Request rejected", reason="http_401", retryable=False)])
+    assert result.status == "failed" and result.attempts == 1
+    assert len(model.calls) == 2
+
+
+def test_concurrent_workflow_requests_do_not_share_match_context():
+    class ContextGoalAgent:
+        async def define(self, prompt, context):
+            await asyncio.sleep(0)
+            from backend.agents.models import GoalDecision
+            return GoalDecision(status="custom", goal=Goal(description=prompt, player_ids=(context["players"][0]["id"],)))
+
+    class ContextCoder:
+        async def generate(self, goal, match_id, feedback):
+            await asyncio.sleep(0)
+            return goal.target_rule(match_id)
+
+    workflow = RuleWorkflow(ContextGoalAgent(), ContextCoder())
+
+    async def parallel():
+        return await asyncio.gather(*(workflow.plan("Track player events", {
+            "match_id": f"match-{i}", "players": [{"id": f"player-{i}"}]}) for i in range(5)))
+    results = asyncio.run(parallel())
+    for i, result in enumerate(results):
+        assert result.status == "ready" and result.rule.match_id == f"match-{i}"
+        assert result.goal.player_ids == (f"player-{i}",)

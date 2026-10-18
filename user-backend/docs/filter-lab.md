@@ -56,7 +56,7 @@ Registration backfills from the already-observed event prefix once. Later events
 
 ## Model and production boundaries
 
-Default mode uses documented fixture phrases. [Local LLM mode](local-llm.md) runs the goal and coding roles through a configurable model endpoint. Both paths produce the same validated JSON rules. Arbitrary Python and regex execution are not enabled; Microsoft Agent Framework integration remains future work.
+Default mode uses documented fixture phrases. [Local LLM mode](local-llm.md) runs the goal and coding roles through a configurable model endpoint. Both paths produce the same validated JSON rules. Microsoft Agent Framework runs the typed workflow and, in local mode, both agents. Arbitrary Python and regex execution are not enabled.
 
 This is one shared, unauthenticated development run in one backend process. The UI polls committed state every 700 ms. Per-viewer subscriptions, broker consumers, a durable delivery outbox and a coordinated ETL-history/live cutoff remain to build. The earlier profile/pin harness remains separate from this lab.
 
