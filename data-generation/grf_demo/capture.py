@@ -140,8 +140,7 @@ def main():
                     raise TimeoutError(
                         "Capture exceeded 40 minutes; partial outputs retained"
                     )
-        adapter.finish_pass(last, frames / 25)
-        adapter.flush(last, frames / 25)
+        adapter.finish(last, frames / 25)
     finally:
         if encoder:
             encoder.stdin.close()
@@ -160,15 +159,9 @@ def main():
         "events": adapter.canonical_events(),
         "presets": [],
         "possession_samples": adapter.possession_samples,
-        "capabilities": {
-            "supported_event_types": ["touch", "pass", "shot", "goal"],
-            "shot_outcomes": False,
-            "distance_event_types": ["pass"],
-            "body_parts": False,
-            "shots_include_scoring_attempts": False,
-            "possession_basis": "confirmed_native_ownership",
-        },
+        "capabilities": adapter.capabilities(),
         "provenance": {
+            "telemetry_version": adapter.version,
             "generator": "data-generation/grf_demo/capture.py",
             "seed": args.seed,
             "source": "Google Research Football instrumented native runtime",
@@ -184,10 +177,10 @@ def main():
             "limitations": [
                 "Synthetic simulation, not official Opta data or an actual fixture.",
                 "Names map simulator slots; player abilities are generic.",
-                "Shots are executed native shot contacts; headed contacts are touches, not certified shots.",
+                "Headed pass/shot classification requires an executed header with explicit native action intent.",
                 "Pass completion means first subsequent intentional teammate touch; event time is resolution.",
                 "Possession measures confirmed native ownership ticks; loose-ball and stoppage time excluded.",
-                "No inferred xG, fouls, cards, tackles, offsides, corners or on-target classifications.",
+                "No inferred xG, successful tackles, interceptions, saves or on-target classifications; referee decisions and taken restarts are native observations.",
             ],
         },
     }

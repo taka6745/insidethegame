@@ -33,6 +33,8 @@ flowchart LR
 
 The [26 examples](../fixtures/filter-lab.md) use 35 synthetic deliveries, including duplicates, corrections and a retraction. “Headers” means recorded headed touches; headed attempts are a separate rule. The schema is **Opta-inspired**, not a licensed Opta integration.
 
+The GRF recording declares its own coverage. Native v2 distinguishes restarts taken, whistled fouls, foul victims, offsides, keeper claims and period boundaries. It can declare `body_part_event_types` for selected action categories while leaving global `body_parts` false: headed-shot filters are allowed only where coverage is declared; unsupported broad header counts remain unavailable. Raw restart/link qualifiers are preserved upstream but are not DSL fields. [Event coverage](../../data-generation/docs/event-coverage.md).
+
 ## Small, replaceable pieces
 
 | File / layer | Responsibility |

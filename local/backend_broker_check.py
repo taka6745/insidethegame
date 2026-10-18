@@ -13,13 +13,16 @@ from backend.services.broker_runtime import BrokerRuntime
 from backend.services.lab import FilterLabService
 from backend.services.question_snapshot import build_snapshot
 from backend.store import Store
+from broker_probe import require_idle_replay
 
 
 async def main():
     store = Store(os.environ['ACCOUNTS_DATABASE_URL'], os.environ['MATCH_APP_DATABASE_URL'],
                   'broker_check_' + uuid4().hex)
-    store.initialize()
+    backend_url = os.getenv('BACKEND_URL', 'http://backend:8000')
     async with httpx.AsyncClient(timeout=20) as client:
+        await require_idle_replay(client, backend_url)
+        store.initialize()
         response = await client.get(os.environ['DEMO_RECORDING_URL'])
         response.raise_for_status()
         source = FixtureEventSource(content=response.content)
@@ -44,14 +47,15 @@ async def main():
         try:
             calculation = await lab.register(Rule(match_id=source.match_id), 'Captured actions')
             for _ in range(12):
+                await require_idle_replay(client, backend_url)
                 await lab.advance(finish=False)
             payload = build_snapshot(source, lab.run_id, lab.position)
             assert lab.engine.get(calculation['id']).value == 12
             # The same final event must not increment the index on redelivery.
             await transport.publish(payload, source.events[11])
             async with asyncio.timeout(60):
-                await duplicate_received.wait()
-                while not await asyncio.to_thread(inbox.read, payload.snapshot.id):
+                while not duplicate_received.is_set() or not await asyncio.to_thread(inbox.read, payload.snapshot.id):
+                    await require_idle_replay(client, backend_url)
                     await asyncio.sleep(.1)
             assert lab.position == 12 and lab.engine.get(calculation['id']).value == 12
             restored = FilterLabService(source, PostgresLabRepository(store), None)
@@ -66,7 +70,7 @@ async def main():
             print('PASS both upstream HTTP checkpoint write paths disabled', flush=True)
         finally:
             # Resume the existing viewer's audience polling target, preserving state.
-            state = (await client.get('http://backend:8000/lab/state')).json()
+            state = (await client.get(backend_url + '/lab/state')).json()
             if state['status'] != 'error':
                 await transport.publish(build_snapshot(source, state['run_id'], state['position'],
                                                        finished=state['status'] == 'finished'))

@@ -28,18 +28,11 @@ def translate(source):
         raise ValueError(
             "Raw physics frames do not match fixed-rate capture; cannot infer alignment"
         )
-    adapter.finish_pass(last, duration)
-    adapter.flush(last, duration)
+    adapter.finish(last, duration)
     recording["events"] = adapter.canonical_events()
     recording["possession_samples"] = adapter.possession_samples
-    recording["capabilities"] = {
-        "supported_event_types": ["touch", "pass", "shot", "goal"],
-        "shot_outcomes": False,
-        "distance_event_types": ["pass"],
-        "body_parts": False,
-        "shots_include_scoring_attempts": False,
-        "possession_basis": "confirmed_native_ownership",
-    }
+    recording["capabilities"] = adapter.capabilities()
+    recording["provenance"]["telemetry_version"] = adapter.version
     recording["provenance"]["contact_coalescing"] = (
         "Continuous same-player/function/type callbacks with gaps<=300ms form one action."
     )

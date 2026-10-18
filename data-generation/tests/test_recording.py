@@ -36,9 +36,18 @@ class RenderedRecordingTests(unittest.TestCase):
         self.assertFalse(recording["capabilities"]["shot_outcomes"])
         self.assertFalse(recording["capabilities"]["body_parts"])
         self.assertEqual(recording["capabilities"]["distance_event_types"], ["pass"])
-        self.assertEqual(len(events), 1321)
-        self.assertEqual(sum(e["typeName"] in ("shot", "goal") for e in events), 19)
-        self.assertNotIn("card", recording["capabilities"]["supported_event_types"])
+        self.assertEqual(len(events), 1376)
+        self.assertEqual(sum(e["typeName"] in ("shot", "goal") for e in events), 17)
+        self.assertIn("card", recording["capabilities"]["supported_event_types"])
+        from collections import Counter
+        counts = Counter(e["typeName"] for e in events)
+        self.assertEqual({kind: counts[kind] for kind in ("kick_off", "corner", "throw_in", "free_kick", "offside", "foul", "foul_won")},
+                         {"kick_off": 6, "corner": 1, "throw_in": 3, "free_kick": 18, "offside": 17, "foul": 1, "foul_won": 1})
+        self.assertEqual(recording["capabilities"]["body_part_event_types"], ["pass", "shot"])
+        headed_passes = [e for e in events if e["typeName"] == "pass" and
+                         {q["type"]: q["value"] for q in e["qualifiers"]}.get("bodyPart") == "head"]
+        self.assertEqual(len(headed_passes), 2)
+        self.assertFalse(any(e["typeName"] == "shot" and (e["timeMin"], e["timeSec"]) in ((57, 51), (59, 33)) for e in events))
         samples = recording["possession_samples"]
         self.assertTrue(
             all(

@@ -10,7 +10,9 @@ class Event(BaseModel):
     event_id: str = Field(min_length=1, max_length=120)
     match_id: str = Field(min_length=1, max_length=120)
     revision: int = Field(default=1, ge=1)
-    event_type: Literal['pass','shot','goal','corner','card','save','tackle','clearance','interception','foul','touch']
+    event_type: Literal['pass','shot','goal','corner','card','save','tackle','clearance','interception','foul','touch',
+                        'throw_in','free_kick','goal_kick','kick_off','penalty','offside',
+                        'foul_won','keeper_claim','period_start','period_end']
     team_id: str | None = None
     player_id: str | None = None
     body_part: Literal['head','left_foot','right_foot','foot','other','hand'] | None = None

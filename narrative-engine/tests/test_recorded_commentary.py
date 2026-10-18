@@ -62,3 +62,23 @@ def test_fixture_release_is_forward_only_and_final_minute_waits_for_tail():
         if minute == 12:
             payload.snapshot.clock_seconds = 5399
             assert len(fixture.read(payload, payload.events, target)) == 11
+
+
+def test_native_decision_commentary_matches_exact_recorded_facts():
+    recording = json.loads((ROOT / 'data-generation/recordings/chelsea-united-grf.json').read_text())
+    fixture = CommentaryFixture(ROOT / 'narrative-engine/fixtures/grf-narratives.json')
+    events = recording['events']
+    corners = [e for e in events if e['typeName'] == 'corner']
+    assert [(e['playerId'], e['timeMin'], e['timeSec']) for e in corners] == [('manutd-8', 11, 41)]
+    fouls = [e for e in events if e['typeName'] == 'foul']
+    victims = [e for e in events if e['typeName'] == 'foul_won']
+    assert [(e['playerId'], e['timeMin'], e['timeSec']) for e in fouls] == [('manutd-0', 75, 19)]
+    assert [e['playerId'] for e in victims] == ['chelsea-10']
+    eighth_minute = [e for e in events if 420 < e['videoSeconds'] <= 480]
+    assert [(e['playerId'], e['timeMin'], e['timeSec']) for e in eighth_minute if e['typeName'] == 'shot'] == [
+        ('manutd-9', 57, 40), ('manutd-9', 59, 11)]
+    assert [(e['playerId'], e['timeMin'], e['timeSec']) for e in eighth_minute if e['typeName'] == 'offside'] == [
+        ('manutd-9', 57, 51), ('manutd-8', 59, 33)]
+    late = [item for item in fixture.document['items'] if item['video_minute'] == 11]
+    assert all({'foul', 'foul_won', 'offside', 'free_kick'} <= {e['event_type'] for e in item['evidence']}
+               for item in late)

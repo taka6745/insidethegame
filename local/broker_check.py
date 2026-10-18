@@ -14,6 +14,7 @@ from azure.servicebus.aio import ServiceBusClient
 from backend.adapters.question_data import GraphQLQuestionData
 from backend.adapters.replay_source import FixtureEventSource
 from backend.services.question_snapshot import LabSnapshotProvider
+from broker_probe import require_idle_replay
 
 
 async def snapshot(source, run_id, cursor, status='ready'):
@@ -60,7 +61,13 @@ async def inspect(payload, etl, narrative, seen):
     stats = {row['id']: row for row in (await etl.stats(watermark))['stats']}
     expected = sum(event.event_type == 'goal' and not event.deleted for event in events)
     assert stats['all:goals']['value'] == expected
-    assert not stats['all:cards']['available'], 'Unrecorded cards cannot become false zeros'
+    supported = payload.data_reference['capabilities']['supported_event_types']
+    for stat, event_type in (('cards', 'card'), ('corners', 'corner'), ('fouls', 'foul'),
+                             ('offsides', 'offside'), ('throw_ins', 'throw_in'), ('saves', 'save')):
+        actual = stats[f'all:{stat}']
+        assert actual['available'] == (event_type in supported)
+        expected_value = sum(e.event_type == event_type and not e.deleted for e in events) if event_type in supported else None
+        assert actual['value'] == expected_value, f'{stat} disagrees with observed events/coverage'
     assert (await etl.events(watermark, limit=100))['total'] == len(events)
     blocks = (await narrative.compact(watermark))['blocks']
     assert all(a['end_seconds'] == b['start_seconds'] for a, b in zip(blocks, blocks[1:]))
@@ -76,6 +83,7 @@ async def main():
     narrative_url = os.environ['NARRATIVE_GRAPHQL_URL']
     backend_url = os.getenv('BACKEND_URL', 'http://backend:8000')
     async with httpx.AsyncClient(timeout=30) as http:
+        await require_idle_replay(http, backend_url)
         response = await http.get(etl_url.rsplit('/', 1)[0] + '/demo/recording')
         response.raise_for_status()
         source = FixtureEventSource(content=response.content)
@@ -88,8 +96,14 @@ async def main():
         async with producer, bus:
             async with bus.get_subscription_receiver(topic_name='narratives', subscription_name='integration') as receiver:
                 listener = asyncio.create_task(collect(receiver, run_id, seen))
+                async def inspect_delivery(payload):
+                    await require_idle_replay(http, backend_url)
+                    if listener.done():
+                        listener.result()
+                    return await inspect(payload, etl, narrative, seen)
                 try:
                     for minute in (0, None, 1, 6, 12):
+                        await require_idle_replay(http, backend_url)
                         cursor = 1 if minute is None else next((i + 1 for i, t in enumerate(source.video_times)
                             if t >= minute * 60), len(source.events)) if minute else 0
                         payload = await snapshot(source, run_id, cursor, 'finished' if minute == 12 else 'ready')
@@ -99,7 +113,7 @@ async def main():
                             # Same delivery twice must not inflate event history or standard totals.
                             await publish(producer, payload, event=event)
                         goals, count = await wait_for('ETL → narrative → Service Bus',
-                            lambda: inspect(payload, etl, narrative, seen))
+                            lambda: inspect_delivery(payload))
                         if listener.done():
                             listener.result()
                         label = 'first event + duplicate' if minute is None else f'{minute} playback min'

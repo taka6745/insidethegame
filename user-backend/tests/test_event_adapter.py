@@ -42,3 +42,27 @@ def test_malformed_fixture_fails_at_adapter_boundary(changes):
 def test_extra_vendor_fields_require_deliberate_adapter_mapping():
     with pytest.raises(ValidationError):
         OptaInspiredAdapter().adapt(SCENARIO["events"][0] | {"typeId": 1})
+
+
+@pytest.mark.parametrize('kind', [
+    'throw_in', 'free_kick', 'goal_kick', 'kick_off', 'penalty', 'offside',
+    'foul_won', 'keeper_claim', 'period_start', 'period_end',
+])
+def test_native_event_categories_are_queryable_and_extra_qualifiers_stay_upstream(kind):
+    from backend.models.rules import Rule
+    raw = SCENARIO['events'][0] | {'typeName': kind, 'qualifiers': [
+        {'type': 'restartType', 'value': 'corner'},
+        {'type': 'relatedEventId', 'value': 'native-20'},
+    ]}
+    event = OptaInspiredAdapter().adapt(raw)
+    rule = Rule(match_id=event.match_id, predicates=[{'field': 'event_type', 'op': 'eq', 'value': kind}])
+    assert rule.matches(event)
+    assert 'restartType' not in event.model_dump()
+    assert kind in OptaInspiredAdapter().data_reference()['events']
+
+
+@pytest.mark.parametrize('outcome', ['yellow', 'second_yellow', 'red'])
+def test_native_card_outcomes_keep_recipient_and_decision(outcome):
+    event = OptaInspiredAdapter().adapt(SCENARIO['events'][0] | {'typeName': 'card', 'outcome': outcome})
+    assert event.player_id == 'mbappe'
+    assert event.outcome == outcome

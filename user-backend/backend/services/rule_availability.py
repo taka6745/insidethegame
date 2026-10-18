@@ -32,11 +32,13 @@ def supported_rule(rule, capabilities):
             constrained = True
             values = predicate.value if isinstance(predicate.value, tuple) else (predicate.value,)
             selected.intersection_update(values)
-        if predicate.field == 'body_part' and not capabilities.get('body_parts', False):
-            return False
     supported = set(capabilities.get('supported_event_types', ()))
     if constrained and not selected.issubset(supported):
         return False
+    if any(p.field == 'body_part' for p in rule.predicates) and not capabilities.get('body_parts', False):
+        covered = set(capabilities.get('body_part_event_types', ()))
+        if not constrained or not selected.issubset(covered):
+            return False
     if rule.operation == 'sum' and not selected.issubset(set(capabilities.get('distance_event_types', ()))):
         return False
     if any(p.field == 'outcome' for p in rule.predicates):
