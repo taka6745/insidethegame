@@ -93,3 +93,9 @@ class QuestionRepository:
             row = self._session(conn,token,lock=True)
             conn.execute('UPDATE question_offers SET calculation_id=%s WHERE id=%s AND conversation_id=%s',
                          (calculation_id,offer_id,row['id']))
+
+    def untrack(self, token, calculation_id):
+        with self.store.connect() as conn:
+            row = self._session(conn, token, lock=True)
+            conn.execute('UPDATE question_offers SET calculation_id=NULL WHERE conversation_id=%s AND calculation_id=%s',
+                         (row['id'], calculation_id))

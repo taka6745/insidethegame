@@ -19,7 +19,7 @@ For the **runnable user-backend harness**, use:
 ./dev replay backend    # send the key moments to connected viewers
 ```
 
-[Event filter lab](http://localhost:18020) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a preset or type a request, add the validated filter, then start events. Default fixture mode needs no model account; [optional local LLM](user-backend/docs/local-llm.md) enables flexible requests. This profile needs no Azure login or emulator EULA acceptance. `./dev test backend` reruns the backend tests and both live replay checks; it resets the shared lab run.
+[Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a preset or type a request, add the validated filter, then start events. Default fixture mode needs no model account; [optional local LLM](user-backend/docs/local-llm.md) enables flexible requests. This profile needs no Azure login or emulator EULA acceptance. `./dev test backend` reruns the backend tests and both live replay checks; it resets the shared lab run.
 
 For messaging, SQL and GraphQL, first review the [Microsoft licence links](local/README.md#licences), then:
 
@@ -40,7 +40,7 @@ ACCEPT_EULA=Y ./dev up azure
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | One live match, cards and two chat tabs. |
 
-The stack includes a **working structured-filter lab**, not the finished app. It runs typed rules rather than generated Python. Match footage, Stream Analytics, shared narrative generation and production consumers are not implemented. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
+The stack includes a **working match viewer and structured-filter lab**, backed by synthetic upstream services. It runs typed rules rather than generated Python. Match footage, Stream Analytics, shared narrative generation and production consumers are not implemented. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
 
 ## Work independently
 

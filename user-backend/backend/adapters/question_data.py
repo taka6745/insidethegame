@@ -19,11 +19,12 @@ class GraphQLQuestionData:
     def __init__(self, url, *, bridge=False, transport=None):
         self.url, self.bridge, self.transport = url, bridge, transport
 
-    async def capture(self, payload):
+    async def capture(self, payload, *, purpose="question"):
         if not self.bridge:
             raise RuleError('snapshot_unavailable', 'Sorry, match snapshots are not available.', 503)
         async with httpx.AsyncClient(timeout=10, transport=self.transport) as client:
-            response = await client.post(self.url.rsplit('/', 1)[0] + '/dev/question-snapshots', json=payload.model_dump(mode='json'))
+            path = '/dev/viewer-snapshots' if purpose == 'viewer' else '/dev/question-snapshots'
+            response = await client.post(self.url.rsplit('/', 1)[0] + path, json=payload.model_dump(mode='json'))
             response.raise_for_status()
             if response.json().get('snapshot_id') != payload.snapshot.id:
                 raise ValueError('Wrong snapshot acknowledged')

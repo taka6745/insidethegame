@@ -3,3 +3,16 @@
 !nginx.conf
 !lab/
 !lab/**
+!match/
+!match/**
+!assets/
+!assets/icons/
+!assets/icons/*.svg
+!tools/
+!tools/build.sh
+!assets/league/
+!assets/league/*.svg
+!assets/league/fonts/
+!assets/league/fonts/*.woff2
+!assets/league/clubs/
+!assets/league/clubs/*.svg

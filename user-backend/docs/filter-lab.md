@@ -4,7 +4,7 @@
 ./dev up backend
 ```
 
-Open **[localhost:18020](http://localhost:18020)**. Choose a preset or request a stat, add it, then start the match. The UI configures filters before replay; the API also supports late registration. **New run** clears this lab's rules and replay progress while keeping its recording. Viewer profiles and pins remain. There is no video or rewind.
+Open **[localhost:18020](http://localhost:18020/lab/)**. Choose a preset or request a stat, add it, then start the match. The UI configures filters before replay; the API also supports late registration. **New run** clears this lab's rules and replay progress while keeping its recording. Viewer profiles and pins remain. There is no video or rewind.
 
 ## The event recording
 

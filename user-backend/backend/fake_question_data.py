@@ -5,6 +5,7 @@ from collections import OrderedDict
 from fastapi import HTTPException
 from .models.questions import SnapshotInput
 from .fake_recaps import build_recaps
+from .fake_product_narratives import viewer_narratives
 
 
 def snapshot_id(payload):
@@ -40,20 +41,27 @@ def standard_stats(payload, events):
 class FakeQuestionData:
     def __init__(self, role):
         self.role, self.snapshots = role, OrderedDict()
+        self.viewer_snapshots = OrderedDict()
 
     def store(self, payload: SnapshotInput):
+        return self._store(payload, self.snapshots, 16)
+
+    def store_viewer(self, payload: SnapshotInput):
+        return self._store(payload, self.viewer_snapshots, 2)
+
+    def _store(self, payload, destination, capacity):
         if payload.snapshot.cursor != len(payload.events) or any(e.match_id != payload.snapshot.match_id for e in payload.events):
             raise HTTPException(422, 'Snapshot deliveries must match its identity and cursor')
         if snapshot_id(payload) != payload.snapshot.id:
             raise HTTPException(422, 'Snapshot content does not match its ID')
-        self.snapshots[payload.snapshot.id] = payload
-        self.snapshots.move_to_end(payload.snapshot.id)
-        while len(self.snapshots) > 16:
-            self.snapshots.popitem(last=False)
+        destination[payload.snapshot.id] = payload
+        destination.move_to_end(payload.snapshot.id)
+        while len(destination) > capacity:
+            destination.popitem(last=False)
         return {'snapshot_id': payload.snapshot.id, 'synthetic': True}
 
     def read(self, root, info, snapshotId, operation, offset=0, limit=100, ids=None, tier=None, start=None, end=None, eventType=None, playerId=None, period=None):
-        payload = self.snapshots.get(snapshotId)
+        payload = self.snapshots.get(snapshotId) or self.viewer_snapshots.get(snapshotId)
         if payload is None:
             raise ValueError('Snapshot unavailable; capture it again')
         if offset < 0 or not 1 <= limit <= 100:
@@ -68,6 +76,8 @@ class FakeQuestionData:
                     and (eventType is None or e.event_type == eventType) and (playerId is None or e.player_id == playerId)
                     and (period is None or e.period == period)]
             result.update(items=rows[offset:offset + limit], has_more=offset + limit < len(rows), total=len(rows))
+        elif self.role == 'narrative' and operation == 'viewer':
+            result.update(viewer_narratives(payload, events))
         elif self.role == 'narrative' and operation in ('compact', 'recaps'):
             recaps = build_recaps(payload, events)
             if operation == 'compact':
@@ -84,4 +94,5 @@ class FakeQuestionData:
 
     def wire(self, app, schema):
         app.post('/dev/question-snapshots')(self.store)
+        app.post('/dev/viewer-snapshots')(self.store_viewer)
         schema.query_type.fields['questionData'].resolve = self.read

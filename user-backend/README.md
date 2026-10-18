@@ -12,7 +12,7 @@
 ./dev replay backend
 ```
 
-[Filter lab](http://localhost:18020) · [API explorer](http://localhost:18000/docs) · [Test coverage](docs/testing.md) · [Synthetic examples](fixtures/filter-lab.md)
+[Filter lab](http://localhost:18020/lab/) · [API explorer](http://localhost:18000/docs) · [Test coverage](docs/testing.md) · [Synthetic examples](fixtures/filter-lab.md)
 
 The diagram and components below describe the target architecture; the [development guide](docs/development.md) separates implemented behaviour from fixtures.
 

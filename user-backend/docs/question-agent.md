@@ -1,6 +1,6 @@
 # Match questions
 
-**Implemented local lab.** Open [Questions](http://localhost:18020), choose a demo profile and ask about the observed match or a football rule. The replay keeps running while the agent works.
+**Implemented local lab.** Open [Questions](http://localhost:18020/lab/), choose a demo profile and ask about the observed match or a football rule. The replay keeps running while the agent works.
 
 ```mermaid
 flowchart LR
