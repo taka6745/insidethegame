@@ -4,7 +4,7 @@
 
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
-**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. It now [frames neutral narratives into shared, database-defined audience buckets](docs/narrative-framing.md). The upstream engine still owns match analysis and the neutral source.
+**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. This service does not generate the shared game narrative.
 
 ```sh
 ./dev up backend
@@ -27,7 +27,7 @@ The diagram and components below describe the target architecture; the [developm
 
 **Read:** live events from Event Hubs; historical events and computed stats from ETL GraphQL; narrative history from narrative GraphQL; new narratives and stat-selection instructions through Service Bus.
 
-**Deliver:** answers, stat values and shared bucket rewrites through the API and one live connection per session. Every available DB bucket is generated independently of viewer presence; questions never drive narrative generation.
+**Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience definitions and framing belong to the narrative engine; questions never drive narrative generation. [Connection boundary](docs/narrative-framing.md).
 
 Custom stats follow **interpret / clarify → compile → validate → calculate → optional pin**. The local default uses one successful model call per turn; the model-based rule coder remains optional. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 
