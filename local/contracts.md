@@ -38,6 +38,8 @@ Before real integration, agree corrections/versioning, ordering/watermarks, and 
 
 Replay posts `/events` or `/narratives` to the appropriate fake, which stores the fixture and sends an HTTP notification to the backend's `/dev/*` routes. The backend reads history/stats through GraphQL and delivers snapshots via WebSocket. No production broker wiring is implied. Replace these test bridges with the agreed Event Hubs and Service Bus consumers when those services are ready.
 
-The narrative engine generates for every available bucket in its database. No audience-presence feedback is needed. No presence topic is provisioned. Viewer questions never trigger shared narrative generation. Jev subscriptions, clips and delayed playback remain Phase 2.
+The narrative engine generates for every available bucket returned by the backend audience API. No audience-presence feedback is needed. No presence topic is provisioned. Viewer questions never trigger shared narrative generation. Jev subscriptions, clips and delayed playback remain Phase 2.
 
 The optional `NARRATIVE_SERVICEBUS_CONNECTION_STRING` enables the backend receiver for already-bucketed `Narrative` messages. It never calls an LLM. The default local harness continues to use HTTP notifications.
+
+Audience configuration: `GET /matches/{match_id}/audience-config` on the backend returns revisioned layers, options, combinations and expanded generation targets. Read-only to the narrative engine; conditional reads use ETag/If-None-Match. [Contract](../user-backend/docs/audience-api.md).

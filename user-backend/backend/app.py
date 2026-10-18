@@ -13,6 +13,9 @@ from pydantic import BaseModel, ConfigDict, Field
 from .domain import MatchEvent, Narrative, Preferences, RuleError, card_ids, pin
 from .fixtures import FixtureFeed
 from .store import Store
+from .repositories.audiences import AudienceRepository
+from .services.audiences import AudienceService
+from .routes.audiences import audience_router
 
 
 class StartSession(BaseModel):
@@ -47,12 +50,14 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
         raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
     store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
     feed = feed or FixtureFeed(match_id, slots)
+    audiences = AudienceService(AudienceRepository(store), match_id)
     peers = {}
     sessions_lock = asyncio.Lock()
 
     @asynccontextmanager
     async def lifespan(app):
         await asyncio.to_thread(store.initialize)
+        await audiences.initialize()
         if lab:
             await lab.initialize()
         consumer_task = None
@@ -72,6 +77,7 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
 
     app = FastAPI(title="Inside the Game — user backend harness", lifespan=lifespan)
     app.state.store, app.state.feed = store, feed
+    app.include_router(audience_router(audiences, enable_dev_feed=enable_dev_feed))
     if lab:
         from .routes.lab import lab_router
         app.include_router(lab_router(lab))

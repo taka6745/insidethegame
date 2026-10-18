@@ -36,6 +36,6 @@ The three example prompt files remain unchanged. The board requests structured J
 
 ## Audience ownership
 
-The narrative engine owns audience layers, options, semantic descriptions and available combinations in its database. Generate all available buckets regardless of viewer presence. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
+The backend stores audience layers, options, semantic descriptions and available combinations, and exposes a [read-only API](../user-backend/docs/audience-api.md). The narrative engine fetches the catalogue before framing. Generate all available buckets regardless of viewer presence. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
 
-The original 12 buckets are seeds. A retained [prototype](prototypes/bucket_framing/README.md) models flexible definitions; persistence, batching and generation still need integration into this engine. No audience configuration or framing model runs in the user backend.
+The original 12 buckets are seeds. A retained [prototype](prototypes/bucket_framing/README.md) preserves the authoring code; API consumption, batching and generation still need integration into this engine. The backend serves configuration but never invokes a narrative framing model.

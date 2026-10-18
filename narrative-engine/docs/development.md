@@ -2,7 +2,7 @@
 
 ![Service boundary](../architecture.svg)
 
-**Own:** neutral match memory, audience definitions, bucket narratives, narrative history and deduplication. Questions never start this workflow.
+**Own:** neutral match memory, bucket narratives, narrative history and deduplication. Questions never start this workflow.
 
 ```text
 Notification + match GraphQL → memory → bucket author
@@ -16,4 +16,4 @@ Notification + match GraphQL → memory → bucket author
 
 **Prove it:** repeat a notification without duplicate output; recover checkpoints; exclude superseded summaries; keep independent match context; route only relevant buckets. Use labelled deterministic model fixtures for tests, then run a separate real-model check.
 
-**Azure:** Container Apps, Foundry, Cosmos and Service Bus. Foundry requires a real configured model endpoint; no LLM is emulated here. Generate for all available buckets defined in this service's database; no viewer-presence dependency. Never read the backend's user database.
+**Azure:** Container Apps, Foundry, Cosmos and Service Bus. Foundry requires a real configured model endpoint; no LLM is emulated here. Read definitions from the [backend audience API](../../user-backend/docs/audience-api.md) and generate for all available buckets; no viewer-presence dependency. Never read the backend's user database.
