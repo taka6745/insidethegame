@@ -49,6 +49,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
+video:focus-visible,
 button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 3px solid var(--mint);
   outline-offset: 3px;
@@ -248,14 +249,7 @@ body[data-connection="live"][data-match-status="running"] .live-dot {
   font-size: 10px;
   color: var(--muted);
 }
-.fixture-label {
-  color: #ddcfe3;
-}
-.fixture-label::after {
-  content: "·";
-  color: #82658f;
-  margin-left: 12px;
-}
+
 .connection-bar #connection[data-state="live"] {
   color: #a7d6ca;
 }
@@ -337,37 +331,7 @@ option {
   margin-top: 6px;
   font-size: 11px;
 }
-.video-caption {
-  position: absolute;
-  bottom: 16px;
-  left: 18px;
-  right: 18px;
-  display: flex;
-  justify-content: space-between;
-  color: #9f92aa;
-  font-size: 9px;
-  letter-spacing: .7px;
-  pointer-events: none;
-}
-.video-actions {
-  display: flex;
-  gap: 8px;
-  pointer-events: auto;
-}
-#video-status {
-  align-self: center;
-  color: #fff;
-  background: #100b14d9;
-  padding: 4px 7px;
-  border-radius: 4px;
-}
-.video-actions button {
-  border: 1px solid #ffffff50;
-  background: #100b14c9;
-  padding: 5px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-}
+
 .demo-controls {
   display: flex;
   gap: 12px;
@@ -392,9 +356,7 @@ option {
   text-underline-offset: 4px;
   font-size: 10px;
 }
-#demo-progress {
-  margin-left: auto;
-}
+
 .stats-section {
   min-width: 0;
 }
@@ -605,9 +567,7 @@ footer {
     font-size: 9px;
     flex-wrap: wrap;
   }
-  .fixture-label {
-    display: none;
-  }
+
   select {
     max-width: 180px;
     font-size: 10px;
@@ -634,12 +594,7 @@ footer {
     height: 34px;
     margin-bottom: 8px;
   }
-  .video-caption {
-    flex-wrap: wrap;
-    gap: 6px;
-    bottom: 12px;
-    font-size: 8px;
-  }
+
   .demo-controls {
     min-height: 43px;
   }

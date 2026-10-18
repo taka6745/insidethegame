@@ -209,10 +209,6 @@ test("match view presents resumable replay controls for a restored partial run",
     document.getElementById("start-demo-label").textContent,
     "Resume match",
   );
-  assert.equal(
-    document.getElementById("demo-progress").textContent,
-    "Ready to resume",
-  );
 });
 
 test("match snapshots do not render the developer event feed", () => {
