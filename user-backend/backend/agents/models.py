@@ -25,10 +25,6 @@ class Goal(BaseModel):
 
     @model_validator(mode="after")
     def supported(self):
-        allowed = {"pass", "shot", "goal", "corner", "card", "save", "tackle", "clearance",
-                   "interception", "foul", "touch"}
-        if not set(self.event_types) <= allowed:
-            raise ValueError("Unsupported event category")
         if self.after_seconds is not None and self.from_seconds is not None:
             raise ValueError("Choose an inclusive or exclusive lower bound")
         if self.before_seconds is not None and self.through_seconds is not None:

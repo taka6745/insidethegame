@@ -4,7 +4,7 @@
 
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
-**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. This service does not generate the shared game narrative.
+**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. The [Questions tab](docs/question-agent.md) adds short grounded match answers, neutral recap reads and one-off custom stat offers. This service does not generate the shared game narrative.
 
 ```sh
 ./dev up backend

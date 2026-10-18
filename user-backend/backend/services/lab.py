@@ -141,8 +141,10 @@ class FilterLabService:
                                 "changed_count": len(self.last_changed)},
                     "llm": {"configured": self.local_llm, "mode": "local" if self.local_llm else "fixture"}}
 
-    async def register(self, rule, label):
+    async def register(self, rule, label, *, expected_run_id=None):
         async with self._lock:
+            if expected_run_id is not None and str(self.run_id) != expected_run_id:
+                raise RuleError("run_changed", "This offer belongs to an earlier match run.", 409)
             if rule.match_id != self.source.match_id:
                 raise RuleError("wrong_match", "Choose the current lab match", 422)
             if self.status == "error":

@@ -33,7 +33,12 @@ def create_fake(role, notify_url=None):
     feed = FixtureFeed("synthetic-demo", 3)
     app.state.feed = feed
     fields = "matchEvents(matchId: ID!): JSON matchState(matchId: ID!, team: String!): JSON" if role == "etl" else "context(matchId: ID!, bucket: String!): JSON"
+    fields += " questionData(snapshotId: ID!, operation: String!, offset: Int, limit: Int, ids: [String!], tier: String, start: Int, end: Int, eventType: String, playerId: String, period: Int): JSON"
     schema = build_schema("scalar JSON\ntype Query {" + fields + "}")
+    from .fake_question_data import FakeQuestionData
+    question_data = FakeQuestionData(role)
+    question_data.wire(app, schema)
+    app.state.question_data = question_data
     schema.type_map["JSON"].serialize = lambda value: value
 
     def read_match(root, info, matchId):

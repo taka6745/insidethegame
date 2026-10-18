@@ -1,0 +1,62 @@
+{
+  "recording_hash": "348a339fcfac735019b0bef96fcf2649ecad208043abd40363b1f55a246a9e43",
+  "cases": [
+    {
+      "id": "standard",
+      "prompt": "How many shots has Madrid had this game?",
+      "review": "5, including goals as shots; one-off no live rule",
+      "standard_stat_id": "madrid:shots"
+    },
+    {
+      "id": "custom",
+      "prompt": "How many headed shots has Mbapp\u00e9 had this game, including goals?",
+      "review": "3; offer tracking; no live registration before click",
+      "offer_value": 3
+    },
+    {
+      "id": "followup",
+      "prompt": "What about in the second half?",
+      "review": "2 for Mbappe headed shots including goals",
+      "offer_value": 2
+    },
+    {
+      "id": "ambiguous",
+      "prompt": "How many headers?",
+      "review": "Clarify headed passes, headed shots, all recorded headed contacts, whose",
+      "status": "clarification"
+    },
+    {
+      "id": "clarification",
+      "prompt": "All recorded headed contacts by Mbapp\u00e9 across the whole match.",
+      "review": "6; not just shots",
+      "offer_value": 6
+    },
+    {
+      "id": "time",
+      "prompt": "How many Chelsea corners were awarded after 60:00, excluding exactly 60:00?",
+      "review": "5",
+      "offer_value": 5
+    },
+    {
+      "id": "overview",
+      "prompt": "How is Chelsea looking this game?",
+      "review": "Current score 1-0, Chelsea red card at74, no invented possession or pressure."
+    },
+    {
+      "id": "archive",
+      "prompt": "What happened up to and including 10:00 in the first half?",
+      "review": "Recorded Mbappe headed pass at2 and saved headed shot at10; archive/event drilldown"
+    },
+    {
+      "id": "general",
+      "prompt": "What does offside mean?",
+      "review": "Short football explanation, no match invention"
+    },
+    {
+      "id": "unsupported",
+      "prompt": "What is Mbapp\u00e9\u2019s current heart rate?",
+      "review": "Short apology, no substitute stat or invented number",
+      "status": "unsupported"
+    }
+  ]
+}

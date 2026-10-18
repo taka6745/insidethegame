@@ -56,6 +56,10 @@ For code changes rerun `./dev up backend` to rebuild. `./dev logs backend` shows
 
 ETL owns Cosmos DB for standard stats and Azure SQL for event history. `FixtureServices.match_events()` is the separate historical query helper; an agent can use that route for investigation without duplicating standard stats. The fake services remain in-memory substitutes, not Cosmos/SQL integration.
 
-The separate filter lab implements incremental typed calculations and an optional local model adapter. Its persisted replay prefix provides deterministic startup recovery; it is not an ETL/broker handoff implementation. Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for bucket narratives, GraphQL for history/stats. No user question calls the narrative generator. Production Event Hubs consumption, filter-lab viewer integration, general question answering and any arbitrary-code executor remain next steps.
+The separate filter lab implements incremental typed calculations and an optional local model adapter. Its persisted replay prefix provides deterministic startup recovery; it is not an ETL/broker handoff implementation. Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for bucket narratives, GraphQL for history/stats. No user question calls the narrative generator. General question answering now runs in the lab through the adapters described below. Production Event Hubs consumption, real upstream snapshot contracts, per-viewer card integration and any arbitrary-code executor remain next steps.
 
 [Fixture format and moments](../fixtures/README.md) · [Testing guide](testing.md) · [Full design](../architecture.md)
+
+## Match questions
+
+The lab **Questions** tab uses the native Microsoft Agent Framework agent with separate ETL/narrative GraphQL adapters. [Run, contracts and limits](question-agent.md). Chat and offered cards persist per demo profile/run; Track starts a shared live calculation. The local fake recap service compacts synthetic summaries and retains the archive.

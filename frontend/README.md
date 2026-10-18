@@ -4,7 +4,7 @@
 
 ![Live match, statistics and two conversation tabs](architecture.svg)
 
-**Implemented: removable filter lab.** [Run it locally](docs/development.md) to prepare structured filters, start synthetic events and watch custom values update. It shows events rather than video, with no rewind. The actual match interface below remains planned.
+**Implemented: removable event lab with Filters and Questions tabs.** [Run it locally](docs/development.md) to prepare structured filters, start synthetic events and watch custom values update. Questions use a demo profile, saved chat, frozen match context and optional Track cards. It shows events rather than video, with no rewind. The actual match interface below remains planned.
 
 **Planned match interface:** one live match with stat cards and two tabs: agent chat and the narrative feed/backlog.
 

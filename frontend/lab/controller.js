@@ -75,6 +75,8 @@ export class FilterLab {
     const next = await this.api.state();
     if (request !== this.refreshSequence) return;
     this.state = next;
+    window.labState = next;
+    window.dispatchEvent(new CustomEvent('lab-state', { detail: next }));
     if (this.connectionFailed) { this.view.error(); this.connectionFailed = false; }
     if (this.state.error) this.view.error(this.state.error);
     this.view.state(this.state, calculation => this.inspectRule(calculation), deliveryIndex => this.inspectEvent(deliveryIndex));
