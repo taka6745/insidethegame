@@ -4,6 +4,7 @@ One process owns one replay. No vendor keys, SQL or HTTP requests belong here.
 """
 import asyncio
 import logging
+import time
 from contextlib import suppress
 from pydantic import ValidationError
 
@@ -11,6 +12,7 @@ from backend.domain import RuleError
 from backend.agents.conversation import assistant_message
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
+from backend.services.rule_availability import supported_rule
 from backend.services.plan_conversations import PlanConversations
 
 
@@ -24,6 +26,7 @@ class FilterLabService:
         self.changed = asyncio.Event()
         self._plan_lock = asyncio.Lock()
         self._task = None
+        self._replay_origin = None
         self.engine = FilterEngine()
         self.position, self.status, self.error = 0, "ready", None
         self.labels = {}
@@ -123,6 +126,7 @@ class FilterLabService:
             self.conversations.clear()
             self.engine, self.labels, self.last_changed = FilterEngine(), {}, []
             self.position, self.status, self.error = 0, "ready", None
+            self._replay_origin = None
             self._task = None
             scenario = self.scenario()
         self.changed.set()
@@ -137,6 +141,8 @@ class FilterLabService:
         async with self._lock:
             return {"synthetic": True, "run_id": self.run_id, "match_id": self.source.match_id,
                     "status": self.status, "position": self.position, "total": len(self.source.events),
+                    "playback_seconds": self._playback_seconds(),
+                    "playback_sampled_at": time.time() * 1000 if self.status == "running" and self.source.timed else None,
                     "error": self.error,
                     "events": [self.source.display_delivery(i) for i in range(max(0, self.position - 100), self.position)],
                     "calculations": [self._calculation(r) for r in self.engine.calculations],
@@ -157,6 +163,8 @@ class FilterLabService:
                 raise RuleError("wrong_match", "Choose the current lab match", 422)
             if self.status == "error":
                 raise RuleError("reset_required", "Start a new run first")
+            if not supported_rule(rule, self.source.spec.get('capabilities')):
+                raise RuleError('unavailable_measurement', 'This recording does not capture that measurement.', 422)
             # Calculate a new rule against observed history without publishing it
             # into live memory before persistence succeeds.
             identifier = rule.calculation_id
@@ -199,7 +207,8 @@ class FilterLabService:
         async with self._lock:
             if self.status == "running":
                 raise RuleError("already_running", "Replay is already running")
-            if self.position >= len(self.source.events) or self.status == "error":
+            if ((self.position >= len(self.source.events) and
+                 not (self.source.timed and self.status == 'ready')) or self.status == "error"):
                 raise RuleError("reset_required", "Start a new run before replaying")
             previous = self.status, self.error
             self.status, self.error = "running", None
@@ -208,15 +217,34 @@ class FilterLabService:
             except Exception:
                 self.status, self.error = previous
                 raise
+            self._replay_origin = asyncio.get_running_loop().time() - self.source.playback_seconds(self.position)
             self._task = asyncio.create_task(self._run(interval_ms / 1000))
             self.changed.set()
         return await self.state()
 
+    def _playback_seconds(self):
+        if self.status == 'finished':
+            return self.source.playback_duration
+        if self.status == 'running' and self.source.timed and self._replay_origin is not None:
+            return min(self.source.playback_duration, asyncio.get_running_loop().time() - self._replay_origin)
+        return self.source.playback_seconds(self.position)
+
     async def _run(self, interval):
+        loop = asyncio.get_running_loop()
+        origin = self._replay_origin if self._replay_origin is not None else loop.time() - self.source.playback_seconds(self.position)
         try:
             while True:
-                await asyncio.sleep(interval)
-                if not await self.advance():
+                delay = self.source.replay_delay(self.position, interval)
+                if self.source.timed and self.position < len(self.source.events):
+                    delay = max(0.0, origin + self.source.video_times[self.position] - loop.time())
+                await asyncio.sleep(delay)
+                if not await self.advance(finish=not self.source.timed):
+                    if self.source.timed:
+                        await asyncio.sleep(max(0.0, origin + self.source.playback_duration - loop.time()))
+                        async with self._lock:
+                            self.status = 'finished'
+                            await self._save_progress()
+                            self.changed.set()
                     return
         except asyncio.CancelledError:
             raise
@@ -227,7 +255,7 @@ class FilterLabService:
             self.status = "error"
             self.changed.set()
 
-    async def advance(self):
+    async def advance(self, *, finish=True):
         """One forward event. Also used by deterministic integration tests."""
         async with self._lock:
             event = self.source.next_event(self.position)
@@ -236,7 +264,7 @@ class FilterLabService:
             previous_position, previous_status = self.position, self.status
             changed = self.engine.ingest(event)
             self.position += 1
-            if self.position == len(self.source.events):
+            if self.position == len(self.source.events) and finish:
                 self.status = "finished"
             try:
                 await self._save_progress(changed)
@@ -249,7 +277,7 @@ class FilterLabService:
                 raise
             self.last_changed = [r.calculation_id for r in changed]
             self.changed.set()
-            return self.status != "finished"
+            return self.position < len(self.source.events)
 
     async def reset(self):
         async with self._lock:
@@ -261,6 +289,7 @@ class FilterLabService:
             try:
                 await asyncio.to_thread(self.repository.reset, self.source.fingerprint)
                 await self._reload()
+                self._replay_origin = None
                 self.conversations.clear()
                 self.error, self.last_changed = None, []
             except Exception:

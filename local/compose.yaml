@@ -126,46 +126,64 @@ services:
       ENABLE_FILTER_LAB: "1"
       ACCOUNTS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/accounts
       MATCH_APP_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/matchapp
-      ETL_GRAPHQL_URL: http://fake-etl:8000/graphql
-      NARRATIVE_GRAPHQL_URL: http://fake-narrative:8000/graphql
+      ETL_GRAPHQL_URL: http://etl:8000/graphql
+      NARRATIVE_GRAPHQL_URL: http://narrative:8000/graphql
+      DEMO_RECORDING_URL: http://etl:8000/demo/recording
     depends_on:
       postgres: {condition: service_healthy}
-      fake-etl: {condition: service_healthy}
-      fake-narrative: {condition: service_healthy}
+      etl: {condition: service_healthy}
+      narrative: {condition: service_healthy}
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=5)"]
       interval: 3s
       timeout: 6s
       retries: 20
 
-  fake-etl:
-    build: {context: ../user-backend, target: runtime}
+  etl-db-init:
+    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
     profiles: [backend]
-    command: [uvicorn, "backend.fakes:from_env", --factory, --host, "0.0.0.0", --port, "8000"]
     environment:
-      FAKE_ROLE: etl
-      BACKEND_NOTIFY_URL: http://backend:8000
+      PGPASSWORD: local-development-only
+    volumes: ["./sql/etl-databases.sql:/init.sql:ro"]
+    entrypoint: [psql, -h, postgres, -U, itg, -d, accounts, -v, ON_ERROR_STOP=1, -f, /init.sql]
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  etl:
+    build: ../etl
+    profiles: [backend]
+    environment:
+      ETL_HISTORY_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_history
+      ETL_STATS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_stats
+      DEMO_RECORDING_PATH: /recordings/chelsea-united-grf.json
+    volumes: ["../data-generation/recordings:/recordings:ro"]
     ports: ["127.0.0.1:18010:8000"]
-    healthcheck: &fake-health
+    depends_on:
+      etl-db-init: {condition: service_completed_successfully}
+    healthcheck: &upstream-health
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
       interval: 3s
       timeout: 6s
       retries: 20
 
-  fake-narrative:
-    build: {context: ../user-backend, target: runtime}
+  narrative:
+    build: ../narrative-engine
     profiles: [backend]
-    command: [uvicorn, "backend.fakes:from_env", --factory, --host, "0.0.0.0", --port, "8000"]
     environment:
-      FAKE_ROLE: narrative
-      BACKEND_NOTIFY_URL: http://backend:8000
+      ETL_BASE_URL: http://etl:8000
+      AUDIENCE_BASE_URL: http://backend:8000
+    volumes: ["narrative-data:/data"]
     ports: ["127.0.0.1:18011:8000"]
-    healthcheck: *fake-health
+    depends_on:
+      etl: {condition: service_healthy}
+    healthcheck: *upstream-health
 
   backend-tests:
     build: {context: ../user-backend, target: test}
     profiles: [tools]
-    environment: *backend-env
+    environment:
+      <<: *backend-env
+      DEMO_RECORDING_URL: ""
 
   frontend:
     build: ../frontend
@@ -182,3 +200,4 @@ services:
 volumes:
   postgres-data:
   sql-data:
+  narrative-data:

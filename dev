@@ -4,6 +4,10 @@ cd "$(dirname "$0")"
 compose() {
   local files=(-f local/compose.yaml)
   if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
+  if [[ -z "${DEMO_VIDEO_PATH:-}" && -f .local/grf-demo-chelsea-united-v2/match.mp4 ]]; then
+    export DEMO_VIDEO_PATH="$PWD/.local/grf-demo-chelsea-united-v2/match.mp4"
+  fi
+  if [[ -n "${DEMO_VIDEO_PATH:-}" ]]; then files+=(-f local/compose.media.yaml); fi
   docker compose --env-file local/env.defaults "${files[@]}" "$@"
 }
 docker_ready() {
@@ -17,8 +21,7 @@ check_mode() {
 check() {
   if [[ "$1" == backend ]]; then
     compose run --rm --build --no-deps backend-tests
-    compose run --rm --no-deps backend-tests python -m backend.smoke
-    compose run --rm --no-deps backend-tests python -m backend.lab_smoke
+    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/demo_check.py
   else
     compose run --rm --build --no-deps tools python local/check.py "$1"
   fi
@@ -28,12 +31,12 @@ usage() {
 ./dev doctor             Check Docker before first setup
 ./dev up                 Start + check Postgres and Cosmos (no accounts)
 ./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
-./dev up backend         Build + test the backend with fake ETL/narratives and Postgres
+./dev up backend         Build + test backend, demo ETL, narrative stub and Postgres
                          Includes the match viewer at http://localhost:18020 (filter lab: /lab/)
 ./dev test [azure|backend] Test dependencies or backend behaviour + live replay
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
-./dev replay backend     Replay Opta-inspired JSON through the fake services
-./dev reset backend      Reset synthetic match/history; keep saved profiles and pins
+./dev replay backend     Start the aligned GRF match (12-minute forward replay)
+./dev reset backend      Start a fresh match run; keep account profiles
 ./dev benchmark filters  Opt-in filter performance test (no models or network)
 ./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
 ./dev benchmark values   Opt-in cached value read benchmark
@@ -77,8 +80,7 @@ case "${1:-help}" in
   replay)
     docker_ready
     if [[ "${2:-}" == backend ]]; then
-      shift 2
-      compose run --rm --no-deps backend python -m backend.replay "$@"
+      compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py start
     elif [[ -z "${2:-}" ]]; then
       compose run --rm --build --no-deps tools python local/replay.py
     else
@@ -105,7 +107,7 @@ case "${1:-help}" in
   reset)
     [[ "${2:-}" == backend ]] || { usage; exit 2; }
     docker_ready
-    compose --profile backend up -d --no-deps --force-recreate --wait --wait-timeout 120 fake-etl fake-narrative backend
+    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py reset
     ;;
   logs) shift; compose --profile azure --profile backend logs --tail 60 "$@" ;;
   down) compose --profile azure --profile backend down ;;

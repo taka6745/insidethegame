@@ -21,6 +21,12 @@ class Preset(BaseModel):
     rule: Rule
 
 
+class Playback(BaseModel):
+    duration_seconds: float = Field(gt=0, le=14400, allow_inf_nan=False)
+    football_duration_seconds: int = Field(gt=0, le=12000)
+    halftime_seconds: float = Field(gt=0, le=7200, allow_inf_nan=False)
+
+
 class Recording(BaseModel):
     model_config = ConfigDict(strict=True)
     synthetic: bool
@@ -29,6 +35,7 @@ class Recording(BaseModel):
     players: list[Player] = Field(max_length=1000)
     events: list[dict] = Field(min_length=1, max_length=20000)
     presets: list[Preset] = Field(default_factory=list, max_length=200)
+    playback: Playback | None = None
 
     @model_validator(mode="after")
     def valid_catalogue(self):

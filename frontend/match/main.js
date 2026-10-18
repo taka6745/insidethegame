@@ -5,9 +5,8 @@ import { LiveConnection } from "./live.js";
 import { MatchController } from "./controller.js";
 import { attachDemoVideo } from "./video.js";
 
-attachDemoVideo(document);
-
 const view = new MatchView(document);
+view.video = attachDemoVideo(document);
 const questions = new QuestionView(document);
 const live = new LiveConnection({
   onSnapshot: (snapshot) => controller.receive(snapshot),

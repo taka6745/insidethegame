@@ -9,9 +9,10 @@ from .services.questions import QuestionService
 
 
 def create_question_service(store, lab):
+    bridge = 'demo' if os.getenv('DEMO_RECORDING_URL') else os.getenv('ENABLE_DEV_FEED') == '1'
     return QuestionService(QuestionRepository(store),LabSnapshotProvider(lab),
-        GraphQLQuestionData(os.environ['ETL_GRAPHQL_URL'],bridge=os.getenv('ENABLE_DEV_FEED') == '1'),
-        GraphQLQuestionData(os.environ['NARRATIVE_GRAPHQL_URL'],bridge=os.getenv('ENABLE_DEV_FEED') == '1'),
+        GraphQLQuestionData(os.environ['ETL_GRAPHQL_URL'],bridge=bridge),
+        GraphQLQuestionData(os.environ['NARRATIVE_GRAPHQL_URL'],bridge=bridge),
         QuestionAgent() if lab.local_llm else FixtureQuestionAgent(),lab.planner,
         timeout=float(os.getenv('QUESTION_TIMEOUT_SECONDS','60')),
         max_active=int(os.getenv('QUESTION_MAX_ACTIVE','4')))

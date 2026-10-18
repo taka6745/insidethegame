@@ -25,6 +25,10 @@ class FixtureEventSource:
         self.spec.setdefault("presets", [])
         self.adapter = adapter or OptaInspiredAdapter()
         self.events = tuple(self.adapter.adapt(raw) for raw in self.spec["events"])
+        self.video_times = tuple(raw.get('videoSeconds') for raw in self.spec['events'])
+        self.timed = all(value is not None for value in self.video_times)
+        if self.timed and any(b < a for a, b in zip(self.video_times, self.video_times[1:])):
+            raise ValueError('Recording video timestamps must be ordered')
         self.match_id = self.spec["match_id"]
         if any(event.match_id != self.match_id for event in self.events):
             raise ValueError("Fixture events must belong to the scenario match")
@@ -53,9 +57,44 @@ class FixtureEventSource:
                 "players": self.spec["players"], "teams": self.spec["teams"],
                 "presets": [{k: preset[k] for k in ("id", "label", "rule")} for preset in self.spec["presets"]]}
 
+    def data_reference(self):
+        reference = self.adapter.data_reference()
+        if self.spec.get('provenance', {}).get('source') == 'Google Research Football instrumented native runtime':
+            reference['contract_id'] = 'synthetic-grf-native-contacts-v1'
+            reference['provenance'] = self.spec['provenance']['source'] + '; synthetic Opta-inspired adapter, not an official feed.'
+            reference['events']['touch'] = (
+                'Coalesced native ball contact, including intentional contacts and nonintentional deflections. '
+                'A touch also accompanies passes and shooting attempts. Count touch records alone for captured '
+                'contacts; adding pass, shot or goal records double-counts those actions.')
+            reference['events']['goal'] += (
+                ' In this GRF recording, a deflected scoring attempt can have an unknown scorer. '
+                'Its original shot is merged into the goal, so the shooter is not recoverable from player_id.')
+            reference['unavailable'] = [*reference['unavailable'],
+                'Exhaustive player shooting totals are unavailable when a scoring attempt has an unknown player_id. '
+                'Named-player counts cover attributed attempts only; do not present them as complete totals. '
+                'Team shooting totals still count the scoring attempt once.']
+        if capabilities := self.spec.get('capabilities'):
+            reference['capabilities'] = capabilities
+            reference['unavailable'] = [*reference['unavailable'],
+                'Only event categories listed in capabilities.supported_event_types are captured in this recording. '
+                'Missing categories are unavailable, not observed zero counts.']
+        return reference
+
     def history(self, position):
         """Only already-observed events, never future fixture data."""
         return self.events[:position]
+
+    def playback_seconds(self, position):
+        return self.video_times[position - 1] if self.timed and position else 0.0
+
+    @property
+    def playback_duration(self):
+        return self.spec.get('playback', {}).get('duration_seconds', self.playback_seconds(len(self.events)))
+
+    def replay_delay(self, position, fallback):
+        if not self.timed or position >= len(self.events):
+            return fallback
+        return max(0.0, self.video_times[position] - self.playback_seconds(position))
 
     def next_event(self, position):
         return self.events[position] if position < len(self.events) else None

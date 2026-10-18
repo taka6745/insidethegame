@@ -1,21 +1,18 @@
 # Develop match data
 
-![Service boundary](../architecture.svg)
-
-**Own:** standard stat calculations/state, historical events, key moments and the GraphQL API for all of them.
-
 ```text
-                         → Cosmos DB: computed stats →
-Events → ETL processing                               ETL GraphQL → consumers
-                         → Azure SQL: event history  →
+GRF recording → ETL demo → history database
+                       → statistics database → GraphQL → backend / narrative stub
 ```
 
-**Start:** `./dev test azure` checks the independent messaging/SQL/DAB infrastructure. `http://localhost:15000/graphql` currently exposes only a tiny SQL fixture. No Stream Analytics job or Cosmos stat writer runs locally. For backend work, `./dev up backend` starts fake ETL/narrative services instead.
+The runnable adapter lives in `demo_etl/`. HTTP routes call `MatchService`; repositories own connections; `RecordingSource` owns provider keys. Keep the future Azure implementation separate and preserve these read contracts.
 
-**Build next:** event storage/migrations, Stream Analytics processing and Cosmos stat state; then the GraphQL routes for computed values and separately filtered/paginated history. Choose the GraphQL composition/adapter implementation for both stores; the existing SQL-only DAB setup is not the complete API. Publish minute/key-event notifications for the narrative engine.
+**Run:** `uvicorn demo_etl.app:from_env --factory --port 8000` from this folder. Set `ETL_HISTORY_DATABASE_URL`, `ETL_STATS_DATABASE_URL` to two local PostgreSQL databases and `DEMO_RECORDING_PATH` to the generated recording. Docker uses the same entry point. See root development commands for the integrated stack.
 
-**Prove it:** known events produce correct stored stats/history; test duplicates, late events, halftime and VAR corrections. Readable state must precede its update notification. Backend cards and agent answers reuse these computed values; they must not recreate standard counters from events.
+**Test:** install `requirements-test.txt`, then `PYTHONPATH=. pytest tests`. Set `ETL_TEST_HISTORY_DATABASE_URL` and `ETL_TEST_STATS_DATABASE_URL` to disposable PostgreSQL databases to include persistence/restart tests. Unit tests use repository doubles; they do not claim database coverage.
 
-**Still to agree:** how standard-stat refreshes are signalled and versioned. Event Hubs remains the custom-calculation event source; fetching standard values is a separate GraphQL operation. See [contracts](../../local/contracts.md).
+**Inspect:** history DB views `raw_recording_events` (unaltered source JSON), `raw_event_history` (observed canonical deliveries); stats DB view `standard_stats` (per snapshot/team/metric). Full recordings are stored once. History deliveries are stored once per run; snapshots retain watermarks, not duplicate event arrays.
 
-**Azure:** Event Hubs, Stream Analytics, Cosmos DB, Azure SQL, Service Bus and a GraphQL API on Container Apps. ETL owns its ASA job, event-time policy and cloud validation. Terraform still needs the ETL-specific Cosmos resources.
+**Publication:** history commits first, then the separately stored projection. No success is returned until both exist. A failed second write is repaired by retrying the same immutable snapshot; reads fail closed while incomplete. The demo recomputes small match projections during ingestion, never on standard-stat reads. It is not a distributed stream-processing implementation.
+
+**Production:** Azure SQL history, Cosmos stat state, Event Hubs ingestion and Stream Analytics aggregation remain the planned adapters. Preserve revision/tombstone handling and readable-state-before-notification. The metadata cursor bridge is explicitly local; it does not replace production brokers. No cloud apply or scheduled automation is part of this setup.

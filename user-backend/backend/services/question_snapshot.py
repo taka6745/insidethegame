@@ -37,8 +37,11 @@ class LabSnapshotProvider:
                 recording_hash=lab.source.fingerprint, cursor=lab.position,
                 clock_seconds=latest.match_time_seconds if latest else None,
                 period=latest.period if latest else None, captured_at=datetime.now(timezone.utc).isoformat())
+            if lab.status == 'finished' and lab.source.spec.get('playback'):
+                snapshot.clock_seconds = lab.source.spec['playback']['football_duration_seconds']
+                snapshot.period = 2
             payload = SnapshotInput(snapshot=snapshot, events=events, teams=description['teams'],
-                players=description['players'], data_reference=lab.source.adapter.data_reference())
+                players=description['players'], data_reference=lab.source.data_reference())
             data = payload.model_dump(mode='json')
             data['snapshot'].pop('id'); data['snapshot'].pop('captured_at')
             snapshot.id = hashlib.sha256(json.dumps(data, sort_keys=True, separators=(',', ':')).encode()).hexdigest()

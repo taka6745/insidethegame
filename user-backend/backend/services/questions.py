@@ -69,7 +69,8 @@ class QuestionService:
             raise RuleError('question_busy','Please wait for the current answer.',409)
         try:
             async with asyncio.timeout(self.timeout):
-                await asyncio.gather(self.match_data.capture(payload), self.narratives.capture(payload))
+                await self.match_data.capture(payload)
+                await self.narratives.capture(payload)
                 stats, compact = await asyncio.gather(self.match_data.stats(payload.snapshot), self.narratives.compact(payload.snapshot))
                 profile = next(p for p in await asyncio.to_thread(self.repository.profiles) if p['id'] == row['profile_id'])
                 profile = {**profile, **(row.get('audience') or {})}

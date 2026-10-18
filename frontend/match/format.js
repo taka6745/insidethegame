@@ -15,6 +15,9 @@ export function number(value) {
   if (value === null || value === undefined) return "—";
   return String(value);
 }
+export function statValue(card) {
+  return number(card.value) + (card.value != null && card.unit === "%" ? "%" : "");
+}
 export function eventLabel(event) {
   const names = {
     shot: "Shot",

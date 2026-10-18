@@ -4,13 +4,13 @@
 ./dev up backend
 ```
 
-Open **http://localhost:18020/** for the match viewer, or **http://localhost:18020/lab/** for the removable filter lab. Docker provides nginx, the backend, Postgres and separate fake upstream services. No Azure account is needed. The default fixture agent works without a model account; [optional local LLM](../../user-backend/docs/local-llm.md) enables flexible questions.
+Open **http://localhost:18020/** for the match viewer, or **http://localhost:18020/lab/** for the removable filter lab. Docker provides nginx, the backend, Postgres, standalone recorded-match ETL and the narrative stub. No Azure account is needed. The default fixture agent works without a model account; [optional local LLM](../../user-backend/docs/local-llm.md) enables flexible questions.
 
 ## Match viewer
 
-A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Choose a team and viewer style in the header, start the synthetic replay, and watch the match state, insights and five compact statistics. All 12 combinations are selectable. Changes preserve chat and pins, and persist for the current demo identity and match run. Raw events are shown only in the developer lab. Insights displays [authored narrative fixtures](../../user-backend/fixtures/viewer-narratives.md) from the mock upstream without rewriting them. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
+A fresh database starts with the committed synthetic Chelsea–Manchester United GRF recording. Existing runs are preserved; `./dev reset backend` explicitly loads a fresh run from ETL. Choose a team and viewer style in the header, start the synthetic replay, and watch the match state, insights and five compact statistics. All 12 combinations are selectable. Changes preserve chat and pins, and persist for the current demo identity and match run. Raw events are shown only in the developer lab. Insights displays [144 manually authored narratives](../../narrative-engine/fixtures/README.md) from the narrative service without rewriting them: one version per bucket for each of the twelve video minutes, released only after the matching events. Neutral recap tiers remain available separately for questions. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
 
-Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional simulator excerpt is illustrative and separate from the Chelsea–United events. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication. The viewer retains its existing demo identity internally; the audience controls edit its match preference. Connected audiences enable their combinations in the backend catalogue; unused combinations stay stored but disabled. The narrative engine reads those generation targets before authoring.
+Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional twelve-minute GRF video is aligned to the Chelsea–United events, with six video minutes per half and a displayed 90-minute football clock. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication. The viewer retains its existing demo identity internally; the audience controls edit its match preference. Connected audiences enable their combinations in the backend catalogue; unused combinations stay stored but disabled. The narrative stub reads those targets to select existing authored versions; the future generator will use them before authoring.
 
 The browser talks only to the user backend. Static modules are independently cacheable; the viewer uses one WebSocket for match updates and HTTP for deliberate actions/questions. Connection recovery uses a fresh authoritative snapshot. It does not run an LLM loop, calculate statistics, or read an upstream database.
 
@@ -27,7 +27,7 @@ cd frontend
 npm test
 ```
 
-Node 20+ is sufficient; the application has no bundled framework dependency. Run the [icon harness](../assets/README.md) separately. Backend regression/integration checks use `./dev test backend` and deliberately reset fixtures.
+Node 20+ is sufficient; the application has no bundled framework dependency. Run the [icon harness](../assets/README.md) separately. Backend regression/integration checks use `./dev test backend`: isolated tests use fixture doubles, and the live checkpoint check leaves the active replay position unchanged. Separate lab smoke tests can still reset shared state.
 
 Browser acceptance: team/style changes, replay, current bucket cards/backlog, a question while updates continue, explicit Track/Untrack, refresh, takeover, disconnection, keyboard controls and narrow mobile layout. Model/event content must stay text, never executable HTML. [Question contract](../../user-backend/docs/question-agent.md) · [Design and research](design-references.md).
 
@@ -53,16 +53,16 @@ HTML revalidates; a build places related JS/CSS under one content hash and cache
 
 Run `node frontend/benchmarks/client.mjs` from the repository root for opt-in static transfer and bounded state-update checks. This does not measure DOM rendering, network fan-out or viewer capacity.
 
-## Optional simulator footage
+## Optional aligned footage
 
-Supply a local H.264 MP4 without adding it to Git or the Docker image:
+`./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-v2/match.mp4` if it exists. The video is ignored, not downloaded on setup, and not included in the image or Git. To use the matching MP4 stored elsewhere:
 
 ```sh
-DEMO_VIDEO_PATH=/absolute/path/to/simulator.mp4 docker compose \
-  --env-file local/env.defaults -f local/compose.yaml -f local/compose.media.yaml \
-  --profile backend up -d --no-deps frontend
+DEMO_VIDEO_PATH=/absolute/path/to/match.mp4 ./dev up backend
 ```
 
-Run from the repository root. The read-only mount serves `/media/simulator.mp4` directly through nginx with byte-range support. The footage loops silently with no seeking UI; Click the player or use Enter/Space to toggle playback; this only affects the illustrative footage, not fixture events. There are no video overlay buttons or labels. Reduced motion starts paused. This optional adapter (`match/video.js`) does not control the shared fixture replay. Removing the mount preserves the data-only demo.
+Run from the repository root. The read-only mount serves `/media/simulator.mp4` directly through nginx with byte-range support. Use the MP4 packaged with the same [GRF recording](../../data-generation/docs/grf-demo.md); an arbitrary video will not align with its events.
 
-The current local excerpt comes from an existing Google Research Football simulation (10:00–13:00 of the saved recording). It is **not Chelsea–United footage** and is not synchronized with the synthetic fixture. The user approved this temporary visual stand-in. Matching footage/event timing remains to be connected; production video would use a media delivery service/CDN, not user-backend fan-out.
+The backend's shared replay clock drives `match/video.js`. Aligned footage starts/resumes with replay, corrects drift on new clock anchors, pauses on disconnect and stops at full-time. It does not loop or allow independent seeking. Browser autoplay restrictions may require a click or Enter/Space. Removing the mount preserves the data-only demo and shows the unavailable-player state. Rewind, clips and per-viewer delayed playback remain phase 2.
+
+The recording is simulated football with illustrative named lineups and generic abilities, not an actual Premier League fixture. Production footage should use a media delivery service/CDN, not user-backend fan-out.

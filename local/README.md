@@ -9,17 +9,19 @@ First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start co
 | Dependency | Local implementation | Host address |
 | --- | --- | --- |
 | User databases | PostgreSQL 16, `accounts` + `matchapp` | `localhost:15432` |
-| Narrative storage | Microsoft Cosmos vNext emulator | `http://localhost:18081` |
+| Cosmos infrastructure check (base) | Microsoft Cosmos vNext emulator | `http://localhost:18081` |
 | Cosmos explorer | Emulator UI | `http://localhost:11234` |
-| Match events | Microsoft Event Hubs emulator | AMQP `localhost:15672` |
-| Notifications | Microsoft Service Bus emulator | AMQP `localhost:15673` |
-| Match history | SQL Server 2022 Developer | `localhost:11433` |
-| Match GraphQL | Real Data API builder | `http://localhost:15000/graphql` |
+| Match-event protocol check (`azure` profile) | Microsoft Event Hubs emulator | AMQP `localhost:15672` |
+| Notification protocol check (`azure` profile) | Microsoft Service Bus emulator | AMQP `localhost:15673` |
+| SQL infrastructure check (`azure` profile) | SQL Server 2022 Developer | `localhost:11433` |
+| SQL GraphQL check (`azure` profile) | Real Data API builder | `http://localhost:15000/graphql` |
 | User backend (`backend` profile) | FastAPI + WebSocket harness | `http://localhost:18000/docs` |
-| Fake ETL (`backend` profile) | Synthetic events/history/stats | `http://localhost:18010/graphql` |
-| Fake narrative (`backend` profile) | Prewritten bucket history | `http://localhost:18011/graphql` |
+| Demo ETL (`backend` profile) | Recorded GRF events + calculated stats | `http://localhost:18010/graphql` |
+| ETL databases (`backend` profile) | PostgreSQL `etl_history` + `etl_stats` | `localhost:15432` |
+| Narrative stub (`backend` profile) | 144 authored narratives + neutral recap archive; own SQLite volume | `http://localhost:18011/graphql` |
+| Match viewer (`backend` profile) | nginx + optional aligned video | `http://localhost:18020/` |
 
-Inside Docker use service names and native ports: `postgres:5432`, `cosmos:8081`, `eventhubs:5672`, `servicebus:5672`, `sql:1433`, `graphql:5000`. Example SDK settings are in [settings.py](settings.py); all credentials there are **public local dummy values**, never cloud credentials. Cosmos uses HTTP for local Python development. Host clients must use the mapped ports above.
+Inside Docker use service names and native ports: `postgres:5432`, `etl:8000`, `narrative:8000`, `backend:8000`, `cosmos:8081`, `eventhubs:5672`, `servicebus:5672`, `sql:1433`, `graphql:5000`. Example SDK settings are in [settings.py](settings.py); all credentials there are **public local dummy values**, never cloud credentials. Cosmos uses HTTP for local Python development. Host clients must use the mapped ports above.
 
 Running your application directly on your laptop? Copy the relevant values from [connections.env.example](connections.env.example) into that service's ignored `.env`. The file is not automatically loaded; your application's config loader owns that. GraphQL example:
 
@@ -33,9 +35,11 @@ Only loopback ports are published. Existing projects on ports 3000, 5432 and 456
 
 ## What tests prove
 
-`./dev up backend` builds the API and separate fake upstream services, then runs the real-Postgres test suite and a network smoke test. `./dev test backend` repeats those checks. `./dev reset backend` clears synthetic upstream state while keeping database preferences/pins; `./dev replay backend` streams the [Opta-inspired scenario](../user-backend/fixtures/README.md). [Backend walkthrough](../user-backend/docs/development.md).
+`./dev up backend` builds the backend, standalone ETL and narrative stub, then runs the real-Postgres backend suite and a cross-service checkpoint check. `./dev test backend` repeats those checks without resetting the active replay. The checkpoint check reads history, stats and neutral recaps at selected points of the committed recording; it does not test production brokers or play the video. [Backend walkthrough](../user-backend/docs/development.md).
 
-This profile uses lightweight HTTP notifications and fake GraphQL, not the Azure emulators below. It needs no cloud account or emulator licence acceptance. It does not validate production broker consumers.
+`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). Its events, measured possession and optional video share a timeline. `./dev` mounts `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when present, or accepts an explicit `DEMO_VIDEO_PATH`. Media stays ignored and is not downloaded by setup; without it, the event/stat/narrative demo still runs.
+
+This profile uses metadata HTTP checkpoints and real GraphQL endpoints backed by demo repositories, not the Azure emulators below. ETL owns PostgreSQL raw history and standard-stat projections; the narrative service owns a SQLite archive and 144 manually authored bucket versions. Older backend fixtures remain isolated test doubles. It needs no cloud account or emulator licence acceptance. It does not validate production broker consumers.
 
 `./dev test`: three demo profiles, two Postgres databases, Cosmos document write/read/delete. Creates narrative containers if absent.
 
@@ -43,7 +47,7 @@ This profile uses lightweight HTTP notifications and fake GraphQL, not the Azure
 
 `./dev replay`: publishes the three tiny, hand-authored synthetic events **with their original timestamps and IDs**. It does not run at match speed or rebase time. It is useful for consumer development, not a Stream Analytics event-time test. The full replay tool belongs to `data-generation/`.
 
-SQL fixture insertion is explicit test setup, **not an implementation of ETL**. Computed stats, the key-event ledger and narrative GraphQL are still application work.
+The Azure-profile SQL fixture insertion is an infrastructure check, **not the demo ETL**. The separate backend profile implements recorded-match history, standard stats and narrative GraphQL. Azure SQL/Cosmos writers, Stream Analytics and production broker ingestion remain planned.
 
 ## Machine and troubleshooting
 
@@ -53,7 +57,7 @@ Allow roughly 8–12 GB Docker memory and several GB of free disk for the full s
 - `./dev logs eventhubs` / `./dev logs servicebus`: diagnose emulator configuration.
 - `./dev test azure` waits for dependencies, then tests their protocols.
 - Ports busy: put personal changes in ignored `local/compose.override.yaml`; `./dev` loads it automatically. Use Compose's `!override` tag to replace a port list rather than append to it (Compose 2.24.4+). Docker-to-Docker settings remain unchanged.
-- `./dev down` preserves SQL/Postgres volumes. Cosmos and messaging state are disposable; rerun tests/seeding after recreation.
+- `./dev down` preserves SQL/Postgres and narrative SQLite volumes. Cosmos and messaging state are disposable; rerun tests/seeding after recreation.
 - Postgres init SQL runs only on a fresh volume. Later application schema changes need migrations.
 
 Dependency image digests are pinned to the tested builds, including multi-architecture manifests. Upgrade them deliberately and rerun `./dev test azure`. Direct Python tooling dependencies are pinned in `requirements.txt`. Docker must be able to reach public image/package registries on first setup; this is account-free, not an offline installer.
@@ -64,7 +68,7 @@ Running `ACCEPT_EULA=Y ./dev up azure` accepts the [Event Hubs emulator terms](h
 
 ## Coverage limits
 
-Microsoft emulators exercise application data protocols, not Azure provisioning, production durability, throughput or security. Stream Analytics isn't supplied here; the ETL service owns its implementation and cloud validation. Foundry models are not emulated. The separate `backend` profile runs the match viewer, question/filter agents and fake upstream services. Arbitrary generated-code isolation remains planned.
+Microsoft emulators exercise application data protocols, not Azure provisioning, production durability, throughput or security. Stream Analytics isn't supplied here; the ETL service owns its implementation and cloud validation. Foundry models are not emulated. The separate `backend` profile runs the match viewer, question/filter agents, recorded-match ETL and authored narrative stub. Arbitrary generated-code isolation remains planned.
 
 **LocalStack Azure is optional, not installed:** it [requires an auth token](https://docs.localstack.cloud/azure/getting-started/auth-token/) and [supports Terraform](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/). The Microsoft emulators used here have no general Azure Resource Manager endpoint, so Terraform doesn't create their resources; checked-in JSON/SQL does.
 

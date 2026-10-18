@@ -1,0 +1,212 @@
+"""Capture an installed, instrumented GRF runtime without importing archived scripts."""
+
+import argparse
+import gzip
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+from .roster import TEAMS, players
+from .telemetry import TelemetryAdapter
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seconds", type=int, default=720)
+    parser.add_argument("--no-video", action="store_true")
+    args = parser.parse_args()
+    args.output.mkdir(parents=True, exist_ok=False)
+    os.environ.setdefault("GRF_HIDDEN_WINDOW", "1")
+    import gfootball.scenarios
+    from gfootball.env import create_environment
+    from gfootball.env.football_action_set import action_builtin_ai
+
+    gfootball.scenarios.__path__.append(str(Path(__file__).parent))
+    env = create_environment(
+        env_name="scenario",
+        representation="raw",
+        number_of_left_players_agent_controls=1,
+        number_of_right_players_agent_controls=1,
+        render=not args.no_video,
+        write_video=False,
+        other_config_options={
+            "action_set": "v2",
+            "game_engine_random_seed": args.seed,
+            "real_time": False,
+            "physics_steps_per_frame": 4,
+            "render_resolution_x": 1280,
+            "render_resolution_y": 720,
+            "match_duration": 4.75,
+        },
+    )
+    native = env.unwrapped._env._env
+    native.drain_telemetry()
+    native.telemetry_enabled = True
+    for left in (True, False):
+        native.perform_action(action_builtin_ai._backend_action, left, 0)
+    adapter = TelemetryAdapter()
+    encoder = None
+    if not args.no_video:
+        encoder = subprocess.Popen(
+            [
+                "ffmpeg",
+                "-hide_banner",
+                "-loglevel",
+                "error",
+                "-nostdin",
+                "-f",
+                "rawvideo",
+                "-pixel_format",
+                "rgb24",
+                "-video_size",
+                "1280x720",
+                "-framerate",
+                "25",
+                "-i",
+                "pipe:0",
+                "-vf",
+                "vflip",
+                "-an",
+                "-c:v",
+                "h264_videotoolbox",
+                "-b:v",
+                "5M",
+                "-pix_fmt",
+                "yuv420p",
+                "-movflags",
+                "+faststart",
+                str(args.output / "native.mp4"),
+            ],
+            stdin=subprocess.PIPE,
+        )
+    frames, halfway, last, started = 0, None, None, time.monotonic()
+    completed = False
+    try:
+        with (
+            gzip.open(args.output / "raw.jsonl.gz", "wt", compresslevel=1) as raw_file,
+            gzip.open(
+                args.output / "frames.jsonl.gz", "wt", compresslevel=1
+            ) as frame_file,
+        ):
+            while True:
+                native.step()
+                video = frames / 25
+                for raw in native.drain_telemetry():
+                    row = json.loads(raw)
+                    raw_file.write(
+                        json.dumps(
+                            {**row, "capture_video_seconds": video},
+                            separators=(",", ":"),
+                        )
+                        + "\n"
+                    )
+                    adapter.consume(row, video)
+                    if row["kind"] == "frame":
+                        last = row
+                        if row["phase"] >= 2 and halfway is None:
+                            halfway = video
+                if encoder:
+                    encoder.stdin.write(native.get_frame())
+                frame_file.write(
+                    json.dumps(
+                        {
+                            "video_seconds": video,
+                            "match_ms": last["match_ms"],
+                            "phase": last["phase"],
+                            "score": last["score"],
+                        }
+                    )
+                    + "\n"
+                )
+                frames += 1
+                if frames % 250 == 0:
+                    progress = {
+                        "video_seconds": frames / 25,
+                        "match_seconds": last["match_ms"] / 1000,
+                        "score": last["score"],
+                        "render_fps": round(frames / (time.monotonic() - started), 1),
+                    }
+                    (args.output / "progress.json").write_text(json.dumps(progress))
+                    print(json.dumps(progress), flush=True)
+                if last["match_ms"] >= args.seconds * 1000:
+                    completed = True
+                    break
+                if time.monotonic() - started > 2400:
+                    raise TimeoutError(
+                        "Capture exceeded 40 minutes; partial outputs retained"
+                    )
+        adapter.finish_pass(last, frames / 25)
+        adapter.flush(last, frames / 25)
+    finally:
+        if encoder:
+            encoder.stdin.close()
+            if encoder.wait(timeout=60):
+                completed = False
+        env.close()
+    if not completed:
+        raise RuntimeError("Incomplete recording")
+    recording = {
+        "schema_version": 1,
+        "synthetic": True,
+        "match_id": "product-demo-match",
+        "description": "GRF simulated Chelsea–Manchester United. Illustrative real-name lineups; not an actual match.",
+        "teams": TEAMS,
+        "players": players(),
+        "events": adapter.canonical_events(),
+        "presets": [],
+        "possession_samples": adapter.possession_samples,
+        "capabilities": {
+            "supported_event_types": ["touch", "pass", "shot", "goal"],
+            "shot_outcomes": False,
+            "distance_event_types": ["pass"],
+            "body_parts": False,
+            "shots_include_scoring_attempts": False,
+            "possession_basis": "confirmed_native_ownership",
+        },
+        "provenance": {
+            "generator": "data-generation/grf_demo/capture.py",
+            "seed": args.seed,
+            "source": "Google Research Football instrumented native runtime",
+            "source_license": "Apache-2.0 / Gameplay Football Unlicense",
+            "native_video_seconds": frames / 25,
+            "native_halftime_video_seconds": halfway,
+            "active_play_seconds": args.seconds,
+            "score": last["score"],
+            "clock_scale": 7.5,
+            "raw_sha256": hashlib.sha256(
+                (args.output / "raw.jsonl.gz").read_bytes()
+            ).hexdigest(),
+            "limitations": [
+                "Synthetic simulation, not official Opta data or an actual fixture.",
+                "Names map simulator slots; player abilities are generic.",
+                "Shots are executed native shot contacts; headed contacts are touches, not certified shots.",
+                "Pass completion means first subsequent intentional teammate touch; event time is resolution.",
+                "Possession measures confirmed native ownership ticks; loose-ball and stoppage time excluded.",
+                "No inferred xG, fouls, cards, tackles, offsides, corners or on-target classifications.",
+            ],
+        },
+    }
+    (args.output / "recording.native.json").write_text(
+        json.dumps(recording, separators=(",", ":"))
+    )
+    print(
+        json.dumps(
+            {
+                "completed": True,
+                "events": len(adapter.events),
+                "score": last["score"],
+                "seconds": frames / 25,
+                "halftime": halfway,
+            }
+        ),
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    main()

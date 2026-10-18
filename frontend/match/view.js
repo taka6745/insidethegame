@@ -5,6 +5,7 @@ import {
   clock,
   title,
   number,
+  statValue,
   replayControls,
 } from "./format.js";
 
@@ -22,6 +23,7 @@ export class MatchView {
     if (element.textContent !== value) element.textContent = value;
   }
   connection(state) {
+    if (state !== 'live') this.video?.disconnect();
     this.audience.connection(state === "live");
     this.document.body.dataset.connection = state;
     const labels = {
@@ -46,6 +48,7 @@ export class MatchView {
   render(snapshot) {
     this.audience.render(snapshot);
     const { match, cards } = snapshot;
+    this.video?.sync(match);
     this.document.body.dataset.matchStatus = match.status;
     const teams = match.teams || [];
     for (const [index, side] of ["home", "away"].entries()) {
@@ -123,7 +126,7 @@ export class MatchView {
     if (existing && existing.className === className) {
       existing.querySelector(".stat-label").textContent = card.label;
       existing.querySelector(".stat-label").title = card.label;
-      existing.querySelector(".stat-value").textContent = number(card.value);
+      existing.querySelector(".stat-value").textContent = statValue(card);
       const button = existing.querySelector("button");
       if (button)
         button.setAttribute("aria-label", `Stop tracking ${card.label}`);
@@ -137,7 +140,7 @@ export class MatchView {
     );
     element.append(
       node(this.document, "span", card.label, "stat-label"),
-      node(this.document, "strong", number(card.value), "stat-value"),
+      node(this.document, "strong", statValue(card), "stat-value"),
     );
     element.querySelector(".stat-label").title = card.label;
     if (pinned) {
