@@ -23,18 +23,21 @@ class JsonModel(Protocol):
 
 class LocalJsonModel:
     def __init__(self, base_url: str, model: str, api_key: str = "", timeout: float = 120,
-                 transport: httpx.AsyncBaseTransport | None = None, *, name="development_agent"):
+                 transport: httpx.AsyncBaseTransport | None = None, *, name="development_agent", max_output_tokens=3000):
+        if not 256 <= max_output_tokens <= 16000:
+            raise ValueError("Model output budget must be between 256 and 16000 tokens")
+        self.max_output_tokens = max_output_tokens
         self.base_url = base_url.rstrip("/")
         self.model, self.api_key = model, api_key
         self.timeout, self.transport, self.name = timeout, transport, name
 
     @classmethod
-    def from_env(cls, *, name="development_agent"):
+    def from_env(cls, *, name="development_agent", max_output_tokens=3000):
         url, model = os.getenv("LOCAL_LLM_BASE_URL"), os.getenv("LOCAL_LLM_MODEL")
         if not url or not model:
             raise ModelError("Configure LOCAL_LLM_BASE_URL and LOCAL_LLM_MODEL for local model mode")
         return cls(url, model, os.getenv("LOCAL_LLM_API_KEY", ""),
-                   float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "120")), name=name)
+                   float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "120")), name=name, max_output_tokens=max_output_tokens)
 
     async def complete(self, system: str, payload: dict, *, response_schema: dict | None = None) -> dict:
         try:
@@ -43,7 +46,7 @@ class LocalJsonModel:
                                        http_client=http, max_retries=0, timeout=self.timeout) as client:
                     agent = Agent(name=self.name, instructions=system,
                                   client=OpenAIChatCompletionClient(model=self.model, async_client=client),
-                                  default_options={"temperature": 0, "max_tokens": 3000})
+                                  default_options={"temperature": 0, "max_tokens": self.max_output_tokens})
                     # Each call is stateless. The workflow carries only the goal and
                     # validation feedback; no conversation is shared between viewers.
                     options = {"response_format": response_schema} if response_schema is not None else {}

@@ -52,10 +52,14 @@ For code changes rerun `./dev up backend` to rebuild. `./dev logs backend` shows
 
 ## Replace the fixtures next
 
-`backend/upstream.py` reads fake GraphQL. Fake services notify `/dev/events` and `/dev/narratives` over HTTP; **these are test bridges**, not Event Hubs or Service Bus adapters. Standard snapshots fetch ETL-computed values without downloading raw history or recalculating them. Only pinned custom fixture calculations request historical events; those still reload history per snapshot, so this does not prove the production incremental custom calculation path.
+`backend/upstream.py` reads fake GraphQL. Fake services notify `/dev/events` and `/dev/narratives` over HTTP; **these are test bridges**. The new neutral framing path has a separate Service Bus adapter. Standard snapshots fetch ETL-computed values without downloading raw history or recalculating them. Only pinned custom fixture calculations request historical events; those still reload history per snapshot, so this does not prove the production incremental custom calculation path.
 
 ETL owns Cosmos DB for standard stats and Azure SQL for event history. `FixtureServices.match_events()` is the separate historical query helper; an agent can use that route for investigation without duplicating standard stats. The fake services remain in-memory substitutes, not Cosmos/SQL integration.
 
-The separate filter lab implements incremental typed calculations and an optional local model adapter. Its persisted replay prefix provides deterministic startup recovery; it is not an ETL/broker handoff implementation. Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for bucket narratives, GraphQL for history/stats. No user question calls the narrative generator. Production consumers, viewer integration, general question answering and any arbitrary-code executor remain next steps.
+The separate filter lab implements incremental typed calculations and an optional local model adapter. Its persisted replay prefix provides deterministic startup recovery; it is not an ETL/broker handoff implementation. Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for neutral narratives, GraphQL for history/stats. No user question calls the narrative generator. Production Event Hubs consumption, filter-lab viewer integration, general question answering and any arbitrary-code executor remain next steps.
 
 [Fixture format and moments](../fixtures/README.md) · [Testing guide](testing.md) · [Full design](../architecture.md)
+
+## Shared narrative framing
+
+[Database-defined layers and options](narrative-framing.md) now frame neutral upstream narratives through Microsoft Agent Framework. The local stack enables a deterministic copy-only fixture by default. `./dev test backend` also checks neutral HTTP ingress and shared WebSocket delivery. An optional Service Bus receiver uses the same service. The older `/dev/narratives` bucket fixture remains only for stat-selection regression coverage.

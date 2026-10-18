@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from .domain import MatchEvent, Narrative, RuleError
 from .fixtures import FixtureFeed
+from .models.narratives import NeutralNarrative
 
 
 def normalise(raw, match_id):
@@ -32,7 +33,8 @@ def create_fake(role, notify_url=None):
     app = FastAPI(title=f"Synthetic {role} fixture service")
     feed = FixtureFeed("synthetic-demo", 3)
     app.state.feed = feed
-    fields = "matchEvents(matchId: ID!): JSON matchState(matchId: ID!, team: String!): JSON" if role == "etl" else "context(matchId: ID!, bucket: String!): JSON"
+    neutral = {}
+    fields = "matchEvents(matchId: ID!): JSON matchState(matchId: ID!, team: String!): JSON" if role == "etl" else "context(matchId: ID!, bucket: String!): JSON neutralNarratives(matchId: ID!, after: String): JSON"
     schema = build_schema("scalar JSON\ntype Query {" + fields + "}")
     schema.type_map["JSON"].serialize = lambda value: value
 
@@ -55,6 +57,27 @@ def create_fake(role, notify_url=None):
                     "stats": {key: feed.value("default", key, team) for key in ("goals", "cards", "shots", "possession")}}
         schema.query_type.fields["matchState"].resolve = read_state
 
+    if role == 'narrative':
+        def read_neutral(root, info, matchId, after=None):
+            if matchId != feed.match_id:
+                raise ValueError('Unknown match')
+            start = int(after or 0)
+            items = sorted(neutral.values(), key=lambda n: (n['minute'], n['id'], n['revision']))
+            page = items[start:start + 50]
+            return {'items': page, 'next_cursor': str(start + 50) if start + 50 < len(items) else None}
+        schema.query_type.fields['neutralNarratives'].resolve = read_neutral
+
+        @app.post('/neutral-narratives', status_code=202)
+        async def neutral_narrative(body: NeutralNarrative):
+            if body.match_id != feed.match_id:
+                raise HTTPException(422, 'Unknown match')
+            key = (body.id, body.revision)
+            if key in neutral and neutral[key] != body.model_dump():
+                raise HTTPException(422, 'Changed content requires a new revision')
+            neutral[key] = body.model_dump()
+            await notify('/dev/neutral-narratives', body.model_dump())
+            return {'accepted': True, 'synthetic': True}
+
     @app.get("/health")
     async def health():
         return {"status": "ok", "role": role, "synthetic": True}
@@ -66,7 +89,7 @@ def create_fake(role, notify_url=None):
     async def notify(path, payload):
         if notify_url:
             try:
-                async with httpx.AsyncClient(timeout=10) as client:
+                async with httpx.AsyncClient(timeout=900) as client:
                     response = await client.post(notify_url + path, json=payload)
                     response.raise_for_status()
             except httpx.HTTPError as exc:
