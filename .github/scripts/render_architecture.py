@@ -67,14 +67,13 @@ class Diagram:
 # Root overview: five owners, with live and historical data paths separated.
 d=Diagram('architecture.svg','Five services. One live match.','Shared match intelligence; personal questions and stat cards. No narrative workflow per viewer.',1440,760)
 xs=[36,320,604,888,1172];w=232
-items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Stats + history · GraphQL'],'stream',BLUE),('Narrative engine',['12 audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
+items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Stats + history · GraphQL'],'stream',BLUE),('Narrative engine',['Neutral match insights'],'agent',PURPLE),('User backend',['Buckets · questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
 for x,(title,notes,ic,col) in zip(xs,items):d.card(x,245,w,205,title,notes,ic,col)
 for i,label in enumerate(['Event Hubs','Facts + triggers','Narratives','Live UI']):
  d.arrow([(xs[i]+w,345),(xs[i+1],345)],label,(xs[i]+w+xs[i+1])/2,320,dash=i==2)
 d.arrow([(436,245),(436,175),(1004,175),(1004,245)],'Live · Event Hubs',720,168,True)
 d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'Stats + history · GraphQL',720,503)
 d.text('Narratives: Service Bus live · GraphQL history',36,575,16,PURPLE)
-d.arrow([(950,245),(950,214),(790,214),(790,245)],'Bucket presence',870,207,True)
 
 d.note('PHASE 2 · Jev · clips · rewind',663,GREY)
 d.save()
@@ -112,11 +111,11 @@ d.arrow([(430,500),(430,590)],'Triggers',475,555,dash=True)
 d.note('Backend selects and delivers standard stats. ETL calculates them.',755)
 d.save()
 
-# Narrative shared memory and per-bucket authors.
+# Shared neutral author; audience framing belongs to the user backend.
 d=Diagram('narrative-engine/architecture.svg','Narrative engine','Python on Azure Container Apps · Microsoft Agent Framework · Foundry model calls',1440,850)
 d.card(36,180,250,180,'Match inputs',['Facts + triggers'],'graphql')
 d.card(366,180,290,180,'Shared context',['Summarise → compress'],'agent',PURPLE)
-d.card(736,180,290,180,'Narrative author',['Up to 12 buckets'],'foundry',PURPLE)
+d.card(736,180,290,180,'Narrative author',['Neutral source + evidence'],'foundry',PURPLE)
 d.card(1106,180,298,180,'Publish',['Narratives + stat choices'],'bus')
 d.arrow([(286,270),(366,270)])
 d.arrow([(656,270),(736,270)])
@@ -188,18 +187,20 @@ d.arrow([(1040,555),(1040,850)],'Pin / unpin',1084,655)
 d.arrow([(560,925),(925,925)],'Custom values',740,912)
 d.arrow([(1155,925),(1185,925)])
 d.arrow([(1360,925),(1430,925)])
-# Shared narratives stay outside the user backend.
+# Neutral sources stay outside; bucket framing is shared within the backend.
 d.rect(615,1170,745,140,'#f5f0ff','#b6a0df')
 d.icon('agent',640,1210,55)
 d.text('Narrative engine',720,1213,23,PURPLE,True)
-d.text('Bucket narratives · ranked stat IDs',720,1250,17,MUTED)
+d.text('Neutral narratives · ranked stat IDs',720,1250,17,MUTED)
 d.text('Service Bus live · GraphQL history',720,1280,15,MUTED)
 d.arrow([(1040,1170),(1040,995)],'Stat IDs',1075,1150)
-d.arrow([(1270,1170),(1270,995)],'Narratives',1310,1150)
+d.card(1120,1040,240,100,'Bucket framing',['DB layers · shared versions'],color=PURPLE)
+d.arrow([(1270,1170),(1270,1140)])
+d.arrow([(1270,1040),(1270,995)])
 # Future features, visually secondary.
 for x,title in [(355,'Playback state'),(555,'Clip resolver'),(755,'Jev follows')]:
  d.card(x,1040,175,70,title,(),color=GREY,dash=True)
-d.text('PHASE 2',1185,1080,14,GREY,True)
+d.text('PHASE 2',960,1080,14,GREY,True)
 d.note('Standard stats: fetch → select → deliver. Custom requests: query history → test → run.',1350)
 d.save()
 
@@ -261,3 +262,19 @@ d.text('PHASE 2',58,725,13,GREY,True)
 d.text('Clips · pause · rewind',58,752,17,GREY)
 d.save()
 print('Rendered overview, five service SVGs and custom-calculation detail.')
+
+# Current shared framing boundary; keep configuration and runtime paths visible.
+d=Diagram('user-backend/docs/narrative-framing.svg','One source. Shared perspectives.','Neutral upstream narratives become reusable audience variants. Database definitions control all available buckets.',1440,740)
+d.card(36,230,235,175,'Narrative engine',['Neutral facts + evidence'],'agent',PURPLE)
+d.card(380,230,270,175,'Bucket framing',['Microsoft Agent Framework'],'foundry',PURPLE)
+d.card(760,230,270,175,'Shared versions',['Once per bucket'],'postgres')
+d.card(1140,230,264,175,'Viewers',['Matching bucket'],'screen',GREEN)
+d.arrow([(271,320),(380,320)],'Service Bus',325,300)
+d.arrow([(650,320),(760,320)],'Batch',705,300)
+d.arrow([(1030,320),(1140,320)],'Live',1085,300)
+d.card(380,475,270,155,'Audience database',['Layers · options · descriptions'],'postgres')
+d.arrow([(515,475),(515,405)])
+d.card(760,475,270,155,'Demo controls',['Available combinations'])
+d.arrow([(760,550),(650,550)])
+d.text('12 buckets / 4 per batch = 3 model calls per insight',36,680,20,INK,True)
+d.save()

@@ -9,6 +9,7 @@ class FixtureServices(FixtureFeed):
     def __init__(self, match_id, slots, etl_url, narrative_url):
         super().__init__(match_id, slots)
         self.etl_url, self.narrative_url = etl_url, narrative_url
+        self.read_bucket_history = True
 
     @staticmethod
     def query(url, query, variables):
@@ -38,7 +39,8 @@ class FixtureServices(FixtureFeed):
                            {"id": self.match_id, "team": team})["matchState"]
         narrative = self.query(self.narrative_url,
             "query($id: ID!, $bucket: String!){context(matchId:$id,bucket:$bucket)}",
-            {"id": self.match_id, "bucket": bucket})["context"]
+            {"id": self.match_id, "bucket": bucket})["context"] if self.read_bucket_history else {
+                "stat_ids": self.defaults(bucket), "narratives": []}
         custom = {}
         if calculation_ids:
             # Only custom fixture pins need raw history. Standard stats are authoritative ETL values.

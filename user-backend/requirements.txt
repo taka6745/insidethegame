@@ -8,3 +8,4 @@ anyio==4.15.1
 agent-framework-core==1.22.0
 agent-framework-openai==1.17.0
 openai==2.54.0
+azure-servicebus==7.15.0

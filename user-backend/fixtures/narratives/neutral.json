@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "demo-pressure-1",
+  "revision": 1,
+  "match_id": "synthetic-demo",
+  "minute": 64,
+  "teams": {
+    "home": "Chelsea",
+    "away": "Manchester United"
+  },
+  "text": "Chelsea have had three shots in the last five minutes, but the score remains 1\u20131. Manchester United have not had a shot in that period.",
+  "evidence": [
+    "synthetic-shot-61",
+    "synthetic-shot-63",
+    "synthetic-shot-64"
+  ]
+}

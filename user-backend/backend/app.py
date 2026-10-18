@@ -1,7 +1,7 @@
 """Fixture-backed API with an optional Microsoft Agent Framework custom-stat lab."""
 import asyncio
 import os
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 from dataclasses import dataclass, field
 from uuid import UUID
 
@@ -42,7 +42,7 @@ class Peer:
             self.queue.put_nowait(message)
 
 
-def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None):
+def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narratives=None, narrative_connection=None):
     if not 1 <= slots <= 4:
         raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
     store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
@@ -53,11 +53,22 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
     @asynccontextmanager
     async def lifespan(app):
         await asyncio.to_thread(store.initialize)
+        if narratives:
+            await narratives.initialize()
         if lab:
             await lab.initialize()
+        consumer_task = None
+        if narratives and narrative_connection:
+            from .adapters.narratives import NarrativeBusConsumer
+            app.state.narrative_consumer = NarrativeBusConsumer(narrative_connection, narratives, notify_all)
+            consumer_task = asyncio.create_task(app.state.narrative_consumer.run())
         try:
             yield
         finally:
+            if consumer_task:
+                consumer_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await consumer_task
             if lab:
                 await lab.close()
 
@@ -79,7 +90,12 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
         view = await asyncio.to_thread(feed.view, bucket, state["team"], state["pins"])
         cards = [{"kind": kind, "id": key, "value": view["values"][kind][key]}
                  for kind, key in card_ids(view["defaults"], state["pins"], slots)]
-        return {"mode": "fixture", "synthetic": True, "match_id": match_id,
+        audience = None
+        if narratives:
+            selection = state.get('audience', {'team': state['team'], 'fan_style': state['fan_style']})
+            audience = await narratives.history(selection)
+            view['narratives'] = audience['narratives']
+        return {"mode": "fixture", "synthetic": True, "match_id": match_id, "audience": audience,
                 "profile_id": row["profile_id"], "bucket": bucket, "cards": cards,
                 "pins": state["pins"], "narratives": view["narratives"], "key_moments": view["key_moments"]}
 
@@ -90,6 +106,16 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
             except RuleError as exc:
                 peer.offer({"close": 4001} if exc.code == "session_replaced" else
                            {"type": "error", "code": exc.code, "detail": exc.message})
+
+    async def notify_all(reason):
+        for token in list(peers):
+            await notify(token, reason)
+
+    if narratives:
+        from .routes.narratives import narrative_router
+        app.include_router(narrative_router(narratives, notify_all, snapshot,
+                                            enable_dev_feed=enable_dev_feed))
+        app.state.narratives = narratives
 
     @app.get("/health")
     async def health():
@@ -119,7 +145,7 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
 
     @app.patch("/sessions/{token}/preferences")
     async def preferences(token: UUID, body: Preferences):
-        await asyncio.to_thread(store.change, token, match_id, lambda state: state.update(body.model_dump()))
+        await asyncio.to_thread(store.change, token, match_id, lambda state: (state.update(body.model_dump()), state.pop("audience", None)))
         await notify(token, "preferences_changed")
         return await snapshot(token)
 
@@ -233,5 +259,11 @@ def from_env():
     if os.environ.get("ENABLE_FILTER_LAB") == "1":
         from .lab_factory import create_filter_lab
         lab = create_filter_lab(store)
-    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab,
+    narratives = None
+    if os.environ.get('ENABLE_NARRATIVE_FRAMING') == '1':
+        from .narrative_factory import create_narrative_service
+        narratives = create_narrative_service(store, match_id)
+        feed.read_bucket_history = False
+    return create_app(store=store, feed=feed, narratives=narratives,
+                      narrative_connection=os.getenv('NARRATIVE_SERVICEBUS_CONNECTION_STRING'), match_id=match_id, slots=slots, lab=lab,
                       enable_dev_feed=os.environ.get("ENABLE_DEV_FEED") == "1")

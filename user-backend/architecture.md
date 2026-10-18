@@ -25,9 +25,9 @@ Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not pa
 | Component | Responsibility |
 | --- | --- |
 | Match event pipeline | Supply timestamped football events, computed stats and historical data. It does not execute viewer-generated stat functions. |
-| Neutral analysis/narrative engine | Independently analyse the match, produce bucket-targeted narrative variants, deduplicate narratives upstream and issue changes to bucket stat selections. |
+| Neutral analysis/narrative engine | Independently analyse the match, produce neutral narratives, deduplicate narratives upstream and issue changes to bucket stat selections. |
 | ETL GraphQL | Expose precomputed stats from ETL Cosmos DB and raw/key event history from ETL Azure SQL. The backend never connects directly to either database. |
-| Narrative GraphQL | Expose narrative history and current bucket selections; owned by the narrative service. |
+| Narrative GraphQL | Expose neutral narrative history; owned by the narrative service. |
 | Live feeds | Event Hubs supplies match events; Service Bus supplies new narratives and stat-selection instructions. |
 | Main user backend | Read demo profiles, resolve match preferences, answer questions, coordinate coding work, manage custom stats and sessions, and deliver updates to viewers. |
 | Isolated generated-code executor | Run generated Python/filter logic with a fixed library set and controlled access to read-only GraphQL. |
@@ -47,19 +47,17 @@ Narrative deduplication is explicitly outside this backend. Do not add a parent-
 - Restore saved chat and pinned stats after refresh/reconnection. Phase 1 resumes the live match; restoration of an earlier playback position belongs to Phase 2.
 - Work already started on an answer/calculation continues after disconnect and saves its result. Do not implement cancellation merely because the connection closed.
 
-## 4. The twelve buckets
+## 4. Configurable audience buckets
 
 `Team A / Team B / neutral` × `Analytical / Simple / Casual / Experienced`.
 
-These are the agreed viewing presets. Preserve the names; do not substitute other audience dimensions.
+These remain the seeded presets. Layers, option descriptions and available combinations now live in Postgres; extra dimensions can be added without rewriting the framing service.
 
 ### Narratives
 
-The narrative engine emits **up to twelve bucket-specific narrative versions** for an insight. It may emit fewer, such as four versions relevant only to one team's viewers. Each version already identifies its target bucket.
+The narrative engine now emits neutral sources. The backend frames each source for every enabled combination stored in its database, independent of viewer presence. The model receives semantic layer/option descriptions and produces bounded batches of reusable variants. This supersedes the earlier upstream bucket-authoring boundary.
 
-The user backend routes the supplied versions to the appropriate viewers. It does not generate the bucket wording or run one narrative agent/workflow per viewer.
-
-Mid-match joins and reconnects can retrieve the narrative backlog and current bucket configuration through GraphQL. The frontend has one tab for agent chat and another for the narrative feed, including its backlog.
+See [narrative framing](docs/narrative-framing.md) for the runnable connection, configuration and limits. Viewer questions never launch this workflow. Mid-match joins read persisted variants from Match App; neutral history remains owned by narrative GraphQL.
 
 ### Default stat cards
 
