@@ -208,6 +208,8 @@ def test_upstream_audience_style_and_period_are_preserved(store):
         a = client.get(f'/product/{analyst["session_token"]}').json()['snapshot']
         b = client.get(f'/product/{simple["session_token"]}').json()['snapshot']
         assert a['narratives'][-1]['text'] != b['narratives'][-1]['text']
+        assert a['narratives'] == [n for n in app.state.product.shared['narratives']
+                                   if 'chelsea:analytical' in n['buckets']]
         assert a['narratives'][-1]['period'] == b['narratives'][-1]['period'] == 2
         assert [c['id'] for c in a['cards']] == ['chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:goals', 'chelsea:cards']
         assert [c['id'] for c in b['cards']] == ['all:goals', 'all:cards', 'all:shots', 'all:corners', 'all:passes']
