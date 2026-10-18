@@ -34,3 +34,14 @@ Cosmos DB holds `contextBlocks` (coverage, summary, supersession and statistics 
 Persist narratives before publishing their Service Bus notification. Serve history through this service's GraphQL interface. Consumers use stable narrative IDs and sequence numbers to reconnect reliably; narrative deduplication belongs here rather than in the user backend.
 
 The three example prompt files remain unchanged. The board requests structured JSON for agent outputs, while the author prompt requests text only. Resolve that output contract, including stat-selection instructions, when implementation starts.
+
+## Open question: audience presence
+
+**Unresolved:** should the narrative engine generate all 12 buckets independently, or use audience-presence events from the user backend to generate only active buckets?
+
+Microservices can exchange events while remaining independently deployable. An asynchronous message still creates a contract and a dependency; it should not make match processing wait for the user backend.
+
+- **All 12 buckets:** removes the presence dependency and simplifies recovery, but spends model calls on audiences that may be absent.
+- **Optional presence events:** reduces unnecessary author calls. Define behaviour for missing, stale or delayed presence; generating all 12 is one possible fallback. Presence is a hint about demand, not a viewer prompt or a change to match facts.
+
+The current diagrams retain the presence arrow while this is open. No fallback has been selected or implemented. Viewer questions must never trigger the shared narrative workflow under either option.

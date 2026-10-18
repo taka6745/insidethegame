@@ -18,6 +18,8 @@ The demo has **one live match**, selectable profiles and one active session per 
 
 Each folder has a short service guide and a closer diagram. Azure products are dependencies of these services, not additional application folders.
 
+**Open question for later:** should the narrative engine generate all 12 buckets independently, or use optional audience-presence events from the user backend? [Dependency trade-off](narrative-engine/design-notes.md#open-question-audience-presence).
+
 [Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
 
 Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No deployment or CI is configured.
