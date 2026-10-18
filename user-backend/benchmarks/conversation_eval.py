@@ -27,6 +27,7 @@ async def evaluate_conversation(workflow, case, context, evaluate):
         turns.append({"prompt": prompt, "status": outcome.status,
             "seconds": round(time.perf_counter() - turn_start, 3),
             "model_calls": outcome.model_calls, "stage_seconds": outcome.stage_seconds,
+            "goal_failure_reasons": outcome.goal_failure_reasons,
             "question": outcome.message if outcome.status == "clarification" else None,
             "clarification": outcome.clarification.model_dump(mode="json") if outcome.clarification else None,
             "goal": outcome.goal.model_dump(mode="json") if outcome.goal else None,

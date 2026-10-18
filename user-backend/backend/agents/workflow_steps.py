@@ -26,6 +26,7 @@ class CodingRequest:
     goal_seconds: float = 0
     model_calls: int = 0
     coding_seconds: float = 0
+    goal_failure_reasons: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -48,6 +49,7 @@ class DefineGoal(Executor):
         context = dict(request.context)
         decision = unresolved_player(request.prompt, context)
         calls = 0
+        failures = []
         for attempt in range(0 if decision is not None else 2):
             try:
                 calls += int(hasattr(self.agent, "model"))
@@ -59,6 +61,7 @@ class DefineGoal(Executor):
                         {"path": ".".join(str(part) for part in error["loc"]), "type": error["type"]}
                         for error in exc.errors()][:12]
                 reason = exc.reason if isinstance(exc, ModelError) else "goal_schema"
+                failures.append(reason)
                 logging.getLogger(__name__).warning("Goal definition failed: reason=%s attempt=%s", reason, attempt + 1)
                 if isinstance(exc, ModelError) and not exc.retryable:
                     break
@@ -66,13 +69,15 @@ class DefineGoal(Executor):
         if decision is None:
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source,
                                               model_calls=calls, stage_seconds={"goal": seconds},
+                                              goal_failure_reasons=failures,
                                               message="Could not define a validated goal. Please try again."))
         elif decision.status != "custom":
             await ctx.yield_output(PlanOutcome(status=decision.status, source=self.source, goal=decision.goal,
                                               standard_stat_id=decision.standard_stat_id, clarification=decision.clarification, message=decision.message,
-                                              model_calls=calls, stage_seconds={"goal": seconds}))
+                                              model_calls=calls, goal_failure_reasons=failures, stage_seconds={"goal": seconds}))
         else:
-            await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"], goal_seconds=seconds, model_calls=calls))
+            await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"], goal_seconds=seconds,
+                                                 model_calls=calls, goal_failure_reasons=tuple(failures)))
 
 
 class GenerateRule(Executor):
@@ -118,6 +123,7 @@ class ValidateRule(Executor):
             await ctx.yield_output(PlanOutcome(status="ready", source=self.source, goal=request.goal,
                                               rule=candidate.rule, attempts=request.attempt,
                                               model_calls=request.model_calls, stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)},
+                                              goal_failure_reasons=list(request.goal_failure_reasons),
                                               message="Structured rule validated against the goal."))
         elif candidate.retryable and request.attempt <= self.max_repairs:
             await ctx.send_message(replace(request, attempt=request.attempt + 1, feedback=error, coding_seconds=coding_seconds))
@@ -126,4 +132,5 @@ class ValidateRule(Executor):
                        else "The model request was rejected. Check the local model configuration.")
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source, goal=request.goal,
                                               attempts=request.attempt, message=message, model_calls=request.model_calls,
+                                              goal_failure_reasons=list(request.goal_failure_reasons),
                                               stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)}))

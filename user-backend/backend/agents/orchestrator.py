@@ -2,16 +2,19 @@
 from backend.adapters.llm import JsonModel
 from .models import Clarification, GoalDecision
 from .semantics import GOAL_INSTRUCTIONS
+from .contracts import decision_contract
 
 
 class GoalAgent:
-    def __init__(self, model: JsonModel):
+    def __init__(self, model: JsonModel, *, instructions: str = GOAL_INSTRUCTIONS, compact_contract: bool = True):
         self.model = model
+        self.instructions = instructions
+        self.schema = decision_contract() if compact_contract else GoalDecision.model_json_schema()
 
     async def define(self, prompt: str, context: dict) -> GoalDecision:
         result = await self.model.complete(
-            GOAL_INSTRUCTIONS,
-            {"request": prompt, "context": context, "decision_schema": GoalDecision.model_json_schema()},
+            self.instructions,
+            {"request": prompt, "context": context, "decision_schema": self.schema},
         )
         decision = GoalDecision.model_validate(result)
         if decision.goal:

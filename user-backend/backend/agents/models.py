@@ -103,4 +103,5 @@ class PlanOutcome(BaseModel):
     attempts: int = 0
     message: str = ""
     model_calls: int | None = None
+    goal_failure_reasons: list[str] | None = None
     stage_seconds: dict[str, float] = Field(default_factory=dict)

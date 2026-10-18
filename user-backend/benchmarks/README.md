@@ -118,3 +118,58 @@ PYTHONPATH=user-backend python -m benchmarks.report_balanced --input .local/benc
 ```
 
 [Measured balanced-cohort results](results/agents-balanced.md): matched wording bands, scripted feedback, complete traces and remaining misses.
+
+### Compare pinned models and prompt variants
+
+The standalone comparison uses the same Microsoft Agent Framework workflow and
+independent oracle. Put routing configuration in an ignored file, for example
+`.local/model-strength/models.json`:
+
+```json
+{"models":[{"label":"small","model":"requested-model-id","expected_models":["reported-model-id"]}]}
+```
+
+```sh
+PYTHONPATH=user-backend python -m benchmarks.model_strength \
+  --models-config .local/model-strength/models.json \
+  --env-file .local/backend-llm.env --cohort balanced \
+  --concurrency 2 --case-timeout 60 --suite-timeout 1200 \
+  --output .local/benchmarks/model-strength
+```
+
+Use repeatable `--case-id` or `--limit` for screening. Select `--variants current`
+for a confirmation run, or retain both variants by default.
+`--candidate-prompt path/to/frozen.txt` overrides only current instructions and
+keeps the compact schema; it is read once at suite start, with its hash recorded.
+This allows a saved candidate to be rerun after runtime instructions change. Models run sequentially;
+within each case, baseline/current order alternates. The frozen
+[prompt baseline](prompts/goal-baseline.txt) uses the original schema, while the
+current variant uses the current instructions and compact schema. This compares
+both changes together, not their individual effects. The timeout is **per user
+turn**; at most two scripted clarification replies are allowed, with an overall
+suite deadline.
+
+Each call records requested/returned model names, elapsed time, HTTP status,
+serialized request bytes, request/prompt/schema hashes and reported token counts.
+If the response marks token usage as estimated, that flag is retained; missing
+usage stays unknown. No local token estimates are invented. Reports retain
+schema/transport failure reasons, retries, clarification outcomes and oracle
+results. No endpoints, credentials, raw response bodies or headers are saved.
+
+A missing model identity or unexpected substitution cannot count as a pinned
+pass, even if the answer is correct. Deterministic responses that never call a
+model are reported separately as unverified. Returned identity is self-reported,
+not proof of which weights ran. `Cache-Control: no-cache` is requested, but a
+server may ignore it. A single run measures this corpus under its observed load;
+it is not a statistical ranking or a guarantee for unseen intents.
+
+`report.json` and `results.jsonl` preserve every model/variant/case, and `README.md`
+gives a short comparison. Ordinary pytest covers observer/runner mechanics with
+mock HTTP responses; no live comparison runs in pytest.
+
+`--cohort transfer` checks 12 additional gold intents that are absent from the
+balanced cohort. Their new, explicit viewer requests cover first-half added time,
+headed passes/shots, inclusive/exclusive windows, combined event types and pass
+metres. Each has one short prepared reply, sent only after clarification. This is
+unseen wording across additional **known** intents, not unseen football semantics
+or an untouched test domain. Keep runtime prompts frozen during this check.

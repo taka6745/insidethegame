@@ -16,8 +16,9 @@ from .cases import cases
 from .quality_cases import quality_cases
 from .balanced_cases import balanced_cases
 from .conversation_eval import evaluate_conversation
+from .transfer_cases import transfer_cases
 
-COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases}
+COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases, "transfer": transfer_cases}
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures/filter-lab.json"
 
