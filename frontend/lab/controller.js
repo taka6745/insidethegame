@@ -2,7 +2,7 @@ import { LabApi } from './api.js';
 import { LabView } from './view.js';
 
 /** Coordinates user actions and one non-overlapping polling loop. */
-class FilterLab {
+export class FilterLab {
   constructor(api, view) {
     this.api = api;
     this.view = view;
@@ -11,10 +11,19 @@ class FilterLab {
     this.prepared = null;
     this.scenario = null;
     this.refreshSequence = 0;
+    this.inspectionSequence = 0;
     this.connectionFailed = false;
   }
 
   async start() {
+    const fileInput = document.getElementById('recording-file');
+    document.getElementById('load-recording').addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) this.action('recording', async () => this.recording(await this.api.loadRecording(file)));
+      fileInput.value = '';
+    });
+    document.getElementById('default-recording').addEventListener('click', () => this.action('recording', async () => this.recording(await this.api.defaultRecording())));
     document.getElementById('presets').addEventListener('change', event => {
       this.view.describePreset(this.scenario?.presets.find(item => item.id === event.target.value)?.label || '');
     });
@@ -47,6 +56,7 @@ class FilterLab {
       this.prepared = null;
       document.getElementById('plan-result').hidden = true;
     }));
+    document.getElementById('rule-dialog').addEventListener('close', () => { this.inspectionSequence++; });
     document.getElementById('close-dialog').addEventListener('click', () => document.getElementById('rule-dialog').close());
     await this.poll();
   }
@@ -58,8 +68,31 @@ class FilterLab {
     this.state = next;
     if (this.connectionFailed) { this.view.error(); this.connectionFailed = false; }
     if (this.state.error) this.view.error(this.state.error);
-    this.view.state(this.state, calculation => this.view.inspect(calculation));
+    this.view.state(this.state, calculation => this.inspectRule(calculation), deliveryIndex => this.inspectEvent(deliveryIndex));
     this.view.controls(this.state, this.busy);
+  }
+
+  recording(result) {
+    this.scenario = result.scenario;
+    this.view.scenario(this.scenario);
+    this.prepared = null;
+    document.getElementById('plan-result').hidden = true;
+  }
+
+  inspectRule(calculation) {
+    this.inspectionSequence++;
+    this.view.inspect(calculation);
+  }
+
+  async inspectEvent(deliveryIndex) {
+    const request = ++this.inspectionSequence;
+    this.view.inspectEventLoading(deliveryIndex);
+    try {
+      const payload = await this.api.event(deliveryIndex);
+      if (request === this.inspectionSequence) this.view.inspectEvent(payload);
+    } catch (error) {
+      if (request === this.inspectionSequence) this.view.inspectEventError(error.message);
+    }
   }
 
   async action(name, operation) {
@@ -87,4 +120,4 @@ class FilterLab {
   }
 }
 
-new FilterLab(new LabApi(), new LabView()).start();
+if (typeof document !== 'undefined') new FilterLab(new LabApi(), new LabView()).start();

@@ -4,7 +4,15 @@
 ./dev up backend
 ```
 
-Open **[localhost:18020](http://localhost:18020)**. Choose a preset or request a stat, add it, then start the match. New filters can also join mid-replay. **New run** clears this lab's rules and replay progress; it does not clear viewer profiles or pins. There is no video or rewind.
+Open **[localhost:18020](http://localhost:18020)**. Choose a preset or request a stat, add it, then start the match. The UI configures filters before replay; the API also supports late registration. **New run** clears this lab's rules and replay progress while keeping its recording. Viewer profiles and pins remain. There is no video or rewind.
+
+## The event recording
+
+The default is **[`fixtures/filter-lab.json`](../fixtures/filter-lab.json)**. Events are data in this file, not hardcoded in the frontend. The backend reads them in array order, translates their fields through the adapter, and sends each delivery into the shared index. Matching rules update their values; the browser polls those committed values and the received-event ledger.
+
+**Download** saves the active recording. Edit a copy and choose **Load JSON** to validate it and start a fresh run. **Use demo** restores the repository file. Uploaded recordings are saved in the local Match App database and survive backend restarts. Each received event opens an inspector showing its original JSON and canonical fields.
+
+Files must be UTF-8 JSON, at most **2 MiB**, with `synthetic: true`, `match_id`, two `teams`, `players`, and a nonempty `events` array. `presets` is optional. Use the default file as the format example; its event meanings are documented [here](../fixtures/filter-lab.md). Invalid uploads preserve the current run. Loading is disabled while replay or a model request is in progress. The download includes the whole recording; live inspection only exposes already-received deliveries.
 
 ```mermaid
 flowchart LR
@@ -30,6 +38,7 @@ The [26 examples](../fixtures/filter-lab.md) use 35 synthetic deliveries, includ
 | --- | --- |
 | `adapters/events.py` | Map provider keys into canonical events; swap this for a different feed. |
 | `adapters/replay_source.py` | Disposable event source and observed history; exposes no future events to the UI. |
+| `models/recording.py` | Validate recording metadata, entity lists and preset rules. |
 | `models/rules.py` | Validate, normalize and evaluate typed count/sum rules. |
 | `services/filter_engine.py` | Share equivalent rules, index candidates, apply event deltas and corrections. |
 | `agents/` + `adapters/llm.py` | Define a goal, generate a rule, validate it and allow up to three repairs. |
