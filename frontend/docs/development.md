@@ -43,7 +43,7 @@ nginx is the local static server and same-origin proxy. Production can place sta
 | `match/controller.js` | Session and user-action coordination |
 | `match/view.js`, `chat-view.js`, `dom.js` | Bounded, safe DOM rendering; preserve unchanged controls |
 | `match/format.js` | Display formatting and bounded snapshot handling |
-| `match/styles.css` | Responsive Premier League integration presentation |
+| `match/styles.css`, `companion.css` | Responsive Premier League integration presentation |
 | `tools/build.sh` | Content-hashed static module directory, without a bundler |
 | `nginx.conf` | Same-origin API/socket proxy, compression, headers and cache policy |
 

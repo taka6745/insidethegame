@@ -26,7 +26,7 @@ export class QuestionView {
     );
     const turns = (session.turns || []).slice(-50).map((turn, index) => ({
       ...turn,
-      key: turn.id || turn.request_id || index,
+      key: turn.request_id || turn.id || index,
       offers: (turn.reply?.offers || []).map(
         (offer) => offers.get(offer.id) || offer,
       ),
@@ -36,9 +36,10 @@ export class QuestionView {
         container,
         turns,
         (turn) => turn.key,
-        (turn) => this.turn(turn),
+        (turn, previous) =>
+          this.turn(turn, Boolean(previous?.querySelector(".answer-waiting"))),
       );
-    else {
+    else if (!container.querySelector(".question-empty")) {
       const empty = node(this.document, "div", "", "question-empty");
       empty.append(
         node(this.document, "h3", "What are you seeing?"),
@@ -57,23 +58,33 @@ export class QuestionView {
         ? "FIXTURE AGENT · DEMONSTRATION ANSWERS"
         : "MICROSOFT AGENT FRAMEWORK";
   }
-  turn(turn) {
+  turn(turn, reveal = false) {
     const article = node(this.document, "article", "", "chat-turn");
     article.append(node(this.document, "p", turn.prompt, "chat-prompt"));
     if (!turn.reply) {
-      article.append(
-        node(
-          this.document,
-          "p",
-          turn.status === "failed"
-            ? "That answer could not be completed. Please try again."
-            : "Checking the match…",
-          "chat-answer",
-        ),
+      const waiting = turn.status !== "failed";
+      const answer = node(
+        this.document,
+        "p",
+        waiting
+          ? "Checking the match…"
+          : "That answer could not be completed. Please try again.",
+        waiting ? "chat-answer answer-waiting" : "chat-answer",
       );
+      if (waiting) {
+        const dots = node(this.document, "span", "", "answer-dots");
+        dots.setAttribute("aria-hidden", "true");
+        for (let index = 0; index < 3; index++)
+          dots.append(node(this.document, "span"));
+        answer.append(dots);
+      }
+      article.append(answer);
       return article;
     }
-    article.append(node(this.document, "p", turn.reply.text, "chat-answer"));
+    article.append(node(
+      this.document, "p", turn.reply.text,
+      reveal ? "chat-answer answer-reveal" : "chat-answer",
+    ));
     const snapshot = turn.reply.snapshot;
     if (snapshot)
       article.append(

@@ -240,3 +240,33 @@ test("event feed prefers roster display names and safely falls back for unknown 
     "Shot · <img src=x onerror=alert(1)>",
   );
 });
+
+test("answer reveal runs on completion, not restored history or pin changes", () => {
+  const document = documentStub(), view = new QuestionView(document);
+  const turn = { request_id: "request-one", prompt: "Shots?", status: "pending" };
+  const container = document.getElementById("chat-messages");
+  view.render({ turns: [turn] });
+  assert.ok(container.querySelector(".answer-waiting"));
+  const saved = { ...turn, id: "database-one" };
+  const reply = { text: "Three shots.", offers: [] };
+  view.render({ turns: [{ ...saved, reply }] });
+  const answer = container.querySelector(".answer-reveal");
+  assert.equal(answer.textContent, "Three shots.");
+  view.render({ turns: [{ ...saved, reply }] });
+  assert.equal(container.querySelector(".answer-reveal"), answer);
+  view.render({ turns: [{ ...saved, reply: { ...reply, offers: [{ id: "pin", value: 3 }] } }] });
+  assert.equal(container.querySelector(".answer-reveal"), null);
+  const restored = new QuestionView(documentStub());
+  restored.render({ turns: [{ ...saved, reply }] });
+  assert.equal(restored.get("chat-messages").querySelector(".answer-reveal"), null);
+});
+
+test("failed answers stop loading and empty-state refresh preserves its DOM", () => {
+  const document = documentStub(), view = new QuestionView(document);
+  view.render({ turns: [] });
+  const empty = view.get("chat-messages").children[0];
+  view.render({ turns: [] });
+  assert.equal(view.get("chat-messages").children[0], empty);
+  view.render({ turns: [{ id: "one", prompt: "Shots?", status: "failed" }] });
+  assert.equal(view.get("chat-messages").querySelector(".answer-waiting"), null);
+});

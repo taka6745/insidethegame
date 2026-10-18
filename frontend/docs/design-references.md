@@ -29,3 +29,9 @@ The interface keeps the match in view while a question is answered. Insight and 
 - Static assets can be served independently; one push connection per viewer, shared upstream work per match, no per-viewer model loop.
 
 These are acceptance requirements, not evidence that all production integrations or viewer capacity have been tested. Record actual validation in the development guide.
+
+## Companion styling
+
+The official [Premier League Companion](https://www.premierleague.com/en/news/4345260/what-is-the-premier-league-companion/) was inspected on 18 October 2026, including its public entry panel and `v1.54.15` stylesheet. Observed patterns: white selected segmented tabs, outlined pill prompts, a rounded bottom composer, purple surfaces, colour-edged loading, staggered prompt fades and response entrance animation. No question was sent to the official service.
+
+Our implementation uses those patterns in `match/companion.css`, with the existing PL typeface and our original feature icon. It keeps the truthful Microsoft Agent Framework credit rather than claiming the prototype is powered by Copilot. Motion is CSS-only, disabled when reduced motion is requested, and does not delay answers. Only a pending answer becoming ready gets a reveal; restored history and pin updates do not restart it. Live match frames do not drive animation or model calls.
