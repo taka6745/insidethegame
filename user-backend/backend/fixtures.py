@@ -87,8 +87,8 @@ class FixtureFeed:
             return 50
         return sum(e.type == {"cards": "card", "shots": "shot"}[key] for e in events)
 
-    def view(self, bucket, team):
+    def view(self, bucket, team, calculation_ids=()):
         return {"defaults": self.defaults(bucket), "narratives": self.history(bucket),
                 "key_moments": self.key_moments(),
                 "values": {"default": {key: self.value("default", key, team) for key in SELECTIONS["simple"]},
-                           "custom": {key: self.value("custom", key, team) for key in self.calculations}}}
+                           "custom": {key: self.value("custom", key, team) for key in calculation_ids}}}

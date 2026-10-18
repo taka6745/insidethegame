@@ -49,9 +49,9 @@ def create_fake(role, notify_url=None):
     schema.query_type.fields["matchEvents" if role == "etl" else "context"].resolve = read_match if role == "etl" else read_context
     if role == "etl":
         def read_state(root, info, matchId, team):
-            if team not in ("home", "away", "neutral"):
-                raise ValueError("Unknown team")
-            return {"events": read_match(root, info, matchId), "key_moments": feed.key_moments(),
+            if matchId != feed.match_id or team not in ("home", "away", "neutral"):
+                raise ValueError("Unknown match or team")
+            return {"key_moments": feed.key_moments(),
                     "stats": {key: feed.value("default", key, team) for key in ("goals", "cards", "shots", "possession")}}
         schema.query_type.fields["matchState"].resolve = read_state
 
