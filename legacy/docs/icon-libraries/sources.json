@@ -1,0 +1,87 @@
+[
+  {
+    "pack": "azure",
+    "bytes": 9677052,
+    "version": 2,
+    "count": 620,
+    "sample_keys": [
+      "id",
+      "status",
+      "name",
+      "created",
+      "updated",
+      "elements"
+    ],
+    "sample_name": "AI Foundry",
+    "url": "https://raw.githubusercontent.com/amattas/microsoft-excalidraw/main/azure-icons.excalidrawlib",
+    "sha256": "c10033a54bf45f51681f37cf1699fd6fc9cbb635c73917e47849e47becf8e1fe",
+    "retrieved": "2026-10-17",
+    "licence_note": "No standalone licence in upstream repo; converted Microsoft artwork retains original branding terms."
+  },
+  {
+    "pack": "fabric",
+    "bytes": 1942577,
+    "version": 2,
+    "count": 135,
+    "sample_keys": [
+      "status",
+      "elements",
+      "id",
+      "created",
+      "name"
+    ],
+    "sample_name": "Fabric",
+    "url": "https://raw.githubusercontent.com/excalidraw/excalidraw-libraries/main/libraries/mwc360/microsoft-fabric-architecture-icons.excalidrawlib",
+    "sha256": "829f94533aa4ded181bcc984c60ea7f281a151e6032f9b92c81e0de93786510a",
+    "retrieved": "2026-10-17",
+    "licence_note": "Excalidraw libraries repository MIT; product trademarks remain with their owners."
+  },
+  {
+    "pack": "developer",
+    "bytes": 424623,
+    "version": 2,
+    "count": 31,
+    "sample_keys": [
+      "status",
+      "elements",
+      "id",
+      "created",
+      "name"
+    ],
+    "sample_name": "Angular v2",
+    "url": "https://raw.githubusercontent.com/excalidraw/excalidraw-libraries/main/libraries/pclainchard/it-logos.excalidrawlib",
+    "sha256": "9030c537df65dbc9623d9c29943279b2ddf1c070db86aca97405ecfd3d41d9ec",
+    "retrieved": "2026-10-17",
+    "licence_note": "Excalidraw libraries repository MIT; product trademarks remain with their owners."
+  },
+  {
+    "pack": "software",
+    "bytes": 184458,
+    "version": 1,
+    "count": 18,
+    "sample_keys": "array",
+    "sample_name": null,
+    "url": "https://raw.githubusercontent.com/excalidraw/excalidraw-libraries/main/libraries/drwnio/drwnio.excalidrawlib",
+    "sha256": "7748ef9f0b91d70a32cae141814f49c21e89cb30cc09e4184e308617f5294586",
+    "retrieved": "2026-10-17",
+    "licence_note": "Excalidraw libraries repository MIT; product trademarks remain with their owners."
+  },
+  {
+    "pack": "architecture",
+    "bytes": 274698,
+    "version": 2,
+    "count": 48,
+    "sample_keys": [
+      "status",
+      "elements",
+      "id",
+      "created",
+      "name"
+    ],
+    "sample_name": "Document",
+    "url": "https://raw.githubusercontent.com/excalidraw/excalidraw-libraries/main/libraries/mateuszbaransanok/it-icons.excalidrawlib",
+    "sha256": "67c69561e0e7ffd7d929f2e052f8a2b84bfbeabc703a9862ea81c5b99206322b",
+    "retrieved": "2026-10-17",
+    "licence_note": "Excalidraw libraries repository MIT; product trademarks remain with their owners."
+  }
+]

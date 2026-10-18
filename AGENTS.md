@@ -1,25 +1,22 @@
 # Working in InsideTheGame
 
-This repo holds the hackathon project, its research and competitor data. Application code will live here as it develops.
+This is a design-stage hackathon application. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`. Read each service's README before changing it.
 
-- Follow the current task. Research does not choose a product or stack; implement decisions when requested.
-- Keep code small, readable and reusable. Follow existing conventions; add structure only when it serves actual code.
-- Preserve local changes. Keep credentials in ignored local files or approved secrets; never print or commit them.
-- Test changed behaviour and check the actual output. Report what is verified and what remains uncertain.
-- Keep READMEs brief: plain language, compact tables and graphics that show relationships, quantities or change.
-- Cite primary sources for research. Distinguish observations, stated goals and hypotheses; date technology releases precisely.
-- Business cases need evidence of a problem and a clear benefit to the League or its fans. Do not assume partner efficiency increases League value.
-- Label synthetic and real data clearly. Preserve collected files, provenance and licence information; do not execute competitor code during audits.
+- Keep code small, readable and reusable. Add implementation only when requested.
+- Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
+- Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work.
+- The detailed sections of `legacy/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
+- Preserve original example prompts in `narrative-engine/prompts/`. Resolve their output contracts before implementation.
+- User questions never trigger the shared narrative workflow. Narrative history uses the narrative service's GraphQL API; live narratives use Service Bus.
+- Live match events reach the user backend through one shared Event Hubs consumer for the demo match. History and computed stats use ETL GraphQL.
+- User-specific code/calculations belong to `user-backend/`, with an isolated generated-code executor, not ETL.
+- Test changed behaviour and inspect actual outputs. Design diagrams are not tested infrastructure.
+- Label synthetic data and preserve provenance/licences. Do not execute archived competitor code.
+- `legacy/` preserves research, scraping scripts, simulator code, earlier docs and outputs. It is inactive; do not revive its automation or overwrite it during application work.
+- Preserve ignored `.local/` runtime environments and assets; do not upload them.
 
 ## Current tooling
 
-- [Research](research/README.md): business context, official requirements and technology sources. Recheck rules before submission.
-- [Competitors](competitors/README.md): exported projects, repository metrics and collected samples.
-- The root README is hand-edited except its marked competitor snapshot. `.github/scripts/build_report.py` updates that block and generates `competitors/README.md`; edit those templates and regenerate. Research graphics come from `.github/scripts/build_research.py`.
-- Validate reports: `python3 .github/scripts/verify_report.py`.
-- Test automation: `python3 -m unittest discover -s .github/scripts -p 'test_*.py'`.
+Render the six SVG diagrams with `python3 .github/scripts/render_architecture.py`; visually inspect the results. No application test or deployment commands exist yet. Add service-specific commands when implementation starts.
 
-- Generate synthetic matches: `data/GoogleResearchFootball/run.sh --games 3` (Docker), or `data/GoogleResearchFootball/render.sh` (native macOS 4K). Outputs are ignored under `.local/grf-runs/`; validate either with `python3 data/GoogleResearchFootball/verify.py <run-folder>`.
-- Test exporter logic: `python3 -m unittest discover -s data/GoogleResearchFootball -p 'test_*.py'`. Native integration tests run in the Docker image; see [simulator](data/GoogleResearchFootball/README.md).
-
-Keep application-specific run and test commands here as code is added. The current automation layout does not prescribe the application's structure.
+Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.

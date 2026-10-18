@@ -7,3 +7,5 @@ __pycache__/
 *curl*.txt
 projects-export/
 .local/
+
+.ruff_cache/

@@ -1,65 +1,23 @@
 # Inside the Game
 
-Football intelligence from synthetic matches. Research, competitor evidence and working data tools live here; example ideas remain examples.
+Live football, shared match narratives and a personal match companion.
 
-## The brief
+![Five planned services and their data flows](architecture.svg)
 
-[![Microsoft’s five-stage brief](research/challenge.svg)](research/README.md)
+**Design stage.** No application services are implemented yet. The narrative engine has three preserved example prompts. These diagrams describe the agreed build, not deployed infrastructure.
 
-[Explore the research](research/README.md) · [Read the full requirements](research/brief.md#what-the-brief-points-toward)
+| Folder | What it does |
+| --- | --- |
+| [data-generation](data-generation/) | Prepare and replay an existing synthetic match into Event Hubs. |
+| [etl](etl/) | Store events, calculate match statistics and expose them through GraphQL. |
+| [narrative-engine](narrative-engine/) | Build shared match memory and write narratives for up to 12 audience buckets. |
+| [user-backend](user-backend/) | Answer questions, build custom stats and deliver each viewer's experience. |
+| [frontend](frontend/) | Show the live match, stat cards, chat and narrative feed. |
 
-## Why those asks matter
+The demo has **one live match**, selectable profiles and one active session per profile. Viewer questions do not trigger narrative generation. Replay controls and semantic subscriptions are Phase 2.
 
-[![Official asks lead through fan benefits to audience demand](research/business.svg)](research/cases.md)
+Each folder has a short service guide and a closer diagram. Azure products are dependencies of these services, not additional application folders.
 
-[Business cases: the gaps, evidence and tests](research/cases.md)
+[Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
 
-## How it is judged
-
-[![Five equally weighted judging criteria](research/judging.svg)](research/brief.md)
-
-[Judging criteria, submission requirements and deadlines](research/brief.md)
-
-## Example ideas
-
-[![Four different fan jobs and their challenged design scores](research/ideas.svg)](research/ideas/README.md)
-
-[Explore the examples, objections and scores](research/ideas/README.md)
-
-## Recent technology
-
-[![Dated technology releases, repositories and papers](research/technology.svg)](research/technology.md)
-
-[Capabilities, release dates and primary sources](research/technology.md)
-
-## Data approach
-
-[![A shared synthetic match drives evidence and replay](research/match-data.svg)](research/data.md)
-
-[Events, tracking, video and what each can prove](research/data.md)
-
-## Working simulator
-
-[![Measured full-match capture and checkpoint branching](research/simulator.svg)](data/README.md)
-
-[Data and collected samples](data/README.md) · [Run the simulator and inspect the results](data/GoogleResearchFootball/README.md)
-
-## Competitors
-
-<!-- competitors:start -->
-
-![Current competitor snapshot](competitors/overview.svg)
-
-**72 data files collected from 11 competitors.** The initial inspected samples are synthetic; no real match dataset or Kaggle/Hugging Face dataset use was verified.
-
-→ [Competitors, repo activity, and their data](competitors/README.md) · [Raw project list](competitors/data/projects.json)
-
-Project list: **2026-10-14** · GitHub: **2026-10-14**. [Manual refresh](competitors/README.md#refresh). The scheduled Action was removed because its saved login expired.
-
-<!-- competitors:end -->
-
-## Working with AI assistants
-
-[![Inspect, build, verify and report](research/working.svg)](AGENTS.md)
-
-[Repository instructions and test commands](AGENTS.md)
+Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No deployment or CI is configured.
