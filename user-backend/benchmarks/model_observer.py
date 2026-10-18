@@ -58,6 +58,12 @@ class ModelObserver(httpx.AsyncBaseTransport):
             try:
                 payload = json.loads(body)
                 record['requested_model'] = payload.get('model')
+                response_format = payload.get('response_format') or {}
+                record['response_format'] = response_format.get('type', 'prompt')
+                schema_spec = response_format.get('json_schema') or {}
+                if isinstance(schema_spec, dict) and 'schema' in schema_spec:
+                    record['wire_schema_sha256'] = digest(schema_spec['schema'])
+                    record['strict_requested'] = schema_spec.get('strict') is True
                 record['system_prompt_sha256'] = digest([
                     row.get('content') for row in payload.get('messages', []) if row.get('role') in {'system', 'developer'}])
             except (ValueError, AttributeError):

@@ -18,7 +18,7 @@ class ModelError(RuntimeError):
 
 
 class JsonModel(Protocol):
-    async def complete(self, system: str, payload: dict) -> dict: ...
+    async def complete(self, system: str, payload: dict, *, response_schema: dict | None = None) -> dict: ...
 
 
 class LocalJsonModel:
@@ -36,7 +36,7 @@ class LocalJsonModel:
         return cls(url, model, os.getenv("LOCAL_LLM_API_KEY", ""),
                    float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "120")), name=name)
 
-    async def complete(self, system: str, payload: dict) -> dict:
+    async def complete(self, system: str, payload: dict, *, response_schema: dict | None = None) -> dict:
         try:
             async with httpx.AsyncClient(timeout=self.timeout, transport=self.transport) as http:
                 async with AsyncOpenAI(base_url=self.base_url, api_key=self.api_key or "local-development",
@@ -46,7 +46,8 @@ class LocalJsonModel:
                                   default_options={"temperature": 0, "max_tokens": 3000})
                     # Each call is stateless. The workflow carries only the goal and
                     # validation feedback; no conversation is shared between viewers.
-                    response = await agent.run(json.dumps(payload))
+                    options = {"response_format": response_schema} if response_schema is not None else {}
+                    response = await agent.run(json.dumps(payload), options=options)
                 if response.finish_reason == "length":
                     raise ModelError("Local model output was truncated", reason="truncated_output")
                 content = response.text

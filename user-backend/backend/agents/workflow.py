@@ -56,13 +56,14 @@ class RuleWorkflow:
 
 def workflow_from_env() -> RuleWorkflow:
     mode = os.getenv("LOCAL_LLM_MODE", "fixture")
-    max_repairs = AgentSettings.from_env().max_repairs
+    settings = AgentSettings.from_env()
+    max_repairs = settings.max_repairs
     timeout = float(os.getenv("AGENT_PLAN_TIMEOUT_SECONDS", "60"))
     if not 1 <= timeout <= 300:
         raise ValueError("AGENT_PLAN_TIMEOUT_SECONDS must be between 1 and 300")
     if mode == "fixture":
         return RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture", max_repairs=max_repairs, timeout_seconds=timeout)
     if mode == "local":
-        return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal")),
+        return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal"), response_mode=settings.goal_output_mode),
                             StructuredRuleCompiler(), source="local", max_repairs=max_repairs, timeout_seconds=timeout)
     raise ValueError("LOCAL_LLM_MODE must be fixture or local")

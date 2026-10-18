@@ -1,0 +1,118 @@
+[
+  {
+    "label": "small-3b",
+    "model": "llama-3.2-3b",
+    "valid": true,
+    "status": "returned",
+    "seconds": 0.808,
+    "pin_verified": true,
+    "pin_reason": "verified",
+    "actual_models": [
+      "@cf/meta/llama-3.2-3b-instruct"
+    ],
+    "calls": [
+      {
+        "http_status": 200,
+        "actual_models": [
+          "@cf/meta/llama-3.2-3b-instruct"
+        ],
+        "tokens": {
+          "prompt_tokens": 59,
+          "completion_tokens": 8,
+          "total_tokens": 67
+        },
+        "status": "ok",
+        "request_bytes": 501,
+        "request_sha256": "4bb2dfee9b90daf395976fa4473bcb979e125c7148a17db887f1b66d7cccb5c1",
+        "requested_model": "llama-3.2-3b",
+        "system_prompt_sha256": "26b11883a39550ce19bfd70568ff39a5cc90b71bcfa51231d940a879b1680bc8",
+        "seconds": 0.458
+      }
+    ]
+  },
+  {
+    "label": "small-8b",
+    "model": "llama-3.1-8b",
+    "valid": false,
+    "status": "http_429",
+    "seconds": 0.306,
+    "pin_verified": false,
+    "pin_reason": "no_successful_model_response",
+    "actual_models": [],
+    "calls": [
+      {
+        "http_status": 429,
+        "actual_models": [],
+        "tokens": {},
+        "status": "http_error",
+        "request_bytes": 501,
+        "request_sha256": "eabb32051b51a769b8e1794ef7febd9ea66baf99eb1fddabf69c70acba6420cc",
+        "requested_model": "llama-3.1-8b",
+        "system_prompt_sha256": "26b11883a39550ce19bfd70568ff39a5cc90b71bcfa51231d940a879b1680bc8",
+        "seconds": 0.303
+      }
+    ]
+  },
+  {
+    "label": "mid-20b",
+    "model": "gpt-oss-20b",
+    "valid": true,
+    "status": "returned",
+    "seconds": 0.621,
+    "pin_verified": true,
+    "pin_reason": "verified",
+    "actual_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "calls": [
+      {
+        "http_status": 200,
+        "actual_models": [
+          "openai/gpt-oss-20b"
+        ],
+        "tokens": {
+          "prompt_tokens": 189,
+          "completion_tokens": 139,
+          "total_tokens": 328
+        },
+        "status": "ok",
+        "request_bytes": 500,
+        "request_sha256": "17d47cbac1cfceea1842b8cd60058ffa5ec6123137c2c342acecc68b37410fd3",
+        "requested_model": "gpt-oss-20b",
+        "system_prompt_sha256": "26b11883a39550ce19bfd70568ff39a5cc90b71bcfa51231d940a879b1680bc8",
+        "seconds": 0.617
+      }
+    ]
+  },
+  {
+    "label": "higher-ranked-reference",
+    "model": "dots-studio/dots-3-note-preview:free",
+    "valid": true,
+    "status": "returned",
+    "seconds": 4.196,
+    "pin_verified": true,
+    "pin_reason": "verified",
+    "actual_models": [
+      "dots-studio/dots-3-note-preview:free"
+    ],
+    "calls": [
+      {
+        "http_status": 200,
+        "actual_models": [
+          "dots-studio/dots-3-note-preview:free"
+        ],
+        "tokens": {
+          "prompt_tokens": 31,
+          "completion_tokens": 232,
+          "total_tokens": 263
+        },
+        "status": "ok",
+        "request_bytes": 525,
+        "request_sha256": "273aa940bd0204f1a0104bf6b6f63cf3f931fde49368c77bb301527483e14211",
+        "requested_model": "dots-studio/dots-3-note-preview:free",
+        "system_prompt_sha256": "26b11883a39550ce19bfd70568ff39a5cc90b71bcfa51231d940a879b1680bc8",
+        "seconds": 4.192
+      }
+    ]
+  }
+]

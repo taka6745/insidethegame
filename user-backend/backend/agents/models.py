@@ -11,16 +11,16 @@ class Goal(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     description: str = Field(min_length=1, max_length=500)
     operation: Literal["count", "sum"] = "count"
-    event_types: tuple[EventType, ...] = ()
-    team_ids: tuple[str, ...] = ()
-    player_ids: tuple[str, ...] = ()
+    event_types: tuple[EventType, ...] = Field(default=(), description="Event categories to include. Empty means all categories, including for general headed contacts.")
+    team_ids: tuple[str, ...] = Field(default=(), description="Explicitly requested teams. Empty means all teams. Never infer a team from a named player.")
+    player_ids: tuple[str, ...] = Field(default=(), description="Explicitly requested players from the match catalogue. Empty means all players.")
     body_part: Literal["head", "left_foot", "right_foot", "foot", "other", "hand"] | None = None
-    period: int | None = Field(default=None, ge=1, le=5)
+    period: int | None = Field(default=None, ge=1, le=5, description="Null means the whole match. Select a period only if requested: 1 first half, 2 second half. A minute bound does not imply a period.")
     outcome: Literal["success", "failure", "saved", "off_target", "blocked", "red", "yellow"] | None = None
-    after_seconds: float | None = Field(default=None, ge=0, le=12000)
-    from_seconds: float | None = Field(default=None, ge=0, le=12000)
-    before_seconds: float | None = Field(default=None, ge=0, le=12000)
-    through_seconds: float | None = Field(default=None, ge=0, le=12000)
+    after_seconds: float | None = Field(default=None, ge=0, le=12000, description="Exclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds.")
+    from_seconds: float | None = Field(default=None, ge=0, le=12000, description="Inclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds.")
+    before_seconds: float | None = Field(default=None, ge=0, le=12000, description="Exclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds.")
+    through_seconds: float | None = Field(default=None, ge=0, le=12000, description="Inclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds.")
     sum_field: Literal["distance_metres"] | None = None
 
     @model_validator(mode="after")
@@ -104,4 +104,5 @@ class PlanOutcome(BaseModel):
     message: str = ""
     model_calls: int | None = None
     goal_failure_reasons: list[str] | None = None
+    goal_validation_errors: list[dict] | None = None
     stage_seconds: dict[str, float] = Field(default_factory=dict)
