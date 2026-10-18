@@ -62,7 +62,7 @@ export function currentSnapshot(previous, incoming) {
     ...incoming,
     events: incoming.events.slice(-60),
     narratives: incoming.narratives.slice(-40),
-    cards: incoming.cards.slice(0, 3),
+    cards: incoming.cards.slice(0, 5),
   };
 }
 

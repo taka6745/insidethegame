@@ -66,12 +66,12 @@ test("state rejects out-of-order versions, accepts new runs and bounds retained 
     ...snapshot(),
     events: Array(1000).fill({}),
     narratives: Array(1000).fill({}),
-    cards: Array(100).fill({}),
+    cards: Array.from({ length: 100 }, (_, id) => ({ id })),
   };
   const limited = currentSnapshot(null, large);
   assert.equal(limited.events.length, 60);
   assert.equal(limited.narratives.length, 40);
-  assert.equal(limited.cards.length, 3);
+  assert.deepEqual(limited.cards.map((card) => card.id), [0, 1, 2, 3, 4]);
 });
 test("many socket updates coalesce to latest state in one animation frame", () => {
   const f = fixture();

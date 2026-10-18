@@ -1,0 +1,10 @@
+# Optional local-only simulator excerpt. Not part of the application image.
+services:
+  frontend:
+    volumes:
+      - type: bind
+        source: ${DEMO_VIDEO_PATH:?Set DEMO_VIDEO_PATH to an absolute local MP4 path}
+        target: /usr/share/nginx/html/media/simulator.mp4
+        read_only: true
+        bind:
+          create_host_path: false

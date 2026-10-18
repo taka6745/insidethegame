@@ -15,14 +15,6 @@
   </head>
   <body>
     <a class="skip" href="#match-main">Skip to the match</a>
-    <div class="utility-bar">
-      <a
-        href="https://www.premierleague.com/en/about"
-        target="_blank"
-        rel="noopener"
-        >About the Premier League ↗</a
-      ><span>Inside the Game · Hackathon demonstration</span>
-    </div>
     <header class="masthead">
       <a
         class="league-logo"
@@ -46,18 +38,7 @@
       <a class="lab-link" href="/lab/">Developer lab ↗</a>
     </header>
     <main id="match-main">
-      <div class="context-row">
-        <div>
-          <p class="breadcrumb">
-            Matches <span aria-hidden="true">/</span> Match Centre
-          </p>
-          <h1>Match Centre</h1>
-        </div>
-        <span class="fixture-label"
-          ><span class="demo-dot" aria-hidden="true"></span>Synthetic
-          fixture</span
-        >
-      </div>
+      <h1 class="sr-only">Match Centre</h1>
       <section class="scoreboard" id="overview" aria-label="Match score">
         <div class="team home" id="home-banner">
           <img class="crest-watermark" id="home-watermark" alt="" hidden />
@@ -68,13 +49,11 @@
               >H</span
             >
             <div>
-              <span class="team-meta">HOME</span>
               <h2 id="home-name">Home</h2>
             </div>
           </div>
         </div>
         <div class="score-centre">
-          <div class="competition">Premier League</div>
           <div class="score">
             <span id="home-score">—</span><span class="score-divider">–</span
             ><span id="away-score">—</span>
@@ -83,13 +62,11 @@
             <span class="live-dot" aria-hidden="true"></span
             ><span id="match-clock">PRE-MATCH</span>
           </div>
-          <span class="match-source">DEMO MATCH</span>
         </div>
         <div class="team away" id="away-banner">
           <img class="crest-watermark" id="away-watermark" alt="" hidden />
           <div class="club-identity">
             <div>
-              <span class="team-meta">AWAY</span>
               <h2 id="away-name">Away</h2>
             </div>
             <img class="club-crest" id="away-crest" alt="" hidden /><span
@@ -100,102 +77,42 @@
           </div>
         </div>
       </section>
-      <nav class="match-nav" aria-label="Match sections">
-        <a href="#overview">Overview</a
-        ><a href="#inside-the-game" class="active" aria-current="location"
-          >Inside the Game <span class="new-tag">NEW</span></a
-        ><a href="#stats-title">Stats</a
-        ><a href="#timeline-title">Match events</a>
-      </nav>
-      <div class="feature-heading" id="inside-the-game">
-        <div>
-          <h2>
-            <img
-              src="/assets/icons/insight.svg"
-              alt=""
-              width="28"
-              height="28"
-            />Inside the Game
-          </h2>
-          <p>Your match. Your perspective.</p>
+      <div class="match-toolbar" id="inside-the-game">
+        <div class="connection-bar">
+          <span class="fixture-label">Synthetic match</span>
+          <span id="connection" role="status">Connecting…</span>
+          <button id="reconnect" hidden>Reconnect ↗</button>
         </div>
         <div class="profile-wrap">
-          <label for="profile">Choose your demo profile</label
-          ><select id="profile" aria-label="Demo profile">
-            <option>Loading profiles…</option>
-          </select>
+          <label class="sr-only" for="profile">Demo profile</label>
+          <select id="profile" aria-label="Demo profile"><option>Loading profiles…</option></select>
         </div>
-      </div>
-      <div class="connection-bar">
-        <span id="connection" role="status">Connecting to your match…</span
-        ><button id="reconnect" hidden>Reconnect this tab ↗</button
-        ><span id="bucket">Your perspective</span>
       </div>
       <div id="notice" class="notice" role="alert" hidden></div>
-      <div class="demo-controls">
-        <div>
-          <span class="demo-tag">DEMO</span
-          ><span>Synthetic match. Forward-only replay.</span>
-        </div>
-        <button id="start-demo" class="primary">
-          <span id="start-demo-label">Start match</span>
-          <span aria-hidden="true">↗</span></button
-        ><button id="reset-demo" class="text-button" hidden>
-          Start a new demo</button
-        ><span id="demo-progress"></span>
-      </div>
       <div class="match-layout">
         <div class="match-column">
-          <section class="match-stage" aria-labelledby="stage-title">
-            <div class="stage-top">
-              <h2 id="stage-title">
-                <img
-                  src="/assets/icons/pitch.svg"
-                  alt=""
-                  width="20"
-                  height="20"
-                />Match live
-              </h2>
-              <span id="stage-status">AWAITING KICKOFF</span>
+          <section class="match-stage" id="match-stage" aria-label="Match stream">
+            <video id="match-video" playsinline preload="none" aria-label="Match footage" hidden></video>
+            <div id="video-empty" class="video-empty">
+              <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true"><rect x="3" y="8" width="36" height="26" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="m18 15 10 6-10 6V15Z" fill="currentColor"/></svg>
+              <p>Demo footage unavailable</p>
+              <span>Live insights and stats are ready.</span>
             </div>
-            <div class="pitch" aria-hidden="true">
-              <div class="halfway"></div>
-              <div class="centre-circle"></div>
-              <div class="penalty left"></div>
-              <div class="penalty right"></div>
-              <div class="goal-area left"></div>
-              <div class="goal-area right"></div>
-              <span class="centre-spot"></span>
-            </div>
-            <div class="event-spotlight">
-              <span id="event-minute" class="spotlight-minute">PRE-MATCH</span>
-              <h2 id="event-title">Waiting for kick-off</h2>
-              <p id="event-detail">The latest match event will appear here.</p>
-            </div>
-            <div class="stage-bottom">
-              <span
-                ><span class="live-dot" aria-hidden="true"></span> EVENT
-                REPLAY</span
-              ><span>Illustrative pitch · no tracking positions</span>
-            </div>
+            <div class="video-caption"><span id="video-status">MATCH STREAM</span><div class="video-actions"><button id="video-play" hidden>Play footage</button><button id="video-fullscreen" hidden>Full screen</button></div></div>
           </section>
+          <div class="demo-controls">
+            <button id="start-demo" class="primary"><span id="start-demo-label">Start match</span><span aria-hidden="true">↗</span></button>
+            <button id="reset-demo" class="text-button" hidden>Start a new demo</button>
+            <span id="demo-progress"></span>
+          </div>
           <section class="stats-section" aria-labelledby="stats-title">
             <div class="section-heading">
-              <h2 id="stats-title">Your match stats</h2>
-              <span id="stats-context">Chosen for your perspective</span>
+              <h2 id="stats-title">Your stats</h2>
+              <span id="stats-context"></span>
             </div>
             <div id="stats" class="stats-grid">
               <p class="empty">Loading match statistics…</p>
             </div>
-          </section>
-          <section class="timeline-section" aria-labelledby="timeline-title">
-            <div class="section-heading">
-              <h2 id="timeline-title">Match events</h2>
-              <span id="event-count">Latest events</span>
-            </div>
-            <ol id="events" class="event-list">
-              <li class="empty">The first event will appear at kickoff.</li>
-            </ol>
           </section>
         </div>
         <aside class="companion" aria-label="Your match companion">
@@ -207,17 +124,9 @@
               height="28"
             />
             <div>
-              <h2>Your match companion</h2>
-              <p id="perspective">Your personalised view of the match</p>
+              <h2>Inside the Game</h2>
+              <p id="perspective">Your match companion</p>
             </div>
-          </div>
-          <div class="microsoft-credit">
-            <img
-              src="/assets/league/microsoft.svg"
-              alt="Microsoft"
-              width="89"
-              height="19"
-            /><span>Built with Microsoft Agent Framework</span>
           </div>
           <div class="tabs" role="tablist" aria-label="Match companion">
             <button
@@ -227,7 +136,7 @@
               aria-selected="true"
               tabindex="0"
             >
-              The story <span id="story-count">0</span></button
+              Insights <span id="story-count">0</span></button
             ><button
               id="questions-tab"
               role="tab"
@@ -235,7 +144,7 @@
               aria-selected="false"
               tabindex="-1"
             >
-              Ask the match <span aria-hidden="true">↗</span>
+              Ask <span aria-hidden="true">↗</span>
             </button>
           </div>
           <section
@@ -244,20 +153,15 @@
             role="tabpanel"
             aria-labelledby="stories-tab"
           >
-            <div class="feed-label">
-              <span>YOUR PERSPECTIVE</span><span>MATCH INSIGHTS</span>
-            </div>
             <div id="narratives" class="narrative-list">
               <div class="story-empty">
                 <span class="empty-symbol" aria-hidden="true">✦</span>
-                <h3>The story starts here.</h3>
+                <h3>Waiting for kick-off.</h3>
                 <p>
-                  As play develops, insights for your team and fan style will
-                  arrive here.
+                  Your match insights will appear here.
                 </p>
               </div>
             </div>
-            <p class="feed-footnote">Match insight, from your perspective.</p>
           </section>
           <section
             id="questions-panel"
@@ -270,8 +174,7 @@
               <div class="question-empty">
                 <h3>What are you seeing?</h3>
                 <p>
-                  Ask about the match, explore a stat, or make sense of a
-                  football rule.
+                  Ask a question. Track a stat.
                 </p>
               </div>
             </div>
@@ -303,29 +206,22 @@
               </div>
               <div class="composer-footer">
                 <span id="question-status" role="status"
-                  >Answers grounded in this match</span
-                ><span id="agent-mode">MICROSOFT AGENT FRAMEWORK</span>
+                  ></span
+                ><span id="agent-mode"></span>
               </div>
             </form>
           </section>
+          <div class="microsoft-credit">
+            <img
+              src="/assets/league/microsoft.svg"
+              alt="Microsoft"
+              width="89"
+              height="19"
+            /><span>Built with Microsoft Agent Framework</span>
+          </div>
         </aside>
       </div>
     </main>
-    <footer>
-      <img
-        src="/assets/league/premier-league-white.svg"
-        alt="Premier League"
-        width="87"
-        height="36"
-      />
-      <div>
-        <strong>Inside the Game</strong
-        ><span
-          >Synthetic hackathon demonstration. Not an official Premier League
-          product.</span
-        >
-      </div>
-      <a href="/lab/">Open developer lab ↗</a>
-    </footer>
+    <footer><span>Hackathon demo · Not an official Premier League product</span><a href="/lab/">Developer lab ↗</a></footer>
   </body>
 </html>

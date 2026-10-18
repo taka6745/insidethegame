@@ -4,8 +4,6 @@ import {
   clock,
   title,
   number,
-  eventLabel,
-  latestEvents,
   replayControls,
 } from "./format.js";
 
@@ -37,7 +35,7 @@ export class MatchView {
     this.document.body.dataset.connection = state;
     const labels = {
       connecting: "Opening your match…",
-      live: "Connected · live updates",
+      live: "Live updates",
       reconnecting: "Reconnecting · showing last received state",
       stale: "Connection interrupted · values may be stale",
       offline: "Offline · reconnect to update",
@@ -81,24 +79,15 @@ export class MatchView {
     const [support, style] = (snapshot.bucket || "neutral:casual").split(":");
     const supportName =
       teams.find((team) => team.id === support)?.name || title(support);
-    this.text("bucket", `${supportName} · ${title(style)}`);
     this.text(
       "perspective",
-      `${title(style)} insights · ${supportName} perspective`,
-    );
-    this.text(
-      "stage-status",
-      match.status === "running"
-        ? "MATCH IN PROGRESS"
-        : match.position
-          ? "LATEST RECEIVED MOMENT"
-          : "AWAITING KICKOFF",
+      `${supportName} · ${title(style)}`,
     );
     this.text(
       "stats-context",
       cards.some((card) => card.kind === "custom")
-        ? "Your tracked stats + match picks"
-        : "Chosen for your perspective",
+        ? "Includes your tracked stats"
+        : "",
     );
     keyedList(
       this.get("stats"),
@@ -106,38 +95,6 @@ export class MatchView {
       (card) => card.id,
       (card, existing) => this.stat(card, existing),
     );
-    const events = latestEvents(snapshot.events);
-    if (events.length) {
-      const latest = events[0];
-      this.text(
-        "event-minute",
-        `${clock(latest.match_time_seconds)} · ${latest.team_name || title(latest.team_id)}`,
-      );
-      this.text("event-title", eventLabel(latest));
-      this.text(
-        "event-detail",
-        `${latest.player_name || title(latest.player_id) || latest.team_name || title(latest.team_id)}${latest.outcome ? ` · ${title(latest.outcome)}` : ""}`,
-      );
-      keyedList(
-        this.get("events"),
-        events,
-        (event) => event.event_id,
-        (event) => this.event(event),
-      );
-    } else {
-      this.text("event-minute", "PRE-MATCH");
-      this.text("event-title", "Waiting for kick-off");
-      this.text("event-detail", "The latest match event will appear here.");
-      this.get("events").replaceChildren(
-        node(
-          this.document,
-          "li",
-          "The first event will appear at kickoff.",
-          "empty",
-        ),
-      );
-    }
-    this.text("event-count", `${snapshot.events.length} recent events`);
     const narratives = [...snapshot.narratives].sort(
       (a, b) =>
         (b.period || 0) - (a.period || 0) || b.clock_seconds - a.clock_seconds,
@@ -153,11 +110,11 @@ export class MatchView {
     else if (this.get("narratives").querySelector(".narrative")) {
       const empty = node(this.document, "div", "", "story-empty");
       empty.append(
-        node(this.document, "h3", "The story starts here."),
+        node(this.document, "h3", "Waiting for kick-off."),
         node(
           this.document,
           "p",
-          "As play develops, insights for your team and fan style will arrive here.",
+          "Your match insights will appear here.",
         ),
       );
       this.get("narratives").replaceChildren(empty);
@@ -171,6 +128,7 @@ export class MatchView {
   stat(card, existing) {
     if (existing && existing.className === `stat-card ${card.kind}`) {
       existing.querySelector(".stat-label").textContent = card.label;
+      existing.querySelector(".stat-label").title = card.label;
       existing.querySelector(".stat-value").textContent = number(card.value);
       const button = existing.querySelector("button");
       if (button)
@@ -187,6 +145,7 @@ export class MatchView {
       node(this.document, "span", card.label, "stat-label"),
       node(this.document, "strong", number(card.value), "stat-value"),
     );
+    element.querySelector(".stat-label").title = card.label;
     if (card.kind === "custom") {
       element.append(node(this.document, "span", "TRACKING", "stat-tag"));
       const remove = node(this.document, "button", "×", "unpin");
@@ -196,27 +155,13 @@ export class MatchView {
     }
     return element;
   }
-  event(event) {
-    const item = node(this.document, "li", "", `event-row ${event.event_type}`);
-    item.append(
-      node(this.document, "time", clock(event.match_time_seconds)),
-      node(this.document, "span", "", "event-indicator"),
-      node(
-        this.document,
-        "strong",
-        `${eventLabel(event)} · ${event.player_name || title(event.player_id) || event.team_name || title(event.team_id)}`,
-      ),
-      node(this.document, "small", event.team_name || title(event.team_id)),
-    );
-    return item;
-  }
   narrative(item) {
     const article = node(this.document, "article", "", "narrative");
     article.append(
       node(
         this.document,
         "time",
-        `${clock(item.clock_seconds)} · MATCH INSIGHT`,
+        clock(item.clock_seconds),
       ),
       node(this.document, "p", item.text),
     );

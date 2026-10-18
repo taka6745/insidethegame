@@ -3,6 +3,9 @@ import { MatchView } from "./view.js";
 import { QuestionView } from "./chat-view.js";
 import { LiveConnection } from "./live.js";
 import { MatchController } from "./controller.js";
+import { attachDemoVideo } from "./video.js";
+
+attachDemoVideo(document);
 
 const view = new MatchView(document);
 const questions = new QuestionView(document);

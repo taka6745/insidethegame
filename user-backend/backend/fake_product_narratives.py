@@ -3,10 +3,10 @@
 These factual templates are fixtures, not generated commentary or a licensed feed.
 """
 STAT_ORDER = {
-    'simple': ('goals', 'cards', 'shots'),
-    'casual': ('goals', 'shots', 'corners'),
-    'experienced': ('shots', 'passes', 'cards'),
-    'analytical': ('shots', 'corners', 'passes'),
+    'simple': ('goals', 'cards', 'shots', 'corners', 'passes'),
+    'casual': ('goals', 'shots', 'corners', 'cards', 'passes'),
+    'experienced': ('shots', 'passes', 'cards', 'corners', 'goals'),
+    'analytical': ('shots', 'corners', 'passes', 'goals', 'cards'),
 }
 
 

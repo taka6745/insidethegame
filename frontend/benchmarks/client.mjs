@@ -48,7 +48,7 @@ const base = {
   match: { run_id: "benchmark" },
   events,
   narratives: Array(40).fill({ text: "Synthetic bounded narrative." }),
-  cards: Array(3).fill({ value: 1 }),
+  cards: Array(5).fill({ value: 1 }),
 };
 let state;
 const started = performance.now();

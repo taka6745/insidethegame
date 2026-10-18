@@ -46,7 +46,7 @@ export class QuestionView {
         node(
           this.document,
           "p",
-          "Ask about the match, explore a stat, or make sense of a football rule.",
+          "Ask a question. Track a stat.",
         ),
       );
       container.replaceChildren(empty);
@@ -55,8 +55,8 @@ export class QuestionView {
     this.get("question-suggestions").hidden = turns.length > 0;
     this.get("agent-mode").textContent =
       session.mode === "fixture"
-        ? "FIXTURE AGENT · DEMONSTRATION ANSWERS"
-        : "MICROSOFT AGENT FRAMEWORK";
+        ? "Demo answers"
+        : "";
   }
   turn(turn, reveal = false) {
     const article = node(this.document, "article", "", "chat-turn");
@@ -91,7 +91,7 @@ export class QuestionView {
         node(
           this.document,
           "div",
-          `As of ${snapshot.clock_seconds === null ? "before kickoff" : clock(snapshot.clock_seconds)} · answer snapshot`,
+          `As of ${snapshot.clock_seconds === null ? "before kickoff" : clock(snapshot.clock_seconds)}`,
           "chat-meta",
         ),
       );
