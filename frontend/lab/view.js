@@ -11,14 +11,15 @@ const node = (tag, className, content) => {
 
 /** DOM-only rendering; calculations and persistence belong to backend services. */
 export class LabView {
-  constructor() { this.presetCount = 0; this.lastCards = ''; this.lastEvents = ''; }
+  constructor() { this.presetCount = 0; this.lastCards = ''; this.lastEvents = ''; this.recordingEditable = true; }
 
   scenario(data) {
+    this.recordingEditable = data.recording_editable !== false;
     const [home, away] = teamNames(data.teams);
     text('home-team', home); text('away-team', away);
     const recording = data.recording || {};
     text('recording-name', recording.filename || 'Recording unavailable');
-    text('recording-meta', [recording.synthetic ? 'Synthetic fixture' : recording.title, recording.format, recording.delivery_count !== undefined ? `${recording.delivery_count} deliveries` : null, recording.event_count !== undefined ? `${recording.event_count} events` : null].filter(Boolean).join(' · '));
+    text('recording-meta', [recording.synthetic ? 'Synthetic fixture' : recording.title, recording.format, recording.delivery_count !== undefined ? `${recording.delivery_count} deliveries` : null, recording.event_count !== undefined ? `${recording.event_count} events` : null, !this.recordingEditable ? 'Source managed by ETL' : null].filter(Boolean).join(' · '));
     const select = el('presets');
     this.presetCount = data.presets?.length || 0;
     select.replaceChildren(...(data.presets || []).map(preset => {
@@ -55,7 +56,7 @@ export class LabView {
     const finished = state?.status === 'finished';
     const failed = state?.status === 'error';
     const ready = !!state;
-    el('load-recording').disabled = !ready || busy || running;
+    el('load-recording').disabled = !ready || busy || running || !this.recordingEditable;
     el('default-recording').disabled = !ready || busy || running;
     el('start').disabled = !ready || busy || running || finished || failed;
     el('reset').disabled = !ready || busy || running;

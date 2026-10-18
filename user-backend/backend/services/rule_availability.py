@@ -3,6 +3,25 @@ from typing import get_args
 from backend.models.events import EventType
 
 
+def observed_unattributed_events(history):
+    """Unknown players in the observed prefix, after corrections and retractions."""
+    latest = {}
+    for event in history:
+        key = event.match_id, event.event_id
+        if key not in latest or event.revision > latest[key].revision:
+            latest[key] = event
+    return tuple(event for event in latest.values() if event.player_id is None and not event.deleted)
+
+
+def incomplete_player_rule(rule, unresolved_events):
+    """An unattributed matching action may belong to the requested player."""
+    if not any(predicate.field == 'player_id' for predicate in rule.predicates):
+        return False
+    remaining = rule.model_copy(update={
+        'predicates': tuple(predicate for predicate in rule.predicates if predicate.field != 'player_id')})
+    return any(remaining.matches(event) for event in unresolved_events)
+
+
 def supported_rule(rule, capabilities):
     if not capabilities:
         return True  # Older hand-authored fixtures declare the complete test contract.

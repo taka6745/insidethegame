@@ -12,6 +12,9 @@ class EventDataSkill:
                          "feed_reference": json.loads(json.dumps(feed_reference))}
         self.fingerprint = hashlib.sha256(json.dumps(self._payload, sort_keys=True).encode()).hexdigest()
 
-    def context(self) -> dict:
+    def context(self, feed_reference: dict | None = None) -> dict:
         # A request cannot mutate the reference used by another viewer.
-        return json.loads(json.dumps(self._payload))
+        payload = json.loads(json.dumps(self._payload))
+        if feed_reference is not None:
+            payload['feed_reference'] = json.loads(json.dumps(feed_reference))
+        return payload

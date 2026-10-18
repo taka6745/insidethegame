@@ -150,7 +150,7 @@ services:
       postgres: {condition: service_healthy}
 
   etl:
-    build: ../etl
+    build: {context: ../etl, target: runtime}
     profiles: [backend]
     environment:
       ETL_HISTORY_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_history

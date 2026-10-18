@@ -300,3 +300,12 @@ test("Insights renders upstream narrative wording unchanged as text", () => {
   assert.equal(article.children[0].textContent, "71:00");
   assert.equal(article.children[1].textContent, text);
 });
+
+test("percentage offers retain ETL units in the chat card", () => {
+  const document = documentStub(), view = new QuestionView(document);
+  view.render({turns: [{id: "percentage", prompt: "Chelsea possession?", reply: {
+    text: "Chelsea possession: 35.9%.",
+    offers: [{id: "offer", label: "Chelsea possession", value: 35.9, unit: "%"}],
+  }}]});
+  assert.equal(document.getElementById("chat-messages").querySelector("strong").textContent, "35.9%");
+});

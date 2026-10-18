@@ -2,6 +2,8 @@
 
 Recorded **18 October 2026, Australia/Brisbane**, from the architecture discussion; updated during the repository-structure review to use Event Hubs for live events and Service Bus for new narratives. This is a planning record, not an implementation or deployment claim. Later decisions in the discussion supersede the initial diagrams.
 
+**Implementation update — 19 October 2026:** the local backend uses Microsoft Agent Framework for goal interpretation and questions, then compiles validated goals into a bounded rule DSL. Canonical rules share indexed calculations; generated Python is never executed. The arbitrary-code executor and Foundry deployment described below remain planned. Live demo replay uses an ETL-owned recording and HTTP checkpoints; production Event Hubs and Service Bus adapters remain planned. [Current service guide](README.md) · [Scaling limits](docs/scaling.md).
+
 The user backend connects the frontend to match intelligence. It answers viewer questions, manages profiles and viewing sessions, routes bucket narratives, selects default stat cards and builds custom statistics. The neutral match analysis and narrative engines remain outside this backend.
 
 **Latest boundary decision:** ETL calculates standard statistics and stores their current state in its Cosmos DB. Historical events remain in ETL-owned event storage (Azure SQL in the current plan). Both are accessed through ETL GraphQL. The user backend selects and delivers standard values; it does not rebuild them from events. Only a genuinely custom request may require backend calculation.
@@ -73,7 +75,7 @@ Mid-match joins and reconnects can retrieve the narrative backlog and current bu
 
 ## 5. Agent responsibilities
 
-**Microsoft Agent Framework with models from Microsoft Foundry is locked in** for the question and coding agents. Model/deployment names are not yet selected.
+**Microsoft Agent Framework is implemented; Microsoft Foundry remains the deployment target.** Local model mode uses an OpenAI-compatible development endpoint. Default fixture mode uses deterministic doubles. The current custom-stat workflow uses a goal agent and deterministic compiler, rather than a second model writing executable Python. [Modes and validation](docs/local-llm.md).
 
 ### Question agent
 
@@ -91,7 +93,7 @@ It may automatically request and run a custom calculation to answer a question. 
 
 ### Coding agent and test harness
 
-The coding agent receives the goal from the question agent. It writes the custom function, checks its output against that goal through a test harness and repairs failures. There is **no additional checking agent**.
+The original design delegates the goal to a coding agent with a test harness and bounded repairs. **Current implementation:** the goal agent supplies structured constraints to a deterministic DSL compiler; the harness checks goal/rule agreement before calculation. An optional model-based coder is available for experiments. There is no additional checking agent, and no generated Python runs inside the API.
 
 The agreed sequence is **semantic goal/data check → function generation → result validation**. Validation must check the requested meaning and result, not merely whether the code executes.
 
@@ -103,7 +105,7 @@ Validate before use and then trust the function. **There is no ongoing semantic 
 
 ## 6. Custom stat functions
 
-The agent can generate **Python, regex and other extraction/filter logic** supported by the runtime. This is more flexible than choosing only from a fixed menu of predefined stat operations.
+**Original target, still deferred:** an agent could generate Python, regex and other extraction logic in an isolated runtime. The implemented path instead compiles typed goals into bounded rules; it supports combinations of entities, event fields, operations and time constraints without executing arbitrary code. The isolation requirements below apply only if arbitrary-code execution is added.
 
 Execution constraints:
 
@@ -116,11 +118,11 @@ Execution constraints:
 
 First reuse an ETL-provided statistic if its meaning and time scope match. Otherwise, for a custom “headers this game,” calculate from kickoff. For “headers since minute 20” or “headers this second half,” generate the appropriate time filter. Backfill from raw match history, then maintain the value using new events.
 
-Equivalent requests with the same match, entities, filters and time range **reuse one calculation**. Each viewer's pin points to that shared calculation; it does not start an identical worker or upstream event subscription. How equivalent generated functions are recognised remains to be designed; do not assume similar wording proves equivalence.
+Equivalent requests with the same match, entities, filters and time range **reuse one calculation**. Each viewer's pin points to that shared calculation; it does not start an identical worker or upstream event subscription. The implemented DSL uses canonical rule definitions for equivalence; similar wording alone does not prove equivalence.
 
-### Proposed rule storage and execution
+### Rule storage and execution
 
-See the [focused diagram and lifecycle](docs/custom-calculations.md): Match App stores validated rule definitions, calculation state and viewer subscriptions. Registration activates a calculation worker; history initializes its value and relevant live events update it. A changed value is saved and routed to subscribed viewers. The worker is part of the user-backend system; ETL does not host viewer rules or create a publication per custom stat. This execution detail is proposed, not yet implemented.
+See the [focused diagram and lifecycle](docs/custom-calculations.md): Match App stores validated rule definitions, calculation state and viewer subscriptions. Registration activates a calculation worker; history initializes its value and relevant live events update it. A changed value is saved and routed to subscribed viewers. The worker is part of the user-backend system; ETL does not host viewer rules or create a publication per custom stat. Structured rule storage, indexed evaluation and live pins are implemented in the single-process demo. Distributed ownership and broker recovery remain planned.
 
 ### Live data path
 
@@ -142,13 +144,13 @@ Custom stat subscriptions are **continuously updated cards**, not threshold aler
 | Remove a custom pin | Restore the highest-priority missing default from the current bucket selection. |
 | Receive a new bucket stat selection | Update the default slots while preserving custom pins. |
 
-Active custom subscriptions are scoped to the current match and end at match end for the live-only demo. Generated functions are not retained as a cross-match library. The exact number of visible stat cards is not yet chosen.
+Active custom subscriptions are scoped to the current match and end at match end for the live-only demo. Generated functions are not retained as a cross-match library. The current viewer has five visible stat slots.
 
 ## 8. Frontend communication and persistence
 
 Use individual API requests for chat and actions such as pinning, plus **one live connection per active viewer session** for narratives and stat updates. Chat replies may stream. Both interfaces belong to the same main backend container; separate communication paths do not imply separate services.
 
-The development harness uses HTTP and WebSocket; the production managed-transport choice is not locked in. SignalR appeared in an earlier diagram as a proposal, not an accepted requirement. Upstream transport is now agreed: Event Hubs for match events, Service Bus for new narratives, and service-owned GraphQL APIs for history. Audience-presence feedback remains an open question; no feedback from viewer questions is sent to narrative generation.
+The development harness uses HTTP and WebSocket; the production managed-transport choice is not locked in. SignalR appeared in an earlier diagram as a proposal, not an accepted requirement. Upstream transport is now agreed: Event Hubs for match events, Service Bus for new narratives, and service-owned GraphQL APIs for history. The backend now exposes enabled audience combinations through its read-only configuration API. The narrative stub reads that catalogue; viewer questions do not trigger narrative generation.
 
 Use **two databases on the same database server**:
 

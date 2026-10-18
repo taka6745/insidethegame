@@ -4,8 +4,8 @@ Latest aligned GRF, upstream-service and question/pinning checks verified locall
 
 | Check | Result |
 |---|---|
-| Backend regression suite | 428 passed; one existing Starlette/httpx deprecation warning |
-| Frontend unit/contract tests | 77 passed |
+| Backend regression suite | 441 passed; one existing Starlette/httpx deprecation warning |
+| Frontend unit/contract tests | 79 passed |
 | Native SVG harness tests | 6 passed; all three icons exceed 80% foreground overlap |
 | Separate-service check | GRF checkpoints at 0, 1, 6 and 12 video minutes: ETL history/stats and narrative recap coverage agree |
 | Upstream/generator tests | 14 ETL (including real PostgreSQL), 26 narrative, 12 generator tests passed |
@@ -13,7 +13,7 @@ Latest aligned GRF, upstream-service and question/pinning checks verified locall
 
 Browser checks covered the actual Docker-served viewer: Chelsea–United marks/fonts, live score and standard cards, profile switching, question answers, Track/Untrack, saved chat/pins on refresh, session takeover and narrow layout. A pre-match headed-shot answer stayed at zero while its tracked live card reached three. Restarting the backend mid-replay reconnected without a page reload, exposed Resume match and continued from the saved position. No browser console errors were observed.
 
-`node frontend/benchmarks/client.mjs` passed: 78,933 gzip bytes for all shipped UI/assets (including fonts/marks); UI code alone 19,163 gzip bytes. Ten thousand bounded state replacements took 2.78 ms in this run. This is a local reducer measurement, **not** DOM rendering, delivery latency or concurrent-viewer capacity. Rerun on the target environment rather than treating the timing as a guarantee.
+`node frontend/benchmarks/client.mjs` passed: 80,074 gzip bytes for all shipped UI/assets (including fonts/marks); UI code alone 20,304 gzip bytes. Ten thousand bounded state replacements took 3.36 ms in this run. This is a local reducer measurement, **not** DOM rendering, delivery latency or concurrent-viewer capacity. Rerun on the target environment rather than treating the timing as a guarantee.
 
 [Live contract and production boundaries](live-contract.md) · [Icon evidence](../assets/README.md) · [Brand asset provenance](../assets/league/PROVENANCE.md)
 
@@ -34,3 +34,5 @@ Aligned GRF follow-up: the rendered Chelsea–United match is exactly 720 second
 Browser verification: the actual Docker viewer played matching footage, streamed ETL-owned percentages and counters, displayed the first authored narrative, and answered a completed-pass question with 13 at its observed snapshot. Tracking that offer produced a live card which reached 15 without changing the historical answer. Unsupported body-part/card/corner measurements are unavailable rather than fabricated zeros. Fresh recording/integration and narrative reviews found no remaining issues in their scopes.
 
 This uses the documented metadata HTTP checkpoint bridge, not production Event Hubs/Service Bus or Stream Analytics. SQLite/PostgreSQL are explicit local substitutes for planned upstream Azure stores. The neutral narrative engine is still an authored demo stub, not the production LLM workflow. Named-player attempt totals can be incomplete when scorer attribution is unknown; this limitation is included in agent context and the generator guide.
+
+Comprehensive review follow-up: incomplete player totals are now unavailable until attribution is corrected, including already-tracked calculations. ETL-owned mode rejects mismatched lab uploads. Match prose requires current-question evidence references, and planning reads the active recording's semantic description. Percentage answers/offers preserve units. Browser verification returned and pinned **Chelsea possession: 30.1%**, retained it across refresh, and confirmed minimum-width scrolling cards at the narrow desktop breakpoint. Fresh runtime, layout and Azure reviewers returned no further actionable findings in their scopes. Microsoft emulator checks, updated Terraform mock plans, real ETL PostgreSQL tests and nginx default/custom template rendering passed. See the [review record](../../docs/reviews/2026-10-19.md) for remaining production and submission gates.

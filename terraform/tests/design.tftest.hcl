@@ -33,4 +33,22 @@ run "service_boundaries" {
     condition     = alltrue([for container in azurerm_cosmosdb_sql_container.memory : container.partition_key_paths == tolist(["/matchId"])])
     error_message = "Narrative storage must be partitioned by match."
   }
+  assert {
+    condition = (
+      azurerm_cosmosdb_sql_container.stats.account_name == azurerm_cosmosdb_account.etl.name &&
+      azurerm_cosmosdb_account.etl.name != azurerm_cosmosdb_account.narrative.name &&
+      azurerm_cosmosdb_sql_container.stats.database_name == azurerm_cosmosdb_sql_database.etl.name &&
+      azurerm_cosmosdb_sql_container.stats.partition_key_paths == tolist(["/matchId"])
+    )
+    error_message = "Standard stats belong in ETL-owned Cosmos storage, partitioned by match."
+  }
+  assert {
+    condition = (
+      !azurerm_cosmosdb_account.etl.public_network_access_enabled &&
+      !azurerm_cosmosdb_account.narrative.public_network_access_enabled &&
+      !azurerm_mssql_server.match.public_network_access_enabled &&
+      !azurerm_postgresql_flexible_server.user.public_network_access_enabled
+    )
+    error_message = "Datastores must remain private; complete private connectivity before deploying."
+  }
 }

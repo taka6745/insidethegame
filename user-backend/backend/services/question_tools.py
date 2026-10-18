@@ -4,7 +4,7 @@ from uuid import uuid4
 from typing import get_args
 from backend.models.events import Event, EventType
 from backend.services.filter_engine import FilterEngine
-from backend.services.rule_availability import supported_rule
+from backend.services.rule_availability import supported_rule, observed_unattributed_events, incomplete_player_rule
 
 class QuestionTools:
     def __init__(self, payload, match_data, narratives, planner, stats, compact, history):
@@ -95,6 +95,7 @@ class QuestionTools:
         if len(self.offers) >= 2:
             return {'status':'unsupported','message':'Ask for one statistic at a time.'}
         context = {'match_id':self.payload.snapshot.match_id,'players':self.payload.players,'teams':self.payload.teams,
+                   'data_reference': self.payload.data_reference,
                    'standard_stats':self.stats, 'clock_seconds':self.payload.snapshot.clock_seconds,
                    'period':self.payload.snapshot.period}
         outcome = await self.planner.plan(request, context, history=history) if history else await self.planner.plan(request, context)
@@ -108,7 +109,7 @@ class QuestionTools:
         if not supported_rule(outcome.rule, self.payload.data_reference.get('capabilities')):
             return {'status':'unsupported', 'message':'Sorry, this recording does not capture that measurement.'}
         # Complete observed history, not a model-visible truncated search page.
-        engine, offset = FilterEngine(), 0
+        engine, offset, observed = FilterEngine(), 0, []
         while True:
             page = await self.match_data.events(self.payload.snapshot, offset=offset, limit=100)
             if not page.get('complete') or (page.get('has_more') and not page['items']):
@@ -118,11 +119,14 @@ class QuestionTools:
                 if event.match_id != self.payload.snapshot.match_id:
                     raise ValueError('Wrong match event')
                 engine.ingest(event)
+                observed.append(event)
             offset += len(page['items'])
             if offset > 20000:
                 raise ValueError('History limit exceeded')
             if not page.get('has_more'):
                 break
+        if incomplete_player_rule(outcome.rule, observed_unattributed_events(observed)):
+            return {'status': 'unsupported', 'message': 'Sorry, some matching events have no recorded player, so I cannot give a complete player total.'}
         result = engine.register(outcome.rule)
         offer = {'id':str(uuid4()),'label':outcome.goal.description[:160] if outcome.goal else request[:160],
                  'value':result.value,'rule':outcome.rule.model_dump(mode='json'),

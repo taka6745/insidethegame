@@ -12,7 +12,7 @@ Live football, shared match narratives and a personal match companion.
 ./dev up backend
 ```
 
-Open the [match viewer](http://localhost:18020) for the Chelsea–Manchester United demo, or the [event filter lab](http://localhost:18020/lab/). Load a JSON recording or use the included demo, pick filters, then replay and inspect each event and live value. [How it works](user-backend/docs/filter-lab.md).
+Open the [match viewer](http://localhost:18020) for the Chelsea–Manchester United demo, or the [event filter lab](http://localhost:18020/lab/). Pick filters, then replay and inspect each event and live value. The connected demo recording is managed by ETL; standalone lab mode also supports JSON uploads. [How it works](user-backend/docs/filter-lab.md).
 
 | Folder | What it does |
 | --- | --- |
@@ -29,5 +29,7 @@ Each folder has a short service guide and a closer diagram. Azure products are d
 **Narrative boundary:** the backend exposes bucket definitions through a read-only API; the narrative engine owns framing. The backend receives finished bucket versions and routes them. [Diagram and current implementation](user-backend/docs/narrative-framing.md).
 
 [Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
+
+[Review results](docs/reviews/2026-10-19.md) · [Hackathon readiness](docs/reviews/hackathon-readiness.md) · [Azure deployment gaps](terraform/deployment-readiness.md)
 
 Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No cloud deployment or CI is configured.

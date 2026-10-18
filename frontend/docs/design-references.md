@@ -1,6 +1,6 @@
 # Match experience references
 
-Research checked 18 October 2026. The user requested a Premier League integration prototype: authentic league typography, club crests and match-centre conventions, with a discreet hackathon/synthetic label. It is not an official released Premier League product.
+Research checked 18 October 2026. The user requested a Premier League integration prototype: authentic league typography, club crests and match-centre conventions, with a discreet hackathon/unofficial-product footer. It is not an official released Premier League product.
 
 | Reference | What we take from it |
 |---|---|
@@ -14,7 +14,7 @@ Research checked 18 October 2026. The user requested a Premier League integratio
 
 ## Visual direction
 
-The current official match centre uses deep purple surfaces, PremierLeague W01 typography, club crests, team-colour match banners and a compact score panel. The prototype follows that language, adding Inside the Game as a match-centre feature. Chelsea/Manchester United banners use authentic crests over CSS club-colour surfaces. No footage is invented. The main area shows an optional local simulator excerpt, separate from the fixture events. Without a source, it shows an explicit unavailable state. Five compact statistics sit below it. Raw events stay in the developer lab.
+The current official match centre uses deep purple surfaces, PremierLeague W01 typography, club crests, team-colour match banners and a compact score panel. The prototype follows that language, adding Inside the Game as a match-centre feature. Chelsea/Manchester United banners use authentic crests over CSS club-colour surfaces. The main area shows an optional 12-minute synthetic GRF recording whose video and ETL events share the same timeline. Player names map illustrative simulator slots, not measured real-player abilities. Without a source, it shows an explicit unavailable state. Five compact statistics sit below it. Raw events stay in the developer lab.
 
 The compact desktop layout keeps the player and five stat slots in view while the companion history scrolls internally. On mobile the stat row scrolls horizontally and the companion follows the player. Insight and question tabs have different purposes: ongoing bucket narratives versus a personal conversation. Three generated feature icons are rebuilt as small native SVGs; [provenance and comparison](../assets/README.md) are retained separately from shipped assets. Official fonts and marks have separate [source attribution](../assets/league/PROVENANCE.md); those are authentic third-party files, not generated substitutes.
 

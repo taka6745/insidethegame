@@ -28,7 +28,7 @@ class GoalAgent:
     async def define(self, prompt: str, context: dict) -> GoalDecision:
         payload = {"request": prompt, "context": context, "decision_schema": self.schema}
         if self.data_skill is not None:
-            payload["data_skill"] = self.data_skill.context()
+            payload["data_skill"] = self.data_skill.context(context.get('data_reference'))
         if self.response_mode == "schema":
             result = await self.model.complete(self.instructions, payload, response_schema=self.schema)
             result = decision_envelope_model().model_validate_json(

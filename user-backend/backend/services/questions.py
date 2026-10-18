@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from backend.domain import RuleError
 from backend.models.questions import QuestionDraft, QuestionReply
 from backend.models.rules import Rule
-from backend.models.stat_offers import pin_id
+from backend.models.stat_offers import pin_id, stat_answer
 from .question_tools import QuestionTools
 from .question_answers import resolve_answer
 
@@ -91,7 +91,7 @@ class QuestionService:
                 offers = toolkit.offers if draft.status == 'answer' else []
                 if offers:
                     # Stat values come from ETL or deterministic evaluation, never model prose.
-                    draft.text = ' '.join(f"{o['label']}: {o['value']}." for o in offers)
+                    draft.text = ' '.join(stat_answer(offer) for offer in offers)
                 if draft.status == 'unsupported':
                     draft.text = 'Sorry, I cannot answer that from the information available.'
                 reply = QuestionReply(**draft.model_dump(),snapshot=payload.snapshot,offers=offers,

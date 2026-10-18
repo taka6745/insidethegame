@@ -62,3 +62,5 @@ Re-run `./dev up backend` after code changes; `./dev logs backend`, `./dev logs 
 Run each upstream service's own tests when changing it: [ETL](../../etl/docs/development.md), [narrative](../../narrative-engine/docs/development.md). The integration checkpoint check does not substitute for their unit/persistence tests or browser playback verification.
 
 [Question contracts](question-agent.md) · [Testing guide](testing.md) · [Full design](../architecture.md)
+
+The optional `NARRATIVE_SERVICEBUS_CONNECTION_STRING` belongs to the legacy viewer harness only. Starting the current product demo with it is rejected: that adapter cannot deliver to product sessions. Keep the product on its checkpoint/GraphQL adapter until product broker ingestion and acknowledgement/recovery tests are implemented. Setting a connection string alone does not migrate the demo to Azure messaging.

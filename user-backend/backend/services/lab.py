@@ -12,16 +12,17 @@ from backend.domain import RuleError
 from backend.agents.conversation import assistant_message
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
-from backend.services.rule_availability import supported_rule
+from backend.services.rule_availability import supported_rule, observed_unattributed_events, incomplete_player_rule
 from backend.services.plan_conversations import PlanConversations
 
 
 class FilterLabService:
-    def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None):
+    def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None, recording_editable=True):
         self.source, self.repository, self.planner = source, repository, planner
         self.default_source = source
         self.initial_recording = initial_recording
         self.local_llm = local_llm
+        self.recording_editable = recording_editable
         self._lock = asyncio.Lock()
         self.changed = asyncio.Event()
         self._plan_lock = asyncio.Lock()
@@ -96,7 +97,7 @@ class FilterLabService:
                 await task
 
     def scenario(self):
-        return self.source.describe()
+        return {**self.source.describe(), "recording_editable": self.recording_editable}
 
     async def recording(self):
         async with self._lock:
@@ -108,15 +109,18 @@ class FilterLabService:
                 raise RuleError("event_not_received", "This event has not been received in the current run", 404)
             return self.source.inspect(delivery_index)
 
-    async def load_recording(self, content=None, filename=None):
+    async def load_recording(self, content=None, filename=None, *, upstream=False):
         try:
-            source = self.default_source if content is None else self.source.with_recording(content, filename)
+            default = self.default_source if self.recording_editable else self.source
+            source = default if content is None else self.source.with_recording(content, filename)
         except ValidationError as exc:
             error = exc.errors(include_input=False, include_context=False)[0]
             raise RuleError("invalid_recording", f"Invalid recording: {error['msg']}", 422) from None
         except (ValueError, UnicodeError):
             raise RuleError("invalid_recording", "Use a valid UTF-8 synthetic match JSON recording", 422) from None
         async with self._lock:
+            if not self.recording_editable and not upstream and source.fingerprint != self.source.fingerprint:
+                raise RuleError("recording_owned_by_etl", "This match recording is owned by ETL. Change its source there, then reset the demo.", 409)
             if self.status == "running" or self._plan_lock.locked():
                 raise RuleError("recording_busy", "Wait for the replay or rule request to finish before loading a recording", 409)
             run_id = await asyncio.to_thread(self.repository.replace_recording, source.fingerprint,
@@ -132,20 +136,24 @@ class FilterLabService:
         self.changed.set()
         return {"scenario": scenario, "state": await self.state()}
 
-    def _calculation(self, result):
+    def _calculation(self, result, unattributed=()):
+        rule = self.engine.rule(result.calculation_id)
+        complete = not incomplete_player_rule(rule, unattributed)
         return {"id": result.calculation_id, "label": self.labels[result.calculation_id],
-                "value": result.value, "version": result.version,
-                "rule": self.engine.rule(result.calculation_id).model_dump(mode="json")}
+                "value": result.value if complete else None, "version": result.version,
+                "available": complete, "complete": complete,
+                "rule": rule.model_dump(mode="json")}
 
     async def state(self):
         async with self._lock:
+            unattributed = observed_unattributed_events(self.source.history(self.position))
             return {"synthetic": True, "run_id": self.run_id, "match_id": self.source.match_id,
                     "status": self.status, "position": self.position, "total": len(self.source.events),
                     "playback_seconds": self._playback_seconds(),
                     "playback_sampled_at": time.time() * 1000 if self.status == "running" and self.source.timed else None,
                     "error": self.error,
                     "events": [self.source.display_delivery(i) for i in range(max(0, self.position - 100), self.position)],
-                    "calculations": [self._calculation(r) for r in self.engine.calculations],
+                    "calculations": [self._calculation(r, unattributed) for r in self.engine.calculations],
                     "changed_ids": self.last_changed,
                     "metrics": {"total_rules": self.engine.count,
                                 "candidate_count": self.engine.last_candidate_count,
@@ -165,6 +173,9 @@ class FilterLabService:
                 raise RuleError("reset_required", "Start a new run first")
             if not supported_rule(rule, self.source.spec.get('capabilities')):
                 raise RuleError('unavailable_measurement', 'This recording does not capture that measurement.', 422)
+            unattributed = observed_unattributed_events(self.source.history(self.position))
+            if incomplete_player_rule(rule, unattributed):
+                raise RuleError('unavailable_measurement', 'Some matching events have no player attribution, so this total is unavailable.', 422)
             # Calculate a new rule against observed history without publishing it
             # into live memory before persistence succeeds.
             identifier = rule.calculation_id
@@ -177,7 +188,7 @@ class FilterLabService:
             self.engine.register(rule)
             self.labels.setdefault(result.calculation_id, label)
             self.changed.set()
-            return self._calculation(result)
+            return self._calculation(result, unattributed)
 
     async def plan(self, prompt, conversation_id=None):
         # Model calls are off the event-processing lock; replay stays responsive.
@@ -189,6 +200,7 @@ class FilterLabService:
                 description = self.source.describe()
                 context = {key: description[key] for key in ("match_id", "players", "teams")}
                 context["standard_stats"] = []
+                context["data_reference"] = self.source.data_reference()
                 run_id = self.run_id
                 history = self.conversations.history(conversation_id, run_id)
                 if sum(len(item["content"]) for item in history) + len(prompt) > 6000:

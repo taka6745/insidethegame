@@ -26,7 +26,7 @@ class GraphQLQuestionData:
         async with httpx.AsyncClient(timeout=10, transport=self.transport) as client:
             prefix = '/demo' if self.bridge == 'demo' else '/dev'
             path = prefix + ('/viewer-snapshots' if purpose == 'viewer' else '/question-snapshots')
-            body = payload.model_dump(mode='json')
+            body = payload.model_dump(mode='json', exclude={'events'} if self.bridge == 'demo' else None)
             if self.bridge == 'demo':
                 # ETL owns the recording. A checkpoint identifies an observed
                 # prefix; user-backend never sends history back as the source.

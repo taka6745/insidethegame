@@ -1,5 +1,6 @@
 """Resolve the final declared source, never the last incidental tool invocation."""
 from backend.models.questions import QuestionDraft
+from backend.models.stat_offers import stat_answer
 from uuid import uuid4
 
 
@@ -18,10 +19,11 @@ def standard_answer(draft, row, tools):
         return unavailable()
     tools.offers = [{'id': str(uuid4()), 'kind': 'standard', 'standard_stat_id': row['id'],
                      'label': row['label'], 'value': row['value'],
+                     'unit': row.get('unit', ''),
                      'snapshot_id': tools.payload.snapshot.id, 'run_id': tools.payload.snapshot.run_id}]
     return QuestionDraft(answer_kind='statistic',status='answer',standard_stat_id=row['id'],
                          statistic_request=draft.statistic_request,
-                         text=f"{row['label']}: {row['value']}.",evidence_ids=['stat:'+row['id']])
+                         text=stat_answer(tools.offers[0]),evidence_ids=['stat:'+row['id']])
 
 
 def selected_answer(draft, identifier, tools):
@@ -32,7 +34,7 @@ def selected_answer(draft, identifier, tools):
     tools.offers, tools.goal = [selected], selected.get('goal')
     return QuestionDraft(answer_kind='statistic',status='answer',selected_offer_id=identifier,
                          statistic_request=draft.statistic_request,
-                         text=f"{selected['label']}: {selected['value']}.",evidence_ids=['offer:'+identifier])
+                         text=stat_answer(selected),evidence_ids=['offer:'+identifier])
 
 
 async def resolve_answer(draft, tools):

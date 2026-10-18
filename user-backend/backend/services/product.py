@@ -154,7 +154,7 @@ class ProductService:
     async def reset_demo(self):
         from backend.adapters.product_demo import load_product_demo
         content = await asyncio.to_thread(load_product_demo)
-        result = await self.lab.load_recording(content, 'product-demo.json')
+        result = await self.lab.load_recording(content, 'product-demo.json', upstream=True)
         await self.refresh()
         return result
 
