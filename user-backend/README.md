@@ -31,7 +31,7 @@ The diagram and components below describe the target architecture; the [developm
 
 Custom stats follow **interpret / clarify → compile → validate → calculate → optional pin**. The local default uses one successful model call per turn; the model-based rule coder remains optional. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 
-One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
+One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. The viewer chooses any of three match allegiances and four styles independently. Connected combinations enable narrative generation targets in PostgreSQL; all twelve definitions remain stored. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
 
 [Custom-rule storage and execution](docs/custom-calculations.md) · [Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
 

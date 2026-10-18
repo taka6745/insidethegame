@@ -11,6 +11,7 @@ class QuestionRepository:
     def initialize(self):
         with self.store.connect() as conn:
             conn.execute((Path(__file__).parents[2] / 'migrations/006_questions.sql').read_text())
+            conn.execute((Path(__file__).parents[2] / 'migrations/007_viewer_audience.sql').read_text())
             conn.execute("UPDATE question_turns SET status='failed',reply=%s WHERE status='pending'", (Jsonb({'status':'unsupported','text':'Sorry, that question was interrupted. Please ask again.','offers':[]}),))
 
     def profiles(self):
@@ -46,8 +47,14 @@ class QuestionRepository:
             turns = conn.execute('SELECT id,request_id,prompt,status,reply FROM question_turns WHERE conversation_id=%s ORDER BY id', (row['id'],)).fetchall()
             offers = conn.execute('SELECT id,document,calculation_id FROM question_offers WHERE conversation_id=%s', (row['id'],)).fetchall()
         return {'session_token': str(token), 'profile_id':row['profile_id'], 'run_id':row['run_id'],
-                'match_id':row['match_id'], 'turns':turns,
+                'match_id':row['match_id'], 'audience': row['audience'], 'turns':turns,
                 'offers':[{**r['document'],'id':str(r['id']),'calculation_id':r['calculation_id']} for r in offers]}
+
+    def set_audience(self, token, audience):
+        with self.store.connect() as conn:
+            row = self._session(conn, token, lock=True)
+            conn.execute('UPDATE question_conversations SET audience=%s WHERE id=%s',
+                         (Jsonb(audience.model_dump()), row['id']))
 
     def begin(self, token, request_id, prompt):
         with self.store.connect() as conn:

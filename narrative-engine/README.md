@@ -6,7 +6,7 @@
 
 **Planned service; not implemented or deployed.** The retained [example prompts](prompts/README.md) and [bucket framing prototype](prototypes/bucket_framing/README.md) are implementation inputs.
 
-One minute summariser and context compressor build neutral, shared match memory. The author frames the neutral insight for every available bucket returned by the backend [audience API](../user-backend/docs/audience-api.md). Layers and options carry semantic descriptions; the original home/away/neutral × four fan styles are the 12 seed combinations. Viewer questions never trigger this workflow.
+One minute summariser and context compressor build neutral, shared match memory. The author frames the neutral insight for every enabled `generation_target` returned by the backend [audience API](../user-backend/docs/audience-api.md). Layers and options carry semantic descriptions; the original home/away/neutral × four fan styles are the 12 seed combinations. For the product demo, only combinations with connected viewers are enabled; all definitions remain stored. Fetch the current match catalogue before each generation cycle. Viewer questions never trigger this workflow.
 
 | Component | Role in this design |
 | --- | --- |

@@ -13,7 +13,7 @@ User backend → match state + cards + narratives
              ↔ questions + Track / Untrack
 ```
 
-- A demo profile selects the team/style audience. Already-framed narratives come from upstream.
+- Choose either team or Neither, plus Analytical, Simple, Casual or Experienced. Chat and pins stay with the same demo identity; already-framed narratives come from upstream. Only combinations with connected viewers are enabled in the demo audience catalogue.
 - Standard statistics come from ETL through the backend. The browser never calculates match statistics.
 - Tracking a standard or custom stat replaces the lowest-priority default card; untracking restores the default.
 - Questions keep their as-of snapshot while live cards advance. Sessions restore on refresh; a new session takes over the previous tab.

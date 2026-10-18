@@ -31,16 +31,17 @@ export class MatchController {
     this.busy = false;
     this.framePending = false;
     this.retry = null;
+    this.audienceBusy = false;
     view.onUnpin = (id) => this.unpin(id);
     questions.onTrack = (id) => this.track(id);
   }
   async start({ restore = false } = {}) {
     const result = await this.api.profiles();
-    this.profile = this.view.profiles(
-      result.profiles,
-      this.storage.getItem("match-profile"),
-    );
+    const saved = this.storage.getItem("match-profile");
+    this.profile = result.profiles.find(profile => profile.id === saved)?.id
+      || result.profiles[0]?.id;
     if (!this.profile) throw new Error("No demo profiles are available yet.");
+    this.storage.setItem("match-profile", this.profile);
     await this.connect({ restore });
   }
   async connect({ restore = false } = {}) {
@@ -59,6 +60,8 @@ export class MatchController {
     this.live.stop();
     this.token = null;
     this.busy = false;
+    this.audienceBusy = false;
+    this.view.audience.setBusy(false);
     this.snapshot = null;
     this.retry = null;
     this.view.error("");
@@ -90,10 +93,26 @@ export class MatchController {
       this.questions.status("Reconnect to ask about the match.", true);
     }
   }
-  selectProfile(profile) {
-    this.profile = profile;
-    this.storage.setItem("match-profile", profile);
-    return this.connect();
+  async selectAudience(selection) {
+    if (!this.token || this.audienceBusy) return;
+    const generation = this.generation, token = this.token;
+    this.audienceBusy = true;
+    this.view.audience.setBusy(true);
+    try {
+      const session = await this.api.audience(token, selection);
+      if (generation !== this.generation) return;
+      this.receive(session.snapshot);
+      this.view.error("");
+    } catch (error) {
+      if (generation !== this.generation) return;
+      if (this.snapshot) this.view.audience.render(this.snapshot);
+      this.view.error(error.message);
+    } finally {
+      if (generation === this.generation) {
+        this.audienceBusy = false;
+        this.view.audience.setBusy(false);
+      }
+    }
   }
   receive(message) {
     if (

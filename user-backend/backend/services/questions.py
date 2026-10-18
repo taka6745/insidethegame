@@ -38,7 +38,7 @@ class QuestionService:
             identity = await self.snapshots.identity()
             token = await asyncio.to_thread(self.repository.start, profile_id, identity)
             if self.session_started:
-                self.session_started(profile_id)
+                await self.session_started(profile_id)
             return await self.read(token)
 
     async def read(self, token):
@@ -72,6 +72,9 @@ class QuestionService:
                 await asyncio.gather(self.match_data.capture(payload), self.narratives.capture(payload))
                 stats, compact = await asyncio.gather(self.match_data.stats(payload.snapshot), self.narratives.compact(payload.snapshot))
                 profile = next(p for p in await asyncio.to_thread(self.repository.profiles) if p['id'] == row['profile_id'])
+                profile = {**profile, **(row.get('audience') or {})}
+                # Demo account labels may name a different team/style than this match choice.
+                profile = {key: profile[key] for key in ('team', 'fan_style')}
                 history = [{'user':t['prompt'],'reply':{key:t['reply'].get(key) for key in ('status','answer_kind','text','goal','statistic_request','standard_stat_id')}} for t in row['turns'][-12:] if t['reply']]
                 toolkit = QuestionTools(payload,self.match_data,self.narratives,self.planner,stats['stats'],compact,history)
                 context = {'snapshot':payload.snapshot.model_dump(), 'teams':payload.teams,'players':payload.players,

@@ -5,6 +5,7 @@ from uuid import UUID
 import anyio
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from backend.domain import RuleError
+from backend.models.viewer_audience import ViewerAudience
 from .questions import SessionRequest, MessageRequest
 
 
@@ -51,7 +52,8 @@ async def stream_product(ws, service, token):
     except (WebSocketDisconnect, TimeoutError):
         pass
     finally:
-        service.live.detach(peer)
+        with anyio.CancelScope(shield=True):
+            await service.detach(peer)
 
 
 def product_router(service):
@@ -72,6 +74,10 @@ def product_router(service):
     @router.get('/{token}')
     async def bootstrap(token: UUID):
         return await service.bootstrap(token)
+
+    @router.put('/{token}/audience')
+    async def select_audience(token: UUID, body: ViewerAudience):
+        return await service.select_audience(token, body)
 
     @router.post('/{token}/messages')
     async def ask(token: UUID, body: MessageRequest):

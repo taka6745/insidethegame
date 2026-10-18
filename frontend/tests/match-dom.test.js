@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { keyedList } from "../match/dom.js";
 import { QuestionView } from "../match/chat-view.js";
 import { MatchView } from "../match/view.js";
+import { AudienceView } from "../match/audience-view.js";
 
 class Element {
   constructor(tag) {
@@ -186,6 +187,27 @@ test("changing a live custom value preserves the focused Stop tracking control",
     container.children[0].querySelector(".stat-value").textContent,
     "2",
   );
+});
+
+test("audience controls use match teams and keep selection across live updates", () => {
+  const document = documentStub();
+  const view = new AudienceView(document);
+  const state = {match:{teams:[{name:"Chelsea"},{name:"Manchester United"}]},
+    audience:{team:"away",fan_style:"experienced"}};
+  view.render(state);
+  assert.deepEqual(view.team.children.map(option => [option.value,option.textContent]),
+    [["home","Chelsea"],["away","Manchester United"],["neutral","Neither"]]);
+  assert.deepEqual(view.selection(), state.audience);
+  const option = view.team.children[1];
+  view.render({...state,version:2});
+  assert.equal(view.team.children[1], option);
+  view.connection(true);
+  assert.equal(view.team.disabled, false);
+  view.setBusy(true);
+  assert.equal(view.style.disabled, true);
+  view.connection(false);
+  view.setBusy(false);
+  assert.equal(view.team.disabled, true);
 });
 
 test("standard stat gains tracking controls and removes them after unpin", () => {
