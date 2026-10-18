@@ -135,7 +135,7 @@ def worker(args):
                 return
     assert engine.count == args.count, "Generated rules must really be unique"
     save(status="replaying", registered_rules=engine.count, build_seconds=time.perf_counter() - started)
-    samples, candidates, probes = [], [], []
+    samples, candidates, probes, family_evaluations, time_probes = [], [], [], [], []
     replay_start = time.perf_counter()
     for event in events:
         start = time.perf_counter_ns()
@@ -144,6 +144,8 @@ def worker(args):
         samples.append(elapsed)
         candidates.append(engine.last_candidate_count)
         probes.append(engine.last_index_probe_count)
+        family_evaluations.append(engine.last_family_evaluation_count)
+        time_probes.append(engine.last_time_probe_count)
         if time.perf_counter() - replay_start > args.replay_timeout:
             break
     replay_wall = time.perf_counter() - replay_start
@@ -157,6 +159,8 @@ def worker(args):
          throughput_events_per_second=len(samples) / sum(samples), latency=values,
          candidates_mean=sum(candidates) / len(candidates), candidates_max=max(candidates),
          index_probes_max=max(probes), reference_checks=len(sampled),
+         family_evaluations_mean=sum(family_evaluations) / len(family_evaluations),
+         family_evaluations_max=max(family_evaluations), time_index_probes_max=max(time_probes),
          arrival_models=[arrival_model(samples, rate) for rate in (1, 5, 100)])
 
 
@@ -180,6 +184,7 @@ def parent(args):
               "python": platform.python_version(), "platform": platform.platform(), "machine": platform.machine(),
               "logical_cpus": os.cpu_count(),
               "engine_sha256": hashlib.sha256(Path(__file__).resolve().parents[1].joinpath("backend/services/filter_engine.py").read_bytes()).hexdigest(), "recording_sha256": hashlib.sha256(args.recording.read_bytes()).hexdigest(),
+              "time_index_sha256": hashlib.sha256(Path(__file__).resolve().parents[1].joinpath("backend/services/time_index.py").read_bytes()).hexdigest(),
               "memory_limit_mb": args.memory_mb, "build_timeout_seconds": args.build_timeout,
               "replay_timeout_seconds": args.replay_timeout, "cases": []}
     started = time.monotonic()

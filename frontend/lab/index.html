@@ -36,8 +36,14 @@
           </form>
           <div id="plan-result" class="plan-result" hidden aria-live="polite">
             <p id="plan-message"></p>
-            <pre id="plan-rule" hidden></pre>
+            <p id="plan-options" class="muted"></p>
+            <details id="plan-rule-details" hidden><summary>Inspect structured rule</summary><pre id="plan-rule" hidden></pre></details>
             <button id="add-plan" class="button secondary full" hidden>Add this filter</button>
+            <form id="reply-form" hidden>
+              <label id="reply-label" for="reply">Your answer</label>
+              <textarea id="reply" rows="2" maxlength="2000" placeholder="Add the missing detail or correct the request"></textarea>
+              <button id="send-reply" class="button secondary full" type="submit">Send reply ↗</button>
+            </form>
           </div>
           <div class="boundary-note"><span>↳</span><p>The agent prepares a structured rule once. Live events update the value without another model call.</p></div>
         </aside>

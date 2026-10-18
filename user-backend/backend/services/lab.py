@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from backend.domain import RuleError
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
+from backend.services.plan_conversations import PlanConversations
 
 
 class FilterLabService:
@@ -25,6 +26,7 @@ class FilterLabService:
         self.labels = {}
         self.last_changed = []
         self.run_id = None
+        self.conversations = PlanConversations()
 
     async def initialize(self):
         await asyncio.to_thread(self.repository.initialize, self.source.fingerprint)
@@ -110,6 +112,7 @@ class FilterLabService:
                                             source.content if content is not None else None,
                                             source.filename if content is not None else None)
             self.source, self.run_id = source, run_id
+            self.conversations.clear()
             self.engine, self.labels, self.last_changed = FilterEngine(), {}, []
             self.position, self.status, self.error = 0, "ready", None
             self._task = None
@@ -132,6 +135,8 @@ class FilterLabService:
                     "metrics": {"total_rules": self.engine.count,
                                 "candidate_count": self.engine.last_candidate_count,
                                 "index_probe_count": self.engine.last_index_probe_count,
+                                "family_evaluation_count": self.engine.last_family_evaluation_count,
+                                "time_probe_count": self.engine.last_time_probe_count,
                                 "changed_count": len(self.last_changed)},
                     "llm": {"configured": self.local_llm, "mode": "local" if self.local_llm else "fixture"}}
 
@@ -154,7 +159,7 @@ class FilterLabService:
             self.labels.setdefault(result.calculation_id, label)
             return self._calculation(result)
 
-    async def plan(self, prompt):
+    async def plan(self, prompt, conversation_id=None):
         # Model calls are off the event-processing lock; replay stays responsive.
         if self._plan_lock.locked():
             raise RuleError("planner_busy", "Wait for the current rule request to finish", 409)
@@ -164,8 +169,25 @@ class FilterLabService:
                 description = self.source.describe()
                 context = {key: description[key] for key in ("match_id", "players", "teams")}
                 context["standard_stats"] = []
-            outcome = await self.planner.plan(prompt, context)
-            return outcome.model_dump(mode="json")
+                run_id = self.run_id
+                history = self.conversations.history(conversation_id, run_id)
+                if sum(len(item["content"]) for item in history) + len(prompt) > 6000:
+                    raise RuleError("conversation_limit", "Start a new request with the details you have clarified.", 409)
+            outcome = await self.planner.plan(prompt, context, history=history) if history else await self.planner.plan(prompt, context)
+            response = outcome.model_dump(mode="json")
+            async with self._lock:
+                if self.run_id != run_id:
+                    raise RuleError("conversation_expired", "The match run changed. Start a new request.", 409)
+                if response.get("status") in {"ready", "clarification"}:
+                    clarification = response.get("clarification") or {}
+                    reply = clarification.get("question") or response.get("message") or "Please clarify your request."
+                    if clarification.get("options"):
+                        reply += "\nOptions:\n" + "\n".join(
+                            f"{index}. {option}" for index, option in enumerate(clarification["options"], 1))
+                    if response.get("status") == "ready" and response.get("goal"):
+                        reply = response["goal"]["description"]
+                    response["conversation_id"] = self.conversations.save(conversation_id, run_id, history, prompt, reply)
+            return response
 
     async def start(self, interval_ms):
         async with self._lock:
@@ -230,6 +252,7 @@ class FilterLabService:
             try:
                 await asyncio.to_thread(self.repository.reset, self.source.fingerprint)
                 await self._reload()
+                self.conversations.clear()
                 self.error, self.last_changed = None, []
             except Exception:
                 self.status = "error"

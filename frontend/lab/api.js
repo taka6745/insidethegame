@@ -19,7 +19,10 @@ export class LabApi {
     if (!response.ok) {
       const detail = data.detail || data.message || data.error;
       const message = Array.isArray(detail) ? detail.map(issue => issue.msg || 'Invalid input').join('; ') : detail;
-      throw new Error(typeof message === 'string' ? message : `Request failed (${response.status}).`);
+      const error = new Error(typeof message === 'string' ? message : `Request failed (${response.status}).`);
+      error.code = data.code;
+      error.status = response.status;
+      throw error;
     }
     return data;
   }
@@ -38,7 +41,7 @@ export class LabApi {
   event(deliveryIndex) { return this.request(`/events/${encodeURIComponent(deliveryIndex)}`); }
   state() { return this.request('/state'); }
   add(rule, label) { return this.request('/calculations', { rule, ...(label ? { label } : {}) }); }
-  plan(prompt) { return this.request('/plan', { prompt }); }
+  plan(prompt, conversationId = null) { return this.request('/plan', { prompt, ...(conversationId ? { conversation_id: conversationId } : {}) }); }
   start() { return this.request('/replay/start', { interval_ms: 1000 }); }
   reset() { return this.request('/reset', {}); }
 }

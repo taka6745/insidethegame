@@ -12,6 +12,7 @@ class AddCalculation(BaseModel):
 class PlanRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     prompt: str = Field(min_length=1, max_length=2000)
+    conversation_id: str | None = Field(default=None, min_length=1, max_length=64)
 
 
 class StartReplay(BaseModel):

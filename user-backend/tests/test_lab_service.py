@@ -8,6 +8,7 @@ import pytest
 from pydantic import BaseModel
 
 from backend.adapters.replay_source import FixtureEventSource
+from backend.domain import RuleError
 from backend.models.rules import Rule
 from backend.services.lab import FilterLabService
 
@@ -239,7 +240,74 @@ def test_planner_receives_entity_catalogue_not_future_events_or_preset_answers()
     async def run():
         planner = Planner()
         service, _ = await setup(planner=planner)
-        assert await service.plan("Track corners") == {"status": "clarification"}
+        outcome = await service.plan("Track corners")
+        assert outcome["status"] == "clarification" and outcome["conversation_id"]
         assert set(planner.context) == {"match_id", "players", "teams", "standard_stats"}
         assert planner.context["standard_stats"] == []
+    asyncio.run(run())
+
+
+def test_clarification_keeps_original_request_and_server_question():
+    from backend.agents.models import PlanOutcome
+
+    class Planner:
+        async def plan(self, prompt, context, history=None):
+            self.history = history
+            return PlanOutcome(status="clarification", source="fixture", message="Which player?")
+
+    async def run():
+        planner = Planner()
+        service, _ = await setup(planner=planner)
+        first = await service.plan("Track headed shots after minute 60")
+        second = await service.plan("Mbappe", first["conversation_id"])
+        assert second["conversation_id"] == first["conversation_id"]
+        assert planner.history == [
+            {"role": "user", "content": "Track headed shots after minute 60"},
+            {"role": "assistant", "content": "Which player?"},
+        ]
+        await service.reset()
+        with pytest.raises(RuleError, match="expired"):
+            await service.plan("Mbappe", first["conversation_id"])
+    asyncio.run(run())
+
+
+def test_reset_during_model_call_discards_stale_plan():
+    from backend.agents.models import PlanOutcome
+    from backend.domain import RuleError
+
+    class Planner:
+        async def plan(self, prompt, context):
+            started.set()
+            await release.wait()
+            return PlanOutcome(status="clarification", source="fixture", message="Which player?")
+
+    async def run():
+        nonlocal started, release
+        started, release = asyncio.Event(), asyncio.Event()
+        service, _ = await setup(planner=Planner())
+        planning = asyncio.create_task(service.plan("Track headers"))
+        await started.wait()
+        await service.reset()
+        release.set()
+        with pytest.raises(RuleError, match="changed"):
+            await planning
+    started = release = None
+    asyncio.run(run())
+
+
+def test_clarification_options_are_preserved_for_ordinal_answers():
+    from backend.agents.models import Clarification, PlanOutcome
+
+    class Planner:
+        async def plan(self, prompt, context, history=None):
+            self.history = history
+            return PlanOutcome(status="clarification", source="fixture", clarification=Clarification(
+                question="Which player?", options=["Mbappe", "Palmer", "Colwill"], missing_fields=["player"]))
+
+    async def run():
+        planner = Planner()
+        service, _ = await setup(planner=planner)
+        first = await service.plan("Track his headers")
+        await service.plan("The second one", first["conversation_id"])
+        assert planner.history[1]["content"] == "Which player?\nOptions:\n1. Mbappe\n2. Palmer\n3. Colwill"
     asyncio.run(run())

@@ -1,8 +1,9 @@
 """Shared in-memory indexed calculations. No database, network or generated exec.
 
-Each rule chooses one compound equality/membership index. An event probes at
-most 64 field masks, independent of rule count. Range-only rules use a match
-wildcard; genuinely relevant rules still cost work. Caller serializes mutations.
+Rules with the same non-clock predicates share one predicate evaluation. A
+compound index selects those families, then a clock index selects their windows.
+Changed result materialization still costs O(changed rules). Caller serializes
+mutations; this engine does not route results to individual viewers.
 """
 from collections import defaultdict
 from decimal import Decimal
@@ -12,6 +13,7 @@ from pydantic import BaseModel, ConfigDict
 
 from backend.models.events import Event
 from backend.models.rules import INDEX_FIELDS, Rule
+from backend.services.time_index import TimeIndex
 
 
 class CalculationResult(BaseModel):
@@ -28,8 +30,11 @@ class FilterEngine:
         self._totals: dict[str, Decimal] = {}
         self._events: dict[tuple[str, str], Event] = {}
         self._index = defaultdict(lambda: defaultdict(set))
+        self._families: dict[str, tuple[Rule, TimeIndex]] = {}
         self.last_candidate_count = 0
         self.last_index_probe_count = 0
+        self.last_family_evaluation_count = 0
+        self.last_time_probe_count = 0
 
     @property
     def rules(self) -> dict[str, Rule]:
@@ -89,8 +94,15 @@ class FilterEngine:
         self._rules[identifier] = rule
         self._totals[identifier] = value
         self._results[identifier] = CalculationResult(calculation_id=identifier, value=float(value), version=1)
-        for fields, values in self._keys(rule):
-            self._index[rule.match_id][fields, values].add(identifier)
+        # Keep operation in the family identity: count and sum share matching
+        # behaviour but have different event contributions.
+        base = rule.model_copy(update={"predicates": tuple(p for p in rule.predicates if p.field != "match_time_seconds")})
+        family_id = base.calculation_id
+        if family_id not in self._families:
+            self._families[family_id] = base, TimeIndex()
+            for fields, values in self._keys(base):
+                self._index[rule.match_id][fields, values].add(family_id)
+        self._families[family_id][1].add(identifier, tuple(p for p in rule.predicates if p.field == "match_time_seconds"))
         return self.get(identifier)
 
     def _candidates(self, event):
@@ -104,26 +116,57 @@ class FilterEngine:
             self.last_index_probe_count += 1
         return candidates
 
+    def _groups(self, event):
+        groups = []
+        if event is None:
+            return groups
+        for family_id in self._candidates(event):
+            base, clock = self._families[family_id]
+            identifiers = clock.matching(event.match_time_seconds)
+            self.last_time_probe_count += clock.last_probe_count
+            self.last_candidate_count += len(identifiers)
+            if not identifiers:
+                continue
+            self.last_family_evaluation_count += 1
+            contribution = Decimal(str(base.contribution(event)))
+            # Keep zero contributions for correction candidate accounting.
+            groups.append((identifiers, contribution))
+        return groups
+
+    def _apply(self, identifiers, delta, changed):
+        if not delta:
+            return
+        for identifier in identifiers:
+            self._totals[identifier] += delta
+            result = CalculationResult(calculation_id=identifier, value=float(self._totals[identifier]),
+                                       version=self._results[identifier].version + 1)
+            self._results[identifier] = result
+            changed.append(result)
+
     def ingest(self, event: Event) -> list[CalculationResult]:
         self.last_candidate_count = self.last_index_probe_count = 0
+        self.last_family_evaluation_count = self.last_time_probe_count = 0
         key = (event.match_id, event.event_id)
         previous = self._events.get(key)
         if previous and event.revision <= previous.revision:
             if event.revision == previous.revision and event != previous:
                 raise ValueError("Conflicting contents for the same event revision")
             return []
-        candidates = self._candidates(event)
-        if previous:
-            candidates.update(self._candidates(previous))
-        self.last_candidate_count = len(candidates)
+        groups = self._groups(event)
         self._events[key] = event
         changed = []
-        for identifier in sorted(candidates):
-            rule, result = self._rules[identifier], self._results[identifier]
-            delta = Decimal(str(rule.contribution(event))) - Decimal(str(rule.contribution(previous)))
-            if delta:
-                self._totals[identifier] += delta
-                result = CalculationResult(calculation_id=identifier, value=float(self._totals[identifier]), version=result.version + 1)
-                self._results[identifier] = result
-                changed.append(result)
+        if previous is None:
+            for identifiers, delta in groups:
+                self._apply(identifiers, delta, changed)
+        else:
+            # Corrections can move across category families and time windows.
+            # Net deltas first: an unchanged total must not bump its version.
+            deltas = {identifier: delta for identifiers, delta in groups for identifier in identifiers}
+            for identifiers, contribution in self._groups(previous):
+                for identifier in identifiers:
+                    deltas[identifier] = deltas.get(identifier, Decimal(0)) - contribution
+            self.last_candidate_count = len(deltas)
+            for identifier, delta in deltas.items():
+                self._apply((identifier,), delta, changed)
+        changed.sort(key=lambda result: result.calculation_id)
         return changed

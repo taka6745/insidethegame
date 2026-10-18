@@ -1,12 +1,14 @@
 """Typed Microsoft Agent Framework executors for goal, generation and repair."""
 import logging
-from dataclasses import dataclass
+import time
+from dataclasses import dataclass, replace
 
 from agent_framework import Executor, WorkflowContext, handler
 
 from backend.adapters.llm import ModelError
 from backend.models.rules import Rule
 from .models import Goal, PlanOutcome
+from .clarification import unresolved_player
 
 
 @dataclass(frozen=True)
@@ -21,6 +23,9 @@ class CodingRequest:
     match_id: str
     attempt: int = 1
     feedback: str | None = None
+    goal_seconds: float = 0
+    model_calls: int = 0
+    coding_seconds: float = 0
 
 
 @dataclass(frozen=True)
@@ -29,6 +34,7 @@ class Candidate:
     rule: Rule | None = None
     error: str | None = None
     retryable: bool = True
+    seconds: float = 0
 
 
 class DefineGoal(Executor):
@@ -38,24 +44,35 @@ class DefineGoal(Executor):
 
     @handler
     async def handle(self, request: PlanningRequest, ctx: WorkflowContext[CodingRequest, PlanOutcome]):
-        decision = None
-        for attempt in range(2):
+        start = time.perf_counter()
+        context = dict(request.context)
+        decision = unresolved_player(request.prompt, context)
+        calls = 0
+        for attempt in range(0 if decision is not None else 2):
             try:
-                decision = await self.agent.define(request.prompt, request.context)
+                calls += int(hasattr(self.agent, "model"))
+                decision = await self.agent.define(request.prompt, context)
                 break
             except (ModelError, ValueError) as exc:
+                if hasattr(exc, "errors"):
+                    context["goal_validation_errors"] = [
+                        {"path": ".".join(str(part) for part in error["loc"]), "type": error["type"]}
+                        for error in exc.errors()][:12]
                 reason = exc.reason if isinstance(exc, ModelError) else "goal_schema"
                 logging.getLogger(__name__).warning("Goal definition failed: reason=%s attempt=%s", reason, attempt + 1)
                 if isinstance(exc, ModelError) and not exc.retryable:
                     break
+        seconds = round(time.perf_counter() - start, 3)
         if decision is None:
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source,
+                                              model_calls=calls, stage_seconds={"goal": seconds},
                                               message="Could not define a validated goal. Please try again."))
         elif decision.status != "custom":
             await ctx.yield_output(PlanOutcome(status=decision.status, source=self.source, goal=decision.goal,
-                                              standard_stat_id=decision.standard_stat_id, message=decision.message))
+                                              standard_stat_id=decision.standard_stat_id, clarification=decision.clarification, message=decision.message,
+                                              model_calls=calls, stage_seconds={"goal": seconds}))
         else:
-            await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"]))
+            await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"], goal_seconds=seconds, model_calls=calls))
 
 
 class GenerateRule(Executor):
@@ -65,6 +82,8 @@ class GenerateRule(Executor):
 
     @handler
     async def handle(self, request: CodingRequest, ctx: WorkflowContext[Candidate]):
+        start = time.perf_counter()
+        request = replace(request, model_calls=request.model_calls + int(hasattr(self.agent, "model")))
         try:
             rule = await self.agent.generate(request.goal, request.match_id, request.feedback)
             candidate = Candidate(request, rule=rule)
@@ -74,6 +93,7 @@ class GenerateRule(Executor):
             error = str(exc) if isinstance(exc, ModelError) else "Generated rule does not match the supported schema."
             candidate = Candidate(request, error=error,
                                   retryable=not isinstance(exc, ModelError) or exc.retryable)
+        candidate = replace(candidate, seconds=time.perf_counter() - start)
         await ctx.send_message(candidate)
 
 
@@ -86,19 +106,24 @@ class ValidateRule(Executor):
     @handler
     async def handle(self, candidate: Candidate, ctx: WorkflowContext[CodingRequest, PlanOutcome]):
         request, error = candidate.request, candidate.error
+        validation_start = time.perf_counter()
+        coding_seconds = request.coding_seconds + candidate.seconds
         if error is None:
             try:
                 self.harness.validate(request.goal, request.match_id, candidate.rule)
             except ValueError as exc:
                 error = str(exc)[:1500]
+        coding_seconds += time.perf_counter() - validation_start
         if error is None:
             await ctx.yield_output(PlanOutcome(status="ready", source=self.source, goal=request.goal,
                                               rule=candidate.rule, attempts=request.attempt,
+                                              model_calls=request.model_calls, stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)},
                                               message="Structured rule validated against the goal."))
         elif candidate.retryable and request.attempt <= self.max_repairs:
-            await ctx.send_message(CodingRequest(request.goal, request.match_id, request.attempt + 1, error))
+            await ctx.send_message(replace(request, attempt=request.attempt + 1, feedback=error, coding_seconds=coding_seconds))
         else:
             message = (f"Could not validate the calculation after {self.max_repairs} repairs." if candidate.retryable
                        else "The model request was rejected. Check the local model configuration.")
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source, goal=request.goal,
-                                              attempts=request.attempt, message=message))
+                                              attempts=request.attempt, message=message, model_calls=request.model_calls,
+                                              stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)}))

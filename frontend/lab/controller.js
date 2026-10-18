@@ -13,6 +13,8 @@ export class FilterLab {
     this.refreshSequence = 0;
     this.inspectionSequence = 0;
     this.connectionFailed = false;
+    this.conversationId = null;
+    this.planLabel = '';
   }
 
   async start() {
@@ -37,23 +39,30 @@ export class FilterLab {
       const prompt = document.getElementById('prompt').value.trim();
       if (!prompt) { this.view.error('Describe the stat you want to track first.'); return; }
       this.action('plan', async () => {
-        this.prepared = null;
-        this.view.plan({ message: 'The agent is preparing and checking your rule…' });
-        const plan = await this.api.plan(prompt);
-        this.prepared = plan.rule || null;
-        this.view.plan(plan);
+        await this.requestPlan(prompt);
+      });
+    });
+    document.getElementById('reply-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const reply = document.getElementById('reply').value.trim();
+      if (!reply || !this.conversationId) return;
+      this.action('plan', async () => {
+        await this.requestPlan(reply, true);
+        document.getElementById('reply').value = '';
       });
     });
     document.getElementById('add-plan').addEventListener('click', () => this.action('add', async () => {
       if (!this.prepared) return;
-      await this.api.add(this.prepared, document.getElementById('prompt').value.trim());
+      await this.api.add(this.prepared, this.planLabel);
       this.prepared = null;
+      this.conversationId = null;
       this.view.plan({ message: 'Added. Your filter will update as events arrive.' });
     }));
     document.getElementById('start').addEventListener('click', () => this.action('start', () => this.api.start()));
     document.getElementById('reset').addEventListener('click', () => this.action('reset', async () => {
       await this.api.reset();
       this.prepared = null;
+      this.conversationId = null;
       document.getElementById('plan-result').hidden = true;
     }));
     document.getElementById('rule-dialog').addEventListener('close', () => { this.inspectionSequence++; });
@@ -72,10 +81,23 @@ export class FilterLab {
     this.view.controls(this.state, this.busy);
   }
 
+  async requestPlan(prompt, followup = false) {
+    if (!followup) { this.conversationId = null; this.planLabel = prompt; }
+    this.prepared = null;
+    const conversationId = this.conversationId;
+    this.view.plan({ message: 'The agent is preparing and checking your rule…' });
+    const plan = await this.api.plan(prompt, conversationId);
+    this.prepared = plan.status === 'ready' ? plan.rule || null : null;
+    this.conversationId = plan.conversation_id || (plan.status === 'failed' ? conversationId : null);
+    this.planLabel = (plan.goal?.description || this.planLabel).slice(0, 160);
+    this.view.plan({ ...plan, conversation_id: this.conversationId });
+  }
+
   recording(result) {
     this.scenario = result.scenario;
     this.view.scenario(this.scenario);
     this.prepared = null;
+    this.conversationId = null;
     document.getElementById('plan-result').hidden = true;
   }
 
@@ -103,7 +125,10 @@ export class FilterLab {
     try { await operation(); await this.refresh(); }
     catch (error) {
       this.view.error(error.message);
-      if (name === 'plan') this.view.plan({ message: error.message });
+      if (name === 'plan') {
+        if (['conversation_expired', 'conversation_limit'].includes(error.code)) this.conversationId = null;
+        this.view.plan({ message: error.message, conversation_id: this.conversationId });
+      }
     }
     finally { this.busy = false; this.view.controls(this.state, this.busy); }
   }

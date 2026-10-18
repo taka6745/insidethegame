@@ -2,6 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { LabApi } from '../lab/api.js';
 
+test('clarification reply sends opaque conversation ID without client history', async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    assert.deepEqual(JSON.parse(options.body), { prompt: 'Mbappe', conversation_id: 'c1' });
+    return new Response(JSON.stringify({ status: 'ready' }));
+  };
+  try { await new LabApi().plan('Mbappe', 'c1'); }
+  finally { globalThis.fetch = original; }
+});
+
 test('structured rules are sent unchanged to the backend', async () => {
   const rule = { operation: 'count', where: { event_type: 'corner', match_time_seconds: { greater_than: 3600 } } };
   const original = globalThis.fetch;
