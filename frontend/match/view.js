@@ -35,13 +35,14 @@ export class MatchView {
     this.document.body.dataset.connection = state;
     const labels = {
       connecting: "Opening your match…",
-      live: "Live updates",
+      live: "",
       reconnecting: "Reconnecting · showing last received state",
       stale: "Connection interrupted · values may be stale",
       offline: "Offline · reconnect to update",
       replaced: "Session ended · another tab or a new demo took over",
     };
-    this.text("connection", labels[state] || state);
+    this.text("connection", labels[state] ?? state);
+    this.get("inside-the-game").hidden = state === "live";
     this.get("connection").dataset.state = state;
     this.get("reconnect").hidden = !["offline", "replaced", "stale"].includes(
       state,

@@ -87,6 +87,10 @@ button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visi
   height: 40px;
 }
 .league-nav {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 28px;
@@ -95,6 +99,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visi
   flex: 1;
 }
 .league-nav a {
+  flex-shrink: 0;
   position: relative;
   padding: 20px 0;
 }
@@ -242,6 +247,10 @@ body[data-connection="live"][data-match-status="running"] .live-dot {
   justify-content: space-between;
   gap: 12px;
 }
+.profile-wrap {
+  flex-shrink: 0;
+  margin-left: auto;
+}
 .connection-bar {
   display: flex;
   gap: 12px;
@@ -281,10 +290,11 @@ option {
   border-radius: 8px;
 }
 .match-layout {
+  margin-top: 20px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 350px);
   gap: 20px;
-  height: clamp(430px, calc(100dvh - 260px), 760px);
+  height: clamp(430px, calc(100dvh - 225px), 795px);
 }
 .match-column {
   min-width: 0;
@@ -497,11 +507,7 @@ footer {
     height: 34px;
   }
   .league-nav {
-    gap: 22px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    font-size: 12px;
-    white-space: nowrap;
+    display: none;
   }
   .league-nav a {
     padding: 18px 0;
