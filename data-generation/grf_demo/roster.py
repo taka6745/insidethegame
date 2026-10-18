@@ -33,6 +33,12 @@ NAMES = (
     ),
 )
 
+# Presentation numbers for these illustrative lineups, not a live squad feed.
+SHIRT_NUMBERS = (
+    (1, 10, 9, 3, 6, 4, 24, 8, 25, 17, 7),
+    (31, 19, 30, 23, 6, 4, 2, 8, 18, 37, 10),
+)
+
 
 def player_id(team, index):
     return f"{TEAMS[team]['id']}-{index}"

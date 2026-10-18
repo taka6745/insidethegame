@@ -4,7 +4,9 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 EventType = Literal["pass", "shot", "goal", "corner", "card", "save", "tackle",
-                    "clearance", "interception", "foul", "touch"]
+                    "clearance", "interception", "foul", "touch", "throw_in",
+                    "free_kick", "goal_kick", "kick_off", "penalty", "offside",
+                    "foul_won", "keeper_claim", "period_start", "period_end"]
 
 
 class Event(BaseModel):

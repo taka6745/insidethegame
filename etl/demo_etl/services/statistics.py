@@ -31,7 +31,11 @@ def project(payload, possession=None, capabilities=None):
         counts = Counter(e.event_type for e in rows)
         kinds = [('goals', ('goal',)), ('shots', shot_types), ('passes', ('pass',)),
                  ('corners', ('corner',)), ('cards', ('card',)), ('saves', ('save',)),
-                 ('tackles', ('tackle',)), ('interceptions', ('interception',)), ('fouls', ('foul',))]
+                 ('tackles', ('tackle',)), ('interceptions', ('interception',)), ('fouls', ('foul',)),
+                 ('fouls_won', ('foul_won',)), ('offsides', ('offside',)),
+                 ('throw_ins', ('throw_in',)), ('free_kicks', ('free_kick',)),
+                 ('goal_kicks', ('goal_kick',)), ('kick_offs', ('kick_off',)),
+                 ('penalties', ('penalty',)), ('keeper_claims', ('keeper_claim',))]
         def append(kind, value, definition, types=(), available=True):
             if not available:
                 value = None
@@ -41,11 +45,26 @@ def project(payload, possession=None, capabilities=None):
                 'unit': '%' if kind in ('possession', 'pass_accuracy') else '',
                 'definition': definition, 'event_types': list(types), 'complete': True})
         for kind, types in kinds:
+            definition = f'Observed {", ".join(types)} events; latest non-deleted revisions.'
+            if types[0] in ('throw_in', 'free_kick', 'goal_kick', 'kick_off', 'penalty') or (
+                kind == 'corners' and capabilities.get('restart_events') == 'taken'
+            ):
+                definition = 'Restarts actually taken, not merely awarded; latest non-deleted revisions.'
+            elif kind == 'fouls':
+                definition = 'Whistled fouls committed; excludes offsides and companion foul-won records.'
             append(kind, sum(counts[t] for t in types) if set(types) <= supported else None,
-                   f'Observed {", ".join(types)} events; latest non-deleted revisions.', types, set(types) <= supported)
+                   definition, types, set(types) <= supported)
+        body_types = set(capabilities.get('body_part_event_types', ()))
+        for kind, types in [('headed_passes', ('pass',)), ('headed_shots', shot_types),
+                            ('headed_contacts', ('touch',))]:
+            available = set(types) <= supported and (
+                capabilities.get('body_parts', False) or set(types) <= body_types)
+            append(kind, sum(e.event_type in types and e.body_part == 'head' for e in rows),
+                   f'Head contacts among {", ".join(types)} records; requires complete body-part coverage for each category.',
+                   types, available)
         # Goals are distinct from non-goal shot events in this adapter contract.
         on_target = counts['goal'] + sum(e.event_type == 'shot' and e.outcome in ('saved','on_target') for e in rows)
-        append('shots_on_target', on_target, 'Goals plus non-goal shots explicitly recorded saved/on_target.', ('shot','goal'), capabilities.get('shot_outcomes', True))
+        append('shots_on_target', on_target, 'Goals plus non-goal shots explicitly recorded saved/on_target.', ('shot','goal'), {'shot', 'goal'} <= supported and capabilities.get('shot_outcomes', True))
         passes = [e for e in rows if e.event_type == 'pass']
         known = [e for e in passes if e.outcome in ('success','failure')]
         append('pass_accuracy', round(100 * sum(e.outcome == 'success' for e in known) / len(known), 1) if known else None,

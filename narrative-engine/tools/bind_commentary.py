@@ -10,6 +10,8 @@ from pathlib import Path
 
 STYLES = ('simple', 'casual', 'experienced', 'analytical')
 PERSPECTIVES = ('home', 'away', 'neutral')
+EVIDENCE_TYPES = {'shot', 'corner', 'foul', 'foul_won', 'offside', 'card',
+                  'free_kick', 'throw_in', 'goal_kick', 'kick_off', 'penalty'}
 ORDER = {
     'simple': ('goals', 'shots', 'possession', 'passes', 'pass_accuracy'),
     'casual': ('goals', 'shots', 'possession', 'passes', 'pass_accuracy'),
@@ -34,7 +36,7 @@ def bind(text, source, reviewed_hash):
         # Return compact evidence references; the prefix digest guards all factual claims.
         evidence = [event for event, seconds in zip(events, times) if seconds <= minute * 60
                     and (event['event_type'] == 'goal' or
-                         (seconds > (minute - 1) * 60 and event['event_type'] == 'shot'))]
+                         (seconds > (minute - 1) * 60 and event['event_type'] in EVIDENCE_TYPES))]
         if not evidence:
             evidence = prefix[-1:]
         for index, prose in enumerate(versions):

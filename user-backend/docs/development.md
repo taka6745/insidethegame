@@ -54,7 +54,7 @@ Run one backend process/worker. WebSocket/session ownership is local; this setup
 
 Refresh/reconnect within a run restores chat, selected audience and pins. A new session for the same profile takes over the previous one. `reset backend` creates a new shared run, resetting match-scoped chat/pins/calculations while preserving account profiles. `./dev down` preserves PostgreSQL and narrative volumes. The browser lab shares replay state; do not load another recording during a viewer demonstration.
 
-`./dev` mounts the optional `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when available; `DEMO_VIDEO_PATH` overrides that path. Video and events share the same 12-minute timeline. Without the ignored video, the data demo still runs. [Frontend media setup](../../frontend/docs/development.md#optional-aligned-footage).
+`./dev` mounts the optional `.local/grf-demo-chelsea-united-v3/match.mp4` automatically when available; `DEMO_VIDEO_PATH` overrides that path. Video and events share the same 12-minute timeline. Without the ignored video, the data demo still runs. [Frontend media setup](../../frontend/docs/development.md#optional-aligned-footage).
 
 ## Change and verify
 

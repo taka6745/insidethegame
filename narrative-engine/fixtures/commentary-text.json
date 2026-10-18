@@ -1,5 +1,5 @@
 {
-  "provenance": "Manually authored for the rendered synthetic Chelsea–Manchester United GRF capture (0–4). Generic simulator abilities and illustrative named lineups, not a real fixture. Order: home/away/neutral, each simple/casual/experienced/analytical. Evidence reviewed against the final canonical ETL export.",
+  "provenance": "Manually authored and reviewed for the rendered synthetic Chelsea–Manchester United GRF telemetry-v2 capture (0–4). Generic simulator abilities and illustrative named lineups, not a real fixture. Order: home/away/neutral, each simple/casual/experienced/analytical. Goals, valid attempts and referee decisions checked against the canonical ETL export; no invented tactics or shot outcomes.",
   "minutes": [
     [
       "Chelsea are 1–0 down. Bruno Fernandes has scored for United.",
@@ -19,29 +19,29 @@
       "Chelsea are now 3–0 down. United have scored twice more.",
       "Two more United goals have left Chelsea with a much bigger deficit.",
       "Chelsea have conceded again at 8:50 and 12:02. Dalot is credited with United's third.",
-      "Chelsea trail 3–0 after goals at 7:05, 8:50 and 12:02. The scorer of United's second is not identified in the feed.",
+      "Chelsea trail 3–0. Casemiro took a United corner at 11:41, before Dalot's goal at 12:02.",
       "United lead 3–0. Diogo Dalot has scored their third goal.",
       "United have raced three goals clear, with Dalot adding the third.",
       "United extend their advantage with goals at 8:50 and 12:02, the latter credited to Dalot.",
-      "United's goals are recorded at 7:05, 8:50 and 12:02. Fernandes and Dalot are named; the second scorer is unidentified.",
+      "United lead 3–0. Casemiro took the corner at 11:41; Dalot's goal followed at 12:02. No assist is assigned here.",
       "United have added two more goals and lead Chelsea 3–0.",
       "Three goals already for United, with Dalot adding to their early advantage.",
       "United's early lead has grown to three goals after another score and a Dalot goal.",
-      "The score is 0–3. Goals are recorded at 7:05, 8:50 and 12:02; no scorer is identified for the second."
+      "Chelsea 0–3 United. Casemiro took a corner at 11:41 and Dalot scored at 12:02; United's second scorer remains unidentified."
     ],
     [
-      "Chelsea are still 3–0 down. There has not been another goal.",
-      "Chelsea have stopped the score changing in this spell, but still need a way back from 3–0.",
-      "Chelsea remain three goals behind; this interval adds no recorded attempt for either side.",
-      "No new shot or goal is recorded in this interval. Chelsea still trail 3–0.",
-      "United still lead 3–0. They have not added another goal in this spell.",
-      "United's three-goal advantage is unchanged after that early burst.",
-      "United remain three goals ahead, with no further recorded attempt in this interval.",
-      "This interval contains no new recorded shots or goals. United's lead remains 3–0.",
-      "The score remains Chelsea 0–3 United.",
-      "The early rush of goals has paused, with United still three clear.",
-      "Neither side has added a recorded attempt in this spell. United's three-goal advantage stands.",
-      "There are no new recorded shots or goals in this interval. The score remains 0–3."
+      "Chelsea still trail 3–0. United have been caught offside twice in this spell.",
+      "Two offside decisions have given Chelsea restarts, but the three-goal deficit remains.",
+      "Mbeumo and Cunha have been flagged offside. Chelsea take the resulting free kicks without changing the score.",
+      "United offsides are recorded at 15:20 and 21:43. Chelsea's free kicks follow at 15:24 and 21:48; it remains 0–3.",
+      "United lead 3–0. Mbeumo and Cunha have been caught offside.",
+      "United stay three clear, although two attacks have ended with offside decisions.",
+      "Mbeumo and Cunha are the latest United players flagged offside. No further attempt is recorded in this spell.",
+      "Mbeumo is offside at 15:20 and Cunha at 21:43. United's lead remains 3–0, with no new shot or goal.",
+      "United still lead 3–0 after two offside decisions against them.",
+      "The goals have paused. Two United offsides have brought Chelsea free kicks.",
+      "Mbeumo and Cunha are flagged offside, with Cucurella and Delap taking Chelsea's resulting restarts.",
+      "Two offsides and two ensuing free kicks are recorded in this interval. Neither side adds a shot or goal; it stays 0–3."
     ],
     [
       "Kobbie Mainoo has scored for United. Chelsea are now 4–0 down.",
@@ -100,18 +100,18 @@
       "Attempts are recorded for Dalot at 48:30 and Cucurella at 50:40. The score remains Chelsea 0–4 United."
     ],
     [
-      "Chelsea are still 4–0 down after more United attempts from Mainoo and Casemiro.",
-      "Mainoo and Casemiro have tried to add to United's lead, but Chelsea have not conceded again.",
-      "United's latest attempts come from Mainoo and Casemiro. Chelsea's deficit remains four.",
-      "Mainoo and Casemiro record attempts around minutes 57–59. No new goal is recorded; Chelsea trail 0–4.",
-      "Mainoo and Casemiro have had more attempts. United still lead 4–0.",
-      "United have been looking for a fifth through Mainoo and Casemiro.",
-      "Mainoo and Casemiro account for United's latest attempts, without another goal being added.",
-      "United record attempts through Mainoo and Casemiro around minutes 57–59. Their lead stays at 4–0.",
-      "Mainoo and Casemiro have taken shots for United. It is still 0–4.",
-      "United have supplied the latest attempts but have not added a fifth goal.",
-      "A set of United attempts through Mainoo and Casemiro has not changed the score.",
-      "Mainoo and Casemiro feature among the recorded attempts around minutes 57–59. The score remains 0–4."
+      "Chelsea remain 4–0 down. Mainoo has had two more attempts for United.",
+      "Mainoo has tried twice more, but Chelsea have not conceded another goal.",
+      "Mainoo adds two valid attempts. Other United actions are stopped for offside, and Chelsea's deficit remains four.",
+      "Mainoo's attempts come at 57:40 and 59:11. Offsides at 57:51 and 59:33 are separate decisions; Chelsea still trail 0–4.",
+      "Mainoo has taken two more shots. United still lead 4–0.",
+      "Mainoo has another pair of attempts, although United have not found a fifth goal.",
+      "United add two Mainoo attempts, while Mainoo and Casemiro also receive offside decisions in this spell.",
+      "Mainoo records attempts at 57:40 and 59:11. The actions stopped for offside at 57:51 and 59:33 do not add shots.",
+      "Mainoo has had two attempts for United. The score remains 0–4.",
+      "Two more Mainoo attempts leave United's four-goal advantage unchanged.",
+      "Mainoo supplies both valid attempts in this spell. Offside decisions also stop United twice.",
+      "Two Mainoo attempts and two United offsides are recorded in this interval. No goal is added; Chelsea trail 0–4."
     ],
     [
       "Chelsea are still 4–0 down. Mainoo has had another shot for United.",
@@ -142,18 +142,18 @@
       "Attempts are recorded for Tosin at 71:39 and De Ligt at 73:35. The score remains Chelsea 0–4 United."
     ],
     [
-      "Chelsea are still 4–0 down. There has not been another goal.",
-      "Chelsea have not found a way onto the scoresheet as the game moves into its closing stages.",
-      "Chelsea's deficit remains four, and this spell adds no recorded attempt for either side.",
-      "No new shot or goal is recorded in this interval. Chelsea still trail 0–4.",
-      "United still lead 4–0 as the match approaches the end.",
-      "United's four-goal advantage is intact late in the game.",
-      "United remain four goals ahead, with no recorded attempt added in this interval.",
-      "This interval contains no new recorded shots or goals. United still lead 4–0.",
-      "United still lead Chelsea 4–0 late in the game.",
-      "The scoreline has held steady, with United still four clear.",
-      "Neither side has added a recorded attempt in this spell; United's lead remains unchanged.",
-      "There are no new recorded shots or goals in this interval. The score remains 0–4."
+      "Chelsea still trail 4–0. Neto has won a free kick after a foul by Lammens.",
+      "A foul on Neto gives Chelsea a restart, but they are still looking for their first goal.",
+      "Lammens fouls Neto at 75:19. Enzo takes the resulting free kick, without Chelsea adding a recorded attempt in this spell.",
+      "Chelsea win a foul at 75:19 and Enzo takes the free kick at 75:23. No shot or goal is added; it remains 0–4.",
+      "United lead 4–0. Lammens has conceded a foul against Neto.",
+      "United's four-goal lead holds after Lammens gives away a free kick.",
+      "Lammens is penalised for a foul on Neto. Mainoo is also caught offside twice later in this interval.",
+      "United concede one foul at 75:19; Mainoo is offside at 80:38 and 81:19. Their lead stays 4–0.",
+      "Lammens has fouled Neto. Chelsea take the free kick, with United still 4–0 ahead.",
+      "A Chelsea free kick and two United offsides bring more stoppages, but no change to the score.",
+      "Neto wins a foul from Lammens before Mainoo is flagged offside twice. There are no recorded attempts in this spell.",
+      "This interval records one foul and two offsides, followed by three free kicks. No shot or goal is added; it remains 0–4."
     ],
     [
       "Full-time: Chelsea lose 4–0 to United.",

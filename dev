@@ -4,8 +4,8 @@ cd "$(dirname "$0")"
 compose() {
   local files=(-f local/compose.yaml)
   if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
-  if [[ -z "${DEMO_VIDEO_PATH:-}" && -f .local/grf-demo-chelsea-united-v2/match.mp4 ]]; then
-    export DEMO_VIDEO_PATH="$PWD/.local/grf-demo-chelsea-united-v2/match.mp4"
+  if [[ -z "${DEMO_VIDEO_PATH:-}" && -f .local/grf-demo-chelsea-united-v3/match.mp4 ]]; then
+    export DEMO_VIDEO_PATH="$PWD/.local/grf-demo-chelsea-united-v3/match.mp4"
   fi
   if [[ -n "${DEMO_VIDEO_PATH:-}" ]]; then files+=(-f local/compose.media.yaml); fi
   docker compose --env-file local/env.defaults "${files[@]}" "$@"

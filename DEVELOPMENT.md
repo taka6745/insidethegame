@@ -65,6 +65,6 @@ Recorded GRF events → Event Hubs → ETL → history + stats → GraphQL
                      viewer + video
 ```
 
-The checked-in recording is the exact rendered Chelsea–United simulation. Large footage remains ignored. If `.local/grf-demo-chelsea-united-v2/match.mp4` exists, `./dev` mounts it automatically; otherwise set `DEMO_VIDEO_PATH` to the matching file. See [generation instructions](data-generation/docs/grf-demo.md). Playback is 12 minutes with a 90-minute football clock; no scrubbing.
+The checked-in recording is the exact rendered Chelsea–United simulation. Large footage remains ignored. If `.local/grf-demo-chelsea-united-v3/match.mp4` exists, `./dev` mounts it automatically; otherwise set `DEMO_VIDEO_PATH` to the matching file. See [generation instructions](data-generation/docs/grf-demo.md). Playback is 12 minutes with a 90-minute football clock; no scrubbing.
 
 ETL owns separate local PostgreSQL history/stat databases; the narrative stub owns a SQLite archive. These are replaceable development repositories for planned Azure SQL/Cosmos. The replay publishes recorded events and snapshot watermarks through the Event Hubs emulator. ETL publishes ready snapshots through Service Bus; the narrative stub publishes authored bucket versions through another Service Bus topic. History and standard-stat reads still use GraphQL. Stream Analytics is not part of this demo. No backend standard-stat calculations or authored match stories are used by this runtime.

@@ -55,7 +55,7 @@ Run `node frontend/benchmarks/client.mjs` from the repository root for opt-in st
 
 ## Optional aligned footage
 
-`ACCEPT_EULA=Y ./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-v2/match.mp4` if it exists. The video is ignored, not downloaded on setup, and not included in the image or Git. To use the matching MP4 stored elsewhere:
+`ACCEPT_EULA=Y ./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-v3/match.mp4` if it exists. The video is ignored, not downloaded on setup, and not included in the image or Git. To use the matching MP4 stored elsewhere:
 
 ```sh
 DEMO_VIDEO_PATH=/absolute/path/to/match.mp4 ACCEPT_EULA=Y ./dev up backend

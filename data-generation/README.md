@@ -4,7 +4,7 @@
 
 ![An existing synthetic match is prepared and replayed into Event Hubs](architecture.svg)
 
-**A rendered GRF demo and telemetry adapter are implemented** ([run guide](docs/grf-demo.md)). The removable backend lab replay publisher now sends the aligned recording through the Event Hubs emulator; a standalone production publisher remains planned. A [reusable 90-minute GRF-derived recording](recordings/README.md) is implemented for algorithm benchmarks. Prepares and replays an existing generated match into the shared match-event stream. The benchmark recording is separate from production publishing.
+**A rendered GRF demo and telemetry adapter are implemented** ([run guide](docs/grf-demo.md), [event coverage](docs/event-coverage.md)). The removable backend lab replay publisher now sends the aligned recording through the Event Hubs emulator; a standalone production publisher remains planned. A [reusable 90-minute GRF-derived recording](recordings/README.md) is implemented for algorithm benchmarks. Prepares and replays an existing generated match into the shared match-event stream. The benchmark recording is separate from production publishing.
 
 | Part | Role |
 | --- | --- |

@@ -18,4 +18,8 @@ Stat IDs are `<team-id>:<metric>` or `all:<metric>`. Metrics include goals, shot
 
 The original recording is retained for provenance. Only observed events are exposed by snapshot queries. No generation, random stat fabrication or user-specific calculation runs in this service.
 
+Native v2 adds capability-gated metrics for fouls won, offsides, throw-ins, free kicks, goal kicks, kick-offs, penalties taken and keeper claims. Restart records count executions; their accompanying pass/shot records count the action separately. Whistled fouls exclude offsides and companion `foul_won` records. Unsupported channels remain unavailable, even when no matching event appears. See the [event coverage guide](../../data-generation/docs/event-coverage.md).
+
+`headed_passes`, `headed_shots` and `headed_contacts` require declared body-part coverage for every contributing event category. Headed shots include goals in the native contract. If any goal has unknown body part, complete headed-shot totals are unavailable; known headed contacts alone do not establish complete contact coverage.
+
 Broker input on `match-events` is `{type: "MatchEvent", version: 1, snapshot: <metadata>, event: <canonical event or null>}`. The nested metadata contains the existing snapshot watermark, catalogues, data reference and `events: []`. A non-null event must equal the recording delivery at `cursor - 1`; null permits initial/recovery publication. After durable storage, `match-notifications` receives `{type: "MatchSnapshotReady", version: 1, snapshot: <same metadata>}`. The notification does not contain history; consumers fetch it via GraphQL.

@@ -78,6 +78,26 @@ class FixtureEventSource:
             reference['unavailable'] = [*reference['unavailable'],
                 'Only event categories listed in capabilities.supported_event_types are captured in this recording. '
                 'Missing categories are unavailable, not observed zero counts.']
+            if capabilities.get('restart_events') == 'taken':
+                reference['contract_id'] = 'synthetic-grf-native-contacts-v2'
+                reference['events']['corner'] = (
+                    'Corner actually taken by the recorded player/team. Its distribution or attempt is '
+                    'a separate pass, shot or goal record; do not add restart and action counts.')
+                reference['events']['foul'] = (
+                    'Referee-whistled foul attributed to the offender. Offsides and unwhistled advantage '
+                    'are excluded. A separate foul_won record belongs to the victim.')
+                reference['events']['card'] = (
+                    'Card decision attributed to the recipient. Outcome is yellow, second_yellow or red. '
+                    'Second yellow is the dismissing decision, not an additional straight red.')
+                reference['unavailable'] = [text.replace('Corner-taker identity, ', '')
+                                            for text in reference['unavailable']]
+                reference['guarantees'].append(
+                    'Restart records count actual executions; accompanying pass/shot/goal records describe '
+                    'the action. Raw restart and related-event qualifiers are not queryable canonical fields.')
+            if 'body_part_event_types' in capabilities:
+                reference['guarantees'].append(
+                    'Body-part filters require an explicit event category covered by body_part_event_types '
+                    'unless body_parts is true. Missing contact metadata remains unknown.')
         return reference
 
     def history(self, position):

@@ -108,3 +108,49 @@ def test_grf_reference_describes_contacts_and_partial_player_attribution():
     assert any('attributed attempts only' in text for text in reference['unavailable'])
     assert reference['schema_sha256'] == baseline['schema_sha256']
     assert FixtureEventSource().data_reference() == baseline
+
+
+def test_native_v2_reference_keeps_restart_meanings_out_of_old_fixtures():
+    baseline = FixtureEventSource().data_reference()
+    spec = recording()
+    spec['provenance'] = {'source': 'Google Research Football instrumented native runtime'}
+    spec['capabilities'] = {'supported_event_types': ['corner', 'pass', 'foul', 'foul_won'],
+                            'restart_events': 'taken', 'body_part_event_types': ['pass']}
+    reference = FixtureEventSource(content=json.dumps(spec).encode()).data_reference()
+    assert reference['contract_id'] == 'synthetic-grf-native-contacts-v2'
+    assert 'actually taken' in reference['events']['corner']
+    assert 'Referee-whistled' in reference['events']['foul']
+    assert 'second_yellow' in reference['events']['card']
+    assert not any('Corner-taker identity' in text for text in reference['unavailable'])
+    assert 'awarded' in baseline['events']['corner']
+    assert FixtureEventSource().data_reference() == baseline
+
+
+def test_body_part_coverage_is_scoped_to_explicit_categories():
+    from backend.models.rules import Rule
+    from backend.services.rule_availability import supported_rule
+    cap = {'supported_event_types': ['pass', 'shot', 'goal', 'touch', 'corner'],
+           'body_parts': False, 'body_part_event_types': ['pass', 'shot', 'goal']}
+    head = {'field': 'body_part', 'op': 'eq', 'value': 'head'}
+    def headed(*kinds):
+        return Rule(match_id='m', predicates=[head, *(
+            [{'field': 'event_type', 'op': 'in', 'value': list(kinds)}] if kinds else [])])
+    assert supported_rule(headed('pass'), cap)
+    assert supported_rule(headed('shot', 'goal'), cap)
+    assert not supported_rule(headed('touch'), cap)
+    assert not supported_rule(headed('pass', 'corner'), cap)
+    assert not supported_rule(headed(), cap)
+
+
+def test_new_categories_require_recording_coverage_before_history_queries():
+    from backend.services.question_tools import QuestionTools
+    data = payload(0)
+    data.data_reference['capabilities'] = {'supported_event_types': ['offside']}
+    class MatchData:
+        async def events(self, *args, **kwargs):
+            assert kwargs['eventType'] == 'offside'
+            return {'items': [], 'has_more': False, 'total': 0, 'complete': True}
+    tools = QuestionTools(data, MatchData(), None, None, [], {}, [])
+    assert asyncio.run(tools.events(event_type='offside'))['total'] == 0
+    assert asyncio.run(tools.events(event_type='penalty'))['unavailable']
+    assert asyncio.run(tools.events(event_type='var_review'))['unavailable']

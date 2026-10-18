@@ -61,7 +61,7 @@ class OptaInspiredAdapter:
     """Explicit field mapping. Unknown named qualifiers are preserved upstream,
     but have no DSL meaning here; replacing this class does not change the engine.
     Clock minutes already include the period offset (second half starts at 45).
-    Corner means awarded, not taken, in this synthetic contract.
+    Restart semantics belong to the recording's versioned data reference.
     """
     def data_reference(self) -> dict:
         from .feed_reference import FeedReference

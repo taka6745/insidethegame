@@ -50,7 +50,9 @@ ETL owns PostgreSQL history/stat projections; the narrative stub owns SQLite and
 
 The broker check publishes a unique run through the actual SDKs, verifies first-event redelivery and selected match watermarks, reads both GraphQL services and observes the `narratives` integration subscription. It restores the current live watermark afterwards. Isolated backend tests use empty broker settings and their existing HTTP doubles. No cloud throughput or distributed ownership is proved by these checks.
 
-`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). `./dev` mounts `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when present, or accepts `DEMO_VIDEO_PATH`. Media stays ignored; the event/stat/narrative demo works without it.
+Run broker probes serially while replay is idle or finished. They share the demo narrative cursor: a running match correctly suppresses older probe snapshots from live publication. Both probes refuse an active replay and detect it starting during their wait; they never stop or reset the viewer.
+
+`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). `./dev` mounts `.local/grf-demo-chelsea-united-v3/match.mp4` automatically when present, or accepts `DEMO_VIDEO_PATH`. Media stays ignored; the event/stat/narrative demo works without it.
 
 `./dev test`: three demo profiles, two Postgres databases, Cosmos document write/read/delete. Creates narrative containers if absent.
 

@@ -56,6 +56,10 @@ def prepare(source):
         hsv[:, :, 1][saturated] = 225
         cv2.imwrite(str(path), cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR))
 
+    from .prepare_presentation import prepare as prepare_presentation
+
+    prepare_presentation(source)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)

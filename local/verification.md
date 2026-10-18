@@ -39,3 +39,15 @@ One non-failing dependency warning: Starlette deprecates its HTTPX-based test cl
 Upstream tests: **28 ETL passed, one optional database test skipped; 40 narrative passed**. The integration checks exercised the running ETL against PostgreSQL. A live API/WebSocket check switched audience and received 12 authored narratives plus five stat cards through the broker-backed runtime. Independent backend, upstream and wiring reviews completed after fixes.
 
 The viewer returned HTTP 200. Browser inspection was blocked by the existing error-page tab's URL policy, so no fresh visual verification is claimed. This validates local Microsoft emulator adapters, not cloud deployment, distributed checkpoint leases, multi-replica operation or production load. See [transport and recovery limits](../user-backend/docs/broker-transport.md).
+
+## Native telemetry and full-frame camera — 2026-10-19
+
+Rendered a new 720-second, 1280×720 Chelsea–United capture with a wider native camera, numbered shirt textures and no minimap. Extracted frames were visually inspected and FFmpeg decoded the complete video without errors. HTTP range delivery returned 206. Large video/raw assets remain ignored under `.local/grf-demo-chelsea-united-v3/`; the committed recording contains 1,376 deliveries.
+
+Validation: **46 generator tests, 47 ETL tests, 41 narrative tests and 465 backend tests passed**; one optional ETL database test was skipped. Independent reviews covered native event attribution, presentation, stat availability and all twelve narrative intervals. The 144 bucket versions are bound to the exact new recording. Unknown body-part coverage remains unavailable rather than reporting incomplete header counts as totals.
+
+A live WebSocket received 124 broker-delivered events, five ETL stat cards and the first matching authored narrative at roughly 60 video seconds. An isolated probe run concurrently with live replay correctly lost its stale snapshot's narrative publication; broker integration probes require idle replay. This is a test-harness sequencing requirement, not a change to production stale-message protection.
+
+With replay idle, the real Event Hubs → ETL → Service Bus check passed at 0, 1, 6 and 12 video minutes, including duplicate delivery and all 1,376 history records. Isolated runs without matching viewer sessions correctly produced empty bucket payloads; the live viewer check above verifies nonempty narrative routing. Three probe-guard tests passed and the guard changes received a clean independent review.
+
+The separate backend broker check passed: twelve indexed events, ignored redelivery, PostgreSQL restore, durable Service Bus inbox and rejected HTTP checkpoint writes. The demo was left ready at the beginning with the new recording loaded. These remain local emulator checks, not Azure deployment or distributed-load evidence.
