@@ -26,6 +26,6 @@
 <text x="828" y="242" font-size="15" style="fill:#5d7185" font-weight="400">Validate + mock tests</text>
 <rect x="30" y="300" width="1040" height="97" rx="12" fill="#eef0f4" stroke="#aeb9c6" stroke-dasharray="6 5"/>
 <text x="50" y="326" font-size="12" style="fill:#5d7185" font-weight="700">SEPARATE AZURE CHECK</text>
-<text x="50" y="363" font-size="20" style="fill:#17324d" font-weight="700">Stream Analytics · Luke</text>
+<text x="50" y="363" font-size="20" style="fill:#17324d" font-weight="700">Stream Analytics · ETL</text>
 <text x="420" y="363" font-size="20" style="fill:#17324d" font-weight="400">Real models · Identity · Networking · Scale</text>
 </svg>

@@ -57,7 +57,7 @@ Running `ACCEPT_EULA=Y ./dev up azure` accepts the [Event Hubs emulator terms](h
 
 ## Coverage limits
 
-Microsoft emulators exercise application data protocols, not Azure provisioning, production durability, throughput or security. Stream Analytics isn't supplied here; Luke owns its implementation and cloud validation. Foundry models are not emulated. No agents, generated-code sandbox or frontend are running yet.
+Microsoft emulators exercise application data protocols, not Azure provisioning, production durability, throughput or security. Stream Analytics isn't supplied here; the ETL service owns its implementation and cloud validation. Foundry models are not emulated. No agents, generated-code sandbox or frontend are running yet.
 
 **LocalStack Azure is optional, not installed:** it [requires an auth token](https://docs.localstack.cloud/azure/getting-started/auth-token/) and [supports Terraform](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/). The Microsoft emulators used here have no general Azure Resource Manager endpoint, so Terraform doesn't create their resources; checked-in JSON/SQL does.
 

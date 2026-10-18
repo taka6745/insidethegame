@@ -20,4 +20,4 @@ resource "azurerm_container_app_environment" "app" {
 }
 
 # Container Apps are added when real application images exist. No placeholder apps.
-# Luke owns the Stream Analytics job, query, inputs, outputs and event-time policy.
+# The ETL service owns the Stream Analytics job, query, inputs, outputs and event-time policy.

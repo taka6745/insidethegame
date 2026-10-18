@@ -25,6 +25,6 @@ Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development
 - `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.
 - `python3 .github/scripts/render_architecture.py` and `python3 .github/scripts/render_development.py`: regenerate SVGs; visually inspect.
 
-Local fixtures are explicit test inputs, not an ETL or LLM implementation. Stream Analytics belongs to Luke. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup. No application test commands exist yet; add them with actual code.
+Local fixtures are explicit test inputs, not an ETL or LLM implementation. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup. No application test commands exist yet; add them with actual code.
 
 Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.
