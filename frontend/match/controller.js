@@ -180,12 +180,12 @@ export class MatchController {
     this.busy = true;
     this.view.error("");
     this.questions.status("Checking stats and the match story…", true);
-    this.questions.render({
-      ...this.session,
-      turns: [...(this.session.turns || []), { prompt, status: "pending" }],
-    });
     const requestId =
       this.retry?.prompt === prompt ? this.retry.id : this.uuid();
+    this.questions.render({
+      ...this.session,
+      turns: [...(this.session.turns || []), { request_id: requestId, prompt, status: "pending" }],
+    });
     this.retry = { prompt, id: requestId };
     try {
       await this.api.ask(token, prompt, requestId);
