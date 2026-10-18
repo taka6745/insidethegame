@@ -1,0 +1,3 @@
+# Copy to local.auto.tfvars (git-ignored) and fill in.
+subscription_id = "<az account show --query id -o tsv>"
+budget_emails   = ["you@example.com"]
