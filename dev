@@ -21,7 +21,8 @@ check_mode() {
 check() {
   if [[ "$1" == backend ]]; then
     compose run --rm --build --no-deps backend-tests
-    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/demo_check.py
+    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/broker_check.py
+    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/backend_broker_check.py
   else
     compose run --rm --build --no-deps tools python local/check.py "$1"
   fi
@@ -31,7 +32,7 @@ usage() {
 ./dev doctor             Check Docker before first setup
 ./dev up                 Start + check Postgres and Cosmos (no accounts)
 ./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
-./dev up backend         Build + test backend, demo ETL, narrative stub and Postgres
+./dev up backend         Build + test backend, demo services, Postgres and messaging
                          Includes the match viewer at http://localhost:18020 (filter lab: /lab/)
 ./dev test [azure|backend] Test dependencies or backend behaviour + live replay
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
@@ -45,7 +46,8 @@ usage() {
 ./dev down               Stop this stack; keep SQL/Postgres volumes
 ./dev terraform check    Format-check, validate and mock-test Azure infrastructure
 
-For Azure emulators, first review local/README.md licence links, then run:
+For backend or Azure emulators, first review local/README.md licence links, then run:
+ACCEPT_EULA=Y ./dev up backend
 ACCEPT_EULA=Y ./dev up azure
 This accepts Microsoft's emulator and SQL Server terms. No cloud deployment.
 EOF
@@ -63,7 +65,8 @@ case "${1:-help}" in
     check_mode "${2:-base}"
     docker_ready
     if [[ "${2:-}" == backend ]]; then
-      compose --profile backend up -d --build --wait --wait-timeout 120 frontend
+      [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
+      compose --profile backend up -d --build --wait --wait-timeout 240 frontend
     elif [[ "${2:-}" == azure ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
       compose --profile azure up -d

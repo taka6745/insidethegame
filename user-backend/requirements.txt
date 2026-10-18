@@ -9,3 +9,4 @@ agent-framework-core==1.22.0
 agent-framework-openai==1.17.0
 openai==2.54.0
 azure-servicebus==7.15.0
+azure-eventhub==5.15.1

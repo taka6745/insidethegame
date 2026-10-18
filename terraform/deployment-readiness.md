@@ -1,6 +1,6 @@
 # From the local demo to Azure
 
-**Not deployed.** The working viewer uses separate HTTP/GraphQL demo services. Microsoft emulators test Azure data protocols separately. Terraform validates a foundation with mocks; it does not currently deploy the app.
+**Not deployed.** The working viewer uses Event Hubs and Service Bus emulators for live delivery, plus separate GraphQL demo services for reads. Terraform validates a foundation with mocks; it does not currently deploy the app.
 
 ```text
 Today:   recording → ETL demo → GraphQL → one backend → viewer
@@ -12,7 +12,7 @@ Cloud:   Event Hubs → ETL / calculation owner → shared delivery → viewers
 | --- | --- |
 | Runtime placement | Add actual Container Apps images, registry access, probes, internal service addresses and budgets. Keep the current backend at one replica and one worker; it has process-local replay, calculations and socket ownership. |
 | Data access | Complete private endpoints/VNet routes and private DNS for SQL, both Cosmos accounts and PostgreSQL. Add managed identities/RBAC, credential rotation and protected Terraform state. Public access remains disabled. |
-| Live ingestion | Implement product Event Hubs consumption and Service Bus delivery, checkpoints, correction/replay handling and settlement after durable acceptance. The legacy narrative consumer is not wired to product sessions. |
+| Live ingestion | SDK consumers and durable-before-ack handling are implemented for the demo. Add persistent Event Hubs partition checkpoints/ownership, replace recorded-prefix ETL recovery, and validate Azure retention, lock expiry and dead-letter operations. |
 | Upstream services | Replace demo PostgreSQL ETL stores with Azure SQL history and Cosmos stats adapters; complete Stream Analytics. Replace authored SQLite narrative storage with the narrative service's intended implementation. |
 | Demo assets | Package or securely mount the immutable GRF event recording; the local host bind mount does not travel with the ETL image. Mount durable storage if retaining the SQLite stub for an Azure demo. Serve video through media storage/CDN; do not stream it through backend replicas. |
 | Frontend proxy | Configure `BACKEND_UPSTREAM` and `NGINX_RESOLVER` for the actual network. Docker DNS is not an Azure resolver. Use authenticated ingress/TLS and an explicitly secured upstream route. |

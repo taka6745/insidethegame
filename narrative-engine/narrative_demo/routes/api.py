@@ -6,7 +6,7 @@ from graphql import build_schema, graphql_sync
 from ..models.snapshots import GraphQLQuery, SnapshotInput
 
 
-def routes(service):
+def routes(service, *, broker_enabled=False):
     router = APIRouter()
     schema = build_schema('''scalar JSON
         type Query { questionData(snapshotId:ID!, operation:String!, offset:Int, limit:Int,
@@ -17,9 +17,12 @@ def routes(service):
     @router.get('/health')
     async def health():
         return {'status': 'ok', 'role': 'narrative', 'mode': 'authored-demo-stub',
+                'transport': 'service-bus' if broker_enabled else 'http-fixture',
                 'authored_items': len(service.commentary.document['items']), 'synthetic': True}
 
     async def capture(body, viewer):
+        if broker_enabled:
+            raise HTTPException(409, 'Snapshots arrive through Service Bus in broker mode')
         if body.events:
             raise HTTPException(422, 'Send checkpoint metadata; events are owned by ETL')
         try:

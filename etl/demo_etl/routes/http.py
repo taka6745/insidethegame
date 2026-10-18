@@ -1,4 +1,6 @@
 """HTTP and GraphQL transport only; services own reads and publication."""
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, Response
 from graphql import build_schema, graphql_sync
 from pydantic import BaseModel, Field
@@ -10,8 +12,18 @@ class Query(BaseModel):
     variables: dict = Field(default_factory=dict)
 
 
-def create_app(service):
-    app = FastAPI(title='Demo ETL — persisted match history and standard stats')
+def create_app(service, *, brokers=None):
+    @asynccontextmanager
+    async def lifespan(app):
+        if brokers:
+            await brokers.start()
+        try:
+            yield
+        finally:
+            if brokers:
+                await brokers.close()
+
+    app = FastAPI(lifespan=lifespan, title='Demo ETL — persisted match history and standard stats')
     schema = build_schema('''scalar JSON
       type Query {
         questionData(snapshotId: ID!, operation: String!, offset: Int, limit: Int, ids: [String!], tier: String, start: Int, end: Int, eventType: String, playerId: String, period: Int): JSON
@@ -33,7 +45,8 @@ def create_app(service):
 
     @app.get('/health')
     def health():
-        return {'status':'ok','role':'demo-etl','synthetic':True,'history_store':'postgresql-local-substitute','stats_store':'postgresql-local-substitute'}
+        return {'status':'ok','role':'demo-etl','synthetic':True,'history_store':'postgresql-local-substitute','stats_store':'postgresql-local-substitute',
+                **(brokers.status() if brokers else {'transport':'http-fixture'})}
 
     @app.post('/graphql')
     def graphql(body: Query):
@@ -51,6 +64,8 @@ def create_app(service):
         return Response(service.recording.content,media_type='application/json')
 
     def publish(payload, owned):
+        if brokers:
+            raise HTTPException(409,'Snapshots are published through Event Hubs')
         try:
             return service.publish(payload,owned=owned)
         except ValueError as exc:

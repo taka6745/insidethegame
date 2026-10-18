@@ -19,6 +19,7 @@ from backend.services.plan_conversations import PlanConversations
 class FilterLabService:
     def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None, recording_editable=True):
         self.source, self.repository, self.planner = source, repository, planner
+        self.broker = None
         self.default_source = source
         self.initial_recording = initial_recording
         self.local_llm = local_llm
@@ -269,8 +270,26 @@ class FilterLabService:
 
     async def advance(self, *, finish=True):
         """One forward event. Also used by deterministic integration tests."""
+        if self.broker:
+            return await self.broker.advance(finish=finish)
+        return await self.accept_event(finish=finish)
+
+    async def accept_event(self, *, delivery=None, finish=True):
+        """Commit a received event and its cursor together; ignore old-run duplicates."""
         async with self._lock:
-            event = self.source.next_event(self.position)
+            if delivery:
+                watermark = delivery.snapshot.snapshot
+                if watermark.run_id != str(self.run_id):
+                    return False
+                if watermark.recording_hash != self.source.fingerprint or watermark.match_id != self.source.match_id:
+                    raise ValueError('Wrong event source')
+                if watermark.cursor <= self.position:
+                    return self.position < len(self.source.events)
+                if watermark.cursor != self.position + 1:
+                    raise ValueError('Event delivery gap')
+                if delivery.event != self.source.next_event(self.position):
+                    raise ValueError('Event does not match the demo recording')
+            event = delivery.event if delivery else self.source.next_event(self.position)
             if event is None:
                 return False
             previous_position, previous_status = self.position, self.status
