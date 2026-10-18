@@ -313,3 +313,100 @@ def test_background_projection_failure_cannot_interrupt_committed_choice(store):
 
         result = client.portal.call(interleave)
         assert result['audience'] == {'team': 'away', 'fan_style': 'casual'}
+
+
+def test_disconnect_during_narrative_fetch_refreshes_same_match_cursor(store):
+    """An in-flight response cannot consume a newer audience invalidation."""
+    import asyncio
+    from contextlib import suppress
+
+    lab, questions, _, app = product(store)
+    questions.narratives.audience_dependent = True
+    original = questions.narratives.read
+    with TestClient(app) as client:
+        token = start(client)['session_token']
+        service = app.state.product
+
+        async def interleave():
+            # Drive refreshes explicitly so the barrier fixes the exact ordering.
+            service._task.cancel()
+            with suppress(asyncio.CancelledError):
+                await service._task
+            peer, _ = await service.attach(token)
+            await service.refresh()
+            fetched, release = asyncio.Event(), asyncio.Event()
+            reads = []
+
+            async def pause(snapshot, operation, **filters):
+                result = await original(snapshot, operation, **filters)
+                catalogue, _ = await service.audiences.read(snapshot.match_id)
+                targets = [target['bucket_id'] for target in catalogue['generation_targets']]
+                reads.append(targets)
+                result['items'] = [{'id': target, 'text': 'Observed match commentary.',
+                                    'buckets': [target], 'stat_ids': [], 'clock_seconds': 0}
+                                   for target in targets]
+                if len(reads) == 1:
+                    fetched.set()
+                    await release.wait()
+                return result
+
+            questions.narratives.read = pause
+            await lab.advance()
+            refreshing = asyncio.create_task(service.refresh())
+            await asyncio.wait_for(fetched.wait(), 5)
+            await service.detach(peer)
+            release.set()
+            await asyncio.wait_for(refreshing, 5)
+            cursor = service.shared['match']['position']
+            assert service.shared['narratives']
+            await service.refresh()
+            assert service.shared['match']['position'] == cursor
+            assert service.shared['narratives'] == []
+            assert reads == [['home:analytical'], []]
+
+        client.portal.call(interleave)
+
+
+def test_saved_audience_retry_commits_targets_before_narrative_read(store, monkeypatch):
+    import asyncio
+    from contextlib import suppress
+    from backend.models.viewer_audience import ViewerAudience
+
+    _, questions, _, app = product(store)
+    questions.narratives.audience_dependent = True
+    original_read = questions.narratives.read
+    with TestClient(app) as client:
+        token = start(client)['session_token']
+        service = app.state.product
+
+        async def retry():
+            service._task.cancel()
+            with suppress(asyncio.CancelledError):
+                await service._task
+            await service.attach(token)
+            await service.refresh()
+            original_write = service.presence.repository.set_viewer_targets
+            attempts, reads = [], []
+
+            def fail_once(match_id, choices):
+                attempts.append(choices)
+                if len(attempts) == 1:
+                    raise RuntimeError('Temporary presence write failure')
+                return original_write(match_id, choices)
+
+            async def read_targets(snapshot, operation, **filters):
+                result = await original_read(snapshot, operation, **filters)
+                catalogue, _ = await service.audiences.read(snapshot.match_id)
+                reads.append([target['bucket_id'] for target in catalogue['generation_targets']])
+                return result
+
+            monkeypatch.setattr(service.presence.repository, 'set_viewer_targets', fail_once)
+            questions.narratives.read = read_targets
+            chosen = ViewerAudience(team='away', fan_style='experienced')
+            result = await service.select_audience(token, chosen)
+            assert result['audience'] == chosen.model_dump()
+            await service.refresh()
+            assert len(attempts) == 2
+            assert reads == [['away:experienced']]
+
+        client.portal.call(retry)

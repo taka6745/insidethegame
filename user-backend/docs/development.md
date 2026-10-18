@@ -1,65 +1,64 @@
 # Develop the user backend
 
 ```sh
-./dev up backend        # build, start, test; Docker is the only prerequisite
-./dev reset backend     # return the synthetic match to minute 20
-./dev replay backend    # stream the remaining key moments
-./dev test backend      # isolated tests + a live replay through all three services
+./dev up backend        # build services, run backend tests + checkpoint check
+./dev reset backend     # create a fresh Chelsea–United match run
+./dev replay backend    # play the aligned 12-minute recording forward
+./dev test backend      # repeat checks without resetting the active replay
 ```
 
-No Azure account, model key or emulator licence acceptance is needed for this profile. It starts **Postgres, backend, fake ETL, fake narrative and the event filter UI**. First run needs internet for images/packages.
-
-Start with the **[filter lab](http://localhost:18020/lab/)**: select a preset, add it and start events. [Lab guide](filter-lab.md) explains the index, layers and replaceable feed. [Local LLM setup](local-llm.md) enables flexible requests; default fixture mode supports the documented examples without a model. The profile API below is a separate integration harness.
+Docker is the only prerequisite for the recorded demo. No Azure account, model key or emulator licence acceptance is needed; first run downloads images/packages. This profile starts **Postgres, the user backend, standalone ETL, the narrative stub and frontend**. Generating a new GRF recording has separate [native-runtime requirements](../../data-generation/docs/grf-demo.md).
 
 ```mermaid
 flowchart LR
-  JSON["Synthetic JSONL"] --> ETL["Fake ETL"]
-  JSON --> N["Fake narratives"]
-  ETL -->|GraphQL + dev notifications| B["User backend"]
-  N -->|GraphQL + dev notifications| B
-  P[("Postgres")] <--> B
-  B -->|WebSocket| F["Frontend client"]
+  R["GRF recording"] --> E["ETL demo"]
+  E --> H[("History + stats")]
+  E -->|checkpoint read| N["Narrative stub"]
+  E -->|GraphQL| B["User backend"]
+  N -->|GraphQL| B
+  P[("Profiles + match app")] <--> B
+  B -->|WebSocket| F["Match viewer"]
 ```
 
 ## Try it
 
-[Backend API explorer](http://localhost:18000/docs) · [Fake ETL](http://localhost:18010/docs) · [Fake narratives](http://localhost:18011/docs)
+[Match viewer](http://localhost:18020/) · [Filter lab](http://localhost:18020/lab/) · [Backend API](http://localhost:18000/docs) · [ETL API](http://localhost:18010/docs) · [Narrative API](http://localhost:18011/docs)
 
-1. `GET /profiles` lists three demo profiles.
-2. `POST /sessions` with `{"profile_id":"chelsea-analytical"}` returns a token and snapshot.
-3. Connect to `ws://localhost:18000/sessions/TOKEN/live` for snapshots and matching narratives.
-4. `POST /sessions/TOKEN/pins` with `{"calculation_id":"fixture-headers"}` pins the match's headed-touch count.
-5. Run `./dev replay backend`. The count rises from **2 → 3 → 4**; the goal changes the bucket's default cards.
+1. Open the viewer and choose either team or Neither, plus one of four viewer styles.
+2. Start the replay. Five standard-stat slots read ETL values; Insights shows authored bucket narratives unchanged.
+3. Ask a match question. The agent can read standard stats, observed event history and neutral recaps, or offer a custom stat to Track.
+4. Track an offered card. It replaces the lowest-priority default; Untrack restores the default.
 
-Replace `TOKEN` with the returned token. `GET /calculations` lists four pre-approved fixture calculations. `PATCH /sessions/TOKEN/preferences` accepts `team` and `fan_style`; `DELETE /sessions/TOKEN/pins/ID` restores a default card. All endpoints are documented in the API explorer.
+The default fixture agent handles documented examples without a model. [Local LLM setup](local-llm.md) enables flexible questions through Microsoft Agent Framework. Unsupported recording metrics are unavailable, not invented zeros. This GRF recording does not identify headers, cards, corners or xG; use the separate [filter fixtures](../fixtures/filter-lab.md) when testing those capabilities.
 
-A new session for the same profile invalidates the old token and closes its socket with code **4001**. A second socket using the same token replaces the first socket. A full outgoing queue closes with **1013**; reconnect for a fresh snapshot.
+For API clients, `GET /product/profiles` lists demo identities and `POST /product/sessions` accepts `{"profile_id":"chelsea-analytical"}`. Use the returned token for `/product/{token}` and `ws://localhost:18000/product/{token}/live`. The API explorer covers audience changes, questions and offer tracking. The older `/sessions` fixture harness remains for isolated tests; it is not the match viewer's upstream path.
 
-## What is real, what is fake
+## Service ownership
 
-| Real implementation | Temporary fixture behaviour |
-| --- | --- |
-| PostgreSQL profiles, session tokens, preferences and pins | Three cards by default; final card count undecided |
-| Twelve buckets, priority replacement and WebSocket delivery | Profile harness still uses four hand-written calculations |
-| Separate HTTP/GraphQL processes for upstream boundaries | In-memory match/narrative history; possession fixed at 50% |
-| Lab goal/coding agents, typed rules, shared index and persisted results | Default fixture phrases; optional local model; no arbitrary code execution |
+| Owner | Current local implementation | Planned production adapter |
+| --- | --- | --- |
+| ETL | `etl_history` PostgreSQL raw history; `etl_stats` standard projections; GraphQL | Azure SQL history, Cosmos stat state, Event Hubs + Stream Analytics |
+| Narrative | SQLite checkpoint/recap archive; 144 authored versions, one per video minute/bucket | Cosmos, Agent Framework generation, Service Bus delivery |
+| User backend | PostgreSQL `accounts` + `matchapp`; question/filter agents, cards, audience routing | Azure PostgreSQL + Container Apps |
 
-Run one backend process/worker. Session sockets are in memory; scaling to multiple replicas is not implemented. The demo has no authentication, and `/dev/*` injection is explicitly enabled in this local profile. Keep the loopback-only port bindings.
+ETL computes standard statistics; the backend never recalculates ordinary cards. Historical investigations use ETL GraphQL. Custom structured calculations run here with a shared index; equivalent requests reuse one calculation. Generated model output is validated data, never Python executed inside the API.
 
-Tests leave the profile harness match at minute 47 and change the demo profile's pins/preferences. The lab smoke check finishes by clearing its own run. `reset backend` resets match/narrative memory and disconnects sockets; **Postgres preferences, pins and lab state survive**. Use **New run** in the browser to clear lab state. `./dev down` also preserves the Postgres volume.
+The narrative stub reads ETL checkpoints and the backend's enabled audience catalogue. It owns factual neutral recap tiers and their retained children. Questions read compact context first, then deeper recaps or events when needed; they never start shared narrative authoring. The 144 manual versions are tied to the recording hash and observed evidence. See [narrative fixtures](../../narrative-engine/fixtures/README.md).
 
-For code changes rerun `./dev up backend` to rebuild. `./dev logs backend` shows recent logs. To run only the isolated suite, use `docker compose --env-file local/env.defaults -f local/compose.yaml run --rm --build --no-deps backend-tests` after Postgres is running.
+## Local bridge and state
 
-## Replace the fixtures next
+The demo uses metadata HTTP checkpoint requests and GraphQL reads across real service processes. The ETL recording endpoint supplies the shared forward replay. This is **not** production Event Hubs or Service Bus delivery. Keep the intended cloud boundary: one shared match-event consumer, separate bucket-narrative notifications and GraphQL for history/stat reads.
 
-`backend/upstream.py` reads fake GraphQL. Fake services notify `/dev/events` and `/dev/narratives` over HTTP; **these are test bridges**. An optional Service Bus adapter now receives already-bucketed narratives; see [the boundary guide](narrative-framing.md). Standard snapshots fetch ETL-computed values without downloading raw history or recalculating them. Only pinned custom fixture calculations request historical events; those still reload history per snapshot, so this does not prove the production incremental custom calculation path.
+Run one backend process/worker. WebSocket/session ownership is local; this setup does not prove multi-replica delivery or EPL viewer capacity. Keep loopback-only ports: demo identities are not production authentication. [Scaling boundary](scaling.md).
 
-ETL owns Cosmos DB for standard stats and Azure SQL for event history. `FixtureServices.match_events()` is the separate historical query helper; an agent can use that route for investigation without duplicating standard stats. The fake services remain in-memory substitutes, not Cosmos/SQL integration.
+Refresh/reconnect within a run restores chat, selected audience and pins. A new session for the same profile takes over the previous one. `reset backend` creates a new shared run, resetting match-scoped chat/pins/calculations while preserving account profiles. `./dev down` preserves PostgreSQL and narrative volumes. The browser lab shares replay state; do not load another recording during a viewer demonstration.
 
-The separate filter lab implements incremental typed calculations and an optional local model adapter. Its persisted replay prefix provides deterministic startup recovery; it is not an ETL/broker handoff implementation. Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for bucket narratives, GraphQL for history/stats. No user question calls the narrative generator. General question answering now runs in the lab through the adapters described below. Production Event Hubs consumption, real upstream snapshot contracts, per-viewer card integration and any arbitrary-code executor remain next steps.
+`./dev` mounts the optional `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when available; `DEMO_VIDEO_PATH` overrides that path. Video and events share the same 12-minute timeline. Without the ignored video, the data demo still runs. [Frontend media setup](../../frontend/docs/development.md#optional-aligned-footage).
 
-[Fixture format and moments](../fixtures/README.md) · [Testing guide](testing.md) · [Full design](../architecture.md)
+## Change and verify
 
-## Match questions
+Re-run `./dev up backend` after code changes; `./dev logs backend`, `./dev logs etl` and `./dev logs narrative` show service logs. `./dev test backend` runs isolated backend tests and `local/demo_check.py`, which checks real upstream history/stats/recaps at selected checkpoints without moving the active viewer replay. Older synthetic backend fixtures remain test doubles.
 
-The lab **Questions** tab uses the native Microsoft Agent Framework agent with separate ETL/narrative GraphQL adapters. [Run, contracts and limits](question-agent.md). Chat and offered cards persist per demo profile/run; Track starts a shared live calculation. The local fake recap service compacts synthetic summaries and retains the archive.
+Run each upstream service's own tests when changing it: [ETL](../../etl/docs/development.md), [narrative](../../narrative-engine/docs/development.md). The integration checkpoint check does not substitute for their unit/persistence tests or browser playback verification.
+
+[Question contracts](question-agent.md) · [Testing guide](testing.md) · [Full design](../architecture.md)

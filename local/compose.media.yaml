@@ -1,4 +1,4 @@
-# Optional local-only simulator excerpt. Not part of the application image.
+# Optional aligned local GRF match video. Not part of the application image.
 services:
   frontend:
     volumes:

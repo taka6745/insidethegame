@@ -1,6 +1,6 @@
 # Working in InsideTheGame
 
-This hackathon application has a runnable user-backend fixture harness and planned upstream services. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`. Read each service's README before changing it.
+This hackathon application has a runnable user backend, recorded-match ETL demo and standalone authored narrative stub. Production upstream adapters remain planned. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`. Read each service's README before changing it.
 
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
@@ -28,11 +28,12 @@ Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development
 - `./dev doctor`: Docker/Compose preflight. `./dev up` starts Postgres + Cosmos and runs checks; `./dev test` reruns them.
 - `ACCEPT_EULA=Y ./dev up azure` / `./dev test azure`: Microsoft emulators, SQL and DAB. Only set EULA acceptance with the developer's consent; see `local/README.md`.
 - `./dev terraform check`: format/schema validation and mock-provider tests in Docker; no real Azure calls.
-- `./dev up backend` / `./dev test backend`: real-Postgres API tests plus live replay across separate fake ETL/narrative services and the backend. See `user-backend/docs/testing.md`.
-- `./dev reset backend` / `./dev replay backend`: reset synthetic upstream state (preserving pins/preferences), then replay Opta-inspired events and prewritten narratives. These use HTTP test notifications, not the production brokers.
-- `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.
+- `./dev up backend` / `./dev test backend`: real-Postgres API tests plus a non-destructive checkpoint check across the standalone ETL, narrative stub and backend. ETL uses separate local PostgreSQL history/stat databases; the narrative stub uses SQLite. See `user-backend/docs/testing.md`.
+- `./dev reset backend` / `./dev replay backend`: create a fresh match run, then start the aligned 12-minute Chelsea–United GRF recording. Account profiles remain; match-scoped chat, pins and calculations start fresh. The narrative stub serves 144 manually authored versions (12 video minutes × 12 buckets), bound to this recording. Local metadata HTTP checkpoints stand in for production brokers.
+- `./dev` automatically mounts `.local/grf-demo-chelsea-united-v2/match.mp4` when present; `DEMO_VIDEO_PATH` can override it. Video remains optional and ignored.
+- `./dev down`: stops only this Compose project, preserving database volumes.
 - `python3 .github/scripts/render_architecture.py` and `python3 .github/scripts/render_development.py`: regenerate SVGs; visually inspect.
 
-Local fixtures are explicit test inputs, not a production ETL or LLM implementation. Never execute generated code inside the API; the local agent workflow interprets goals using Microsoft Agent Framework and compiles a bounded rule DSL deterministically; fixture mode uses doubles. An arbitrary-code isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup.
+The recorded-match ETL and narrative stub are replaceable demo services, not production ETL or LLM implementations. Older backend fixtures remain isolated test doubles, not the viewer's runtime upstreams. Never execute generated code inside the API; the local agent workflow interprets goals using Microsoft Agent Framework and compiles a bounded rule DSL deterministically; fixture mode uses doubles. An arbitrary-code isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup.
 
 Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.

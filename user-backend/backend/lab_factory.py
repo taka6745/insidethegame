@@ -9,8 +9,9 @@ from .services.lab import FilterLabService
 
 
 def create_filter_lab(store):
-    source = FixtureEventSource()
+    content = load_product_demo()
+    source = FixtureEventSource(content=content, filename='product-demo.json') if os.getenv('DEMO_RECORDING_URL') else FixtureEventSource()
     return FilterLabService(source, PostgresLabRepository(store),
-                            workflow_from_env(data_reference=source.adapter.data_reference()),
+                            workflow_from_env(data_reference=source.data_reference()),
                             local_llm=os.environ.get("LOCAL_LLM_MODE", "fixture") == "local",
-                            initial_recording=(load_product_demo(), "product-demo.json"))
+                            initial_recording=(content, "product-demo.json"))

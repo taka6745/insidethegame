@@ -1,24 +1,18 @@
 # Match data / ETL
 
-[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+[Development](docs/development.md) · [Demo API](docs/demo-api.md)
 
 ![ETL owns standard statistics and historical events](architecture.svg)
 
-**Planned service.** ETL owns standard stat calculations, corrections and match history. Consumers use its GraphQL API.
+**Working local demo:** GRF recording → ETL-owned replay prefix → stored history + standard statistics → GraphQL. The user backend reads these results; it does not recalculate standard cards.
 
-| Component | Owns |
-| --- | --- |
-| Event Hubs | Incoming match events |
-| Stream Analytics | Event processing and standard stat aggregation |
-| Azure Cosmos DB | Precomputed standard stat state |
-| Azure SQL | Raw events and historical/key-event queries |
-| ETL GraphQL on Container Apps | Read-only access to stats and event history |
-| Service Bus | Minute/key-event triggers for narrative generation |
+| Data | Local demo | Planned Azure |
+| --- | --- | --- |
+| Original events + immutable history | `etl_history` PostgreSQL database | Azure SQL |
+| Standard stat projections | `etl_stats` PostgreSQL database | Cosmos DB |
+| Ingestion | Recorded GRF match, cursor bridge | Event Hubs + Stream Analytics |
+| Read API | Python GraphQL on port 8000 | Container Apps GraphQL |
 
-The user backend **fetches standard stats**, then selects and delivers the viewer's cards. Agents use ETL GraphQL for specific historical investigations. Backend custom calculations are reserved for requests the existing statistics cannot answer; one shared Event Hubs consumer supports those custom live values.
+`demo_etl/` is a replaceable demo implementation, separate from the future Stream Analytics job. It preserves corrections, tombstones and snapshot watermarks. Possession comes from measured simulator ownership; unsupported metrics are unavailable. Synthetic football is not an official Opta feed or a real fixture.
 
-The local DAB container currently serves a tiny SQL fixture. Routing GraphQL across Cosmos stats and SQL history remains to implement; the backend harness uses explicitly fake upstream services. Neither is a completed ETL pipeline.
-
-Timing, late events, duplicate handling and VAR corrections belong here. Agree those contracts before production integration.
-
-[Original design board](../legacy/design/plan.excalidraw) · [Repository plan](../README.md)
+No Azure SQL/Cosmos writer, production broker consumer or ASA job is implemented here. The local DAB container remains an independent SQL infrastructure check.

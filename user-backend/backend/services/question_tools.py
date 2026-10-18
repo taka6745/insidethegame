@@ -4,6 +4,7 @@ from uuid import uuid4
 from typing import get_args
 from backend.models.events import Event, EventType
 from backend.services.filter_engine import FilterEngine
+from backend.services.rule_availability import supported_rule
 
 class QuestionTools:
     def __init__(self, payload, match_data, narratives, planner, stats, compact, history):
@@ -44,6 +45,9 @@ class QuestionTools:
             return {'unavailable':True,'message':'Invalid event interval'}
         if event_type is not None and event_type not in get_args(EventType):
             return {'unavailable':True,'message':'This event category is not recorded.'}
+        capabilities = self.payload.data_reference.get('capabilities')
+        if capabilities and event_type is not None and event_type not in capabilities.get('supported_event_types', ()):
+            return {'unavailable':True,'message':'This recording does not capture that event category.'}
         if player_id is not None and player_id not in {p['id'] for p in self.payload.players}:
             return {'unavailable':True,'message':'This player is not in the match.'}
         if period is not None and period not in range(1,6):
@@ -101,6 +105,8 @@ class QuestionTools:
             return {'status':'reuse','stat':row,'evidence_id':'stat:' + outcome.standard_stat_id}
         if outcome.status != 'ready' or outcome.rule is None:
             return {'status':'unsupported','message':'Sorry, I cannot calculate that from the available data.'}
+        if not supported_rule(outcome.rule, self.payload.data_reference.get('capabilities')):
+            return {'status':'unsupported', 'message':'Sorry, this recording does not capture that measurement.'}
         # Complete observed history, not a model-visible truncated search page.
         engine, offset = FilterEngine(), 0
         while True:

@@ -39,6 +39,8 @@ class _RawEvent(BaseModel):
     deleted: bool = False
     synthetic: bool = True
     keyMoment: str | None = None
+    videoSeconds: float | None = Field(default=None, ge=0, le=14400, allow_inf_nan=False)
+    rawTelemetry: dict | None = None
 
     @field_validator("synthetic")
     @classmethod

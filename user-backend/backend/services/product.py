@@ -29,6 +29,8 @@ class ProductService:
         self._refresh_lock = asyncio.Lock()
         self._session_lock = asyncio.Lock()
         self._task = None
+        self._audience_generation = 0
+        self._published_audience_generation = 0
 
     async def initialize(self):
         identity = await self.questions.snapshots.identity()
@@ -53,6 +55,9 @@ class ProductService:
         await self._sync_presence()
 
     async def _sync_presence(self):
+        if getattr(self.questions.narratives, 'audience_dependent', False):
+            self._audience_generation += 1
+            self.lab.changed.set()
         try:
             await self.presence.sync()
         except Exception:
@@ -82,17 +87,20 @@ class ProductService:
 
     async def refresh(self):
         async with self._refresh_lock:
+            audience_generation = self._audience_generation
             payload = await self.questions.snapshots.capture()
             state = await self.lab.state()
             if state['position'] != payload.snapshot.cursor or str(state['run_id']) != payload.snapshot.run_id:
                 self.lab.changed.set()
                 return
-            if self.shared and self.shared['snapshot_id'] == payload.snapshot.id:
+            # Commit active targets before the narrative service reads them.
+            await self.presence.match(payload.snapshot.match_id, payload.snapshot.run_id)
+            if self.shared and self.shared['snapshot_id'] == payload.snapshot.id and audience_generation == self._published_audience_generation:
                 stats = {'stats': self.shared['stats']}
                 narratives = {'events': self.shared['events'], 'items': self.shared['narratives']}
             else:
-                await asyncio.gather(self.questions.match_data.capture(payload, purpose='viewer'),
-                                     self.questions.narratives.capture(payload, purpose='viewer'))
+                await self.questions.match_data.capture(payload, purpose='viewer')
+                await self.questions.narratives.capture(payload, purpose='viewer')
                 stats, narratives = await asyncio.gather(
                     self.questions.match_data.stats(payload.snapshot),
                     self.questions.narratives.read(payload.snapshot, 'viewer'))
@@ -102,6 +110,7 @@ class ProductService:
                     {**event, 'team_name': team_names.get(event.get('team_id')),
                      'player_name': player_names.get(event.get('player_id'))}
                     for event in narratives['events']]
+                self._published_audience_generation = audience_generation
             if (await self.questions.snapshots.identity()).run_id != payload.snapshot.run_id:
                 self.lab.changed.set()
                 return
@@ -118,6 +127,9 @@ class ProductService:
                         'period': payload.snapshot.period, 'position': state['position'], 'total': state['total'], 'teams': teams},
                     'events': narratives['events'][-30:], 'narratives': narratives['items'][-480:],
                     'stats': stats['stats'], 'calculations': {c['id']: c for c in state['calculations']}}
+                if self.lab.source.timed:
+                    self.shared['match']['media'] = {'aligned': True, 'seconds': state['playback_seconds'],
+                        'sampled_at': state['playback_sampled_at'], 'url': '/media/simulator.mp4'}
                 for peer in self.live.active():
                     if peer.viewer['run_id'] != payload.snapshot.run_id:
                         peer.close(4001)
@@ -188,12 +200,16 @@ class ProductService:
             elif identifier in shared['calculations']:
                 tracked.append({**shared['calculations'][identifier], 'kind': 'custom',
                                 'pinned': True, 'pin_id': identifier})
-        # The fake narrative service owns the ordered approved-stat recommendation.
+        # Narrative recommendations reference ETL's approved catalogue.
         stat_ids = next((n['stat_ids'] for n in reversed(shared['narratives']) if routing_ids.intersection(n['buckets'])),
                         [f"{support if support != 'neutral' else 'all'}:{kind}" for kind in ('goals','shots','corners','passes','cards')])
         pinned_standard = {card['id'] for card in tracked if card['kind'] == 'standard'}
+        fallback = [f"{support if support != 'neutral' else 'all'}:{kind}"
+                    for kind in ('goals', 'shots', 'passes', 'possession', 'pass_accuracy')]
+        if any(i in available and not available[i].get('available', True) for i in stat_ids):
+            stat_ids = [*stat_ids, *fallback]
         defaults = [{**available[i], 'kind': 'standard'} for i in dict.fromkeys(stat_ids)
-                    if i in available and i not in pinned_standard]
+                    if i in available and available[i].get('available', True) and i not in pinned_standard]
         return {key: shared[key] for key in ('type','version','projection_epoch','synthetic','mode','match','events')} | {
             'profile': profile, 'audience': viewer['audience'], 'bucket': bucket, 'bucket_id': bucket_id,
             'cards': defaults[:self.slots - len(tracked)] + tracked,
@@ -212,6 +228,9 @@ class ProductService:
             peer = self.live.attach(str(token), self._subscription(data))
             try:
                 await self.presence.sync()
+                if getattr(self.questions.narratives, 'audience_dependent', False):
+                    self._audience_generation += 1
+                    self.lab.changed.set()
             except Exception as exc:
                 self.live.detach(peer)
                 raise RuleError('audience_unavailable', 'Audience settings are temporarily unavailable.', 503) from exc
