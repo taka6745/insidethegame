@@ -24,6 +24,7 @@ FIXTURE = Path(__file__).parent / "fixtures/match-events.jsonl"
 
 
 def wait_for(label, operation, timeout=180):
+    print(f"Checking {label} (startup allowance: {timeout}s)", flush=True)
     deadline = time.monotonic() + timeout
     last_error = None
     while time.monotonic() < deadline:

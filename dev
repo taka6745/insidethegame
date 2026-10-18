@@ -8,7 +8,7 @@ compose() {
 }
 docker_ready() {
   command -v docker >/dev/null || { echo "Install Docker Desktop (or Docker Engine + Compose), then retry." >&2; exit 1; }
-  docker info >/dev/null 2>&1 || { echo "Docker is not running. Start it, then retry." >&2; exit 1; }
+  docker info >/dev/null 2>&1 || { echo "Cannot reach Docker. Start it and check your user's Docker access, then retry." >&2; exit 1; }
   docker compose version >/dev/null 2>&1 || { echo "Install the Docker Compose plugin, then retry." >&2; exit 1; }
 }
 check_mode() {
