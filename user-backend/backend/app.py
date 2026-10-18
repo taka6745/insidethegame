@@ -1,4 +1,4 @@
-"""Runnable fixture-mode API. Real upstream/agent adapters are deliberately not connected."""
+"""Fixture-backed API with an optional Microsoft Agent Framework custom-stat lab."""
 import asyncio
 import os
 from contextlib import asynccontextmanager

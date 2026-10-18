@@ -19,6 +19,8 @@ HTTP / UI view → application service → domain model / pure engine
 
 **One responsibility per file.** Split files when their reasons to change differ, not at an arbitrary line count. Keep related logic together. Avoid catch-all helpers and duplicated business rules. Existing foundation code can migrate incrementally; new features follow these boundaries.
 
+**Use Microsoft Agent Framework for agent orchestration.** Goal/coding agents use the SDK, and workflow stages use its typed executors and routing. Keep deterministic filters and validation separate from model calls. Fixture mode substitutes agent doubles inside the same workflow; do not replace the framework with a parallel custom orchestration implementation.
+
 **Inject dependencies.** Construct adapters/repositories in one composition root. Tests replace them without changing services. A provider-specific key change belongs in its event adapter. The fixture replay is an optional source and UI, not the production pipeline.
 
 **Validate at boundaries.** Use strict typed event/rule models. Treat LLM output as untrusted data. Reject unsupported operators, unavailable fields and wrong-match rules. Never use `eval`/`exec` for a structured filter. Future arbitrary Python requires a separate isolated executor.
