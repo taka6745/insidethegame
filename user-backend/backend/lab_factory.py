@@ -8,5 +8,7 @@ from .services.lab import FilterLabService
 
 
 def create_filter_lab(store):
-    return FilterLabService(FixtureEventSource(), PostgresLabRepository(store), workflow_from_env(),
+    source = FixtureEventSource()
+    return FilterLabService(source, PostgresLabRepository(store),
+                            workflow_from_env(data_reference=source.adapter.data_reference()),
                             local_llm=os.environ.get("LOCAL_LLM_MODE", "fixture") == "local")

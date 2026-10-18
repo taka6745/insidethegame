@@ -35,6 +35,8 @@ HTTP / UI view → application service → domain model / pure engine
 
 **Evaluate understanding separately.** Freeze prompts and independent expected answers before model runs. Compare clear, average and poor wording of the same intents. Supply prepared user replies only after clarification, count unjustified guesses as failures, and report first-turn and final accuracy separately. Never give the model gold rules or expected values, or replace older results with an easier corpus.
 
+**Ground agents in the active data contract.** Keep feed meanings in a versioned adapter-owned reference; derive types from executable models. Do not treat public provider definitions as a wire schema. Review semantic changes explicitly, and keep data skills free of benchmark prompts, gold rules and expected totals. Evaluate reference changes on frozen regression and separate transfer cases before enabling them.
+
 **Local model configuration stays local.** Commit only generic variable names and an example configuration. Keep URLs, keys and machine-specific model routing in ignored files. Model failures must be visible; fixture mode must identify itself. Never commit request logs or provider response dumps.
 
 **Document briefly.** Service README: purpose, run command, boundaries and current limits. Put deeper contracts in service `docs/`. Mark planned versus implemented. Preserve source provenance for synthetic/vendor-inspired data. No unsolicited CI, new infrastructure or cloud deployments.

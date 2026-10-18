@@ -27,7 +27,7 @@ than outputting null arrays. Arrays contain catalogue IDs or exact allowed enum 
 
 """
 
-FEED_SEMANTICS = """METRIC MAPPING — more specific wording takes precedence:
+METRIC_SEMANTICS = """METRIC MAPPING — more specific wording takes precedence:
 - Headers/headed contacts/headed touches: body_part=head across all event categories;
   event_types=[]. The everyday word touches here does not mean the touch event category.
 - Headed shots/shot attempts including goals: body_part=head, event_types=[shot,goal].
@@ -44,7 +44,9 @@ FEED_SEMANTICS = """METRIC MAPPING — more specific wording takes precedence:
 - Running distance, speed, coordinates, xG, possession and video judgments are unavailable.
   Ratios, rolling windows, sequences, predictions and score-dependent conditions are unsupported.
 
-TIME MAPPING:
+"""
+
+TIME_SEMANTICS = """TIME MAPPING:
 - Bare match-time numbers mean MINUTES, not seconds: convert them to whole-match seconds.
   Explicit seconds stay seconds. mm:ss means minutes:seconds. Never infer a time unit from the field name.
 - After -> after_seconds (exclusive). Since/from -> from_seconds (inclusive).
@@ -56,6 +58,8 @@ TIME MAPPING:
 Before emitting JSON, verify the selected status, each requested restriction and nesting.
 If goal_validation_errors exist, correct those fields using the schema; keep the user's meaning.
 """
+
+FEED_SEMANTICS = METRIC_SEMANTICS + TIME_SEMANTICS
 
 SCHEMA_RESPONSE = """RESPONSE CONTRACT:
 Return one object with a single decision property matching the supplied response schema.
@@ -69,3 +73,6 @@ just to fill a field. A named player never requires a team; leave team_ids empty
 
 GOAL_INSTRUCTIONS = DECISION_POLICY + PROMPT_RESPONSE + FEED_SEMANTICS
 STRUCTURED_GOAL_INSTRUCTIONS = DECISION_POLICY + SCHEMA_RESPONSE + FEED_SEMANTICS
+
+DATA_GOAL_INSTRUCTIONS = DECISION_POLICY + PROMPT_RESPONSE + TIME_SEMANTICS
+DATA_STRUCTURED_INSTRUCTIONS = DECISION_POLICY + SCHEMA_RESPONSE + TIME_SEMANTICS

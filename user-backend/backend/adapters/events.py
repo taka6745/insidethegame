@@ -4,6 +4,7 @@ It is not a licensed Opta schema implementation. No vendor numeric codes are
 assumed. Real feed mappings belong in another implementation of EventAdapter.
 """
 from typing import Protocol
+from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -12,6 +13,7 @@ from backend.models.events import Event, EventType
 
 class EventAdapter(Protocol):
     def adapt(self, payload: dict) -> Event: ...
+    def data_reference(self) -> dict: ...
 
 
 class _Qualifier(BaseModel):
@@ -59,6 +61,10 @@ class OptaInspiredAdapter:
     Clock minutes already include the period offset (second half starts at 45).
     Corner means awarded, not taken, in this synthetic contract.
     """
+    def data_reference(self) -> dict:
+        from .feed_reference import FeedReference
+        return FeedReference.load(Path(__file__).parent / "feed_profiles/opta-inspired-v1.json").describe()
+
     def adapt(self, payload: dict) -> Event:
         raw = _RawEvent.model_validate(payload)
         qualifiers = {q.type: q.value for q in raw.qualifiers}

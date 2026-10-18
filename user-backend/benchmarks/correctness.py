@@ -17,8 +17,10 @@ from .quality_cases import quality_cases
 from .balanced_cases import balanced_cases
 from .conversation_eval import evaluate_conversation
 from .transfer_cases import transfer_cases
+from .data_transfer_cases import data_transfer_cases, remap_fixture
 
-COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases, "transfer": transfer_cases}
+COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases,
+           "transfer": transfer_cases, "data-transfer": data_transfer_cases}
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures/filter-lab.json"
 
@@ -73,7 +75,7 @@ async def agent_check(args, scenario, events, output):
     if args.limit:
         selected = selected[:args.limit]
     rows = []
-    workflow = workflow_from_env()
+    workflow = workflow_from_env(data_reference=OptaInspiredAdapter().data_reference())
     if workflow.source != "local":
         raise ValueError("Agent evaluation requires LOCAL_LLM_MODE=local; fixture answers are not an evaluation")
     workflow.timeout_seconds = args.case_timeout
@@ -126,6 +128,8 @@ def main():
         load_dotenv(args.env_file, override=False)
     logging.basicConfig(level=logging.ERROR)
     scenario = json.loads(FIXTURE.read_text())
+    if args.cohort == "data-transfer":
+        scenario = remap_fixture(scenario)
     events = [OptaInspiredAdapter().adapt(row) for row in scenario["events"]]
     gold = gold_check(scenario, events, COHORTS[args.cohort]())
     args.output.mkdir(parents=True, exist_ok=True)

@@ -88,3 +88,5 @@ This is one model run with bounded timeouts, not proof of language-understanding
 [Model strength and prompt comparison](model-strength.md): pinned model groups, shorter contracts, response identity checks and a separate transfer cohort.
 
 [Schema and failure diagnosis](schema-study.md): strict structured output, schema evolution, semantic mistakes and route availability.
+
+[Data-reference skill evaluation](data-skill.md): adapter-owned knowledge, 100-case regression, independently authored wording/catalogue transfer and additive comparisons.

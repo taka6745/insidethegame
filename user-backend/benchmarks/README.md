@@ -179,3 +179,22 @@ headed passes/shots, inclusive/exclusive windows, combined event types and pass
 metres. Each has one short prepared reply, sent only after clarification. This is
 unseen wording across additional **known** intents, not unseen football semantics
 or an untouched test domain. Keep runtime prompts frozen during this check.
+
+`--variants current skill` compares fixed feed mappings with the adapter's
+[event-data skill](../docs/data-skill.md), with the same prompt-mode output schema.
+Use `--variants schema schema_skill` for the equivalent structured-output pair.
+Skill mode replaces the fixed metric-mapping instructions with the data reference;
+it does not append benchmark examples or make another model call. Reports record
+the reference/skill hash as well as the prompt and schema hashes.
+
+`current skill_added` (or `schema schema_skill_added`) is the additive ablation:
+original instructions and output schema are identical within each pair, and only
+the data-skill context is added. This benchmark-only variant measures extra
+knowledge separately from the reference replacement; the runtime does not keep
+two independent data mappings enabled.
+
+`--cohort data-transfer` uses 20 frozen, independently authored requests with
+fictional player/team names and IDs. The fixture and gold rules are consistently
+remapped before evaluation; event-revision weights stay unchanged. Four incomplete
+requests must clarify; four unavailable-data requests must be unsupported. This is
+a transfer check over a reused match and known capabilities, not a new-domain test.
