@@ -28,18 +28,26 @@ class FixtureServices(FixtureFeed):
             raise RuleError("wrong_match", "Only the configured match is supported", 422)
         return True
 
-    def view(self, bucket, team):
+    def match_events(self):
+        """Historical event tool for agent investigations or genuinely custom calculations."""
+        return self.query(self.etl_url, "query($id: ID!){matchEvents(matchId:$id)}",
+                          {"id": self.match_id})["matchEvents"]
+
+    def view(self, bucket, team, calculation_ids=()):
         match = self.query(self.etl_url, "query($id: ID!, $team: String!){matchState(matchId:$id,team:$team)}",
                            {"id": self.match_id, "team": team})["matchState"]
         narrative = self.query(self.narrative_url,
             "query($id: ID!, $bucket: String!){context(matchId:$id,bucket:$bucket)}",
             {"id": self.match_id, "bucket": bucket})["context"]
-        # Harness backfill on each snapshot. Real incremental history/live handoff is still to build.
-        local = FixtureFeed(self.match_id, self.slots)
-        local.events.clear()
-        for event in match["events"]:
-            local.accept_event(MatchEvent(**event))
-        view = local.view(bucket, team)
-        view["defaults"], view["narratives"] = narrative["stat_ids"], narrative["narratives"]
-        view["values"]["default"], view["key_moments"] = match["stats"], match["key_moments"]
-        return view
+        custom = {}
+        if calculation_ids:
+            # Only custom fixture pins need raw history. Standard stats are authoritative ETL values.
+            # Incremental custom history/live handoff is still to build.
+            local = FixtureFeed(self.match_id, self.slots)
+            local.events.clear()
+            for event in self.match_events():
+                local.accept_event(MatchEvent(**event))
+            custom = {key: local.value("custom", key, team) for key in calculation_ids}
+        return {"defaults": narrative["stat_ids"], "narratives": narrative["narratives"],
+                "key_moments": match["key_moments"],
+                "values": {"default": match["stats"], "custom": custom}}

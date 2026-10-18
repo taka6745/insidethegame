@@ -30,3 +30,5 @@ flowchart LR
 Real deployment will require an Azure account, subscription, provider registrations and billing. `./dev` has no cloud `apply` command and forwards no Azure credentials to the test container. Required cloud values are `subscription_id`, a unique `prefix` and a strong `database_admin_password`; don't commit them. Terraform state can contain passwords even when outputs are sensitive.
 
 LocalStack's [Azure Terraform integration](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/) is a separate optional route. It requires [LocalStack authentication](https://docs.localstack.cloud/azure/getting-started/auth-token/), emulator endpoints and compatible provider configuration. It has not been wired or tested here. Microsoft's individual emulators do not implement Terraform's Azure control plane.
+
+**Plan update:** ETL now owns a Cosmos DB store for standard stat state as well as SQL event history, both behind its GraphQL API. The existing Cosmos resources cover narrative memory; ETL Cosmos resources and GraphQL routing still need implementation. No infrastructure was deployed by this design update.

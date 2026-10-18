@@ -11,6 +11,7 @@ Run **`./dev up backend`**, then **`./dev test backend`** after changes. No mode
 | Live updates | Target-bucket narratives, changing stat values and key moments |
 | Data integrity | Duplicate/conflicting events, wrong match, VAR cancellation, invalid/stale stat selections |
 | Coding workflow | Missing data rejected before generation; wrong results/errors repaired; stop after initial attempt + three repairs |
+| ETL ownership | Standard values pass through unchanged; no raw-history query or standard recalculation, even when a custom pin is active |
 | Running stack | JSONL → fake services → GraphQL → backend → WebSocket; replay twice; takeover and saved pin |
 
 `tests/` runs against real Postgres with an in-process fake feed. `backend/smoke.py` then checks the separate running Docker services over their actual network interfaces. It modifies the synthetic match and demo viewer; use `./dev reset backend` for a fresh replay.

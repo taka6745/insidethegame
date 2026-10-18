@@ -27,3 +27,7 @@ Re-run the commands on a new machine. Emulator behaviour differs from Azure; in 
 The separate live smoke test replayed the JSONL through both fake services, read their GraphQL APIs and checked the backend WebSocket. It verified header count **4**, Chelsea goals **1**, United goals **0** after VAR, only the matching bucket narrative, duplicate-event protection and retained pins after session takeover. Tests use synthetic data; no model or Azure account was used.
 
 One non-failing dependency warning: Starlette deprecates its HTTPX-based test client in favour of HTTPX2. The current pinned direct dependencies passed. Real agents, generated-code execution, production broker consumers and Azure deployment remain unverified/unimplemented; see [coverage limits](../user-backend/docs/testing.md).
+
+## ETL stat ownership — 2026-10-18
+
+`./dev up backend`: **42 tests passed**, followed by the live Docker replay check. New tests enforce unchanged ETL-provided standard values, no raw-history fetch for standard cards, and a separate event-history query for custom pins/investigation. Standard values are no longer redundantly calculated in the runtime backend adapter. Cosmos stat storage and SQL history remain the planned production ETL stores; these tests use the fake ETL GraphQL service.

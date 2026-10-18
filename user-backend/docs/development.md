@@ -50,7 +50,9 @@ For code changes rerun `./dev up backend` to rebuild. `./dev logs backend` shows
 
 ## Replace the fixtures next
 
-`backend/upstream.py` reads fake GraphQL. Fake services notify `/dev/events` and `/dev/narratives` over HTTP; **these are test bridges**, not Event Hubs or Service Bus adapters. Each snapshot reloads history, so this does not prove the production history/live handoff or incremental calculation path.
+`backend/upstream.py` reads fake GraphQL. Fake services notify `/dev/events` and `/dev/narratives` over HTTP; **these are test bridges**, not Event Hubs or Service Bus adapters. Standard snapshots fetch ETL-computed values without downloading raw history or recalculating them. Only pinned custom fixture calculations request historical events; those still reload history per snapshot, so this does not prove the production incremental custom calculation path.
+
+ETL owns Cosmos DB for standard stats and Azure SQL for event history. `FixtureServices.match_events()` is the separate historical query helper; an agent can use that route for investigation without duplicating standard stats. The fake services remain in-memory substitutes, not Cosmos/SQL integration.
 
 Keep the agreed production boundaries: Event Hubs for shared match events, Service Bus for bucket narratives, GraphQL for history/stats. No user question calls the narrative generator. Add the question agent, real model adapter, isolated executor, calculation registry, chat/jobs and production consumers next.
 

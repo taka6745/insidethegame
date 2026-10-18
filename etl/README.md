@@ -2,24 +2,23 @@
 
 [Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
 
-![Match events become queryable history, stats and notifications](architecture.svg)
+![ETL owns standard statistics and historical events](architecture.svg)
 
-**Planned service; not implemented or deployed.** Turns timestamped match events into history, a key-event ledger and computed match statistics.
+**Planned service.** ETL owns standard stat calculations, corrections and match history. Consumers use its GraphQL API.
 
-| Azure component | Role in this design |
+| Component | Owns |
 | --- | --- |
-| Event Hubs | Incoming match-event stream. |
-| Stream Analytics | Pass through raw events; filter key events; aggregate one-minute team statistics. |
-| Azure SQL Database, serverless | Store `rawEvents`, `keyEvents`, `minuteStats`; expose `matchStatsAsOf`. |
-| Data API builder on Container Apps | Serve the stored data through GraphQL. |
-| Service Bus | Publish `KeyEventDetected` and `MinuteClosed` notifications. |
+| Event Hubs | Incoming match events |
+| Stream Analytics | Event processing and standard stat aggregation |
+| Azure Cosmos DB | Precomputed standard stat state |
+| Azure SQL | Raw events and historical/key-event queries |
+| ETL GraphQL on Container Apps | Read-only access to stats and event history |
+| Service Bus | Minute/key-event triggers for narrative generation |
 
-**Input:** match events with match ID, event ID, wall-clock timestamp and match time.
+The user backend **fetches standard stats**, then selects and delivers the viewer's cards. Agents use ETL GraphQL for specific historical investigations. Backend custom calculations are reserved for requests the existing statistics cannot answer; one shared Event Hubs consumer supports those custom live values.
 
-For the demo, [data generation](../data-generation/README.md) prepares and replays an existing generated match into Event Hubs. ETL consumes that stream. The replay source and runner are still to be selected.
+The local DAB container currently serves a tiny SQL fixture. Routing GraphQL across Cosmos stats and SQL history remains to implement; the backend harness uses explicitly fake upstream services. Neither is a completed ETL pipeline.
 
-**Outputs:** GraphQL history and computed statistics for the narrative engine and user backend; Service Bus notifications for narrative orchestration. The user backend consumes live match events directly from Event Hubs through one shared consumer.
-
-The draft aligns kickoff with a wall-clock minute, uses event-time windows and allows for late arrivals. VAR corrections contribute negative goal deltas. These timing and correction contracts still need implementation and testing.
+Timing, late events, duplicate handling and VAR corrections belong here. Agree those contracts before production integration.
 
 [Original design board](../legacy/design/plan.excalidraw) · [Repository plan](../README.md)

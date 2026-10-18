@@ -66,7 +66,7 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
         row = await asyncio.to_thread(store.read, token, match_id)
         state = row["state"]
         bucket = f"{state['team']}:{state['fan_style']}"
-        view = await asyncio.to_thread(feed.view, bucket, state["team"])
+        view = await asyncio.to_thread(feed.view, bucket, state["team"], state["pins"])
         cards = [{"kind": kind, "id": key, "value": view["values"][kind][key]}
                  for kind, key in card_ids(view["defaults"], state["pins"], slots)]
         return {"mode": "fixture", "synthetic": True, "match_id": match_id,

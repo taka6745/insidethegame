@@ -4,6 +4,8 @@ Recorded **18 October 2026, Australia/Brisbane**, from the architecture discussi
 
 The user backend connects the frontend to match intelligence. It answers viewer questions, manages profiles and viewing sessions, routes bucket narratives, selects default stat cards and builds custom statistics. The neutral match analysis and narrative engines remain outside this backend.
 
+**Latest boundary decision:** ETL calculates standard statistics and stores their current state in its Cosmos DB. Historical events remain in ETL-owned event storage (Azure SQL in the current plan). Both are accessed through ETL GraphQL. The user backend selects and delivers standard values; it does not rebuild them from events. Only a genuinely custom request may require backend calculation.
+
 ## 1. Scope and phases
 
 | Phase 1: hackathon | Phase 2: later version |
@@ -24,7 +26,7 @@ Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not pa
 | --- | --- |
 | Match event pipeline | Supply timestamped football events, computed stats and historical data. It does not execute viewer-generated stat functions. |
 | Neutral analysis/narrative engine | Independently analyse the match, produce bucket-targeted narrative variants, deduplicate narratives upstream and issue changes to bucket stat selections. |
-| ETL GraphQL | Expose computed state and raw/key event history through Data API builder over Azure SQL. |
+| ETL GraphQL | Expose precomputed stats from ETL Cosmos DB and raw/key event history from ETL Azure SQL. The backend never connects directly to either database. |
 | Narrative GraphQL | Expose narrative history and current bucket selections; owned by the narrative service. |
 | Live feeds | Event Hubs supplies match events; Service Bus supplies new narratives and stat-selection instructions. |
 | Main user backend | Read demo profiles, resolve match preferences, answer questions, coordinate coding work, manage custom stats and sessions, and deliver updates to viewers. |
@@ -61,7 +63,8 @@ Mid-match joins and reconnects can retrieve the narrative backlog and current bu
 
 ### Default stat cards
 
-- Each bucket begins with a predefined, ranked selection from an approved pool of existing statistics.
+- Each bucket begins with a predefined, ranked selection from an approved pool of existing statistics. ETL owns their calculation, corrections and stored values; the backend does not independently aggregate them.
+- Read standard values through ETL GraphQL whether they are used on a card or in an agent answer. Ordinary card refreshes do not fetch raw match history.
 - The narrative engine can send a structured **“new stats” instruction** containing the target bucket and a new priority-ordered list, such as goals and cards.
 - The backend recognises those names and resolves their existing state fields through GraphQL: conceptually, `goals → state:goals`. This is a mapping example, not a final GraphQL schema.
 - The selection remains until a replacement instruction arrives. Roughly four changes per match was discussed as an expectation, **not a fixed schedule or a backend-owned periodic selector**.
@@ -80,8 +83,9 @@ Before requesting code, it:
 
 1. Understands the semantic goal: what exactly should be counted or calculated, for which entities and over what period.
 2. Asks the viewer to clarify ambiguity that would change the result, such as headed touches versus headed shots.
-3. Checks whether available match data can support the request. If not, explains the limitation immediately.
-4. Defines the goal and what a correct result means, then delegates to the specialist coding agent.
+3. Checks ETL GraphQL for an existing statistic that answers the request, including its team/time scope. Reuse it when available; do not generate a duplicate calculation.
+4. For a historical investigation, query specific events through ETL GraphQL with the needed filters and pagination. Reading/searching events does not automatically require a coding agent.
+5. Only if a new calculation is needed, checks data availability, defines the goal and expected result, then delegates to the specialist coding agent. Explain unsupported requests immediately.
 
 It may automatically request and run a custom calculation to answer a question. **Pinning that result as a live stat is a separate viewer choice.**
 
@@ -110,7 +114,7 @@ Execution constraints:
 - Do not permit upstream writes or arbitrary external-service access.
 - Retain successful generated functions for reuse **within the current match only**.
 
-For “headers this game,” calculate from kickoff. For “headers since minute 20” or “headers this second half,” generate the appropriate time filter. Backfill from raw match history, then maintain the value using new events.
+First reuse an ETL-provided statistic if its meaning and time scope match. Otherwise, for a custom “headers this game,” calculate from kickoff. For “headers since minute 20” or “headers this second half,” generate the appropriate time filter. Backfill from raw match history, then maintain the value using new events.
 
 Equivalent requests with the same match, entities, filters and time range **reuse one calculation**. Each viewer's pin points to that shared calculation; it does not start an identical worker or upstream event subscription. How equivalent generated functions are recognised remains to be designed; do not assume similar wording proves equivalence.
 
@@ -140,7 +144,7 @@ Active custom subscriptions are scoped to the current match and end at match end
 
 Use individual API requests for chat and actions such as pinning, plus **one live connection per active viewer session** for narratives and stat updates. Chat replies may stream. Both interfaces belong to the same main backend container; separate communication paths do not imply separate services.
 
-The frontend live transport is not locked in. SignalR appeared in an earlier diagram as a proposal, not an accepted requirement. Upstream transport is now agreed: Event Hubs for match events, Service Bus for new narratives, and service-owned GraphQL APIs for history. Active-bucket presence changes are sent to the narrative service through Service Bus; they change the audience set, not the match facts or narrative prompts.
+The development harness uses HTTP and WebSocket; the production managed-transport choice is not locked in. SignalR appeared in an earlier diagram as a proposal, not an accepted requirement. Upstream transport is now agreed: Event Hubs for match events, Service Bus for new narratives, and service-owned GraphQL APIs for history. Audience-presence feedback remains an open question; no feedback from viewer questions is sent to narrative generation.
 
 Use **two databases on the same database server**:
 
@@ -200,7 +204,7 @@ Service references used during planning: [Container Apps](https://learn.microsof
 
 ## 12. Review scenarios for implementation
 
-1. Select a demo profile mid-match: load its bucket, narrative backlog and latest ranked stat selection.
+1. Select a demo profile mid-match: load its bucket, narrative backlog, latest ranked stat selection and ETL-computed values, without fetching raw history or recalculating standard stats.
 2. Ask an ordinary football question: answer without invoking or changing the neutral narrative workflow.
 3. Ask for headers since minute 20: clarify if needed, check data availability, delegate code generation, validate and return a historical calculation.
 4. Pin that result: replace the lowest-priority default and update its value as new events arrive.

@@ -67,12 +67,12 @@ class Diagram:
 # Root overview: five owners, with live and historical data paths separated.
 d=Diagram('architecture.svg','Five services. One live match.','Shared match intelligence; personal questions and stat cards. No narrative workflow per viewer.',1440,760)
 xs=[36,320,604,888,1172];w=232
-items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Azure SQL · GraphQL'],'stream',BLUE),('Narrative engine',['12 audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
+items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Stats + history · GraphQL'],'stream',BLUE),('Narrative engine',['12 audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
 for x,(title,notes,ic,col) in zip(xs,items):d.card(x,245,w,205,title,notes,ic,col)
 for i,label in enumerate(['Event Hubs','Facts + triggers','Narratives','Live UI']):
  d.arrow([(xs[i]+w,345),(xs[i+1],345)],label,(xs[i]+w+xs[i+1])/2,320,dash=i==2)
 d.arrow([(436,245),(436,175),(1004,175),(1004,245)],'Live · Event Hubs',720,168,True)
-d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'History · GraphQL',720,503)
+d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'Stats + history · GraphQL',720,503)
 d.text('Narratives: Service Bus live · GraphQL history',36,575,16,PURPLE)
 d.arrow([(950,245),(950,214),(790,214),(790,245)],'Bucket presence',870,207,True)
 
@@ -92,16 +92,24 @@ d.icon('screen',85,510,45);d.text('Footage → frontend',155,520,21,INK,True)
 
 d.save()
 
-# ETL implementation boundary.
-d=Diagram('etl/architecture.svg','ETL','One Stream Analytics job stores raw events, key events and per-minute statistics.')
-for x,title,notes,ic in [(30,'Event Hubs',['Match events'],'events'),(290,'Stream Analytics',['Filter + aggregate'],'stream'),(550,'Azure SQL',['Events + stats'],'sql'),(810,'Data API builder',['GraphQL'],'graphql')]:
- d.card(x,200,220,190,title,notes,ic)
-d.card(1070,200,220,190,'Consumers',['Narrative engine','User backend'],'containers')
-for x in [250,510,770,1030]:d.arrow([(x,292),(x+40,292)])
-d.card(550,470,300,155,'Service Bus',['Minutes + key events'],'bus')
-d.arrow([(400,390),(400,545),(550,545)],'notify',455,533,True)
-d.arrow([(850,545),(1180,545),(1180,390)],'triggers',1010,533,True)
-
+# ETL owns standard statistics and history; consumers see only its API.
+d=Diagram('etl/architecture.svg','ETL owns match facts','Standard stats in Cosmos DB; historical events in Azure SQL; consumers query ETL GraphQL.',1440,850)
+d.card(30,320,220,180,'Event Hubs',['Match events'],'events')
+d.card(310,320,240,180,'Stream Analytics',['Compute + store'],'stream')
+d.card(620,180,240,180,'Cosmos DB',['Standard stats'],'cosmos')
+d.card(620,520,240,180,'Azure SQL',['Event history'],'sql')
+d.card(940,320,220,180,'ETL GraphQL',['Stats + event queries'],'graphql')
+d.card(1210,320,200,180,'Consumers',['Agents + cards'],'containers')
+d.arrow([(250,410),(310,410)])
+d.arrow([(550,375),(585,375),(585,270),(620,270)])
+d.arrow([(550,445),(585,445),(585,610),(620,610)])
+d.arrow([(860,270),(900,270),(900,375),(940,375)])
+d.arrow([(860,610),(900,610),(900,445),(940,445)])
+d.arrow([(1160,410),(1210,410)])
+d.icon('bus',330,610,45)
+d.text('Service Bus',400,635,20,BLUE,True)
+d.arrow([(430,500),(430,590)],'Triggers',475,555,dash=True)
+d.note('Backend selects and delivers standard stats. ETL calculates them.',755)
 d.save()
 
 # Narrative shared memory and per-bucket authors.
@@ -127,29 +135,72 @@ d.text('1 min → summary     ·     Key event / 10 min → narrative',58,696,17
 
 d.save()
 
-# User backend internals with an explicit separate executor boundary.
-d=Diagram('user-backend/architecture.svg','User backend','One Python app on Azure Container Apps; generated code runs in an isolated executor.',1440,1000)
-d.card(36,190,255,190,'Upstream data',['Event Hubs · GraphQL'],'graphql')
-d.card(376,190,290,190,'Question + coding',['Goal → code → test'],'agent',PURPLE)
-d.card(766,190,290,190,'Viewer delivery',['Chat + live updates'],'containers')
-d.card(1156,190,248,190,'Frontend',[],'screen')
-d.arrow([(291,280),(376,280)])
-d.arrow([(666,280),(766,280)],'result',716,267)
-d.arrow([(1056,280),(1156,280)],both=True)
-d.card(36,470,255,190,'Narrative input',['Service Bus · GraphQL'],'bus')
-d.card(376,470,290,190,'Isolated executor',['Python · read-only data'],'code',PURPLE)
-d.card(766,470,290,190,'Shared stat engine',['Shared calculations'],'chart',GREEN)
-d.card(1156,470,248,190,'PostgreSQL',['Accounts · Match App'],'postgres')
-d.arrow([(521,380),(521,470)],'test / run',574,431,both=True)
-d.arrow([(666,565),(766,565)],'values',716,551)
-d.arrow([(911,470),(911,380)],'cards',948,432)
-d.arrow([(1278,470),(1278,420),(1020,420),(1020,380)])
-d.text('→ Viewer delivery',163,643,14,BLUE,anchor='middle')
-
-
-for x,title,notes in [(36,'Jev follows',[]),(506,'Clip resolver',[]),(976,'Playback state',[])]:
- d.card(x,767,428,116,title,notes,color=GREY,dash=True)
-d.note('PHASE 2 ONLY',742,GREY)
+# Detailed backend boundary follows the reference board. Standard and custom stats stay separate.
+d=Diagram('user-backend/architecture.svg','Main user backend','ETL owns standard stats in Cosmos DB and historical events in SQL. GraphQL is the only database access path for the backend.',1680,1420)
+# Service boundaries.
+d.rect(24,145,270,900,'#fff4e5','#f4a34f')
+d.text('ETL service',44,179,22,'#b86500',True)
+d.rect(330,145,1050,990,'#e8f4ff',BLUE)
+d.icon('containers',350,164,32)
+d.text('User backend · Container Apps',395,188,22,BLUE,True)
+d.rect(1420,335,236,690,'#effaf1','#69ad7d')
+d.text('Frontend',1440,370,22,GREEN,True)
+# Upstream stores are accessed only through ETL GraphQL.
+d.card(44,210,230,145,'Cosmos DB',['Standard stats'],'cosmos')
+d.card(44,410,230,145,'ETL GraphQL',[],'graphql')
+d.card(44,620,230,145,'Azure SQL',['Event history'],'sql')
+d.card(44,850,230,145,'Event Hubs',['Custom live events'],'events')
+d.arrow([(159,355),(159,410)])
+d.arrow([(159,620),(159,555)])
+# Main API, identity and agent components.
+d.rect(600,385,275,395,'#f7f1ff','#cbb9e9')
+d.text('Microsoft Agent Framework',737,402,12,PURPLE,True,'middle')
+d.card(355,410,205,145,'GraphQL helper',['Read-only queries'],'graphql')
+d.card(615,410,245,145,'Question agent',['Existing stats first'],'agent',PURPLE)
+d.card(925,410,230,145,'Chat + actions',[],'containers')
+d.card(640,230,195,145,'Foundry models',[],'foundry',PURPLE)
+d.card(925,230,200,145,'Profiles + sessions',[],'users')
+d.card(1150,230,210,145,'PostgreSQL',['Accounts · Match App'],'postgres')
+d.card(1430,410,216,145,'Agent chat',[],'screen',GREEN)
+d.arrow([(355,480),(274,480)],'Query',314,465,both=True)
+d.arrow([(615,480),(560,480)])
+d.arrow([(925,480),(860,480)])
+d.arrow([(820,410),(820,375)])
+d.arrow([(1040,410),(1040,375)])
+d.arrow([(1125,300),(1150,300)],both=True)
+d.arrow([(1155,480),(1430,480)],'Questions + replies',1290,466,both=True)
+# User-defined calculations are a separate lane from standard stats.
+d.card(355,620,205,145,'Isolated executor',['Separate container'],'python',PURPLE)
+d.card(615,620,245,145,'Coding + tests',['Custom requests only'],'agent',PURPLE)
+d.card(355,850,205,145,'Custom calculations',['Shared per match'],'code',PURPLE)
+d.arrow([(737,555),(737,620)],'Goal',775,594)
+d.arrow([(615,690),(560,690)],both=True)
+d.arrow([(457,620),(457,555)],'Data',490,594)
+d.arrow([(457,850),(457,765)],'Run',490,814)
+d.arrow([(274,925),(355,925)])
+d.arrow([(737,765),(737,810),(530,850)],'Validated function',660,838)
+# Standard values bypass the executor and custom calculation engine.
+d.card(925,850,230,145,'Cards + pins',['Select · rank · replace'],'chart',GREEN)
+d.card(1185,850,175,145,'Live delivery',['One per viewer'],'bus')
+d.card(1430,850,216,145,'Match view',['Stats + narratives'],'chart',GREEN)
+d.arrow([(560,535),(585,535),(585,795),(1040,795),(1040,850)],'ETL stat values',850,788)
+d.arrow([(1040,555),(1040,850)],'Pin / unpin',1084,655)
+d.arrow([(560,925),(925,925)],'Custom values',740,912)
+d.arrow([(1155,925),(1185,925)])
+d.arrow([(1360,925),(1430,925)])
+# Shared narratives stay outside the user backend.
+d.rect(615,1170,745,140,'#f5f0ff','#b6a0df')
+d.icon('agent',640,1210,55)
+d.text('Narrative engine',720,1213,23,PURPLE,True)
+d.text('Bucket narratives · ranked stat IDs',720,1250,17,MUTED)
+d.text('Service Bus live · GraphQL history',720,1280,15,MUTED)
+d.arrow([(1040,1170),(1040,995)],'Stat IDs',1075,1150)
+d.arrow([(1270,1170),(1270,995)],'Narratives',1310,1150)
+# Future features, visually secondary.
+for x,title in [(355,'Playback state'),(555,'Clip resolver'),(755,'Jev follows')]:
+ d.card(x,1040,175,70,title,(),color=GREY,dash=True)
+d.text('PHASE 2',1185,1080,14,GREY,True)
+d.note('Standard stats: fetch → select → deliver. Custom requests: query history → test → run.',1350)
 d.save()
 
 # Product interface, not a frontend framework decision.

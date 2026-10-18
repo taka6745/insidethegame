@@ -2,17 +2,20 @@
 
 ![Service boundary](../architecture.svg)
 
-**Own:** event history, key events, minute deltas, computed stats and their GraphQL API.
+**Own:** standard stat calculations/state, historical events, key moments and the GraphQL API for all of them.
 
 ```text
-Event Hubs → Stream Analytics → Azure SQL → GraphQL
-                           ↘ Service Bus
+                         → Cosmos DB: computed stats →
+Events → ETL processing                               ETL GraphQL → consumers
+                         → Azure SQL: event history  →
 ```
 
-**Start:** [Docker setup](../../DEVELOPMENT.md), then `./dev test azure`. Open `http://localhost:15000/graphql`. Real Data API builder queries a tiny SQL fixture table; **no Stream Analytics job runs locally**.
+**Start:** `./dev test azure` checks the independent messaging/SQL/DAB infrastructure. `http://localhost:15000/graphql` currently exposes only a tiny SQL fixture. No Stream Analytics job or Cosmos stat writer runs locally. For backend work, `./dev up backend` starts fake ETL/narrative services instead.
 
-**Build next:** put SQL migrations, Stream Analytics query/config and their tests here. Start with raw-event passthrough, then key-event filtering and minute deltas. Add the computed-stat view and DAB entities. Publish `KeyEventDetected` / `MinuteClosed` to `match-notifications`.
+**Build next:** event storage/migrations, Stream Analytics processing and Cosmos stat state; then the GraphQL routes for computed values and separately filtered/paginated history. Choose the GraphQL composition/adapter implementation for both stores; the existing SQL-only DAB setup is not the complete API. Publish minute/key-event notifications for the narrative engine.
 
-**Prove it:** replay known events; compare stored history and aggregated values; test duplicates, late data, halftime and VAR negative deltas. A closed minute must have queryable data before its notification is consumed. Agree timing/correction rules in [contracts](../../local/contracts.md).
+**Prove it:** known events produce correct stored stats/history; test duplicates, late events, halftime and VAR corrections. Readable state must precede its update notification. Backend cards and agent answers reuse these computed values; they must not recreate standard counters from events.
 
-**Azure:** Event Hubs, Stream Analytics, Azure SQL, Service Bus; DAB runs on Container Apps. Shared infrastructure is in [terraform/](../../terraform/README.md). This service owns the ASA job, event-time policy and Azure integration. Local fixture insertion is not an ETL substitute.
+**Still to agree:** how standard-stat refreshes are signalled and versioned. Event Hubs remains the custom-calculation event source; fetching standard values is a separate GraphQL operation. See [contracts](../../local/contracts.md).
+
+**Azure:** Event Hubs, Stream Analytics, Cosmos DB, Azure SQL, Service Bus and a GraphQL API on Container Apps. ETL owns its ASA job, event-time policy and cloud validation. Terraform still needs the ETL-specific Cosmos resources.
