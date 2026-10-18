@@ -52,10 +52,9 @@ tabs.forEach((tab, index) => {
     next.focus();
   });
 });
-document
-  .getElementById("profile")
-  .addEventListener("change", (event) =>
-    controller.selectProfile(event.target.value),
+for (const id of ["audience-team", "audience-style"])
+  document.getElementById(id).addEventListener("change", () =>
+    controller.selectAudience(view.audience.selection()),
   );
 document
   .getElementById("reconnect")

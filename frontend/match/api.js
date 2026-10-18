@@ -46,6 +46,11 @@ export class MatchApi {
   restore(token) {
     return this.request(`/${encodeURIComponent(token)}`);
   }
+  audience(token, selection) {
+    return this.request(`/${encodeURIComponent(token)}/audience`, {
+      method: "PUT", body: selection,
+    });
+  }
   ask(token, prompt, requestId) {
     return this.request(`/${encodeURIComponent(token)}/messages`, {
       body: { prompt, request_id: requestId },

@@ -6,7 +6,7 @@
 | --- | --- |
 | Neutral match analysis and source narratives | Viewer profiles and match preferences |
 | Read audience definitions through the backend API | Store layers/options/descriptions and select the viewer's bucket |
-| Framing for every available DB bucket | Routing supplied text unchanged |
+| Framing for every enabled generation target | Routing supplied text unchanged |
 | Persisting/publishing bucket versions and history | Live delivery and history retrieval |
 
 **Current implementation:** `/dev/narratives` and the optional Service Bus adapter receive already-bucketed messages using `backend.domain.Narrative`. The original 12 combinations are supported by this harness. The backend does not invoke a framing model. GraphQL history remains upstream-owned.

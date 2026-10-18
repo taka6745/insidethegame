@@ -1,4 +1,5 @@
 import { clubBrand } from "./clubs.js";
+import { AudienceView } from "./audience-view.js";
 import { node, keyedList } from "./dom.js";
 import {
   clock,
@@ -11,6 +12,7 @@ export class MatchView {
   constructor(document) {
     this.document = document;
     this.onUnpin = () => {};
+    this.audience = new AudienceView(document);
   }
   get(id) {
     return this.document.getElementById(id);
@@ -19,19 +21,8 @@ export class MatchView {
     const element = this.get(id);
     if (element.textContent !== value) element.textContent = value;
   }
-  profiles(profiles, selected) {
-    this.get("profile").replaceChildren(
-      ...profiles.map((profile) => {
-        const option = node(this.document, "option", profile.display_name);
-        option.value = profile.id;
-        return option;
-      }),
-    );
-    if (profiles.some((profile) => profile.id === selected))
-      this.get("profile").value = selected;
-    return this.get("profile").value;
-  }
   connection(state) {
+    this.audience.connection(state === "live");
     this.document.body.dataset.connection = state;
     const labels = {
       connecting: "Opening your match…",
@@ -53,6 +44,7 @@ export class MatchView {
     this.get("notice").hidden = !message;
   }
   render(snapshot) {
+    this.audience.render(snapshot);
     const { match, cards } = snapshot;
     this.document.body.dataset.matchStatus = match.status;
     const teams = match.teams || [];

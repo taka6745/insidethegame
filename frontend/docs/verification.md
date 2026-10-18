@@ -1,11 +1,11 @@
 # Viewer verification
 
-Latest question/pinning checks verified locally on 19 October 2026. Earlier visual and icon checks are retained below. This is a synthetic demonstration, not a real fixture or a production capacity certification.
+Latest audience and question/pinning checks verified locally on 19 October 2026. Earlier visual and icon checks are retained below. This is a synthetic demonstration, not a real fixture or a production capacity certification.
 
 | Check | Result |
 |---|---|
-| Backend regression suite | 404 passed; one existing Starlette/httpx deprecation warning |
-| Frontend unit/contract tests | 69 passed |
+| Backend regression suite | 419 passed; one existing Starlette/httpx deprecation warning |
+| Frontend unit/contract tests | 74 passed |
 | Native SVG harness tests | 6 passed; all three icons exceed 80% foreground overlap |
 | Separate-service smoke | GraphQL reads, live cards/narratives, corrections and takeover passed |
 | Filter lab smoke | 26 presets, 35 deliveries, persisted results and reset passed; leaves Chelsea–United ready |
@@ -26,3 +26,5 @@ Narrative fixture follow-up: six authored story beats × 12 buckets replace per-
 Pinning/recovery follow-up: standard ETL answers now offer Track alongside custom stats. Real-Postgres checks cover live ETL updates, persistence, default-card deduplication, Untrack and clarification-to-custom tracking. In the browser a standard answer stayed at its 20-minute value while the pinned card advanced from 4 to 6. An isolated Docker test changed the backend IP: the original proxy returned 502; the updated proxy recovered to 200 and preserved the path/query string. Header ambiguity instructions now run in the intent router before the statistic planner. Fresh independent review found no further issues.
 
 Real-model follow-up: the viewer asked for clarification of Bruno Fernandes headers. A separate disposable-schema run then verified the complete dialogue: headed shots including goals → 3 → successful Track, retaining the player from the original question. The planner needed one schema repair and succeeded within its configured repair budget. This used the real development model and fixture upstreams, not fixture agent replies.
+
+Audience follow-up: separate team and viewer-style controls cover all 12 combinations without changing identity, chat or tracked stats. The real-Postgres suite covers presence flags, shared combinations, takeover, disconnect, restart, reset and failure races. Browser selection changed the persisted generation target to `home:experienced`, then `neutral:simple`; refresh retained the latter and its tracked stat. All definitions remain stored. Narrow-layout inspection showed no horizontal page overflow. The final selected-audience question-context assertion passed separately after the full suite. Fresh independent review was clean. Presence is currently owned by one backend process; the planned narrative generator consumes enabled targets, while the mock service still serves prewritten fixtures.

@@ -33,7 +33,7 @@ function fixture(api = {}) {
     render: (s) => renders.push(s),
     error() {},
     connection() {},
-    profiles: () => "one",
+    audience: { setBusy() {}, render() {} },
   };
   const questions = {
     render: (s) => chats.push(s),
@@ -152,6 +152,56 @@ test("HTTP adapter only sends intent, token and offer identifiers", async () => 
     api.socketUrl("t", { protocol: "https:", host: "match.example" }),
     "wss://match.example/viewer-api/t/live",
   );
+});
+
+test("audience choices update the same session without replacing chat or pins", async () => {
+  const selection = {team: "neutral", fan_style: "experienced"};
+  const updated = {...snapshot(2), audience: selection, cards: [{id:"pinned"}]};
+  const f = fixture({audience: async (token, body) => {
+    assert.equal(token, "t");
+    assert.deepEqual(body, selection);
+    return {snapshot: updated};
+  }});
+  f.controller.session = {turns: [{prompt: "earlier question"}], offers: [{id:"saved"}]};
+  const session = f.controller.session;
+  await f.controller.selectAudience(selection);
+  assert.equal(f.controller.token, "t");
+  assert.equal(f.controller.session, session);
+  assert.equal(f.chats.length, 0);
+  assert.deepEqual(f.controller.snapshot.audience, selection);
+  assert.equal(f.controller.snapshot.cards[0].id, "pinned");
+  assert.equal(f.controller.audienceBusy, false);
+});
+
+test("failed audience save restores the committed choice", async () => {
+  const f = fixture({audience: async () => {throw new Error("offline");}});
+  f.controller.snapshot = {...snapshot(), audience:{team:"home",fan_style:"simple"}};
+  let restored;
+  f.controller.view.audience.render = value => { restored = value; };
+  await f.controller.selectAudience({team:"away",fan_style:"casual"});
+  assert.equal(restored, f.controller.snapshot);
+  assert.equal(f.controller.audienceBusy, false);
+});
+
+test("a late audience save cannot update a replacement session", async () => {
+  const pending = deferred();
+  const f = fixture({audience: () => pending.promise});
+  const work = f.controller.selectAudience({team:"away",fan_style:"casual"});
+  f.controller.generation++;
+  pending.resolve({snapshot:snapshot(5)});
+  await work;
+  assert.equal(f.controller.snapshot, null);
+});
+
+test("audience API sends relative team and style without profile or config writes", async () => {
+  const selection = {team:"away",fan_style:"casual"};
+  const api = new MatchApi(async (url, options) => {
+    assert.equal(url, "/viewer-api/token/audience");
+    assert.equal(options.method, "PUT");
+    assert.deepEqual(JSON.parse(options.body), selection);
+    return {ok:true,json:async () => ({})};
+  });
+  await api.audience("token",selection);
 });
 
 test("HTML proxy failures preserve status and give an actionable retry message", async () => {

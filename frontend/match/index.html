@@ -35,10 +35,17 @@
         ><a href="https://www.premierleague.com/en/news">News</a
         ><a href="https://www.premierleague.com/en/clubs">Clubs</a>
       </nav>
-        <div class="profile-wrap">
-          <label class="sr-only" for="profile">Demo profile</label>
-          <select id="profile" aria-label="Demo profile"><option>Loading profiles…</option></select>
-        </div>
+      <div class="audience-controls" role="group" aria-label="Your match perspective">
+        <label class="sr-only" for="audience-team">Team you support</label>
+        <select id="audience-team" disabled><option>Team…</option></select>
+        <label class="sr-only" for="audience-style">Viewer style</label>
+        <select id="audience-style" disabled>
+          <option value="analytical">Analytical</option>
+          <option value="simple">Simple</option>
+          <option value="casual">Casual</option>
+          <option value="experienced">Experienced</option>
+        </select>
+      </div>
     </header>
     <main id="match-main">
       <h1 class="sr-only">Match Centre</h1>

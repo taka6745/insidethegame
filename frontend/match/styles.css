@@ -247,9 +247,14 @@ body[data-connection="live"][data-match-status="running"] .live-dot {
   justify-content: space-between;
   gap: 12px;
 }
-.profile-wrap {
-  flex-shrink: 0;
+.audience-controls {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
   margin-left: auto;
+}
+.audience-controls select {
+  min-width: 0;
 }
 .connection-bar {
   display: flex;
@@ -500,7 +505,7 @@ footer {
   .masthead {
     height: 58px;
     padding: 0 4%;
-    gap: 25px;
+    gap: 12px;
   }
   .league-logo img {
     width: 80px;
@@ -508,6 +513,17 @@ footer {
   }
   .league-nav {
     display: none;
+  }
+  .audience-controls {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+  #audience-team {
+    max-width: 155px;
+  }
+  #audience-style {
+    max-width: 112px;
   }
   .league-nav a {
     padding: 18px 0;

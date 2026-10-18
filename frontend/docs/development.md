@@ -8,9 +8,9 @@ Open **http://localhost:18020/** for the match viewer, or **http://localhost:180
 
 ## Match viewer
 
-A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Select a demo profile, start the synthetic replay, and watch the match state, insights and five compact statistics. Raw events are shown only in the developer lab. Insights displays [authored narrative fixtures](../../user-backend/fixtures/viewer-narratives.md) from the mock upstream without rewriting them. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
+A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Choose a team and viewer style in the header, start the synthetic replay, and watch the match state, insights and five compact statistics. All 12 combinations are selectable. Changes preserve chat and pins, and persist for the current demo identity and match run. Raw events are shown only in the developer lab. Insights displays [authored narrative fixtures](../../user-backend/fixtures/viewer-narratives.md) from the mock upstream without rewriting them. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
 
-Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional simulator excerpt is illustrative and separate from the Chelsea–United events. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication.
+Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional simulator excerpt is illustrative and separate from the Chelsea–United events. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication. The viewer retains its existing demo identity internally; the audience controls edit its match preference. Connected audiences enable their combinations in the backend catalogue; unused combinations stay stored but disabled. The narrative engine reads those generation targets before authoring.
 
 The browser talks only to the user backend. Static modules are independently cacheable; the viewer uses one WebSocket for match updates and HTTP for deliberate actions/questions. Connection recovery uses a fresh authoritative snapshot. It does not run an LLM loop, calculate statistics, or read an upstream database.
 
@@ -29,7 +29,7 @@ npm test
 
 Node 20+ is sufficient; the application has no bundled framework dependency. Run the [icon harness](../assets/README.md) separately. Backend regression/integration checks use `./dev test backend` and deliberately reset fixtures.
 
-Browser acceptance: profile switch, replay, current bucket cards/backlog, a question while updates continue, explicit Track/Untrack, refresh, takeover, disconnection, keyboard controls and narrow mobile layout. Model/event content must stay text, never executable HTML. [Question contract](../../user-backend/docs/question-agent.md) · [Design and research](design-references.md).
+Browser acceptance: team/style changes, replay, current bucket cards/backlog, a question while updates continue, explicit Track/Untrack, refresh, takeover, disconnection, keyboard controls and narrow mobile layout. Model/event content must stay text, never executable HTML. [Question contract](../../user-backend/docs/question-agent.md) · [Design and research](design-references.md).
 
 ## Deployment boundary
 
@@ -43,7 +43,7 @@ Production can place static assets behind Azure Front Door/CDN and replace the s
 |---|---|
 | `match/api.js`, `live.js` | Same-origin requests and one reconnecting live connection |
 | `match/controller.js` | Session and user-action coordination |
-| `match/view.js`, `chat-view.js`, `dom.js` | Bounded, safe DOM rendering; preserve unchanged controls |
+| `match/view.js`, `audience-view.js`, `chat-view.js`, `dom.js` | Bounded, safe DOM rendering; preserve unchanged controls |
 | `match/format.js` | Display formatting and bounded snapshot handling |
 | `match/styles.css`, `companion.css` | Responsive Premier League integration presentation |
 | `tools/build.sh` | Content-hashed static module directory, without a bundler |

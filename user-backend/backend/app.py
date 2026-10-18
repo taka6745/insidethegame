@@ -27,7 +27,7 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
     product = None
     if enable_product and questions and lab:
         from .services.product import ProductService
-        product = ProductService(questions, lab)
+        product = ProductService(questions, lab, audiences)
 
     @asynccontextmanager
     async def lifespan(app):
