@@ -1,5 +1,7 @@
 # User backend
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
 **Planned service.** Owns profiles, sessions, questions, stat cards and narrative routing. It does not generate the shared game narrative.

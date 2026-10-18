@@ -1,5 +1,7 @@
 # Data generation
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![An existing synthetic match is prepared and replayed into Event Hubs](architecture.svg)
 
 **Planned demo tooling; not implemented or deployed.** Prepares and replays an existing generated match into the shared match-event stream. No specific source file has been selected.

@@ -4,7 +4,14 @@ Live football, shared match narratives and a personal match companion.
 
 ![Five planned services and their data flows](architecture.svg)
 
-**Design stage.** No application services are implemented yet. The narrative engine has three preserved example prompts. These diagrams describe the agreed build, not deployed infrastructure.
+**Development foundation.** Local Docker dependencies and integration checks are available; application services are still to build. The narrative engine has three preserved example prompts. These diagrams describe the agreed application design.
+
+**[Start developing →](DEVELOPMENT.md)** · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
+
+```sh
+./dev up
+./dev test
+```
 
 | Folder | What it does |
 | --- | --- |
@@ -22,4 +29,4 @@ Each folder has a short service guide and a closer diagram. Azure products are d
 
 [Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
 
-Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No deployment or CI is configured.
+Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No cloud deployment or CI is configured.

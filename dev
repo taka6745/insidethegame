@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+compose() { docker compose --env-file local/env.defaults -f local/compose.yaml "$@"; }
+usage() {
+  cat <<'EOF'
+./dev up                 Start Postgres + Cosmos (no accounts)
+./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
+./dev test [azure]       Test real local dependency round trips
+./dev replay             Send the tiny synthetic fixture to Event Hubs
+./dev status             Show this project's containers
+./dev logs [service]     Show recent logs
+./dev down               Stop this stack; keep SQL/Postgres volumes
+./dev terraform check    Format-check, validate and mock-test Azure infrastructure
+
+For Azure emulators, first review local/README.md licence links, then run:
+ACCEPT_EULA=Y ./dev up azure
+This accepts Microsoft's emulator and SQL Server terms. No cloud deployment.
+EOF
+}
+case "${1:-help}" in
+  up)
+    if [[ "${2:-}" == azure ]]; then
+      [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
+      compose --profile azure up -d
+    else
+      compose up -d
+    fi
+    compose build tools
+    ;;
+  test)
+    compose run --rm --build --no-deps tools python local/check.py "${2:-base}"
+    ;;
+  replay)
+    compose run --rm --build --no-deps tools python local/replay.py
+    ;;
+  status) compose --profile azure ps ;;
+  logs) shift; compose --profile azure logs --tail 60 "$@" ;;
+  down) compose --profile azure down ;;
+  terraform)
+    [[ "${2:-}" == check ]] || { usage; exit 2; }
+    docker run --rm -v "$PWD/terraform:/work" -w /work --entrypoint sh \
+      hashicorp/terraform:1.13.4 -ec \
+      'terraform fmt -check -recursive && terraform init -backend=false -input=false && terraform validate && terraform test'
+    ;;
+  help|-h|--help) usage ;;
+  *) usage; exit 2 ;;
+esac

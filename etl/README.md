@@ -1,5 +1,7 @@
 # Match data / ETL
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![Match events become queryable history, stats and notifications](architecture.svg)
 
 **Planned service; not implemented or deployed.** Turns timestamped match events into history, a key-event ledger and computed match statistics.

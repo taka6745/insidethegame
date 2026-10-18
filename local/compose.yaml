@@ -1,0 +1,112 @@
+name: itg-local
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: itg
+      POSTGRES_PASSWORD: local-development-only
+      POSTGRES_DB: accounts
+    ports: ["127.0.0.1:15432:5432"]
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/postgres.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U itg -d accounts"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  cosmos:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest
+    environment:
+      PROTOCOL: http
+      ENABLE_EXPLORER: "true"
+    ports: ["127.0.0.1:18081:8081", "127.0.0.1:11234:1234"]
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+    profiles: [azure]
+    # Private dependency of Event Hubs; no host ports needed.
+
+  eventhubs:
+    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
+    profiles: [azure]
+    environment:
+      ACCEPT_EULA: ${ACCEPT_EULA:-N}
+      BLOB_SERVER: azurite
+      METADATA_SERVER: azurite
+    volumes:
+      - ./config/eventhubs.json:/Eventhubs_Emulator/ConfigFiles/Config.json:ro
+    ports: ["127.0.0.1:15672:5672", "127.0.0.1:15300:5300"]
+    depends_on: [azurite]
+
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    profiles: [azure]
+    environment:
+      ACCEPT_EULA: ${ACCEPT_EULA:-N}
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: Local-Only-Password-42!
+      MSSQL_MEMORY_LIMIT_MB: "2048"
+    ports: ["127.0.0.1:11433:1433"]
+    volumes: ["sql-data:/var/opt/mssql"]
+    healthcheck:
+      test: [CMD-SHELL, '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -C -Q "SELECT 1" -b -o /dev/null']
+      interval: 5s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+
+  servicebus:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    profiles: [azure]
+    environment:
+      ACCEPT_EULA: ${ACCEPT_EULA:-N}
+      SQL_SERVER: sql
+      MSSQL_SA_PASSWORD: Local-Only-Password-42!
+      SQL_WAIT_INTERVAL: "15"
+      EMULATOR_HTTP_PORT: "5300"
+    volumes:
+      - ./config/servicebus.json:/ServiceBus_Emulator/ConfigFiles/Config.json:ro
+    ports: ["127.0.0.1:15673:5672", "127.0.0.1:15301:5300"]
+    depends_on:
+      sql: {condition: service_healthy}
+
+  sql-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    profiles: [azure]
+    environment:
+      SQLCMDPASSWORD: Local-Only-Password-42!
+    volumes: ["./sql/match.sql:/init.sql:ro"]
+    entrypoint: [/opt/mssql-tools18/bin/sqlcmd]
+    command: [-S, sql, -U, sa, -C, -b, -i, /init.sql]
+    depends_on:
+      sql: {condition: service_healthy}
+
+  graphql:
+    image: mcr.microsoft.com/azure-databases/data-api-builder:1.6.87
+    platform: linux/amd64
+    profiles: [azure]
+    environment:
+      SQL_CONNECTION_STRING: "Server=sql;Database=matchdata;User ID=sa;Password=Local-Only-Password-42!;TrustServerCertificate=true"
+    volumes: ["./config/dab.json:/App/dab-config.json:ro"]
+    ports: ["127.0.0.1:15000:5000"]
+    depends_on:
+      sql-init: {condition: service_completed_successfully}
+
+  tools:
+    build: .
+    profiles: [tools]
+    working_dir: /workspace
+    volumes: ["../:/workspace:ro"]
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    # Tooling only: no credentials for real Azure and no Docker socket.
+
+volumes:
+  postgres-data:
+  sql-data:
