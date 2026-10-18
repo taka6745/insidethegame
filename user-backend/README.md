@@ -27,7 +27,7 @@ The diagram and components below describe the target architecture; the [developm
 
 **Read:** live events from Event Hubs; historical events and computed stats from ETL GraphQL; narrative history from narrative GraphQL; new narratives and stat-selection instructions through Service Bus.
 
-**Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience definitions and framing belong to the narrative engine; questions never drive narrative generation. [Connection boundary](docs/narrative-framing.md).
+**Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience definitions are exposed through the [configuration API](docs/audience-api.md); framing belongs to the narrative engine; questions never drive narrative generation. [Connection boundary](docs/narrative-framing.md).
 
 Custom stats follow **interpret / clarify → compile → validate → calculate → optional pin**. The local default uses one successful model call per turn; the model-based rule coder remains optional. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 

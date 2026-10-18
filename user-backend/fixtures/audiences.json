@@ -43,7 +43,7 @@
   ],
   "buckets": [
     {
-      "id": "home-simple",
+      "id": "home:simple",
       "selections": {
         "team": "home",
         "fan_style": "simple"
@@ -51,7 +51,7 @@
       "enabled": true
     },
     {
-      "id": "home-casual",
+      "id": "home:casual",
       "selections": {
         "team": "home",
         "fan_style": "casual"
@@ -59,7 +59,7 @@
       "enabled": true
     },
     {
-      "id": "home-experienced",
+      "id": "home:experienced",
       "selections": {
         "team": "home",
         "fan_style": "experienced"
@@ -67,7 +67,7 @@
       "enabled": true
     },
     {
-      "id": "home-analytical",
+      "id": "home:analytical",
       "selections": {
         "team": "home",
         "fan_style": "analytical"
@@ -75,7 +75,7 @@
       "enabled": true
     },
     {
-      "id": "away-simple",
+      "id": "away:simple",
       "selections": {
         "team": "away",
         "fan_style": "simple"
@@ -83,7 +83,7 @@
       "enabled": true
     },
     {
-      "id": "away-casual",
+      "id": "away:casual",
       "selections": {
         "team": "away",
         "fan_style": "casual"
@@ -91,7 +91,7 @@
       "enabled": true
     },
     {
-      "id": "away-experienced",
+      "id": "away:experienced",
       "selections": {
         "team": "away",
         "fan_style": "experienced"
@@ -99,7 +99,7 @@
       "enabled": true
     },
     {
-      "id": "away-analytical",
+      "id": "away:analytical",
       "selections": {
         "team": "away",
         "fan_style": "analytical"
@@ -107,7 +107,7 @@
       "enabled": true
     },
     {
-      "id": "neutral-simple",
+      "id": "neutral:simple",
       "selections": {
         "team": "neutral",
         "fan_style": "simple"
@@ -115,7 +115,7 @@
       "enabled": true
     },
     {
-      "id": "neutral-casual",
+      "id": "neutral:casual",
       "selections": {
         "team": "neutral",
         "fan_style": "casual"
@@ -123,7 +123,7 @@
       "enabled": true
     },
     {
-      "id": "neutral-experienced",
+      "id": "neutral:experienced",
       "selections": {
         "team": "neutral",
         "fan_style": "experienced"
@@ -131,7 +131,7 @@
       "enabled": true
     },
     {
-      "id": "neutral-analytical",
+      "id": "neutral:analytical",
       "selections": {
         "team": "neutral",
         "fan_style": "analytical"

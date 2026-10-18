@@ -26,7 +26,7 @@ The demo has **one live match**, selectable profiles and one active session per 
 
 Each folder has a short service guide and a closer diagram. Azure products are dependencies of these services, not additional application folders.
 
-**Narrative boundary:** the narrative engine owns bucket definitions and framing. The backend receives finished bucket versions and routes them. [Diagram and current implementation](user-backend/docs/narrative-framing.md).
+**Narrative boundary:** the backend exposes bucket definitions through a read-only API; the narrative engine owns framing. The backend receives finished bucket versions and routes them. [Diagram and current implementation](user-backend/docs/narrative-framing.md).
 
 [Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
 

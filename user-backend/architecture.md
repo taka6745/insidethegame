@@ -51,11 +51,11 @@ Narrative deduplication is explicitly outside this backend. Do not add a parent-
 
 `Team A / Team B / neutral` × `Analytical / Simple / Casual / Experienced`.
 
-These remain the seed presets. Flexible layers/options belong to the narrative engine; its full dynamic catalogue is still to integrate. The current backend harness routes the original 12 combinations.
+These remain the seed presets. Flexible layers/options are stored by the backend and exposed through the [audience API](docs/audience-api.md). The narrative engine owns framing; full dynamic viewer routing is still to integrate. The current backend harness routes the original 12 combinations.
 
 ### Narratives
 
-The narrative engine emits bucket-specific versions for every available combination defined in its database. Each version already identifies its target bucket. Its neutral intermediate narratives never require backend rewriting.
+The narrative engine emits bucket-specific versions for every available combination supplied by the backend audience API. Each version already identifies its target bucket. Its neutral intermediate narratives never require backend rewriting.
 
 The user backend routes the supplied versions to the appropriate viewers. It does not generate the bucket wording or run one narrative agent/workflow per viewer.
 
