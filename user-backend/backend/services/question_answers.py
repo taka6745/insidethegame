@@ -1,5 +1,6 @@
 """Resolve the final declared source, never the last incidental tool invocation."""
 from backend.models.questions import QuestionDraft
+from uuid import uuid4
 
 
 def unavailable():
@@ -15,6 +16,9 @@ def standard_answer(draft, row, tools):
     clear_offers(tools)
     if not row or not row.get('available') or not row.get('complete'):
         return unavailable()
+    tools.offers = [{'id': str(uuid4()), 'kind': 'standard', 'standard_stat_id': row['id'],
+                     'label': row['label'], 'value': row['value'],
+                     'snapshot_id': tools.payload.snapshot.id, 'run_id': tools.payload.snapshot.run_id}]
     return QuestionDraft(answer_kind='statistic',status='answer',standard_stat_id=row['id'],
                          statistic_request=draft.statistic_request,
                          text=f"{row['label']}: {row['value']}.",evidence_ids=['stat:'+row['id']])

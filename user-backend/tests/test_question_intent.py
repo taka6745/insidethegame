@@ -72,6 +72,27 @@ def test_native_stat_route_calls_planner_without_exposing_events_or_answering_in
     assert not requests[0].get("tools")
 
 
+def test_ambiguous_route_returns_question_without_calculation():
+    class Router:
+        async def route(self, prompt, context):
+            return QuestionIntent(route="clarification", question="Headed passes, headed shots, or all headed contacts?")
+
+    class Tools:
+        offers = []
+        goal = None
+        async def prepare_original(self):
+            raise AssertionError("Ambiguity must be resolved before calculation")
+
+    async def run():
+        tools = Tools()
+        draft = await QuestionAgent(SimpleNamespace(), router=Router()).answer("How many headers by Bruno?", {}, tools)
+        reply = await resolve_answer(draft, tools)
+        assert reply.status == "clarification"
+        assert "headed shots" in reply.text
+        assert tools.offers == []
+    asyncio.run(run())
+
+
 def test_stat_followup_passes_original_conversation_to_existing_planner():
     from backend.agents.models import PlanOutcome
     from backend.services.question_tools import QuestionTools

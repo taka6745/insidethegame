@@ -386,3 +386,130 @@ def test_event_labels_are_roster_scoped_and_unknown_ids_do_not_invent_names(stor
         assert events[0]['team_name'] == 'Madrid'
         assert events[-1]['player_name'] is None
         assert events[-1]['team_name'] is None
+
+
+def test_standard_offer_pins_upstream_value_and_streams_without_custom_engine(store):
+    lab, questions, _, app = product(store)
+    original = questions.match_data.stats
+
+    async def supplied_values(snapshot):
+        result = await original(snapshot)
+        for stat in result['stats']:
+            if stat['id'] == 'all:shots':
+                stat['value'] = 1000 + snapshot.cursor
+        return result
+
+    async def forbidden(*args, **kwargs):
+        raise AssertionError('An ETL pin must not compile a rule or search event history')
+
+    questions.match_data.stats = supplied_values
+    questions.match_data.events = questions.planner.plan = forbidden
+    with TestClient(app) as client:
+        token = start(client)['session_token']
+        offer = ask(client, token, 'how many Both teams shots')['offers'][0]
+        assert offer['kind'] == 'standard' and offer['value'] == 1000
+        assert 'rule' not in offer
+        client.portal.call(lab.advance)
+        response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
+        assert response.status_code == 200, response.text
+        tracked = response.json()
+        identifier = tracked['calculation']['id']
+        assert identifier == 'standard:all:shots'
+        assert tracked['calculation']['value'] == 1001
+        card = tracked['snapshot']['cards'][-1]
+        assert card['id'] == 'all:shots' and card['value'] == 1001
+        assert card['pinned'] and card['pin_id'] == identifier
+        assert len(tracked['snapshot']['cards']) == 5
+        assert lab.engine.count == 0
+        with client.websocket_connect(f'/product/{token}/live') as ws:
+            assert ws.receive_json()['cards'][-1]['value'] == 1001
+            client.portal.call(lab.advance)
+            assert ws.receive_json()['cards'][-1]['value'] == 1002
+        other = start(client, 'neutral-simple')
+        assert not any(c.get('pinned') for c in other['snapshot']['cards'])
+        assert client.post(f'/product/{other["session_token"]}/offers/{offer["id"]}/track').status_code == 404
+    # Pins survive API restart without recreating a custom accumulator.
+    _, _, _, restarted = product(store)
+    with TestClient(restarted) as client:
+        restored = start(client)
+        assert restored['snapshot']['cards'][-1]['pin_id'] == identifier
+        assert len(restored['snapshot']['cards']) == 5
+        removed = client.delete(f'/product/{restored["session_token"]}/pins/{identifier}').json()['snapshot']
+        assert not any(c.get('pinned') for c in removed['cards'])
+        assert [c['id'] for c in removed['cards']] == [
+            'chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:cards']
+
+
+def test_pin_existing_bucket_stat_deduplicates_and_unpin_restores_rank(store):
+    _, _, _, app = product(store)
+    with TestClient(app) as client:
+        token = start(client, 'neutral-simple')['session_token']
+        initial = client.get(f'/product/{token}').json()['snapshot']['cards']
+        for _ in range(2):
+            offer = ask(client, token, 'how many Both teams shots')['offers'][0]
+            response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
+            assert response.status_code == 200, response.text
+            cards = response.json()['snapshot']['cards']
+            assert len(cards) == 5
+            assert len({c['id'] for c in cards}) == 5
+            assert sum(c.get('pinned', False) for c in cards) == 1
+            assert {c['id'] for c in cards} == {c['id'] for c in initial}
+        removed = client.delete(f'/product/{token}/pins/standard:all:shots').json()['snapshot']['cards']
+        assert removed == initial
+        assert all(o['calculation_id'] is None for o in client.get(f'/product/{token}').json()['offers'])
+
+
+def test_clarification_reply_resolves_to_pinnable_custom_stat(store):
+    from backend.models.questions import QuestionDraft
+
+    class Clarifying:
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            if prompt == 'How many headers by Mbappe?':
+                return QuestionDraft(answer_kind='statistic', status='clarification',
+                                     text='Headed passes, headed shots or all recorded contacts?')
+            assert prompt == 'Headed shots'
+            assert context['history'][-1]['user'] == 'How many headers by Mbappe?'
+            assert context['history'][-1]['reply']['status'] == 'clarification'
+            prepared = await tools.prepare("Track Mbappe's headed shots")
+            return QuestionDraft(answer_kind='statistic', status='answer', text='Prepared.',
+                                 selected_offer_id=prepared['offer_id'])
+
+    lab, questions, _, app = product(store)
+    questions.agent = Clarifying()
+    with TestClient(app) as client:
+        token = start(client)['session_token']
+        first = ask(client, token, 'How many headers by Mbappe?')
+        assert first['status'] == 'clarification' and first['offers'] == []
+        second = ask(client, token, 'Headed shots')
+        assert second['status'] == 'answer' and len(second['offers']) == 1
+        offer = second['offers'][0]
+        assert lab.engine.count == 0
+        tracked = client.post(f'/product/{token}/offers/{offer["id"]}/track').json()
+        assert tracked['snapshot']['cards'][-1]['pinned']
+        for _ in range(len(lab.source.events)):
+            client.portal.call(lab.advance)
+        client.portal.call(app.state.product.refresh)
+        assert client.get(f'/product/{token}').json()['snapshot']['cards'][-1]['value'] == 3
+
+
+def test_unavailable_standard_stat_cannot_be_pinned(store):
+    lab, questions, _, app = product(store)
+    original = questions.match_data.stats
+
+    async def unavailable(snapshot):
+        result = await original(snapshot)
+        for stat in result['stats']:
+            if stat['id'] == 'all:shots':
+                stat['available'] = False
+        return result
+
+    with TestClient(app) as client:
+        token = start(client)['session_token']
+        offer = ask(client, token, 'how many Both teams shots')['offers'][0]
+        questions.match_data.stats = unavailable
+        response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
+        assert response.status_code == 503 and response.json()['code'] == 'stat_unavailable'
+        assert lab.engine.count == 0
+        assert client.get(f'/product/{token}').json()['offers'][0]['calculation_id'] is None

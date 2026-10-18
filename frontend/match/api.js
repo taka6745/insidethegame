@@ -18,9 +18,11 @@ export class MatchApi {
     try {
       data = await response.json();
     } catch {
-      throw new Error(
-        `The match service returned an unreadable response (${response.status}).`,
-      );
+      const error = new Error(response.status >= 500
+        ? "The match service is temporarily unavailable. Please try again shortly."
+        : "The match service returned an invalid response. Please try again.");
+      error.status = response.status;
+      throw error;
     }
     if (!response.ok) {
       const detail = data.detail || data.message || data.error;

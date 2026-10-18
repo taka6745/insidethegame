@@ -15,7 +15,7 @@ User backend → match state + cards + narratives
 
 - A demo profile selects the team/style audience. Already-framed narratives come from upstream.
 - Standard statistics come from ETL through the backend. The browser never calculates match statistics.
-- Custom tracking replaces the lowest-priority default card; untracking restores the default.
+- Tracking a standard or custom stat replaces the lowest-priority default card; untracking restores the default.
 - Questions keep their as-of snapshot while live cards advance. Sessions restore on refresh; a new session takes over the previous tab.
 
 **Scale boundary:** static files can be distributed independently. One push connection per viewer, bounded UI state and shared backend projection avoid per-viewer polling or agent loops. The local single-process harness is not an EPL-capacity demonstration. [Production boundaries](../user-backend/docs/scaling.md).

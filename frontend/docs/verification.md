@@ -1,11 +1,11 @@
 # Viewer verification
 
-Verified locally on 18 October 2026. This is a synthetic demonstration, not a real fixture or a production capacity certification.
+Latest question/pinning checks verified locally on 19 October 2026. Earlier visual and icon checks are retained below. This is a synthetic demonstration, not a real fixture or a production capacity certification.
 
 | Check | Result |
 |---|---|
-| Backend regression suite | 399 passed; one existing Starlette/httpx deprecation warning |
-| Frontend unit/contract tests | 66 passed |
+| Backend regression suite | 404 passed; one existing Starlette/httpx deprecation warning |
+| Frontend unit/contract tests | 69 passed |
 | Native SVG harness tests | 6 passed; all three icons exceed 80% foreground overlap |
 | Separate-service smoke | GraphQL reads, live cards/narratives, corrections and takeover passed |
 | Filter lab smoke | 26 presets, 35 deliveries, persisted results and reset passed; leaves Chelsea–United ready |
@@ -22,3 +22,7 @@ Companion styling follow-up: public PL Companion UI/CSS inspected; CSS-only prom
 Stream-first follow-up: five ETL-owned stat slots, raw events confined to the lab, compact scorebar and internally scrolling companion. Browser checks confirmed simulator playback, Pause/Play, five cards, Track replacing the fifth default, Untrack restoring it, and restored pins after refresh. Desktop player/stats/companion fit in a 1600×900 viewport without page scrolling; narrow layout has no page overflow and the five stats scroll horizontally. The optional local video is illustrative, not aligned to the fixture, and is excluded from Git/build assets.
 
 Narrative fixture follow-up: six authored story beats × 12 buckets replace per-event blurbs. All 72 messages reviewed against the source recording. Prefix, correction, duplicate, unrelated-recording and pass-through checks pass; browser confirms authored commentary arrives in Insights as replay advances. These remain mock upstream outputs, not deployed narrative generation.
+
+Pinning/recovery follow-up: standard ETL answers now offer Track alongside custom stats. Real-Postgres checks cover live ETL updates, persistence, default-card deduplication, Untrack and clarification-to-custom tracking. In the browser a standard answer stayed at its 20-minute value while the pinned card advanced from 4 to 6. An isolated Docker test changed the backend IP: the original proxy returned 502; the updated proxy recovered to 200 and preserved the path/query string. Header ambiguity instructions now run in the intent router before the statistic planner. Fresh independent review found no further issues.
+
+Real-model follow-up: the viewer asked for clarification of Bruno Fernandes headers. A separate disposable-schema run then verified the complete dialogue: headed shots including goals → 3 → successful Track, retaining the player from the original question. The planner needed one schema repair and succeeded within its configured repair budget. This used the real development model and fixture upstreams, not fixture agent replies.

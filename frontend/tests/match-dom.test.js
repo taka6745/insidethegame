@@ -188,6 +188,22 @@ test("changing a live custom value preserves the focused Stop tracking control",
   );
 });
 
+test("standard stat gains tracking controls and removes them after unpin", () => {
+  const view = new MatchView(documentStub());
+  const card = { id: "all:shots", kind: "standard", label: "Shots", value: 2 };
+  const original = view.stat(card);
+  assert.equal(original.querySelector("button"), null);
+  const tracked = {...card, pinned: true, pin_id: "standard:all:shots"};
+  const element = view.stat(tracked, original);
+  let removed;
+  view.onUnpin = id => { removed = id; };
+  element.querySelector("button").listeners.click();
+  assert.equal(removed, "standard:all:shots");
+  assert.equal(view.stat({...tracked, value: 3}, element), element);
+  assert.equal(element.querySelector(".stat-value").textContent, "3");
+  assert.equal(view.stat(card, element).querySelector("button"), null);
+});
+
 test("match view presents resumable replay controls for a restored partial run", () => {
   const document = documentStub(),
     view = new MatchView(document);

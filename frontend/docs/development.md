@@ -8,7 +8,7 @@ Open **http://localhost:18020/** for the match viewer, or **http://localhost:180
 
 ## Match viewer
 
-A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Select a demo profile, start the synthetic replay, and watch the match state, insights and five compact statistics. Raw events are shown only in the developer lab. Insights displays [authored narrative fixtures](../../user-backend/fixtures/viewer-narratives.md) from the mock upstream without rewriting them. In Questions, ask for a stat and select Track on the offered card. A tracked custom stat replaces a default slot; removing it restores that default. The original answer retains its as-of timestamp.
+A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Select a demo profile, start the synthetic replay, and watch the match state, insights and five compact statistics. Raw events are shown only in the developer lab. Insights displays [authored narrative fixtures](../../user-backend/fixtures/viewer-narratives.md) from the mock upstream without rewriting them. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
 
 Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional simulator excerpt is illustrative and separate from the Chelsea–United events. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication.
 
@@ -33,7 +33,9 @@ Browser acceptance: profile switch, replay, current bucket cards/backlog, a ques
 
 ## Deployment boundary
 
-nginx is the local static server and same-origin proxy. Production can place static assets behind Azure Front Door/CDN and replace the socket transport with an authenticated delivery gateway or Azure Web PubSub adapter. Use Microsoft's supported recovery SDK for that adapter. Multiple backend replicas still need shared session ownership, durable delivery and coordinated match calculations; adding replicas to the development harness alone is insufficient.
+nginx is the local static server and same-origin proxy. It re-resolves the backend through Docker DNS every five seconds so a backend container replacement does not leave it pointing at a stale IP. Brief downtime still shows a retryable error; the socket reconnects with a fresh snapshot.
+
+Production can place static assets behind Azure Front Door/CDN and replace the socket transport with an authenticated delivery gateway or Azure Web PubSub adapter. Use Microsoft's supported recovery SDK for that adapter. Multiple backend replicas still need shared session ownership, durable delivery and coordinated match calculations; adding replicas to the development harness alone is insufficient.
 
 ## Files and caching
 

@@ -53,7 +53,13 @@ def main():
             if 'offer_value' in case:
                 checks['offer'] = len(body.get('offers', [])) == 1 and body['offers'][0]['value'] == case['offer_value']
             if 'standard_stat_id' in case:
-                checks['standard_source'] = body.get('standard_stat_id') == case['standard_stat_id'] and not body.get('offers')
+                offers = body.get('offers', [])
+                checks['standard_source'] = (
+                    body.get('standard_stat_id') == case['standard_stat_id']
+                    and len(offers) == 1
+                    and offers[0].get('kind') == 'standard'
+                    and offers[0].get('standard_stat_id') == case['standard_stat_id']
+                    and 'rule' not in offers[0])
             results['cases'].append({**case, 'seconds': round(time.monotonic()-started, 2),
                                      'checks': checks, 'reply': body})
             # Never give review notes or expected values to the model.

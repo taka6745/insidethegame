@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from backend.domain import RuleError
 from backend.models.questions import QuestionDraft, QuestionReply
 from backend.models.rules import Rule
+from backend.models.stat_offers import pin_id
 from .question_tools import QuestionTools
 from .question_answers import resolve_answer
 
@@ -83,9 +84,9 @@ class QuestionService:
                 draft = await resolve_answer(draft, toolkit)
                 if any(identifier not in toolkit.evidence for identifier in draft.evidence_ids):
                     raise ValueError('Unverified evidence reference')
-                offers = toolkit.offers if draft.status == 'answer' and not draft.standard_stat_id else []
+                offers = toolkit.offers if draft.status == 'answer' else []
                 if offers:
-                    # Numeric custom results always come from deterministic evaluation, never model prose.
+                    # Stat values come from ETL or deterministic evaluation, never model prose.
                     draft.text = ' '.join(f"{o['label']}: {o['value']}." for o in offers)
                 if draft.status == 'unsupported':
                     draft.text = 'Sorry, I cannot answer that from the information available.'
@@ -114,7 +115,19 @@ class QuestionService:
             document = offer['document']
             if document['run_id'] != row['run_id']:
                 raise RuleError('run_changed','This offer belongs to an earlier run.',409)
-            calculation = await self.snapshots.track(row['run_id'],Rule.model_validate(document['rule']),document['label'])
+            if document.get('kind') == 'standard':
+                payload = await self.snapshots.capture()
+                if payload.snapshot.run_id != row['run_id']:
+                    raise RuleError('run_changed', 'This offer belongs to an earlier run.', 409)
+                await self.match_data.capture(payload)
+                stats = await self.match_data.stats(payload.snapshot)
+                stat = next((s for s in stats['stats'] if s['id'] == document['standard_stat_id']), None)
+                if not stat or not stat.get('available') or not stat.get('complete'):
+                    raise RuleError('stat_unavailable', 'This statistic is temporarily unavailable.', 503)
+                calculation = {**stat, 'id': pin_id(document), 'kind': 'standard',
+                               'standard_stat_id': stat['id']}
+            else:
+                calculation = await self.snapshots.track(row['run_id'],Rule.model_validate(document['rule']),document['label'])
             # Registration releases the replay lock. Fence the durable link too:
             # a reset in between must not mark an already deleted rule tracked.
             async with self.snapshots.run_guard(row['run_id']):
