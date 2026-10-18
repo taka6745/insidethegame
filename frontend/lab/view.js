@@ -16,6 +16,9 @@ export class LabView {
   scenario(data) {
     const [home, away] = teamNames(data.teams);
     text('home-team', home); text('away-team', away);
+    const recording = data.recording || {};
+    text('recording-name', recording.filename || 'Recording unavailable');
+    text('recording-meta', [recording.synthetic ? 'Synthetic fixture' : recording.title, recording.format, recording.delivery_count !== undefined ? `${recording.delivery_count} deliveries` : null, recording.event_count !== undefined ? `${recording.event_count} events` : null].filter(Boolean).join(' · '));
     const select = el('presets');
     this.presetCount = data.presets?.length || 0;
     select.replaceChildren(...(data.presets || []).map(preset => {
@@ -47,6 +50,8 @@ export class LabView {
     const finished = state?.status === 'finished';
     const failed = state?.status === 'error';
     const ready = !!state;
+    el('load-recording').disabled = !ready || busy || running;
+    el('default-recording').disabled = !ready || busy || running;
     el('start').disabled = !ready || busy || running || finished || failed;
     el('reset').disabled = !ready || busy || running;
     // Configure before replay; no mid-stream planning ambiguity in this test client.
@@ -55,24 +60,24 @@ export class LabView {
     el('add-plan').disabled = !ready || busy || running || finished || failed;
     el('prompt').disabled = busy || running || finished;
     el('presets').disabled = !this.presetCount || busy || running || finished;
-    text('prepare', busy === 'plan' ? 'Preparing your rule…' : 'Prepare a filter ↗');
+    text('prepare', busy === 'plan' ? 'Preparing your rule…' : 'Prepare request ↗');
     text('start', running ? 'Replay running…' : finished ? 'Replay finished' : '▶ Start replay');
   }
 
-  state(state, inspectRule) {
+  state(state, inspectRule, inspectEvent) {
     text('status', title(state.status));
     el('status').dataset.status = state.status;
     const events = state.events || [];
     text('clock', clock(state.match_time_seconds ?? replaySeconds(events)));
-    text('progress', `${state.position ?? events.length} of ${state.total ?? 0} events · forward only`);
-    text('event-count', `${state.position ?? events.length} events received`);
+    text('progress', `${state.position ?? events.length} of ${state.total ?? 0} deliveries · forward only`);
+    text('event-count', `${state.position ?? events.length} deliveries received`);
     el('progress-bar').style.width = `${Math.min(100, (state.position || 0) / (state.total || 1) * 100)}%`;
     text('total-rules', state.metrics?.total_rules ?? state.calculations?.length ?? 0);
     text('candidates', state.metrics?.candidate_count ?? 0);
     text('changes', state.metrics?.changed_count ?? 0);
     text('model-status', state.llm?.configured ? 'Local model configured · runs only when requested' : 'Local model not configured · sample filters still work');
     this.cards(state.calculations || [], inspectRule);
-    this.events(events);
+    this.events(events, inspectEvent);
   }
 
   cards(calculations, inspectRule) {
@@ -90,13 +95,13 @@ export class LabView {
     el('cards').replaceChildren(...calculations.map(calc => {
       const card = node('button', 'stat-card');
       card.type = 'button';
-      card.append(node('span', 'stat-label', calc.label || calc.rule?.label || calc.id), node('strong', 'stat-value', calc.value ?? '—'), node('span', 'stat-detail', 'View structured rule ↗'));
+      card.append(node('span', 'stat-label', calc.label || calc.rule?.label || calc.id), node('strong', 'stat-value', calc.value ?? '–'), node('span', 'stat-detail', 'View structured rule ↗'));
       card.addEventListener('click', () => inspectRule(calc));
       return card;
     }));
   }
 
-  events(events) {
+  events(events, inspectEvent) {
     const signature = JSON.stringify(events);
     if (signature === this.lastEvents) return;
     this.lastEvents = signature;
@@ -105,7 +110,10 @@ export class LabView {
       return;
     }
     el('events').replaceChildren(...events.slice(-60).reverse().map(event => {
-      const row = node('div', 'event-row');
+      const row = node('button', 'event-row');
+      row.type = 'button';
+      row.disabled = event.delivery_index === undefined;
+      row.addEventListener('click', () => inspectEvent(event.delivery_index));
       const type = event.event_type || event.type || event.typeName || 'event';
       row.dataset.type = type;
       const info = node('div', 'event-info');
@@ -114,12 +122,28 @@ export class LabView {
       const player = event.player_name || event.player || event.player_id || event.playerId;
       const team = event.team_name || event.team_id || event.team || event.teamId;
       info.append(node('span', '', [team, player, event.body_part === 'head' ? 'Headed touch' : null].filter(Boolean).join(' · ')));
-      row.append(node('time', '', clock(eventSeconds(event))), node('span', 'event-dot', '●'), info, node('span', 'event-id', event.id || event.event_id || event.eventId || ''));
+      row.append(node('time', '', clock(eventSeconds(event))), info, node('span', 'event-id', event.id || event.event_id || event.eventId || ''));
+      if (event.key_moment) row.classList.add('key-moment');
+      row.setAttribute('aria-label', `Inspect ${title(type)} at ${clock(eventSeconds(event))}`);
       return row;
     }));
   }
 
+  inspectEventLoading(deliveryIndex) {
+    text('rule-title', `Delivery ${deliveryIndex + 1}`);
+    text('detail-description', 'Received event payload and canonical event.');
+    text('rule-detail', 'Loading received payload…');
+    el('rule-dialog').showModal();
+  }
+
+  inspectEvent(payload) {
+    text('rule-detail', JSON.stringify({ raw: payload.raw, canonical: payload.canonical }, null, 2));
+  }
+
+  inspectEventError(message) { text('rule-detail', message); }
+
   inspect(calculation) {
+    text('detail-description', 'Stored by the backend. Indexed and evaluated against incoming events.');
     text('rule-title', calculation.label || 'Calculation rule');
     text('rule-detail', JSON.stringify(calculation.rule, null, 2));
     el('rule-dialog').showModal();

@@ -1,5 +1,6 @@
 """Failure recovery and lifecycle tests without HTTP, PostgreSQL or models."""
 import asyncio
+import json
 from copy import deepcopy
 from threading import Event as ThreadEvent
 
@@ -60,6 +61,34 @@ async def setup(service_type=FilterLabService, planner=None):
     service = service_type(FixtureEventSource(), repository, planner)
     await service.initialize()
     return service, repository
+
+
+def test_planner_waits_for_recording_commit_before_defining_goal():
+    class Outcome(BaseModel):
+        team: str
+
+    class Planner:
+        async def plan(self, prompt, context):
+            return Outcome(team=context["teams"][0]["name"])
+
+    async def run():
+        service, repository = await setup(planner=Planner())
+        def replace(fingerprint, content, filename):
+            repository.entered.set()
+            assert repository.release.wait(3)
+            repository.reset(fingerprint)
+            return repository.run["run_id"]
+        repository.replace_recording = replace
+        recording = deepcopy(service.source.spec)
+        recording["teams"][0]["name"] = "New recording team"
+        load = asyncio.create_task(service.load_recording(json.dumps(recording).encode(), "new.json"))
+        assert await asyncio.to_thread(repository.entered.wait, 1)
+        plan = asyncio.create_task(service.plan("Track headers"))
+        await asyncio.sleep(0)
+        repository.release.set()
+        await load
+        assert (await plan)["team"] == "New recording team"
+    asyncio.run(run())
 
 
 def test_failed_start_restores_status_and_can_be_retried():

@@ -21,3 +21,40 @@ test('failed planner requests remain errors rather than fake rules', async () =>
   try { await assert.rejects(new LabApi().plan('corners'), /Local model unavailable/); }
   finally { globalThis.fetch = original; }
 });
+
+test('event inspection requests the received delivery index', async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, '/api/events/3');
+    assert.equal(options.method, 'GET');
+    return new Response(JSON.stringify({ delivery_index: 3, raw: { typeId: 1 }, canonical: { event_type: 'pass' } }));
+  };
+  try { assert.equal((await new LabApi().event(3)).canonical.event_type, 'pass'); }
+  finally { globalThis.fetch = original; }
+});
+
+test('recording upload sends original file bytes and an encoded filename', async () => {
+  const original = globalThis.fetch;
+  const file = new Blob(['{"synthetic":true}'], { type: 'application/json' });
+  file.name = 'my recording.json';
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, '/api/recording');
+    assert.equal(options.method, 'POST');
+    assert.equal(options.headers['X-Recording-Filename'], 'my%20recording.json');
+    assert.equal(options.body, file);
+    return new Response(JSON.stringify({ scenario: {}, state: {} }));
+  };
+  try { assert.deepEqual(await new LabApi().loadRecording(file), { scenario: {}, state: {} }); }
+  finally { globalThis.fetch = original; }
+});
+
+test('oversized recording is rejected before a network request', async () => {
+  await assert.rejects(new LabApi().loadRecording({ size: 2 * 1024 * 1024 + 1 }), /2 MiB/);
+});
+
+test('recording validation errors preserve the backend explanation', async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ code: 'invalid_recording', message: 'Recordings must declare synthetic: true.' }), { status: 422 });
+  try { await assert.rejects(new LabApi().loadRecording({ size: 20, name: 'bad.json' }), /must declare synthetic: true/); }
+  finally { globalThis.fetch = original; }
+});

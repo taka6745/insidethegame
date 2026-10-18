@@ -8,6 +8,10 @@ export class LabApi {
       headers: { 'Content-Type': 'application/json' },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
+    return this.parse(response);
+  }
+
+  async parse(response) {
     const text = await response.text();
     let data;
     try { data = text ? JSON.parse(text) : {}; }
@@ -20,7 +24,18 @@ export class LabApi {
     return data;
   }
 
+  async loadRecording(file) {
+    if (file.size > 2 * 1024 * 1024) throw new Error('Recording must be 2 MiB or smaller.');
+    const response = await fetch(`${this.base}/recording`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Recording-Filename': encodeURIComponent(file.name) },
+      body: file,
+    });
+    return this.parse(response);
+  }
+  defaultRecording() { return this.request('/recording/default', {}); }
   scenario() { return this.request('/scenario'); }
+  event(deliveryIndex) { return this.request(`/events/${encodeURIComponent(deliveryIndex)}`); }
   state() { return this.request('/state'); }
   add(rule, label) { return this.request('/calculations', { rule, ...(label ? { label } : {}) }); }
   plan(prompt) { return this.request('/plan', { prompt }); }

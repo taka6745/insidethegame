@@ -7,13 +7,15 @@ Sample rule / user request → User backend → Structured calculation
 Synthetic events          → User backend → Updated cards + event feed
 ```
 
-Run `./dev up backend` from the repo root, then open **http://localhost:18020**. Choose sample filters or ask the local development model to prepare one. Inspect its JSON and add it before starting the replay. **New run** resets the lab; there is no rewind or video feed. Model access is optional: sample rules work without it.
+Run `./dev up backend` from the repo root, then open **http://localhost:18020**. Choose sample filters or ask the local development model to prepare one. Inspect its JSON and add it before starting the replay. **Load JSON** replaces the recording and starts a fresh run with no rules. Files must be JSON and at most 2 MiB; validation failures preserve the current run. **Use demo** restores the default repository recording. **Download** exports the loaded JSON, while selecting a received event opens its raw and canonical payloads. The browser only requests payloads for received deliveries.
+
+**New run** resets the lab; there is no rewind or video feed. Model access is optional: sample rules work without it.
 
 | File | Responsibility |
 |---|---|
 | `lab/api.js` | Backend HTTP adapter; the only network calls |
 | `lab/controller.js` | User actions and non-overlapping state polling |
-| `lab/view.js` | DOM rendering and rule inspection |
+| `lab/view.js` | DOM rendering, recording identity and payload/rule inspection |
 | `lab/format.js` | Display-only formatting |
 | `lab/styles.css` | Responsive layout |
 | `nginx.conf` | Same-origin `/api/` proxy to backend `/lab/` |

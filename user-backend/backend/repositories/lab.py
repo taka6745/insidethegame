@@ -12,6 +12,7 @@ class PostgresLabRepository:
     def initialize(self, source_hash):
         with self.store.connect() as conn:
             conn.execute((Path(__file__).parents[2] / "migrations/002_filter_lab.sql").read_text())
+            conn.execute((Path(__file__).parents[2] / "migrations/003_lab_recording.sql").read_text())
             conn.execute("INSERT INTO filter_lab_run (run_id, source_hash) VALUES (%s,%s) "
                          "ON CONFLICT (singleton) DO NOTHING", (uuid4(), source_hash))
 
@@ -41,5 +42,16 @@ class PostgresLabRepository:
 
     def reset(self, source_hash):
         with self.store.connect() as conn:
+            previous = conn.execute("SELECT recording_text,recording_filename FROM filter_lab_run").fetchone()
             conn.execute("DELETE FROM filter_lab_run")
-            conn.execute("INSERT INTO filter_lab_run (run_id,source_hash) VALUES (%s,%s)", (uuid4(), source_hash))
+            conn.execute("INSERT INTO filter_lab_run (run_id,source_hash,recording_text,recording_filename) "
+                         "VALUES (%s,%s,%s,%s)",
+                         (uuid4(), source_hash, previous["recording_text"], previous["recording_filename"]))
+
+    def replace_recording(self, source_hash, content, filename):
+        with self.store.connect() as conn:
+            conn.execute("DELETE FROM filter_lab_run")
+            conn.execute("INSERT INTO filter_lab_run (run_id,source_hash,recording_text,recording_filename) "
+                         "VALUES (%s,%s,%s,%s)",
+                         (uuid4(), source_hash, content.decode("utf-8") if content is not None else None, filename))
+            return str(conn.execute("SELECT run_id FROM filter_lab_run").fetchone()["run_id"])

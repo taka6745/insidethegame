@@ -5,6 +5,7 @@ One process owns one replay. No vendor keys, SQL or HTTP requests belong here.
 import asyncio
 import logging
 from contextlib import suppress
+from pydantic import ValidationError
 
 from backend.domain import RuleError
 from backend.models.rules import Rule
@@ -14,6 +15,7 @@ from backend.services.filter_engine import FilterEngine
 class FilterLabService:
     def __init__(self, source, repository, planner, *, local_llm=False):
         self.source, self.repository, self.planner = source, repository, planner
+        self.default_source = source
         self.local_llm = local_llm
         self._lock = asyncio.Lock()
         self._plan_lock = asyncio.Lock()
@@ -34,6 +36,9 @@ class FilterLabService:
 
     async def _reload(self):
         run, calculations = await asyncio.to_thread(self.repository.load)
+        if run.get("recording_text") is not None:
+            self.source = self.default_source.with_recording(run["recording_text"].encode("utf-8"),
+                                                           run["recording_filename"])
         if run["source_hash"] != self.source.fingerprint:
             self.run_id, self.position = run["run_id"], run["position"]
             self.error = "The fixture changed. Start a new run before replaying."
@@ -80,6 +85,37 @@ class FilterLabService:
     def scenario(self):
         return self.source.describe()
 
+    async def recording(self):
+        async with self._lock:
+            return self.source.filename, self.source.content
+
+    async def event_record(self, delivery_index):
+        async with self._lock:
+            if delivery_index < 0 or delivery_index >= self.position or self.status == "error":
+                raise RuleError("event_not_received", "This event has not been received in the current run", 404)
+            return self.source.inspect(delivery_index)
+
+    async def load_recording(self, content=None, filename=None):
+        try:
+            source = self.default_source if content is None else self.source.with_recording(content, filename)
+        except ValidationError as exc:
+            error = exc.errors(include_input=False, include_context=False)[0]
+            raise RuleError("invalid_recording", f"Invalid recording: {error['msg']}", 422) from None
+        except (ValueError, UnicodeError):
+            raise RuleError("invalid_recording", "Use a valid UTF-8 synthetic match JSON recording", 422) from None
+        async with self._lock:
+            if self.status == "running" or self._plan_lock.locked():
+                raise RuleError("recording_busy", "Wait for the replay or rule request to finish before loading a recording", 409)
+            run_id = await asyncio.to_thread(self.repository.replace_recording, source.fingerprint,
+                                            source.content if content is not None else None,
+                                            source.filename if content is not None else None)
+            self.source, self.run_id = source, run_id
+            self.engine, self.labels, self.last_changed = FilterEngine(), {}, []
+            self.position, self.status, self.error = 0, "ready", None
+            self._task = None
+            scenario = self.scenario()
+        return {"scenario": scenario, "state": await self.state()}
+
     def _calculation(self, result):
         return {"id": result.calculation_id, "label": self.labels[result.calculation_id],
                 "value": result.value, "version": result.version,
@@ -90,7 +126,7 @@ class FilterLabService:
             return {"synthetic": True, "run_id": self.run_id, "match_id": self.source.match_id,
                     "status": self.status, "position": self.position, "total": len(self.source.events),
                     "error": self.error,
-                    "events": [self.source.display(e) for e in self.source.history(self.position)[-100:]],
+                    "events": [self.source.display_delivery(i) for i in range(max(0, self.position - 100), self.position)],
                     "calculations": [self._calculation(r) for r in self.engine.calculations],
                     "changed_ids": self.last_changed,
                     "metrics": {"total_rules": self.engine.count,
@@ -123,9 +159,11 @@ class FilterLabService:
         if self._plan_lock.locked():
             raise RuleError("planner_busy", "Wait for the current rule request to finish", 409)
         async with self._plan_lock:
-            description = self.source.describe()
-            context = {key: description[key] for key in ("match_id", "players", "teams")}
-            context["standard_stats"] = []
+            # Wait for any recording swap to commit before capturing its context.
+            async with self._lock:
+                description = self.source.describe()
+                context = {key: description[key] for key in ("match_id", "players", "teams")}
+                context["standard_stats"] = []
             outcome = await self.planner.plan(prompt, context)
             return outcome.model_dump(mode="json")
 

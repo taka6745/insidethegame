@@ -1,4 +1,7 @@
 """Real PostgreSQL and HTTP tests for the removable filter lab."""
+import json
+
+import pytest
 from fastapi.testclient import TestClient
 
 from backend.adapters.replay_source import FixtureEventSource
@@ -89,3 +92,88 @@ def test_invalid_requests_and_running_restart(store):
     # A process restart preserves the run but waits for an explicit Start.
     with TestClient(create_app(store, lab=make_lab(store))) as client:
         assert client.get("/lab/state").json()["status"] == "ready"
+
+
+def test_recording_download_and_received_event_inspection(store):
+    lab = make_lab(store)
+    with TestClient(create_app(store, lab=lab)) as client:
+        metadata = client.get("/lab/scenario").json()["recording"]
+        assert metadata["filename"] == "filter-lab.json"
+        assert metadata["delivery_count"] == 35
+        assert metadata["event_count"] == 30
+        download = client.get("/lab/recording")
+        assert download.content == lab.source.content
+        assert "attachment" in download.headers["content-disposition"]
+        assert client.get("/lab/events/0").status_code == 404
+        client.portal.call(lab.advance)
+        event = client.get("/lab/events/0").json()
+        assert event["raw"] == lab.source.spec["events"][0]
+        assert event["canonical"]["event_id"] == event["raw"]["eventId"]
+        state = client.get("/lab/state").json()
+        assert state["events"][0]["delivery_index"] == 0
+        assert client.get("/lab/events/1").status_code == 404
+        assert client.get("/lab/events/-1").status_code == 404
+        client.post("/lab/reset")
+        assert client.get("/lab/events/0").status_code == 404
+
+
+def test_uploaded_recording_survives_restart_reset_and_default_restore(store):
+    lab = make_lab(store)
+    recording = lab.source.spec.copy()
+    recording["events"] = recording["events"][:2]
+    recording.pop("presets")
+    content = json.dumps(recording).encode()
+    with TestClient(create_app(store, lab=lab)) as client:
+        initial = client.get("/lab/state").json()["run_id"]
+        client.post("/lab/calculations", json={"rule": lab.source.spec["presets"][0]["rule"]})
+        result = client.post("/lab/recording", content=content,
+                             headers={"X-Recording-Filename": "short-match.json"})
+        assert result.status_code == 200, result.text
+        assert result.json()["state"]["run_id"] != initial
+        assert result.json()["state"]["calculations"] == []
+        assert result.json()["scenario"]["presets"] == []
+        client.portal.call(lab.advance)
+    with TestClient(create_app(store, lab=make_lab(store))) as client:
+        assert client.get("/lab/state").json()["position"] == 1
+        assert client.get("/lab/scenario").json()["recording"]["filename"] == "short-match.json"
+        assert client.get("/lab/recording").content == content
+        client.post("/lab/reset").raise_for_status()
+        assert client.get("/lab/recording").content == content
+        result = client.post("/lab/recording/default")
+        assert result.status_code == 200
+        assert result.json()["scenario"]["recording"]["filename"] == "filter-lab.json"
+        assert result.json()["state"]["total"] == 35
+    with TestClient(create_app(store, lab=make_lab(store))) as client:
+        assert client.get("/lab/scenario").json()["recording"]["filename"] == "filter-lab.json"
+
+
+@pytest.mark.parametrize("content,expected", [(b"not json", 422), (b"{}", 422), (b"x" * (2*1024*1024+1), 413)])
+def test_invalid_recordings_preserve_current_run(store, content, expected):
+    lab = make_lab(store)
+    with TestClient(create_app(store, lab=lab)) as client:
+        before = client.get("/lab/state").json()
+        assert client.post("/lab/recording", content=content).status_code == expected
+        assert client.get("/lab/state").json() == before
+
+
+def test_recording_cannot_change_during_replay(store):
+    lab = make_lab(store)
+    with TestClient(create_app(store, lab=lab)) as client:
+        client.post("/lab/replay/start", json={"interval_ms": 5000})
+        response = client.post("/lab/recording", content=lab.source.content)
+        assert response.status_code == 409
+        assert client.post("/lab/recording/default").status_code == 409
+
+
+def test_recording_persistence_failure_does_not_replace_current_source(store, monkeypatch):
+    lab = make_lab(store)
+    with TestClient(create_app(store, lab=lab)) as client:
+        before = client.get("/lab/state").json()
+        def fail(*args):
+            raise OSError("Test database outage")
+        monkeypatch.setattr(lab.repository, "replace_recording", fail)
+        with pytest.raises(OSError):
+            client.post("/lab/recording", content=lab.source.content,
+                        headers={"X-Recording-Filename": "replacement.json"})
+        assert client.get("/lab/state").json() == before
+        assert lab.source.filename == "filter-lab.json"

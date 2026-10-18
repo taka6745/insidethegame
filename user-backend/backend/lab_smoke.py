@@ -8,7 +8,7 @@ from backend.adapters.replay_source import FixtureEventSource
 
 def main():
     with httpx.Client(base_url="http://frontend/api", timeout=15) as client:
-        client.post("/reset").raise_for_status()
+        client.post("/recording/default").raise_for_status()
         scenario = client.get("/scenario")
         scenario.raise_for_status()
         assert scenario.json()["synthetic"] is True

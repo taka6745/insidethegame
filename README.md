@@ -12,7 +12,7 @@ Live football, shared match narratives and a personal match companion.
 ./dev up backend
 ```
 
-Open the [event filter lab](http://localhost:18020). Pick filters, start the forward-only replay and inspect the live values. [How it works](user-backend/docs/filter-lab.md).
+Open the [event filter lab](http://localhost:18020). Load a JSON recording or use the included demo, pick filters, then replay and inspect each event and live value. [How it works](user-backend/docs/filter-lab.md).
 
 | Folder | What it does |
 | --- | --- |
