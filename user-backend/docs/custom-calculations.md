@@ -1,6 +1,6 @@
 # Where custom rules live and run
 
-**Proposed execution design.** This expands the agreed user-backend boundary; it is not an implemented worker/registry. Standard ETL-provided statistics bypass this path.
+**Execution design, partly implemented.** The [filter lab](filter-lab.md) now implements typed rules, a shared index, incremental corrections and a Postgres-backed development registry. Broker consumers, production history/live coordination and viewer subscription fan-out below remain planned. Standard ETL-provided statistics bypass this path.
 
 ![Rule storage, activation and live updates](custom-calculations.svg)
 

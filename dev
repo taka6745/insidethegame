@@ -18,6 +18,7 @@ check() {
   if [[ "$1" == backend ]]; then
     compose run --rm --build --no-deps backend-tests
     compose run --rm --no-deps backend-tests python -m backend.smoke
+    compose run --rm --no-deps backend-tests python -m backend.lab_smoke
   else
     compose run --rm --build --no-deps tools python local/check.py "$1"
   fi
@@ -28,6 +29,7 @@ usage() {
 ./dev up                 Start + check Postgres and Cosmos (no accounts)
 ./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
 ./dev up backend         Build + test the backend with fake ETL/narratives and Postgres
+                         Includes the event filter lab at http://localhost:18020
 ./dev test [azure|backend] Test dependencies or backend behaviour + live replay
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
 ./dev replay backend     Replay Opta-inspired JSON through the fake services
@@ -55,7 +57,7 @@ case "${1:-help}" in
     check_mode "${2:-base}"
     docker_ready
     if [[ "${2:-}" == backend ]]; then
-      compose --profile backend up -d --build --wait --wait-timeout 120 backend
+      compose --profile backend up -d --build --wait --wait-timeout 120 frontend
     elif [[ "${2:-}" == azure ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
       compose --profile azure up -d

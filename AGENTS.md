@@ -16,6 +16,10 @@ This hackathon application has a runnable user-backend fixture harness and plann
 - `legacy/` preserves research, scraping scripts, simulator code, earlier docs and outputs. It is inactive; do not revive its automation or overwrite it during application work.
 - Preserve ignored `.local/` runtime environments and assets; do not upload them.
 
+## Code organisation
+
+Follow [DEVELOPMENT-PRACTICES.md](DEVELOPMENT-PRACTICES.md). New code separates models, services, repositories, adapters and HTTP/view layers. Routes call application services; repositories own DB connections. Event vendor keys stay in a replaceable adapter. Structured model output is validated data, never executable Python.
+
 ## Current tooling
 
 Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development.md`.

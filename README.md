@@ -4,15 +4,15 @@ Live football, shared match narratives and a personal match companion.
 
 ![Five planned services and their data flows](architecture.svg)
 
-**Development foundation.** The user backend now runs with Postgres, fake ETL/narrative services and a synthetic match replay. Tests cover sessions, buckets, pins and live delivery. Real agents and production integrations are still to build. These diagrams describe the agreed application design.
+**Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. Production messaging and the full viewer experience remain to build. These diagrams describe the agreed application design.
 
-**[Start developing →](DEVELOPMENT.md)** · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
+**[Start developing →](DEVELOPMENT.md)** · [Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
 
 ```sh
 ./dev up backend
-./dev reset backend
-./dev replay backend
 ```
+
+Open the [event filter lab](http://localhost:18020). Pick filters, start the forward-only replay and inspect the live values. [How it works](user-backend/docs/filter-lab.md).
 
 | Folder | What it does |
 | --- | --- |

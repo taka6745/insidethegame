@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Inside the Game · Filter lab</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/controller.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Inside the Game filter lab"><span class="brand-mark">i<span>g</span></span><span>Inside the Game<small>DEVELOPMENT LAB</small></span></a>
+      <div class="environment"><span></span> Synthetic match <b>LOCAL</b></div>
+    </header>
+    <main>
+      <section class="heading">
+        <div><p class="eyebrow">EVENTS → RULES → LIVE VALUES</p><h1>A match. Your numbers.</h1><p>Choose what to track, then watch the filters work as events arrive.</p></div>
+        <span class="sample-label">Synthetic data · No footage</span>
+      </section>
+      <div id="notice" class="notice" role="alert" hidden></div>
+      <div class="workspace">
+        <aside class="setup panel">
+          <div class="section-heading"><span class="step">01</span><h2>Set up your stats</h2></div>
+          <p class="muted">Try a ready-made filter, or describe your own.</p>
+          <label for="presets">Sample filters</label>
+          <select id="presets" disabled><option>Loading examples…</option></select>
+          <p id="preset-description" class="preset-description"></p>
+          <button id="add-preset" class="button secondary full" disabled><span>＋</span> Add sample filter</button>
+          <div class="divider"><span>or ask the agent</span></div>
+          <form id="prompt-form">
+            <label for="prompt">What would you like to track?</label>
+            <textarea id="prompt" rows="3" maxlength="1500" placeholder="Track Chelsea’s corners after the 60th minute"></textarea>
+            <div class="model-status" id="model-status">Checking local model…</div>
+            <button id="prepare" class="button primary full" type="submit" disabled>Prepare a filter <span>↗</span></button>
+          </form>
+          <div id="plan-result" class="plan-result" hidden aria-live="polite">
+            <p id="plan-message"></p>
+            <pre id="plan-rule" hidden></pre>
+            <button id="add-plan" class="button secondary full" hidden>Add this filter</button>
+          </div>
+          <div class="boundary-note"><span>↳</span><p>The agent prepares a structured rule once. Live events update the value without another model call.</p></div>
+        </aside>
+        <section class="match-area">
+          <section class="match panel" aria-labelledby="match-heading">
+            <div class="match-top"><span id="match-heading">SYNTHETIC MATCH REPLAY</span><span class="status" id="status">Connecting</span></div>
+            <div class="match-center"><div class="club"><span class="crest home" aria-hidden="true">H</span><h2 id="home-team">Home</h2></div><div class="match-clock"><span id="clock">00:00</span><small>MATCH CLOCK</small></div><div class="club"><span class="crest away" aria-hidden="true">A</span><h2 id="away-team">Away</h2></div></div>
+            <div class="replay-controls"><p id="progress">Waiting for match data</p><div><button id="reset" class="button ghost" disabled>New run</button><button id="start" class="button primary" disabled>▶ Start replay</button></div></div>
+            <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
+          </section>
+          <section class="stats-section" aria-labelledby="stats-heading"><div class="section-heading"><span class="step">02</span><h2 id="stats-heading">Your live stats</h2><span class="hint">Select a card to inspect its rule</span></div><div id="cards" class="cards"><div class="empty-stats"><span>＋</span><p>Your custom stats will appear here.<small>Add a filter to get started.</small></p></div></div></section>
+          <section class="activity panel" aria-labelledby="activity-heading">
+            <div class="activity-heading"><div class="section-heading"><span class="step">03</span><h2 id="activity-heading">Watch the events</h2></div><span id="event-count" class="muted">0 events</span></div>
+            <div class="metrics"><div><strong id="total-rules">0</strong><span>active rules</span></div><span class="metric-arrow">→</span><div><strong id="candidates">0</strong><span>candidates on last event</span></div><span class="metric-arrow">→</span><div><strong id="changes">0</strong><span>values changed</span></div></div>
+            <div id="events" class="events" aria-label="Recent match events"><div class="empty-events">The feed starts when you press <b>Start replay</b>.<br>Events move forward only. Match time is compressed for testing.</div></div>
+          </section>
+        </section>
+      </div>
+      <footer><span>Filter lab</span> A removable test client for the user backend. Events, players and results are synthetic.</footer>
+    </main>
+    <dialog id="rule-dialog"><div class="dialog-heading"><h2 id="rule-title">Calculation rule</h2><button id="close-dialog" class="button ghost" aria-label="Close rule details">✕</button></div><p class="muted">Stored by the backend. Indexed and evaluated against incoming events.</p><pre id="rule-detail"></pre></dialog>
+  </body>
+</html>

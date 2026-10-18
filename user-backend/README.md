@@ -4,7 +4,7 @@
 
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
-**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. Questions and real agent integrations are still to build. This service does not generate the shared game narrative.
+**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. The [filter lab](docs/filter-lab.md) adds goal/coding agents, structured custom rules and shared indexed calculations. This service does not generate the shared game narrative.
 
 ```sh
 ./dev up backend
@@ -12,7 +12,7 @@
 ./dev replay backend
 ```
 
-[API explorer](http://localhost:18000/docs) · [Test coverage](docs/testing.md) · [Synthetic match](fixtures/README.md)
+[Filter lab](http://localhost:18020) · [API explorer](http://localhost:18000/docs) · [Test coverage](docs/testing.md) · [Synthetic examples](fixtures/filter-lab.md)
 
 The diagram and components below describe the target architecture; the [development guide](docs/development.md) separates implemented behaviour from fixtures.
 
