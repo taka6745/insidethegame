@@ -5,7 +5,6 @@ import hashlib
 import json
 import logging
 import os
-import time
 from decimal import Decimal
 from pathlib import Path
 
@@ -15,6 +14,10 @@ from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 from .cases import cases
 from .quality_cases import quality_cases
+from .balanced_cases import balanced_cases
+from .conversation_eval import evaluate_conversation
+
+COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases}
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures/filter-lab.json"
 
@@ -64,7 +67,7 @@ def gold_check(scenario, events, selected=None):
 
 async def agent_check(args, scenario, events, output):
     semaphore = asyncio.Semaphore(args.concurrency)
-    selected = [c for c in (quality_cases() if args.cohort == "quality" else cases())
+    selected = [c for c in COHORTS[args.cohort]()
                 if not args.case_id or c["id"] in args.case_id]
     if args.limit:
         selected = selected[:args.limit]
@@ -78,31 +81,9 @@ async def agent_check(args, scenario, events, output):
 
     async def run(case):
         async with semaphore:
-            start = time.perf_counter()
             try:
-                outcome = await workflow.plan(case["prompt"], context)
-                turns = [{"status": outcome.status, "seconds": round(time.perf_counter() - start, 3),
-                          "model_calls": outcome.model_calls, "stage_seconds": outcome.stage_seconds,
-                          "question": outcome.message if outcome.status == "clarification" else None}]
-                initial_ok = outcome.status in case.get("expected_initial_status", [outcome.status])
-                if "reply" in case and outcome.status == "clarification":
-                    next_start = time.perf_counter()
-                    outcome = await workflow.plan(case["reply"], context, history=[
-                        {"role": "user", "content": case["prompt"]},
-                        {"role": "assistant", "content": outcome.message}])
-                    turns.append({"status": outcome.status, "seconds": round(time.perf_counter() - next_start, 3),
-                                  "model_calls": outcome.model_calls, "stage_seconds": outcome.stage_seconds})
-                checked = {"ok": outcome.status in case["expected_status"], "reason": "status",
-                           "expected_status": case["expected_status"], "actual_status": outcome.status}
-                if checked["ok"] and outcome.status == "ready":
-                    checked = evaluate_rule(case, outcome.rule, events, scenario["events"])
-                if not initial_ok:
-                    checked = {"ok": False, "reason": "missed_clarification", "final_check": checked}
-                row = {"id": case["id"], "quality": case["quality"], "attempts": outcome.attempts,
-                       "status": outcome.status, "seconds": round(time.perf_counter() - start, 3),
-                       "model_calls": (sum(turn["model_calls"] for turn in turns)
-                                       if all(turn["model_calls"] is not None for turn in turns) else None), "turns": turns, "goal": outcome.goal.model_dump(mode="json") if outcome.goal else None,
-                       "actual_rule": outcome.rule.model_dump(mode="json") if outcome.rule else None, **checked}
+                row = await evaluate_conversation(workflow, case, context,
+                    lambda case, rule: evaluate_rule(case, rule, events, scenario["events"]))
             except Exception as exc:
                 # Never save provider exception bodies, endpoint URLs or credentials.
                 row = {"id": case["id"], "ok": False, "reason": type(exc).__name__}
@@ -127,7 +108,7 @@ async def agent_check(args, scenario, events, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--cohort", choices=["baseline", "quality"], default="baseline")
+    parser.add_argument("--cohort", choices=list(COHORTS), default="baseline")
     parser.add_argument("--agents", action="store_true", help="Explicit opt-in: calls the configured local model")
     parser.add_argument("--env-file", type=Path)
     parser.add_argument("--output", type=Path, default=Path(".local/benchmarks/correctness"))
@@ -145,13 +126,14 @@ def main():
     logging.basicConfig(level=logging.ERROR)
     scenario = json.loads(FIXTURE.read_text())
     events = [OptaInspiredAdapter().adapt(row) for row in scenario["events"]]
-    gold = gold_check(scenario, events, quality_cases() if args.cohort == "quality" else cases())
+    gold = gold_check(scenario, events, COHORTS[args.cohort]())
     args.output.mkdir(parents=True, exist_ok=True)
     failures = [row for row in gold if not row["ok"]]
     report = {"cohort": args.cohort, "fixture_sha256": hashlib.sha256(FIXTURE.read_bytes()).hexdigest(), "gold": gold,
               "agent_calls": False, "max_repairs": int(os.getenv("AGENT_MAX_REPAIRS", "3")),
               "cases_sha256": hashlib.sha256(Path(__file__).with_name("cases.py").read_bytes()).hexdigest(),
               "quality_cases_sha256": hashlib.sha256(Path(__file__).with_name("quality_cases.py").read_bytes()).hexdigest(),
+              "selected_cases_sha256": hashlib.sha256(json.dumps(COHORTS[args.cohort](), sort_keys=True).encode()).hexdigest(),
               "agent_source_sha256": hashlib.sha256(b"".join(
                   path.read_bytes() for path in sorted((Path(__file__).resolve().parents[1] / "backend/agents").glob("*.py")))).hexdigest()}
     if failures:

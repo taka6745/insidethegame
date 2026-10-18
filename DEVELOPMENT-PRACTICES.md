@@ -31,6 +31,10 @@ HTTP / UI view → application service → domain model / pure engine
 
 **Test observable behaviour.** Use synthetic events with expected results, exact time boundaries, corrections, duplicates, unseen fields and broad filters. Compare indexed results to a simple reference evaluation. Test candidate counts rather than fragile performance timings. Use real Postgres for persistence tests, and verify the running API/UI before calling integration complete.
 
+**Optimise from the algorithm.** State the invariant and costs of lookup, candidate evaluation, updates, memory and output separately. Prefer general indexes and shared work over branches for particular examples. Measure realistic workloads before adding complexity; many matching results still require many updates. Keep expensive benchmarks opt-in and distinguish measured capacity from projections.
+
+**Evaluate understanding separately.** Freeze prompts and independent expected answers before model runs. Compare clear, average and poor wording of the same intents. Supply prepared user replies only after clarification, count unjustified guesses as failures, and report first-turn and final accuracy separately. Never give the model gold rules or expected values, or replace older results with an easier corpus.
+
 **Local model configuration stays local.** Commit only generic variable names and an example configuration. Keep URLs, keys and machine-specific model routing in ignored files. Model failures must be visible; fixture mode must identify itself. Never commit request logs or provider response dumps.
 
 **Document briefly.** Service README: purpose, run command, boundaries and current limits. Put deeper contracts in service `docs/`. Mark planned versus implemented. Preserve source provenance for synthetic/vendor-inspired data. No unsolicited CI, new infrastructure or cloud deployments.
