@@ -81,20 +81,24 @@ export class QuestionView {
       article.append(answer);
       return article;
     }
-    article.append(node(
+    const answer = node(
       this.document, "p", turn.reply.text,
       reveal ? "chat-answer answer-reveal" : "chat-answer",
-    ));
+    );
     const snapshot = turn.reply.snapshot;
-    if (snapshot)
-      article.append(
-        node(
-          this.document,
-          "div",
-          `As of ${snapshot.clock_seconds === null ? "before kickoff" : clock(snapshot.clock_seconds)}`,
-          "chat-meta",
-        ),
-      );
+    if (snapshot) {
+      const seconds = snapshot.clock_seconds;
+      const beforeKickoff = seconds === null || seconds === undefined;
+      const timestamp = node(this.document, "span",
+        beforeKickoff ? "Pre-match" : `${Math.floor(Math.max(0, seconds) / 60)}′`,
+        "answer-time");
+      const description = `Answer as of ${beforeKickoff ? "before kickoff" : clock(seconds)}`;
+      timestamp.title = description;
+      timestamp.setAttribute("aria-label", description);
+      answer.className += " timestamped";
+      answer.append(timestamp);
+    }
+    article.append(answer);
     for (const offer of turn.offers) {
       const card = node(this.document, "div", "", "offer");
       card.append(

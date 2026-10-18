@@ -163,10 +163,18 @@
   background: #2c0836;
   overflow-wrap: anywhere;
 }
-.chat-meta {
+.chat-answer.timestamped {
+  position: relative;
+  padding-top: 30px;
+}
+.answer-time {
+  position: absolute;
+  top: 8px;
+  right: 14px;
   font-size: 10px;
   line-height: 1.5;
   color: #c0a6cc;
+  font-variant-numeric: tabular-nums;
 }
 .offer {
   margin-top: 13px;
