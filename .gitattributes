@@ -2,3 +2,6 @@
 legacy/competitors/data/** -text -whitespace
 
 *.pdf binary
+
+# Keep the local launcher runnable in WSL even when cloned from Windows Git.
+/dev text eol=lf

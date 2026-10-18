@@ -18,6 +18,14 @@ First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start co
 
 Inside Docker use service names and native ports: `postgres:5432`, `cosmos:8081`, `eventhubs:5672`, `servicebus:5672`, `sql:1433`, `graphql:5000`. Example SDK settings are in [settings.py](settings.py); all credentials there are **public local dummy values**, never cloud credentials. Cosmos uses HTTP for local Python development. Host clients must use the mapped ports above.
 
+Running your application directly on your laptop? Copy the relevant values from [connections.env.example](connections.env.example) into that service's ignored `.env`. The file is not automatically loaded; your application's config loader owns that. GraphQL example:
+
+```sh
+curl http://localhost:15000/graphql \
+  -H 'Content-Type: application/json' \
+  --data '{"query":"{ rawEvents(first: 3) { items { id type } } }"}'
+```
+
 Only loopback ports are published. Existing projects on ports 3000, 5432 and 4566 are untouched. Avoid exposing this unauthenticated demo stack to a network.
 
 ## What tests prove
@@ -41,7 +49,7 @@ Allow roughly 8–12 GB Docker memory and several GB of free disk for the full s
 - `./dev down` preserves SQL/Postgres volumes. Cosmos and messaging state are disposable; rerun tests/seeding after recreation.
 - Postgres init SQL runs only on a fresh volume. Later application schema changes need migrations.
 
-Dependency image digests are pinned to the tested builds, including multi-architecture manifests. Upgrade them deliberately and rerun `./dev test azure`. Python tooling dependencies are pinned in `requirements.txt`. Docker must be able to reach public image/package registries on first setup; this is account-free, not an offline installer.
+Dependency image digests are pinned to the tested builds, including multi-architecture manifests. Upgrade them deliberately and rerun `./dev test azure`. Direct Python tooling dependencies are pinned in `requirements.txt`. Docker must be able to reach public image/package registries on first setup; this is account-free, not an offline installer.
 
 ## Licences
 
