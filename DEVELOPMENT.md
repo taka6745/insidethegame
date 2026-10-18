@@ -25,7 +25,7 @@ ACCEPT_EULA=Y ./dev up azure
 | Work on | Start with | First useful result |
 | --- | --- | --- |
 | Replay | [data-generation guide](data-generation/docs/development.md) | Publish a timestamped, labelled synthetic match. |
-| Match data — Luke | [ETL guide](etl/docs/development.md) | Events → stored history → GraphQL. |
+| Match data | [ETL guide](etl/docs/development.md) | Events → stored history → GraphQL. |
 | Shared narratives | [narrative guide](narrative-engine/docs/development.md) | One minute of context → stored bucket narrative. |
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | One live match, cards and two chat tabs. |
@@ -42,4 +42,4 @@ Use the documented API/message boundary, never another service's database. Start
 ./dev terraform check
 ```
 
-This validates and mock-tests Terraform in Docker, with no accounts or cloud deployment. Real Azure integration remains a separate check: **Stream Analytics belongs to Luke**, Foundry needs an actual model endpoint, and managed identity/networking/scale need Azure validation.
+This validates and mock-tests Terraform in Docker, with no accounts or cloud deployment. Real Azure integration remains a separate check: **Stream Analytics belongs to the ETL service**, Foundry needs an actual model endpoint, and managed identity/networking/scale need Azure validation.

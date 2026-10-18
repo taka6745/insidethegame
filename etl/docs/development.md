@@ -1,4 +1,4 @@
-# Develop match data — Luke
+# Develop match data
 
 ![Service boundary](../architecture.svg)
 
@@ -15,4 +15,4 @@ Event Hubs → Stream Analytics → Azure SQL → GraphQL
 
 **Prove it:** replay known events; compare stored history and aggregated values; test duplicates, late data, halftime and VAR negative deltas. A closed minute must have queryable data before its notification is consumed. Agree timing/correction rules in [contracts](../../local/contracts.md).
 
-**Azure:** Event Hubs, Stream Analytics, Azure SQL, Service Bus; DAB runs on Container Apps. Shared infrastructure is in [terraform/](../../terraform/README.md). Luke owns the ASA job, event-time policy and Azure integration. Local fixture insertion is not an ETL substitute.
+**Azure:** Event Hubs, Stream Analytics, Azure SQL, Service Bus; DAB runs on Container Apps. Shared infrastructure is in [terraform/](../../terraform/README.md). This service owns the ASA job, event-time policy and Azure integration. Local fixture insertion is not an ETL substitute.

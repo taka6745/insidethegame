@@ -63,7 +63,7 @@ def cosmos_check():
 
 
 def seed_sql():
-    # Fixtures are inserted directly. This deliberately does NOT substitute for Luke's ASA job.
+    # Fixtures are inserted directly. This deliberately does NOT substitute for the ETL service's ASA job.
     with pymssql.connect("sql", "sa", SQL_PASSWORD, "matchdata", login_timeout=5, timeout=10) as conn:
         with conn.cursor() as cur:
             for line in FIXTURE.read_text().splitlines():

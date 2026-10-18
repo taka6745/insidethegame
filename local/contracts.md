@@ -23,7 +23,7 @@ flowchart LR
 | --- | --- | --- |
 | `match-events` | Replay → ETL / backend | Match-partitioned events; separate `etl` and `user-backend` consumer groups. |
 | Match GraphQL | ETL → narrative / backend | Historical events, key-event ledger, computed stats. Only raw-event fixture queries exist locally. |
-| `match-notifications` | ETL → narrative | `KeyEventDetected`, `MinuteClosed`; fields and timing policy to agree with Luke. |
+| `match-notifications` | ETL → narrative | `KeyEventDetected`, `MinuteClosed`; fields and timing policy to agree with the ETL service. |
 | `narratives` | Narrative → backend | Narrative ID, match ID/time, bucket, text; optional ordered approved stat IDs. Final schema still to agree. |
 | Narrative GraphQL | Narrative → backend | Match/bucket history. Planned; never substitute direct backend Cosmos access. |
 | Viewer API/live connection | Backend → frontend | Profiles, session takeover, chat, cards, backlog. Transport still undecided. |

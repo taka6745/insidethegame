@@ -25,7 +25,7 @@ flowchart LR
 | `main.tf` | Resource group, logs and Container Apps environment. |
 | `tests/design.tftest.hcl` | Account-free checks of service boundaries. |
 
-**Before cloud deployment:** finish networking/private access, identities and permissions, secrets/state storage, real service images and probes, and regional SKU checks. Database public access is disabled; connectivity is intentionally unfinished. Add the Stream Analytics job/query/input/output configuration with Luke. Select Foundry model deployments and frontend hosting separately. Never treat a mock plan as proof Azure will accept or run the stack.
+**Before cloud deployment:** finish networking/private access, identities and permissions, secrets/state storage, real service images and probes, and regional SKU checks. Database public access is disabled; connectivity is intentionally unfinished. Add the Stream Analytics job/query/input/output configuration with the ETL service. Select Foundry model deployments and frontend hosting separately. Never treat a mock plan as proof Azure will accept or run the stack.
 
 Real deployment will require an Azure account, subscription, provider registrations and billing. `./dev` has no cloud `apply` command and forwards no Azure credentials to the test container. Required cloud values are `subscription_id`, a unique `prefix` and a strong `database_admin_password`; don't commit them. Terraform state can contain passwords even when outputs are sensitive.
 
