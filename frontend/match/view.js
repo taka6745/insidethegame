@@ -86,7 +86,7 @@ export class MatchView {
     );
     this.text(
       "stats-context",
-      cards.some((card) => card.kind === "custom")
+      cards.some((card) => card.pinned || card.kind === "custom")
         ? "Includes your tracked stats"
         : "",
     );
@@ -126,7 +126,9 @@ export class MatchView {
     this.get("reset-demo").hidden = !controls.showReset;
   }
   stat(card, existing) {
-    if (existing && existing.className === `stat-card ${card.kind}`) {
+    const pinned = card.pinned || card.kind === "custom";
+    const className = `stat-card ${card.kind}${pinned ? " tracked" : ""}`;
+    if (existing && existing.className === className) {
       existing.querySelector(".stat-label").textContent = card.label;
       existing.querySelector(".stat-label").title = card.label;
       existing.querySelector(".stat-value").textContent = number(card.value);
@@ -139,18 +141,18 @@ export class MatchView {
       this.document,
       "article",
       "",
-      `stat-card ${card.kind}`,
+      className,
     );
     element.append(
       node(this.document, "span", card.label, "stat-label"),
       node(this.document, "strong", number(card.value), "stat-value"),
     );
     element.querySelector(".stat-label").title = card.label;
-    if (card.kind === "custom") {
+    if (pinned) {
       element.append(node(this.document, "span", "TRACKING", "stat-tag"));
       const remove = node(this.document, "button", "×", "unpin");
       remove.setAttribute("aria-label", `Stop tracking ${card.label}`);
-      remove.addEventListener("click", () => this.onUnpin(card.id));
+      remove.addEventListener("click", () => this.onUnpin(card.pin_id || card.id));
       element.append(remove);
     }
     return element;

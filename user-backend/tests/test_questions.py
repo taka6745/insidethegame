@@ -50,7 +50,9 @@ def test_standard_stats_are_upstream_and_no_custom_rule_or_history(store):
         assert reply['snapshot']['match_id'] == lab.source.match_id
         assert reply['snapshot']['cursor'] == 15
         assert reply['evidence'][0]['id'] == 'stat:all:shots'
-        assert reply['offers'] == []
+        assert reply['offers'][0]['kind'] == 'standard'
+        assert reply['offers'][0]['standard_stat_id'] == 'all:shots'
+        assert 'rule' not in reply['offers'][0]
         assert lab.engine.count == 0
         assert all(len(next(iter(a.state.question_data.snapshots.values())).events) == 15 for a in apps)
 
@@ -287,7 +289,7 @@ def test_statistical_draft_uses_upstream_stat_without_compiling_or_history(store
         reply=ask(client,session(client),'How many shots?').json()
         assert reply['status']=='answer'
         assert reply['text']=='Both teams shots: 0.'
-        assert reply['offers']==[]
+        assert reply['offers'][0]['standard_stat_id']=='all:shots'
         assert reply['standard_stat_id']=='all:shots'
 
 

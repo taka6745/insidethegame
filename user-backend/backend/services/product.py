@@ -9,6 +9,7 @@ from contextlib import suppress
 from uuid import uuid4
 
 from backend.domain import RuleError
+from backend.models.stat_offers import pin_id
 from .live_viewers import LiveViewers
 
 
@@ -142,24 +143,35 @@ class ProductService:
         teams = shared['match']['teams']
         support = profile['team'] if profile['team'] in {t['id'] for t in teams} else 'neutral'
         bucket = f"{support}:{profile['fan_style']}"
-        pins = list(dict.fromkeys(o['calculation_id'] for o in viewer['offers'] if o.get('calculation_id')))[-self.slots:]
-        custom = [{**shared['calculations'][identifier], 'kind': 'custom'} for identifier in pins if identifier in shared['calculations']]
+        pins = {o['calculation_id']: o for o in viewer['offers'] if o.get('calculation_id')}
+        available = {s['id']: s for s in shared['stats']}
+        tracked = []
+        for identifier, offer in list(pins.items())[-self.slots:]:
+            if offer.get('kind') == 'standard':
+                stat_id = offer['standard_stat_id']
+                stat = available.get(stat_id, {'id': stat_id, 'label': offer['label'],
+                                               'value': None, 'available': False, 'complete': False})
+                tracked.append({**stat, 'kind': 'standard', 'pinned': True, 'pin_id': identifier})
+            elif identifier in shared['calculations']:
+                tracked.append({**shared['calculations'][identifier], 'kind': 'custom',
+                                'pinned': True, 'pin_id': identifier})
         # The fake narrative service owns the ordered approved-stat recommendation.
         stat_ids = next((n['stat_ids'] for n in reversed(shared['narratives']) if bucket in n['buckets']),
                         [f"{support if support != 'neutral' else 'all'}:{kind}" for kind in ('goals','shots','corners','passes','cards')])
-        available = {s['id']: s for s in shared['stats']}
-        defaults = [{**available[i], 'kind': 'standard'} for i in stat_ids if i in available]
+        pinned_standard = {card['id'] for card in tracked if card['kind'] == 'standard'}
+        defaults = [{**available[i], 'kind': 'standard'} for i in dict.fromkeys(stat_ids)
+                    if i in available and i not in pinned_standard]
         return {key: shared[key] for key in ('type','version','projection_epoch','synthetic','mode','match','events')} | {
             'profile': profile, 'bucket': bucket,
-            'cards': defaults[:self.slots - len(custom)] + custom,
+            'cards': defaults[:self.slots - len(tracked)] + tracked,
             'narratives': [n for n in shared['narratives'] if bucket in n['buckets']]}
 
     @staticmethod
     def _subscription(viewer):
         # Live delivery retains routing/pin IDs, never the viewer's chat transcript.
         return {key: viewer[key] for key in ('run_id', 'profile_id', 'profile')} | {
-            'offers': [{'calculation_id': identifier} for identifier in dict.fromkeys(
-                offer['calculation_id'] for offer in viewer['offers'] if offer.get('calculation_id'))]}
+            'offers': [{key: offer[key] for key in ('calculation_id', 'kind', 'standard_stat_id', 'label')
+                        if key in offer} for offer in viewer['offers'] if offer.get('calculation_id')]}
 
     async def attach(self, token):
         async with self._session_lock, self.questions.session_guard():
@@ -173,8 +185,7 @@ class ProductService:
             offer = next((o for o in viewer['offers'] if o['id'] == str(offer_id)), None)
             if offer is None:
                 raise RuleError('offer_not_found', 'This offer is not in your conversation.', 404)
-            from backend.models.rules import Rule
-            identifier = Rule.model_validate(offer['rule']).calculation_id
+            identifier = pin_id(offer)
             pins = {o['calculation_id'] for o in viewer['offers'] if o.get('calculation_id')}
             if identifier not in pins and len(pins) >= self.slots:
                 raise RuleError('cards_full', 'Remove a tracked stat before adding another.', 409)

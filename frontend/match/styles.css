@@ -422,10 +422,10 @@ option {
   font-variant-numeric: tabular-nums;
   margin-top: 7px;
 }
-.stat-card.custom .stat-value {
+.stat-card.tracked .stat-value {
   color: var(--mint);
 }
-.stat-card.custom .stat-label {
+.stat-card.tracked .stat-label {
   padding-right: 12px;
 }
 .unpin {

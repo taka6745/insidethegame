@@ -154,6 +154,21 @@ test("HTTP adapter only sends intent, token and offer identifiers", async () => 
   );
 });
 
+test("HTML proxy failures preserve status and give an actionable retry message", async () => {
+  const api = new MatchApi(async () => new Response('<html>Bad Gateway</html>', {status: 502}));
+  await assert.rejects(api.profiles(), error => {
+    assert.equal(error.status, 502);
+    assert.match(error.message, /temporarily unavailable.*try again/i);
+    assert.doesNotMatch(error.message, /html|unreadable/i);
+    return true;
+  });
+});
+
+test("malformed successful responses remain errors", async () => {
+  const api = new MatchApi(async () => new Response('broken', {status: 200}));
+  await assert.rejects(api.profiles(), /invalid response/i);
+});
+
 test("restored pending answer refreshes only while pending and stops after completion", async () => {
   const f = fixture({
     restore: async () => ({

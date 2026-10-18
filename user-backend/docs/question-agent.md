@@ -26,7 +26,7 @@ flowchart LR
 
 The router receives catalogue meanings and recent dialogue, without stat values, events, recaps or old numeric answers. Statistical requests bypass the prose agent and retain the original conversation for clarification and scope changes. Intent classification is still probabilistic; typed routing prevents the answer model from silently doing custom arithmetic once routed, not all semantic mistakes. General football answers receive a small versioned rules reference.
 
-The narrative engine still owns shared generation and bucket framing. Questions only read neutral recaps. Standard statistics are computed in fake ETL, never in this backend. Standard-stat answers do not create a duplicate custom calculation or offer a custom Track card.
+The narrative engine still owns shared generation and bucket framing. Questions only read neutral recaps. Standard statistics are computed in fake ETL, never in this backend. Standard-stat answers offer Track too: the saved pin references the ETL stat ID, and live cards read the shared ETL projection. No duplicate custom calculation or raw-history search is created. A pinned default appears once; removing its pin restores the current bucket ranking.
 
 ## API
 
