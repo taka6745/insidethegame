@@ -33,4 +33,4 @@ Custom stats follow **goal → write → test → calculate → optional pin**. 
 
 One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
 
-[Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
+[Custom-rule storage and execution](docs/custom-calculations.md) · [Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
