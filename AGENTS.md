@@ -19,7 +19,7 @@ This is a design-stage hackathon application. Active areas: `data-generation/`, 
 
 Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development.md`.
 
-- `./dev up` / `./dev test`: local Postgres + Cosmos checks.
+- `./dev doctor`: Docker/Compose preflight. `./dev up` starts Postgres + Cosmos and runs checks; `./dev test` reruns them.
 - `ACCEPT_EULA=Y ./dev up azure` / `./dev test azure`: Microsoft emulators, SQL and DAB. Only set EULA acceptance with the developer's consent; see `local/README.md`.
 - `./dev terraform check`: format/schema validation and mock-provider tests in Docker; no real Azure calls.
 - `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.

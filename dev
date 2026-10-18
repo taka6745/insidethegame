@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")"
-compose() { docker compose --env-file local/env.defaults -f local/compose.yaml "$@"; }
+compose() {
+  local files=(-f local/compose.yaml)
+  if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
+  docker compose --env-file local/env.defaults "${files[@]}" "$@"
+}
+docker_ready() {
+  command -v docker >/dev/null || { echo "Install Docker Desktop (or Docker Engine + Compose), then retry." >&2; exit 1; }
+  docker info >/dev/null 2>&1 || { echo "Docker is not running. Start it, then retry." >&2; exit 1; }
+  docker compose version >/dev/null 2>&1 || { echo "Install the Docker Compose plugin, then retry." >&2; exit 1; }
+}
+check_mode() {
+  case "${1:-base}" in base|azure) ;; *) echo "Choose base or azure." >&2; exit 2 ;; esac
+}
+check() { compose run --rm --build --no-deps tools python local/check.py "$1"; }
 usage() {
   cat <<'EOF'
-./dev up                 Start Postgres + Cosmos (no accounts)
+./dev doctor             Check Docker before first setup
+./dev up                 Start + check Postgres and Cosmos (no accounts)
 ./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
 ./dev test [azure]       Test real local dependency round trips
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
@@ -19,17 +33,29 @@ This accepts Microsoft's emulator and SQL Server terms. No cloud deployment.
 EOF
 }
 case "${1:-help}" in
+  doctor)
+    docker_ready
+    docker version --format 'Docker engine: {{.Server.Version}}'
+    docker compose version
+    docker info --format 'Docker CPU: {{.Architecture}}; available memory: {{.MemTotal}} bytes'
+    compose --profile azure config --quiet
+    echo "Docker and Compose configuration are ready. First startup checks actual service connectivity."
+    ;;
   up)
+    check_mode "${2:-base}"
+    docker_ready
     if [[ "${2:-}" == azure ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
       compose --profile azure up -d
     else
       compose up -d
     fi
-    compose build tools
+    check "${2:-base}"
     ;;
   test)
-    compose run --rm --build --no-deps tools python local/check.py "${2:-base}"
+    check_mode "${2:-base}"
+    docker_ready
+    check "${2:-base}"
     ;;
   replay)
     compose run --rm --build --no-deps tools python local/replay.py
@@ -39,7 +65,9 @@ case "${1:-help}" in
   down) compose --profile azure down ;;
   terraform)
     [[ "${2:-}" == check ]] || { usage; exit 2; }
-    docker run --rm -v "$PWD/terraform:/work" -w /work --entrypoint sh \
+    docker_ready
+    docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
+      -v "$PWD/terraform:/work" -w /work --entrypoint sh \
       hashicorp/terraform:1.13.4 -ec \
       'terraform fmt -check -recursive && terraform init -backend=false -input=false && terraform validate && terraform test'
     ;;

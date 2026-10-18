@@ -7,11 +7,10 @@ resource "azurerm_eventhub_namespace" "match" {
 }
 
 resource "azurerm_eventhub" "match" {
-  name                = "match-events"
-  namespace_name      = azurerm_eventhub_namespace.match.name
-  resource_group_name = azurerm_resource_group.app.name
-  partition_count     = 2
-  message_retention   = 1
+  name              = "match-events"
+  namespace_id      = azurerm_eventhub_namespace.match.id
+  partition_count   = 2
+  message_retention = 1
 }
 
 resource "azurerm_eventhub_consumer_group" "consumers" {

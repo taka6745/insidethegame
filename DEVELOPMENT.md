@@ -5,15 +5,16 @@
 ![Local development and Azure validation](local/development.svg)
 
 ```sh
+./dev doctor
 ./dev up
-./dev test
 ```
+
+`up` waits for the integration checks to pass. Use `./dev test` to rerun them later.
 
 For messaging, SQL and GraphQL, first review the [Microsoft licence links](local/README.md#licences), then:
 
 ```sh
 ACCEPT_EULA=Y ./dev up azure
-./dev test azure
 ./dev replay
 ```
 
