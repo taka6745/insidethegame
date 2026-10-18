@@ -9,3 +9,13 @@ projects-export/
 .local/
 
 .ruff_cache/
+
+# Local infrastructure / credentials. Commit provider lock files, never state.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+*.tfvars.json
+crash.log
+local/compose.override.yaml

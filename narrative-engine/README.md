@@ -1,5 +1,7 @@
 # Narrative engine
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![Shared match context becomes narratives for active audience buckets](architecture.svg)
 
 **Planned service; not implemented or deployed.** The retained [example prompts](prompts/README.md) are its only implementation inputs so far.

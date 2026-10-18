@@ -1,5 +1,7 @@
 # Frontend
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![Live match, statistics and two conversation tabs](architecture.svg)
 
 **Planned interface; not implemented.** Show one live match with stat cards and two tabs: agent chat and the narrative feed/backlog.

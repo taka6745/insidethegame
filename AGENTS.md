@@ -17,6 +17,14 @@ This is a design-stage hackathon application. Active areas: `data-generation/`, 
 
 ## Current tooling
 
-Render the six SVG diagrams with `python3 .github/scripts/render_architecture.py`; visually inspect the results. No application test or deployment commands exist yet. Add service-specific commands when implementation starts.
+Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development.md`.
+
+- `./dev up` / `./dev test`: local Postgres + Cosmos checks.
+- `ACCEPT_EULA=Y ./dev up azure` / `./dev test azure`: Microsoft emulators, SQL and DAB. Only set EULA acceptance with the developer's consent; see `local/README.md`.
+- `./dev terraform check`: format/schema validation and mock-provider tests in Docker; no real Azure calls.
+- `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.
+- `python3 .github/scripts/render_architecture.py` and `python3 .github/scripts/render_development.py`: regenerate SVGs; visually inspect.
+
+Local fixtures are explicit test inputs, not an ETL or LLM implementation. Stream Analytics belongs to Luke. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup. No application test commands exist yet; add them with actual code.
 
 Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.
