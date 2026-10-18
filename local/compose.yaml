@@ -115,6 +115,7 @@ services:
       - path: ../.local/backend-llm.env
         required: false
     environment: &backend-env
+      AGENT_MAX_REPAIRS: ${AGENT_MAX_REPAIRS:-3}
       BACKEND_MODE: fixture
       ENABLE_DEV_FEED: "1"
       ENABLE_FILTER_LAB: "1"

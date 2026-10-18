@@ -1,0 +1,7011 @@
+[
+  {
+    "id": "stat-001",
+    "prompt": "Count all recorded headed touches by Mbapp\u00e9",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0
+    ]
+  },
+  {
+    "id": "stat-002",
+    "prompt": "mbappe headers second half pls",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  },
+  {
+    "id": "stat-003",
+    "prompt": "Mbapp\u00e9 headed touches in the first half, including stoppage time",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-004",
+    "prompt": "headers from everyone",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e8@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e22@1": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0
+    ]
+  },
+  {
+    "id": "stat-005",
+    "prompt": "Chelsea recorded headed touches",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1,
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-006",
+    "prompt": "madrid headed touches",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0
+    ]
+  },
+  {
+    "id": "stat-007",
+    "prompt": "Mbapp\u00e9 headed shot attempts including headed goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e21@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-008",
+    "prompt": "mbappe head passes count",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e18@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-009",
+    "prompt": "Mbapp\u00e9 headed goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "id": "stat-010",
+    "prompt": "Palmer headed goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-011",
+    "prompt": "Count Colwill headed clearances",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-012",
+    "prompt": "vinicius head shots including goals",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "vinicius"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e14@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-013",
+    "prompt": "saved headed Mbapp\u00e9 shots",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e21@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-014",
+    "prompt": "Mbapp\u00e9 off-target headed shots",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "off_target"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-015",
+    "prompt": "headed touches since minute 20 inclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 1200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e8@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e22@1": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0
+    ]
+  },
+  {
+    "id": "stat-016",
+    "prompt": "headers before minute twenty",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 1200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-017",
+    "prompt": "Count headed touches after 75:00, excluding 75:00 itself",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e22@1": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-018",
+    "prompt": "headers since 75:00 including that second",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e21@2": 1,
+      "e22@1": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-019",
+    "prompt": "First-half headed touches from either team",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e8@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-020",
+    "prompt": "second half all headers",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e14@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e22@1": 1,
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0
+    ]
+  },
+  {
+    "id": "stat-021",
+    "prompt": "Chelsea corners awarded after minute 60",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      4.0,
+      5.0,
+      4.0,
+      5.0,
+      5.0
+    ]
+  },
+  {
+    "id": "stat-022",
+    "prompt": "chelsea corners from 60 inclusive",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      5.0,
+      6.0,
+      5.0,
+      6.0,
+      6.0
+    ]
+  },
+  {
+    "id": "stat-023",
+    "prompt": "corners after 60 all teams",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e12@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e28@2": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      7.0,
+      6.0,
+      7.0,
+      7.0
+    ]
+  },
+  {
+    "id": "stat-024",
+    "prompt": "Count all corners awarded",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1,
+      "e10@1": 1,
+      "e11@1": 1,
+      "e12@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e28@2": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      7.0,
+      8.0,
+      8.0,
+      9.0,
+      8.0,
+      9.0,
+      9.0
+    ]
+  },
+  {
+    "id": "stat-025",
+    "prompt": "Chelsea corners",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1,
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      6.0,
+      7.0,
+      6.0,
+      7.0,
+      7.0
+    ]
+  },
+  {
+    "id": "stat-026",
+    "prompt": "Madrid corners",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e12@1": 1,
+      "e28@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-027",
+    "prompt": "first half corners",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-028",
+    "prompt": "corners in second half",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e12@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e28@2": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      7.0,
+      8.0,
+      7.0,
+      8.0,
+      8.0
+    ]
+  },
+  {
+    "id": "stat-029",
+    "prompt": "Chelsea corners after 70 minutes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      1.0,
+      2.0,
+      1.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-030",
+    "prompt": "Chelsea corners after 60 through 70 inclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-031",
+    "prompt": "corners before 60",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-032",
+    "prompt": "corners through 60:00 including that second",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1,
+      "e10@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-033",
+    "prompt": "corners from 60:00 inclusive until 60:01 exclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3601
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-034",
+    "prompt": "corners after ninety mins",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-035",
+    "prompt": "Chelsea second half corners after 90:00",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-036",
+    "prompt": "madrid corners after 70",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e28@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-037",
+    "prompt": "Chelsea corners before 30 minutes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 1800
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e3@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-038",
+    "prompt": "all corners since 67 minutes inclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 4020
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e28@2": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      5.0,
+      4.0,
+      5.0,
+      5.0
+    ]
+  },
+  {
+    "id": "stat-039",
+    "prompt": "corners from 60 up to but not including 61 minutes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3660
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-040",
+    "prompt": "corners after 88:00 but before 90:00",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5280
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e29@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "id": "stat-041",
+    "prompt": "Count all pass events",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e5@1": 1,
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+    ]
+  },
+  {
+    "id": "stat-042",
+    "prompt": "Chelsea completed passes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-043",
+    "prompt": "chelsea failed passes count",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e5@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-044",
+    "prompt": "Mbapp\u00e9 passes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e18@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-045",
+    "prompt": "Palmer passes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e5@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-046",
+    "prompt": "all completed passes",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  },
+  {
+    "id": "stat-047",
+    "prompt": "all failed passes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e5@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-048",
+    "prompt": "Total recorded pass distance, both teams, in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e18@1": 5.0,
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      8.0,
+      8.0,
+      8.0,
+      20.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      45.0,
+      45.0,
+      45.0,
+      45.0,
+      45.0,
+      45.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0,
+      60.0
+    ]
+  },
+  {
+    "id": "stat-049",
+    "prompt": "sum chelsea pass metres all outcomes",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      12.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0
+    ]
+  },
+  {
+    "id": "stat-050",
+    "prompt": "Chelsea successful pass distance in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0,
+      27.0
+    ]
+  },
+  {
+    "id": "stat-051",
+    "prompt": "Chelsea failed pass distance in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e5@1": 20.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+    ]
+  },
+  {
+    "id": "stat-052",
+    "prompt": "Mbapp\u00e9 headed pass distance in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e18@1": 5.0
+    },
+    "expected_trace": [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0,
+      13.0
+    ]
+  },
+  {
+    "id": "stat-053",
+    "prompt": "palmer total pass distance metres",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      12.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      32.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0,
+      47.0
+    ]
+  },
+  {
+    "id": "stat-054",
+    "prompt": "second half completed pass distance in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e18@1": 5.0,
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+    ]
+  },
+  {
+    "id": "stat-055",
+    "prompt": "First-half pass distance in metres",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e4@1": 12.0,
+      "e5@1": 20.0
+    },
+    "expected_trace": [
+      8.0,
+      8.0,
+      8.0,
+      20.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0,
+      40.0
+    ]
+  },
+  {
+    "id": "stat-056",
+    "prompt": "passes from either team after 70:00",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-057",
+    "prompt": "passes before 30 minutes",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 1800
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e5@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-058",
+    "prompt": "right foot passes",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e5@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-059",
+    "prompt": "completed right-foot passes by Palmer",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-060",
+    "prompt": "Palmer second-half pass metres",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0
+    ]
+  },
+  {
+    "id": "stat-061",
+    "prompt": "Goals by either team",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-062",
+    "prompt": "chelsea goals count",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-063",
+    "prompt": "Madrid goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "id": "stat-064",
+    "prompt": "second half goals",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-065",
+    "prompt": "first half goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  {
+    "id": "stat-066",
+    "prompt": "Count all headed goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-067",
+    "prompt": "All shot attempts including goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e9@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e21@1": 1,
+      "e21@2": 1,
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0
+    ]
+  },
+  {
+    "id": "stat-068",
+    "prompt": "Mbapp\u00e9 shot attempts including goals",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e9@1": 1,
+      "e13@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  },
+  {
+    "id": "stat-069",
+    "prompt": "saved shots both teams",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e9@1": 1,
+      "e14@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  },
+  {
+    "id": "stat-070",
+    "prompt": "off target shots count",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "off_target"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-071",
+    "prompt": "right foot shot attempts including goals by mbappe",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e9@1": 1,
+      "e21@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-072",
+    "prompt": "second half saved shots by Mbapp\u00e9",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e9@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-073",
+    "prompt": "Count all card events",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1,
+      "e20@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-074",
+    "prompt": "red cards",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "red"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-075",
+    "prompt": "yellow cards count",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "yellow"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-076",
+    "prompt": "Chelsea red cards",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "red"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-077",
+    "prompt": "Madrid yellow cards",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "yellow"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-078",
+    "prompt": "camavinga cards",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "camavinga"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-079",
+    "prompt": "Colwill cards",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-080",
+    "prompt": "cards after 60 minutes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-081",
+    "prompt": "Count all saves",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "save"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e24@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-082",
+    "prompt": "courtois saves",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "save"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "courtois"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e24@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-083",
+    "prompt": "Chelsea fouls",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "foul"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e25@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-084",
+    "prompt": "palmer fouls",
+    "quality": "messy",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "foul"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e25@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-085",
+    "prompt": "Count Chelsea interceptions",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "interception"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e27@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-086",
+    "prompt": "Palmer interceptions",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "interception"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e27@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-087",
+    "prompt": "colwill tackles",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "tackle"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e19@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-088",
+    "prompt": "Chelsea successful tackles",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "tackle"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e19@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-089",
+    "prompt": "Chelsea clearances",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-090",
+    "prompt": "first half Chelsea clearances including added time",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 1
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-091",
+    "prompt": "Chelsea tackles, clearances and interceptions combined",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "tackle",
+            "clearance",
+            "interception"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1,
+      "e19@1": 1,
+      "e27@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-092",
+    "prompt": "Chelsea second-half tackles, clearances and interceptions combined",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "tackle",
+            "clearance",
+            "interception"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e19@1": 1,
+      "e27@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-093",
+    "prompt": "only events of type touch by Mbapp\u00e9",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "touch"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-094",
+    "prompt": "Mbapp\u00e9 recorded headed touches after 80 minutes",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 4800
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e26@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "id": "stat-095",
+    "prompt": "Palmer goal events and pass events combined",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "goal",
+            "pass"
+          ]
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e5@1": 1,
+      "e22@1": 1,
+      "e23@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ]
+  },
+  {
+    "id": "stat-096",
+    "prompt": "Count goal and card events combined",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "goal",
+            "card"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1,
+      "e7@1": 1,
+      "e20@1": 1,
+      "e22@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ]
+  },
+  {
+    "id": "stat-097",
+    "prompt": "Chelsea goals or corners in the second half",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "goal",
+            "corner"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e22@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      7.0,
+      6.0,
+      7.0,
+      6.0,
+      7.0,
+      7.0
+    ]
+  },
+  {
+    "id": "stat-098",
+    "prompt": "Madrid headed touches through 10:00 inclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1
+    },
+    "expected_trace": [
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "stat-099",
+    "prompt": "Palmer completed pass metres since 80:00 inclusive",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 4800
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e23@1": 15.0
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0
+    ]
+  },
+  {
+    "id": "stat-100",
+    "prompt": "Mbapp\u00e9 headed touches after 60:00 and before 75:00",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1
+    },
+    "expected_trace": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+    ]
+  },
+  {
+    "id": "negative-01",
+    "prompt": "Track his headers",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "clarification"
+    ]
+  },
+  {
+    "id": "negative-02",
+    "prompt": "Track our corners",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "clarification"
+    ]
+  },
+  {
+    "id": "negative-03",
+    "prompt": "How much pressure are they putting on?",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "clarification",
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-04",
+    "prompt": "Track Haaland headers in this match",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "clarification"
+    ]
+  },
+  {
+    "id": "negative-05",
+    "prompt": "Track Arsenal corners",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "clarification"
+    ]
+  },
+  {
+    "id": "negative-06",
+    "prompt": "Track Chelsea corners in the last five minutes, continuously sliding",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-07",
+    "prompt": "Count sequences of five uninterrupted Madrid passes",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-08",
+    "prompt": "Track Chelsea corners only while Chelsea are losing",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-09",
+    "prompt": "Track the ratio of Chelsea passes to Madrid passes",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-10",
+    "prompt": "Track xG for Mbapp\u00e9",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-11",
+    "prompt": "Count Mbapp\u00e9's touches inside the penalty area",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "negative-12",
+    "prompt": "Track how tired Palmer looks",
+    "quality": "ambiguous_or_unsupported",
+    "expected_status": [
+      "unsupported"
+    ]
+  }
+]

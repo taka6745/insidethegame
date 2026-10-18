@@ -55,3 +55,10 @@ def test_missing_data_never_generates_code():
 def test_invalid_or_failed_execution_requires_repair(bad):
     result = build_calculation(GOAL, GOAL.required_fields, ScriptedAgent(), ScriptedExecutor([bad, [0, 1]]))
     assert result.attempts == 2 and result.error is None
+
+
+def test_legacy_contract_respects_backend_repair_setting(monkeypatch):
+    monkeypatch.setenv('AGENT_MAX_REPAIRS', '0')
+    agent = ScriptedAgent()
+    outcome = build_calculation(GOAL, GOAL.required_fields, agent, ScriptedExecutor([[99, 99]]))
+    assert outcome.attempts == 1 and len(agent.calls) == 1 and outcome.source is None

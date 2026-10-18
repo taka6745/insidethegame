@@ -34,6 +34,9 @@ usage() {
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
 ./dev replay backend     Replay Opta-inspired JSON through the fake services
 ./dev reset backend      Reset synthetic match/history; keep saved profiles and pins
+./dev benchmark filters  Opt-in filter performance test (no models or network)
+./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
+./dev benchmark values   Opt-in cached value read benchmark
 ./dev status             Show this project's containers
 ./dev logs [service]     Show recent logs
 ./dev down               Stop this stack; keep SQL/Postgres volumes
@@ -81,6 +84,22 @@ case "${1:-help}" in
     else
       usage; exit 2
     fi
+    ;;
+  benchmark)
+    docker_ready
+    kind="${2:-filters}"
+    shift
+    if [[ $# -gt 0 ]]; then shift; fi
+    mkdir -p .local/benchmarks
+    case "$kind" in
+      filters) module=benchmarks.performance; extra=(--output /results/performance) ;;
+      agents) module=benchmarks.correctness; extra=(--agents --output /results/agents) ;;
+      values) module=benchmarks.value_reads; extra=(--output /results/performance/value-reads.json) ;;
+      *) echo "Choose filters, agents or values." >&2; exit 2 ;;
+    esac
+    compose run --rm --build --no-deps --user "$(id -u):$(id -g)" \
+      -v "$PWD/user-backend:/app:ro" -v "$PWD/data-generation:/data-generation:ro" \
+      -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
     ;;
   status) compose --profile azure --profile backend ps ;;
   reset)

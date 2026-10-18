@@ -78,9 +78,10 @@ class GenerateRule(Executor):
 
 
 class ValidateRule(Executor):
-    def __init__(self, harness, source):
+    def __init__(self, harness, source, max_repairs=3):
         super().__init__(id="validate_rule")
         self.harness, self.source = harness, source
+        self.max_repairs = max_repairs
 
     @handler
     async def handle(self, candidate: Candidate, ctx: WorkflowContext[CodingRequest, PlanOutcome]):
@@ -94,10 +95,10 @@ class ValidateRule(Executor):
             await ctx.yield_output(PlanOutcome(status="ready", source=self.source, goal=request.goal,
                                               rule=candidate.rule, attempts=request.attempt,
                                               message="Structured rule validated against the goal."))
-        elif candidate.retryable and request.attempt < 4:
+        elif candidate.retryable and request.attempt <= self.max_repairs:
             await ctx.send_message(CodingRequest(request.goal, request.match_id, request.attempt + 1, error))
         else:
-            message = ("Could not validate the calculation after three repairs." if candidate.retryable
+            message = (f"Could not validate the calculation after {self.max_repairs} repairs." if candidate.retryable
                        else "The model request was rejected. Check the local model configuration.")
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source, goal=request.goal,
                                               attempts=request.attempt, message=message))
