@@ -8,6 +8,7 @@ from contextlib import suppress
 from pydantic import ValidationError
 
 from backend.domain import RuleError
+from backend.agents.conversation import assistant_message
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 from backend.services.plan_conversations import PlanConversations
@@ -179,13 +180,7 @@ class FilterLabService:
                 if self.run_id != run_id:
                     raise RuleError("conversation_expired", "The match run changed. Start a new request.", 409)
                 if response.get("status") in {"ready", "clarification"}:
-                    clarification = response.get("clarification") or {}
-                    reply = clarification.get("question") or response.get("message") or "Please clarify your request."
-                    if clarification.get("options"):
-                        reply += "\nOptions:\n" + "\n".join(
-                            f"{index}. {option}" for index, option in enumerate(clarification["options"], 1))
-                    if response.get("status") == "ready" and response.get("goal"):
-                        reply = response["goal"]["description"]
+                    reply = assistant_message(response)
                     response["conversation_id"] = self.conversations.save(conversation_id, run_id, history, prompt, reply)
             return response
 

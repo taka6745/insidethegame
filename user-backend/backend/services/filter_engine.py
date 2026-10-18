@@ -88,8 +88,8 @@ class FilterEngine:
         identifier = rule.calculation_id
         if identifier in self._rules:
             return self.get(identifier)
-        # Decimal accumulation keeps streaming and backfill independent of float
-        # addition order (including subtracting a corrected measurement).
+        # Decimal avoids ordinary binary-float accumulation drift, but its
+        # precision is bounded; see docs/filter-engine-design.md for the contract.
         value = sum((Decimal(str(rule.contribution(e))) for e in self._events.values()), Decimal(0))
         self._rules[identifier] = rule
         self._totals[identifier] = value

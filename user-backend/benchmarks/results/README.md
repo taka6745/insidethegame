@@ -82,3 +82,5 @@ This is one model run with bounded timeouts, not proof of language-understanding
 [Run the harness](../README.md) · [Raw performance results](performance.json)
 
 **Follow-up measurements:** [Agent interpretation and clarification improvements](agents-improved.md) · [Filter optimisation comparison](optimization.md). Original measurements above remain unchanged.
+
+[Balanced wording and clarification evaluation](agents-balanced.md): 30 matched intents in three wording bands, plus 10 unsupported controls.

@@ -43,8 +43,10 @@ The generated rules use actual player/event/period combinations from the saved G
 
 | Workload | What it measures |
 | --- | --- |
-| Selective | Player + event + half indexes narrow candidate sets; remaining time conditions are evaluated. |
-| Overlapping | Time-only rules share the wildcard bucket; every event is a candidate for every rule. |
+| Selective | Player + event + half indexes select predicate families, then the clock index selects matching windows. |
+| Overlapping | Time-only rules share a predicate family; the clock index skips inactive windows. Every actually changed result still needs an update and output record. |
+
+See [index invariants and actual complexity](../docs/filter-engine-design.md): 64 categorical probes are only lookup overhead, not the cost of processing all candidates or emitting and sorting changed results.
 
 Sizes: **100, 1k, 10k, 100k, 1m, 10m, 100m**. Each size runs in a fresh subprocess. Defaults: 30-second build limit, 20-second replay limit, 1 GiB RSS ceiling and a 5-minute suite deadline. A parent watchdog kills hung/oversized workers. If a smaller tier reaches a limit, larger tiers are explicitly **unmeasured**, not extrapolated as successful. A replay limit produces timings for the measured prefix, with its event count and `full_match=false`; short prefixes may not represent the whole game. `--event-order spread` uses a fixed-seed permutation spanning the recording; it requires unique event IDs and is only for performance sampling, not chronological or correction-feed validation.
 
@@ -91,3 +93,28 @@ that the rule preserves the interpreted goal; the independent gold evaluation
 checks whether that interpretation matches the request.** Neither proves model
 accuracy for unseen users. A clearer corpus is reported separately from a
 same-corpus comparison; it cannot replace the original score.
+
+### Balanced wording and user feedback
+
+```sh
+./dev benchmark agents --cohort balanced --concurrency 2 --case-timeout 60 --suite-timeout 1200
+PYTHONPATH=user-backend python -m benchmarks.check_conversation_runner
+```
+
+`balanced` matches **30 gold intents across clear, average and poor wording**
+(90 stat requests) plus 10 unsupported controls. Each request has two prepared
+natural user replies, sent only if the agent asks for clarification. Truly
+ambiguous cases must ask first: a lucky guess does not pass. Replies never expose
+expected values, fixture events or the filter DSL. There is no runtime tuning
+based on this frozen cohort.
+
+The report separates immediate correct stats, correct clarification decisions,
+correct final results after feedback, unnecessary questions, unsafe guesses,
+wrong values/constraints, timeouts and per-turn latency. Controls stay separate.
+Cases and full transcripts are inspectable; old cohorts remain unchanged.
+
+```sh
+PYTHONPATH=user-backend python -m benchmarks.report_balanced --input .local/benchmarks/agents-balanced/report.json
+```
+
+[Measured balanced-cohort results](results/agents-balanced.md): matched wording bands, scripted feedback, complete traces and remaining misses.
