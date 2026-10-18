@@ -4,7 +4,17 @@
 
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
-**Planned service.** Owns profiles, sessions, questions, stat cards and narrative routing. It does not generate the shared game narrative.
+**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres and fake upstream services. Questions and real agent integrations are still to build. This service does not generate the shared game narrative.
+
+```sh
+./dev up backend
+./dev reset backend
+./dev replay backend
+```
+
+[API explorer](http://localhost:18000/docs) · [Test coverage](docs/testing.md) · [Synthetic match](fixtures/README.md)
+
+The diagram and components below describe the target architecture; the [development guide](docs/development.md) separates implemented behaviour from fixtures.
 
 | Component | Role |
 | --- | --- |
@@ -15,7 +25,7 @@
 
 **Read:** live events from Event Hubs; historical events and computed stats from ETL GraphQL; narrative history from narrative GraphQL; new narratives and stat-selection instructions through Service Bus.
 
-**Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Publish active-bucket presence changes for the narrative engine; questions never drive narrative generation.
+**Deliver:** answers, stat values and existing bucket narratives through the API and one live connection per session. Audience-presence feedback is an [open design question](../narrative-engine/design-notes.md#open-question-audience-presence); questions never drive narrative generation.
 
 Custom stats follow **goal → write → test → calculate → optional pin**. Allow up to three repairs. Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 

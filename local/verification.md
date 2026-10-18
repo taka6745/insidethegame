@@ -19,3 +19,11 @@ Machine: Apple Silicon macOS, Docker Engine 29.7.2, Compose 5.5.1. Existing unre
 These checks exercise actual local containers. They do **not** validate the Stream Analytics job, real Foundry models, application services, frontend, generated-code isolation or a cloud deployment. Terraform's mock-provider checks are also separate from runtime integration.
 
 Re-run the commands on a new machine. Emulator behaviour differs from Azure; in particular messages/state, identity, throughput and resource-management APIs are not cloud-equivalent.
+
+## User-backend harness — 2026-10-18
+
+`./dev up backend` built and started the API, fake ETL and fake narrative services against the existing local Postgres. **39 tests passed**, including all 12 buckets, real database persistence/concurrent pins, session takeover, repeated socket disconnects, stat replacement, event corrections and the coding-agent repair contract.
+
+The separate live smoke test replayed the JSONL through both fake services, read their GraphQL APIs and checked the backend WebSocket. It verified header count **4**, Chelsea goals **1**, United goals **0** after VAR, only the matching bucket narrative, duplicate-event protection and retained pins after session takeover. Tests use synthetic data; no model or Azure account was used.
+
+One non-failing dependency warning: Starlette deprecates its HTTPX-based test client in favour of HTTPX2. The current pinned direct dependencies passed. Real agents, generated-code execution, production broker consumers and Azure deployment remain unverified/unimplemented; see [coverage limits](../user-backend/docs/testing.md).

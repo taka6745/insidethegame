@@ -15,6 +15,9 @@ First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start co
 | Notifications | Microsoft Service Bus emulator | AMQP `localhost:15673` |
 | Match history | SQL Server 2022 Developer | `localhost:11433` |
 | Match GraphQL | Real Data API builder | `http://localhost:15000/graphql` |
+| User backend (`backend` profile) | FastAPI + WebSocket harness | `http://localhost:18000/docs` |
+| Fake ETL (`backend` profile) | Synthetic events/history/stats | `http://localhost:18010/graphql` |
+| Fake narrative (`backend` profile) | Prewritten bucket history | `http://localhost:18011/graphql` |
 
 Inside Docker use service names and native ports: `postgres:5432`, `cosmos:8081`, `eventhubs:5672`, `servicebus:5672`, `sql:1433`, `graphql:5000`. Example SDK settings are in [settings.py](settings.py); all credentials there are **public local dummy values**, never cloud credentials. Cosmos uses HTTP for local Python development. Host clients must use the mapped ports above.
 
@@ -29,6 +32,10 @@ curl http://localhost:15000/graphql \
 Only loopback ports are published. Existing projects on ports 3000, 5432 and 4566 are untouched. Avoid exposing this unauthenticated demo stack to a network.
 
 ## What tests prove
+
+`./dev up backend` builds the API and separate fake upstream services, then runs the real-Postgres test suite and a network smoke test. `./dev test backend` repeats those checks. `./dev reset backend` clears synthetic upstream state while keeping database preferences/pins; `./dev replay backend` streams the [Opta-inspired scenario](../user-backend/fixtures/README.md). [Backend walkthrough](../user-backend/docs/development.md).
+
+This profile uses lightweight HTTP notifications and fake GraphQL, not the Azure emulators below. It needs no cloud account or emulator licence acceptance. It does not validate production broker consumers.
 
 `./dev test`: three demo profiles, two Postgres databases, Cosmos document write/read/delete. Creates narrative containers if absent.
 

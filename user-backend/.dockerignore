@@ -1,0 +1,7 @@
+*
+!requirements*.txt
+!backend/**
+!migrations/**
+!fixtures/**
+!tests/**
+!pytest.ini

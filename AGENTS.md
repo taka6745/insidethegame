@@ -1,6 +1,6 @@
 # Working in InsideTheGame
 
-This is a design-stage hackathon application. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`. Read each service's README before changing it.
+This hackathon application has a runnable user-backend fixture harness and planned upstream services. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`. Read each service's README before changing it.
 
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
@@ -22,9 +22,11 @@ Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development
 - `./dev doctor`: Docker/Compose preflight. `./dev up` starts Postgres + Cosmos and runs checks; `./dev test` reruns them.
 - `ACCEPT_EULA=Y ./dev up azure` / `./dev test azure`: Microsoft emulators, SQL and DAB. Only set EULA acceptance with the developer's consent; see `local/README.md`.
 - `./dev terraform check`: format/schema validation and mock-provider tests in Docker; no real Azure calls.
+- `./dev up backend` / `./dev test backend`: real-Postgres API tests plus live replay across separate fake ETL/narrative services and the backend. See `user-backend/docs/testing.md`.
+- `./dev reset backend` / `./dev replay backend`: reset synthetic upstream state (preserving pins/preferences), then replay Opta-inspired events and prewritten narratives. These use HTTP test notifications, not the production brokers.
 - `./dev down`: stops only this Compose project, preserving SQL/Postgres volumes.
 - `python3 .github/scripts/render_architecture.py` and `python3 .github/scripts/render_development.py`: regenerate SVGs; visually inspect.
 
-Local fixtures are explicit test inputs, not an ETL or LLM implementation. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup. No application test commands exist yet; add them with actual code.
+Local fixtures are explicit test inputs, not a production ETL or LLM implementation. Never execute generated code inside the API; the current coding harness uses test doubles, and an isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate; the Terraform foundation still needs networking, identities, actual service images and ASA configuration. Do not run cloud apply as part of local setup.
 
 Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. No CI or scheduled scraping is configured for the new layout.

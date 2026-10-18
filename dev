@@ -12,16 +12,26 @@ docker_ready() {
   docker compose version >/dev/null 2>&1 || { echo "Install the Docker Compose plugin, then retry." >&2; exit 1; }
 }
 check_mode() {
-  case "${1:-base}" in base|azure) ;; *) echo "Choose base or azure." >&2; exit 2 ;; esac
+  case "${1:-base}" in base|azure|backend) ;; *) echo "Choose base, azure or backend." >&2; exit 2 ;; esac
 }
-check() { compose run --rm --build --no-deps tools python local/check.py "$1"; }
+check() {
+  if [[ "$1" == backend ]]; then
+    compose run --rm --build --no-deps backend-tests
+    compose run --rm --no-deps backend-tests python -m backend.smoke
+  else
+    compose run --rm --build --no-deps tools python local/check.py "$1"
+  fi
+}
 usage() {
   cat <<'EOF'
 ./dev doctor             Check Docker before first setup
 ./dev up                 Start + check Postgres and Cosmos (no accounts)
 ./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
-./dev test [azure]       Test real local dependency round trips
+./dev up backend         Build + test the backend with fake ETL/narratives and Postgres
+./dev test [azure|backend] Test dependencies or backend behaviour + live replay
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
+./dev replay backend     Replay Opta-inspired JSON through the fake services
+./dev reset backend      Reset synthetic match/history; keep saved profiles and pins
 ./dev status             Show this project's containers
 ./dev logs [service]     Show recent logs
 ./dev down               Stop this stack; keep SQL/Postgres volumes
@@ -38,13 +48,15 @@ case "${1:-help}" in
     docker version --format 'Docker engine: {{.Server.Version}}'
     docker compose version
     docker info --format 'Docker CPU: {{.Architecture}}; available memory: {{.MemTotal}} bytes'
-    compose --profile azure config --quiet
+    compose --profile azure --profile backend config --quiet
     echo "Docker and Compose configuration are ready. First startup checks actual service connectivity."
     ;;
   up)
     check_mode "${2:-base}"
     docker_ready
-    if [[ "${2:-}" == azure ]]; then
+    if [[ "${2:-}" == backend ]]; then
+      compose --profile backend up -d --build --wait --wait-timeout 120 backend
+    elif [[ "${2:-}" == azure ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
       compose --profile azure up -d
     else
@@ -58,11 +70,24 @@ case "${1:-help}" in
     check "${2:-base}"
     ;;
   replay)
-    compose run --rm --build --no-deps tools python local/replay.py
+    docker_ready
+    if [[ "${2:-}" == backend ]]; then
+      shift 2
+      compose run --rm --no-deps backend python -m backend.replay "$@"
+    elif [[ -z "${2:-}" ]]; then
+      compose run --rm --build --no-deps tools python local/replay.py
+    else
+      usage; exit 2
+    fi
     ;;
-  status) compose --profile azure ps ;;
-  logs) shift; compose --profile azure logs --tail 60 "$@" ;;
-  down) compose --profile azure down ;;
+  status) compose --profile azure --profile backend ps ;;
+  reset)
+    [[ "${2:-}" == backend ]] || { usage; exit 2; }
+    docker_ready
+    compose --profile backend up -d --no-deps --force-recreate --wait --wait-timeout 120 fake-etl fake-narrative backend
+    ;;
+  logs) shift; compose --profile azure --profile backend logs --tail 60 "$@" ;;
+  down) compose --profile azure --profile backend down ;;
   terraform)
     [[ "${2:-}" == check ]] || { usage; exit 2; }
     docker_ready
