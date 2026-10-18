@@ -24,6 +24,7 @@ LOCAL_LLM_API_KEY=<local credential if required>
 LOCAL_LLM_TIMEOUT_SECONDS=60
 AGENT_PLAN_TIMEOUT_SECONDS=60
 AGENT_MAX_REPAIRS=3
+AGENT_GOAL_OUTPUT_MODE=prompt
 ```
 
 Never commit this file or log its contents. The model/chain choice is configuration; the adapter neither chooses providers nor changes server routing. Switch back to `fixture` to work without a model server. Restart the backend after changing environment values.
@@ -42,7 +43,21 @@ Goal definition retries once for transient failures or invalid output. Coding al
 
 The goal schema enumerates supported events and outcomes; feed semantics define headed contacts, shot attempts, half boundaries and strict/inclusive time windows. `PlanOutcome` reports model-call count and stage timings. These help diagnose latency; goal validation still does not prove the user’s meaning was understood. The separate evaluation checks known intentions and values independently.
 
-The model-facing contract inlines schema references and omits titles/default annotations while preserving types, enums, bounds and required fields. Four decision shapes make nesting explicit. `goal_failure_reasons` records safe retry categories (such as `goal_schema`), never rejected output or provider error text. A timeout leaves these diagnostics `null` when the workflow cannot recover them. Compilation and validation still use the same typed domain models.
+In default `prompt` mode, the model-facing contract inlines schema references and omits titles/default annotations while preserving types, enums, bounds and required fields. Four decision shapes make nesting explicit. `goal_failure_reasons` records safe retry categories; `goal_validation_errors` adds bounded attempt/field-path/error-type details, masking unknown extra keys. Neither records rejected values or provider error text. A timeout leaves these diagnostics `null` when the workflow cannot recover them.
+
+Optional **`AGENT_GOAL_OUTPUT_MODE=schema`** passes the generated JSON Schema through Microsoft Agent Framework's [`response_format` option](https://learn.microsoft.com/en-us/agent-framework/agents/structured-outputs). The SDK requests strict JSON output; the same schema goes in model context. Each response must also pass strict local JSON-type validation and the existing cross-field checks. Provider rejection stays visible; there is no automatic downgrade. Keep `prompt` as the default until the chosen route supports the complete contract reliably. A simple schema canary is insufficient: routes may accept a small schema but reject or ignore a larger one.
+
+```text
+Typed Goal / Clarification models
+        ↓ generated contract
+SDK response_format + model context → strict local validation
+                                             ↓
+                                    goal → compiler → rule checks
+```
+
+The schema is generated from the current typed models, not maintained as a second hand-written list. Changing a field updates the contract on the next process start; tests check new fields, bounds, defaults and inherited validators. Every strict wire field is required: `[]` means unrestricted arrays, `null` means unused nullable constraints. Contract/prompt hashes in evaluations identify the exact version tested. Deploy code and contract together and rerun the relevant gold cases and provider compatibility checks. Future nested model fields and arbitrary-key maps fail contract construction until explicitly supported, preventing provider/local validation drift. New operators still need compiler/executor support and tests; changing a schema alone cannot add a capability. Vendor feed-key changes belong in the event adapter, which preserves the internal event model.
+
+**A valid schema does not prove correct meaning.** A model can emit a perfectly valid first-half restriction the viewer never requested. Keep semantic gold tests, clarification checks and model-strength comparisons separate from format checks. [Measured schema study](../benchmarks/results/schema-study.md).
 
 For model selection, use the [pinned-model comparison](../benchmarks/README.md#compare-pinned-models-and-prompt-variants). It checks reported model identities, prompt/schema hashes, clarification outcomes, tokens and latency. A fallback chain is not a fixed model; a provider's model name is evidence of routing, not independent verification of its weights. Keep routing choices in the ignored configuration and inspect the [measured comparison](../benchmarks/results/model-strength.md) before choosing a smaller model.
 

@@ -1,0 +1,38 @@
+[
+  {
+    "model": "llama-3.1-8b",
+    "mode": "prompt",
+    "status": 200,
+    "returned_model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+    "error_categories": []
+  },
+  {
+    "model": "llama-3.1-8b",
+    "mode": "schema",
+    "status": 429,
+    "returned_model": null,
+    "error_categories": [
+      "schema",
+      "cooldown"
+    ]
+  },
+  {
+    "model": "dots-studio/dots-3-note-preview:free",
+    "mode": "prompt",
+    "status": 200,
+    "returned_model": "dots-studio/dots-3-note-preview:free",
+    "error_categories": []
+  },
+  {
+    "model": "dots-studio/dots-3-note-preview:free",
+    "mode": "schema",
+    "status": 429,
+    "returned_model": null,
+    "error_categories": [
+      "rate limit",
+      "response_format",
+      "cooldown",
+      "exhaust"
+    ]
+  }
+]

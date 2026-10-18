@@ -4,6 +4,7 @@ import time
 from dataclasses import dataclass, replace
 
 from agent_framework import Executor, WorkflowContext, handler
+from pydantic import ValidationError
 
 from backend.adapters.llm import ModelError
 from backend.models.rules import Rule
@@ -27,6 +28,7 @@ class CodingRequest:
     model_calls: int = 0
     coding_seconds: float = 0
     goal_failure_reasons: tuple[str, ...] = ()
+    goal_validation_errors: tuple[dict, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -50,16 +52,24 @@ class DefineGoal(Executor):
         decision = unresolved_player(request.prompt, context)
         calls = 0
         failures = []
+        validation_errors = []
         for attempt in range(0 if decision is not None else 2):
             try:
                 calls += int(hasattr(self.agent, "model"))
                 decision = await self.agent.define(request.prompt, context)
                 break
             except (ModelError, ValueError) as exc:
-                if hasattr(exc, "errors"):
-                    context["goal_validation_errors"] = [
-                        {"path": ".".join(str(part) for part in error["loc"]), "type": error["type"]}
-                        for error in exc.errors()][:12]
+                if isinstance(exc, ValidationError):
+                    safe_errors = []
+                    for error in exc.errors(include_url=False, include_context=False, include_input=False)[:12]:
+                        location = list(error["loc"])
+                        # Unknown keys are model output too; do not publish their contents.
+                        if error["type"] == "extra_forbidden" and location:
+                            location[-1] = "<extra>"
+                        safe_errors.append({"path": ".".join(str(part) for part in location)[:256],
+                                            "type": error["type"]})
+                    context["goal_validation_errors"] = safe_errors
+                    validation_errors.extend({"attempt": attempt + 1, **error} for error in safe_errors)
                 reason = exc.reason if isinstance(exc, ModelError) else "goal_schema"
                 failures.append(reason)
                 logging.getLogger(__name__).warning("Goal definition failed: reason=%s attempt=%s", reason, attempt + 1)
@@ -69,15 +79,16 @@ class DefineGoal(Executor):
         if decision is None:
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source,
                                               model_calls=calls, stage_seconds={"goal": seconds},
-                                              goal_failure_reasons=failures,
+                                              goal_failure_reasons=failures, goal_validation_errors=validation_errors,
                                               message="Could not define a validated goal. Please try again."))
         elif decision.status != "custom":
             await ctx.yield_output(PlanOutcome(status=decision.status, source=self.source, goal=decision.goal,
                                               standard_stat_id=decision.standard_stat_id, clarification=decision.clarification, message=decision.message,
-                                              model_calls=calls, goal_failure_reasons=failures, stage_seconds={"goal": seconds}))
+                                              model_calls=calls, goal_failure_reasons=failures, goal_validation_errors=validation_errors, stage_seconds={"goal": seconds}))
         else:
             await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"], goal_seconds=seconds,
-                                                 model_calls=calls, goal_failure_reasons=tuple(failures)))
+                                                 model_calls=calls, goal_failure_reasons=tuple(failures),
+                                                 goal_validation_errors=tuple(validation_errors)))
 
 
 class GenerateRule(Executor):
@@ -124,6 +135,7 @@ class ValidateRule(Executor):
                                               rule=candidate.rule, attempts=request.attempt,
                                               model_calls=request.model_calls, stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)},
                                               goal_failure_reasons=list(request.goal_failure_reasons),
+                                              goal_validation_errors=list(request.goal_validation_errors),
                                               message="Structured rule validated against the goal."))
         elif candidate.retryable and request.attempt <= self.max_repairs:
             await ctx.send_message(replace(request, attempt=request.attempt + 1, feedback=error, coding_seconds=coding_seconds))
@@ -133,4 +145,5 @@ class ValidateRule(Executor):
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source, goal=request.goal,
                                               attempts=request.attempt, message=message, model_calls=request.model_calls,
                                               goal_failure_reasons=list(request.goal_failure_reasons),
+                                              goal_validation_errors=list(request.goal_validation_errors),
                                               stage_seconds={"goal": request.goal_seconds, "compile_validate": round(coding_seconds, 3)}))

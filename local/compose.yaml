@@ -116,6 +116,7 @@ services:
         required: false
     environment: &backend-env
       AGENT_MAX_REPAIRS: ${AGENT_MAX_REPAIRS:-3}
+      AGENT_GOAL_OUTPUT_MODE: ${AGENT_GOAL_OUTPUT_MODE:-prompt}
       AGENT_PLAN_TIMEOUT_SECONDS: ${AGENT_PLAN_TIMEOUT_SECONDS:-60}
       BACKEND_MODE: fixture
       ENABLE_DEV_FEED: "1"

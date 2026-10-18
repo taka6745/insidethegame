@@ -138,12 +138,18 @@ PYTHONPATH=user-backend python -m benchmarks.model_strength \
 ```
 
 Use repeatable `--case-id` or `--limit` for screening. Select `--variants current`
-for a confirmation run, or retain both variants by default.
+for a confirmation run, retain baseline/current by default, or use
+`--variants current schema` to compare prompt instructions with strict structured
+output. Schema mode sends the generated contract in both the protocol and model
+context and validates JSON types locally. It requires a compatible route and
+never silently falls back to prompt mode. The observer records `response_format`,
+`strict_requested` and the wire-schema hash; these prove what was requested, not
+that the provider constrained decoding.
 `--candidate-prompt path/to/frozen.txt` overrides only current instructions and
 keeps the compact schema; it is read once at suite start, with its hash recorded.
 This allows a saved candidate to be rerun after runtime instructions change. Models run sequentially;
 within each case, baseline/current order alternates. The frozen
-[prompt baseline](prompts/goal-baseline.txt) uses the original schema, while the
+[prompt baseline](prompts/goal-baseline.txt) uses its [frozen original schema](prompts/goal-baseline.schema.json), while the
 current variant uses the current instructions and compact schema. This compares
 both changes together, not their individual effects. The timeout is **per user
 turn**; at most two scripted clarification replies are allowed, with an overall

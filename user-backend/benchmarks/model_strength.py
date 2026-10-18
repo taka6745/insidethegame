@@ -21,6 +21,7 @@ from .correctness import COHORTS, FIXTURE, evaluate_rule, gold_check
 from .model_observer import ModelObserver, digest, pin_verification
 
 BASELINE = Path(__file__).with_name('prompts') / 'goal-baseline.txt'
+BASELINE_SCHEMA = BASELINE.with_suffix('.schema.json')
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -55,7 +56,7 @@ def load_models(path):
 
 
 def variant_order(case_index, variants=('baseline', 'current')):
-    ordered = ('baseline', 'current') if case_index % 2 == 0 else ('current', 'baseline')
+    ordered = ('baseline', 'current', 'schema') if case_index % 2 == 0 else ('schema', 'current', 'baseline')
     return tuple(variant for variant in ordered if variant in variants)
 
 
@@ -68,6 +69,9 @@ def build_workflow(model_config, variant, case_timeout, observer, candidate_inst
                           transport=observer, name='model_comparison_goal')
     if variant == 'baseline':
         agent = GoalAgent(model, instructions=BASELINE.read_text(), compact_contract=False)
+        agent.schema = json.loads(BASELINE_SCHEMA.read_text())
+    elif variant == 'schema':
+        agent = GoalAgent(model, response_mode='schema')
     elif candidate_instructions is not None:
         agent = GoalAgent(model, instructions=candidate_instructions, compact_contract=True)
     else:
@@ -173,7 +177,7 @@ def main():
     parser.add_argument('--env-file', type=Path)
     parser.add_argument('--cohort', choices=['balanced', 'baseline', 'transfer'], default='balanced')
     parser.add_argument('--case-id', action='append')
-    parser.add_argument('--variants', nargs='+', choices=['baseline', 'current'], default=['baseline', 'current'])
+    parser.add_argument('--variants', nargs='+', choices=['baseline', 'current', 'schema'], default=['baseline', 'current'])
     parser.add_argument('--candidate-prompt', type=Path, help='Override current instructions; retain compact schema')
     parser.add_argument('--limit', type=int)
     parser.add_argument('--concurrency', type=int, choices=range(1, 9), default=2)

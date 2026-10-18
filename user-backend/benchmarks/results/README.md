@@ -86,3 +86,5 @@ This is one model run with bounded timeouts, not proof of language-understanding
 [Balanced wording and clarification evaluation](agents-balanced.md): 30 matched intents in three wording bands, plus 10 unsupported controls.
 
 [Model strength and prompt comparison](model-strength.md): pinned model groups, shorter contracts, response identity checks and a separate transfer cohort.
+
+[Schema and failure diagnosis](schema-study.md): strict structured output, schema evolution, semantic mistakes and route availability.
