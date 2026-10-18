@@ -256,3 +256,11 @@ test("failed answers stop loading and empty-state refresh preserves its DOM", ()
   view.render({ turns: [{ id: "one", prompt: "Shots?", status: "failed" }] });
   assert.equal(view.get("chat-messages").querySelector(".answer-waiting"), null);
 });
+
+test("Insights renders upstream narrative wording unchanged as text", () => {
+  const view = new MatchView(documentStub());
+  const text = "Five corners since the break give Chelsea chances to threaten. <No rewrite>";
+  const article = view.narrative({ clock_seconds: 4260, text });
+  assert.equal(article.children[0].textContent, "71:00");
+  assert.equal(article.children[1].textContent, text);
+});
