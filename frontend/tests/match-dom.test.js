@@ -213,32 +213,18 @@ test("match view presents resumable replay controls for a restored partial run",
   );
 });
 
-test("event feed prefers roster display names and safely falls back for unknown identities", () => {
-  const document = documentStub(),
-    view = new MatchView(document);
-  const event = {
-    event_id: "shot",
-    event_type: "shot",
-    match_time_seconds: 100,
-    team_id: "manutd",
-    player_id: "bruno",
-    player_name: "Bruno Fernandes",
-    team_name: "Manchester United",
+test("match snapshots do not render the developer event feed", () => {
+  const document = documentStub(), view = new MatchView(document);
+  const get = document.getElementById;
+  document.getElementById = (id) => {
+    assert.ok(!["events", "event-title", "event-detail", "event-count"].includes(id));
+    return get(id);
   };
-  const named = view.event(event);
-  assert.equal(named.children[2].textContent, "Shot · Bruno Fernandes");
-  assert.equal(named.children[3].textContent, "Manchester United");
-  const unknown = view.event({ ...event, player_name: null, team_name: null });
-  assert.equal(unknown.children[2].textContent, "Shot · Bruno");
-  assert.equal(unknown.children[3].textContent, "Manutd");
-  const unsafe = view.event({
-    ...event,
-    player_name: "<img src=x onerror=alert(1)>",
+  view.render({
+    match: { status: "running", position: 1, total: 35, teams: [], clock_seconds: 120 },
+    bucket: "neutral:casual", cards: [], narratives: [],
+    events: [{ event_type: "shot", event_id: "one", match_time_seconds: 120 }],
   });
-  assert.equal(
-    unsafe.children[2].textContent,
-    "Shot · <img src=x onerror=alert(1)>",
-  );
 });
 
 test("answer reveal runs on completion, not restored history or pin changes", () => {

@@ -33,13 +33,38 @@ def test_product_uses_same_match_and_maps_relative_profile(store):
         snapshot = data['snapshot']
         assert snapshot['match']['id'] == data['match_id'] == lab.source.match_id
         assert snapshot['bucket'] == 'chelsea:analytical'
-        assert [c['id'] for c in snapshot['cards']] == ['chelsea:goals', 'chelsea:shots', 'chelsea:corners']
+        assert [c['id'] for c in snapshot['cards']] == ['chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:cards']
         assert all(c['value'] == 0 for c in snapshot['cards'])
         profiles = client.get('/product/profiles').json()['profiles']
         away = next(p for p in profiles if p['id'] == 'united-casual')
         assert away['team'] == 'madrid' and 'Madrid' in away['display_name']
         reply = ask(client, data['session_token'], 'what is offside')
         assert reply['snapshot']['run_id'] == data['run_id']
+
+
+def test_all_five_standard_values_are_passed_through_from_etl(store):
+    _, questions, _, app = product(store)
+    original = questions.match_data.stats
+
+    async def supplied_values(snapshot):
+        result = await original(snapshot)
+        for index, stat in enumerate(result['stats']):
+            stat['value'] = 1000 + index
+        return result
+
+    async def no_event_search(*args, **kwargs):
+        raise AssertionError('Standard cards must not search event history')
+
+    questions.match_data.stats = supplied_values
+    questions.match_data.events = no_event_search
+    with TestClient(app) as client:
+        data = start(client)
+        supplied = {stat['id']: stat['value'] for stat in app.state.product.shared['stats']}
+        assert len(data['snapshot']['cards']) == 5
+        assert all(card['value'] == supplied[card['id']] >= 1000
+                   for card in data['snapshot']['cards'])
+        restored = client.get(f'/product/{data["session_token"]}').json()
+        assert restored['snapshot']['cards'] == data['snapshot']['cards']
 
 
 def test_pins_are_durable_private_and_restore_standard_slot(store):
@@ -51,8 +76,10 @@ def test_pins_are_durable_private_and_restore_standard_slot(store):
         offer = reply['offers'][0]
         response = client.post(f'/product/{token}/offers/{offer["id"]}/track').json()
         calculation = response['calculation']['id']
-        assert [c['kind'] for c in response['snapshot']['cards']] == ['standard', 'standard', 'custom']
+        assert [c['kind'] for c in response['snapshot']['cards']] == ['standard'] * 4 + ['custom']
         assert response['snapshot']['cards'][-1]['value'] == 0
+        assert [c['id'] for c in response['snapshot']['cards'][:-1]] == [
+            'chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes']
         for _ in range(len(lab.source.events)):
             client.portal.call(lab.advance)
         client.portal.call(app.state.product.refresh)
@@ -65,7 +92,7 @@ def test_pins_are_durable_private_and_restore_standard_slot(store):
         restored = start(client)
         assert restored['snapshot']['cards'][-1]['id'] == calculation
         unpin = client.delete(f'/product/{restored["session_token"]}/pins/{calculation}').json()
-        assert len(unpin['snapshot']['cards']) == 3
+        assert len(unpin['snapshot']['cards']) == 5
         assert all(c['kind'] == 'standard' for c in unpin['snapshot']['cards'])
 
 
@@ -141,7 +168,7 @@ def test_product_pin_limit_and_duplicate_tracking(store):
         token = start(client)['session_token']
         # Valid offers from deterministic calculation, independent of model wording.
         offers = []
-        for i, kind in enumerate(('pass','shot','corner','save')):
+        for i, kind in enumerate(('pass','shot','corner','save','tackle','clearance')):
             rule = Rule.model_validate({'match_id': lab.source.match_id, 'operation': 'count',
                 'predicates': [{'field': 'event_type', 'op': 'eq', 'value': kind}]})
             turn = questions.repository.begin(token, uuid4(), f'Test {i}')
@@ -149,13 +176,13 @@ def test_product_pin_limit_and_duplicate_tracking(store):
                      'label': kind, 'value': 0}
             questions.repository.finish(token, turn['id'], {'status':'answer','text': kind,'offers':[offer]})
             offers.append(offer)
-        for offer in offers[:3]:
+        for offer in offers[:5]:
             response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
             assert response.status_code == 200, response.text
         assert client.post(f'/product/{token}/offers/{offers[0]["id"]}/track').status_code == 200
-        fourth = client.post(f'/product/{token}/offers/{offers[3]["id"]}/track')
-        assert fourth.status_code == 409 and fourth.json()['code'] == 'cards_full'
-        assert lab.engine.count == 3
+        sixth = client.post(f'/product/{token}/offers/{offers[5]["id"]}/track')
+        assert sixth.status_code == 409 and sixth.json()['code'] == 'cards_full'
+        assert lab.engine.count == 5
 
 
 def test_viewer_projection_does_not_evict_question_snapshot(store):
@@ -182,8 +209,8 @@ def test_upstream_audience_style_and_period_are_preserved(store):
         b = client.get(f'/product/{simple["session_token"]}').json()['snapshot']
         assert a['narratives'][-1]['text'] != b['narratives'][-1]['text']
         assert a['narratives'][-1]['period'] == b['narratives'][-1]['period'] == 2
-        assert [c['id'] for c in a['cards']] == ['chelsea:shots', 'chelsea:corners', 'chelsea:passes']
-        assert [c['id'] for c in b['cards']] == ['all:goals', 'all:cards', 'all:shots']
+        assert [c['id'] for c in a['cards']] == ['chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:goals', 'chelsea:cards']
+        assert [c['id'] for c in b['cards']] == ['all:goals', 'all:cards', 'all:shots', 'all:corners', 'all:passes']
 
 
 def test_projection_failure_invalidates_live_cache(store):

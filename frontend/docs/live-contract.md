@@ -25,7 +25,7 @@ flowchart LR
 | Remove custom pin | `DELETE /{token}/pins/{calculation_id}` |
 | Select fresh Chelsea–United demo | `POST /demo/reset` (development only) |
 
-The socket sends bounded snapshots with `projection_epoch`, monotonic `version`, match/run identity, profile/bucket, three cards, recent events and narrative backlog. An epoch changes on server restart. Clients reject older/equal revisions within an epoch and ignore late responses from retired epochs. Heartbeats only refresh liveness, not the DOM. Reconnect restores an authoritative snapshot; no unbounded client delta queue is retained.
+The socket sends bounded snapshots with `projection_epoch`, monotonic `version`, match/run identity, profile/bucket, five cards, recent events and narrative backlog. An epoch changes on server restart. Clients reject older/equal revisions within an epoch and ignore late responses from retired epochs. Heartbeats only refresh liveness, not the DOM. Reconnect restores an authoritative snapshot; no unbounded client delta queue is retained.
 
 A new session for the same profile ends the previous connection. Closing a connection does not erase its chat or pins. Session tokens stay in tab-scoped storage. These are demo sessions, not real authentication or a production identity system.
 
@@ -35,4 +35,4 @@ One committed replay change triggers one shared projection read, not a query for
 
 The local projection bridge uploads the observed event prefix to fake upstream services; this is deliberately replaceable development plumbing. It is not the production event ingestion path. Production needs incremental broker ingestion, durable match-owner recovery, authenticated session ownership and managed fan-out. Azure Web PubSub is a possible delivery adapter; it is not currently deployed. [Backend scaling plan](../../user-backend/docs/scaling.md).
 
-Browser state is bounded (60 received events, 40 narratives, 50 rendered chat turns, three cards). It coalesces rendering to animation frames and retains unchanged nodes. Server queues are bounded and slow peers reconnect. Limits bound work; they do not establish a viewer-capacity number.
+Browser state is bounded (60 received events, 40 narratives, 50 rendered chat turns, five cards). It coalesces rendering to animation frames and retains unchanged nodes. Server queues are bounded and slow peers reconnect. Limits bound work; they do not establish a viewer-capacity number.

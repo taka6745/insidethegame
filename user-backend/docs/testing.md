@@ -4,7 +4,8 @@ Run **`./dev up backend`**, then **`./dev test backend`** after changes. No mode
 
 | Check | Evidence |
 | --- | --- |
-| Profiles / buckets | All 12 combinations return matching history and three cards |
+| Foundation profiles / buckets | All 12 combinations return matching history and three legacy-harness cards |
+| Product viewer | Five ETL-backed cards; custom tracking replaces the lowest-priority default and untracking restores it |
 | Pins | Lowest-priority default replaced; unpin restores current default; full custom cards require explicit replacement |
 | Persistence / concurrency | Real Postgres, isolated schema per test; concurrent pins and reconnect preserve state |
 | Sessions | New session revokes HTTP token and closes old socket; one socket per token |

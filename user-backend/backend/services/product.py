@@ -13,7 +13,7 @@ from .live_viewers import LiveViewers
 
 
 class ProductService:
-    slots = 3
+    slots = 5
 
     def __init__(self, questions, lab):
         self.questions, self.lab = questions, lab
@@ -146,7 +146,7 @@ class ProductService:
         custom = [{**shared['calculations'][identifier], 'kind': 'custom'} for identifier in pins if identifier in shared['calculations']]
         # The fake narrative service owns the ordered approved-stat recommendation.
         stat_ids = next((n['stat_ids'] for n in reversed(shared['narratives']) if bucket in n['buckets']),
-                        [f"{support if support != 'neutral' else 'all'}:{kind}" for kind in ('goals','shots','corners')])
+                        [f"{support if support != 'neutral' else 'all'}:{kind}" for kind in ('goals','shots','corners','passes','cards')])
         available = {s['id']: s for s in shared['stats']}
         defaults = [{**available[i], 'kind': 'standard'} for i in stat_ids if i in available]
         return {key: shared[key] for key in ('type','version','projection_epoch','synthetic','mode','match','events')} | {

@@ -14,9 +14,9 @@ Research checked 18 October 2026. The user requested a Premier League integratio
 
 ## Visual direction
 
-The current official match centre uses deep purple surfaces, PremierLeague W01 typography, club crests, team-colour match banners and a compact score panel. The prototype follows that language, adding Inside the Game as a match-centre feature. Chelsea/Manchester United banners use authentic crests over CSS club-colour surfaces. No footage is invented. The event stage shows the synthetic stream; replay controls remain labelled demo controls.
+The current official match centre uses deep purple surfaces, PremierLeague W01 typography, club crests, team-colour match banners and a compact score panel. The prototype follows that language, adding Inside the Game as a match-centre feature. Chelsea/Manchester United banners use authentic crests over CSS club-colour surfaces. No footage is invented. The main area shows an optional local simulator excerpt, labelled as illustrative footage separate from the fixture events. Without a source, it shows an explicit unavailable state. Five compact statistics sit below it. Raw events stay in the developer lab.
 
-The interface keeps the match in view while a question is answered. Insight and question tabs have different purposes: ongoing bucket narratives versus a personal conversation. Three generated feature icons are rebuilt as small native SVGs; [provenance and comparison](../assets/README.md) are retained separately from shipped assets. Official fonts and marks have separate [source attribution](../assets/league/PROVENANCE.md); those are authentic third-party files, not generated substitutes.
+The compact desktop layout keeps the player and five stat slots in view while the companion history scrolls internally. On mobile the stat row scrolls horizontally and the companion follows the player. Insight and question tabs have different purposes: ongoing bucket narratives versus a personal conversation. Three generated feature icons are rebuilt as small native SVGs; [provenance and comparison](../assets/README.md) are retained separately from shipped assets. Official fonts and marks have separate [source attribution](../assets/league/PROVENANCE.md); those are authentic third-party files, not generated substitutes.
 
 ## Acceptance
 

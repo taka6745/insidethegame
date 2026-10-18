@@ -8,9 +8,9 @@ Open **http://localhost:18020/** for the match viewer, or **http://localhost:180
 
 ## Match viewer
 
-A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Select a demo profile, start the synthetic replay, and watch the match state, narrative feed and statistics. In Questions, ask for a stat and select Track on the offered card. A tracked custom stat replaces a default slot; removing it restores that default. The original answer retains its as-of timestamp.
+A fresh database starts with the fictional Chelsea–Manchester United recording. Existing recordings are preserved. Select a demo profile, start the synthetic replay, and watch the match state, insights and five compact statistics. Raw events are shown only in the developer lab. In Questions, ask for a stat and select Track on the offered card. A tracked custom stat replaces a default slot; removing it restores that default. The original answer retains its as-of timestamp.
 
-Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. No footage, rewind or individual playback delay is implemented. Profile sessions are demo identities, not production authentication.
+Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional simulator excerpt is illustrative and explicitly labelled as separate from the Chelsea–United events. Without the local media mount, the player shows an unavailable state. Rewind, clips and individual playback delay remain phase 2. Profile sessions are demo identities, not production authentication.
 
 The browser talks only to the user backend. Static modules are independently cacheable; the viewer uses one WebSocket for match updates and HTTP for deliberate actions/questions. Connection recovery uses a fresh authoritative snapshot. It does not run an LLM loop, calculate statistics, or read an upstream database.
 
@@ -50,3 +50,17 @@ nginx is the local static server and same-origin proxy. Production can place sta
 HTML revalidates; a build places related JS/CSS under one content hash and caches them immutably. Relative module imports stay in that version. The unversioned developer lab and brand assets revalidate. No application secrets or LLM keys are shipped.
 
 Run `node frontend/benchmarks/client.mjs` from the repository root for opt-in static transfer and bounded state-update checks. This does not measure DOM rendering, network fan-out or viewer capacity.
+
+## Optional simulator footage
+
+Supply a local H.264 MP4 without adding it to Git or the Docker image:
+
+```sh
+DEMO_VIDEO_PATH=/absolute/path/to/simulator.mp4 docker compose \
+  --env-file local/env.defaults -f local/compose.yaml -f local/compose.media.yaml \
+  --profile backend up -d --no-deps frontend
+```
+
+Run from the repository root. The read-only mount serves `/media/simulator.mp4` directly through nginx with byte-range support. The footage loops silently with no seeking UI; Play/Pause only affects the illustrative footage, not fixture events. Reduced motion starts paused. This optional adapter (`match/video.js`) does not control the shared fixture replay. Removing the mount preserves the data-only demo.
+
+The current local excerpt comes from an existing Google Research Football simulation (10:00–13:00 of the saved recording). It is **not Chelsea–United footage** and is not synchronized with the synthetic fixture. The user approved this temporary visual stand-in. Matching footage/event timing remains to be connected; production video would use a media delivery service/CDN, not user-backend fan-out.
