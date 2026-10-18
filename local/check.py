@@ -39,7 +39,8 @@ def wait_for(label, operation, timeout=180):
 
 def postgres_check():
     with psycopg.connect(POSTGRES_DSN + " dbname=accounts", connect_timeout=5) as conn:
-        assert conn.execute("SELECT count(*) FROM demo_profiles").fetchone()[0] == 3
+        profiles = {row[0] for row in conn.execute("SELECT id FROM demo_profiles")}
+        assert {"chelsea-analytical", "united-casual", "neutral-simple"} <= profiles
     with psycopg.connect(POSTGRES_DSN + " dbname=matchapp", connect_timeout=5) as conn:
         # Roll back the probe; don't leave test tables in the application database.
         conn.execute("CREATE TEMP TABLE integration_probe (value text)")
@@ -54,7 +55,7 @@ def cosmos_check():
         for name in ("contextBlocks", "narratives", "checkpoints"):
             db.create_container_if_not_exists(name, partition_key=PartitionKey(path="/matchId"))
         container = db.get_container_client("narratives")
-        item = {"id": "integration-probe", "matchId": "integration-only", "text": "Synthetic probe"}
+        item = {"id": str(uuid.uuid4()), "matchId": "integration-only", "text": "Synthetic probe"}
         container.upsert_item(item)
         assert container.read_item(item["id"], partition_key=item["matchId"])["text"] == item["text"]
         container.delete_item(item["id"], partition_key=item["matchId"])

@@ -2,6 +2,8 @@
 
 Run from the repo root using [`../dev`](../dev). [Quick start](../DEVELOPMENT.md) · [Contracts](contracts.md) · [Verified results](verification.md)
 
+First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start containers and run their integration checks before reporting success. The full stack needs no extra CLI installation or account login.
+
 ## What runs
 
 | Dependency | Local implementation | Host address |
@@ -35,9 +37,11 @@ Allow roughly 8–12 GB Docker memory and several GB of free disk for the full s
 - `./dev logs sql` / `./dev logs graphql`: diagnose SQL startup or DAB configuration.
 - `./dev logs eventhubs` / `./dev logs servicebus`: diagnose emulator configuration.
 - `./dev test azure` waits for dependencies, then tests their protocols.
-- Ports busy: adjust `ports` in Compose and update host client settings; Docker-to-Docker settings remain unchanged.
+- Ports busy: put personal changes in ignored `local/compose.override.yaml`; `./dev` loads it automatically. Use Compose's `!override` tag to replace a port list rather than append to it (Compose 2.24.4+). Docker-to-Docker settings remain unchanged.
 - `./dev down` preserves SQL/Postgres volumes. Cosmos and messaging state are disposable; rerun tests/seeding after recreation.
 - Postgres init SQL runs only on a fresh volume. Later application schema changes need migrations.
+
+Dependency image digests are pinned to the tested builds, including multi-architecture manifests. Upgrade them deliberately and rerun `./dev test azure`. Python tooling dependencies are pinned in `requirements.txt`. Docker must be able to reach public image/package registries on first setup; this is account-free, not an offline installer.
 
 ## Licences
 

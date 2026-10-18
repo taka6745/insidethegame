@@ -2,7 +2,7 @@ name: itg-local
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
     environment:
       POSTGRES_USER: itg
       POSTGRES_PASSWORD: local-development-only
@@ -18,19 +18,19 @@ services:
       retries: 30
 
   cosmos:
-    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest@sha256:0bd6dbab98295718c85399ad27c38d45733060086528711594a7d52bafcb3447
     environment:
       PROTOCOL: http
       ENABLE_EXPLORER: "true"
     ports: ["127.0.0.1:18081:8081", "127.0.0.1:11234:1234"]
 
   azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0@sha256:647c63a91102a9d8e8000aab803436e1fc85fbb285e7ce830a82ee5d6661cf37
     profiles: [azure]
     # Private dependency of Event Hubs; no host ports needed.
 
   eventhubs:
-    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
+    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest@sha256:be413f0d59541621879e6d197d73f64f3b3ac5fa45861641fdc1430252b8b44b
     profiles: [azure]
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:-N}
@@ -42,7 +42,7 @@ services:
     depends_on: [azurite]
 
   sql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest@sha256:cf8f0ab2ebe61feec2eed2629061a07d247f791c2a8ddda74a4ac9f06a291718
     platform: linux/amd64
     profiles: [azure]
     environment:
@@ -60,7 +60,7 @@ services:
       start_period: 20s
 
   servicebus:
-    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest@sha256:5a96d893b245031740f7d46e0fe5ff282d24b78c4b7d761dd57590f3f010a9b3
     profiles: [azure]
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:-N}
@@ -75,7 +75,7 @@ services:
       sql: {condition: service_healthy}
 
   sql-init:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest@sha256:cf8f0ab2ebe61feec2eed2629061a07d247f791c2a8ddda74a4ac9f06a291718
     platform: linux/amd64
     profiles: [azure]
     environment:
@@ -87,7 +87,7 @@ services:
       sql: {condition: service_healthy}
 
   graphql:
-    image: mcr.microsoft.com/azure-databases/data-api-builder:1.6.87
+    image: mcr.microsoft.com/azure-databases/data-api-builder:1.6.87@sha256:13bbc00893dc1aa120af067a895a88d76f8a3b440f3efa5a56c07d727f75454a
     platform: linux/amd64
     profiles: [azure]
     environment:

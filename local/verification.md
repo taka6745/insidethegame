@@ -10,6 +10,8 @@ Machine: Apple Silicon macOS, Docker Engine 29.7.2, Compose 5.5.1. Existing unre
 | `./dev replay` | Published the three synthetic fixture events successfully. |
 | `./dev terraform check` | Passed: formatting, Azure provider schema validation and one mocked plan test with four boundary assertions. No Azure account or deployment. |
 | Guide checks | Local Markdown links checked; SVG rendered and visually inspected. |
+| Onboarding follow-up | `./dev doctor`, automatic checks on `up azure`, and invalid-mode/licence guards passed. Pinned image manifests checked for ARM64/AMD64 support where applicable. |
+| Terraform follow-up | Passed without deprecated Event Hub fields, using the host user's UID/GID in Docker. |
 
 These checks exercise actual local containers. They do **not** validate the Stream Analytics job, real Foundry models, application services, frontend, generated-code isolation or a cloud deployment. Terraform's mock-provider checks are also separate from runtime integration.
 

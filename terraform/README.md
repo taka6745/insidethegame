@@ -8,6 +8,8 @@
 
 Run from the repo root. Docker runs pinned Terraform, downloads the pinned Azure provider, checks formatting, validates resource schemas and tests a plan with a mock provider. No Azure login, LocalStack token or host Terraform installation is needed. Commit `.terraform.lock.hcl`; keep state, plans and credentials ignored.
 
+The check container uses your user/group ID so generated files remain editable on Linux and WSL.
+
 ```mermaid
 flowchart LR
   HCL[Terraform] --> Check[Validate + mock test]
