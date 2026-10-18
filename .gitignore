@@ -9,3 +9,12 @@ projects-export/
 .local/
 
 .ruff_cache/
+.venv/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+local.auto.tfvars
+
+# Contains a private API key; keep its settings in narrative-engine/.env
+narrative-engine/Luke-LLM-Setup.md
