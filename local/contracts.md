@@ -26,7 +26,7 @@ flowchart LR
 | `match-notifications` | ETL → narrative | `KeyEventDetected`, `MinuteClosed`; fields and timing policy to agree with the ETL service. |
 | `narratives` | Narrative → backend | Narrative ID, match ID/time, bucket, text; optional ordered approved stat IDs. Final schema still to agree. |
 | Narrative GraphQL | Narrative → backend | Match/bucket history. Planned; never substitute direct backend Cosmos access. |
-| Viewer API/live connection | Backend → frontend | Harness implements HTTP + WebSocket for profiles, takeover, cards and backlog; chat is pending. |
+| Viewer API/live connection | Backend → frontend | The product harness implements HTTP + WebSocket for profile sessions, takeover, three stat slots, narrative backlog and saved questions/Track offers. `/product` uses the same match run as the filter engine and question agent; the older viewer probe endpoints remain separate test contracts. |
 
 The [event fixture](fixtures/match-events.jsonl) contains `id`, `matchId`, `sequence`, `eventTime` (UTC), `matchMinute`, `type`, `teamId`, `synthetic` and structured `qualifiers`. It is a starting development shape, not the archived simulator's native schema. Define a source adapter when the full match is selected.
 
@@ -43,3 +43,9 @@ The narrative engine generates for every available bucket returned by the backen
 The optional `NARRATIVE_SERVICEBUS_CONNECTION_STRING` enables the backend receiver for already-bucketed `Narrative` messages. It never calls an LLM. The default local harness continues to use HTTP notifications.
 
 Audience configuration: `GET /matches/{match_id}/audience-config` on the backend returns revisioned layers, options, combinations and expanded generation targets. Read-only to the narrative engine; conditional reads use ETag/If-None-Match. [Contract](../user-backend/docs/audience-api.md).
+
+## Product viewer projection
+
+`/product` uses one process-local projection refreshed after committed replay changes. A shared adapter reads computed statistics from fake ETL GraphQL and already-framed messages from fake narrative GraphQL once per observed prefix, then composes each viewer's three cards and audience feed. WebSocket delivery is bounded; slow peers reconnect to a fresh snapshot. It retains routing/pin IDs, not chat transcripts, per connection.
+
+The local snapshot-upload bridge is explicitly development infrastructure: it sends the observed event prefix to separate fake services. Production must replace this with upstream live projections/deltas plus durable reconnect cursors. Adding API replicas does not coordinate the in-memory replay owner. See [scaling](../user-backend/docs/scaling.md).

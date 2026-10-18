@@ -9,12 +9,12 @@ class PostgresLabRepository:
     def __init__(self, store):
         self.store = store
 
-    def initialize(self, source_hash):
+    def initialize(self, source_hash, recording_text=None, recording_filename=None):
         with self.store.connect() as conn:
             conn.execute((Path(__file__).parents[2] / "migrations/002_filter_lab.sql").read_text())
             conn.execute((Path(__file__).parents[2] / "migrations/003_lab_recording.sql").read_text())
-            conn.execute("INSERT INTO filter_lab_run (run_id, source_hash) VALUES (%s,%s) "
-                         "ON CONFLICT (singleton) DO NOTHING", (uuid4(), source_hash))
+            conn.execute("INSERT INTO filter_lab_run (run_id, source_hash, recording_text, recording_filename) VALUES (%s,%s,%s,%s) "
+                         "ON CONFLICT (singleton) DO NOTHING", (uuid4(), source_hash, recording_text, recording_filename))
 
     def load(self):
         with self.store.connect() as conn:

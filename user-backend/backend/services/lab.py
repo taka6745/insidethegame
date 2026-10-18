@@ -15,11 +15,13 @@ from backend.services.plan_conversations import PlanConversations
 
 
 class FilterLabService:
-    def __init__(self, source, repository, planner, *, local_llm=False):
+    def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None):
         self.source, self.repository, self.planner = source, repository, planner
         self.default_source = source
+        self.initial_recording = initial_recording
         self.local_llm = local_llm
         self._lock = asyncio.Lock()
+        self.changed = asyncio.Event()
         self._plan_lock = asyncio.Lock()
         self._task = None
         self.engine = FilterEngine()
@@ -30,7 +32,12 @@ class FilterLabService:
         self.conversations = PlanConversations()
 
     async def initialize(self):
-        await asyncio.to_thread(self.repository.initialize, self.source.fingerprint)
+        if self.initial_recording:
+            content, filename = self.initial_recording
+            initial = self.source.with_recording(content, filename)
+            await asyncio.to_thread(self.repository.initialize, initial.fingerprint, content.decode('utf-8'), filename)
+        else:
+            await asyncio.to_thread(self.repository.initialize, self.source.fingerprint)
         await self._reload()
         # A process restart resumes only when the user explicitly presses Start.
         if self.status == "running":
@@ -118,6 +125,7 @@ class FilterLabService:
             self.position, self.status, self.error = 0, "ready", None
             self._task = None
             scenario = self.scenario()
+        self.changed.set()
         return {"scenario": scenario, "state": await self.state()}
 
     def _calculation(self, result):
@@ -160,6 +168,7 @@ class FilterLabService:
                                     rule.model_dump(mode="json"), result.model_dump(mode="json"))
             self.engine.register(rule)
             self.labels.setdefault(result.calculation_id, label)
+            self.changed.set()
             return self._calculation(result)
 
     async def plan(self, prompt, conversation_id=None):
@@ -200,6 +209,7 @@ class FilterLabService:
                 self.status, self.error = previous
                 raise
             self._task = asyncio.create_task(self._run(interval_ms / 1000))
+            self.changed.set()
         return await self.state()
 
     async def _run(self, interval):
@@ -215,6 +225,7 @@ class FilterLabService:
             logging.getLogger(__name__).exception("Filter replay failed")
             self.error = "Replay stopped. Check the backend logs and start a new run."
             self.status = "error"
+            self.changed.set()
 
     async def advance(self):
         """One forward event. Also used by deterministic integration tests."""
@@ -237,6 +248,7 @@ class FilterLabService:
                 self.position, self.status = previous_position, previous_status
                 raise
             self.last_changed = [r.calculation_id for r in changed]
+            self.changed.set()
             return self.status != "finished"
 
     async def reset(self):
@@ -259,4 +271,5 @@ class FilterLabService:
                 if task:
                     with suppress(asyncio.CancelledError):
                         await task
+        self.changed.set()
         return await self.state()

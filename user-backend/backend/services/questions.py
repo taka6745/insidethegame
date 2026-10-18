@@ -1,6 +1,7 @@
 """Question use cases. Model work stays outside replay and database locks."""
 import asyncio
 import logging
+from contextlib import asynccontextmanager
 from backend.domain import RuleError
 from backend.models.questions import QuestionDraft, QuestionReply
 from backend.models.rules import Rule
@@ -14,9 +15,16 @@ class QuestionService:
         self.repository, self.snapshots, self.match_data, self.narratives = repository, snapshots, match_data, narratives
         self.agent, self.planner, self.timeout = agent, planner, timeout
         self._session_lock = asyncio.Lock()
+        self.session_started = None
         # One application-wide service owns this admission limit, across profiles
         # and session takeovers. Replicas require a separate distributed budget.
         self._slots = asyncio.Semaphore(max_active)
+
+    @asynccontextmanager
+    async def session_guard(self):
+        """Fence external session attachment against takeover in every API."""
+        async with self._session_lock:
+            yield
 
     async def initialize(self):
         await asyncio.to_thread(self.repository.initialize)
@@ -28,6 +36,8 @@ class QuestionService:
         async with self._session_lock:
             identity = await self.snapshots.identity()
             token = await asyncio.to_thread(self.repository.start, profile_id, identity)
+            if self.session_started:
+                self.session_started(profile_id)
             return await self.read(token)
 
     async def read(self, token):

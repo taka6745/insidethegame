@@ -17,13 +17,17 @@ from .services.viewers import ViewerService
 from .routes.viewers import viewer_router
 
 
-def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None):
+def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None, enable_product=False):
     if not 1 <= slots <= 4:
         raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
     store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
     feed = feed or FixtureFeed(match_id, slots)
     audiences = AudienceService(AudienceRepository(store), match_id)
     viewers = ViewerService(store, feed, match_id, slots)
+    product = None
+    if enable_product and questions and lab:
+        from .services.product import ProductService
+        product = ProductService(questions, lab)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -33,6 +37,8 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
             await lab.initialize()
         if questions:
             await questions.initialize()
+        if product:
+            await product.initialize()
         consumer_task = None
         if narrative_connection:
             from .adapters.narratives import NarrativeBusConsumer
@@ -45,6 +51,8 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
                 consumer_task.cancel()
                 with suppress(asyncio.CancelledError):
                     await consumer_task
+            if product:
+                await product.close()
             if lab:
                 await lab.close()
 
@@ -53,6 +61,10 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
     app.state.viewers = viewers
     app.include_router(viewer_router(viewers, enable_dev_feed=enable_dev_feed))
     app.include_router(audience_router(audiences, enable_dev_feed=enable_dev_feed))
+    if product:
+        from .routes.product import product_router
+        app.include_router(product_router(product))
+        app.state.product = product
     if questions:
         from .routes.questions import question_router
         app.include_router(question_router(questions))
@@ -89,6 +101,6 @@ def from_env():
     if lab:
         from .question_factory import create_question_service
         questions = create_question_service(store, lab)
-    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab, questions=questions,
+    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab, questions=questions, enable_product=True,
                       narrative_connection=os.getenv("NARRATIVE_SERVICEBUS_CONNECTION_STRING"),
                       enable_dev_feed=os.environ.get("ENABLE_DEV_FEED") == "1")

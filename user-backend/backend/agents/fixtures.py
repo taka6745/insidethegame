@@ -15,6 +15,8 @@ class FixtureGoalAgent:
     # Exact phrases make unsupported requests visible instead of silently dropping conditions.
     async def define(self, prompt: str, context: dict) -> GoalDecision:
         phrases = {
+            "track bruno's headed shots": {"player_ids": ("bruno",), "body_part": "head", "event_types": ("shot", "goal")},
+            "track bruno's headers": {"player_ids": ("bruno",), "body_part": "head"},
             "track total headers in this game by mbappe": {"player_ids": ("mbappe",), "body_part": "head"},
             "track mbappe's headers": {"player_ids": ("mbappe",), "body_part": "head"},
             "track mbappe's headed shots": {"player_ids": ("mbappe",), "body_part": "head", "event_types": ("shot", "goal")},

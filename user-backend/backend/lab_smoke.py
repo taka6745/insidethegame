@@ -32,6 +32,12 @@ def main():
         assert {row["id"]: row["value"] for row in state["calculations"]} == expected
         assert state["position"] == state["total"] == 35
         client.post("/reset").raise_for_status()
+        # Leave the user-facing match viewer ready after the destructive lab check.
+        client.post("http://frontend/viewer-api/demo/reset").raise_for_status()
+        scenario = client.get("/scenario")
+        scenario.raise_for_status()
+        assert scenario.json()["match_id"] == "product-demo-match"
+        assert {team["id"] for team in scenario.json()["teams"]} == {"chelsea", "manutd"}
     print("Filter lab: frontend proxy, 26 presets, 35 deliveries and reset verified")
 
 

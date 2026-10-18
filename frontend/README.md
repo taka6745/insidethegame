@@ -1,23 +1,23 @@
 # Frontend
 
-[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+[Run locally](docs/development.md) · [Design references](docs/design-references.md) · [Icon checks](assets/README.md) · [Verification](docs/verification.md)
 
 ![Live match, statistics and two conversation tabs](architecture.svg)
 
-**Implemented: removable event lab with Filters and Questions tabs.** [Run it locally](docs/development.md) to prepare structured filters, start synthetic events and watch custom values update. Questions use a demo profile, saved chat, frozen match context and optional Track cards. It shows events rather than video, with no rewind. The actual match interface below remains planned.
+**Match viewer:** one live match, fixed stat slots, bucketed insights and a question tab. The event stage is labelled synthetic; video and rewind remain phase 2. The separate filter lab stays at `/lab/`.
 
-**Planned match interface:** one live match with stat cards and two tabs: agent chat and the narrative feed/backlog.
+```text
+Static HTML / CSS / modules ← CDN or nginx
+             ↓ one live connection
+User backend → match state + cards + narratives
+             ↔ questions + Track / Untrack
+```
 
-- Select a demo profile; use its team and fan style to resolve the bucket.
-- Send questions and pin/unpin actions to the user backend. Receive replies and live updates.
-- A custom pin replaces the lowest-priority default card. Keep the slot count fixed.
-- Restore chat and pins after reconnecting. A new session takes over the previous one.
-- Mid-match viewers receive narrative history and current bucket stats.
+- A demo profile selects the team/style audience. Already-framed narratives come from upstream.
+- Standard statistics come from ETL through the backend. The browser never calculates match statistics.
+- Custom tracking replaces the lowest-priority default card; untracking restores the default.
+- Questions keep their as-of snapshot while live cards advance. Sessions restore on refresh; a new session takes over the previous tab.
 
-**Boundary:** the browser talks to the user backend for application data, and to the footage source for video. It does not query databases or run agents.
-
-**Lab implementation:** static HTML, CSS and JavaScript served by nginx; all requests go through its `/api/` proxy to the backend. No model keys, filtering logic or database access in the browser. Production hosting/framework remain undecided.
-
-**Phase 2** (grey/dashed): play requested clip segments, pause/rewind, and align stats and narratives with playback position. The backend returns source IDs and timestamps; the browser plays the segments.
+**Scale boundary:** static files can be distributed independently. One push connection per viewer, bounded UI state and shared backend projection avoid per-viewer polling or agent loops. The local single-process harness is not an EPL-capacity demonstration. [Production boundaries](../user-backend/docs/scaling.md).
 
 [Repository plan](../README.md)

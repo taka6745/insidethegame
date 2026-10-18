@@ -9,7 +9,7 @@
 
 No Azure account, model key or emulator licence acceptance is needed for this profile. It starts **Postgres, backend, fake ETL, fake narrative and the event filter UI**. First run needs internet for images/packages.
 
-Start with the **[filter lab](http://localhost:18020)**: select a preset, add it and start events. [Lab guide](filter-lab.md) explains the index, layers and replaceable feed. [Local LLM setup](local-llm.md) enables flexible requests; default fixture mode supports the documented examples without a model. The profile API below is a separate integration harness.
+Start with the **[filter lab](http://localhost:18020/lab/)**: select a preset, add it and start events. [Lab guide](filter-lab.md) explains the index, layers and replaceable feed. [Local LLM setup](local-llm.md) enables flexible requests; default fixture mode supports the documented examples without a model. The profile API below is a separate integration harness.
 
 ```mermaid
 flowchart LR
