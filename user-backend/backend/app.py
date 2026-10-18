@@ -42,7 +42,7 @@ class Peer:
             self.queue.put_nowait(message)
 
 
-def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False):
+def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None):
     if not 1 <= slots <= 4:
         raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
     store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
@@ -53,10 +53,20 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
     @asynccontextmanager
     async def lifespan(app):
         await asyncio.to_thread(store.initialize)
-        yield
+        if lab:
+            await lab.initialize()
+        try:
+            yield
+        finally:
+            if lab:
+                await lab.close()
 
     app = FastAPI(title="Inside the Game — user backend harness", lifespan=lifespan)
     app.state.store, app.state.feed = store, feed
+    if lab:
+        from .routes.lab import lab_router
+        app.include_router(lab_router(lab))
+        app.state.lab = lab
 
     @app.exception_handler(RuleError)
     async def rule_error(request, exc):
@@ -218,5 +228,10 @@ def from_env():
     match_id = os.environ.get("MATCH_ID", "synthetic-demo")
     slots = int(os.environ.get("CARD_SLOTS", "3"))
     feed = FixtureServices(match_id, slots, os.environ["ETL_GRAPHQL_URL"], os.environ["NARRATIVE_GRAPHQL_URL"])
-    return create_app(feed=feed, match_id=match_id, slots=slots,
+    store = Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
+    lab = None
+    if os.environ.get("ENABLE_FILTER_LAB") == "1":
+        from .lab_factory import create_filter_lab
+        lab = create_filter_lab(store)
+    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab,
                       enable_dev_feed=os.environ.get("ENABLE_DEV_FEED") == "1")
