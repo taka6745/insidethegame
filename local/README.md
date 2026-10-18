@@ -11,9 +11,9 @@ First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start co
 | User databases | PostgreSQL 16, `accounts` + `matchapp` | `localhost:15432` |
 | Cosmos infrastructure check (base) | Microsoft Cosmos vNext emulator | `http://localhost:18081` |
 | Cosmos explorer | Emulator UI | `http://localhost:11234` |
-| Match-event protocol check (`azure` profile) | Microsoft Event Hubs emulator | AMQP `localhost:15672` |
-| Notification protocol check (`azure` profile) | Microsoft Service Bus emulator | AMQP `localhost:15673` |
-| SQL infrastructure check (`azure` profile) | SQL Server 2022 Developer | `localhost:11433` |
+| Match events (`backend` + `azure`) | Microsoft Event Hubs emulator | AMQP `localhost:15672` |
+| Notifications and narratives (`backend` + `azure`) | Microsoft Service Bus emulator | AMQP `localhost:15673` |
+| Service Bus storage / SQL check (`backend` + `azure`) | SQL Server 2022 Developer | `localhost:11433` |
 | SQL GraphQL check (`azure` profile) | Real Data API builder | `http://localhost:15000/graphql` |
 | User backend (`backend` profile) | FastAPI + WebSocket harness | `http://localhost:18000/docs` |
 | Demo ETL (`backend` profile) | Recorded GRF events + calculated stats | `http://localhost:18010/graphql` |
@@ -35,11 +35,22 @@ Only loopback ports are published. Existing projects on ports 3000, 5432 and 456
 
 ## What tests prove
 
-`./dev up backend` builds the backend, standalone ETL and narrative stub, then runs the real-Postgres backend suite and a cross-service checkpoint check. `./dev test backend` repeats those checks without resetting the active replay. The checkpoint check reads history, stats and neutral recaps at selected points of the committed recording; it does not test production brokers or play the video. [Backend walkthrough](../user-backend/docs/development.md).
+`ACCEPT_EULA=Y ./dev up backend` builds the viewer, backend, ETL and narrative stub, starts both messaging emulators, then runs backend tests and a broker integration check. `./dev test backend` repeats the checks without resetting the active replay. Review the [licences](#licences) first; no account is needed.
 
-`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). Its events, measured possession and optional video share a timeline. `./dev` mounts `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when present, or accepts an explicit `DEMO_VIDEO_PATH`. Media stays ignored and is not downloaded by setup; without it, the event/stat/narrative demo still runs.
+```text
+Replay → Event Hubs ─┬→ shared backend event consumer
+                    └→ ETL → Service Bus match-notifications
+                                      ↓
+                              narrative stub
+                                      ↓
+                          Service Bus narratives → backend → viewer
+```
 
-This profile uses metadata HTTP checkpoints and real GraphQL endpoints backed by demo repositories, not the Azure emulators below. ETL owns PostgreSQL raw history and standard-stat projections; the narrative service owns a SQLite archive and 144 manually authored bucket versions. Older backend fixtures remain isolated test doubles. It needs no cloud account or emulator licence acceptance. It does not validate production broker consumers.
+ETL owns PostgreSQL history/stat projections; the narrative stub owns SQLite and 144 manually authored versions. GraphQL provides historical events, computed stats and recap history. These remain replaceable demo repositories. Azure SQL/Cosmos adapters, Stream Analytics and generated narratives are still planned.
+
+The broker check publishes a unique run through the actual SDKs, verifies first-event redelivery and selected match watermarks, reads both GraphQL services and observes the `narratives` integration subscription. It restores the current live watermark afterwards. Isolated backend tests use empty broker settings and their existing HTTP doubles. No cloud throughput or distributed ownership is proved by these checks.
+
+`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). `./dev` mounts `.local/grf-demo-chelsea-united-v2/match.mp4` automatically when present, or accepts `DEMO_VIDEO_PATH`. Media stays ignored; the event/stat/narrative demo works without it.
 
 `./dev test`: three demo profiles, two Postgres databases, Cosmos document write/read/delete. Creates narrative containers if absent.
 
@@ -47,7 +58,7 @@ This profile uses metadata HTTP checkpoints and real GraphQL endpoints backed by
 
 `./dev replay`: publishes the three tiny, hand-authored synthetic events **with their original timestamps and IDs**. It does not run at match speed or rebase time. It is useful for consumer development, not a Stream Analytics event-time test. The full replay tool belongs to `data-generation/`.
 
-The Azure-profile SQL fixture insertion is an infrastructure check, **not the demo ETL**. The separate backend profile implements recorded-match history, standard stats and narrative GraphQL. Azure SQL/Cosmos writers, Stream Analytics and production broker ingestion remain planned.
+The Azure-profile SQL fixture insertion is an infrastructure check, **not the demo ETL**. The separate backend profile implements recorded-match history, standard stats and narrative GraphQL. Azure SQL/Cosmos writers, Stream Analytics and Azure deployment remain planned.
 
 ## Machine and troubleshooting
 
@@ -64,7 +75,7 @@ Dependency image digests are pinned to the tested builds, including multi-archit
 
 ## Licences
 
-Running `ACCEPT_EULA=Y ./dev up azure` accepts the [Event Hubs emulator terms](https://github.com/Azure/azure-event-hubs-emulator-installer/blob/main/EMULATOR_EULA.txt), [Service Bus emulator terms](https://github.com/Azure/azure-service-bus-emulator-installer/blob/main/EMULATOR_EULA.txt) and [SQL Server terms](https://go.microsoft.com/fwlink/?LinkId=746388). Each developer should review them; the default is `N`. No login or billing account is needed for these containers.
+Running `ACCEPT_EULA=Y ./dev up backend` or `ACCEPT_EULA=Y ./dev up azure` accepts the [Event Hubs emulator terms](https://github.com/Azure/azure-event-hubs-emulator-installer/blob/main/EMULATOR_EULA.txt), [Service Bus emulator terms](https://github.com/Azure/azure-service-bus-emulator-installer/blob/main/EMULATOR_EULA.txt) and [SQL Server terms](https://go.microsoft.com/fwlink/?LinkId=746388). Each developer should review them; the default is `N`. No login or billing account is needed for these containers.
 
 ## Coverage limits
 

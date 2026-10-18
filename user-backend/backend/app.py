@@ -17,8 +17,8 @@ from .services.viewers import ViewerService
 from .routes.viewers import viewer_router
 
 
-def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None, enable_product=False):
-    if enable_product and lab and questions and narrative_connection:
+def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None, enable_product=False, brokers=None):
+    if enable_product and lab and questions and narrative_connection and brokers is None:
         raise ValueError("Service Bus ingress currently serves only the legacy viewer harness; "
                          "the product demo requires its GraphQL checkpoint adapter")
     if not 1 <= slots <= 4:
@@ -31,6 +31,9 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
     if enable_product and questions and lab:
         from .services.product import ProductService
         product = ProductService(questions, lab, audiences)
+        if brokers:
+            product.brokers = brokers
+            brokers.on_narrative = product.narratives_changed
 
     @asynccontextmanager
     async def lifespan(app):
@@ -40,10 +43,12 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
             await lab.initialize()
         if questions:
             await questions.initialize()
+        if brokers:
+            await brokers.start()
         if product:
             await product.initialize()
         consumer_task = None
-        if narrative_connection:
+        if narrative_connection and brokers is None:
             from .adapters.narratives import NarrativeBusConsumer
             consumer = NarrativeBusConsumer(narrative_connection, viewers.deliver_narrative)
             consumer_task = asyncio.create_task(consumer.run())
@@ -58,6 +63,8 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
                 await product.close()
             if lab:
                 await lab.close()
+            if brokers:
+                await brokers.close()
 
     app = FastAPI(title="Inside the Game — user backend harness", lifespan=lifespan)
     app.state.store, app.state.feed = store, feed
@@ -83,7 +90,8 @@ def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, ena
 
     @app.get("/health")
     async def health():
-        return {"status": "ok", "mode": "fixture", "synthetic": True}
+        return {"status": "ok", "mode": "fixture", "synthetic": True,
+                "transport": "event-hubs/service-bus" if brokers else "http-fixture"}
 
     return app
 
@@ -100,10 +108,23 @@ def from_env():
     if os.environ.get("ENABLE_FILTER_LAB") == "1":
         from .lab_factory import create_filter_lab
         lab = create_filter_lab(store)
+    brokers = None
+    if os.getenv('MATCH_EVENTHUB_CONNECTION_STRING'):
+        if lab is None or not os.getenv('NARRATIVE_SERVICEBUS_CONNECTION_STRING'):
+            raise RuntimeError('Broker demo requires the lab and both messaging connections')
+        from .adapters.match_brokers import MatchBrokers
+        from .repositories.broker_inbox import NarrativeInbox
+        from .services.broker_runtime import BrokerRuntime
+        brokers = BrokerRuntime(lab, MatchBrokers(os.environ['MATCH_EVENTHUB_CONNECTION_STRING'],
+            os.environ['NARRATIVE_SERVICEBUS_CONNECTION_STRING'],
+            hub=os.getenv('MATCH_EVENTHUB_NAME', 'match-events'),
+            group=os.getenv('MATCH_EVENTHUB_CONSUMER_GROUP', 'user-backend'),
+            topic=os.getenv('NARRATIVE_SERVICEBUS_TOPIC', 'narratives'),
+            subscription=os.getenv('NARRATIVE_SERVICEBUS_SUBSCRIPTION', 'user-backend')), NarrativeInbox(store))
     questions = None
     if lab:
         from .question_factory import create_question_service
-        questions = create_question_service(store, lab)
-    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab, questions=questions, enable_product=True,
+        questions = create_question_service(store, lab, brokers=brokers)
+    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab, questions=questions, enable_product=True, brokers=brokers,
                       narrative_connection=os.getenv("NARRATIVE_SERVICEBUS_CONNECTION_STRING"),
                       enable_dev_feed=os.environ.get("ENABLE_DEV_FEED") == "1")

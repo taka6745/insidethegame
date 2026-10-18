@@ -31,3 +31,11 @@ One non-failing dependency warning: Starlette deprecates its HTTPX-based test cl
 ## ETL stat ownership — 2026-10-18
 
 `./dev up backend`: **42 tests passed**, followed by the live Docker replay check. New tests enforce unchanged ETL-provided standard values, no raw-history fetch for standard cards, and a separate event-history query for custom pins/investigation. Standard values are no longer redundantly calculated in the runtime backend adapter. Cosmos stat storage and SQL history remain the planned production ETL stores; these tests use the fake ETL GraphQL service.
+
+## Product broker integration — 2026-10-19
+
+`ACCEPT_EULA=Y ./dev up backend` passed **449 backend tests**, then both real AMQP integration checks. Event Hubs delivered recorded events to separate ETL/backend consumer groups. GraphQL snapshots agreed at video minutes 0, 1, 6 and 12; Service Bus delivered authored bucket narratives. A separate backend schema verified 12 custom-index events, a confirmed duplicate delivery without double counting, PostgreSQL restore and the durable narrative inbox. Both upstream HTTP checkpoint write paths returned 409. Active replay position and viewer sessions were preserved.
+
+Upstream tests: **28 ETL passed, one optional database test skipped; 40 narrative passed**. The integration checks exercised the running ETL against PostgreSQL. A live API/WebSocket check switched audience and received 12 authored narratives plus five stat cards through the broker-backed runtime. Independent backend, upstream and wiring reviews completed after fixes.
+
+The viewer returned HTTP 200. Browser inspection was blocked by the existing error-page tab's URL policy, so no fresh visual verification is claimed. This validates local Microsoft emulator adapters, not cloud deployment, distributed checkpoint leases, multi-replica operation or production load. See [transport and recovery limits](../user-backend/docs/broker-transport.md).

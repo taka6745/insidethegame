@@ -19,6 +19,7 @@ class ProductService:
 
     def __init__(self, questions, lab, audiences):
         self.questions, self.lab = questions, lab
+        self.brokers = None
         self.live = LiveViewers()
         self.audiences = audiences
         self.presence = ProductAudiences(audiences.repository, self.live)
@@ -31,6 +32,9 @@ class ProductService:
         self._task = None
         self._audience_generation = 0
         self._published_audience_generation = 0
+
+    def narratives_changed(self):
+        self._audience_generation += 1
 
     async def initialize(self):
         identity = await self.questions.snapshots.identity()
@@ -89,6 +93,8 @@ class ProductService:
         async with self._refresh_lock:
             audience_generation = self._audience_generation
             payload = await self.questions.snapshots.capture()
+            if self.brokers:
+                await self.brokers.prepare(payload)
             state = await self.lab.state()
             if state['position'] != payload.snapshot.cursor or str(state['run_id']) != payload.snapshot.run_id:
                 self.lab.changed.set()

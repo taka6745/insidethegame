@@ -1,8 +1,8 @@
 # Develop match data
 
 ```text
-GRF recording → ETL demo → history database
-                       → statistics database → GraphQL → backend / narrative stub
+Replay → Event Hubs → ETL demo → history + statistics → GraphQL
+                              → Service Bus snapshot-ready notification
 ```
 
 The runnable adapter lives in `demo_etl/`. HTTP routes call `MatchService`; repositories own connections; `RecordingSource` owns provider keys. Keep the future Azure implementation separate and preserve these read contracts.
@@ -15,4 +15,8 @@ The runnable adapter lives in `demo_etl/`. HTTP routes call `MatchService`; repo
 
 **Publication:** history commits first, then the separately stored projection. No success is returned until both exist. A failed second write is repaired by retrying the same immutable snapshot; reads fail closed while incomplete. The demo recomputes small match projections during ingestion, never on standard-stat reads. It is not a distributed stream-processing implementation.
 
-**Production:** Azure SQL history, Cosmos stat state, Event Hubs ingestion and Stream Analytics aggregation remain the planned adapters. Preserve revision/tombstone handling and readable-state-before-notification. The metadata cursor bridge is explicitly local; it does not replace production brokers. No cloud apply or scheduled automation is part of this setup.
+**Brokers:** set both `MATCH_EVENTHUB_CONNECTION_STRING` and `SNAPSHOT_SERVICEBUS_CONNECTION_STRING`. Names default to `MATCH_EVENTHUB_NAME=match-events` and `SNAPSHOT_SERVICEBUS_TOPIC=match-notifications`. Provision the Event Hubs consumer group `etl`. Broker mode rejects HTTP snapshot writes with 409; recording, snapshot and GraphQL reads stay available. Without these settings, HTTP publication remains an isolated fixture mode.
+
+One consumer receives version-1 `MatchEvent` messages and validates each event against the owned recording. The stub materialises the prefix to recover missed/replayed deliveries, commits both stores, publishes `MatchSnapshotReady`, then checkpoints. Transient database/broker failures retry the same delivery; invalid/conflicting messages are logged without payloads and skipped. Checkpoints are memory-only: restarting replays retained Event Hubs messages, so consumers must tolerate duplicate notifications. This is a local recovery strategy, not production checkpoint durability. `/health` reports the transport and whether its receiver task is running, not network readiness.
+
+**Production:** Azure SQL history, Cosmos stat state, durable checkpoints and Stream Analytics aggregation remain planned. Preserve revision/tombstone handling and readable-state-before-notification. The Azure SDK transports now run against the real emulators; recording-prefix materialisation is still a demo substitute. No cloud apply or scheduled automation is part of this setup.

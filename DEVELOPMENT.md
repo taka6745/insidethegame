@@ -14,12 +14,12 @@
 For the **runnable user-backend harness**, use:
 
 ```sh
-./dev up backend        # viewer + API + Postgres + owned demo services, then tests
+ACCEPT_EULA=Y ./dev up backend  # viewer + API + demo services + messaging, then tests
 ./dev reset backend     # fresh GRF match run; account profiles stay
 ./dev replay backend    # start the 12-minute aligned replay
 ```
 
-[Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a preset or type a request, add the validated filter, then start events. Default fixture mode needs no model account; [optional local LLM](user-backend/docs/local-llm.md) enables flexible requests. This profile needs no Azure login or emulator EULA acceptance. `./dev test backend` reruns the backend tests and the cross-service checkpoint check without resetting the live match.
+[Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a preset or type a request, add the validated filter, then start events. Default fixture mode needs no model account; [optional local LLM](user-backend/docs/local-llm.md) enables flexible requests. Review the [Microsoft emulator licences](local/README.md#licences) before starting. No Azure login is needed. `./dev test backend` reruns isolated backend tests and a real broker round trip without resetting the live match.
 
 For messaging, SQL and GraphQL, first review the [Microsoft licence links](local/README.md#licences), then:
 
@@ -40,7 +40,7 @@ ACCEPT_EULA=Y ./dev up azure
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | One live match, cards and two chat tabs. |
 
-The stack includes a **working match viewer and structured-filter lab**, backed by a persisted demo ETL and a separate authored narrative stub. It runs typed rules rather than generated Python. Aligned GRF footage is generated locally. Stream Analytics, LLM narrative generation and production broker consumers remain planned. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
+The stack includes a **working match viewer and structured-filter lab**, backed by a persisted demo ETL and a separate authored narrative stub. It runs typed rules rather than generated Python. Aligned GRF footage is generated locally. Stream Analytics, LLM narrative generation and Azure deployment remain planned. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
 
 ## Work independently
 
@@ -58,11 +58,13 @@ This validates and mock-tests Terraform in Docker, with no accounts or cloud dep
 ## Recorded match demo
 
 ```text
-GRF frames + telemetry → data-generation recording → ETL history + stats
-                                                   ↓ GraphQL
-144 authored commentaries → narrative stub → user backend → viewer + video
+Recorded GRF events → Event Hubs → ETL → history + stats → GraphQL
+                          ↓        ↓ Service Bus notifications
+                     user backend ← Service Bus ← narrative stub
+                          ↓
+                     viewer + video
 ```
 
 The checked-in recording is the exact rendered Chelsea–United simulation. Large footage remains ignored. If `.local/grf-demo-chelsea-united-v2/match.mp4` exists, `./dev` mounts it automatically; otherwise set `DEMO_VIDEO_PATH` to the matching file. See [generation instructions](data-generation/docs/grf-demo.md). Playback is 12 minutes with a 90-minute football clock; no scrubbing.
 
-ETL owns separate local PostgreSQL history/stat databases; the narrative stub owns a SQLite archive. These are replaceable development repositories for planned Azure SQL/Cosmos. The local bridge sends checkpoint metadata, then reads GraphQL; it does not claim Event Hubs/Service Bus or Stream Analytics integration. No backend standard-stat calculations or authored match stories are used by this runtime.
+ETL owns separate local PostgreSQL history/stat databases; the narrative stub owns a SQLite archive. These are replaceable development repositories for planned Azure SQL/Cosmos. The replay publishes recorded events and snapshot watermarks through the Event Hubs emulator. ETL publishes ready snapshots through Service Bus; the narrative stub publishes authored bucket versions through another Service Bus topic. History and standard-stat reads still use GraphQL. Stream Analytics is not part of this demo. No backend standard-stat calculations or authored match stories are used by this runtime.

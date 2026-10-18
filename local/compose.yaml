@@ -26,12 +26,12 @@ services:
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.35.0@sha256:647c63a91102a9d8e8000aab803436e1fc85fbb285e7ce830a82ee5d6661cf37
-    profiles: [azure]
+    profiles: [azure, backend]
     # Private dependency of Event Hubs; no host ports needed.
 
   eventhubs:
     image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest@sha256:be413f0d59541621879e6d197d73f64f3b3ac5fa45861641fdc1430252b8b44b
-    profiles: [azure]
+    profiles: [azure, backend]
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:-N}
       BLOB_SERVER: azurite
@@ -44,7 +44,7 @@ services:
   sql:
     image: mcr.microsoft.com/mssql/server:2022-latest@sha256:cf8f0ab2ebe61feec2eed2629061a07d247f791c2a8ddda74a4ac9f06a291718
     platform: linux/amd64
-    profiles: [azure]
+    profiles: [azure, backend]
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:-N}
       MSSQL_PID: Developer
@@ -61,7 +61,7 @@ services:
 
   servicebus:
     image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest@sha256:5a96d893b245031740f7d46e0fe5ff282d24b78c4b7d761dd57590f3f010a9b3
-    profiles: [azure]
+    profiles: [azure, backend]
     environment:
       ACCEPT_EULA: ${ACCEPT_EULA:-N}
       SQL_SERVER: sql
@@ -107,6 +107,15 @@ services:
       PYTHONUNBUFFERED: "1"
     # Tooling only: no credentials for real Azure and no Docker socket.
 
+  broker-ready:
+    build: {context: ../user-backend, target: runtime}
+    profiles: [backend]
+    volumes: ["./broker_ready.py:/checks/broker_ready.py:ro"]
+    command: [python, /checks/broker_ready.py]
+    depends_on:
+      eventhubs: {condition: service_started}
+      servicebus: {condition: service_started}
+
   backend:
     build: {context: ../user-backend, target: runtime}
     profiles: [backend]
@@ -129,6 +138,11 @@ services:
       ETL_GRAPHQL_URL: http://etl:8000/graphql
       NARRATIVE_GRAPHQL_URL: http://narrative:8000/graphql
       DEMO_RECORDING_URL: http://etl:8000/demo/recording
+      MATCH_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      MATCH_EVENTHUB_NAME: match-events
+      NARRATIVE_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      NARRATIVE_SERVICEBUS_TOPIC: narratives
+      NARRATIVE_SERVICEBUS_SUBSCRIPTION: user-backend
     depends_on:
       postgres: {condition: service_healthy}
       etl: {condition: service_healthy}
@@ -156,10 +170,14 @@ services:
       ETL_HISTORY_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_history
       ETL_STATS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_stats
       DEMO_RECORDING_PATH: /recordings/chelsea-united-grf.json
+      MATCH_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      MATCH_EVENTHUB_NAME: match-events
+      SNAPSHOT_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
     volumes: ["../data-generation/recordings:/recordings:ro"]
     ports: ["127.0.0.1:18010:8000"]
     depends_on:
       etl-db-init: {condition: service_completed_successfully}
+      broker-ready: {condition: service_completed_successfully}
     healthcheck: &upstream-health
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
       interval: 3s
@@ -172,6 +190,8 @@ services:
     environment:
       ETL_BASE_URL: http://etl:8000
       AUDIENCE_BASE_URL: http://backend:8000
+      SNAPSHOT_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      NARRATIVE_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
     volumes: ["narrative-data:/data"]
     ports: ["127.0.0.1:18011:8000"]
     depends_on:
@@ -184,6 +204,8 @@ services:
     environment:
       <<: *backend-env
       DEMO_RECORDING_URL: ""
+      MATCH_EVENTHUB_CONNECTION_STRING: ""
+      NARRATIVE_SERVICEBUS_CONNECTION_STRING: ""
 
   frontend:
     build: ../frontend

@@ -1,7 +1,7 @@
 # Develop the frontend
 
 ```sh
-./dev up backend
+ACCEPT_EULA=Y ./dev up backend
 ```
 
 Open **http://localhost:18020/** for the match viewer, or **http://localhost:18020/lab/** for the removable filter lab. Docker provides nginx, the backend, Postgres, standalone recorded-match ETL and the narrative stub. No Azure account is needed. The default fixture agent works without a model account; [optional local LLM](../../user-backend/docs/local-llm.md) enables flexible questions.
@@ -55,10 +55,10 @@ Run `node frontend/benchmarks/client.mjs` from the repository root for opt-in st
 
 ## Optional aligned footage
 
-`./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-v2/match.mp4` if it exists. The video is ignored, not downloaded on setup, and not included in the image or Git. To use the matching MP4 stored elsewhere:
+`ACCEPT_EULA=Y ./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-v2/match.mp4` if it exists. The video is ignored, not downloaded on setup, and not included in the image or Git. To use the matching MP4 stored elsewhere:
 
 ```sh
-DEMO_VIDEO_PATH=/absolute/path/to/match.mp4 ./dev up backend
+DEMO_VIDEO_PATH=/absolute/path/to/match.mp4 ACCEPT_EULA=Y ./dev up backend
 ```
 
 Run from the repository root. The read-only mount serves `/media/simulator.mp4` directly through nginx with byte-range support. Use the MP4 packaged with the same [GRF recording](../../data-generation/docs/grf-demo.md); an arbitrary video will not align with its events.

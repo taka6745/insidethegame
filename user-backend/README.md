@@ -4,10 +4,10 @@
 
 ![Questions, custom calculations and personalised delivery](architecture.svg)
 
-**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres, the standalone demo ETL and the authored narrative stub. Test doubles remain for isolated tests. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. The [Questions tab](docs/question-agent.md) adds short grounded match answers, neutral recap reads and one-off custom stat offers. This service does not generate the shared game narrative.
+**Runnable foundation.** Profiles, sessions, stat cards and bucket routing work against Postgres, the standalone demo ETL and the authored narrative stub. Live events and narratives now use the Microsoft Event Hubs/Service Bus emulators; GraphQL supplies history and standard stats. Test doubles remain for isolated tests. The [filter lab](docs/filter-lab.md) adds Microsoft Agent Framework goal/coding agents and workflows, structured custom rules and shared indexed calculations. The [Questions tab](docs/question-agent.md) adds short grounded match answers, neutral recap reads and one-off custom stat offers. This service does not generate the shared game narrative.
 
 ```sh
-./dev up backend
+ACCEPT_EULA=Y ./dev up backend
 ./dev reset backend
 ./dev replay backend
 ```

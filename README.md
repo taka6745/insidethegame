@@ -4,12 +4,12 @@ Live football, shared match narratives and a personal match companion.
 
 ![Five planned services and their data flows](architecture.svg)
 
-**Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; production messaging remains to build. These diagrams describe the agreed application design.
+**Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; live messaging uses Microsoft emulators; cloud deployment remains to build. These diagrams describe the agreed application design.
 
 **[Start developing →](DEVELOPMENT.md)** · [Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
 
 ```sh
-./dev up backend
+ACCEPT_EULA=Y ./dev up backend
 ```
 
 Open the [match viewer](http://localhost:18020) for the Chelsea–Manchester United demo, or the [event filter lab](http://localhost:18020/lab/). Pick filters, then replay and inspect each event and live value. The connected demo recording is managed by ETL; standalone lab mode also supports JSON uploads. [How it works](user-backend/docs/filter-lab.md).
