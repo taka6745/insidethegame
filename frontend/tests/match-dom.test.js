@@ -128,7 +128,9 @@ test("model text, prompts and offer labels are text only; scrolled chat does not
     turn = messages.children[0];
   assert.equal(turn.children[0].textContent, unsafe);
   assert.equal(turn.children[1].textContent, unsafe);
-  assert.equal(turn.children[3].children[0].textContent, unsafe);
+  assert.equal(turn.children[2].children[0].textContent, unsafe);
+  assert.equal(turn.querySelector(".answer-time").textContent, "1′");
+  assert.equal(turn.querySelector(".answer-time")["aria-label"], "Answer as of 1:40");
   assert.equal(messages.scrollTop, 20);
 });
 test("question history is capped at fifty turns and unchanged Track button retains identity", () => {
