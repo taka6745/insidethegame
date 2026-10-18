@@ -4,48 +4,37 @@ export function attachDemoVideo(document, {
 } = {}) {
   const video = document.getElementById("match-video");
   const empty = document.getElementById("video-empty");
-  const status = document.getElementById("video-status");
-  const play = document.getElementById("video-play");
-  const fullscreen = document.getElementById("video-fullscreen");
-  const updateControl = () => {
-    play.textContent = video.paused ? "Play footage" : "Pause footage";
-  };
+  const describe = () => video.setAttribute("aria-label",
+    video.paused ? "Play match footage" : "Pause match footage");
   const start = async () => {
     try {
       await video.play();
     } catch {
-      // Autoplay may be blocked; the same button offers a deliberate retry.
+      // A click or keyboard activation can retry after blocked autoplay.
     }
-    updateControl();
+    describe();
   };
+  const toggle = () => video.paused ? start() : video.pause();
   video.addEventListener("loadeddata", () => {
     video.hidden = false;
     empty.hidden = true;
-    play.hidden = false;
-    status.textContent = "Illustrative footage · separate demo events";
-    fullscreen.hidden = !video.requestFullscreen;
-    updateControl();
+    describe();
   });
-  video.addEventListener("play", updateControl);
-  video.addEventListener("pause", updateControl);
+  video.addEventListener("play", describe);
+  video.addEventListener("pause", describe);
   video.addEventListener("error", () => {
     video.hidden = true;
     empty.hidden = false;
-    play.hidden = true;
-    fullscreen.hidden = true;
-    status.textContent = "Demo footage unavailable";
   });
-  play.addEventListener("click", () => {
-    if (video.paused) return start();
-    video.pause();
-  });
-  fullscreen.addEventListener("click", async () => {
-    try {
-      await video.requestFullscreen();
-    } catch {
-      status.textContent = "Full screen unavailable · illustrative footage";
+  video.addEventListener("click", toggle);
+  video.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle();
     }
   });
+  video.tabIndex = 0;
+  video.setAttribute("role", "button");
   video.muted = true;
   video.loop = true;
   video.autoplay = !reducedMotion;

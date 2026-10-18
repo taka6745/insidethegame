@@ -123,7 +123,6 @@ export class MatchView {
     this.get("start-demo").hidden = !controls.showStart;
     this.text("start-demo-label", controls.startLabel);
     this.get("reset-demo").hidden = !controls.showReset;
-    this.text("demo-progress", controls.progress);
   }
   stat(card, existing) {
     if (existing && existing.className === `stat-card ${card.kind}`) {
