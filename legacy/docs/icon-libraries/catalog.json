@@ -1,0 +1,5114 @@
+[
+  {
+    "id": "engineering-azure-7ba56a3d-f7db-5f19-7f0d-7744f3cf6fdd",
+    "name": "Azure \u00b7 AI Foundry",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-b2d3d77f-6aec-cb48-8c56-04158456160b",
+    "name": "Azure \u00b7 AI Gateway",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-bf089964-4f47-ae73-e051-b5bbf7c7e2f9",
+    "name": "Azure \u00b7 AI Studio",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-0b2397fa-f626-34a1-f091-d2372581527b",
+    "name": "Azure \u00b7 Anomaly Detector",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-d4857751-9a6e-2121-eb7d-54b57a10dff8",
+    "name": "Azure \u00b7 Azure AI Foundry IQ",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-26fbd2c2-1ad0-4bf1-3cbc-31e8358ebc4a",
+    "name": "Azure \u00b7 Azure Applied AI Services",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-8d81ad64-0141-5e0d-279f-959b0d9e89fe",
+    "name": "Azure \u00b7 Azure Experimentation Studio",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-85282b30-6aa4-c6d8-1bde-376e98d6c0de",
+    "name": "Azure \u00b7 Azure Machine Learning",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-925733f8-e8d9-d98c-8d58-8e8f14bf1f0a",
+    "name": "Azure \u00b7 Azure Object Understanding",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-azure-02ff9915-357a-28fe-6775-b4326ef6cf07",
+    "name": "Azure \u00b7 Azure OpenAI",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-778d8f4b-5010-f589-dbb7-8f323d422aea",
+    "name": "Azure \u00b7 Azure Video Indexer",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-8c6fc16a-9ca2-079b-c3d4-55007f418d44",
+    "name": "Azure \u00b7 Batch AI",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-52ac4ae9-4597-67bb-9eae-6526ac76409a",
+    "name": "Azure \u00b7 Bonsai",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-03837b34-0ee3-e92f-1b7f-31a5d4ee0175",
+    "name": "Azure \u00b7 Bot Services",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-86ebe1c2-bb61-7e4c-cb0d-4f59fc9f78d3",
+    "name": "Azure \u00b7 Cognitive Services Decisions",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-21f9ab6b-7fb7-a46f-0187-4822abd5cc96",
+    "name": "Azure \u00b7 Computer Vision",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-76ddfb69-3372-ff14-d4eb-2566734589a1",
+    "name": "Azure \u00b7 Content Moderators",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-538ed818-3763-4b56-9c61-f177cd316166",
+    "name": "Azure \u00b7 Content Safety",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-55b04f48-2a21-841a-ba66-f5f16e7e02e4",
+    "name": "Azure \u00b7 Custom Vision",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-80f7a26b-a846-4d95-2c1c-c2a11abbbcb8",
+    "name": "Azure \u00b7 FRD QA",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-08247d4a-570a-057d-2a7e-d4d9c0337fc2",
+    "name": "Azure \u00b7 Face APIs",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-d04bfb69-ccd7-99cb-353d-1a287530f73e",
+    "name": "Azure \u00b7 Form Recognizers",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-c6b5414f-06ef-2a55-e051-b31872208212",
+    "name": "Azure \u00b7 Foundry Agent Service",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-009e8474-ce7b-935d-679c-053d24ba802f",
+    "name": "Azure \u00b7 Foundry Application",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-2a36e021-0ebf-2d58-1af3-dd88b590a637",
+    "name": "Azure \u00b7 Foundry Control Plane",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-6a855358-c228-2787-d3fe-412044c84087",
+    "name": "Azure \u00b7 Foundry Labs",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-313258b6-d510-48a2-d50f-d033ac74ec78",
+    "name": "Azure \u00b7 Foundry Local",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-5bb6ed56-403c-50af-3a09-fbe3727975c0",
+    "name": "Azure \u00b7 Foundry Models",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-61f3658d-5ebc-a0f8-d7ed-50fac6b81bb9",
+    "name": "Azure \u00b7 Foundry Project",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-db90a279-0bd8-ec18-ff37-eb97c821f87e",
+    "name": "Azure \u00b7 Genomics",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-f7be3b3b-c6dc-3af2-d099-a2c9e6da6edb",
+    "name": "Azure \u00b7 Immersive Readers",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-5e92f455-a140-e572-3bcb-f24f98d3cbd7",
+    "name": "Azure \u00b7 Language Understanding",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-8738a60d-cba0-bd73-cd3c-d70547457956",
+    "name": "Azure \u00b7 Language",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-85f014f1-4637-d10a-d2d2-8e4923286e0a",
+    "name": "Azure \u00b7 Machine Learning Studio Workspaces",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-03fd8e4d-1b8e-7677-0751-fdb6a2ffc72e",
+    "name": "Azure \u00b7 Machine Learning",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-8bab2cd7-af75-f9f1-9a73-6ba0230ad0bb",
+    "name": "Azure \u00b7 Metrics Advisor",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-6bd459be-30ab-4dae-d640-7109542e170a",
+    "name": "Azure \u00b7 Personalizers",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-50f6efde-6abe-40d2-29d8-f0e57633088b",
+    "name": "Azure \u00b7 Planetary Computer Pro",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-60c395a4-2444-5b99-a09b-a86a5a19dcbc",
+    "name": "Azure \u00b7 QnA Makers",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-c8dd0221-8f18-56fe-f0ff-5f4195483c9c",
+    "name": "Azure \u00b7 Serverless Search",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-b51402ea-8d1b-158a-ca48-35d31d5fac12",
+    "name": "Azure \u00b7 Speech Services",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-f346b15e-bcd0-435b-7321-da10be52972b",
+    "name": "Azure \u00b7 Translator Text",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-10978939-c7b4-96cb-d6f3-7e8f2a23af4b",
+    "name": "Azure \u00b7 Video Analyzers",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-97dd6b11-3b86-d7ee-9483-dfde4e76c461",
+    "name": "Azure \u00b7 Analysis Services",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-53fea66f-12f1-1e6d-d059-39f08e899de4",
+    "name": "Azure \u00b7 Azure Data Sharing",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-e548770a-1d8c-6dc9-1dda-3228cc676f57",
+    "name": "Azure \u00b7 Azure Databricks",
+    "pack": "azure",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-azure-e391e18f-af83-c168-557a-19d2108dc6d3",
+    "name": "Azure \u00b7 Azure Synapse Analytics",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-66f8ed70-b3bf-8f71-7bbe-8b644df0962d",
+    "name": "Azure \u00b7 Azure Workbooks",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-002b4cd2-1bb3-89e1-c6b2-6b3007f237aa",
+    "name": "Azure \u00b7 Data Factories",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-cfa4ec6d-ef81-f4db-89e4-f95dad738845",
+    "name": "Azure \u00b7 Data Lake Analytics",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-45672619-782f-11eb-68b5-63e845e8e180",
+    "name": "Azure \u00b7 Data Lake Store Gen1",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-6d9ebb00-32fc-ebe7-5267-5d0e94a345b6",
+    "name": "Azure \u00b7 Endpoint Analytics",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-79ea4f3c-9b29-7c2a-d948-a11951fb9c2c",
+    "name": "Azure \u00b7 HD Insight Clusters",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-e9758003-1569-16e9-0b8f-af1e659cfac8",
+    "name": "Azure \u00b7 HDI AKS Cluster",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-8251dfe8-4afe-62a4-c4e4-33512cd458f3",
+    "name": "Azure \u00b7 Power BI Embedded",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-bedbb379-5f89-1c89-eb48-ecf73d24c2a1",
+    "name": "Azure \u00b7 Private Link Services",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-10e53976-8bb6-0217-a10b-7a8d13eba27e",
+    "name": "Azure \u00b7 Applens",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-519a39ae-ab01-1ae4-5ada-4aa7bc9338ae",
+    "name": "Azure \u00b7 Azure Hybrid Center",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-be068a5c-4e5e-fea9-3551-5b3d8c3d21c3",
+    "name": "Azure \u00b7 Collaborative Service",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-0b0d4be2-5d82-f097-939a-55871d6cea0a",
+    "name": "Azure \u00b7 ABS Member",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-1084dfb0-c5a6-c312-7937-dd31f6f2594e",
+    "name": "Azure \u00b7 Azure Blockchain Service",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-c2d2c2aa-e886-8e5a-cfe8-6dc55cba50eb",
+    "name": "Azure \u00b7 Azure Token Service",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-8095bdc5-a376-536f-9c70-317a1e4ac7ae",
+    "name": "Azure \u00b7 Blockchain Applications",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-1aed4bfb-851c-e1fa-01e4-f8e82aeccf18",
+    "name": "Azure \u00b7 Consortium",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-98b10bd6-4c3c-7f9b-99f0-d70a2cde95d6",
+    "name": "Azure \u00b7 Outbound Connection",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-a28ed29e-1560-56ff-a5ce-c88a6585b701",
+    "name": "Azure \u00b7 AKS Automatic",
+    "pack": "azure",
+    "element_count": 33
+  },
+  {
+    "id": "engineering-azure-27ca97ad-9688-95f3-4693-616ab61121d4",
+    "name": "Azure \u00b7 AKS",
+    "pack": "azure",
+    "element_count": 29
+  },
+  {
+    "id": "engineering-azure-a7030f4c-4630-09c7-e23d-982780640ccb",
+    "name": "Azure \u00b7 AVS VM",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-eb80c4f7-6aaf-cb37-7317-1e0e26e32081",
+    "name": "Azure \u00b7 Application Group",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-0437ed39-3aca-2b2e-53b2-5057eaa74777",
+    "name": "Azure \u00b7 Automanaged VM",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-96bb7457-88f6-e402-2431-da4fa4d427e7",
+    "name": "Azure \u00b7 Availability Sets",
+    "pack": "azure",
+    "element_count": 36
+  },
+  {
+    "id": "engineering-azure-472a7346-a7dd-f071-26fd-3a7b69ff6928",
+    "name": "Azure \u00b7 Azure Center For SAP",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-7ffa576e-915c-4718-1573-638ab794169a",
+    "name": "Azure \u00b7 Azure Compute Galleries",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-4d829c7a-b54f-0fda-9db9-deec8c82f648",
+    "name": "Azure \u00b7 Azure HPC Workbenches",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-e8ded1e9-78a1-d66d-033f-50facda6b5dc",
+    "name": "Azure \u00b7 Azure Linux",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-7daf7f01-484c-2a85-8384-afb31963801f",
+    "name": "Azure \u00b7 Azure VMware Solution",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-c06163bd-fcbe-dfc2-869d-366647b4ccf5",
+    "name": "Azure \u00b7 Azure Virtual Desktop",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-87ce3897-6e29-c0f1-3595-7c1544e9378c",
+    "name": "Azure \u00b7 Bare Metal Infrastructure",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-c6a63c4d-4e82-c5b6-d4ec-0e2e4f1ee76e",
+    "name": "Azure \u00b7 Batch Accounts",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-bf014436-e223-129d-b1fd-c7166a12210f",
+    "name": "Azure \u00b7 Capacity Reservation Groups",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-af58481c-3514-3fb9-c321-676b16b867e7",
+    "name": "Azure \u00b7 Central Service Instance For SAP",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-15fc4194-48eb-a2cc-cb5b-fa81b0c5e31d",
+    "name": "Azure \u00b7 Cloud Services (Classic)",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-360a415f-b2a7-ef38-9fc1-ae37871aa2a0",
+    "name": "Azure \u00b7 Cloud Services (extended Support)",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-f463f7ca-010c-0282-41c6-e0028ea894a3",
+    "name": "Azure \u00b7 Community Images",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-36291dc0-af84-20af-64a0-f54138a4d192",
+    "name": "Azure \u00b7 Compute Fleet",
+    "pack": "azure",
+    "element_count": 33
+  },
+  {
+    "id": "engineering-azure-72af9e2a-91e9-d8e4-ad3b-9dd3d7aafe32",
+    "name": "Azure \u00b7 Container Instances (compute)",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-6f1bbd6a-7cfd-6498-61b4-ab5fcab0b8de",
+    "name": "Azure \u00b7 Database Instance For SAP",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-86741da5-e909-7fe6-65f5-f44cc32995ed",
+    "name": "Azure \u00b7 Disk Encryption Sets",
+    "pack": "azure",
+    "element_count": 36
+  },
+  {
+    "id": "engineering-azure-8d02ec92-4349-bfa0-e91e-4e29f72fa358",
+    "name": "Azure \u00b7 Disks Snapshots",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-5505152b-f390-95e8-5fbb-cf4ac113048b",
+    "name": "Azure \u00b7 Disks",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-5fd07248-de45-6c48-ae0f-0f19c5d12e70",
+    "name": "Azure \u00b7 Function Apps",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-ca4593bb-fad0-3be3-db2d-a903bab7b939",
+    "name": "Azure \u00b7 Host Groups",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-954f3b26-f205-a60d-7e98-8cab551209dc",
+    "name": "Azure \u00b7 Host Pools",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-345a26b0-909a-e258-a551-978189f25984",
+    "name": "Azure \u00b7 Hosts",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-ad0c3c3f-bfb6-2f34-7324-63242df6deea",
+    "name": "Azure \u00b7 Image Definitions",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-892d040a-a554-22fe-a811-357aaaa688ed",
+    "name": "Azure \u00b7 Image Templates",
+    "pack": "azure",
+    "element_count": 37
+  },
+  {
+    "id": "engineering-azure-502a00c3-b4e0-e667-7f7d-874055f8219c",
+    "name": "Azure \u00b7 Images",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-f30a451a-b186-b036-e8df-3d8e4a56a496",
+    "name": "Azure \u00b7 Maintenance Configuration",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-4e354c46-8144-75e0-f791-8231963a931e",
+    "name": "Azure \u00b7 Managed Service Fabric",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-59424ab2-aa07-c42b-df20-ab4e9912eb69",
+    "name": "Azure \u00b7 Mesh Applications",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-021e460a-ff56-3cea-d37f-ce77f61164e3",
+    "name": "Azure \u00b7 Restore Points Collections",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-a2c9de78-e413-7b5a-d199-274795d20660",
+    "name": "Azure \u00b7 Restore Points",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-ae0a64b3-ce06-28f6-f528-a52cc9e5b4c3",
+    "name": "Azure \u00b7 SSH Keys",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-06ea093b-bf30-0c83-675f-0ca4f80a8de4",
+    "name": "Azure \u00b7 Scheduled Actions",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-7c92e586-bd62-204f-1c8a-ac9cf7c90b75",
+    "name": "Azure \u00b7 Service Fabric Clusters",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-3b1d5d09-1146-d517-d66e-05518f82394a",
+    "name": "Azure \u00b7 Shared Image Galleries",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-a1fa4daa-0c17-f20c-ea8d-0c6162446a05",
+    "name": "Azure \u00b7 Stage Maps",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-14e7b9f5-16e4-5e12-6ca0-b64290e7efac",
+    "name": "Azure \u00b7 VM App Definitions",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-327e80d9-55ac-b9a7-9e41-6d33977bf77b",
+    "name": "Azure \u00b7 VM App Versions",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-1c69f7ac-32e7-6101-6e0d-c352724e81c6",
+    "name": "Azure \u00b7 VM Image Version",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-8f1ad68f-c9ad-b6c6-f66f-3f9ebd4c38b8",
+    "name": "Azure \u00b7 VM Images (Classic)",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-2b329630-6a08-ac39-2bfe-9fb3fe7aa3d9",
+    "name": "Azure \u00b7 VM Scale Sets",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-d1fad11d-198f-68d5-a15d-96072f167cd6",
+    "name": "Azure \u00b7 Virtual Instance For SAP",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-45dba14f-2096-249a-396d-473018dac39b",
+    "name": "Azure \u00b7 Virtual Machine",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-feacf8e3-48e7-8734-2872-de25b9f89d3a",
+    "name": "Azure \u00b7 Workspaces Alt",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-7ca07cc3-b6d9-1789-5272-ac58e10bd32a",
+    "name": "Azure \u00b7 Workspaces",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-4f1d97a0-fa14-cf31-e8b6-e8934389d285",
+    "name": "Azure \u00b7 AKS Istio",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-e7ceae9b-bd5b-5338-b724-fa2a1a1a8d18",
+    "name": "Azure \u00b7 AKS Network Policy",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-5eec437a-bf91-6dc3-4ff2-e1b49beca70f",
+    "name": "Azure \u00b7 Azure Container Storage",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-dcded82d-0e92-2fd5-0ed7-58c9f2490543",
+    "name": "Azure \u00b7 Azure Red Hat OpenShift",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-bbedba19-bf00-f351-a06f-6d1d37db4478",
+    "name": "Azure \u00b7 Container Apps Environments",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-4f2f51fb-cab3-5e33-37c8-291cfb2a3bb6",
+    "name": "Azure \u00b7 Container Instances (containers)",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-064d1494-028f-0b53-5d64-217476f6838b",
+    "name": "Azure \u00b7 Container Registries",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-799fc88b-44a7-9f4f-1aac-7f1119e5dbb6",
+    "name": "Azure \u00b7 Kubernetes Fleet Manager",
+    "pack": "azure",
+    "element_count": 29
+  },
+  {
+    "id": "engineering-azure-bc604009-c2a0-be2a-2a87-a63bc9463f74",
+    "name": "Azure \u00b7 Kubernetes Hub",
+    "pack": "azure",
+    "element_count": 26
+  },
+  {
+    "id": "engineering-azure-899986fa-242d-9e55-2b04-d3942b3c4959",
+    "name": "Azure \u00b7 Kubernetes Services",
+    "pack": "azure",
+    "element_count": 29
+  },
+  {
+    "id": "engineering-azure-25b9a0f1-d8d5-8e3b-25c1-d5310f88d4ef",
+    "name": "Azure \u00b7 Service Groups",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-0493666c-71fe-dbfe-e024-391780ca7719",
+    "name": "Azure \u00b7 Worker Container App",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-afe1b9f8-f4e4-c6bb-0099-85eb1ec25463",
+    "name": "Azure \u00b7 Azure Data Explorer Clusters",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-eb853555-d730-4f0f-0bd2-18c8fe3918ed",
+    "name": "Azure \u00b7 Azure Database MariaDB Server",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-00817398-7f2f-fe43-3891-261544236bde",
+    "name": "Azure \u00b7 Azure Database Migration Services",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-cf959b38-b878-980b-2528-14c73563f844",
+    "name": "Azure \u00b7 Azure Database MySQL Server",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-28f4c496-9b31-7b54-9dc1-60440739c50b",
+    "name": "Azure \u00b7 Azure Database PostgreSQL Server Group",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-61b3e663-2b0f-4605-4793-833559c41b96",
+    "name": "Azure \u00b7 Azure Database PostgreSQL Server",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-926ba960-a04e-116f-1c28-155e0adf81a0",
+    "name": "Azure \u00b7 Azure DocumentDB",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-7c658fe8-d333-2324-6805-749c1b4f12a4",
+    "name": "Azure \u00b7 Azure Managed Redis",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-382fe6d6-b774-e7ae-3f45-2db5cc79e225",
+    "name": "Azure \u00b7 Azure SQL Edge",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-c612da06-205d-c3c9-8e60-f81baa000a06",
+    "name": "Azure \u00b7 Azure SQL VM",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-946d5175-7c5d-115c-60fa-a2a9930f7b8a",
+    "name": "Azure \u00b7 Azure SQL",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-88a441e6-3cbc-63fd-07ba-ff58ae873608",
+    "name": "Azure \u00b7 Cache Redis",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-0bc24d55-97e6-db3e-7b04-22f7b986fff9",
+    "name": "Azure \u00b7 Elastic Job Agents",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-d469a698-6acf-4c85-0992-c0390fa778d4",
+    "name": "Azure \u00b7 Instance Pools",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-72921f4a-0304-90a0-cc1e-72f25558571c",
+    "name": "Azure \u00b7 Managed Database",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-d6da74bc-71c1-ea5d-ca7e-f2e196f363f1",
+    "name": "Azure \u00b7 Managed Instance Apache Cassandra",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-ddea232b-357f-c2f2-7227-a370e3b90ad9",
+    "name": "Azure \u00b7 Oracle Database",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-ff1e8b21-d096-a3cd-e2b0-c5bcf6074e2b",
+    "name": "Azure \u00b7 SQL Data Warehouses",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-b9c78509-a43b-fe94-c1ae-8a8672857456",
+    "name": "Azure \u00b7 SQL Database Fleet Manager",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-64a9d765-b246-f83d-875f-744e6a631f34",
+    "name": "Azure \u00b7 SQL Database",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-9d58fc93-1522-40f3-c468-db9f6c87ca02",
+    "name": "Azure \u00b7 SQL Elastic Pools",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-c873c3d3-82f9-8ba0-68cf-c115ca0f9c43",
+    "name": "Azure \u00b7 SQL Managed Instance",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-0f45998d-4b63-f2a1-05d6-4091b981ad01",
+    "name": "Azure \u00b7 SQL Server Registries",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-b3b6fedf-bc4f-7122-dbc5-339887121d79",
+    "name": "Azure \u00b7 SQL Server",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-fbb795f5-495f-bd7f-1c4e-0d730403c26b",
+    "name": "Azure \u00b7 SSIS Lift And Shift IR",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-401f5e0a-559f-55e6-0b9a-7d168e6c4a9f",
+    "name": "Azure \u00b7 Virtual Clusters",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-5c83b039-6421-4f02-3be9-9abdaf587bd3",
+    "name": "Azure \u00b7 Azure App Testing",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-b3f0aa75-f0c3-d090-8edf-43efde9d3812",
+    "name": "Azure \u00b7 Azure Dev Tunnels",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-8a3b4beb-94bd-c006-e10b-64d46e00aa19",
+    "name": "Azure \u00b7 Microsoft Dev Box",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-ac7675c2-0fa7-fa30-f960-d8d5ef293be7",
+    "name": "Azure \u00b7 API Management Services",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-6cfe29bd-648e-42a1-2f89-d788fd901aae",
+    "name": "Azure \u00b7 Application Insights",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-6780efd7-0bee-3efd-f460-afc570991d29",
+    "name": "Azure \u00b7 Azure Chaos Studio",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-3ae38c96-195f-0d91-c97c-8ec3777ade9f",
+    "name": "Azure \u00b7 Azure Deployment Environments",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-1cf6c335-3082-af27-6d10-1592cba8db7c",
+    "name": "Azure \u00b7 Azure DevOps",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-bb86a487-3d3a-71eb-a840-f91d17882f28",
+    "name": "Azure \u00b7 Azure Load Testing",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-531167bb-6a38-eac9-54d2-b9f9cdc2bcd1",
+    "name": "Azure \u00b7 CloudTest",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-e9e89d43-023c-32a6-09d8-532b94704ce0",
+    "name": "Azure \u00b7 Code Optimization",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-50816170-4267-7d6f-ea86-cba8136cc091",
+    "name": "Azure \u00b7 DevOps Starter",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-ea06c196-b4d0-9731-fbb6-3cd98c477e6e",
+    "name": "Azure \u00b7 DevTest Labs",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-f83b29e2-9624-4381-b378-96678ba22ddd",
+    "name": "Azure \u00b7 Lab Accounts",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-8ba4605e-d9bd-2524-00f5-5aeef05f1c8d",
+    "name": "Azure \u00b7 Lab Services",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-169f3526-5cba-a617-f17e-c1eb4f5c9ef1",
+    "name": "Azure \u00b7 Load Testing",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-544711c0-96d5-f1f1-c22f-80f6548d52a1",
+    "name": "Azure \u00b7 Managed DevOps Pools",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-fd6fe345-e0ec-4462-2a1f-9807e93b2e2f",
+    "name": "Azure \u00b7 Targets Management",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-dd261f5c-1345-8ba5-14a5-82c2bb7236e4",
+    "name": "Azure \u00b7 Test Base",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-ad8200ff-0b3e-d3a1-2bfa-9fceae810046",
+    "name": "Azure \u00b7 Workspace Gateway",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-6c87a5c1-b1cc-d7a4-b8a9-1e60620e92ed",
+    "name": "Azure \u00b7 All Resources",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-e7819183-dab4-6fe7-c5a7-8f0fbc2a92c4",
+    "name": "Azure \u00b7 Aquila",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-c9e01393-aad0-551f-d6d6-154ae9f841ed",
+    "name": "Azure \u00b7 Azure A",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-59ab396a-4864-dc70-df74-4ab7cfe20a04",
+    "name": "Azure \u00b7 Azure Cloud Shell",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f6839a70-9c4d-d8ba-3d39-a8bf3794688f",
+    "name": "Azure \u00b7 Azure Support Center Blue",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-3b30fd72-bb1d-5a12-f997-c337a5598268",
+    "name": "Azure \u00b7 Backlog",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-865398fd-aa59-41e2-2710-3177391f546c",
+    "name": "Azure \u00b7 Biz Talk",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-360e1570-fa57-66d9-0c86-0aa8401488a7",
+    "name": "Azure \u00b7 Blob Block",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-5c36e422-5cb4-4c06-f509-8fd08dd89d49",
+    "name": "Azure \u00b7 Blob Page",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-e691a7a0-0b10-67e8-75ac-09d8ed9fd3cf",
+    "name": "Azure \u00b7 Branch",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-e19ae2fa-4195-c43a-b267-91942b8bf33c",
+    "name": "Azure \u00b7 Breeze",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-c0791a6a-66c1-286b-0779-bf8cb991229b",
+    "name": "Azure \u00b7 Browser",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-83461308-027e-173c-453f-dba3acf6b809",
+    "name": "Azure \u00b7 Bug",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-33fbd53a-339c-1e41-c76a-bd8add0f4a6e",
+    "name": "Azure \u00b7 Builds",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-2f3bf92d-25c1-9836-aec3-e8ec3822143d",
+    "name": "Azure \u00b7 Cache",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-ad2465a5-883d-af03-4209-78221fb927e2",
+    "name": "Azure \u00b7 Ceres",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-ef9d9f69-44ff-1f96-171b-5cd3c476c72a",
+    "name": "Azure \u00b7 Code",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-4b3c0937-9da4-0963-0329-fb56f320fe77",
+    "name": "Azure \u00b7 Commit",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-a4c5180a-aa4d-efae-e5e2-2ea9620f1d2c",
+    "name": "Azure \u00b7 Controls Horizontal",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-1cb9c777-260d-bfba-c5a7-b98f00a45fc6",
+    "name": "Azure \u00b7 Controls",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-5ee42868-3dd0-b684-a862-d104283d3320",
+    "name": "Azure \u00b7 Cost Alerts",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-eb11efd4-c28c-a29b-c83a-5fe54dba6a10",
+    "name": "Azure \u00b7 Cost Analysis",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f438a291-5e10-aa6a-ac57-5df53f344f04",
+    "name": "Azure \u00b7 Cost Budgets",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-8d1ca80d-0e83-4923-e6cd-5b2e9d0ec5f4",
+    "name": "Azure \u00b7 Cost Management",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-8993fe90-acf9-e43b-3c8f-8a13fdabadcd",
+    "name": "Azure \u00b7 Counter",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-bcc582ba-9c4f-ed09-08e2-54d94d4988cc",
+    "name": "Azure \u00b7 Cubes",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-d6b3bc99-346a-4ca3-88e7-7ba77a4a60cc",
+    "name": "Azure \u00b7 Dashboard Hub",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-c3e34f1a-3977-7ce5-986c-03dc2d7e9941",
+    "name": "Azure \u00b7 Dashboard",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-0b41ed12-1d1d-c311-b2a8-a5ba97126058",
+    "name": "Azure \u00b7 Dev Console",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-eaaa976b-ec68-7a26-e91b-cdb4da127920",
+    "name": "Azure \u00b7 Download",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-8fe2543f-2b03-8aa1-45c3-b4493e274411",
+    "name": "Azure \u00b7 Error",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-e6fa2260-d979-1fcc-4d91-62867e63f539",
+    "name": "Azure \u00b7 Extensions",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-c42b7319-4f16-f70a-8b4b-c774bcfdabc2",
+    "name": "Azure \u00b7 FTP",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-af39db55-8ba8-83d8-a28a-15bda70696b6",
+    "name": "Azure \u00b7 Fiji",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-bca06655-ffc2-c763-ef96-8fed63449218",
+    "name": "Azure \u00b7 File",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-59ab8fc4-ee37-39de-5795-841ef908c6c1",
+    "name": "Azure \u00b7 Files",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-ccf15984-353b-9106-e1c9-e82d7889a791",
+    "name": "Azure \u00b7 Folder Blank",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-b16884ef-3d68-a95a-8836-c6c8a110e61a",
+    "name": "Azure \u00b7 Folder Website",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-517eb873-d0ca-fb55-a16e-86b0507a5fc4",
+    "name": "Azure \u00b7 Free Services",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-e972f7d6-1c4b-b9ba-941b-8a743406b0aa",
+    "name": "Azure \u00b7 Gear",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-f85924d9-2f00-5a0a-e293-5fb1c9c86571",
+    "name": "Azure \u00b7 Globe Error",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-603b6cd8-0924-e103-81d1-ef76a4754359",
+    "name": "Azure \u00b7 Globe Success",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-995e915f-9d5c-4e9d-cb9c-8b4025da463f",
+    "name": "Azure \u00b7 Globe Warning",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-c3853cb7-84fb-3877-e1bb-23edc0fec8ce",
+    "name": "Azure \u00b7 Guide",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-57616746-e726-4079-68cd-2f11d2c83929",
+    "name": "Azure \u00b7 Heart",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-ff95527f-b665-1bd6-9c2b-454dad4fa773",
+    "name": "Azure \u00b7 Help And Support",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-09874397-e4e6-15e1-44d3-e6edfa56db84",
+    "name": "Azure \u00b7 IcM Troubleshooting",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-cb0f597d-4692-87aa-6fbe-33fdb60947bc",
+    "name": "Azure \u00b7 Image",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-472b0604-e8ce-713c-f216-7542105cafb9",
+    "name": "Azure \u00b7 Information",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-7326222b-2ab5-18be-ab27-810768406574",
+    "name": "Azure \u00b7 Input Output",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-b0c33e8b-2c69-0e13-a4b9-43c25d992453",
+    "name": "Azure \u00b7 Journey Hub",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-d6af0342-0f1a-1c7a-7c30-db82f9c306c3",
+    "name": "Azure \u00b7 Launch Portal",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-44ce1cf3-8138-98a4-fb99-691275ee5562",
+    "name": "Azure \u00b7 Learn",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-8704045c-24a4-2a27-576c-752eb49372ad",
+    "name": "Azure \u00b7 Load Test",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-ac267dec-12a1-7035-0f2d-491006dadc04",
+    "name": "Azure \u00b7 Location",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-86ded2c5-e233-f35c-b7da-e0d5dc48b6ec",
+    "name": "Azure \u00b7 Log Streaming",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-7e60deb5-3d1a-c2dd-2716-8d257332a784",
+    "name": "Azure \u00b7 Management Groups",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-1f26fe5d-51cb-8829-ee98-46ed27e794ce",
+    "name": "Azure \u00b7 Management Portal",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-faf7759a-acfe-f4cf-faf6-12605bdfc4ff",
+    "name": "Azure \u00b7 Marketplace Management",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-dccbc682-c6d7-154d-f290-0f3a27000671",
+    "name": "Azure \u00b7 Marketplace",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-dcc9e2f4-84f1-b6ce-6e95-812a1e33932e",
+    "name": "Azure \u00b7 Media File",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-e0e05c42-c911-682f-0bb2-f7d0b996a576",
+    "name": "Azure \u00b7 Media",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-018f85a9-3a3c-7501-0d1c-2902def3e3c8",
+    "name": "Azure \u00b7 Microsoft Discovery",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-2207a16d-80ee-ccfa-2f1a-dfaec3a3afc4",
+    "name": "Azure \u00b7 Mobile Engagement",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-95710653-67be-524d-ad05-a241a215ad8d",
+    "name": "Azure \u00b7 Mobile",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-c4b0ec37-04e7-45bc-3eaa-351a74ed482a",
+    "name": "Azure \u00b7 Module",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-6b67bc69-c52d-1a01-9b34-98b987f1f108",
+    "name": "Azure \u00b7 Open Supply Chain Platform",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-3d89a52b-7e8d-a91e-2c35-0f09c089c55e",
+    "name": "Azure \u00b7 Power Up",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-3847af40-bdb0-2d56-ed76-2e37056aa8f4",
+    "name": "Azure \u00b7 Power",
+    "pack": "azure",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-azure-aff11f06-66db-b188-8cc6-d194dbc9ec91",
+    "name": "Azure \u00b7 Powershell",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-8c5ef814-31db-678b-ea03-d73fd228666d",
+    "name": "Azure \u00b7 Preview Features",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-dfd500c6-7e97-d450-b475-70cc9c4483f3",
+    "name": "Azure \u00b7 Process Explorer",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-591fc3b2-63af-0e45-df89-96efc8aa6b3a",
+    "name": "Azure \u00b7 Production Ready Database",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f8bc895e-5369-4eb9-7aa8-aeb7a6eefafe",
+    "name": "Azure \u00b7 Quickstart Center",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-3eeffd30-b36e-46db-c517-e661f9f04eb3",
+    "name": "Azure \u00b7 Recent",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-8045f80e-1843-78c3-ccb6-6c49b6f52278",
+    "name": "Azure \u00b7 Region Management",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-47e9860a-9da2-388f-0129-3abe905f4b43",
+    "name": "Azure \u00b7 Reservations",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-b002240c-3aee-99d1-86fe-bbf84e31faf8",
+    "name": "Azure \u00b7 Resource Explorer",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-1440a560-abaa-8334-8a70-3167627663e8",
+    "name": "Azure \u00b7 Resource Groups",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-77437462-25d9-9734-f189-af6f007e84c2",
+    "name": "Azure \u00b7 Resource Linked",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-3bfdaf24-71cd-426f-9faf-fd2709ee45d6",
+    "name": "Azure \u00b7 SSD",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-022ef924-7ee2-c069-e27e-758ce57395a3",
+    "name": "Azure \u00b7 Scheduler",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-acf97596-0c7b-4580-f848-5314adef8931",
+    "name": "Azure \u00b7 Search Grid",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-c01be4c6-a6a8-79d7-ef2f-78410d5551ba",
+    "name": "Azure \u00b7 Search",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-e3038e29-db98-2f2e-8b94-5ae138efe348",
+    "name": "Azure \u00b7 Server Farm",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-7fe023b3-e856-e571-ed1c-3c772ecbcd4c",
+    "name": "Azure \u00b7 Service Health",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-9655062a-b2a7-4ad5-d489-95558a6f4b18",
+    "name": "Azure \u00b7 Storage Azure Files",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f6c521be-5c77-6461-4884-f7b7c513ac8c",
+    "name": "Azure \u00b7 Storage Container",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-79fb87b0-8f8e-a2d0-b6b0-b8796bc15f11",
+    "name": "Azure \u00b7 Storage Queue",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-47439ccd-6a16-2788-70e9-a46f5c92453f",
+    "name": "Azure \u00b7 Subscriptions",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-8b627d88-f728-ebff-7a3d-b527ece8ea10",
+    "name": "Azure \u00b7 TFS VC Repository",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-f44bbac6-aacb-3837-0530-166b029662b4",
+    "name": "Azure \u00b7 Table",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-24a30fc8-1f71-3a50-06df-b7e706166dd0",
+    "name": "Azure \u00b7 Tag",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-e43c8f3c-afcb-9a59-d706-0b4870b0e06a",
+    "name": "Azure \u00b7 Tags",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-f84ddead-b81f-c681-7bb8-38538df00139",
+    "name": "Azure \u00b7 Templates",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-cb90fb79-f69e-c04c-2223-b9ab50ebb594",
+    "name": "Azure \u00b7 Toolbox",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-19ebd236-7c4a-3b81-4c65-300bf70c62d5",
+    "name": "Azure \u00b7 Troubleshoot",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-0dcca8ae-b0e2-375c-dd07-3b11c4da3a10",
+    "name": "Azure \u00b7 Versions",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-e3f99543-6cc1-5948-233e-433e15f9d61d",
+    "name": "Azure \u00b7 Web Slots",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-a06b046e-dfb8-5114-3e2e-d3efd82c8d42",
+    "name": "Azure \u00b7 Web Test",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-894f800f-b047-918f-8770-dcfacd435029",
+    "name": "Azure \u00b7 Website Power",
+    "pack": "azure",
+    "element_count": 19
+  },
+  {
+    "id": "engineering-azure-b042a2e2-b326-62af-e7f3-e6c132bf425b",
+    "name": "Azure \u00b7 Website Staging",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-5e1a88fb-bc96-8982-4ff8-06cd422ca2dd",
+    "name": "Azure \u00b7 Workbooks",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-97b70c66-d9f6-50de-30ec-880d4b6a5b28",
+    "name": "Azure \u00b7 Workflow",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-0e547afb-8531-a6fa-84db-201d1d65c88b",
+    "name": "Azure \u00b7 AI At Edge",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-b209a3ee-a51e-7191-fe3d-e1b98b5e988a",
+    "name": "Azure \u00b7 Arc Data Services",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-40c2d8d9-fae5-0d62-c8e0-0cb855d76aa7",
+    "name": "Azure \u00b7 Arc Kubernetes",
+    "pack": "azure",
+    "element_count": 31
+  },
+  {
+    "id": "engineering-azure-005b44e9-af66-da81-5caf-4ddec8dd2705",
+    "name": "Azure \u00b7 Arc PostgreSQL",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-c7ce3b7b-902d-2103-d0b7-9c8f5d589af2",
+    "name": "Azure \u00b7 Arc SQL Managed Instance",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-f534f275-7c98-75c5-32c5-1107683f9fd8",
+    "name": "Azure \u00b7 Arc SQL Server",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-63beb5ec-b40e-1058-0b92-ee3ba0996628",
+    "name": "Azure \u00b7 Azure Edge Hardware Center",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-ddb98731-45a7-b6dd-969b-42566cf2fdd3",
+    "name": "Azure \u00b7 Azure Local",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-78591669-3a13-b4c8-f1f0-b98cdc5abdb8",
+    "name": "Azure \u00b7 Azure Monitor Pipeline",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-a8c787d9-32cc-d936-e7a3-e7afbd2c66f7",
+    "name": "Azure \u00b7 Azure Operator 5G Core",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-94464175-e6ba-ee7b-6897-2f90e2463a68",
+    "name": "Azure \u00b7 Azure Operator Insights",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-c868c8e7-2487-5335-cc69-68b92adea62c",
+    "name": "Azure \u00b7 Azure Operator Nexus",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-b7638b15-f5ce-6266-15bd-da1ad78b09f8",
+    "name": "Azure \u00b7 Azure Programmable Connectivity",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-d237276d-dbf3-a92e-6a33-b34174e083a2",
+    "name": "Azure \u00b7 Disconnected Operations",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-b97e7c1f-956c-1d81-e2a9-53bcc3c5d464",
+    "name": "Azure \u00b7 Edge Management",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-90839dfc-3e21-bd42-7131-85b37f80d90d",
+    "name": "Azure \u00b7 Edge Storage Accelerator",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-5f1f8358-4796-b396-0022-9650952299a8",
+    "name": "Azure \u00b7 Modular Data Center",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-1f12c6d0-c08d-593a-25d5-12845205e27e",
+    "name": "Azure \u00b7 SCVMM Management Servers",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-681fdc05-ffc9-1d13-1405-399c60ee899e",
+    "name": "Azure \u00b7 WAC Installer",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-b05eb499-5c6e-8681-c461-3cdb2ea23e91",
+    "name": "Azure \u00b7 WAC",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-29ea44b7-99f4-c311-ad69-c1079aca8f32",
+    "name": "Azure \u00b7 Workload Orchestration",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-732db797-a8eb-9559-b914-65fd58e7c672",
+    "name": "Azure \u00b7 API Proxy",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-099a676b-2d10-1338-686f-ab2855551645",
+    "name": "Azure \u00b7 Administrative Units",
+    "pack": "azure",
+    "element_count": 30
+  },
+  {
+    "id": "engineering-azure-bb5dd83b-8481-0e67-0b28-7e71f9adbc3f",
+    "name": "Azure \u00b7 App Registrations",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-780dd054-17c3-9ac2-87d1-9cae65d2558f",
+    "name": "Azure \u00b7 Azure AD B2C",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-05c1082a-1094-efb0-555d-d8e244958385",
+    "name": "Azure \u00b7 Enterprise Applications",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-fd690dce-f6c0-0896-1d1f-7707c549933c",
+    "name": "Azure \u00b7 Entra Connect Health",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-ec62eb96-dc5d-e190-ec14-5243055dd16b",
+    "name": "Azure \u00b7 Entra Connect Sync",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-88bb2c16-1a6f-b3ef-f61b-4532f5ca4376",
+    "name": "Azure \u00b7 Entra Connect",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-5035ed62-543d-65ec-541f-e4ee67273adf",
+    "name": "Azure \u00b7 Entra Domain Services",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-4d8df631-9a32-36cf-0aa6-a0ab650fa326",
+    "name": "Azure \u00b7 Entra Global Secure Access",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-5eb755f1-6137-8997-b07b-5db031a91b99",
+    "name": "Azure \u00b7 Entra ID Protection",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-674ad505-ddf1-6393-74f0-644b4d1caecd",
+    "name": "Azure \u00b7 Entra Identity Custom Roles",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-652e6f61-b542-ec21-9724-87eb68e1916c",
+    "name": "Azure \u00b7 Entra Identity Licenses",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-3f550af7-47cd-145c-9b0e-80b1ea5efa17",
+    "name": "Azure \u00b7 Entra Internet Access",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-86c4f176-ea90-b84b-f556-a80cbeac5850",
+    "name": "Azure \u00b7 Entra Private Access",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-d9ee6189-f7f5-313a-1497-0069bddeeb81",
+    "name": "Azure \u00b7 Entra Privleged Identity Management",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-789adcbe-9840-bab3-f227-de344351be3b",
+    "name": "Azure \u00b7 Entra Verified ID",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-3eb528e8-3f3c-1f0a-09f7-5c8d41f65ce6",
+    "name": "Azure \u00b7 Exchange On Premises Access",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-7dd65120-29e2-7396-06f6-839ae3d886a9",
+    "name": "Azure \u00b7 External Identities",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-8a007ca3-335a-8ab1-01c6-0fc38af25481",
+    "name": "Azure \u00b7 Groups",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-19d36cfb-a417-1cc2-88cc-b18900248b4d",
+    "name": "Azure \u00b7 Identity Governance",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-5924d5f5-9271-7c33-1bd5-2411a291cb3e",
+    "name": "Azure \u00b7 Managed Identities",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-37657b32-3736-5ba0-1923-80d364b4771b",
+    "name": "Azure \u00b7 Multi Factor Authentication",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-7dd643dc-aae0-db20-70b5-d87810584e48",
+    "name": "Azure \u00b7 Multi Tenancy",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-31d6f70f-625b-903a-4df3-48aabb69fec1",
+    "name": "Azure \u00b7 Security",
+    "pack": "azure",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-azure-9a44ea72-ccf2-9892-53c3-55bc2e1410f2",
+    "name": "Azure \u00b7 Tenant Properties",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-a87a11a0-2455-f968-7cae-5ba51cde13d8",
+    "name": "Azure \u00b7 User Settings",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-14813a4b-b97e-a3c5-35f6-49972eb59fb6",
+    "name": "Azure \u00b7 User Subscriptions",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-6c7dd9cc-0830-1cca-f034-972f46e4f544",
+    "name": "Azure \u00b7 Users",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-4a00d35b-1665-3e52-e832-0bfb0ede2f1a",
+    "name": "Azure \u00b7 Verifiable Credentials",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-17c50d0c-b314-9a8b-004b-fb08dd4d6b2a",
+    "name": "Azure \u00b7 Verification As A Service",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-bbc9e532-2d22-1bf2-ae5a-001c1aa104f0",
+    "name": "Azure \u00b7 External Id Modified",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-5ed2d301-e427-2959-c4f0-3616262736d0",
+    "name": "Azure \u00b7 External Id",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-876a83f7-653b-7427-3fd3-4f6769372b77",
+    "name": "Azure \u00b7 App Configuration",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-10d40e66-8441-e9d1-feec-bbf79e2dbece",
+    "name": "Azure \u00b7 Azure API For FHIR",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-c744d502-e069-d762-9c64-86ab3ed0f144",
+    "name": "Azure \u00b7 Azure Data Catalog",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-4bbea2ed-2800-2bc5-6c7a-ad450fb24cf2",
+    "name": "Azure \u00b7 Azure Service Bus",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-3bc46ee1-893e-a0e5-0bfc-264769c90041",
+    "name": "Azure \u00b7 Business Process Tracking",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-776cbd4d-48af-d6e6-701d-899880ba44f3",
+    "name": "Azure \u00b7 Event Grid Domains",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-azure-202fbbf0-6248-fa57-06e9-f549cd396aab",
+    "name": "Azure \u00b7 Event Grid Subscriptions",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-azure-bc5378a7-248d-0f9f-d4c6-100c995b78ad",
+    "name": "Azure \u00b7 Event Grid Topics",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-bc21db21-fed8-696d-3cc0-587e70d83355",
+    "name": "Azure \u00b7 FHIR Service",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-93763c6f-109b-2915-f75b-77a53a307a54",
+    "name": "Azure \u00b7 Integration Accounts",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-ad46019e-20d0-3988-9e6d-8f593bc4caaf",
+    "name": "Azure \u00b7 Integration Environments",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-ef2c4420-0ffa-256a-a340-43acb0ef905b",
+    "name": "Azure \u00b7 Integration Service Environments",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-5b27b5ec-d575-4b01-b48a-b867dd8f719b",
+    "name": "Azure \u00b7 Logic Apps Custom Connector",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-b3d9e678-3e9d-fb1d-055b-ebc5d26a1591",
+    "name": "Azure \u00b7 Logic Apps Template",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-803a899f-19db-9d45-8d0d-9eaef94bf9eb",
+    "name": "Azure \u00b7 Logic Apps",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-4bed59c0-b49b-b333-8091-bd847c47a9fe",
+    "name": "Azure \u00b7 MedTech Service",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-0991ddd6-b273-b8b2-a88a-5304c0f99d40",
+    "name": "Azure \u00b7 Partner Namespace",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-0ad0d20a-8720-5c44-c7d0-253f560a5c6a",
+    "name": "Azure \u00b7 Partner Registration",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-1f2e87e4-2dac-df88-3f11-27a70c313d40",
+    "name": "Azure \u00b7 Partner Topic",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-b095bdc3-9520-b62a-832c-99bff0e25261",
+    "name": "Azure \u00b7 Relays",
+    "pack": "azure",
+    "element_count": 15
+  },
+  {
+    "id": "engineering-azure-b297a598-e96e-9e9a-f1ae-a3867392b041",
+    "name": "Azure \u00b7 SendGrid Accounts",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-b01171bf-5d0f-ac1c-5fe8-fb6b1647b76e",
+    "name": "Azure \u00b7 Software As A Service",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-73b4dbce-59c8-061a-1911-56700b3a220a",
+    "name": "Azure \u00b7 StorSimple Device Managers",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-5fd1435c-61a9-1dcf-83c7-33644f9be98c",
+    "name": "Azure \u00b7 System Topic",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-7d46e7ea-d99f-96c1-952f-7a7bc2ad9669",
+    "name": "Azure \u00b7 Pubsub",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-f06ba965-ce4e-220b-0ce1-b5a36a781858",
+    "name": "Azure \u00b7 Client Apps",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-6be814a5-55ab-c54e-84ae-89d26eb5e17d",
+    "name": "Azure \u00b7 Device Compliance",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-effff4b0-ff68-8c13-5ef3-1c772fe1c885",
+    "name": "Azure \u00b7 Device Configuration",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-e21a2c03-1be8-7e6b-8827-29eccf9f384f",
+    "name": "Azure \u00b7 Device Enrollment",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-2cf613d2-5eb0-ce5b-7746-ba5d92fbce1a",
+    "name": "Azure \u00b7 Device Security Apple",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-18d2581e-e1cf-a020-aa18-dc4e195a92f6",
+    "name": "Azure \u00b7 Device Security Google",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-e9af4615-9c2b-abfd-ae1c-6cfe67017c6b",
+    "name": "Azure \u00b7 Device Security Windows",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-2df6ec8f-ac86-4aad-2b1e-4245062de6de",
+    "name": "Azure \u00b7 Devices",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-d0825009-095d-ebf4-bb67-c0264fed0886",
+    "name": "Azure \u00b7 Engage Center Connect",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-49f2d2e2-5226-50ee-1061-6136dcea955c",
+    "name": "Azure \u00b7 Entra Identity Roles And Administrators",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-62783b49-f98a-b189-db3a-e70fe59285b7",
+    "name": "Azure \u00b7 Exchange Access",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-01974df6-a9a0-5346-3aa4-ac05c94db9c4",
+    "name": "Azure \u00b7 Intune",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-b0b2a90b-fa21-59e4-3944-5138b1b6c7df",
+    "name": "Azure \u00b7 Mindaro",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-c7e200ff-fc94-7f13-ffcb-a666d754b5ad",
+    "name": "Azure \u00b7 Security Baselines",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-0ae9690e-3826-b082-85fa-49098adc51c3",
+    "name": "Azure \u00b7 Software Updates",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-77271d45-9604-eea2-845a-a81f72afd728",
+    "name": "Azure \u00b7 Tenant Status",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-9552a915-1bd1-6c81-a0ee-bd4c0a1031d0",
+    "name": "Azure \u00b7 eBooks",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-1dc21f16-0369-8f34-f246-aad15014e57b",
+    "name": "Azure \u00b7 Azure Cosmos DB",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-2db91986-355c-6468-5ab0-9a4cce21cabf",
+    "name": "Azure \u00b7 Azure IoT Operations",
+    "pack": "azure",
+    "element_count": 28
+  },
+  {
+    "id": "engineering-azure-a2ab7137-1e0e-d8fa-4b62-6e86eb25dae0",
+    "name": "Azure \u00b7 Azure Maps Accounts",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-f79c426e-a274-549c-4cb4-17d0a209db99",
+    "name": "Azure \u00b7 Azure Sphere",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-dfeb056e-4bd0-2278-d60f-05f62f07623f",
+    "name": "Azure \u00b7 Azure Stack HCI Sizer",
+    "pack": "azure",
+    "element_count": 19
+  },
+  {
+    "id": "engineering-azure-fc9423c8-0b05-646e-9527-216f2de2ef29",
+    "name": "Azure \u00b7 Connected Vehicle Platform",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-029fe523-bfb9-71a2-2bba-d3bd91995cba",
+    "name": "Azure \u00b7 Device Provisioning Services",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-2047108b-2ad2-3dcd-8869-a78596272d0e",
+    "name": "Azure \u00b7 Device Update IoT Hub",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-d5bbcdec-bac4-f675-8536-3e511c116a4c",
+    "name": "Azure \u00b7 Digital Twins",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-ea554dcf-6d92-304f-6099-cc0d666bf4fd",
+    "name": "Azure \u00b7 Event Hub Clusters",
+    "pack": "azure",
+    "element_count": 27
+  },
+  {
+    "id": "engineering-azure-ec77d2c1-273d-1b79-326e-fc88818fc09e",
+    "name": "Azure \u00b7 Event Hubs",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-29f63462-480f-8334-e569-2017baeec361",
+    "name": "Azure \u00b7 Hybrid Connectivity Hub",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-ce2c061e-8587-a33b-5d62-b8f67259cba0",
+    "name": "Azure \u00b7 Industrial IoT",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-3ed9664e-0581-7149-a4d9-cf56c159d727",
+    "name": "Azure \u00b7 IoT Central Applications",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-781f17be-eb93-2637-82ad-641072616dcc",
+    "name": "Azure \u00b7 IoT Edge",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-53d7b047-93e0-9f91-5bc4-14d4d8459a28",
+    "name": "Azure \u00b7 IoT Hub",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-95cc44a3-46fd-a2b8-9d89-b15111fb8c50",
+    "name": "Azure \u00b7 Machine Learning Studio Web Service Plans",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-9b232646-16c5-459e-9dbf-cb93d97a2269",
+    "name": "Azure \u00b7 Notification Hub Namespaces",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-b41c9d2c-6940-0989-e353-3a83a45fea3c",
+    "name": "Azure \u00b7 RTOS",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-d84d55aa-dfe4-4406-9de0-58dc744db193",
+    "name": "Azure \u00b7 Stack HCI Premium",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-3fb3ca64-edab-4faa-781c-0d372c21c2d8",
+    "name": "Azure \u00b7 Stream Analytics Jobs",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-ff92aa1f-3e18-1d5c-7501-2ddbc9db581e",
+    "name": "Azure \u00b7 Time Series Data Sets",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-3425dcce-8d96-fa8b-261a-117877ecd37e",
+    "name": "Azure \u00b7 Time Series Insights Access Policies",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-d1ea1d0a-d184-3075-b9b1-6a744b074032",
+    "name": "Azure \u00b7 Time Series Insights Environments",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-6cbaf8b5-903c-51f0-cf4e-cdf58e5368d3",
+    "name": "Azure \u00b7 Time Series Insights Event Sources",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-cf9f8e89-aa34-c222-4e4e-d8079359140c",
+    "name": "Azure \u00b7 Windows10 Core Services",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-704dfa94-2b95-b42d-6a86-84a92a0e275e",
+    "name": "Azure \u00b7 Advisor",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-dbef4c0f-f515-97df-3cf5-e762b861c05e",
+    "name": "Azure \u00b7 Alerts",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-d7ab48e5-7040-1144-81c4-c4a1cf9cfa61",
+    "name": "Azure \u00b7 App Compliance Automation",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-864e40d4-a8d3-5a93-f325-292055a7e54f",
+    "name": "Azure \u00b7 Arc Machines",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-53b42aea-3a29-3333-fc98-5442eb34e15c",
+    "name": "Azure \u00b7 Automation Accounts",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-ca09860f-5f57-7f99-d595-7d26609d5acd",
+    "name": "Azure \u00b7 Azure Arc",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-2975f132-fa32-cbc3-d96a-c27b0905798a",
+    "name": "Azure \u00b7 Azure Consumption Commitment",
+    "pack": "azure",
+    "element_count": 23
+  },
+  {
+    "id": "engineering-azure-a19501a0-506d-132e-98c7-ac56e6d98b4e",
+    "name": "Azure \u00b7 Azure Lighthouse",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-279fe527-b631-f23b-efef-a30fffeba7e1",
+    "name": "Azure \u00b7 Azure Quotas",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-bd1a26d4-6a3d-3aed-0fa5-200a21d7c66e",
+    "name": "Azure \u00b7 Azure Sustainability",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-73e7c0f3-9799-cb35-3c3c-b8b406a17d2c",
+    "name": "Azure \u00b7 Blueprints",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-ae18adac-09db-5cd7-967d-07c5fd3ec161",
+    "name": "Azure \u00b7 Compliance Center",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-afaa1a9f-bdf3-0640-a61a-153915f1f906",
+    "name": "Azure \u00b7 Compliance",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-89c98af9-80eb-e5c9-3cff-3f19fa5ffabc",
+    "name": "Azure \u00b7 Cost Export",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-9ef856b2-0b4d-4b39-10d2-cd27c6d3d487",
+    "name": "Azure \u00b7 Cost Management And Billing",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-5b0a4504-f290-1597-dae4-1b5aebb00371",
+    "name": "Azure \u00b7 Customer Lockbox For Microsoft Azure",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-9e18ecbf-6ce8-d4e1-2b1f-57cfb0344042",
+    "name": "Azure \u00b7 Education",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-5f503f4e-011b-8f85-4174-06032fdf0454",
+    "name": "Azure \u00b7 Intune Trends",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-e345976c-15eb-43c9-867f-5cba417a32f3",
+    "name": "Azure \u00b7 Landing Zone",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-8e5550bf-2e2b-320d-4a08-2cdd3352ada9",
+    "name": "Azure \u00b7 Log Analytics Workspaces",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-579625b1-7f54-3350-2ed2-2bb80b00df89",
+    "name": "Azure \u00b7 MachinesAzureArc",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-2e85b01a-d221-8d3d-686e-aeecbfe8e53e",
+    "name": "Azure \u00b7 Managed Applications Center",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-dab8a992-6b2d-c4d0-ac5d-f67c09d37feb",
+    "name": "Azure \u00b7 Managed Desktop",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-912ff775-f5b7-cdc6-98a1-599c0aea9c64",
+    "name": "Azure \u00b7 Metrics",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-173eb371-508d-4253-0b2e-ea9fdeee375a",
+    "name": "Azure \u00b7 Mission Landing Zone",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-6588d28d-d3f5-83e8-d675-19ac939a26c4",
+    "name": "Azure \u00b7 OSConfig",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-574d2e8b-b36e-f850-2672-7bc2d0cb86d5",
+    "name": "Azure \u00b7 Operation Log (Classic)",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-caf92b6b-f45f-a05a-33b8-4c8e6e91579d",
+    "name": "Azure \u00b7 Policy",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-bb482bd9-17c5-2151-8248-fd21538c4a78",
+    "name": "Azure \u00b7 Reserved Capacity",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-054af289-fe2f-b9b8-14e5-093fe9410fb4",
+    "name": "Azure \u00b7 Resiliency",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-d10f5cc1-4ad9-676e-c136-80036f1373cf",
+    "name": "Azure \u00b7 Resource Graph Explorer",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-6d0c3ac6-009b-c2a1-2126-d237825966c2",
+    "name": "Azure \u00b7 Resource Guard",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-2d0bf5b0-1d44-f5c9-5960-559be7a6329c",
+    "name": "Azure \u00b7 Resources Provider",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-7998a245-4af7-d294-0f30-a94606ba7e91",
+    "name": "Azure \u00b7 Savings Plans",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-4d4206e3-c5fa-4a1b-bb29-b76ed0816de1",
+    "name": "Azure \u00b7 Scheduler Job Collections",
+    "pack": "azure",
+    "element_count": 19
+  },
+  {
+    "id": "engineering-azure-ac469c30-1796-0f38-199c-d1c6a9947ef4",
+    "name": "Azure \u00b7 Service Catalog MAD",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-a31db42b-a5c0-cbe9-a4aa-0a47b4cfedcd",
+    "name": "Azure \u00b7 Service Group Relationships",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-a22d05fb-8f0e-635a-ce09-9c12ff8b947c",
+    "name": "Azure \u00b7 Service Providers",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-d1aaf299-32b4-7067-6d0a-8eac569476ae",
+    "name": "Azure \u00b7 Solutions",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-5b075c65-3ea4-7aa5-0d56-225b964395ef",
+    "name": "Azure \u00b7 Template Specs",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-54652ede-9fa3-370b-9878-f21f09d30165",
+    "name": "Azure \u00b7 Universal Print",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-2b450c4f-e75c-a4f2-4711-1b74d1e5cdf6",
+    "name": "Azure \u00b7 Update Management Center",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-918cccf1-4cb8-053e-0421-0e7612a3c1f9",
+    "name": "Azure \u00b7 User Privacy",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-b4f04ffa-fc5c-53a7-cda5-29c938a2ddbf",
+    "name": "Azure \u00b7 Azure Data Transfer",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-c529fa7f-b061-5497-e7dd-11ea5bb2c7b4",
+    "name": "Azure \u00b7 Azure Migrate",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-dc6d93c1-8a10-92a0-89dc-6490ead09651",
+    "name": "Azure \u00b7 Resource Mover",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-94a728c3-a9f0-7f47-327a-b64dae5bb382",
+    "name": "Azure \u00b7 Remote Rendering",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-1701a815-7b8e-ed79-bf41-51009a954b92",
+    "name": "Azure \u00b7 Spatial Anchor Accounts",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-06bd5a72-e475-f5cf-43c6-0dbdc04aa7ba",
+    "name": "Azure \u00b7 Notification Hubs",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-e9f4f1ac-95f1-223c-f2eb-ad3d339243f7",
+    "name": "Azure \u00b7 Windows Notification Services",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-565c386e-1a90-f4aa-47e0-d047a8a6b460",
+    "name": "Azure \u00b7 Activity Log",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-02f4aadb-0714-b137-1acb-e38b995f8d43",
+    "name": "Azure \u00b7 Auto Scale",
+    "pack": "azure",
+    "element_count": 24
+  },
+  {
+    "id": "engineering-azure-9ca547b1-0205-82d8-88f7-ad8972f46045",
+    "name": "Azure \u00b7 Azure Managed Grafana",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-71e6bf30-43a5-5437-4081-b222d0799397",
+    "name": "Azure \u00b7 Azure Monitor Dashboard",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-1214244e-f45d-729c-486c-90fdb9a1a77d",
+    "name": "Azure \u00b7 Azure Monitors For SAP Solutions",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-d45702cd-1ad6-98c4-5849-e6adbb82b426",
+    "name": "Azure \u00b7 Change Analysis",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-a2f42fbd-62a7-a8a7-8cae-e290d36e82e2",
+    "name": "Azure \u00b7 Data Collection Rules",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-90bb6606-2031-c8ed-e203-b1138e5dbca2",
+    "name": "Azure \u00b7 Diagnostics Settings",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-02d8ee09-12be-6c9b-54c5-96f8eecafd05",
+    "name": "Azure \u00b7 Log Analytics Query Pack",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-874e010d-5917-ee3f-8d30-87f118500efd",
+    "name": "Azure \u00b7 Monitor Health Models",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-724298ae-e9ea-eb8f-73fd-34278ea6afee",
+    "name": "Azure \u00b7 Monitor",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-cc61292e-9637-e622-e265-860310408fa2",
+    "name": "Azure \u00b7 Network Watcher",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-e0e24375-3769-697c-d10e-113ae18d00c3",
+    "name": "Azure \u00b7 Promethus",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-f75b40d6-376a-74d4-059d-c14851840715",
+    "name": "Azure \u00b7 ATM Multistack",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-d212cf9a-f9d8-d268-2d45-d1d2e7c994db",
+    "name": "Azure \u00b7 Application Gateway Containers",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-90e78ef6-0463-5e76-a497-098cbab93965",
+    "name": "Azure \u00b7 Application Gateways",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-8caabe47-71c1-d9fa-de3d-31720397c8d3",
+    "name": "Azure \u00b7 Azure Access Point",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-01f9a3ba-8d8e-89ab-f312-5b04489960cf",
+    "name": "Azure \u00b7 Azure Communications Gateway",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-33fa97b4-dd18-8d8a-7f00-6dc6c1ab45c3",
+    "name": "Azure \u00b7 Azure Firewall Manager",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-ac3d64cc-6407-16bf-05d4-045fe55f9f6a",
+    "name": "Azure \u00b7 Azure Firewall Policy",
+    "pack": "azure",
+    "element_count": 33
+  },
+  {
+    "id": "engineering-azure-8ff839a9-c44b-e073-8a39-e467f93e7c26",
+    "name": "Azure \u00b7 Azure Network Function Manager Functions",
+    "pack": "azure",
+    "element_count": 27
+  },
+  {
+    "id": "engineering-azure-7a2a4109-3709-29ae-f5c6-da7ccb5389d2",
+    "name": "Azure \u00b7 Azure Network Function Manager",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-181ca30b-be34-e663-3dd2-f96c51a51beb",
+    "name": "Azure \u00b7 Azure Orbital",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-8f1da283-3507-87e3-5574-8a04263b1913",
+    "name": "Azure \u00b7 Bastions",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-8428d06c-9241-62c8-4043-ae75e624de15",
+    "name": "Azure \u00b7 CDN Profiles",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-713b8a98-c3de-fd58-cf52-818fad9aea5b",
+    "name": "Azure \u00b7 Connected Cache",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-f24529e6-1de2-8a8c-8091-0c4e96e22a57",
+    "name": "Azure \u00b7 Connections",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-09e11290-eb9c-3693-e287-b5d1dfee1723",
+    "name": "Azure \u00b7 Custom IP Prefix",
+    "pack": "azure",
+    "element_count": 25
+  },
+  {
+    "id": "engineering-azure-48d99926-700f-11dd-3954-32173c60d1cb",
+    "name": "Azure \u00b7 DDoS Custom Policy",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-f5b54710-d3c4-c340-bd18-d2d90550dcdb",
+    "name": "Azure \u00b7 DDoS Protection Plans",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-a001607e-6fea-98dc-09df-f99094d6b292",
+    "name": "Azure \u00b7 DNS Multistack",
+    "pack": "azure",
+    "element_count": 29
+  },
+  {
+    "id": "engineering-azure-097776db-9cb7-4a64-2d7a-dafd547f6e84",
+    "name": "Azure \u00b7 DNS Private Resolver",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-69ccae91-5c3a-2e95-f51b-0d86e6da01d6",
+    "name": "Azure \u00b7 DNS Security Policy",
+    "pack": "azure",
+    "element_count": 19
+  },
+  {
+    "id": "engineering-azure-1f8b5dc3-9b45-4b8e-4906-44205ae7b219",
+    "name": "Azure \u00b7 DNS Zones",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-aadab431-5b72-a647-1d29-1395ff71a02b",
+    "name": "Azure \u00b7 Edge Actions",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-26cb1c8b-33c1-bfd0-c027-01bb22372be1",
+    "name": "Azure \u00b7 Express Route Traffic Collector",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-5d7d9881-7da4-75b7-3490-14ae1c9a3bf5",
+    "name": "Azure \u00b7 ExpressRoute Circuits",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-018961f1-ce6d-2cd7-c7fe-15af98207dd2",
+    "name": "Azure \u00b7 ExpressRoute Direct",
+    "pack": "azure",
+    "element_count": 23
+  },
+  {
+    "id": "engineering-azure-82665191-dc7a-b71a-cf8c-05905edfc846",
+    "name": "Azure \u00b7 Firewalls",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-8ea8233c-bf71-90da-ccaa-181f86826d85",
+    "name": "Azure \u00b7 Front Door And CDN Profiles",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-6025acb1-ee9c-60e4-8368-f06240bcadfa",
+    "name": "Azure \u00b7 IP Address Manager",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-11b253b5-47ba-71ee-0c54-cdff80c6d1dd",
+    "name": "Azure \u00b7 IP Groups",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-9dadb2f7-60bd-1f8d-8f98-d4909337d1ed",
+    "name": "Azure \u00b7 Internet Analyzer Profiles",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-43f949ab-b163-4213-53e6-2bbbf40f2bd5",
+    "name": "Azure \u00b7 Load Balancer Hub Alt",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-71e933a1-c918-cd2c-d46d-ed3b567812c2",
+    "name": "Azure \u00b7 Load Balancer Hub",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-1878d54a-65f3-f577-adff-63fea9d09a80",
+    "name": "Azure \u00b7 Load Balancers",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-e04e243c-3d62-b072-9df2-7949285ad284",
+    "name": "Azure \u00b7 Local Network Gateways",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-4ffbb351-aea8-044c-5344-79811f87595a",
+    "name": "Azure \u00b7 Mobile Networks",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-54f4b41b-8052-bb74-d32b-d686cb1c039a",
+    "name": "Azure \u00b7 NAT",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-b3520ba9-624d-7eb3-cc21-c5518f8b81d1",
+    "name": "Azure \u00b7 Network Foundation Hub",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-5d83112d-d256-5acb-9713-3f007bd65477",
+    "name": "Azure \u00b7 Network Interfaces",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-5016a99c-55bd-0c17-248a-f4fc3cb0fa11",
+    "name": "Azure \u00b7 Network Managers",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-1f14f131-70bd-9331-1724-4e9e926a1514",
+    "name": "Azure \u00b7 Network Security Groups",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-528ccfef-b2f5-7ddd-faeb-5dbb4bdf0501",
+    "name": "Azure \u00b7 Network Security Hub",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-7db36e62-710c-61c5-7d4f-c4e4b62bd76a",
+    "name": "Azure \u00b7 Network Security Perimeters",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-de01d9e5-15c1-83f5-155a-d867e72fbb93",
+    "name": "Azure \u00b7 On Premises Data Gateways",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-d279363c-98f9-7628-bcb0-2d9bce7cc725",
+    "name": "Azure \u00b7 Peering Service",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-fe5c3512-32b9-d026-996c-b25c4945eb07",
+    "name": "Azure \u00b7 Peerings",
+    "pack": "azure",
+    "element_count": 21
+  },
+  {
+    "id": "engineering-azure-ce6fe731-b713-c15f-663d-d7c11359c621",
+    "name": "Azure \u00b7 Private Endpoints",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-697ee88b-ae4f-8580-d6f9-91d593adbf10",
+    "name": "Azure \u00b7 Private Link Service",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-6ac4adc0-346e-f139-4021-6af924058dc6",
+    "name": "Azure \u00b7 Private Link",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-faef6bc4-9dcc-57ed-899a-d33c86622cb7",
+    "name": "Azure \u00b7 Proximity Placement Groups",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-1b7148b9-5f4c-7a47-c5f3-00fb0c81c40a",
+    "name": "Azure \u00b7 Public IP Addresses",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f114ff90-a283-acbe-9469-6a67058bfa7f",
+    "name": "Azure \u00b7 Public IP Prefixes",
+    "pack": "azure",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-azure-75f97a63-cafa-5697-c1f2-1e5347ab4965",
+    "name": "Azure \u00b7 Reserved IP Addresses (Classic)",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-d7a2c56b-4c2e-861c-305a-b1b6293b2e39",
+    "name": "Azure \u00b7 Resource Management Private Link",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-cef5aad9-a2e4-ac3d-210d-fe3e0f92c1ee",
+    "name": "Azure \u00b7 Route Filters",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-c7f3411d-5cd9-062f-35cf-3175226f0f67",
+    "name": "Azure \u00b7 Route Tables",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-7dc22e87-d715-6e41-c4ef-93382159799e",
+    "name": "Azure \u00b7 Service Endpoint Policies",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-62a1a115-6ac7-97cc-151e-9542b5c184cd",
+    "name": "Azure \u00b7 Sonic Dash",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-b9281af1-9996-3707-9032-30156f03c1d1",
+    "name": "Azure \u00b7 Spot VM",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-d0d24ecb-d4c9-1d10-0f99-61d1cfa7024b",
+    "name": "Azure \u00b7 Spot VMSS",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-bdbf5d44-5d64-2f28-cd98-bad05bf6ca86",
+    "name": "Azure \u00b7 Subnet",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-c5c18a01-8268-be3a-d070-28cd89a8e096",
+    "name": "Azure \u00b7 Traffic Manager Profiles",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-b23baaa1-3163-6ae8-671b-606d7cb50a6c",
+    "name": "Azure \u00b7 VNet Appliance",
+    "pack": "azure",
+    "element_count": 39
+  },
+  {
+    "id": "engineering-azure-59b352dc-f771-7ed3-cf09-5c3cfbfc3de8",
+    "name": "Azure \u00b7 VPNClientWindows",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-2275ea22-9b2d-2263-52f3-9f1a5ef5fbb7",
+    "name": "Azure \u00b7 Virtual Network Gateways",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-de57b7af-943a-7cd4-40b8-b111cba69d38",
+    "name": "Azure \u00b7 Virtual Networks",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-ba98ecae-e2f1-550f-0627-b507a915050a",
+    "name": "Azure \u00b7 Virtual Router",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-a93b1d87-9e7a-1969-9193-b967e0145946",
+    "name": "Azure \u00b7 Virtual WAN Hub",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-498a04f6-7341-f870-ef38-31a3095049b9",
+    "name": "Azure \u00b7 Virtual WANs",
+    "pack": "azure",
+    "element_count": 26
+  },
+  {
+    "id": "engineering-azure-9944dab1-8f47-4aa0-6082-37b5f2e923f2",
+    "name": "Azure \u00b7 Web Application Firewall Policies(WAF)",
+    "pack": "azure",
+    "element_count": 23
+  },
+  {
+    "id": "engineering-azure-f152dfed-be76-47ef-4856-7d5300e230de",
+    "name": "Azure \u00b7 Application Security Groups",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-fc51f414-1ddd-0040-ccb4-b3b29ef2a595",
+    "name": "Azure \u00b7 Azure Enclaves",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-2645717a-f438-7800-7a2b-70869d8ba591",
+    "name": "Azure \u00b7 Azure Information Protection",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-1bfe735e-fd8c-59d0-973b-75c53956bf10",
+    "name": "Azure \u00b7 Azure Sentinel",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-c97e3573-b3d2-8743-2b52-8950b179d204",
+    "name": "Azure \u00b7 AzureAttestation",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-7c403244-5c1b-7eb8-3018-f1fea98d3054",
+    "name": "Azure \u00b7 Conditional Access",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-11e77c79-0040-a0d7-4b77-5dfea70c13f2",
+    "name": "Azure \u00b7 Confidential Ledgers",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-011c9c8a-b3b7-1f67-9d7c-0e1bafc40bd3",
+    "name": "Azure \u00b7 Dedicated HSM",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-f78ad58f-c59c-86f0-4682-26b892fe9fd0",
+    "name": "Azure \u00b7 Defender CM Local Manager",
+    "pack": "azure",
+    "element_count": 30
+  },
+  {
+    "id": "engineering-azure-df195757-272b-b7ea-d304-db83df08850c",
+    "name": "Azure \u00b7 Defender DCS Controller",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-4cdbc448-18a3-f7af-8b99-ac3d97e53543",
+    "name": "Azure \u00b7 Defender Distributer Control System",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-55b2c335-8118-9534-8598-5baaa864f3b8",
+    "name": "Azure \u00b7 Defender Engineering Station",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-3730c295-9c3f-8226-db52-8640024fe583",
+    "name": "Azure \u00b7 Defender External Management",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-e8fe2a18-6a0e-5e78-7865-4cc10abce65e",
+    "name": "Azure \u00b7 Defender Freezer Monitor",
+    "pack": "azure",
+    "element_count": 36
+  },
+  {
+    "id": "engineering-azure-736406a3-6887-4c7b-d140-c2ec1e3a2814",
+    "name": "Azure \u00b7 Defender HMI",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-a5da9e4b-d37a-0537-b4ad-22e63e9b6b7c",
+    "name": "Azure \u00b7 Defender Historian",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-e8b4334c-875d-caba-0da9-950f0ac9dc93",
+    "name": "Azure \u00b7 Defender Industrial Packaging System",
+    "pack": "azure",
+    "element_count": 22
+  },
+  {
+    "id": "engineering-azure-46bee4f4-95d0-7e5c-4666-717e02b72763",
+    "name": "Azure \u00b7 Defender Industrial Printer",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-7008b073-7dab-95bf-a74f-06a1f5b8fca2",
+    "name": "Azure \u00b7 Defender Industrial Robot",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-c9594091-764a-4a6e-39f3-3c0c1cfbefcb",
+    "name": "Azure \u00b7 Defender Industrial Scale System",
+    "pack": "azure",
+    "element_count": 18
+  },
+  {
+    "id": "engineering-azure-6ef4371d-10bc-dc33-8a04-38c8459a0e59",
+    "name": "Azure \u00b7 Defender Marquee",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-05653630-c73a-c8ec-b4ba-ceaf8a801863",
+    "name": "Azure \u00b7 Defender Meter",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-azure-2f430f9c-e4ae-0d54-27a3-9f48550fc8e4",
+    "name": "Azure \u00b7 Defender PLC",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-59b9fc2f-f3ef-f37f-ef35-f72d13c6a876",
+    "name": "Azure \u00b7 Defender Pneumatic Device",
+    "pack": "azure",
+    "element_count": 33
+  },
+  {
+    "id": "engineering-azure-1f18bd5c-4430-4cf1-3a0c-5595eca516b6",
+    "name": "Azure \u00b7 Defender Programable Board",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-c1e4112b-bf38-cbd9-f856-5cf6d22f3b63",
+    "name": "Azure \u00b7 Defender RTU",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-5c7508a2-cc62-c114-58fe-33b1bfc10575",
+    "name": "Azure \u00b7 Defender Relay",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-e27546d3-cb0d-ffe7-b03d-b4ddc96af080",
+    "name": "Azure \u00b7 Defender Robot Controller",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-ca4d296b-e2fc-7841-0152-10e15e07fd33",
+    "name": "Azure \u00b7 Defender Sensor",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-e726dcb0-8978-beee-4cc5-0cf8a53dae4b",
+    "name": "Azure \u00b7 Defender Slot",
+    "pack": "azure",
+    "element_count": 56
+  },
+  {
+    "id": "engineering-azure-d6d57779-2cc1-67ba-7cca-1e2232411273",
+    "name": "Azure \u00b7 Defender Web Guiding System",
+    "pack": "azure",
+    "element_count": 32
+  },
+  {
+    "id": "engineering-azure-b0108476-8f7f-1900-3357-4a1391cf9f6b",
+    "name": "Azure \u00b7 Detonation",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-5d2cd46b-d81a-2a6a-24c5-03529cfd57fd",
+    "name": "Azure \u00b7 Entra Identity Risky Signins",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-08e9a250-5554-d89f-ee4a-61b6a61926a9",
+    "name": "Azure \u00b7 Entra Identity Risky Users",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-969f09a6-8ad5-81bd-6506-0717d6768565",
+    "name": "Azure \u00b7 ExtendedSecurityUpdates",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-0d61e661-8ea4-7ccc-65d8-e45f3e24ea2c",
+    "name": "Azure \u00b7 Identity Secure Score",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-34da772b-1204-da83-347b-ffb824b0f9a5",
+    "name": "Azure \u00b7 Key Vaults",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-8bd740e7-d16a-55cf-7f41-952645c9f889",
+    "name": "Azure \u00b7 Keys",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-38cf87df-5123-5439-4854-46598fd4b95e",
+    "name": "Azure \u00b7 Microsoft Defender EASM",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-d7944d16-19bc-6adf-27a9-cc98310665ec",
+    "name": "Azure \u00b7 Microsoft Defender For Cloud",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-9df8213a-c713-d139-857b-29eb346b87b9",
+    "name": "Azure \u00b7 Microsoft Defender For IoT",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-47dbce6e-bddf-eafb-f30d-2ce9eebdfc4d",
+    "name": "Azure \u00b7 Multifactor Authentication",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-d2e1f643-c517-8317-8d97-8a0b852bd428",
+    "name": "Azure \u00b7 Azure Backup Center",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-c16e575d-6a63-925e-de69-2b6426b9e318",
+    "name": "Azure \u00b7 Azure Databox Gateway",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-23999287-2849-6df0-ad9d-561d6ac97d5a",
+    "name": "Azure \u00b7 Azure Fileshares",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-fef15d05-e2d7-dd25-9445-d7e5618b6000",
+    "name": "Azure \u00b7 Azure HCP Cache",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-e5bcb0d9-2f9b-3ad0-f0aa-2e702b289476",
+    "name": "Azure \u00b7 Azure NetApp Files",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-88971ca4-4f6d-752d-6976-444f0bf1b2dc",
+    "name": "Azure \u00b7 Azure Storage Mover",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-3ee93cec-79b6-f3d4-6bb5-72fc3219920a",
+    "name": "Azure \u00b7 Azurite",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-824d0298-a33a-a928-2efa-93b2503777be",
+    "name": "Azure \u00b7 Backup Vault",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-3610a20e-373b-8d2f-731b-14721940a44d",
+    "name": "Azure \u00b7 Data Box",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-3d9a737e-5db2-95dd-0cba-b8bd40d29f6a",
+    "name": "Azure \u00b7 Data Lake Storage Gen1",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-690dcb88-0c8b-abe2-7625-6e203202d19c",
+    "name": "Azure \u00b7 Data Share Invitations",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-ead43010-13ce-b10c-df4d-b48c54f2c406",
+    "name": "Azure \u00b7 Data Shares",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-d7898e28-a853-84b1-9d57-ab8dbd627f55",
+    "name": "Azure \u00b7 Data Virtualization",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-ae7062db-582f-aee2-7847-e325e13c6ed0",
+    "name": "Azure \u00b7 Disk Pool",
+    "pack": "azure",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-azure-f30c14fe-2b55-e5a1-070e-cd4ff878b31c",
+    "name": "Azure \u00b7 Elastic SAN",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-1a583453-f9a5-c9ef-2e9c-aa77e56f8edb",
+    "name": "Azure \u00b7 Import Export Jobs",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-feacb31a-443b-9cda-1c1d-46b21b06ba3b",
+    "name": "Azure \u00b7 Managed File Shares",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-986ad604-0b67-920b-a1ff-b94d92a3326c",
+    "name": "Azure \u00b7 Recovery Services Vaults",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-237a4852-0ce8-4cd1-09d3-66b5ad991815",
+    "name": "Azure \u00b7 StorSimple Data Managers",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-19988f97-91d9-e71e-21a7-8c0fadec9f35",
+    "name": "Azure \u00b7 Storage Accounts",
+    "pack": "azure",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-azure-7d79eed2-0c6f-c740-93af-2b69d8bc9fad",
+    "name": "Azure \u00b7 Storage Actions",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-241bee6c-257d-6b91-cb68-065cc9454d2a",
+    "name": "Azure \u00b7 Storage Explorer",
+    "pack": "azure",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-azure-9a09cc7b-1149-fb2e-4c32-7cc969147f46",
+    "name": "Azure \u00b7 Storage Functions",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-ef502bd8-302c-652d-e8fc-8f385b8e42db",
+    "name": "Azure \u00b7 Storage Hubs",
+    "pack": "azure",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-azure-86771291-ea36-c807-87da-55c1d9981c5f",
+    "name": "Azure \u00b7 Storage Sync Services",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-8117ed94-6d5e-6f3c-6db8-c959c3be14b9",
+    "name": "Azure \u00b7 API Center",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-63bf62c7-7a5c-6beb-f0dd-c6e98749af9c",
+    "name": "Azure \u00b7 API Connections",
+    "pack": "azure",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-azure-b0b7dcb7-ddcc-5e31-f422-203c8fcc0994",
+    "name": "Azure \u00b7 Agentic Web Apps",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-f0d1f7a2-3aec-f955-31b0-cd2c05f1489a",
+    "name": "Azure \u00b7 App Service Certificates",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-cd086186-9997-06fa-168e-c3abb769de89",
+    "name": "Azure \u00b7 App Service Domains",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-ad4b78ca-e1b1-092d-a2c0-14ec8ce96266",
+    "name": "Azure \u00b7 App Service Environments",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-89043c1d-e5ab-2bce-96cb-5a801e7e0638",
+    "name": "Azure \u00b7 App Service Plans",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-978d4edc-2135-4ab1-6326-3b96178e0748",
+    "name": "Azure \u00b7 App Services",
+    "pack": "azure",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-azure-89480868-2f52-64bf-72e5-00e10f28741d",
+    "name": "Azure \u00b7 App Space Component",
+    "pack": "azure",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-azure-689b9283-eb05-0ce2-7e79-893e74b7bc1a",
+    "name": "Azure \u00b7 App Space",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-c1a01f3f-5b7a-b3ac-e47c-656c74cb39b6",
+    "name": "Azure \u00b7 Azure Communication Services",
+    "pack": "azure",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-azure-ba97b845-a4dc-b1de-3df1-61777f89b253",
+    "name": "Azure \u00b7 Azure Media Service",
+    "pack": "azure",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-azure-9ac50acb-9375-ffaf-23eb-9c382c0eacdf",
+    "name": "Azure \u00b7 Azure Spring Apps",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-dfc9d0a7-aad1-ab76-949f-c780314827a1",
+    "name": "Azure \u00b7 Cognitive Search",
+    "pack": "azure",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-azure-9b79d073-4fc4-24e7-0979-95658ab2ddd5",
+    "name": "Azure \u00b7 Cognitive Services",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-81f11614-2858-99ea-4355-5e5ba35c81ad",
+    "name": "Azure \u00b7 Power Platform (azure)",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-bd65bf13-c019-ed80-48b8-2b6105b2f4d1",
+    "name": "Azure \u00b7 SignalR",
+    "pack": "azure",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-azure-ef28aa33-a144-c4e3-99fc-d3fefa894203",
+    "name": "Azure \u00b7 Static Apps",
+    "pack": "azure",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-azure-3c38820b-dee0-d2a5-94b8-812a63ff64f1",
+    "name": "Azure \u00b7 Virtual Visits Builder",
+    "pack": "azure",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-azure-d269b8cf-6b38-6619-e82e-d203070c2a18",
+    "name": "Azure \u00b7 Web App + Database",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-azure-c4be606a-d17e-20fb-550f-f5ee60a1feb2",
+    "name": "Azure \u00b7 Web Jobs",
+    "pack": "azure",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-fabric-NNO6LpeLlGX72sm6ba4Yk",
+    "name": "Fabric \u00b7 Fabric",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-k3qdI25icENmSOQLjFJmq",
+    "name": "Fabric \u00b7 OneLake",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-DdHJ1z73U4CO9c1FfZkLh",
+    "name": "Fabric \u00b7 Data Warehouse",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-Tp56U-msuAR4skcewAhIA",
+    "name": "Fabric \u00b7 Data Engineering",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-bIgO9L_8v-7_ZKtUlzRxh",
+    "name": "Fabric \u00b7 Data Factory",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-VWY8nwTEV5Pk4_paesY12",
+    "name": "Fabric \u00b7 Real-Time Intelligence",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-BUqOCKTqBzcQ1gQlhFIUg",
+    "name": "Fabric \u00b7 Data Science",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-crqsmKkbzLEtLubwFmR5M",
+    "name": "Fabric \u00b7 Databases",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-nI5pTXJMTVhjDP_8BBeav",
+    "name": "Fabric \u00b7 Power BI",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-d7il46iK6cSr_UhBAtNVZ",
+    "name": "Fabric \u00b7 Copilot",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-jFyNQyIIDxph2HqkxVk_A",
+    "name": "Fabric \u00b7 Industry Solutions",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-iX3-07UIn5kwjd41fGMkf",
+    "name": "Fabric \u00b7 Capacity",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-P1qJlKwJjXsRpLKspjLpt",
+    "name": "Fabric \u00b7 Workspace",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-ilYAKCDE9KdxQJfyhMVi-",
+    "name": "Fabric \u00b7 Gateway",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-BC8qVlQpnqUuhqUHxh9OL",
+    "name": "Fabric \u00b7 Connection",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-n4KC4R7EX1aKLQb8n22lC",
+    "name": "Fabric \u00b7 Domain",
+    "pack": "fabric",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-fabric-8t2GJIVKHquACiir5nOBr",
+    "name": "Fabric \u00b7 Lakehouse",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-puN-cghu9BSAs4xMJL0kf",
+    "name": "Fabric \u00b7 Warehouse",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-FAPaexToNeG9aIQuXsAmB",
+    "name": "Fabric \u00b7 Eventhouse",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-0LmaizWZEqBGVW84Bf64O",
+    "name": "Fabric \u00b7 KQL Database",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-GZsQLfBFI3hONBkCBNcqM",
+    "name": "Fabric \u00b7 SQL Database",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-zCgWTPCA6QXTr05OupyzQ",
+    "name": "Fabric \u00b7 Generic Mirrored Database",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-EYPHm8pDM7yHbs5GmWX3p",
+    "name": "Fabric \u00b7 Mirrored SQL Database",
+    "pack": "fabric",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-fabric-QP8VELixFzzd-4vaYfsQt",
+    "name": "Fabric \u00b7 Mirrored Azure Databricks Catalog",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-YwRFnzhbVoBWGfLBfvAZt",
+    "name": "Fabric \u00b7 Mirrored CosmosDB",
+    "pack": "fabric",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-fabric-F_lz6sWe0fOJs5pt6sPEk",
+    "name": "Fabric \u00b7 Mirrored Postgres",
+    "pack": "fabric",
+    "element_count": 19
+  },
+  {
+    "id": "engineering-fabric-zfWBX9pzRo-TDsqysUbQb",
+    "name": "Fabric \u00b7 Mirrored Snowflake",
+    "pack": "fabric",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-fabric-KV6GM3oNymayeINTqIypP",
+    "name": "Fabric \u00b7 Activator",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-myUOSWHq3UR1P6CHuPRD3",
+    "name": "Fabric \u00b7 Real-Time Dashboard",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-a0_1tXwcpV9t3-j-yFiCT",
+    "name": "Fabric \u00b7 GraphQL",
+    "pack": "fabric",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-fabric-b2yKQgxezw7ZXuwiRQiE0",
+    "name": "Fabric \u00b7 Eventstream",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-Y8vc2JD1mbgpGrH9OOIY6",
+    "name": "Fabric \u00b7 Pipeline",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-qst9CkTqlEmhpVB-ktg7s",
+    "name": "Fabric \u00b7 Experiment",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-GGov4W-v-xSUswi9m95dU",
+    "name": "Fabric \u00b7 ML Model",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-Vufx8dZGdaCXLyRXaja5E",
+    "name": "Fabric \u00b7 Environment",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-f0w9V-RGqgHJ-BvNQxGOU",
+    "name": "Fabric \u00b7 Notebook",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-cpLtZybQ3sbzTK8hj-qoF",
+    "name": "Fabric \u00b7 Spark Job Definition",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-lN4LHZAlWkys9KvugOFsv",
+    "name": "Fabric \u00b7 User Data Function",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-ALPWNPng7L2tmbYARh6UM",
+    "name": "Fabric \u00b7 Function Set",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-_iN51chwWypFNOfghmhhR",
+    "name": "Fabric \u00b7 Dataflows Gen2",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-TsvHwzkSDCThMSVn_NjTR",
+    "name": "Fabric \u00b7 Airflow Job",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-7_aRY7s-xWxjfWADJ0N1h",
+    "name": "Fabric \u00b7 Data Agent",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-3uWuak67KYIKBoosJaVjI",
+    "name": "Fabric \u00b7 Copy Job",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric--FQc-3EavD7OIgWo3E80R",
+    "name": "Fabric \u00b7 KQL QuerySet",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-OHU9yQeUMt3OLQ1ySSR0W",
+    "name": "Fabric \u00b7 KQL Script",
+    "pack": "fabric",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-fabric-_-O7am_jXY2DBh2EUP-jC",
+    "name": "Fabric \u00b7 Variable Library",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-azXp6XYBlw2aR7lQgbrfu",
+    "name": "Fabric \u00b7 SQL Script",
+    "pack": "fabric",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-fabric-vPo4lhf_e29zamYsR52Bj",
+    "name": "Fabric \u00b7 Dashboard",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric--UM8OBedKtt8wev2al-CV",
+    "name": "Fabric \u00b7 Report",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-cKz1a6gyM2Mz7Z7FdROiF",
+    "name": "Fabric \u00b7 Paginated Report",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-MFrk7faaYscJnwvv0XQSt",
+    "name": "Fabric \u00b7 App",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-yw-1Ngp0M2ZjVO9A7EldV",
+    "name": "Fabric \u00b7 Scorecard",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-BBvLJeNP663iw8prTrESF",
+    "name": "Fabric \u00b7 Semantic Model",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-U6MaqGmr2HqdNFUvtFaxC",
+    "name": "Fabric \u00b7 Shared Semantic Model",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-_Up98VeXJtgQ-FtcN960I",
+    "name": "Fabric \u00b7 Dataflow Gen1",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-rvT9xrLo9nFe0D0MVVOQn",
+    "name": "Fabric \u00b7 Datamart",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-hBSDmvZS23e2G5rfOj2_e",
+    "name": "Fabric \u00b7 ADLS Gen2",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-oOCNDAVIOJYBuxxTsz9jV",
+    "name": "Fabric \u00b7 AWS S3",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-7y2N6B3EPpSBVydidpvBY",
+    "name": "Fabric \u00b7 Google Cloud Storage",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-Kfk0uVkLJ90GyTn5UeyAa",
+    "name": "Fabric \u00b7 Parquet File",
+    "pack": "fabric",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-fabric-TOoYyBOruNKfHA50seX_I",
+    "name": "Fabric \u00b7 Orc File",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-E0I0d3jiKKUbjkOQ673q2",
+    "name": "Fabric \u00b7 Avro File",
+    "pack": "fabric",
+    "element_count": 35
+  },
+  {
+    "id": "engineering-fabric-rvRZSJK3prKV5EfBl306u",
+    "name": "Fabric \u00b7 CSV File",
+    "pack": "fabric",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-fabric-gdpHB1fib1xiH9Znsbi45",
+    "name": "Fabric \u00b7 JSON File",
+    "pack": "fabric",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-fabric-e0d4Kji_7LrTUGK1_E6b8",
+    "name": "Fabric \u00b7 TXT File",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-qTm6TABfb63iSO-4ZflvM",
+    "name": "Fabric \u00b7 Excel File",
+    "pack": "fabric",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-fabric-kSmRsbsStczGy_4YWxc46",
+    "name": "Fabric \u00b7 ZIP File",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-dRoPpi2DE56ZDl1SwJvr9",
+    "name": "Fabric \u00b7 XML File",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-WnEyOlKb4WbyBQ0LCtU2G",
+    "name": "Fabric \u00b7 PDF File",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-7MrKgGBhH0LZKJQ_u8X90",
+    "name": "Fabric \u00b7 Image File",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-Uwpm7CW3o0SPRe8vH_gKQ",
+    "name": "Fabric \u00b7 Delta Lake",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-H1cAEqFU_gL70i1BTfW8Y",
+    "name": "Fabric \u00b7 Iceberg",
+    "pack": "fabric",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-fabric-raIdBZjQXz2B8LeF_qf-T",
+    "name": "Fabric \u00b7 Delta Table",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-4Lpp78dcmVfs4sNXH28y5",
+    "name": "Fabric \u00b7 Parquet Table",
+    "pack": "fabric",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-fabric-MJqwsxMiz6Wq44y_MFsxc",
+    "name": "Fabric \u00b7 Icerberg Table",
+    "pack": "fabric",
+    "element_count": 20
+  },
+  {
+    "id": "engineering-fabric-LP6nSI1SndIUPnqZ3_yDG",
+    "name": "Fabric \u00b7 Generic Table",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-tERCO3Zi_NZB0Wfj6YRdv",
+    "name": "Fabric \u00b7 Bronze Delta Table",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-YJJQLSxR30_vfQYsxBsK1",
+    "name": "Fabric \u00b7 Silver Delta Table",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-bphcL8EOxm7z4PhtHkZBo",
+    "name": "Fabric \u00b7 Gold Delta Table",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-Nz3AM5JvGQHPuix42DIAI",
+    "name": "Fabric \u00b7 Delta Table Shortcut",
+    "pack": "fabric",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-fabric-B5SnSTw4OLmtz9ATltVnU",
+    "name": "Fabric \u00b7 Iceberg Table Shortcut",
+    "pack": "fabric",
+    "element_count": 24
+  },
+  {
+    "id": "engineering-fabric-Oxg03tPEBG_U-hwmjRopg",
+    "name": "Fabric \u00b7 Generic Table Shortcut",
+    "pack": "fabric",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-fabric-zrbMYDcFmnq8yjrGeUVP3",
+    "name": "Fabric \u00b7 Folder",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-mYkmFjqt9jubqU_Dkaz8P",
+    "name": "Fabric \u00b7 Folder Shortcut",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-BG8wVvxaraIWDlWhgtJNg",
+    "name": "Fabric \u00b7 Entra",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-Y2rD2cN3jr1hkesbs_Gs-",
+    "name": "Fabric \u00b7 Subscription",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-kFVC3DUUZUsQAf2Ktal43",
+    "name": "Fabric \u00b7 Resource Group",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-NU21umyfBtKhpGMrrYgKh",
+    "name": "Fabric \u00b7 Purview",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-uAX9ZV4Br9gERUzBdPNGg",
+    "name": "Fabric \u00b7 Key Vault",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-16hTeGtv93_vn4z6K2b5D",
+    "name": "Fabric \u00b7 Service Bus",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-_8ZmXmhWoF4odBozU_No1",
+    "name": "Fabric \u00b7 Event Hub",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-2sSImZk60UY-jaqkXib0i",
+    "name": "Fabric \u00b7 Event Grid",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-OS5H0l7lzPJAa7qe8jYQz",
+    "name": "Fabric \u00b7 Virtual Network",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-trAsf1gFjDIJC8H7YrJ3b",
+    "name": "Fabric \u00b7 Private Link Service",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-IcgJaz_q049CEYezcHeBJ",
+    "name": "Fabric \u00b7 Prviate Endpoint",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-Ffn5NEo4s7C6x6O4Hxf1H",
+    "name": "Fabric \u00b7 Private Link",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-2SkPYNadCt2MspfIZyUiI",
+    "name": "Fabric \u00b7 Subnet",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-xW9cGYXozO8Q4dDdpKeoZ",
+    "name": "Fabric \u00b7 Express Route",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-Rr1sdUOGsAeJ5gGQsNCL-",
+    "name": "Fabric \u00b7 Local Network Gateway",
+    "pack": "fabric",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-fabric-DJ8lVoCUWZSlek0SdBzxN",
+    "name": "Fabric \u00b7 Network Security Group",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-cCkz8-dzAkUMkXa4tdOil",
+    "name": "Fabric \u00b7 On-Premise",
+    "pack": "fabric",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-fabric-M0QRlCQJj4nzD_NEEo-dt",
+    "name": "Fabric \u00b7 Network Interface",
+    "pack": "fabric",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-fabric-YDYIyF00Di9375MvcaAWz",
+    "name": "Fabric \u00b7 NAT Gateway",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-erIIUnFNOFciGxewZUqXk",
+    "name": "Fabric \u00b7 VS Code",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-u34xI3tJa2asMz-MvuiL6",
+    "name": "Fabric \u00b7 Visual Studio",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-GIzOSQyL6LNFu-lS5-waX",
+    "name": "Fabric \u00b7 SSMS",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-u2C5Uq2HTA76Ule8NRD3F",
+    "name": "Fabric \u00b7 DAX Optimizer",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-mSPUsBBm2ElqBPvkwLjXR",
+    "name": "Fabric \u00b7 Tabular Editor",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-MflsiJ5Cc088XF5MfTZPv",
+    "name": "Fabric \u00b7 ALM Toolkit",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-JZRao4ElZJK0xEtdr62CZ",
+    "name": "Fabric \u00b7 DAX Studio",
+    "pack": "fabric",
+    "element_count": 30
+  },
+  {
+    "id": "engineering-fabric-rnM4HzoL-oAoFHYsFUmYg",
+    "name": "Fabric \u00b7 DuckDB",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-N_zPDX-UlNCkQxc2Gt7SX",
+    "name": "Fabric \u00b7 Spark",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-v71mRvEV86kN4KYbv8Uuw",
+    "name": "Fabric \u00b7 Polars",
+    "pack": "fabric",
+    "element_count": 47
+  },
+  {
+    "id": "engineering-fabric-0bby3e5QvPutNYn1SsFpz",
+    "name": "Fabric \u00b7 Python",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-M4azwqoQRLA2O3f3G1uUg",
+    "name": "Fabric \u00b7 Delta-rs",
+    "pack": "fabric",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-fabric-5ql7dcmyLpGRUXsXL3u5G",
+    "name": "Fabric \u00b7 GIT",
+    "pack": "fabric",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-fabric-RaVLsQ8e5Uz-BP7wGpgpa",
+    "name": "Fabric \u00b7 Github",
+    "pack": "fabric",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-fabric-VFcH2FOP-XWCHDZPrdf7C",
+    "name": "Fabric \u00b7 DevOps",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-LLj2qk_6k_vjN02MR9Ddm",
+    "name": "Fabric \u00b7 Artifact Feed",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-LTGGmdY19LlGYjSIXVY2I",
+    "name": "Fabric \u00b7 DevOps Pipeline",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-c2qn9uzNL-L5lPmnfTNh5",
+    "name": "Fabric \u00b7 Repo",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-dEbW8xiOB9qO37gYmmO3f",
+    "name": "Fabric \u00b7 Branch",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-4T6-XpQicUCL5DcOyZ3_x",
+    "name": "Fabric \u00b7 Dynamics",
+    "pack": "fabric",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-fabric-tqpLl-w72twlJoPzCSHAz",
+    "name": "Fabric \u00b7 SQL Database",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-bziJ3OeIUKTqeTDGZKuIV",
+    "name": "Fabric \u00b7 Postgres Database",
+    "pack": "fabric",
+    "element_count": 16
+  },
+  {
+    "id": "engineering-fabric-2AawUq5UhvU6s-QlAeeXU",
+    "name": "Fabric \u00b7 Oracle Database",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-60sIMJr8wvTXyobMj2hq8",
+    "name": "Fabric \u00b7 Salesforce",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-b_9wquSBW4Uk2tuQYiBDV",
+    "name": "Fabric \u00b7 MySQL Database",
+    "pack": "fabric",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-fabric-HmOQY3yIQ9Fxlqrfbj-dW",
+    "name": "Fabric \u00b7 Generic Database 1",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-kZ8Xwsc0UFsjE4OKKZyyS",
+    "name": "Fabric \u00b7 Generic Database 2",
+    "pack": "fabric",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-fabric-miD47gxe61Bqy4Alg6AyO",
+    "name": "Fabric \u00b7 Databricks",
+    "pack": "fabric",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-fabric-gf4oFGv2WvQr4uy8WO-Cv",
+    "name": "Fabric \u00b7 Snowflake",
+    "pack": "fabric",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-fabric-YqldzwsapzZgCMsleJX9W",
+    "name": "Fabric \u00b7 BigQuery",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-fabric-R4xz0KaxGi-bhx_nuGncW",
+    "name": "Fabric \u00b7 Developer",
+    "pack": "fabric",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-fabric-wtlqmcJGDTnvnUKdpukie",
+    "name": "Fabric \u00b7 Users",
+    "pack": "fabric",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-developer-blsHV-u6elkQsgOOUx628",
+    "name": "Developer \u00b7 Angular v2",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-NbCUZOZWiaYpUj4xr6QLu",
+    "name": "Developer \u00b7 Angular v1",
+    "pack": "developer",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-developer-eakXIcDUo_9S0Euil8g8c",
+    "name": "Developer \u00b7 Argo CD",
+    "pack": "developer",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-developer-bN7FM4FfriR1XllyAv3-o",
+    "name": "Developer \u00b7 BonitaSoft",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-dqM26-Eq3VyqZqn2AVLFY",
+    "name": "Developer \u00b7 Docker",
+    "pack": "developer",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-developer-E_poAc_LUfxBo0Oq_mKR5",
+    "name": "Developer \u00b7 Excalidraw v1",
+    "pack": "developer",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-developer-V_eJT7lTGIcyjHVa6DXoN",
+    "name": "Developer \u00b7 Excalidraw v2",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-xRABoB22Tkks5XDueBKY2",
+    "name": "Developer \u00b7 Firebase",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-8dtv13kjqUGfoFB-g-_OO",
+    "name": "Developer \u00b7 Flux CD",
+    "pack": "developer",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-developer-IPKJRtsMLDUrmBQB0cpTZ",
+    "name": "Developer \u00b7 GitLab",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-1HmJE3wUgQg8o1LUMdMXx",
+    "name": "Developer \u00b7 Kafka",
+    "pack": "developer",
+    "element_count": 14
+  },
+  {
+    "id": "engineering-developer-zTCgXqcl24HqlIQ7zXJZL",
+    "name": "Developer \u00b7 Kanoma",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-ayfCO6DXAcIS033NTO2Qv",
+    "name": "Developer \u00b7 Kubernetes",
+    "pack": "developer",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-developer-ObIu5-YQFlV9t_e181lNV",
+    "name": "Developer \u00b7 LinkedIn",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-rtGRb1mdXGew_KPHyh7q4",
+    "name": "Developer \u00b7 Lobe AI",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-bhvDpNTtmXIrMIuRbtvoj",
+    "name": "Developer \u00b7 Micronaut",
+    "pack": "developer",
+    "element_count": 49
+  },
+  {
+    "id": "engineering-developer-4iNybKU-NGMYR6L_FUDY1",
+    "name": "Developer \u00b7 Next",
+    "pack": "developer",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-developer-BawkDFn1Y21zumuIBXHdk",
+    "name": "Developer \u00b7 Nx",
+    "pack": "developer",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-developer-5lJ1IadQGytQU6xlLKVJo",
+    "name": "Developer \u00b7 Python",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer--qXjNBlq0pqwtClpMafBa",
+    "name": "Developer \u00b7 React",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-uT5WfiqWQQSTP5LqeXfrb",
+    "name": "Developer \u00b7 Slack",
+    "pack": "developer",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-developer-IX6fh8miq4BaK0wjEv_fN",
+    "name": "Developer \u00b7 SmartBear",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-fma1xqAwBlLwWjjSuk1rU",
+    "name": "Developer \u00b7 SoapUI",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-epGB3eLuIRx37zDDk1Y7L",
+    "name": "Developer \u00b7 Strava",
+    "pack": "developer",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-developer-OwDe_h_G5W3bKqq_ekL5p",
+    "name": "Developer \u00b7 Svelte",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-xLC636wB5qiwEINbAAOPU",
+    "name": "Developer \u00b7 TensorFlow",
+    "pack": "developer",
+    "element_count": 9
+  },
+  {
+    "id": "engineering-developer-fYA48JZ61d3U4k4P6wvjy",
+    "name": "Developer \u00b7 Twitter",
+    "pack": "developer",
+    "element_count": 1
+  },
+  {
+    "id": "engineering-developer-J4PAn5_Fm4WTfIcQbHwSx",
+    "name": "Developer \u00b7 VSCode",
+    "pack": "developer",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-developer-EAkivgcQSDqmqpeOS7QRc",
+    "name": "Developer \u00b7 Vercel",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-hUA41MdxO8R60DEGSSlVP",
+    "name": "Developer \u00b7 Vue",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-developer-0u49J-X0Lhu1YdkiSciik",
+    "name": "Developer \u00b7 X Twitter",
+    "pack": "developer",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-software-software-0",
+    "name": "Software \u00b7 Software symbol 1",
+    "pack": "software",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-software-software-1",
+    "name": "Software \u00b7 Software symbol 2",
+    "pack": "software",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-software-software-2",
+    "name": "Software \u00b7 Software symbol 3",
+    "pack": "software",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-software-software-3",
+    "name": "Software \u00b7 JSON",
+    "pack": "software",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-software-software-4",
+    "name": "Software \u00b7 Software symbol 5",
+    "pack": "software",
+    "element_count": 10
+  },
+  {
+    "id": "engineering-software-software-5",
+    "name": "Software \u00b7 Software symbol 6",
+    "pack": "software",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-software-software-6",
+    "name": "Software \u00b7 Software symbol 7",
+    "pack": "software",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-software-software-7",
+    "name": "Software \u00b7 Software symbol 8",
+    "pack": "software",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-software-software-8",
+    "name": "Software \u00b7 Software symbol 9",
+    "pack": "software",
+    "element_count": 13
+  },
+  {
+    "id": "engineering-software-software-9",
+    "name": "Software \u00b7 Software symbol 10",
+    "pack": "software",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-software-software-10",
+    "name": "Software \u00b7 Software symbol 11",
+    "pack": "software",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-software-software-11",
+    "name": "Software \u00b7 Software symbol 12",
+    "pack": "software",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-software-software-12",
+    "name": "Software \u00b7 Software symbol 13",
+    "pack": "software",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-software-software-13",
+    "name": "Software \u00b7 Software symbol 14",
+    "pack": "software",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-software-software-14",
+    "name": "Software \u00b7 Software symbol 15",
+    "pack": "software",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-software-software-15",
+    "name": "Software \u00b7 Software symbol 16",
+    "pack": "software",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-software-software-16",
+    "name": "Software \u00b7 Software symbol 17",
+    "pack": "software",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-software-software-17",
+    "name": "Software \u00b7 DNS",
+    "pack": "software",
+    "element_count": 12
+  },
+  {
+    "id": "engineering-architecture-p48owge02Pk0wOF3tY1S5",
+    "name": "Architecture \u00b7 Document",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-o7lnINMtKGGPyY3kFMyo8",
+    "name": "Architecture \u00b7 Image",
+    "pack": "architecture",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-architecture-c2eDDKmECOHhU-WXdbPK_",
+    "name": "Architecture \u00b7 Folder",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-SNl3e3Hvr-OYzldcVK6sp",
+    "name": "Architecture \u00b7 Email",
+    "pack": "architecture",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-architecture-Xsr42JsgDH-3Gfha2NRud",
+    "name": "Architecture \u00b7 Sound",
+    "pack": "architecture",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-architecture-VS3FHvOoKw2pUvPV_d1VY",
+    "name": "Architecture \u00b7 Video",
+    "pack": "architecture",
+    "element_count": 11
+  },
+  {
+    "id": "engineering-architecture-tlWSqQ6PLFqU4O5EV-OeT",
+    "name": "Architecture \u00b7 Microphone",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-qrkW0h18VoTrl3IJn-ZvR",
+    "name": "Architecture \u00b7 Camera",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-Ff06EXm7ADTN_kytW1LYe",
+    "name": "Architecture \u00b7 Speaker",
+    "pack": "architecture",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-architecture-3cgIYSos8Iz5blfc823Xc",
+    "name": "Architecture \u00b7 Model",
+    "pack": "architecture",
+    "element_count": 17
+  },
+  {
+    "id": "engineering-architecture-XwYdnBnUHCRpI_tPIaHdK",
+    "name": "Architecture \u00b7 Network",
+    "pack": "architecture",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-architecture-QbxXyWQtP6ThAb4vEcBcQ",
+    "name": "Architecture \u00b7 Internet",
+    "pack": "architecture",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-architecture-TcbL0tmvRv1gqoDMF80Af",
+    "name": "Architecture \u00b7 User",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-qiROftQpdXPd1tGrzpPZZ",
+    "name": "Architecture \u00b7 Home",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-nFiixWBZuUfk-LVb1FnzV",
+    "name": "Architecture \u00b7 Pie chart",
+    "pack": "architecture",
+    "element_count": 5
+  },
+  {
+    "id": "engineering-architecture-5eDqWaq0PzLnG5Mc8MreD",
+    "name": "Architecture \u00b7 Bar chart",
+    "pack": "architecture",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-architecture-lW5_lLLJdiwwRS096-m43",
+    "name": "Architecture \u00b7 Firewall",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-LFnib3Gp-D1J4ZRdrP-n8",
+    "name": "Architecture \u00b7 Cloud",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-fzlqge9V2cOgiyzYaKj-F",
+    "name": "Architecture \u00b7 Database",
+    "pack": "architecture",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-architecture-9JL5o9E-EjDHQlI_ZUfuW",
+    "name": "Architecture \u00b7 Drive",
+    "pack": "architecture",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-architecture-zXlX5Em8IyRfZ1A_TlCta",
+    "name": "Architecture \u00b7 Server",
+    "pack": "architecture",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-architecture-WI5c1OdeaRxBPkznGpjJZ",
+    "name": "Architecture \u00b7 Host",
+    "pack": "architecture",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-architecture-MXY3D8si4Gk8DXgyO3U9D",
+    "name": "Architecture \u00b7 Device",
+    "pack": "architecture",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-architecture-k14JLNYzn9JDhQ8Ns48sE",
+    "name": "Architecture \u00b7 Printer",
+    "pack": "architecture",
+    "element_count": 7
+  },
+  {
+    "id": "engineering-architecture-IrKJ9J6-vWJvHhtT8ktSg",
+    "name": "Architecture \u00b7 Settings",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-ze-sgkoESl6N2QuuEq_iJ",
+    "name": "Architecture \u00b7 Key",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-DQ4aQV1tz_geijXIxKkHb",
+    "name": "Architecture \u00b7 Yes",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-HLIQPycaAIydOKpqrgJAM",
+    "name": "Architecture \u00b7 No",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-f_JnIae9kAQtbl9eJgrBw",
+    "name": "Architecture \u00b7 Event",
+    "pack": "architecture",
+    "element_count": 1
+  },
+  {
+    "id": "engineering-architecture-cYgVwbZY6A27NWq18Al_w",
+    "name": "Architecture \u00b7 Message",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-VZi7Wg2SKeZQpQmTQCM3V",
+    "name": "Architecture \u00b7 Timer",
+    "pack": "architecture",
+    "element_count": 8
+  },
+  {
+    "id": "engineering-architecture-nX1xaUDEzAR28WyRMEeBC",
+    "name": "Architecture \u00b7 Conditional",
+    "pack": "architecture",
+    "element_count": 6
+  },
+  {
+    "id": "engineering-architecture-i9bYGu0UQK1pANH_SpO1p",
+    "name": "Architecture \u00b7 Link",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-u0NSK719k2x65mHRgrkzA",
+    "name": "Architecture \u00b7 Signal",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-xCX61QiATKJYDE92rNiHX",
+    "name": "Architecture \u00b7 Error",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-kUgBgaBWvT9TdwT6Ajfad",
+    "name": "Architecture \u00b7 Escalation",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-bEF_j_icqH7XrDb0kDUDA",
+    "name": "Architecture \u00b7 Compensation",
+    "pack": "architecture",
+    "element_count": 3
+  },
+  {
+    "id": "engineering-architecture-StEHik9-OIrH8ZQcuE-9H",
+    "name": "Architecture \u00b7 Cancel",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-EdwRjx0IDH0O0HgrC3Sfe",
+    "name": "Architecture \u00b7 Multiple",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-yQl5IWUn-AHDflopPLwQw",
+    "name": "Architecture \u00b7 Multiple Parallel",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-eJ6OPgEwOwRgx2dTIZyW4",
+    "name": "Architecture \u00b7 Gateway",
+    "pack": "architecture",
+    "element_count": 1
+  },
+  {
+    "id": "engineering-architecture-edyZQ4eVxDcMLFuC7nGb-",
+    "name": "Architecture \u00b7 Exclusive Gateway",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-1ZhGhon1ZDz2crmQecGBT",
+    "name": "Architecture \u00b7 Inclusive Gateway",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-ua7WkxNQBrU2lY-yodsdR",
+    "name": "Architecture \u00b7 Parallel Gateway",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-TTWStiAY45IwI1BfGYlgX",
+    "name": "Architecture \u00b7 Comment",
+    "pack": "architecture",
+    "element_count": 2
+  },
+  {
+    "id": "engineering-architecture-WKtpMORoMVVsRThIaxFgR",
+    "name": "Architecture \u00b7 Block",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-zxdQuW5t1a2avNJyTgjPC",
+    "name": "Architecture \u00b7 Lifeline",
+    "pack": "architecture",
+    "element_count": 4
+  },
+  {
+    "id": "engineering-architecture-cthN5AKPXiMx4BtsupbS9",
+    "name": "Architecture \u00b7 Pool",
+    "pack": "architecture",
+    "element_count": 3
+  }
+]

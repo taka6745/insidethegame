@@ -1,2 +1,4 @@
 # Keep acquired data byte-for-byte, including upstream whitespace and line endings.
-competitors/data/** -text -whitespace
+legacy/competitors/data/** -text -whitespace
+
+*.pdf binary
