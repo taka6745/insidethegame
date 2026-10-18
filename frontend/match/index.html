@@ -35,7 +35,10 @@
         ><a href="https://www.premierleague.com/en/news">News</a
         ><a href="https://www.premierleague.com/en/clubs">Clubs</a>
       </nav>
-      <a class="lab-link" href="/lab/">Developer lab ↗</a>
+        <div class="profile-wrap">
+          <label class="sr-only" for="profile">Demo profile</label>
+          <select id="profile" aria-label="Demo profile"><option>Loading profiles…</option></select>
+        </div>
     </header>
     <main id="match-main">
       <h1 class="sr-only">Match Centre</h1>
@@ -82,10 +85,7 @@
           <span id="connection" role="status">Connecting…</span>
           <button id="reconnect" hidden>Reconnect ↗</button>
         </div>
-        <div class="profile-wrap">
-          <label class="sr-only" for="profile">Demo profile</label>
-          <select id="profile" aria-label="Demo profile"><option>Loading profiles…</option></select>
-        </div>
+
       </div>
       <div id="notice" class="notice" role="alert" hidden></div>
       <div class="match-layout">
