@@ -20,8 +20,8 @@ The upstream ledger preserves goals, red cards, penalties and VAR overturns with
 | Trigger | Planned work |
 | --- | --- |
 | `MinuteClosed` | Summarise, then compress if due. |
-| `KeyEventDetected` | Debounce nearby events, then author for every available DB bucket. |
-| Ten match minutes since the last narrative step | Author for every available DB bucket. |
+| `KeyEventDetected` | Debounce nearby events, then author for every enabled `generation_target`. |
+| Ten match minutes since the last narrative step | Author for every enabled `generation_target`. |
 | Half time | Finish compression; optionally author a half-time narrative. |
 
 No minute summaries run during half time. Match time includes period, minute and added minute. Debounce duration and exact event/message schemas remain implementation details.

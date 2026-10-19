@@ -2,6 +2,8 @@
 
 [Editable board](../master-plan.excalidraw) · [SVG](../master-plan.svg)
 
+[Independent review record](reviews/master-plan-2026-10-19.md)
+
 This is the **target design**, checked against the original board's detailed sections and later service decisions. It does not describe deployment readiness or claim measured production capacity.
 
 | Boundary | Agreed responsibility |

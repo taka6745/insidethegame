@@ -6,7 +6,7 @@ The retained `models.py` and `framer.py` describe neutral inputs and bucketed au
 
 The framer accepts an injected JSON model adapter (the development experiment used Microsoft Agent Framework). The authoring code has no import or database dependency on the user backend; its future orchestrator reads the configuration API. Its fixture double copies source text; it does not assess writing quality.
 
-Next integration belongs here: fetch a versioned audience catalogue, generate for every available combination, batch calls, and persist/publish the bucketed results. The original 12 combinations are seeds, not a permanent schema restriction. Viewer presence does not determine which configured buckets generate.
+Next integration belongs here: fetch a versioned audience catalogue, generate for its enabled `generation_targets`, batch calls, and persist/publish the bucketed results. The original 12 combinations are seeds, not a permanent schema restriction. The backend maintains enabled targets from connected viewer selections; all definitions remain stored. This supersedes the prototype's earlier all-combinations policy.
 
 The mistaken backend integration remains recoverable in Git commit `882aa2e`; it is no longer active. Its Match App audience/cache tables, if present locally, are untouched but unused.
 

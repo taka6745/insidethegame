@@ -57,7 +57,7 @@ These remain the seed presets. Flexible layers/options are stored by the backend
 
 ### Narratives
 
-The narrative engine emits bucket-specific versions for every available combination supplied by the backend audience API. Each version already identifies its target bucket. Its neutral intermediate narratives never require backend rewriting.
+The narrative engine emits bucket-specific versions for the enabled `generation_targets` supplied by the backend audience API: the union of connected viewer selections. All bucket definitions remain stored. Each version already identifies its target bucket. Its neutral intermediate narratives never require backend rewriting.
 
 The user backend routes the supplied versions to the appropriate viewers. It does not generate the bucket wording or run one narrative agent/workflow per viewer.
 
@@ -206,7 +206,7 @@ All of this moved to Phase 2 when the hackathon scope was narrowed to live-only 
 | Frontend live transport | One live connection agreed; direct streaming versus managed transport still to be selected. |
 | Blob Storage | Not needed for the agreed Phase 1 application state; optional future archive/export storage only. |
 
-Other implementation details remain open: the fixed Python package list, GraphQL schemas and Event Hubs consumer configuration, backfill/replay contract, agent models, result-validation method, calculation-equivalence key, and exact card count. These are not permission to expand the agreed product scope.
+The match view has five stat slots. Other production implementation details remain open: the fixed Python package list, upstream GraphQL contracts and Event Hubs consumer configuration, backfill/replay contract and agent models. The local harness already implements validation and canonical calculation keys; their production recovery guarantees remain to be demonstrated. These are not permission to expand the agreed product scope.
 
 Service references used during planning: [Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview), [Azure PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/overview), [PostgreSQL JSON types](https://www.postgresql.org/docs/current/datatype-json.html), [GraphQL subscriptions](https://graphql.org/learn/subscriptions/), [TypeSafe Jev](https://docs.typesafe.ai/introduction).
 

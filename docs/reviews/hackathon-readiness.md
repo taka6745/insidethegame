@@ -10,7 +10,7 @@ Reviewed **19 October 2026** against the [current official rules](https://github
 | Explain / recap | Grounded question agent; neutral recap tiers with retained children. [Question tools](../../user-backend/backend/agents/question.py) | Narrative stub uses factual summaries and 144 manually authored versions. This is not evidence of live AI narrative generation. |
 | Render / personalize | Video, five live cards, 12 audience combinations, optional custom-stat tracking. [Viewer](../../frontend/README.md) | English-only demo; internationalization is not demonstrated. |
 | Purposeful agents | Actual Microsoft Agent Framework agents and workflow, clarification, validated DSL compilation and bounded repairs. [Workflow](../../user-backend/backend/agents/workflow.py) | Fresh setup defaults to fixture doubles. Configure model mode to demonstrate flexible questions. Arbitrary Python execution is deferred. |
-| Microsoft / Azure | SDK implementation, Docker services, separate Microsoft emulator checks and Terraform foundation. [Local setup](../../local/README.md) | No Foundry deployment, production broker adapters or application deployment in Terraform. LocalStack Azure is not installed. |
+| Microsoft / Azure | Azure SDK broker adapters, Docker services, Microsoft emulator checks and Terraform foundation. [Local setup](../../local/README.md) | Foundry/cloud application deployment and durable production recovery/coordination remain unimplemented. LocalStack Azure is not installed. |
 
 The [five-stage brief (§4.1)](https://github.com/microsoft/insidethegamehackathon/blob/main/OFFICIAL%20RULES.md#41-hackathon-challenge) concerns ingestion, interpretation, explanation, rendering and personalization. Describe the authored narratives as fixtures while demonstrating the implemented question and custom-stat intelligence.
 
@@ -32,7 +32,7 @@ The [five criteria (§6)](https://github.com/microsoft/insidethegamehackathon/bl
 
 1. Follow [local model setup](../../user-backend/docs/local-llm.md) using ignored configuration. Start `./dev up backend`; confirm model mode in the lab. Fixture mode only recognizes documented samples and must not be presented as flexible AI.
 2. Reset and start the shared match. Show aligned footage if available, then switch audience to compare the same moment's authored framing. Explicitly identify the synthetic match and authored narrative fixture.
-3. Ask for a supported ETL statistic, then a custom scope such as **Chelsea's completed passes since minute 5** after that point. Show the short answer, Track action and changing card. Avoid headers/cards/corners: this recording cannot measure them.
+3. Ask for a supported ETL statistic, then a custom scope such as **Chelsea's completed passes since minute 5** after that point. Show the short answer, Track action and changing card. The current recording also has two headed passes and one corner; card channels are supported but no cards occurred. Ask specifically for headed passes rather than ambiguous “headers”; not every headed action is measured.
 4. Show clarification and unsupported-data behavior, then reconnect to demonstrate restored state. Keep model traces and measured timings as evidence, not screen clutter.
 
 The [current recording](../../data-generation/recordings/README.md), [narrative fixture](../../narrative-engine/fixtures/README.md) and [frontend verification](../../frontend/docs/verification.md) document the actual demo, separate from planned services.
