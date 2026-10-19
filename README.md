@@ -4,7 +4,7 @@ Live football, shared match narratives and a personal match companion.
 
 ![Five planned services and their data flows](architecture.svg)
 
-**[Master architecture — editable Excalidraw](master-plan.excalidraw)** · [Full graphical plan](master-plan.svg). GRF/ETL left, backend and narrative engine centre, frontend right; Phase 2 in grey.
+**[Master architecture — editable Excalidraw](master-plan.excalidraw)** · [Full graphical plan](master-plan.svg) · [Boundaries and open decisions](docs/master-plan.md). GRF/ETL left, backend and narrative engine centre, frontend right; Phase 2 in grey.
 
 **Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; live messaging uses Microsoft emulators; cloud deployment remains to build. These diagrams describe the agreed application design.
 
