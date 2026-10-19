@@ -20,7 +20,7 @@ Open the [match viewer](http://localhost:18020) for the Chelsea–Manchester Uni
 | --- | --- |
 | [data-generation](data-generation/) | Prepare and replay an existing synthetic match into Event Hubs. |
 | [etl](etl/) | Store events, calculate match statistics and expose them through GraphQL. |
-| [narrative-engine](narrative-engine/) | Build shared match memory and write narratives for every available DB-defined audience bucket. |
+| [narrative-engine](narrative-engine/) | Build shared match memory and write narratives for enabled DB-defined audience buckets. |
 | [user-backend](user-backend/) | Answer questions, build custom stats and deliver each viewer's experience. |
 | [frontend](frontend/) | Show the live match, stat cards, chat and narrative feed. |
 

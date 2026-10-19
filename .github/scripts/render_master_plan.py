@@ -46,6 +46,16 @@ def icon(name,x,y,size=60,group=None,gray=False):
                 groupIds=[group] if group else [],opacity=35 if gray else 100)
     else:
         # Small native vector product symbols remain individually editable.
+        if name == 'fanout':
+            color = GREY if gray else BLUE
+            for dy in (8, 25, 42):
+                element('line',x+12,y+25,26,abs(dy-25),points=[[0,0],[26,dy-25]],
+                        strokeColor=color,groupIds=[group] if group else [])
+                element('ellipse',x+34,y+dy-4,8,8,backgroundColor='white',
+                        strokeColor=color,groupIds=[group] if group else [])
+            element('ellipse',x+6,y+19,12,12,backgroundColor='white',
+                    strokeColor=color,groupIds=[group] if group else [])
+            return
         box(x,y+7,size,size*.68,color=GREY if gray else BLUE,group=group)
         if name=='chart':
             for i,height in enumerate((18,30,42)):
@@ -153,7 +163,7 @@ node('executor',1890,770,240,150,'Isolated executor','Separate container · read
 node('audience-api',2180,770,220,150,'Audience API','Layers · options · meaning','users')
 node('index',1190,1000,280,150,'Shared filter index','Equivalent rules share results','code',PURPLE)
 node('cards',1890,1000,240,150,'Cards + pins','Pin replaces lowest priority','chart',GREEN)
-node('live',2180,1000,220,150,'Live gateway','Bucket routing · fan-out','bus')
+node('live',2180,1000,220,150,'Live gateway','Bucket routing · fan-out','fanout')
 line([(1410,615),(1530,615)],both=True)
 line([(1770,615),(1890,615)],both=True)
 line([(1650,540),(1650,510)])
