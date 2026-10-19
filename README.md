@@ -4,6 +4,8 @@ Live football, shared match narratives and a personal match companion.
 
 ![Five planned services and their data flows](architecture.svg)
 
+**[Master architecture — editable Excalidraw](master-plan.excalidraw)** · [Full graphical plan](master-plan.svg). GRF/ETL left, backend and narrative engine centre, frontend right; Phase 2 in grey.
+
 **Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; live messaging uses Microsoft emulators; cloud deployment remains to build. These diagrams describe the agreed application design.
 
 **[Start developing →](DEVELOPMENT.md)** · [Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
@@ -35,3 +37,5 @@ Each folder has a short service guide and a closer diagram. Azure products are d
 [Review results](docs/reviews/2026-10-19.md) · [Hackathon readiness](docs/reviews/hackathon-readiness.md) · [Azure deployment gaps](terraform/deployment-readiness.md)
 
 Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). No cloud deployment or CI is configured.
+
+The master board is generated with `python3 .github/scripts/render_master_plan.py`. Its shapes, labels, connectors and embedded icons are editable in Excalidraw. Regenerating replaces manual edits, so keep a copy before doing that. Export `master-plan.svg` through the Excalidraw CLI after updates. The original board remains preserved in `legacy/design/`.
