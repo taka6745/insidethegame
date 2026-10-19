@@ -130,6 +130,8 @@ Use a shared match-event subscription for active custom calculations, rather tha
 
 The user backend consumes live match events directly from **Event Hubs**, with one shared consumer for this match. ETL GraphQL supplies history and computed stats. A GraphQL subscription bridge or separate sidecar is not required for the agreed path.
 
+ETL consumes the same stream independently; its database write is not a prerequisite for backend custom-filter ingestion. The current ETL demo persists history and stats in separate PostgreSQL databases; Azure SQL history and Cosmos DB stats remain the planned cloud stores. Standard cards still wait for ETL-provided values through GraphQL.
+
 History-to-live handoff, reconnects and shared calculation state must avoid missed or double-counted events. Event IDs/replay positions and correction handling are implementation contracts to resolve with the pipeline, not already confirmed features.
 
 ## 7. Pinning and card replacement

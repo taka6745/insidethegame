@@ -41,6 +41,7 @@
 <rect x="436.0" y="539" width="78.0" height="23" fill="white"/>
 <text x="475" y="555" font-size="14" fill="#5d7185" font-weight="400" text-anchor="middle">Triggers</text>
 <text x="36" y="755" font-size="16" fill="#5d7185" font-weight="400" text-anchor="start">Backend selects and delivers standard stats. ETL calculates them.</text>
+<text x="36" y="783" font-size="16" fill="#5d7185" font-weight="400" text-anchor="start">Local demo: PostgreSQL for both stores. Azure SQL + Cosmos DB are planned.</text>
 <path d="M36,800 H1404" stroke="#d8e3ed"/>
 <text x="36" y="825" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">PLANNED · Solid: data / calls · Dashed: messages / Phase 2</text>
 </svg>
