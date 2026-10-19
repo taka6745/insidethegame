@@ -68,12 +68,16 @@ class Diagram:
 d=Diagram('architecture.svg','Five services. One live match.','Shared match intelligence; personal questions and stat cards. No narrative workflow per viewer.',1440,760)
 xs=[36,320,604,888,1172];w=232
 items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Stats + history · GraphQL'],'stream',BLUE),('Narrative engine',['DB-defined audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
-for x,(title,notes,ic,col) in zip(xs,items):d.card(x,245,w,205,title,notes,ic,col)
-for i,label in enumerate(['Event Hubs','Facts + triggers','Narratives','Live UI']):
- d.arrow([(xs[i]+w,345),(xs[i+1],345)],label,(xs[i]+w+xs[i+1])/2,320,dash=i==2)
-d.arrow([(436,245),(436,175),(1004,175),(1004,245)],'Live · Event Hubs',720,168,True)
-d.arrow([(436,450),(436,510),(1004,510),(1004,450)],'Stats + history · GraphQL',720,503)
-d.text('Narratives: Service Bus live · GraphQL history',36,575,16,PURPLE)
+for x,(title,notes,ic,col) in zip(xs,items):d.card(x,315,w,180,title,notes,ic,col)
+d.card(320,125,w,135,'Event Hubs',[],'events')
+d.arrow([(268,405),(292,405),(292,192),(320,192)])
+d.arrow([(436,260),(436,315)])
+d.arrow([(552,192),(1004,192),(1004,315)],'Direct live events',778,180,True)
+for i,label in enumerate(['Facts + triggers','Narratives','Live UI'],start=1):
+ d.arrow([(xs[i]+w,405),(xs[i+1],405)],label,(xs[i]+w+xs[i+1])/2,390,dash=i==2)
+d.arrow([(436,495),(436,550),(1004,550),(1004,495)],'Stats + history · GraphQL',720,543)
+d.text('Independent consumers · live events bypass ETL storage',36,600,16,BLUE)
+d.text('Narratives: Service Bus live · GraphQL history',36,630,16,PURPLE)
 
 d.note('PHASE 2 · Jev · clips · rewind',663,GREY)
 d.save()
@@ -109,6 +113,7 @@ d.icon('bus',330,610,45)
 d.text('Service Bus',400,635,20,BLUE,True)
 d.arrow([(430,500),(430,590)],'Triggers',475,555,dash=True)
 d.note('Backend selects and delivers standard stats. ETL calculates them.',755)
+d.note('Local demo: PostgreSQL for both stores. Azure SQL + Cosmos DB are planned.',783)
 d.save()
 
 # Narrative shared memory and per-bucket authors.
@@ -137,7 +142,7 @@ d.save()
 # Detailed backend boundary follows the reference board. Standard and custom stats stay separate.
 d=Diagram('user-backend/architecture.svg','Main user backend','ETL owns standard stats in Cosmos DB and historical events in SQL. GraphQL is the only database access path for the backend.',1680,1420)
 # Service boundaries.
-d.rect(24,145,270,900,'#fff4e5','#f4a34f')
+d.rect(24,145,270,655,'#fff4e5','#f4a34f')
 d.text('ETL service',44,179,22,'#b86500',True)
 d.rect(330,145,1050,990,'#e8f4ff',BLUE)
 d.icon('containers',350,164,32)
@@ -148,7 +153,8 @@ d.text('Frontend',1440,370,22,GREEN,True)
 d.card(44,210,230,145,'Cosmos DB',['Standard stats'],'cosmos')
 d.card(44,410,230,145,'ETL GraphQL',[],'graphql')
 d.card(44,620,230,145,'Azure SQL',['Event history'],'sql')
-d.card(44,850,230,145,'Event Hubs',['Custom live events'],'events')
+d.text('Shared event stream',44,830,18,BLUE,True)
+d.card(44,850,230,145,'Event Hubs',['Direct match events'],'events')
 d.arrow([(159,355),(159,410)])
 d.arrow([(159,620),(159,555)])
 # Main API, identity and agent components.

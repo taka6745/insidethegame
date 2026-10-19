@@ -23,7 +23,7 @@ The diagram and components below describe the target architecture; the [developm
 | Azure PostgreSQL Flexible Server | Accounts and Match App databases on one server. |
 | Isolated executor | Fixed Python libraries; controlled read-only GraphQL. Sandbox technology TBD. |
 
-**Standard stats:** ETL computes them and stores them in its Cosmos DB. Fetch values through ETL GraphQL, then select/rank/deliver. Agents query the same API for specific historical events from ETL-owned storage. Custom calculations are only for requests that existing ETL stats cannot answer.
+**Standard stats:** ETL computes and stores them (PostgreSQL in the demo; Cosmos DB planned). Fetch values through ETL GraphQL, then select/rank/deliver. Agents query the same API for specific historical events from ETL-owned storage. Custom calculations are only for requests that existing ETL stats cannot answer.
 
 **Read:** live events from Event Hubs; historical events and computed stats from ETL GraphQL; narrative history from narrative GraphQL; new narratives and stat-selection instructions through Service Bus.
 
