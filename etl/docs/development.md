@@ -1,0 +1,65 @@
+# Development
+
+> **In short:** Docker runs the two pieces that have local equivalents (SQL Server for Azure SQL, Data API builder itself). Stream Analytics and the messaging services have no local emulator, so the Python reference implementation produces their output and files stand in for Event Hubs and Service Bus.
+
+| | |
+| --- | --- |
+| **Needs** | Python 3.11, Docker Desktop, `sqlcmd`, Node (UDF tests); Azure CLI and Terraform for Azure work |
+| **Settings** | Ignored `etl/.env` (local SA password, generated) |
+| **Tests** | `pytest tests` (7) plus `devtools verify` end to end |
+
+## 1. Setup
+
+*In short: a virtual environment and the Docker stack.*
+
+```sh
+cd etl
+python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows path shown
+.venv/Scripts/python -m pytest tests
+.venv/Scripts/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
+```
+
+## 2. Local stand-ins
+
+*In short: Docker where a real local version exists, Python and files elsewhere.*
+
+| Azure piece | Local stand-in |
+| --- | --- |
+| Azure SQL | SQL Server 2025 container (`docker-compose.yml`), port 14330 |
+| Data API builder | The same DAB image and config in Docker, port 5000 |
+| Event Hubs | `seeder.replay --target file` writes the replay to `.local/replays/` |
+| Stream Analytics | `reference/pipeline.py`, run by `devtools load-local`, which inserts the expected rows |
+| Service Bus | `load-local` writes notifications to `.local/notifications.jsonl` |
+
+The SQL Server 2022 image failed on this machine; 2025-CU9 works. Docker Desktop hangs if the C: drive fills, so check free space first.
+
+## 3. The offline loop
+
+*In short: replay to a file, load it, verify it.*
+
+```sh
+.venv/Scripts/python -m seeder.replay seeder/matches/itg-syn-0001.jsonl --speed 10 --target file --match-id demo
+.venv/Scripts/python -m devtools load-local .local/replays/demo.jsonl --window 6
+.venv/Scripts/python -m devtools verify .local/replays/demo.jsonl --window 6
+```
+
+`verify` queries every GraphQL entity and the view and compares them with the reference, row by row. The notifications file is what the narrative engine replays offline.
+
+## 4. Tests
+
+*In short: rules and UDFs are tested without Azure.*
+
+| File | Covers |
+| --- | --- |
+| `test_seeder_and_pipeline.py` | Generated match content, replay scheduling and windows, reference outputs (key events, deltas, notifications, running totals) |
+| `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules (skips without Node) |
+
+The SQL view and the deployed query are checked end to end by `devtools verify` and `check-notifications`, locally and in Azure.
+
+## 5. Conventions
+
+*In short: change rules in pairs, keep secrets out of Git.*
+
+- A rule change touches the query (`stream-analytics/`) and the reference (`reference/`) together; the view (`sql/`) and `reference/pipeline.py stats_as_of` likewise.
+- Generated data is labelled `synthetic: true` with provenance.
+- `.env`, `.local/`, Terraform state and `local.auto.tfvars` are ignored.

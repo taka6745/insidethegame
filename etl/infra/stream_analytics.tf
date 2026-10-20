@@ -1,4 +1,4 @@
-# Created stopped. Start/stop with `python -m etltools.dev asa start|stop`; it bills only while running.
+# Created stopped. Start/stop with `python -m devtools asa start|stop`; it bills only while running.
 # Stop the job before `terraform apply` changes the query, inputs or outputs.
 resource "azurerm_stream_analytics_job" "etl" {
   name                                     = "${local.name}-asa"

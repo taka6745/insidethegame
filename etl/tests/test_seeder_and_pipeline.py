@@ -1,7 +1,7 @@
 from collections import Counter
 from datetime import datetime, timezone
 
-from etltools import opta, pipeline
+from reference import opta, pipeline
 from seeder.generate import MatchBuilder
 from seeder.replay import schedule
 

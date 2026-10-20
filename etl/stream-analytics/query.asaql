@@ -1,4 +1,4 @@
--- ETL Stream Analytics job. Rules mirror etltools/opta.py; codes in contracts/opta-codes.json.
+-- ETL Stream Analytics job. Rules mirror reference/opta.py; codes in contracts/opta-codes.json.
 -- Terraform renders this file: ${window_seconds} is the tumbling window (60 / replay speed).
 
 WITH Stream AS (

@@ -10,7 +10,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from collections import defaultdict
 from datetime import datetime, timezone
 
-from etltools import opta
+from reference import opta
 
 
 def parse_time(value):

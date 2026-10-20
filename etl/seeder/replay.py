@@ -18,7 +18,7 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from etltools import opta
+from reference import opta
 
 
 def window_seconds(speed):
@@ -105,7 +105,7 @@ def main():
     print(f"match {match_id}: {len(replay)} messages, window {window_seconds(args.speed)}s, "
           f"kickoff {next(m['timeStamp'] for m in replay if m['feed'] == 'MA3')}")
 
-    # Always keep the timestamped copy: `etltools.dev verify` needs exactly what was sent.
+    # Always keep the timestamped copy: `devtools verify` needs exactly what was sent.
     out = args.out or Path(__file__).resolve().parents[1] / ".local" / "replays" / f"{match_id}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("".join(json.dumps(m, separators=(",", ":")) + "\n" for m in replay), encoding="utf-8")

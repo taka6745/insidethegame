@@ -1,6 +1,6 @@
 # ETL contracts
 
-What other services can rely on. Inputs: [match-event.schema.json](match-event.schema.json), codes in [opta-codes.json](opta-codes.json). The [reference pipeline](../etltools/pipeline.py) is the executable version of the rules below.
+What other services can rely on. Inputs: [match-event.schema.json](match-event.schema.json), codes in [opta-codes.json](opta-codes.json). The [reference pipeline](../reference/pipeline.py) is the executable version of the rules below.
 
 ## Input: Event Hubs `match-events`
 
@@ -63,4 +63,4 @@ JSON body; application property `notificationType` (same value as `messageType`)
 - `MinuteClosed` and the SQL write for that minute happen together. If `matchStatsAsOfs` has no row for that minute yet, retry briefly.
 - Replays can run faster than real time (`--speed 10` gives 6-second minutes), so don't assume 60 seconds per minute.
 
-**Status:** deployed in dev and verified against the reference pipeline. Namespace `itg-etl-dev-0zvxh-sbns`, subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. Offline, `python -m etltools.dev load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. Messages only flow while the Stream Analytics job is running and a replay is sending.
+**Status:** deployed in dev and verified against the reference pipeline. Namespace `itg-etl-dev-0zvxh-sbns`, subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. Messages only flow while the Stream Analytics job is running and a replay is sending.
