@@ -1,0 +1,1992 @@
+{
+  "fixture_sha256": "348a339fcfac735019b0bef96fcf2649ecad208043abd40363b1f55a246a9e43",
+  "gold": [
+    {
+      "id": "stat-001",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-002",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-003",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-004",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-005",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-006",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-007",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-008",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-009",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-010",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-011",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-012",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-013",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-014",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-015",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-016",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-017",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-018",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-019",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-020",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-021",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-022",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-023",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-024",
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-025",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-026",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-027",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-028",
+      "ok": true,
+      "final_value": 8.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-029",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-030",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-031",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-032",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-033",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-034",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-035",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-036",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-037",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-038",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-039",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-040",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-041",
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-042",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-043",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-044",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-045",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-046",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-047",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-048",
+      "ok": true,
+      "final_value": 60.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-049",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-050",
+      "ok": true,
+      "final_value": 27.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-051",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-052",
+      "ok": true,
+      "final_value": 13.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-053",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-054",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-055",
+      "ok": true,
+      "final_value": 40.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-056",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-057",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-058",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-059",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-060",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-061",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-062",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-063",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-064",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-065",
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-066",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-067",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-068",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-069",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-070",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-071",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-072",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-073",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-074",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-075",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-076",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-077",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-078",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-079",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-080",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-081",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-082",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-083",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-084",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-085",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-086",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-087",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-088",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-089",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-090",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-091",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-092",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-093",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-094",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-095",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-096",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-097",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-098",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-099",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-100",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "agent_calls": true,
+  "agents": [
+    {
+      "id": "stat-004",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.935,
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-001",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.749,
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-003",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 26.183,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-005",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.314,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-006",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.586,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 1,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-007",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.271,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-002",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 60.002,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-010",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 12.657,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-008",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 26.771,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      }
+    },
+    {
+      "id": "stat-009",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.011,
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-012",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.402,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-011",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 25.661,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-013",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 25.611,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      }
+    },
+    {
+      "id": "stat-014",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.555,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "off_target"
+          }
+        ],
+        "sum_field": null
+      }
+    },
+    {
+      "id": "stat-016",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.947,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-015",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.545,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 7,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-017",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.255,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-020",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.165,
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-019",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.692,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-021",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.61,
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-023",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 17.447,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-018",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 48.407,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 23,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-024",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 15.2,
+      "ok": true,
+      "final_value": 9.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-022",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 28.545,
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-025",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.656,
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-028",
+      "quality": "average",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 15.275,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-026",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 25.888,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-027",
+      "quality": "average",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 26.822,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-031",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 12.438,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-030",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 26.611,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-029",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 35.172,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-032",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 24.649,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-034",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 13.125,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-036",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 16.771,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-033",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 43.673,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 12,
+      "expected": 1.0,
+      "actual": 2.0
+    },
+    {
+      "id": "stat-035",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 25.8,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-037",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 25.713,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-038",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.664,
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-039",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.37,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-041",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 16.219,
+      "ok": true,
+      "final_value": 5.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-040",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.339,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 30,
+      "expected": 0.0,
+      "actual": 1.0
+    },
+    {
+      "id": "stat-042",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.584,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 4,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-043",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.399,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 5,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-046",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.598,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 1,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-044",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.028,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-045",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.085,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-048",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.715,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea",
+              "madrid"
+            ]
+          }
+        ],
+        "sum_field": "distance_metres"
+      }
+    },
+    {
+      "id": "stat-049",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.184,
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-047",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 26.81,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 5,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-050",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 30.137,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 4,
+      "expected": 12.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-051",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.821,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 5,
+      "expected": 20.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-052",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.644,
+      "ok": true,
+      "final_value": 13.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-053",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.025,
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-054",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.973,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 19,
+      "expected": 5.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-055",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.633,
+      "ok": true,
+      "final_value": 40.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-057",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.358,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-056",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.492,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-058",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.665,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-059",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.975,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 4,
+      "expected": 1.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-061",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.413,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea",
+              "madrid"
+            ]
+          }
+        ],
+        "sum_field": null
+      }
+    },
+    {
+      "id": "stat-060",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.45,
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-062",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.052,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-063",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.365,
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-065",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.97,
+      "ok": true,
+      "final_value": 0.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-064",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.573,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-067",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 14.438,
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-066",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.993,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-068",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 16.256,
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-070",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.516,
+      "ok": false,
+      "reason": "different_constraints",
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "off_target"
+          }
+        ],
+        "sum_field": null
+      }
+    },
+    {
+      "id": "stat-069",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.66,
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-071",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.448,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-075",
+      "quality": "messy",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 14.197,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-073",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.734,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-072",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 28.668,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-076",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 17.875,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-077",
+      "quality": "clear",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 18.553,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-074",
+      "quality": "average",
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 43.078,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed"
+    },
+    {
+      "id": "stat-078",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 24.651,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-079",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.047,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-080",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 25.815,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-081",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 22.275,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-082",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.117,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-083",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.504,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-084",
+      "quality": "messy",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.02,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-085",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.155,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-087",
+      "quality": "average",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 15.228,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-086",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.43,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-089",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.924,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-090",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.848,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-088",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 24.522,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-091",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.979,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-092",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.315,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-093",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.795,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-094",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.958,
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-095",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.952,
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-096",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 15.529,
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "stat-097",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 21.928,
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "negative-01",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 4.714,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "stat-099",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.711,
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 25,
+      "expected": 15.0,
+      "actual": 0.0
+    },
+    {
+      "id": "stat-098",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 35.566,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "negative-02",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "clarification",
+      "seconds": 16.233,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "clarification"
+    },
+    {
+      "id": "stat-100",
+      "quality": "clear",
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.476,
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "negative-03",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 12.48,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "clarification",
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-04",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 8.378,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-06",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 9.714,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-05",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 10.816,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "clarification"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-07",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 7.893,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-08",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 6.342,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-12",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 5.006,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-09",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 10.554,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-10",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 11.852,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    },
+    {
+      "id": "negative-11",
+      "quality": "ambiguous_or_unsupported",
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 14.123,
+      "ok": true,
+      "reason": "status",
+      "expected_status": [
+        "unsupported"
+      ],
+      "actual_status": "unsupported"
+    }
+  ],
+  "case_timeout_seconds": 60,
+  "suite_timeout_seconds": 900,
+  "concurrency": 4
+}

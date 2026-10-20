@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#18001f" />
+    <meta
+      name="description"
+      content="Inside the Game — a live football companion. Synthetic match demonstration."
+    />
+    <title>Match Centre · Inside the Game</title>
+    <link rel="stylesheet" href="/match/companion.css" />
+    <link rel="stylesheet" href="/match/styles.css" />
+    <script type="module" src="/match/main.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#match-main">Skip to the match</a>
+    <header class="masthead">
+      <a
+        class="league-logo"
+        href="https://www.premierleague.com/en"
+        aria-label="Premier League website"
+        ><img
+          src="/assets/league/premier-league-white.svg"
+          width="116"
+          height="48"
+          alt="Premier League"
+      /></a>
+      <nav class="league-nav" aria-label="Premier League">
+        <a href="https://www.premierleague.com/en/matches" class="active"
+          >Matches</a
+        ><a href="https://www.premierleague.com/en/tables">Table</a
+        ><a href="https://www.premierleague.com/en/stats">Statistics</a
+        ><a href="https://fantasy.premierleague.com/">Fantasy</a
+        ><a href="https://www.premierleague.com/en/news">News</a
+        ><a href="https://www.premierleague.com/en/clubs">Clubs</a>
+      </nav>
+      <div class="audience-controls" role="group" aria-label="Your match perspective">
+        <label class="sr-only" for="audience-team">Team you support</label>
+        <select id="audience-team" disabled><option>Team…</option></select>
+        <label class="sr-only" for="audience-style">Viewer style</label>
+        <select id="audience-style" disabled>
+          <option value="analytical">Analytical</option>
+          <option value="simple">Simple</option>
+          <option value="casual">Casual</option>
+          <option value="experienced">Experienced</option>
+        </select>
+      </div>
+    </header>
+    <main id="match-main">
+      <h1 class="sr-only">Match Centre</h1>
+      <section class="scoreboard" id="overview" aria-label="Match score">
+        <div class="team home" id="home-banner">
+          <img class="crest-watermark" id="home-watermark" alt="" hidden />
+          <div class="club-identity">
+            <img class="club-crest" id="home-crest" alt="" hidden /><span
+              class="team-monogram"
+              id="home-mark"
+              >H</span
+            >
+            <div>
+              <h2 id="home-name">Home</h2>
+            </div>
+          </div>
+        </div>
+        <div class="score-centre">
+          <div class="score">
+            <span id="home-score">—</span><span class="score-divider">–</span
+            ><span id="away-score">—</span>
+          </div>
+          <div class="match-clock">
+            <span class="live-dot" aria-hidden="true"></span
+            ><span id="match-clock">PRE-MATCH</span>
+          </div>
+        </div>
+        <div class="team away" id="away-banner">
+          <img class="crest-watermark" id="away-watermark" alt="" hidden />
+          <div class="club-identity">
+            <div>
+              <h2 id="away-name">Away</h2>
+            </div>
+            <img class="club-crest" id="away-crest" alt="" hidden /><span
+              class="team-monogram"
+              id="away-mark"
+              >A</span
+            >
+          </div>
+        </div>
+      </section>
+      <div class="match-toolbar" id="inside-the-game">
+        <div class="connection-bar">
+          <span id="connection" role="status">Connecting…</span>
+          <button id="reconnect" hidden>Reconnect ↗</button>
+        </div>
+
+      </div>
+      <div id="notice" class="notice" role="alert" hidden></div>
+      <div class="match-layout">
+        <div class="match-column">
+          <section class="match-stage" id="match-stage" aria-label="Match stream">
+            <video id="match-video" playsinline preload="none" aria-label="Match footage" hidden></video>
+            <div id="video-empty" class="video-empty">
+              <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true"><rect x="3" y="8" width="36" height="26" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="m18 15 10 6-10 6V15Z" fill="currentColor"/></svg>
+              <p>Demo footage unavailable</p>
+              <span>Live insights and stats are ready.</span>
+            </div>
+          </section>
+          <div class="demo-controls">
+            <button id="start-demo" class="primary"><span id="start-demo-label">Start match</span><span aria-hidden="true">↗</span></button>
+            <button id="reset-demo" class="text-button" hidden>Start a new demo</button>
+          </div>
+          <section class="stats-section" aria-labelledby="stats-title">
+            <div class="section-heading">
+              <h2 id="stats-title">Your stats</h2>
+              <span id="stats-context"></span>
+            </div>
+            <div id="stats" class="stats-grid">
+              <p class="empty">Loading match statistics…</p>
+            </div>
+          </section>
+        </div>
+        <aside class="companion" aria-label="Your match companion">
+          <div class="companion-heading">
+            <img
+              src="/assets/icons/insight.svg"
+              alt=""
+              width="28"
+              height="28"
+            />
+            <div>
+              <h2>Inside the Game</h2>
+              <p id="perspective">Your match companion</p>
+            </div>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Match companion">
+            <button
+              id="stories-tab"
+              role="tab"
+              aria-controls="stories-panel"
+              aria-selected="true"
+              tabindex="0"
+            >
+              Insights <span id="story-count">0</span></button
+            ><button
+              id="questions-tab"
+              role="tab"
+              aria-controls="questions-panel"
+              aria-selected="false"
+              tabindex="-1"
+            >
+              Ask <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <section
+            id="stories-panel"
+            class="tab-panel"
+            role="tabpanel"
+            aria-labelledby="stories-tab"
+          >
+            <div id="narratives" class="narrative-list">
+              <div class="story-empty">
+                <span class="empty-symbol" aria-hidden="true">✦</span>
+                <h3>Waiting for kick-off.</h3>
+                <p>
+                  Your match insights will appear here.
+                </p>
+              </div>
+            </div>
+          </section>
+          <section
+            id="questions-panel"
+            class="tab-panel questions-panel"
+            role="tabpanel"
+            aria-labelledby="questions-tab"
+            hidden
+          >
+            <div id="chat-messages" class="chat-messages">
+              <div class="question-empty">
+                <h3>What are you seeing?</h3>
+                <p>
+                  Ask a question. Track a stat.
+                </p>
+              </div>
+            </div>
+            <div id="question-suggestions" class="suggestions">
+              <button data-prompt="How is the home team looking this game?">
+                How is the home team looking?</button
+              ><button
+                data-prompt="How many shots have there been in this match?"
+              >
+                Explore the match stats
+              </button>
+            </div>
+            <form id="question-form">
+              <label class="sr-only" for="question-input">Your question</label>
+              <div class="composer">
+                <textarea
+                  id="question-input"
+                  rows="2"
+                  maxlength="2000"
+                  placeholder="Ask about this match…"
+                ></textarea
+                ><button
+                  id="question-send"
+                  type="submit"
+                  aria-label="Send question"
+                >
+                  ↗
+                </button>
+              </div>
+              <div class="composer-footer">
+                <span id="question-status" role="status"
+                  ></span
+                ><span id="agent-mode"></span>
+              </div>
+            </form>
+          </section>
+          <div class="microsoft-credit">
+            <img
+              src="/assets/league/microsoft.svg"
+              alt="Microsoft"
+              width="89"
+              height="19"
+            /><span>Built with Microsoft Agent Framework</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer><span>Hackathon demo · Not an official Premier League product</span><a href="/lab/">Developer lab ↗</a></footer>
+  </body>
+</html>

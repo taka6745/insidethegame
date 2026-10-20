@@ -1,0 +1,12 @@
+*
+!requirements*.txt
+!backend/**
+!migrations/**
+!fixtures/**
+!tests/**
+!pytest.ini
+!benchmarks/*.py
+!benchmarks/prompts/*.txt
+!benchmarks/prompts/*.json
+**/__pycache__
+**/*.pyc

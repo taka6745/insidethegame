@@ -1,0 +1,467 @@
+{
+  "scope": "single-process FilterEngine.ingest only; no model, database, network, subscriber routing or serialization",
+  "python": "3.12.12",
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "machine": "arm64",
+  "logical_cpus": 10,
+  "recording_sha256": "f138f9277cae3428743aa9c1273b440a474e6806cb148fb1071672f7fc0a90ee",
+  "memory_limit_mb": 1024,
+  "build_timeout_seconds": 30,
+  "replay_timeout_seconds": 20,
+  "cases": [
+    {
+      "workload": "selective",
+      "requested_rules": 100,
+      "status": "measured",
+      "baseline_mb": 71.53125,
+      "registered_rules": 100,
+      "build_seconds": 0.040290042001288384,
+      "peak_rss_mb": 75.796875,
+      "recording_events": 14018,
+      "measured_events": 14018,
+      "full_match": true,
+      "replay_wall_seconds": 1.2775428330060095,
+      "throughput_events_per_second": 11024.220129048037,
+      "latency": {
+        "mean_ms": 0.09070936431730632,
+        "p50_ms": 0.08625,
+        "p95_ms": 0.11775000000000001,
+        "p99_ms": 0.171,
+        "max_ms": 0.556417
+      },
+      "candidates_mean": 0.4479240975888144,
+      "candidates_max": 1,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 9.070936431730632e-05,
+          "p95_response_ms": 0.11774999984481838,
+          "max_response_ms": 0.5564169996432611,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.00045354682158653154,
+          "p95_response_ms": 0.11774999998692692,
+          "max_response_ms": 0.5564170000980084,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.009070936431730632,
+          "p95_response_ms": 0.11774999999936142,
+          "max_response_ms": 0.5564169999985324,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 1000,
+      "status": "measured",
+      "baseline_mb": 71.375,
+      "registered_rules": 1000,
+      "build_seconds": 0.06247916701249778,
+      "peak_rss_mb": 79.40625,
+      "recording_events": 14018,
+      "measured_events": 14018,
+      "full_match": true,
+      "replay_wall_seconds": 1.6125541669898666,
+      "throughput_events_per_second": 8723.001823207567,
+      "latency": {
+        "mean_ms": 0.1146394349407904,
+        "p50_ms": 0.108875,
+        "p95_ms": 0.13791699999999998,
+        "p99_ms": 0.210709,
+        "max_ms": 0.47550000000000003
+      },
+      "candidates_mean": 7.181052931944643,
+      "candidates_max": 8,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.0001146394349407904,
+          "p95_response_ms": 0.13791699984722072,
+          "max_response_ms": 0.4755000009026844,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.000573197174703952,
+          "p95_response_ms": 0.13791700001775098,
+          "max_response_ms": 0.4754999999931897,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.011463943494079039,
+          "p95_response_ms": 0.1379169999999874,
+          "max_response_ms": 0.4754999999931897,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 10000,
+      "status": "measured",
+      "baseline_mb": 71.296875,
+      "registered_rules": 10000,
+      "build_seconds": 0.5215991250006482,
+      "peak_rss_mb": 110.515625,
+      "recording_events": 14018,
+      "measured_events": 14018,
+      "full_match": true,
+      "replay_wall_seconds": 5.743815416994039,
+      "throughput_events_per_second": 2444.3538448669474,
+      "latency": {
+        "mean_ms": 0.4091060719788843,
+        "p50_ms": 0.359083,
+        "p95_ms": 0.592458,
+        "p99_ms": 0.752166,
+        "max_ms": 5.982875
+      },
+      "candidates_mean": 76.1358253673848,
+      "candidates_max": 77,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.0004091060719788843,
+          "p95_response_ms": 0.5924580000282731,
+          "max_response_ms": 5.98287499997241,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.0020455303598944214,
+          "p95_response_ms": 0.5924580000282731,
+          "max_response_ms": 5.98287499997241,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.04091060719788842,
+          "p95_response_ms": 0.5924579999998514,
+          "max_response_ms": 5.982875000000831,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 100000,
+      "status": "measured",
+      "baseline_mb": 71.5,
+      "registered_rules": 100000,
+      "build_seconds": 5.754256542015355,
+      "peak_rss_mb": 455.65625,
+      "recording_events": 14018,
+      "measured_events": 5122,
+      "full_match": false,
+      "replay_wall_seconds": 20.017245832947083,
+      "throughput_events_per_second": 256.0194347162009,
+      "latency": {
+        "mean_ms": 3.9059534722764546,
+        "p50_ms": 3.852,
+        "p95_ms": 5.4865829999999995,
+        "p99_ms": 6.153084,
+        "max_ms": 69.227542
+      },
+      "candidates_mean": 763.1585318235065,
+      "candidates_max": 764,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.0039059534722764543,
+          "p95_response_ms": 5.48658300021998,
+          "max_response_ms": 69.2275419996804,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.01952976736138227,
+          "p95_response_ms": 5.486582999992606,
+          "max_response_ms": 69.22754200002146,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.39059534722764544,
+          "p95_response_ms": 5.5517910000020265,
+          "max_response_ms": 69.22754200000014,
+          "backlog_after_sample_ms": 54.72133300000337
+        }
+      ]
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 1000000,
+      "status": "unmeasured",
+      "baseline_mb": 71.421875,
+      "registered_rules": 251000,
+      "build_seconds": 13.53034400002798,
+      "peak_rss_mb": 1022.796875,
+      "reason": "memory_limit"
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 10000000,
+      "status": "unmeasured",
+      "reason": "smaller tier 1000000 reached memory_limit"
+    },
+    {
+      "workload": "selective",
+      "requested_rules": 100000000,
+      "status": "unmeasured",
+      "reason": "smaller tier 1000000 reached memory_limit"
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 100,
+      "status": "measured",
+      "baseline_mb": 71.5625,
+      "registered_rules": 100,
+      "build_seconds": 0.002391125017311424,
+      "peak_rss_mb": 73.015625,
+      "recording_events": 14018,
+      "measured_events": 14018,
+      "full_match": true,
+      "replay_wall_seconds": 5.1645967500517145,
+      "throughput_events_per_second": 2718.2614490602414,
+      "latency": {
+        "mean_ms": 0.36788219924382937,
+        "p50_ms": 0.356083,
+        "p95_ms": 0.454459,
+        "p99_ms": 0.535917,
+        "max_ms": 17.434375
+      },
+      "candidates_mean": 100.0,
+      "candidates_max": 100,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.0003678821992438294,
+          "p95_response_ms": 0.4544589992292458,
+          "max_response_ms": 17.434375000000557,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.0018394109962191468,
+          "p95_response_ms": 0.4544590001387405,
+          "max_response_ms": 17.434375000000113,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.03678821992438294,
+          "p95_response_ms": 0.45450000000357704,
+          "max_response_ms": 17.434375000000003,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 1000,
+      "status": "measured",
+      "baseline_mb": 71.546875,
+      "registered_rules": 1000,
+      "build_seconds": 0.04194399999687448,
+      "peak_rss_mb": 74.828125,
+      "recording_events": 14018,
+      "measured_events": 6689,
+      "full_match": false,
+      "replay_wall_seconds": 20.001867040991783,
+      "throughput_events_per_second": 334.6251652983283,
+      "latency": {
+        "mean_ms": 2.9884183967708178,
+        "p50_ms": 3.032584,
+        "p95_ms": 4.122459,
+        "p99_ms": 5.147541,
+        "max_ms": 13.701208
+      },
+      "candidates_mean": 1000.0,
+      "candidates_max": 1000,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.0029884183967708177,
+          "p95_response_ms": 4.122458999972878,
+          "max_response_ms": 13.701208000384213,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.014942091983854088,
+          "p95_response_ms": 4.122458999972878,
+          "max_response_ms": 13.701207999929466,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.2988418396770818,
+          "p95_response_ms": 4.1224590000012995,
+          "max_response_ms": 16.066499999993766,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 10000,
+      "status": "measured",
+      "baseline_mb": 71.515625,
+      "registered_rules": 10000,
+      "build_seconds": 0.2650097500300035,
+      "peak_rss_mb": 95.859375,
+      "recording_events": 14018,
+      "measured_events": 726,
+      "full_match": false,
+      "replay_wall_seconds": 20.015541917004157,
+      "throughput_events_per_second": 36.27849232666085,
+      "latency": {
+        "mean_ms": 27.564541298898074,
+        "p50_ms": 27.222042,
+        "p95_ms": 31.220458,
+        "p99_ms": 39.417584,
+        "max_ms": 63.152708000000004
+      },
+      "candidates_mean": 10000.0,
+      "candidates_max": 10000,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.027564541298898074,
+          "p95_response_ms": 31.220458000007056,
+          "max_response_ms": 63.152708000004054,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.13782270649449035,
+          "p95_response_ms": 31.220458000007056,
+          "max_response_ms": 63.1527080000005,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 2.7564541298898075,
+          "p95_response_ms": 12125.189979999997,
+          "max_response_ms": 12761.856982999994,
+          "backlog_after_sample_ms": 12751.856982999994
+        }
+      ]
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 100000,
+      "status": "measured",
+      "baseline_mb": 71.421875,
+      "registered_rules": 100000,
+      "build_seconds": 2.9384309590095654,
+      "peak_rss_mb": 327.234375,
+      "recording_events": 14018,
+      "measured_events": 63,
+      "full_match": false,
+      "replay_wall_seconds": 20.203451749985106,
+      "throughput_events_per_second": 3.118351518953376,
+      "latency": {
+        "mean_ms": 320.68225596825397,
+        "p50_ms": 317.360792,
+        "p95_ms": 361.229959,
+        "p99_ms": 375.739875,
+        "max_ms": 375.739875
+      },
+      "candidates_mean": 100000.0,
+      "candidates_max": 100000,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.32068225596825395,
+          "p95_response_ms": 361.2299589999992,
+          "max_response_ms": 375.7398750000007,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 1.6034112798412696,
+          "p95_response_ms": 7444.418084000003,
+          "max_response_ms": 7802.982126000002,
+          "backlog_after_sample_ms": 7602.982126000003
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 32.06822559682539,
+          "p95_response_ms": 18654.418084000004,
+          "max_response_ms": 19582.982126000003,
+          "backlog_after_sample_ms": 19572.982126000003
+        }
+      ]
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 1000000,
+      "status": "unmeasured",
+      "baseline_mb": 71.46875,
+      "registered_rules": 387000,
+      "build_seconds": 11.994928499974776,
+      "peak_rss_mb": 1024.265625,
+      "reason": "memory_limit"
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 10000000,
+      "status": "unmeasured",
+      "reason": "smaller tier 1000000 reached memory_limit"
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 100000000,
+      "status": "unmeasured",
+      "reason": "smaller tier 1000000 reached memory_limit"
+    }
+  ],
+  "shared_viewer_model": [
+    {
+      "viewers": 100000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": 0.11775000000000001
+    },
+    {
+      "viewers": 1000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": 0.11775000000000001
+    },
+    {
+      "viewers": 10000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": 0.11775000000000001
+    },
+    {
+      "viewers": 100000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": 0.11775000000000001
+    }
+  ]
+}

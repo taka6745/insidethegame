@@ -1,0 +1,12 @@
+{
+  "UserConfig": {
+    "Namespaces": [{
+      "Name": "sbemulatorns", "Queues": [],
+      "Topics": [
+        {"Name": "match-notifications", "Subscriptions": [{"Name": "narrative-engine"}, {"Name": "integration"}]},
+        {"Name": "narratives", "Subscriptions": [{"Name": "user-backend"}, {"Name": "integration"}]}
+      ]
+    }],
+    "Logging": {"Type": "Console"}
+  }
+}

@@ -1,6 +1,6 @@
 # Context and trigger rules
 
-Design notes transcribed from the [original board](../legacy/design/plan.excalidraw), with the agreed service interfaces. No runtime exists yet.
+Design notes transcribed from the [original board](../legacy/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
 
 ## Shared memory
 
@@ -20,28 +20,22 @@ The upstream ledger preserves goals, red cards, penalties and VAR overturns with
 | Trigger | Planned work |
 | --- | --- |
 | `MinuteClosed` | Summarise, then compress if due. |
-| `KeyEventDetected` | Debounce nearby events, then author for active buckets. |
-| Ten match minutes since the last narrative step | Author for active buckets. |
-| `PresenceChanged` | Update active audience buckets. |
+| `KeyEventDetected` | Debounce nearby events, then author for every enabled `generation_target`. |
+| Ten match minutes since the last narrative step | Author for every enabled `generation_target`. |
 | Half time | Finish compression; optionally author a half-time narrative. |
 
 No minute summaries run during half time. Match time includes period, minute and added minute. Debounce duration and exact event/message schemas remain implementation details.
 
 ## Storage and delivery
 
-Cosmos DB holds `contextBlocks` (coverage, summary, supersession and statistics timestamp), `narratives` (bucket, sequence, trigger and text) and `matches` (clock, checkpoints and active buckets).
+Cosmos DB holds `contextBlocks` (coverage, summary, supersession and statistics timestamp), `narratives` (bucket, sequence, trigger and text) and `matches` (clock and checkpoints).
 
 Persist narratives before publishing their Service Bus notification. Serve history through this service's GraphQL interface. Consumers use stable narrative IDs and sequence numbers to reconnect reliably; narrative deduplication belongs here rather than in the user backend.
 
 The three example prompt files remain unchanged. The board requests structured JSON for agent outputs, while the author prompt requests text only. Resolve that output contract, including stat-selection instructions, when implementation starts.
 
-## Open question: audience presence
+## Audience ownership
 
-**Unresolved:** should the narrative engine generate all 12 buckets independently, or use audience-presence events from the user backend to generate only active buckets?
+The backend stores audience layers, options, semantic descriptions and available combinations, and exposes a [read-only API](../user-backend/docs/audience-api.md). The narrative engine fetches the catalogue before framing. Generate only enabled `generation_targets`; the backend maintains their union from connected viewer selections. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
 
-Microservices can exchange events while remaining independently deployable. An asynchronous message still creates a contract and a dependency; it should not make match processing wait for the user backend.
-
-- **All 12 buckets:** removes the presence dependency and simplifies recovery, but spends model calls on audiences that may be absent.
-- **Optional presence events:** reduces unnecessary author calls. Define behaviour for missing, stale or delayed presence; generating all 12 is one possible fallback. Presence is a hint about demand, not a viewer prompt or a change to match facts.
-
-The current diagrams retain the presence arrow while this is open. No fallback has been selected or implemented. Viewer questions must never trigger the shared narrative workflow under either option.
+The original 12 buckets are seeds. A retained [prototype](prototypes/bucket_framing/README.md) preserves the authoring code; API consumption, batching and generation still need integration into this engine. The backend serves configuration but never invokes a narrative framing model.

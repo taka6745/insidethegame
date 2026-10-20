@@ -6,7 +6,8 @@
 | --- | --- |
 | **Needs** | Python 3.11, Docker Desktop, `sqlcmd`, Node (UDF tests); Azure CLI and Terraform for Azure work |
 | **Settings** | Ignored `etl/.env` (local SA password, generated) |
-| **Tests** | `pytest tests` (7) plus `devtools verify` end to end |
+| **Tests** | `pytest tests` (54 pass, 1 skip without PostgreSQL: 7 pipeline, 47 stand-in) plus `devtools verify` end to end |
+| **Whole product locally** | The shared Docker stack runs the [stand-in](components/demo-etl.md), not this pipeline: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
 
 ## 1. Setup
 
@@ -14,7 +15,7 @@
 
 ```sh
 cd etl
-python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows path shown
+python -m venv .venv && .venv/Scripts/pip install -r requirements-test.txt   # requirements.txt plus pytest; Windows path shown
 .venv/Scripts/python -m pytest tests
 .venv/Scripts/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
 ```
@@ -53,6 +54,7 @@ The SQL Server 2022 image failed on this machine; 2025-CU9 works. Docker Desktop
 | --- | --- |
 | `test_seeder_and_pipeline.py` | Generated match content, replay scheduling and windows, reference outputs (key events, deltas, notifications, running totals) |
 | `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules (skips without Node) |
+| `test_etl.py`, `test_brokers.py`, `test_native_events.py` | The [stand-in](components/demo-etl.md): snapshots, GraphQL, broker mode, native GRF events (Postgres tests skip without `ETL_TEST_*_DATABASE_URL`) |
 
 The SQL view and the deployed query are checked end to end by `devtools verify` and `check-notifications`, locally and in Azure.
 

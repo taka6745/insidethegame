@@ -1,0 +1,345 @@
+{
+  "$defs": {
+    "ClarificationWire": {
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 5,
+          "title": "Options",
+          "type": "array"
+        },
+        "missing_fields": {
+          "items": {
+            "enum": [
+              "player",
+              "team",
+              "metric",
+              "time_window"
+            ],
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question",
+        "options",
+        "missing_fields"
+      ],
+      "title": "ClarificationWire",
+      "type": "object"
+    },
+    "CustomDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "custom",
+          "title": "Status",
+          "type": "string"
+        },
+        "goal": {
+          "$ref": "#/$defs/GoalWire"
+        }
+      },
+      "required": [
+        "status",
+        "goal"
+      ],
+      "title": "CustomDecision",
+      "type": "object"
+    },
+    "GoalWire": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "count",
+            "sum"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "event_types": {
+          "description": "Event categories to include. Empty means all categories, including for general headed contacts.",
+          "items": {
+            "enum": [
+              "pass",
+              "shot",
+              "goal",
+              "corner",
+              "card",
+              "save",
+              "tackle",
+              "clearance",
+              "interception",
+              "foul",
+              "touch"
+            ],
+            "type": "string"
+          },
+          "title": "Event Types",
+          "type": "array"
+        },
+        "team_ids": {
+          "description": "Explicitly requested teams. Empty means all teams. Never infer a team from a named player.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Team Ids",
+          "type": "array"
+        },
+        "player_ids": {
+          "description": "Explicitly requested players from the match catalogue. Empty means all players.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Player Ids",
+          "type": "array"
+        },
+        "body_part": {
+          "anyOf": [
+            {
+              "enum": [
+                "head",
+                "left_foot",
+                "right_foot",
+                "foot",
+                "other",
+                "hand"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Body Part"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null means the whole match. Select a period only if requested: 1 first half, 2 second half. A minute bound does not imply a period.",
+          "title": "Period"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "success",
+                "failure",
+                "saved",
+                "off_target",
+                "blocked",
+                "red",
+                "yellow"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Outcome"
+        },
+        "after_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Exclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds.",
+          "title": "After Seconds"
+        },
+        "from_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Inclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds.",
+          "title": "From Seconds"
+        },
+        "before_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Exclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds.",
+          "title": "Before Seconds"
+        },
+        "through_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Inclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds.",
+          "title": "Through Seconds"
+        },
+        "sum_field": {
+          "anyOf": [
+            {
+              "const": "distance_metres",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sum Field"
+        }
+      },
+      "required": [
+        "description",
+        "operation",
+        "event_types",
+        "team_ids",
+        "player_ids",
+        "body_part",
+        "period",
+        "outcome",
+        "after_seconds",
+        "from_seconds",
+        "before_seconds",
+        "through_seconds",
+        "sum_field"
+      ],
+      "title": "GoalWire",
+      "type": "object"
+    },
+    "_ClarificationDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "clarification",
+          "title": "Status",
+          "type": "string"
+        },
+        "clarification": {
+          "$ref": "#/$defs/ClarificationWire"
+        }
+      },
+      "required": [
+        "status",
+        "clarification"
+      ],
+      "title": "_ClarificationDecision",
+      "type": "object"
+    },
+    "_ReuseDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "reuse",
+          "title": "Status",
+          "type": "string"
+        },
+        "standard_stat_id": {
+          "minLength": 1,
+          "title": "Standard Stat Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "standard_stat_id"
+      ],
+      "title": "_ReuseDecision",
+      "type": "object"
+    },
+    "_UnsupportedDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "unsupported",
+          "title": "Status",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "message"
+      ],
+      "title": "_UnsupportedDecision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "decision": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CustomDecision"
+        },
+        {
+          "$ref": "#/$defs/_ClarificationDecision"
+        },
+        {
+          "$ref": "#/$defs/_ReuseDecision"
+        },
+        {
+          "$ref": "#/$defs/_UnsupportedDecision"
+        }
+      ],
+      "title": "Decision"
+    }
+  },
+  "required": [
+    "decision"
+  ],
+  "title": "DecisionEnvelope",
+  "type": "object"
+}

@@ -1,4 +1,10 @@
-azure-eventhub>=5.11
+# Seeder and developer tools
+azure-eventhub==5.15.1
+azure-servicebus==7.15.0
 azure-identity>=1.17
-pytest>=8
-azure-servicebus>=7.12
+
+# The recorded-match stand-in (demo_etl/)
+fastapi==0.143.3
+uvicorn==0.54.0
+psycopg[binary]==3.3.6
+graphql-core==3.3.0

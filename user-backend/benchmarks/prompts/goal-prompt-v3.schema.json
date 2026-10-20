@@ -1,0 +1,249 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "custom",
+        "reuse",
+        "clarification",
+        "unsupported"
+      ],
+      "type": "string"
+    },
+    "goal": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            "operation": {
+              "enum": [
+                "count",
+                "sum"
+              ],
+              "type": "string"
+            },
+            "event_types": {
+              "description": "Event categories to include. Empty means all categories, including for general headed contacts.",
+              "items": {
+                "enum": [
+                  "pass",
+                  "shot",
+                  "goal",
+                  "corner",
+                  "card",
+                  "save",
+                  "tackle",
+                  "clearance",
+                  "interception",
+                  "foul",
+                  "touch"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "team_ids": {
+              "description": "Explicitly requested teams. Empty means all teams. Never infer a team from a named player.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "player_ids": {
+              "description": "Explicitly requested players from the match catalogue. Empty means all players.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "body_part": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "head",
+                    "left_foot",
+                    "right_foot",
+                    "foot",
+                    "other",
+                    "hand"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "maximum": 5,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Null means the whole match. Select a period only if requested: 1 first half, 2 second half. A minute bound does not imply a period."
+            },
+            "outcome": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "success",
+                    "failure",
+                    "saved",
+                    "off_target",
+                    "blocked",
+                    "red",
+                    "yellow"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "after_seconds": {
+              "anyOf": [
+                {
+                  "maximum": 12000,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds."
+            },
+            "from_seconds": {
+              "anyOf": [
+                {
+                  "maximum": 12000,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Inclusive lower bound in whole-match seconds; null means none. Convert bare match minutes to seconds."
+            },
+            "before_seconds": {
+              "anyOf": [
+                {
+                  "maximum": 12000,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Exclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds."
+            },
+            "through_seconds": {
+              "anyOf": [
+                {
+                  "maximum": 12000,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Inclusive upper bound in whole-match seconds; null means none. Convert bare match minutes to seconds."
+            },
+            "sum_field": {
+              "anyOf": [
+                {
+                  "const": "distance_metres",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "description"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "clarification": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "question": {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            "options": {
+              "items": {
+                "maxLength": 200,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 5,
+              "type": "array"
+            },
+            "missing_fields": {
+              "items": {
+                "enum": [
+                  "player",
+                  "team",
+                  "metric",
+                  "time_window"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "standard_stat_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "message": {
+      "maxLength": 1000,
+      "type": "string"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "type": "object"
+}

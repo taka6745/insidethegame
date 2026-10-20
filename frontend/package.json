@@ -1,0 +1,6 @@
+{
+  "name": "inside-the-game-filter-lab",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/*.test.js" }
+}

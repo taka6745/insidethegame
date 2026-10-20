@@ -1,0 +1,8 @@
+*
+!requirements*.txt
+!demo_etl/**
+!tests/test_etl.py
+!tests/test_brokers.py
+!tests/test_native_events.py
+**/__pycache__
+**/*.pyc

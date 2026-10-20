@@ -18,7 +18,7 @@
 
 [![Five equal judging weights](judging.svg)](brief.md)
 
-[Criteria, submission checklist and deadlines](brief.md)
+[Criteria, submission checklist and deadlines](brief.md) · [Microsoft livestream, 15 Oct: hints and winner profile](livestream-2026-10-15/README.md)
 
 ## Example ideas
 
