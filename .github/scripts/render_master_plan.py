@@ -186,8 +186,8 @@ zone('narrative',1120,1370,1320,1070,'Narrative engine','Python · Azure Contain
 zone('frontend',2660,250,700,2190,'Frontend / match experience','Static assets + CDN · one live connection per viewer',GREEN,'#eef9f0')
 
 node('roster',130,370,450,155,'Match presentation','22 named players · numbered kits\nWider camera · no minimap','kit',ROSE)
-node('video',650,370,180,155,'Video render','Full frame','screen',ROSE)
-node('sim',130,590,200,150,'GRF engine','6-minute halves','python',ROSE)
+node('video',650,370,180,155,'Video + HLS','2 s segments','screen',ROSE)
+node('sim',130,590,200,150,'GRF engine','45-minute halves','python',ROSE)
 node('adapter',390,590,200,150,'Event adapter','Opta-style JSON','code',ROSE)
 node('record',650,590,180,150,'Recording','Events + clock','record',ROSE)
 node('hub',330,835,300,160,'Azure Event Hubs','Shared stream · independent consumers','events',INK)
@@ -198,7 +198,7 @@ line([(230,590),(230,557),(740,557),(740,525)])
 line([(740,740),(740,805),(480,805),(480,835)],'Replay',(610,805),ROSE,True)
 line([(400,995),(400,1170)],color=INK,dash=True)
 line([(630,910),(1040,910),(1040,1065),(1190,1065)],'Live events',(910,910),INK,True)
-line([(830,447),(940,447),(940,205),(3430,205),(3430,1005),(3290,1005)],'Aligned footage · CDN',(2780,205),ROSE)
+line([(830,447),(940,447),(940,205),(3430,205),(3430,1005),(3290,1005)],'HLS segments · CDN',(2780,205),ROSE)
 
 node('asa',130,1170,300,155,'Stream Analytics','Event time + windows','stream',ORANGE)
 node('key',650,1170,180,155,'Key events','Goals · reds · penalties · VAR','flag',ORANGE)
@@ -229,7 +229,7 @@ node('models',1530,360,240,150,'Foundry models','Question + goal agents','foundr
 node('profiles',1890,360,220,150,'Profiles + sessions','One active tab · takeover','users')
 node('pg',2180,360,220,150,'PostgreSQL','Accounts · Match App','postgres')
 node('data-client',1190,540,220,150,'Data clients','ETL / narrative APIs','client')
-node('question',1530,540,240,150,'Question agent','Reuse stats · clarify','agent')
+node('question',1530,540,240,150,'Question + replay','Stats · clip playlists','agent')
 node('chat',1890,540,240,150,'Chat + action API','Answers · Track · audience','chat')
 node('compiler',1190,770,220,150,'Rule compiler','Validated structured DSL','code')
 node('coder',1530,770,240,150,'Goal / coding agent','Test · repair ≤ 3','agent')
@@ -252,7 +252,7 @@ line([(1470,1075),(1890,1075)],'Changed values',(1680,1052))
 line([(1410,665),(1470,665),(1470,965),(2250,965),(2250,1000)],'Snapshot: stats + backlog',(1635,945))
 line([(2000,965),(2000,1000)])  # stats branch to the cards
 # Filled dots mark deliberate branches.
-for bx,by,bc in [(2155,1020,MUTED),(1700,1910,MUTED),(2000,965,MUTED),(995,1795,ORANGE),(2610,1280,BLUE),(2610,1380,BLUE)]:
+for bx,by,bc in [(2155,1020,MUTED),(1700,1910,MUTED),(2000,965,MUTED),(995,1795,ORANGE),(2610,1280,BLUE),(2610,1380,BLUE),(3430,1005,ROSE)]:
     element('ellipse',bx-6,by-6,12,12,backgroundColor=bc,strokeColor=bc)
 line([(1390,690),(1390,735),(1910,735),(1910,770)],'Read-only',(1560,735))
 line([(2130,670),(2155,670),(2155,1050),(2110,1050)],'Pins · bucket',(2155,715))
@@ -268,10 +268,10 @@ line([(2400,1075),(2610,1075),(2610,1380),(2730,1380)],'Live UI',(2610,1180),BLU
 line([(2610,1380),(2610,1710),(2730,1710)],color=BLUE)
 line([(2610,1280),(2900,1280),(2900,1235)],'Clock',(2780,1280),BLUE)
 text('PHASE 2',1190,1170,18,GREY)
-for i,title in enumerate(['Semantic follows','Clip resolver','Playback-aware state','Question web search']):
-    x = 1190 + i * 307.5
-    box(x,1200,287.5,50,'#f7f8fa',GREY,True)
-    text(title,x+10,1214,20,GREY,267.5,'center')
+for i,title in enumerate(['Semantic follows','Question web search']):
+    x = 1190 + i * 615
+    box(x,1200,595,50,'#f7f8fa',GREY,True)
+    text(title,x+10,1214,20,GREY,575,'center')
 
 node('listener',1190,1490,220,160,'Trigger listener','Service Bus · minute · key event','bolt',PURPLE)
 node('orchestrator',1530,1490,240,160,'Match orchestrator','Clock · debounce · half-time','clock',PURPLE)
@@ -331,7 +331,7 @@ box(2770,1169,480,6,'#bdd9c5','#bdd9c5');box(2770,1169,300,6,GREEN,GREEN)
 element('ellipse',3062,1164,16,16,backgroundColor=GREEN,strokeColor=GREEN)
 for px,py,col in [(2890,1095,BLUE),(2950,1015,BLUE),(2990,1105,BLUE),(3060,1030,'#b34353'),(3110,1090,'#b34353'),(3150,1005,'#b34353')]:
     element('ellipse',px,py,13,13,backgroundColor=col,strokeColor=col)
-text('Forward-only · shared match clock',2760,1197,19,GREEN)
+text('HLS live · data held to the picture',2760,1197,19,GREEN)
 box(2730,1320,560,220,'white','#cbd9e7');text('Five live stat cards',2750,1340,25,GREEN)
 for i,label in enumerate(['Goals','Attempts','Passes','Possession','Your pin']):
     box(2750+i*106,1400,96,100,'#f0f7f2','#bdd9c5')
@@ -342,10 +342,11 @@ text('Insights',2750,1645,25,GREEN);text('Already framed for your bucket',2750,1
 for y,width in [(1755,440),(1795,475),(1835,320)]:
     box(2760,y,width,12,'#d9eadd','#d9eadd')
 text('History on join · no client-side stat calculation',2750,1875,19,MUTED)
-box(2730,2010,560,310,'#f7f8fa',GREY,True)
-text('PHASE 2',2755,2035,18,GREY)
-for x,title,detail in [(2755,'Clips + highlights','Timestamp playlist'),(3020,'Playback controls','Rewind-aware context')]:
-    node('p2-'+str(x),x,2090,240,170,title,detail,'screen',gray=True)
+box(2730,2010,560,310,'white','#cbd9e7')
+text('Replay',2750,2030,25,GREEN)
+for x,title,detail in [(2755,'Clip playlist','In chat · show more'),(3020,'Expanded replay','Live in corner PiP')]:
+    node('replay-'+str(x),x,2090,240,170,title,detail,'screen',GREEN)
+line([(3430,1005),(3430,2165),(3290,2165)],color=ROSE)  # VOD replays reuse live segments
 text('No per-viewer narrative generation',2730,2360,21,GREEN)
 
 # Legend with drawn samples.

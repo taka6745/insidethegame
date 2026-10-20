@@ -2,6 +2,7 @@
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 from backend.models.questions import QuestionDraft
+from backend.models.clarifications import FollowUpQuestion
 
 class Wire(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -27,7 +28,7 @@ class FootballAnswer(Wire):
     route: Literal['football']
     text: str = Field(min_length=1,max_length=1800)
 
-class AskClarification(Wire):
+class AskClarification(FollowUpQuestion):
     route: Literal['clarification']
     topic: Literal['statistic','match','football']
     question: str = Field(min_length=1,max_length=500)
@@ -55,5 +56,6 @@ class QuestionDecision(Wire):
         if isinstance(decision,FootballAnswer):
             return QuestionDraft(answer_kind='football',status='answer',text=decision.text)
         if isinstance(decision,AskClarification):
-            return QuestionDraft(answer_kind=decision.topic,status='clarification',text=decision.question)
+            return QuestionDraft(answer_kind=decision.topic,status='clarification',text=decision.question,
+                clarification=decision.model_dump(include={'question', 'options', 'allow_free_text'}))
         return QuestionDraft(answer_kind='match',status='unsupported',text='Sorry, I cannot answer that.')

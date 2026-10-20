@@ -465,6 +465,9 @@ footer {
   font-size: 9px;
   color: #a58faf;
 }
+footer a {
+  white-space: nowrap;
+}
 .companion-heading img, .offer img {
   filter: invert(92%) sepia(30%) saturate(250%) hue-rotate(104deg) brightness(106%);
 }
@@ -499,6 +502,38 @@ footer {
   }
   .stat-tag {
     display: none;
+  }
+}
+/* Tablet portrait and below: stack so the stage keeps a 16:9 picture. */
+@media (max-width: 900px) {
+  .match-layout {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 17px;
+  }
+  .match-column {
+    width: 100%;
+    display: block;
+  }
+  .match-stage {
+    aspect-ratio: 16 / 9;
+    min-height: 190px;
+  }
+  .companion {
+    width: 100%;
+    height: clamp(510px, 80dvh, 680px);
+  }
+  .demo-controls {
+    min-height: 43px;
+  }
+  select, .text-button, .offer button {
+    min-height: 36px;
+  }
+  footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
   }
 }
 @media (max-width: 760px) {
@@ -594,20 +629,6 @@ footer {
     max-width: 180px;
     font-size: 10px;
   }
-  .match-layout {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    gap: 17px;
-  }
-  .match-column {
-    width: 100%;
-    display: block;
-  }
-  .match-stage {
-    aspect-ratio: 16 / 9;
-    min-height: 190px;
-  }
   .video-empty p {
     font-size: 15px;
   }
@@ -617,9 +638,6 @@ footer {
     margin-bottom: 8px;
   }
 
-  .demo-controls {
-    min-height: 43px;
-  }
   .stats-grid {
     display: flex;
     overflow-x: auto;
@@ -638,10 +656,6 @@ footer {
   .stat-value {
     font-size: 26px;
   }
-  .companion {
-    width: 100%;
-    height: 510px;
-  }
   footer {
     padding: 14px 4%;
     font-size: 8px;
@@ -656,5 +670,274 @@ footer {
   }
   .league-nav a:hover {
     color: var(--mint);
+  }
+}
+
+/* Replay on the main stage; live continues as a muted corner picture. */
+#replay-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+.match-stage[data-mode="replay"] #match-video {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: clamp(120px, 26%, 300px);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  z-index: 2;
+  border: 2px solid var(--mint);
+  border-radius: 6px;
+  background: #100b14;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 50%);
+}
+.match-stage[data-mode="replay"] .video-empty {
+  display: none;
+}
+.pip-return {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: clamp(120px, 26%, 300px);
+  aspect-ratio: 16 / 9;
+  z-index: 3;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.pip-return span {
+  background: var(--mint);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.pip-return:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.replay-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.replay-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--purple);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.replay-close {
+  position: absolute;
+  left: 12px;
+  bottom: 18px;
+  pointer-events: auto;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: rgb(24 0 31 / 85%);
+  border: 1px solid #785482;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.replay-close:hover, .replay-close:focus-visible {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+#replay-video {
+  cursor: pointer;
+}
+.replay-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  background: rgb(255 255 255 / 22%);
+}
+.replay-progress-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--mint);
+  transition: width 0.25s linear;
+}
+.replay-marks {
+  position: absolute;
+  inset: 0;
+}
+.replay-join {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: rgb(0 0 0 / 55%);
+}
+.replay-mark {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 3px;
+  margin-left: -1px;
+  background: #ff3b4e;
+  border-radius: 1px;
+}
+/* End of the reel: hold the last frame, greyed, and offer Replay or Back to live. */
+.match-stage[data-ended="true"] #replay-video {
+  filter: grayscale(1) brightness(0.55);
+  transition: filter 0.4s ease;
+}
+.replay-end {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.replay-end[hidden] {
+  display: none;
+}
+.replay-end button {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #fff;
+  background: rgb(24 0 31 / 70%);
+  color: #fff;
+}
+.replay-end #replay-live {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+.replay-end button:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+.replay-card {
+  max-width: 520px;
+  margin-top: 10px;
+  border: 1px solid #785482;
+  background: #230530;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 12px;
+}
+.replay-card:focus {
+  outline: none;
+}
+.replay-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #100b14;
+  cursor: pointer;
+}
+.replay-frame:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.replay-frame:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+.replay-still {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.replay-frame-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--bg);
+  font-size: 18px;
+}
+.replay-frame:hover .replay-frame-icon {
+  transform: scale(1.08);
+}
+.replay-frame-meta {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgb(24 0 31 / 85%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+.replay-page, .replay-note, .replay-unavailable, .replay-status {
+  color: var(--muted);
+}
+.replay-note, .replay-unavailable, .replay-status {
+  margin: 8px 0 0;
+}
+.replay-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+}
+.replay-actions .text-button {
+  font-size: 12px;
+  color: #fff;
+}
+@media (max-width: 760px) {
+  .match-stage[data-mode="replay"] #match-video, .pip-return {
+    width: 30%;
+    right: 8px;
+    bottom: 10px;
+  }
+  .replay-badge {
+    top: 8px;
+    left: 8px;
+  }
+  .replay-close {
+    left: 8px;
+    bottom: 14px;
+  }
+  .replay-end {
+    gap: 8px;
+    padding-bottom: 20%;
+  }
+  .replay-end button {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
   }
 }

@@ -3,7 +3,8 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .rules import Rule
 
-MAX_RECORDING_BYTES = 2 * 1024 * 1024
+MAX_RECORDING_BYTES = 16 * 1024 * 1024
+MAX_RECORDING_EVENTS = 100_000
 
 
 class Team(BaseModel):
@@ -33,7 +34,7 @@ class Recording(BaseModel):
     match_id: str = Field(min_length=1, max_length=120)
     teams: list[Team] = Field(min_length=2, max_length=2)
     players: list[Player] = Field(max_length=1000)
-    events: list[dict] = Field(min_length=1, max_length=20000)
+    events: list[dict] = Field(min_length=1, max_length=MAX_RECORDING_EVENTS)
     presets: list[Preset] = Field(default_factory=list, max_length=200)
     playback: Playback | None = None
 

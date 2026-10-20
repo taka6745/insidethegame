@@ -2,28 +2,62 @@
 from backend.models.questions import QuestionDraft
 from backend.models.stat_offers import stat_answer
 from uuid import uuid4
+import re
 
 
-def unavailable():
-    return QuestionDraft(answer_kind='statistic',status='unsupported',
-                         text='Sorry, I cannot answer that from the information available.')
+UNAVAILABLE = 'Sorry, I cannot answer that from the information available.'
+
+
+def unavailable(reason=None):
+    """Name what is missing when known. Model-written reasons must stay short and number-free."""
+    if not isinstance(reason, str) or not 0 < len(reason.strip()) <= 240 or re.search(r'[\d\n]', reason):
+        return QuestionDraft(answer_kind='statistic',status='unsupported',text=UNAVAILABLE)
+    return QuestionDraft(answer_kind='statistic',status='unsupported',text='Sorry, I cannot answer that. '+reason.strip())
 
 
 def clear_offers(tools):
     tools.offers, tools.goal = [], None
 
 
+def split_rows(row, stats):
+    """A both-teams share equal to the sum of its team rows (possession) is a split: answer per team."""
+    kind = row['id'].split(':', 1)[-1]
+    teams = [s for s in stats if s.get('team_id') and s['id'] == f"{s['team_id']}:{kind}"
+             and s.get('available') and s.get('complete') and s.get('value') is not None]
+    if (row.get('team_id') is None and row.get('unit') == '%' and row.get('value') is not None
+            and len(teams) > 1 and abs(sum(s['value'] for s in teams) - row['value']) < 0.5):
+        return teams
+    return [row]
+
+
+def model_catalogue(stats):
+    """Show models a both-teams share as its per-team split; a bare 100% invites long deliberation."""
+    rows = []
+    for row in stats:
+        teams = split_rows(row, stats)
+        if teams[0] is not row:
+            name = row['label'].removeprefix('Both teams ')
+            row = {**row, 'label': name[:1].upper() + name[1:] + ' split by team',
+                   'value': {team['team_id']: team['value'] for team in teams},
+                   'definition': row.get('definition', '') + ' Answered with each team share.'}
+        rows.append(row)
+    return rows
+
+
 def standard_answer(draft, row, tools):
     clear_offers(tools)
     if not row or not row.get('available') or not row.get('complete'):
-        return unavailable()
-    tools.offers = [{'id': str(uuid4()), 'kind': 'standard', 'standard_stat_id': row['id'],
-                     'label': row['label'], 'value': row['value'],
-                     'unit': row.get('unit', ''),
-                     'snapshot_id': tools.payload.snapshot.id, 'run_id': tools.payload.snapshot.run_id}]
+        return unavailable(row and f"{row['label']} is not available in this recording.")
+    rows = split_rows(row, tools.stats)
+    tools.offers = [{'id': str(uuid4()), 'kind': 'standard', 'standard_stat_id': item['id'],
+                     'label': item['label'], 'value': item['value'],
+                     'unit': item.get('unit', ''),
+                     'snapshot_id': tools.payload.snapshot.id, 'run_id': tools.payload.snapshot.run_id}
+                    for item in rows]
     return QuestionDraft(answer_kind='statistic',status='answer',standard_stat_id=row['id'],
                          statistic_request=draft.statistic_request,
-                         text=stat_answer(tools.offers[0]),evidence_ids=['stat:'+row['id']])
+                         text=' '.join(stat_answer(offer) for offer in tools.offers),
+                         evidence_ids=['stat:'+item['id'] for item in rows])
 
 
 def selected_answer(draft, identifier, tools):
@@ -40,7 +74,7 @@ def selected_answer(draft, identifier, tools):
 async def resolve_answer(draft, tools):
     if draft.status != 'answer' or draft.answer_kind != 'statistic':
         clear_offers(tools)
-        return draft
+        return unavailable() if draft.status == 'unsupported' and draft.answer_kind == 'statistic' else draft
     if draft.selected_offer_id:
         # Prepared A is valid even if a later exploration of B failed or clarified.
         return selected_answer(draft,draft.selected_offer_id,tools)
@@ -62,5 +96,8 @@ async def resolve_answer(draft, tools):
         return standard_answer(draft,result.get('stat'),tools)
     clear_offers(tools)
     if result['status']=='clarification':
-        return QuestionDraft(answer_kind='statistic',status='clarification',text=result['message'])
-    return unavailable()
+        clarification = result.get('clarification')
+        if clarification:
+            clarification = {key: clarification[key] for key in ('question', 'options', 'allow_free_text') if key in clarification}
+        return QuestionDraft(answer_kind='statistic',status='clarification',text=result['message'],clarification=clarification)
+    return unavailable(result.get('message'))

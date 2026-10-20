@@ -1,12 +1,14 @@
 # Filter checks, outside pytest
 
-The separate [question conversation check](question_cases.json) has ten fixed prompts: standard/custom stats, a follow-up, clarification, a time boundary, recap drill-down, general football and unavailable data. Finish a **fresh default recording** in the lab, then run:
+The separate [question conversation check](question_cases.json) has twelve fixed prompts on the shipped Chelsea–United recording: standard stats, possession split, custom/follow-up/percentage stats, clarification and its answer, match description, general football and two unavailable-data refusals that must name what is missing. `tests/test_question_cases.py` recomputes every expected value from the recording. Finish a **fresh full replay** in the lab, then run:
 
 ```sh
 PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --output .local/benchmarks/questions-unique-run-name.json
 ```
 
 This explicitly calls the configured local model through the running API and takes over the Chelsea demo profile's chat session. Use a different profile in the browser. It never starts replay or clicks Track. Automatic checks cover status/source/known values; manually review every explanation and generated rule. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
+
+20 October 2026, in-process against the local model (no API session): 12/12 on one run; 10/12 later on the local model, which asked a clarification for the follow-up and the clarification answer (the same with or without that day's router wording change). Under concurrent load, the 60 s plan timeout dominated failures.
 
 Run it from the repository root with the backend Python environment activated (dependencies from `user-backend/requirements.txt`), and keep replay/Track unchanged during the check. Failed HTTP/model attempts remain in the output file. It also verifies that answering did not add live calculations.
 
@@ -208,3 +210,5 @@ fictional player/team names and IDs. The fixture and gold rules are consistently
 remapped before evaluation; event-revision weights stay unchanged. Four incomplete
 requests must clarify; four unavailable-data requests must be unsupported. This is
 a transfer check over a reused match and known capabilities, not a new-domain test.
+
+Composite graph CPU check: `python benchmarks/composite_perf.py --formulas 10000 --events 100` (from `user-backend/`). Compares selective team scopes with a deliberately shared denominator that invalidates every formula. Reports measured registration, median/p95 event time and dependency evaluations; no viewer/socket capacity claim. Separate from pytest and LLM correctness checks.

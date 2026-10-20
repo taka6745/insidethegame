@@ -4,7 +4,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.telemetry import TelemetryAdapter
-from grf_demo.package import presentation_time
+from grf_demo.package import broadcast_clock
 
 
 def frame(ms=0, score=None, owner=None, phase=1):
@@ -81,19 +81,18 @@ class TelemetryTests(unittest.TestCase):
         )
         self.assertFalse(self.adapter.events)
 
-    def test_period_clock_and_video_mapping(self):
-        row = touch([0, 1], 8, 360_000)
+    def test_broadcast_clock_runs_through_stoppage_and_restarts_at_45(self):
+        self.adapter.consume({**frame(2_820_000), "telemetry_version": 2}, 2820)  # 47:00 stoppage.
+        self.adapter.consume({**frame(2_900_000, phase=2), "telemetry_version": 2}, 2900)
+        row = touch([0, 1], 2, 2_960_000)
         row["phase"] = 2
-        self.adapter.consume(row, 400)
-        shot = self.adapter.events[-1]
-        self.assertEqual(
-            (shot["periodId"], shot["timeMin"], shot["videoSeconds"]), (2, 45, 400)
-        )
-        self.assertEqual(presentation_time(400, 400, 800), 360)
-        self.assertEqual(presentation_time(800, 400, 800), 720)
-        self.assertEqual(presentation_time(200, 400, 800), 180)
-        with self.assertRaises(ValueError):
-            presentation_time(1, 0, 800)
+        self.adapter.consume(row, 2960)
+        events = {e["typeName"]: e for e in self.adapter.events}
+        self.assertEqual((events["period_end"]["periodId"], events["period_end"]["timeMin"]), (1, 47))
+        self.assertEqual((events["period_start"]["periodId"], events["period_start"]["timeMin"]), (2, 45))
+        self.assertEqual((events["touch"]["timeMin"], events["touch"]["videoSeconds"]), (46, 2960))
+        self.assertEqual(broadcast_clock(2820, [0, 2900]), 2820)
+        self.assertEqual(broadcast_clock(2960, [0, 2900]), 2760)
 
     def test_continuous_physics_contacts_form_one_pass(self):
         self.adapter.consume(touch([0, 1], 4, 100), 0.1)
@@ -119,7 +118,7 @@ class TelemetryTests(unittest.TestCase):
         canonical = self.adapter.canonical_events()
         self.assertEqual([e["typeName"] for e in canonical], ["touch", "goal"])
         self.assertEqual([e["sequence"] for e in canonical], [1, 2])
-        self.assertTrue(any(e["typeName"] == "shot" for e in self.adapter.events))
+        self.assertIsNone(self.adapter.pending_shot)
 
     def test_deflected_scoring_shot_counts_once_without_assigning_scorer(self):
         self.adapter.consume(touch([1, 12], 8, 100), 0.1)
@@ -134,10 +133,8 @@ class TelemetryTests(unittest.TestCase):
         self.assertEqual([e["typeName"] for e in canonical], ["touch", "touch", "goal"])
         self.assertIsNone(canonical[-1]["playerId"])
         self.assertEqual(canonical[-1]["teamId"], "manutd")
-        self.assertIn(
-            {"type": "sourceShotEventId", "value": "grf-che-utd-2"},
-            canonical[-1]["qualifiers"],
-        )
+        self.assertIn({"type": "situation", "value": "regular_play"}, canonical[-1]["qualifiers"])
+        self.assertEqual([e for e in canonical if e["typeName"] in ("save", "shot")], [])
 
     def test_intentional_control_ends_shot_association(self):
         self.adapter.consume(touch([1, 12], 8, 100), 0.1)
@@ -145,16 +142,9 @@ class TelemetryTests(unittest.TestCase):
         goal = frame(230, score=[0, 1])
         goal["last_touch"] = [0, 1]
         self.adapter.consume(goal, 0.23)
-        self.assertEqual(
-            len(
-                [e for e in self.adapter.canonical_events() if e["typeName"] == "shot"]
-            ),
-            1,
-        )
-        self.assertNotIn(
-            "sourceShotEventId",
-            [q["type"] for q in self.adapter.events[-1]["qualifiers"]],
-        )
+        shots = [e for e in self.adapter.canonical_events() if e["typeName"] == "shot"]
+        self.assertEqual([e["outcome"] for e in shots], ["blocked"])
+        self.assertNotIn("situation", [q["type"] for q in self.adapter.events[-1]["qualifiers"]])
 
     def test_stoppage_ends_shot_association(self):
         self.adapter.consume(touch([1, 12], 8, 100), 0.1)

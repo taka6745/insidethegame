@@ -12,12 +12,15 @@ from backend.domain import RuleError
 from backend.agents.conversation import assistant_message
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
-from backend.services.rule_availability import supported_rule, observed_unattributed_events, incomplete_player_rule
+from backend.services.rule_availability import unsupported_reason, observed_unattributed_events, incomplete_player_rule
 from backend.services.plan_conversations import PlanConversations
 
 
 class FilterLabService:
-    def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None, recording_editable=True):
+    def __init__(self, source, repository, planner, *, local_llm=False, initial_recording=None, recording_editable=True, max_calculations=10_000):
+        if isinstance(max_calculations, bool) or not isinstance(max_calculations, int) or not 1 <= max_calculations <= 1_000_000:
+            raise ValueError("FILTER_MAX_CALCULATIONS must be an integer between 1 and 1000000")
+        self.max_calculations = max_calculations
         self.source, self.repository, self.planner = source, repository, planner
         self.broker = None
         self.default_source = source
@@ -29,6 +32,8 @@ class FilterLabService:
         self._plan_lock = asyncio.Lock()
         self._task = None
         self._replay_origin = None
+        self.hls = None  # Optional HlsPublisher on the same replay clock.
+        self._hls_task = None
         self.engine = FilterEngine()
         self.position, self.status, self.error = 0, "ready", None
         self.labels = {}
@@ -48,6 +53,9 @@ class FilterLabService:
         if self.status == "running":
             self.status = "ready"
             await self._save_progress()
+        if self.hls:
+            await asyncio.to_thread(self.hls.resume)
+            await asyncio.to_thread(self.hls.publish, self._playback_seconds(), finished=self.status == "finished")
 
     async def _reload(self):
         run, calculations = await asyncio.to_thread(self.repository.load)
@@ -96,6 +104,7 @@ class FilterLabService:
         if task:
             with suppress(asyncio.CancelledError):
                 await task
+        await self._stop_publishing()
 
     def scenario(self):
         return {**self.source.describe(), "recording_editable": self.recording_editable}
@@ -142,7 +151,8 @@ class FilterLabService:
         complete = not incomplete_player_rule(rule, unattributed)
         return {"id": result.calculation_id, "label": self.labels[result.calculation_id],
                 "value": result.value if complete else None, "version": result.version,
-                "available": complete, "complete": complete,
+                "available": complete and result.value is not None, "complete": complete,
+                "unit": rule.unit,
                 "rule": rule.model_dump(mode="json")}
 
     async def state(self):
@@ -157,6 +167,8 @@ class FilterLabService:
                     "calculations": [self._calculation(r, unattributed) for r in self.engine.calculations],
                     "changed_ids": self.last_changed,
                     "metrics": {"total_rules": self.engine.count,
+                                "shared_inputs": self.engine.leaf_count,
+                                "formula_evaluation_count": self.engine.last_formula_evaluation_count,
                                 "candidate_count": self.engine.last_candidate_count,
                                 "index_probe_count": self.engine.last_index_probe_count,
                                 "family_evaluation_count": self.engine.last_family_evaluation_count,
@@ -172,8 +184,10 @@ class FilterLabService:
                 raise RuleError("wrong_match", "Choose the current lab match", 422)
             if self.status == "error":
                 raise RuleError("reset_required", "Start a new run first")
-            if not supported_rule(rule, self.source.spec.get('capabilities')):
-                raise RuleError('unavailable_measurement', 'This recording does not capture that measurement.', 422)
+            if rule.calculation_id not in self.labels and self.engine.count >= self.max_calculations:
+                raise RuleError('calculation_capacity', 'This match has reached its custom-stat limit. Existing tracked stats still work.', 409)
+            if reason := unsupported_reason(rule, self.source.data_reference().get('capabilities')):
+                raise RuleError('unavailable_measurement', reason, 422)
             unattributed = observed_unattributed_events(self.source.history(self.position))
             if incomplete_player_rule(rule, unattributed):
                 raise RuleError('unavailable_measurement', 'Some matching events have no player attribution, so this total is unavailable.', 422)
@@ -216,7 +230,7 @@ class FilterLabService:
                     response["conversation_id"] = self.conversations.save(conversation_id, run_id, history, prompt, reply)
             return response
 
-    async def start(self, interval_ms):
+    async def start(self, interval_ms, from_seconds=0):
         async with self._lock:
             if self.status == "running":
                 raise RuleError("already_running", "Replay is already running")
@@ -230,10 +244,34 @@ class FilterLabService:
             except Exception:
                 self.status, self.error = previous
                 raise
-            self._replay_origin = asyncio.get_running_loop().time() - self.source.playback_seconds(self.position)
+            ahead = from_seconds if self.position == 0 and self.source.timed else 0
+            self._replay_origin = asyncio.get_running_loop().time() - max(self.source.playback_seconds(self.position), ahead)
             self._task = asyncio.create_task(self._run(interval_ms / 1000))
+            if self.hls and (self._hls_task is None or self._hls_task.done()):
+                self._hls_task = asyncio.create_task(self._publish_live())
             self.changed.set()
         return await self.state()
+
+    async def _publish_live(self):
+        """Segments follow the replay clock; events follow the same origin in _run."""
+        try:
+            while True:
+                finished = self.status == "finished"
+                await asyncio.to_thread(self.hls.publish, self._playback_seconds(), finished=finished)
+                if finished or self.status != "running":
+                    return
+                await asyncio.sleep(0.5)
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            logging.getLogger(__name__).exception("Live segment publishing failed")
+
+    async def _stop_publishing(self):
+        task, self._hls_task = self._hls_task, None
+        if task:
+            task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
 
     def _playback_seconds(self):
         if self.status == 'finished':
@@ -322,6 +360,9 @@ class FilterLabService:
                 await self._reload()
                 self._replay_origin = None
                 self.conversations.clear()
+                await self._stop_publishing()
+                if self.hls:
+                    await asyncio.to_thread(self.hls.reset)
                 self.error, self.last_changed = None, []
             except Exception:
                 self.status = "error"

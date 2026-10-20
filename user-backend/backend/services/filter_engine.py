@@ -19,13 +19,17 @@ from backend.services.time_index import TimeIndex
 class CalculationResult(BaseModel):
     model_config = ConfigDict(frozen=True)
     calculation_id: str
-    value: float
+    value: float | None
     version: int
 
 
 class FilterEngine:
     def __init__(self):
         self._rules: dict[str, Rule] = {}
+        self._visible: set[str] = set()
+        self._dependents: dict[str, set[str]] = defaultdict(set)
+        self._formula_inputs: dict[str, tuple[str, str]] = {}
+        self.last_formula_evaluation_count = 0
         self._results: dict[str, CalculationResult] = {}
         self._totals: dict[str, Decimal] = {}
         self._events: dict[tuple[str, str], Event] = {}
@@ -38,15 +42,15 @@ class FilterEngine:
 
     @property
     def rules(self) -> dict[str, Rule]:
-        return dict(self._rules)
+        return {key: value for key, value in self._rules.items() if key in self._visible}
 
     @property
     def calculations(self) -> list[CalculationResult]:
-        return list(self._results.values())
+        return [value for key, value in self._results.items() if key in self._visible]
 
     @property
     def count(self) -> int:
-        return len(self._rules)
+        return len(self._visible)
 
     def rule(self, calculation_id: str) -> Rule:
         return self._rules[calculation_id]
@@ -80,13 +84,27 @@ class FilterEngine:
                 combinations *= len(values)
         return [(tuple(fields), values) for values in product(*options)]
 
-    def register(self, rule: Rule, history=()) -> CalculationResult:
+    def register(self, rule: Rule, history=(), *, _visible=True) -> CalculationResult:
         # History revisions also update other registered calculations. Callers must
         # publish changed results if importing unseen revisions into an active engine.
         for event in history:
             self.ingest(event)
         identifier = rule.calculation_id
+        promoted = _visible and identifier not in self._visible
+        if _visible:
+            self._visible.add(identifier)
         if identifier in self._rules:
+            if promoted:
+                self._results[identifier] = self._results[identifier].model_copy(update={"version": 1})
+            return self.get(identifier)
+        if rule.composite:
+            for source in rule.inputs:
+                self.register(Rule.model_validate(source.model_dump()), _visible=False)
+                self._dependents[source.calculation_id].add(identifier)
+            self._rules[identifier] = rule
+            self._formula_inputs[identifier] = tuple(item.calculation_id for item in rule.inputs)
+            self._results[identifier] = CalculationResult(calculation_id=identifier,
+                value=self._formula_value(identifier), version=1)
             return self.get(identifier)
         # Decimal avoids ordinary binary-float accumulation drift, but its
         # precision is bounded; see docs/filter-engine-design.md for the contract.
@@ -104,6 +122,32 @@ class FilterEngine:
                 self._index[rule.match_id][fields, values].add(family_id)
         self._families[family_id][1].add(identifier, tuple(p for p in rule.predicates if p.field == "match_time_seconds"))
         return self.get(identifier)
+
+    @property
+    def leaf_count(self):
+        return len(self._totals)
+
+    def _formula_value(self, identifier):
+        rule = self._rules[identifier]
+        left, right = (self._totals[source] for source in self._formula_inputs[identifier])
+        if rule.operation == 'difference':
+            return float(left - right)
+        if not right:
+            return None
+        return float(left / right * (100 if rule.operation == 'percentage' else 1))
+
+    def _refresh_formulas(self, changed):
+        affected = set()
+        for result in changed:
+            affected.update(self._dependents.get(result.calculation_id, ()))
+        self.last_formula_evaluation_count = len(affected)
+        for identifier in affected:
+            value = self._formula_value(identifier)
+            current = self._results[identifier]
+            if current.value != value:
+                result = CalculationResult(calculation_id=identifier, value=value, version=current.version + 1)
+                self._results[identifier] = result
+                changed.append(result)
 
     def _candidates(self, event):
         # Masks are bounded by 2**len(INDEX_FIELDS), not derived by scanning rules.
@@ -144,12 +188,13 @@ class FilterEngine:
             changed.append(result)
 
     def ingest(self, event: Event) -> list[CalculationResult]:
+        self.last_formula_evaluation_count = 0
         self.last_candidate_count = self.last_index_probe_count = 0
         self.last_family_evaluation_count = self.last_time_probe_count = 0
         key = (event.match_id, event.event_id)
         previous = self._events.get(key)
         if previous and event.revision <= previous.revision:
-            if event.revision == previous.revision and event != previous:
+            if event.revision == previous.revision and not event.same_content(previous):
                 raise ValueError("Conflicting contents for the same event revision")
             return []
         groups = self._groups(event)
@@ -168,5 +213,7 @@ class FilterEngine:
             self.last_candidate_count = len(deltas)
             for identifier, delta in deltas.items():
                 self._apply((identifier,), delta, changed)
+        self._refresh_formulas(changed)
+        changed = [result for result in changed if result.calculation_id in self._visible]
         changed.sort(key=lambda result: result.calculation_id)
         return changed

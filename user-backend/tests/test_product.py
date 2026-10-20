@@ -513,3 +513,12 @@ def test_unavailable_standard_stat_cannot_be_pinned(store):
         assert response.status_code == 503 and response.json()['code'] == 'stat_unavailable'
         assert lab.engine.count == 0
         assert client.get(f'/product/{token}').json()['offers'][0]['calculation_id'] is None
+
+
+def test_neutral_cards_never_show_both_teams_possession(store):
+    _, _, _, app = product(store)
+    with TestClient(app) as client:
+        response = client.post('/product/sessions', json={'profile_id': 'neutral-simple'})
+        assert response.status_code == 200, response.text
+        cards = [c['id'] for c in response.json()['snapshot']['cards']]
+        assert cards and 'all:possession' not in cards

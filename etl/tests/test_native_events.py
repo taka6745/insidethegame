@@ -60,7 +60,7 @@ def test_unknown_native_categories_are_rejected():
 def test_card_outcomes_and_headed_action_survive_translation():
     card = adapt_event(native('card', outcome='second_yellow'))
     header = adapt_event(native('pass', qualifiers=[{'type': 'bodyPart', 'value': 'head'},
-                                                  {'type': 'intent', 'value': 'short_pass'}]))
+                                                  {'type': 'chipped', 'value': True}]))
     assert card.outcome == 'second_yellow'
     assert header.body_part == 'head' and header.event_type == 'pass'
 

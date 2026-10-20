@@ -7,6 +7,7 @@ from .semantics import (GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS,
                         DATA_GOAL_INSTRUCTIONS, DATA_STRUCTURED_INSTRUCTIONS)
 from .contracts import decision_contract, strict_decision_contract, decision_envelope_model
 from .data_skill import EventDataSkill
+from .measurement_support import MEASUREMENT_POLICY, measurement_support
 
 
 class GoalAgent:
@@ -20,13 +21,14 @@ class GoalAgent:
         prompt_instructions, structured_instructions = (
             (DATA_GOAL_INSTRUCTIONS, DATA_STRUCTURED_INSTRUCTIONS) if data_skill else
             (GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS))
-        self.instructions = instructions if instructions is not None else (
+        self.instructions = instructions if instructions is not None else MEASUREMENT_POLICY + (
             structured_instructions if response_mode == "schema" else prompt_instructions)
         self.schema = (strict_decision_contract() if response_mode == "schema" else
                        decision_contract() if compact_contract else GoalDecision.model_json_schema())
 
     async def define(self, prompt: str, context: dict) -> GoalDecision:
-        payload = {"request": prompt, "context": context, "decision_schema": self.schema}
+        payload = {"request": prompt, "context": context, "decision_schema": self.schema,
+                   "measurement_support": measurement_support(context.get('data_reference', {}))}
         if self.data_skill is not None:
             payload["data_skill"] = self.data_skill.context(context.get('data_reference'))
         if self.response_mode == "schema":
@@ -39,7 +41,8 @@ class GoalAgent:
         if decision.goal:
             for field, collection in (("player_ids", "players"), ("team_ids", "teams")):
                 allowed = {item["id"] for item in context.get(collection, [])}
-                if not set(getattr(decision.goal, field)) <= allowed:
+                goals = decision.goal.inputs or (decision.goal,)
+                if any(not set(getattr(goal, field)) <= allowed for goal in goals):
                     return GoalDecision(status="clarification", clarification=Clarification(
                         question="Which player or team in this match do you mean?",
                         options=[item.get("name", item["id"]) for item in context.get(collection, [])][:5],

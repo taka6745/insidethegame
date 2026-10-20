@@ -77,23 +77,32 @@ class Predicate(BaseModel):
         return {"field": self.field, "op": self.op, "value": value}
 
 
-class Rule(BaseModel):
+class AggregateRule(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     match_id: str = Field(min_length=1, max_length=120)
-    operation: Literal["count", "sum"] = "count"
+    operation: Literal["count", "sum", "count_present"] = "count"
     predicates: tuple[Predicate, ...] = Field(default=(), max_length=16)
     sum_field: Literal["distance_metres"] | None = None
+    coverage: Literal["complete", "recorded"] = "complete"
 
     @model_validator(mode="after")
     def aggregation(self):
-        if (self.operation == "sum") != (self.sum_field is not None):
+        if self.operation in {"percentage", "ratio", "difference", "average"}:
+            return self
+        if (self.operation in {"sum", "count_present"}) != (self.sum_field is not None):
             raise ValueError("Sum requires sum_field; count cannot have one")
+        if self.coverage == 'recorded' and (self.operation != 'count' or not any(
+                p.field == 'body_part' for p in self.predicates)):
+            raise ValueError("Recorded coverage requires a body-part count")
         return self
 
     @property
     def calculation_id(self) -> str:
         terms = sorted({json.dumps(p.canonical(), sort_keys=True, separators=(",", ":")) for p in self.predicates})
-        identity = json.dumps([self.match_id, self.operation, self.sum_field, terms], separators=(",", ":"))
+        parts = [self.match_id, self.operation, self.sum_field, terms]
+        if self.coverage != 'complete':
+            parts.append(self.coverage)  # Preserve existing IDs for complete-coverage rules.
+        identity = json.dumps(parts, separators=(",", ":"))
         return "calc_" + hashlib.sha256(identity.encode()).hexdigest()
 
     def matches(self, event: Event) -> bool:
@@ -102,7 +111,83 @@ class Rule(BaseModel):
     def contribution(self, event: Event | None) -> float:
         if event is None or not self.matches(event):
             return 0
-        return 1 if self.operation == "count" else (getattr(event, self.sum_field) or 0)
+        if self.operation == "count":
+            return 1
+        value = getattr(event, self.sum_field)
+        return int(value is not None) if self.operation == "count_present" else (value or 0)
+
+
+class Rule(AggregateRule):
+    """One formula over two aggregate leaves; never executable model output."""
+    operation: Literal["count", "sum", "count_present", "percentage", "ratio", "difference", "average"] = "count"
+    inputs: tuple[AggregateRule, ...] = Field(default=(), max_length=2)
+
+    @property
+    def composite(self) -> bool:
+        return self.operation in {"percentage", "ratio", "difference", "average"}
+
+    @model_validator(mode="after")
+    def formula(self):
+        if not self.composite:
+            if self.inputs:
+                raise ValueError("Aggregate leaves cannot contain inputs")
+            return self
+        if len(self.inputs) != 2 or self.predicates or self.sum_field is not None or self.coverage != 'complete':
+            raise ValueError("A formula requires exactly two aggregate inputs and no outer filters")
+        left, right = self.inputs
+        if any(item.operation not in {"count", "sum", "count_present"} for item in self.inputs):
+            raise ValueError("Nested formulas are unsupported")
+        if any(item.match_id != self.match_id for item in self.inputs):
+            raise ValueError("Formula inputs must belong to the same match")
+        units = [item.sum_field if item.operation == 'sum' else 'count' for item in self.inputs]
+        if self.operation in {'percentage', 'ratio', 'difference'} and units[0] != units[1]:
+            raise ValueError("Percentage, ratio and difference require compatible input units")
+        if self.operation == 'percentage' and not _subset(left, right):
+            raise ValueError("Percentage numerator must be a subset of its denominator")
+        if self.operation == 'average':
+            if (left.operation != 'sum' or right.operation != 'count_present'
+                    or left.sum_field != right.sum_field or _terms(left) != _terms(right)):
+                raise ValueError("Average requires sum and count of present values over identical filters")
+        return self
+
+    @property
+    def calculation_id(self) -> str:
+        if not self.composite:
+            return super().calculation_id
+        identity = json.dumps(['formula-v1', self.match_id, self.operation,
+                               [item.calculation_id for item in self.inputs]], separators=(',', ':'))
+        return 'calc_' + hashlib.sha256(identity.encode()).hexdigest()
+
+    @property
+    def unit(self) -> str:
+        if self.operation == 'percentage':
+            return '%'
+        if self.operation in {'sum', 'average'}:
+            return 'm'
+        if self.operation == 'difference' and self.inputs[0].operation == 'sum':
+            return 'm'
+        return ''
+
+
+def _terms(rule):
+    return {json.dumps(p.canonical(), sort_keys=True) for p in rule.predicates}
+
+
+def _subset(numerator, denominator):
+    # Prove only bounded conjunction containment; never guess unsupported equivalence.
+    for predicate in denominator.predicates:
+        if json.dumps(predicate.canonical(), sort_keys=True) in _terms(numerator):
+            continue
+        if predicate.op in {'eq', 'in'}:
+            allowed = {predicate.value} if predicate.op == 'eq' else set(predicate.value)
+            constrained = [p for p in numerator.predicates if p.field == predicate.field and p.op in {'eq', 'in'}]
+            if constrained:
+                values = set.intersection(*[{p.value} if p.op == 'eq' else set(p.value) for p in constrained])
+                if values <= allowed:
+                    continue
+        return False
+    return (numerator.operation == denominator.operation and numerator.sum_field == denominator.sum_field
+            and numerator.coverage == denominator.coverage)
 
 
 FilterRule = Rule

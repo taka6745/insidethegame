@@ -15,17 +15,20 @@ def recording():
     source = FixtureEventSource()
     spec = dict(source.spec)
     spec['events'] = [dict(event, videoSeconds=index * 0.1) for index, event in enumerate(spec['events'])]
-    spec['playback'] = {'duration_seconds': 720, 'football_duration_seconds': 5400, 'halftime_seconds': 360}
+    # Real time: playback runs past the last event; the football duration stays 90 minutes.
+    last = spec['events'][-1]['videoSeconds']
+    spec['playback'] = {'duration_seconds': last + 30, 'football_duration_seconds': 5400, 'halftime_seconds': last / 2}
     return spec
 
 
 def test_timed_recording_preserves_event_semantics_and_rejects_reversed_video():
     spec = recording()
     source = FixtureEventSource(content=json.dumps(spec).encode())
-    assert source.timed and source.playback_duration == 720
+    assert source.timed and source.playback_duration == spec['playback']['duration_seconds']
     assert source.playback_seconds(2) == 0.1
     assert source.replay_delay(1, 5) == 0.1
-    assert source.events == FixtureEventSource().events
+    assert [e.video_seconds for e in source.events] == [e['videoSeconds'] for e in spec['events']]
+    assert all(a.same_content(b) for a, b in zip(source.events, FixtureEventSource().events))
     spec['events'][1]['videoSeconds'] = -1
     with pytest.raises(ValueError):
         FixtureEventSource(content=json.dumps(spec).encode())

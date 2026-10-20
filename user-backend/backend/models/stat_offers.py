@@ -4,8 +4,13 @@ from .rules import Rule
 
 def stat_answer(offer):
     """Keep ETL measurement units when rendering a deterministic answer."""
-    suffix = '%' if offer.get('unit') == '%' else ''
-    return f"{offer['label']}: {offer['value']}{suffix}."
+    unit = offer.get('unit', '')
+    suffix = '%' if unit == '%' else (' ' + unit if unit else '')
+    value = offer['value']
+    if value is None:
+        return f"{offer['label']}: not available yet. You can track it as events arrive."
+    value = format(value, '.1f').rstrip('0').rstrip('.') if isinstance(value, float) else str(value)
+    return f"{offer['label']}: {value}{suffix}."
 
 
 def pin_id(offer):

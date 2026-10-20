@@ -6,6 +6,8 @@
 
 **Runnable demo stub; production agents remain planned.** The stub owns authored commentary for the recorded synthetic match and factual neutral recap history. It never calls an LLM. The original [prompts](prompts/README.md) are preserved for the real implementation.
 
+Authored [fixtures](fixtures/README.md) (schema v2) cover the 90-minute broadcast-clock recording: 92 minutes × 12 buckets, minute/tier recaps and key moments.
+
 ```text
 Service Bus checkpoint → neutral recap archive → GraphQL → user backend
                        ↓

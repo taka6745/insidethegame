@@ -2,5 +2,19 @@
   "name": "inside-the-game-filter-lab",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test tests/*.test.js" }
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp match/index.html match/*.css dist/match/ && cp lab/index.html lab/*.css dist/lab/ && sh tools/vendor.sh dist/match/vendor",
+    "typecheck": "tsc -p tsconfig.node.json",
+    "test": "npm run typecheck && node --test tests/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "7.0.2"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "hls.js": "1.7.3"
+  }
 }

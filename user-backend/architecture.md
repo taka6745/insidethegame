@@ -16,11 +16,12 @@ The user backend connects the frontend to match intelligence. It answers viewer 
 | Selectable demo profiles; no sign-in | Playback-aware narrative and stat delivery |
 | Two frontend tabs: agent chat and narrative feed/backlog | Answers constrained to playback time unless live information is requested |
 | Bucket-specific narratives and changing default stat selections | Jev matching incoming narratives to explicit viewer subscriptions |
-| Question agent and specialist coding agent | Highlight and “last X minutes” replay requests |
-| Custom calculations, tested functions, live pinned stat cards | Ordered video segments returned for frontend playback |
-| Reconnect recovery and one active session per profile | Pinned stat values and bucket selections restored when rewinding |
+| Question agent and specialist coding agent | Pinned stat values and bucket selections restored when rewinding |
+| Custom calculations, tested functions, live pinned stat cards | |
+| Reconnect recovery and one active session per profile | |
+| Chat replay: highlight and “last X minutes” clip requests (implemented; [replay plan](docs/replay-plan.md)) | |
 
-Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not part of the first-version implementation.
+Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not part of the first-version implementation. Chat replay moved into Phase 1 on 20 October 2026.
 
 ## 2. System boundaries
 
@@ -33,7 +34,7 @@ Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not pa
 | Live feeds | Event Hubs supplies match events; Service Bus supplies new narratives and stat-selection instructions. |
 | Main user backend | Read demo profiles, resolve match preferences, answer questions, coordinate coding work, manage custom stats and sessions, and deliver updates to viewers. |
 | Isolated generated-code executor | Run generated Python/filter logic with a fixed library set and controlled access to read-only GraphQL. |
-| Frontend | Show match footage, stat cards, agent chat and the narrative feed; submit questions and user actions. In Phase 2, fetch and play requested video segments. |
+| Frontend | Show match footage, stat cards, agent chat and the narrative feed; submit questions and user actions. Play requested replay clips while live continues picture-in-picture. |
 
 **Viewer questions never prompt, inject into or trigger the neutral narrative engine.** “How is Chelsea going?” is answered by the question agent using available facts and narratives. It does not create a personal narrative workflow.
 
@@ -179,7 +180,9 @@ Jev refers to **TypeSafe's decision model**, not a model gateway. This feature i
 
 ## 10. Phase 2: replay and playback-aware behaviour
 
-The viewer can ask for a highlight or the last X minutes. The backend resolves the requested footage and returns an **ordered list of video source IDs and start/end timestamps**. The frontend fetches and plays those segments using the streaming source. Do not generate temporary stitched video files for this design.
+**Superseded for clip requests:** chat replay is implemented per the [replay plan](docs/replay-plan.md) (VOD playlists of existing HLS segments, deterministic cuts). Per-viewer pause, rewind and delayed viewing below remain Phase 2.
+
+*Superseded segment-list design (historical):* the viewer can ask for a highlight or the last X minutes. The backend resolves the requested footage and returns an **ordered list of video source IDs and start/end timestamps**. The frontend fetches and plays those segments using the streaming source. Do not generate temporary stitched video files for this design.
 
 Match events already carry timestamps. Mapping those to the video's time reference is considered feasible; the exact event-to-video clock mapping still needs to be defined.
 
@@ -222,6 +225,6 @@ Service references used during planning: [Container Apps](https://learn.microsof
 8. Fail validation: provide up to three repair attempts, then explain failure without activating the function.
 9. Disconnect during generation: finish and save the result; restore it and existing pins on reconnect at live play.
 10. Open a second tab for the same profile: the new session takes over and the old session is disconnected.
-11. Confirm Phase 1 excludes Jev semantic subscriptions, replay construction and playback-dependent querying.
+11. Confirm Phase 1 excludes Jev semantic subscriptions and playback-dependent querying.
 
 These scenarios are acceptance targets for later implementation, not tests claimed to have passed.

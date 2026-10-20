@@ -1,12 +1,45 @@
 {
   "UserConfig": {
-    "Namespaces": [{
-      "Name": "sbemulatorns", "Queues": [],
-      "Topics": [
-        {"Name": "match-notifications", "Subscriptions": [{"Name": "narrative-engine"}, {"Name": "integration"}]},
-        {"Name": "narratives", "Subscriptions": [{"Name": "user-backend"}, {"Name": "integration"}]}
-      ]
-    }],
-    "Logging": {"Type": "Console"}
+    "Namespaces": [
+      {
+        "Name": "sbemulatorns",
+        "Queues": [],
+        "Topics": [
+          {
+            "Name": "match-notifications",
+            "Subscriptions": [
+              {
+                "Name": "narrative-engine"
+              },
+              {
+                "Name": "integration",
+                "Properties": {
+                  "DefaultMessageTimeToLive": "PT2M",
+                  "DeadLetteringOnMessageExpiration": false
+                }
+              }
+            ]
+          },
+          {
+            "Name": "narratives",
+            "Subscriptions": [
+              {
+                "Name": "user-backend"
+              },
+              {
+                "Name": "integration",
+                "Properties": {
+                  "DefaultMessageTimeToLive": "PT2M",
+                  "DeadLetteringOnMessageExpiration": false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Logging": {
+      "Type": "Console"
+    }
   }
 }

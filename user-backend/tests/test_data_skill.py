@@ -21,7 +21,7 @@ from benchmarks.model_observer import ModelObserver
 
 def profile():
     return FeedReference.load(Path(__file__).parents[1] /
-                              'backend/adapters/feed_profiles/opta-inspired-v1.json')
+                              'backend/adapters/feed_profiles/opta-inspired-v2.json')
 
 
 def test_reference_types_follow_current_schema_without_copied_enums():

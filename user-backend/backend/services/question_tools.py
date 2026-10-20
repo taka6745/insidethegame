@@ -3,8 +3,11 @@ import json
 from uuid import uuid4
 from typing import get_args
 from backend.models.events import Event, EventType
+from backend.models.recording import MAX_RECORDING_EVENTS
 from backend.services.filter_engine import FilterEngine
-from backend.services.rule_availability import supported_rule, observed_unattributed_events, incomplete_player_rule
+from backend.services.rule_availability import unsupported_reason, observed_unattributed_events, incomplete_player_rule
+from backend.services.replay import ReplayTools
+from backend.services.question_answers import model_catalogue
 
 class QuestionTools:
     def __init__(self, payload, match_data, narratives, planner, stats, compact, history):
@@ -12,12 +15,20 @@ class QuestionTools:
         self.stats, self.compact, self.history = stats, compact, history
         self.calls, self.offers, self.goal, self.evidence = 0, [], None, {}
         self.prepared_results = {}
+        self._replay = None
         for row in stats:
             self.evidence['stat:' + row['id']] = {'id':'stat:' + row['id'], 'kind':'stat', 'label':row['label']}
         for row in compact.get('blocks', []):
             self.evidence[row['id']] = {'id':row['id'],'kind':'recap','label':f"{row['start_seconds']//60}–{row['end_seconds']//60}′ recap"}
         for row in compact.get('tail', []) + compact.get('key_events', []):
             self._event_reference(row)
+
+    @property
+    def replay(self):
+        if self._replay is None:
+            self._replay = ReplayTools(self.payload.snapshot, self.match_data, self.narratives,
+                                       self.payload.players, self.payload.teams)
+        return self._replay
 
     def _event_reference(self, row):
         identifier = 'event:' + row['event_id'] + ':' + str(row['revision'])
@@ -81,6 +92,7 @@ class QuestionTools:
             reply = turn['reply']
             # The validated goal is more useful than old result prose. Keep it whole.
             assistant = (json.dumps({'goal':reply['goal']}) if reply.get('goal') else
+                         json.dumps(reply['clarification']) if reply.get('clarification') else
                          reply.get('statistic_request') or reply.get('text') or 'No previous answer.')
             history.extend([{'role':'user','content':turn['user']},
                             {'role':'assistant','content':assistant}])
@@ -96,7 +108,7 @@ class QuestionTools:
             return {'status':'unsupported','message':'Ask for one statistic at a time.'}
         context = {'match_id':self.payload.snapshot.match_id,'players':self.payload.players,'teams':self.payload.teams,
                    'data_reference': self.payload.data_reference,
-                   'standard_stats':self.stats, 'clock_seconds':self.payload.snapshot.clock_seconds,
+                   'standard_stats':model_catalogue(self.stats), 'clock_seconds':self.payload.snapshot.clock_seconds,
                    'period':self.payload.snapshot.period}
         outcome = await self.planner.plan(request, context, history=history) if history else await self.planner.plan(request, context)
         if outcome.status == 'clarification':
@@ -105,9 +117,10 @@ class QuestionTools:
             row = next((r for r in self.stats if r['id'] == outcome.standard_stat_id), None)
             return {'status':'reuse','stat':row,'evidence_id':'stat:' + outcome.standard_stat_id}
         if outcome.status != 'ready' or outcome.rule is None:
-            return {'status':'unsupported','message':'Sorry, I cannot calculate that from the available data.'}
-        if not supported_rule(outcome.rule, self.payload.data_reference.get('capabilities')):
-            return {'status':'unsupported', 'message':'Sorry, this recording does not capture that measurement.'}
+            # A declined plan names its missing data; workflow failures stay generic.
+            return {'status':'unsupported','message':outcome.message if outcome.status == 'unsupported' else None}
+        if reason := unsupported_reason(outcome.rule, self.payload.data_reference.get('capabilities')):
+            return {'status':'unsupported', 'message':reason}
         # Complete observed history, not a model-visible truncated search page.
         engine, offset, observed = FilterEngine(), 0, []
         while True:
@@ -121,20 +134,23 @@ class QuestionTools:
                 engine.ingest(event)
                 observed.append(event)
             offset += len(page['items'])
-            if offset > 20000:
+            if offset > MAX_RECORDING_EVENTS:
                 raise ValueError('History limit exceeded')
             if not page.get('has_more'):
                 break
         if incomplete_player_rule(outcome.rule, observed_unattributed_events(observed)):
-            return {'status': 'unsupported', 'message': 'Sorry, some matching events have no recorded player, so I cannot give a complete player total.'}
+            return {'status': 'unsupported', 'message': 'Some matching events have no recorded player, so a complete player total is unavailable.'}
         result = engine.register(outcome.rule)
         offer = {'id':str(uuid4()),'label':outcome.goal.description[:160] if outcome.goal else request[:160],
-                 'value':result.value,'rule':outcome.rule.model_dump(mode='json'),
+                 'value':result.value,'unit':outcome.rule.unit,'rule':outcome.rule.model_dump(mode='json'),
                  'goal':outcome.goal.model_dump(mode='json') if outcome.goal else None,
                  'snapshot_id':self.payload.snapshot.id,'run_id':self.payload.snapshot.run_id}
+        leaves = outcome.rule.inputs if outcome.rule.composite else (outcome.rule,)
+        if any(leaf.coverage == 'recorded' for leaf in leaves) and not offer['label'].lower().startswith('recorded'):
+            offer['label'] = 'Recorded ' + offer['label'][:151]
         self.offers.append(offer)
         self.goal = offer['goal']
         identifier = 'offer:' + offer['id']
         self.evidence[identifier] = {'id':identifier,'kind':'stat','label':offer['label']}
-        return {'status':'ready','offer_id':offer['id'],'label':offer['label'],'value':offer['value'],'evidence_id':identifier,
+        return {'status':'ready','offer_id':offer['id'],'label':offer['label'],'value':offer['value'],'unit':offer['unit'],'evidence_id':identifier,
                 'message':'One-off result. A Track this stat card will be shown; tracking has not started.'}

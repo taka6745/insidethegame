@@ -66,13 +66,20 @@ async def inspect(payload, etl, narrative, seen):
                              ('offsides', 'offside'), ('throw_ins', 'throw_in'), ('saves', 'save')):
         actual = stats[f'all:{stat}']
         assert actual['available'] == (event_type in supported)
-        expected_value = sum(e.event_type == event_type and not e.deleted for e in events) if event_type in supported else None
+        counted = [e for e in events if e.event_type == event_type and not e.deleted]
+        if stat == 'saves':  # Goalkeeper saves of on-target attempts, as ETL defines them.
+            counted = [e for e in counted if not ({'defensiveBlock', 'fromShotOffTarget'} & set(e.qualifiers or {}))]
+        expected_value = len(counted) if event_type in supported else None
         assert actual['value'] == expected_value, f'{stat} disagrees with observed events/coverage'
     assert (await etl.events(watermark, limit=100))['total'] == len(events)
     blocks = (await narrative.compact(watermark))['blocks']
-    assert all(a['end_seconds'] == b['start_seconds'] for a, b in zip(blocks, blocks[1:]))
+    # Stoppage time repeats clock values across periods: contiguity and bounds are per period.
+    assert all(a['end_seconds'] == b['start_seconds'] for a, b in zip(blocks, blocks[1:])
+               if a.get('period') == b.get('period')), 'Recap blocks must be contiguous within a period'
     viewer = await narrative.read(watermark, 'viewer')
-    assert all(row['clock_seconds'] <= (watermark.clock_seconds or 0) for row in viewer['items'])
+    position = (watermark.period or 0, watermark.clock_seconds or 0)
+    assert all((row.get('period', position[0]), row['clock_seconds']) <= position for row in viewer['items']), \
+        'A released narrative is later than the snapshot'
     assert watermark.id in seen, 'Waiting for narratives topic delivery'
     assert seen[watermark.id]['snapshot']['cursor'] == watermark.cursor
     return expected, len(viewer['items'])
@@ -102,11 +109,13 @@ async def main():
                         listener.result()
                     return await inspect(payload, etl, narrative, seen)
                 try:
-                    for minute in (0, None, 1, 6, 12):
+                    # Start, a duplicated first event, minute 1, just after half-time and full time.
+                    half_time = next(i for i, e in enumerate(source.events) if e.event_type == 'period_end')
+                    for minute in (0, None, 1, source.video_times[half_time] / 60 + 1, 'full'):
                         await require_idle_replay(http, backend_url)
-                        cursor = 1 if minute is None else next((i + 1 for i, t in enumerate(source.video_times)
-                            if t >= minute * 60), len(source.events)) if minute else 0
-                        payload = await snapshot(source, run_id, cursor, 'finished' if minute == 12 else 'ready')
+                        cursor = 1 if minute is None else len(source.events) if minute == 'full' else next(
+                            (i + 1 for i, t in enumerate(source.video_times) if t >= minute * 60), len(source.events)) if minute else 0
+                        payload = await snapshot(source, run_id, cursor, 'finished' if minute == 'full' else 'ready')
                         event = payload.events[-1] if minute is None else None
                         await publish(producer, payload, event=event)
                         if minute is None:
@@ -116,7 +125,7 @@ async def main():
                             lambda: inspect_delivery(payload))
                         if listener.done():
                             listener.result()
-                        label = 'first event + duplicate' if minute is None else f'{minute} playback min'
+                        label = 'first event + duplicate' if minute is None else 'full time' if minute == 'full' else f'{minute:.0f} playback min'
                         print(f'PASS {label}: {cursor} history events, {goals} goals, {count} narratives', flush=True)
                 finally:
                     listener.cancel()

@@ -25,16 +25,26 @@ class NarrativePublisher:
 
 
 async def handle_message(receiver, message, delivery):
-    try:
-        body = json.loads(str(message))
-        if isinstance(body, dict) and body.get('type') == 'IntegrationProbe':
-            await receiver.complete_message(message)
-            return
-        notification = SnapshotReady.model_validate(body)
-    except (ValueError, TypeError, ValidationError):
-        await receiver.dead_letter_message(message, reason='InvalidSnapshotNotification',
-                                           error_description='Expected version 1 checkpoint metadata')
+    await handle_messages(receiver, [message], delivery)
+
+
+async def handle_messages(receiver, messages, delivery):
+    """Narrate only the newest snapshot of a backlog; older ones are settled unread.
+    Live delivery needs only the latest cursor, and questions capture the current one."""
+    ready = []
+    for message in messages:
+        try:
+            body = json.loads(str(message))
+            if isinstance(body, dict) and body.get('type') == 'IntegrationProbe':
+                await receiver.complete_message(message)
+                continue
+            ready.append((message, SnapshotReady.model_validate(body)))
+        except (ValueError, TypeError, ValidationError):
+            await receiver.dead_letter_message(message, reason='InvalidSnapshotNotification',
+                                               error_description='Expected version 1 checkpoint metadata')
+    if not ready:
         return
+    message, notification = ready[-1]
     retry_delay = 1
     while True:
         try:
@@ -53,7 +63,8 @@ async def handle_message(receiver, message, delivery):
             logger.warning('Narrative delivery retry in %ss (%s)', retry_delay, type(exc).__name__)
             await asyncio.sleep(retry_delay)
             retry_delay = min(retry_delay * 2, 15)
-    await receiver.complete_message(message)
+    for message, _ in ready:
+        await receiver.complete_message(message)
 
 
 async def refresh_audiences(delivery, interval=2):
@@ -88,9 +99,8 @@ class NarrativeBroker:
                         refresh = asyncio.create_task(refresh_audiences(delivery))
                         try:
                             while True:
-                                messages = await receiver.receive_messages(max_message_count=1, max_wait_time=2)
-                                for message in messages:
-                                    await handle_message(receiver, message, delivery)
+                                messages = await receiver.receive_messages(max_message_count=100, max_wait_time=2)
+                                await handle_messages(receiver, messages, delivery)
                         finally:
                             refresh.cancel()
                             with suppress(asyncio.CancelledError):

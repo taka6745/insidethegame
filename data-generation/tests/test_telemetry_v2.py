@@ -49,6 +49,10 @@ class TelemetryV2Tests(unittest.TestCase):
     def feed(self, row):
         self.adapter.consume(row, row["physics_ms"] / 1000)
 
+    def settle(self, ms=900):
+        """Attempts resolve when play stops, the ball crosses a line or a contact settles them."""
+        self.feed(frame(ms, in_play=False))
+
     def events(self, kind):
         return [event for event in self.adapter.canonical_events() if event["typeName"] == kind]
 
@@ -70,6 +74,7 @@ class TelemetryV2Tests(unittest.TestCase):
     def test_native_pass_and_shot_functions_with_head_contact(self):
         self.feed(touch(function=4, touch_type=1, touch_body_part="head"))
         self.feed(touch(500, [0, 2], 8, touch_type=1, touch_body_part="head"))
+        self.settle()
         self.assertEqual(qualifiers(self.events("pass")[0])["bodyPart"], "head")
         self.assertEqual(qualifiers(self.events("shot")[0])["bodyPart"], "head")
 
@@ -80,7 +85,7 @@ class TelemetryV2Tests(unittest.TestCase):
         goals = self.events("goal")
         self.assertEqual(len(goals), 1)
         self.assertEqual(qualifiers(goals[0])["bodyPart"], "head")
-        self.assertIn("sourceShotEventId", qualifiers(goals[0]))
+        self.assertEqual(qualifiers(goals[0])["situation"], "regular_play")
 
     def test_teammate_deflection_goal_does_not_inherit_shooters_head(self):
         self.feed(touch(function=8, touch_type=1, touch_body_part="head"))
@@ -89,7 +94,7 @@ class TelemetryV2Tests(unittest.TestCase):
         goal = self.events("goal")[0]
         self.assertEqual(goal["playerId"], "chelsea-2")
         self.assertNotIn("bodyPart", qualifiers(goal))
-        self.assertIn("sourceShotEventId", qualifiers(goal))
+        self.assertIn("situation", qualifiers(goal))
         self.assertEqual(self.events("shot"), [])
         self.assertNotIn("goal", self.adapter.capabilities()["body_part_event_types"])
 
@@ -100,7 +105,8 @@ class TelemetryV2Tests(unittest.TestCase):
         goal = self.events("goal")[0]
         self.assertEqual(goal["playerId"], "chelsea-2")
         self.assertEqual(qualifiers(goal)["bodyPart"], "head")
-        self.assertNotIn("sourceShotEventId", qualifiers(goal))
+        self.assertNotIn("situation", qualifiers(goal))
+        self.assertEqual([e["outcome"] for e in self.events("shot")], ["off_target"])
 
     def test_unknown_header_intent_is_only_a_headed_contact(self):
         self.feed(touch(function=7, requested_function=7, touch_type=1))
@@ -125,6 +131,7 @@ class TelemetryV2Tests(unittest.TestCase):
             with self.subTest(part=part):
                 self.setUp()
                 self.feed(touch(function=8, touch_body_part=part))
+                self.settle()
                 self.assertEqual(qualifiers(self.events("shot")[0])["bodyPart"], category)
 
     def test_awarded_restart_is_not_counted_without_executed_contact(self):
@@ -165,9 +172,11 @@ class TelemetryV2Tests(unittest.TestCase):
     def test_penalty_attempt_is_one_shot_with_penalty_context(self):
         self.feed(touch(function=8, set_piece=True, restart_active=True,
                         restart_mode=6, restart_team=0, restart_id=123))
+        self.settle()
         self.assertEqual(len(self.events("penalty")), 1)
         self.assertEqual(len(self.events("shot")), 1)
         self.assertEqual(qualifiers(self.events("shot")[0])["restart"], "penalty")
+        self.assertEqual(qualifiers(self.events("shot")[0])["situation"], "penalty")
         self.assertEqual(self.events("goal"), [])
 
     def test_kickoff_waits_for_first_deliberate_contact_after_native_ready(self):
@@ -204,18 +213,23 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(400))
         self.assertEqual(self.events("kick_off"), [])
 
-    def test_keeper_retention_is_one_claim_per_transition_not_a_save(self):
+    def test_keeper_retention_is_one_pickup_per_transition_not_a_save(self):
         self.feed(touch(100, [1, 11], 9, touch_type=2))
-        self.assertEqual(self.events("keeper_claim"), [])
+        self.assertEqual(self.events("keeper_pickup"), [])
         self.feed(frame(110, ball_retainer=[1, 11]))
         self.feed(frame(120, ball_retainer=[1, 11]))
         self.feed(frame(130, ball_retainer=[1, 11]))
-        self.assertEqual(len(self.events("keeper_claim")), 1)
-        self.assertEqual(self.events("keeper_claim")[0]["playerId"], "manutd-0")
+        self.assertEqual(len(self.events("keeper_pickup")), 1)
+        self.assertEqual(self.events("keeper_pickup")[0]["playerId"], "manutd-0")
         self.feed(frame(200, ball_retainer=None))
         self.feed(frame(300, ball_retainer=[1, 11]))
-        self.assertEqual(len(self.events("keeper_claim")), 2)
+        self.assertEqual(len(self.events("keeper_pickup")), 2)
         self.assertEqual(self.events("save"), [])
+
+    def test_high_ball_retention_is_a_claim(self):
+        self.feed(frame(100, ball_position_m=[-50, 0, 2.1]))
+        self.feed(frame(110, ball_retainer=[1, 11], ball_position_m=[-50, 0, 2.0]))
+        self.assertEqual(len(self.events("keeper_claim")), 1)
 
     def test_outfield_retention_and_unused_catch_function_are_not_keeper_claims(self):
         self.feed(frame(100, ball_retainer=[0, 1]))
@@ -306,14 +320,13 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(1000, function=2))
         self.assertEqual(len(self.events("touch")), 2)
 
-    def test_half_and_full_time_boundaries_are_exact(self):
-        self.feed(frame(359_990))
-        self.feed(frame(360_000, phase=2, in_play=False))
-        self.feed(frame(360_010, phase=2))
-        self.adapter.finish(frame(720_000, phase=2), 720)
+    def test_half_and_full_time_include_stoppage_on_the_broadcast_clock(self):
+        self.feed(frame(2_890_000, match_ms=2_700_000))  # 48:10 after dead play.
+        self.feed(frame(2_890_010, phase=2, in_play=False, match_ms=2_700_000))
+        self.adapter.finish(frame(5_920_010, phase=2, match_ms=5_400_000), 5920.01)
         starts, ends = self.events("period_start"), self.events("period_end")
         self.assertEqual([(e["periodId"], e["timeMin"]) for e in starts], [(1, 0), (2, 45)])
-        self.assertEqual([(e["periodId"], e["timeMin"]) for e in ends], [(1, 45), (2, 90)])
+        self.assertEqual([(e["periodId"], e["timeMin"], e["timeSec"]) for e in ends], [(1, 48, 10), (2, 95, 30)])
 
     def test_short_capture_does_not_invent_full_time(self):
         self.adapter.finish(frame(10_000), 10)
@@ -322,9 +335,10 @@ class TelemetryV2Tests(unittest.TestCase):
     def test_capabilities_do_not_claim_unobserved_event_semantics(self):
         capabilities = self.adapter.capabilities()
         supported = set(capabilities["supported_event_types"])
-        self.assertTrue({"foul", "offside", "corner", "card"} <= supported)
-        self.assertTrue({"save", "tackle", "interception", "substitution", "injury", "var"}.isdisjoint(supported))
-        self.assertFalse(capabilities["shot_outcomes"])
+        self.assertTrue({"foul", "offside", "corner", "card", "save", "tackle", "interception"} <= supported)
+        self.assertTrue({"substitution", "injury", "var"}.isdisjoint(supported))
+        self.assertTrue(capabilities["shot_outcomes"])
+        self.assertEqual(capabilities["coordinates"], "opta_0_100")
         self.assertEqual(capabilities["restart_events"], "taken")
         self.assertEqual(capabilities["body_part_event_types"], ["pass", "shot", "goal"])
         self.assertEqual(capabilities["possession_basis"], "confirmed_native_ownership")

@@ -1,7 +1,7 @@
 #!/bin/sh
-# Static build: one content fingerprint keeps relative ES module imports together.
+# Static build from compiled output (npm run build → dist/): one content fingerprint keeps relative ES module imports together.
 set -eu
-source_dir=${2:-$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)}
+source_dir=${2:-$(CDPATH= cd -- "$(dirname -- "$0")/../dist" && pwd)}
 output_dir=${1:?Usage: build.sh OUTPUT_DIRECTORY [SOURCE_DIRECTORY]}
 [ -f "$source_dir/match/index.html" ] || { echo 'Missing match entry point' >&2; exit 1; }
 

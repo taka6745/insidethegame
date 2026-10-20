@@ -10,6 +10,7 @@ from backend.adapters.llm import ModelError
 from backend.models.rules import Rule
 from .models import Goal, PlanOutcome
 from .clarification import unresolved_player
+from .measurement_support import measure_decision
 
 
 @dataclass(frozen=True)
@@ -68,6 +69,7 @@ class DefineGoal(Executor):
                             location[-1] = "<extra>"
                         safe_errors.append({"path": ".".join(str(part) for part in location)[:256],
                                             "type": error["type"]})
+                    logging.getLogger(__name__).warning("Goal schema fields: %s", safe_errors)
                     context["goal_validation_errors"] = safe_errors
                     validation_errors.extend({"attempt": attempt + 1, **error} for error in safe_errors)
                 reason = exc.reason if isinstance(exc, ModelError) else "goal_schema"
@@ -75,6 +77,8 @@ class DefineGoal(Executor):
                 logging.getLogger(__name__).warning("Goal definition failed: reason=%s attempt=%s", reason, attempt + 1)
                 if isinstance(exc, ModelError) and not exc.retryable:
                     break
+        if decision is not None:
+            decision = measure_decision(request.prompt, decision, request.context)
         seconds = round(time.perf_counter() - start, 3)
         if decision is None:
             await ctx.yield_output(PlanOutcome(status="failed", source=self.source,

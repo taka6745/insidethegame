@@ -10,7 +10,7 @@ Saved match → normalise → timed replay → Event Hubs
 
 **Start:** follow the root [Docker setup](../../DEVELOPMENT.md), then `./dev replay`. This sends three tiny synthetic fixtures immediately; the full replay runner is still to build.
 
-**Implemented demo:** [GRF capture, translation and aligned 12-minute video](grf-demo.md).
+**Implemented demo:** [GRF capture, translation and aligned 90-minute video + HLS](grf-demo.md).
 
 **Build next:** production broker replay; map its fields to the [event contract](../../local/contracts.md); preserve source IDs/time/provenance; add a controllable replay clock and match partition key. Coordinate rebased UTC time with the ETL service's Stream Analytics windows. Keep original footage aligned with match time.
 

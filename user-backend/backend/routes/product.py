@@ -83,6 +83,10 @@ def product_router(service):
     async def ask(token: UUID, body: MessageRequest):
         return await service.questions.ask(token, body.request_id, body.prompt)
 
+    @router.get('/{token}/turns/{turn_id}/replay/{page}')
+    async def replay_page(token: UUID, turn_id: int, page: int):
+        return await service.questions.replay_page(token, turn_id, page)
+
     @router.post('/{token}/offers/{offer_id}/track')
     async def track(token: UUID, offer_id: UUID):
         return await service.track(token, offer_id)

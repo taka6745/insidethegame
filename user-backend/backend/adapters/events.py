@@ -3,12 +3,15 @@
 It is not a licensed Opta schema implementation. No vendor numeric codes are
 assumed. Real feed mappings belong in another implementation of EventAdapter.
 """
-from typing import Protocol
+from typing import Protocol, get_args
 from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from backend.models.events import Event, EventType
+from backend.models.events import Coordinate, Event, EventType, QualifierType, QualifierValue
+
+
+_KNOWN_QUALIFIERS = frozenset(get_args(QualifierType))
 
 
 class EventAdapter(Protocol):
@@ -18,8 +21,8 @@ class EventAdapter(Protocol):
 
 class _Qualifier(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    type: str
-    value: str | int | float
+    type: str = Field(min_length=1, max_length=60)
+    value: QualifierValue
 
 
 class _RawEvent(BaseModel):
@@ -35,7 +38,10 @@ class _RawEvent(BaseModel):
     timeMin: int = Field(ge=0, le=200)
     timeSec: int = Field(ge=0, le=59)
     outcome: str | None = None
-    qualifiers: list[_Qualifier] = Field(default_factory=list, max_length=32)
+    x: Coordinate | None = None
+    y: Coordinate | None = None
+    possessionId: int | None = Field(default=None, ge=0)
+    qualifiers: list[_Qualifier] = Field(default_factory=list, max_length=40)
     deleted: bool = False
     synthetic: bool = True
     keyMoment: str | None = None
@@ -58,14 +64,15 @@ class _RawEvent(BaseModel):
 
 
 class OptaInspiredAdapter:
-    """Explicit field mapping. Unknown named qualifiers are preserved upstream,
-    but have no DSL meaning here; replacing this class does not change the engine.
-    Clock minutes already include the period offset (second half starts at 45).
-    Restart semantics belong to the recording's versioned data reference.
+    """Explicit field mapping. Known qualifiers stay available to services; unknown
+    named qualifiers stay upstream. Neither has DSL meaning; replacing this class does
+    not change the engine. Clock minutes already include the period offset (second half
+    starts at 45) and first-half stoppage keeps period 1. Restart semantics belong to
+    the recording's versioned data reference.
     """
     def data_reference(self) -> dict:
         from .feed_reference import FeedReference
-        return FeedReference.load(Path(__file__).parent / "feed_profiles/opta-inspired-v1.json").describe()
+        return FeedReference.load(Path(__file__).parent / "feed_profiles/opta-inspired-v2.json").describe()
 
     def adapt(self, payload: dict) -> Event:
         raw = _RawEvent.model_validate(payload)
@@ -76,5 +83,7 @@ class OptaInspiredAdapter:
             body_part=qualifiers.get("bodyPart"), period=raw.periodId,
             match_time_seconds=raw.timeMin * 60 + raw.timeSec,
             outcome=raw.outcome, distance_metres=qualifiers.get("distanceMetres"),
-            deleted=raw.deleted,
+            deleted=raw.deleted, sequence=raw.sequence, video_seconds=raw.videoSeconds,
+            x=raw.x, y=raw.y, possession_id=raw.possessionId,
+            qualifiers={k: v for k, v in qualifiers.items() if k in _KNOWN_QUALIFIERS},
         )

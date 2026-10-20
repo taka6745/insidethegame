@@ -10,6 +10,8 @@ from agent_framework.exceptions import AgentFrameworkException
 from agent_framework.openai import OpenAIChatCompletionClient
 from openai import AsyncOpenAI, APIStatusError, APIConnectionError
 
+from .usage import UsageTransport
+
 
 class ModelError(RuntimeError):
     def __init__(self, message: str, *, reason="model_error", retryable=True):
@@ -26,7 +28,8 @@ class LocalJsonModel:
                  transport: httpx.AsyncBaseTransport | None = None, *, name="development_agent"):
         self.base_url = base_url.rstrip("/")
         self.model, self.api_key = model, api_key
-        self.timeout, self.transport, self.name = timeout, transport, name
+        # Usage counting only reads token totals; it never records the model or provider.
+        self.timeout, self.transport, self.name = timeout, transport or UsageTransport(), name
 
     @classmethod
     def from_env(cls, *, name="development_agent"):

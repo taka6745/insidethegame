@@ -18,8 +18,8 @@ First run `./dev doctor`. `./dev up` and `ACCEPT_EULA=Y ./dev up azure` start co
 | User backend (`backend` profile) | FastAPI + WebSocket harness | `http://localhost:18000/docs` |
 | Demo ETL (`backend` profile) | Recorded GRF events + calculated stats | `http://localhost:18010/graphql` |
 | ETL databases (`backend` profile) | PostgreSQL `etl_history` + `etl_stats` | `localhost:15432` |
-| Narrative stub (`backend` profile) | 144 authored narratives + neutral recap archive; own SQLite volume | `http://localhost:18011/graphql` |
-| Match viewer (`backend` profile) | nginx + optional aligned video | `http://localhost:18020/` |
+| Narrative stub (`backend` profile) | Authored narratives (92 minutes × 12 buckets), tier recaps, key moments; own SQLite volume | `http://localhost:18011/graphql` |
+| Match viewer (`backend` profile) | nginx + optional aligned live HLS | `http://localhost:18020/` |
 
 Inside Docker use service names and native ports: `postgres:5432`, `etl:8000`, `narrative:8000`, `backend:8000`, `cosmos:8081`, `eventhubs:5672`, `servicebus:5672`, `sql:1433`, `graphql:5000`. Example SDK settings are in [settings.py](settings.py); all credentials there are **public local dummy values**, never cloud credentials. Cosmos uses HTTP for local Python development. Host clients must use the mapped ports above.
 
@@ -46,13 +46,13 @@ Replay → Event Hubs ─┬→ shared backend event consumer
                           Service Bus narratives → backend → viewer
 ```
 
-ETL owns PostgreSQL history/stat projections; the narrative stub owns SQLite and 144 manually authored versions. GraphQL provides historical events, computed stats and recap history. These remain replaceable demo repositories. Azure SQL/Cosmos adapters, Stream Analytics and generated narratives are still planned.
+ETL owns PostgreSQL history/stat projections; the narrative stub owns SQLite and the offline AI-authored per-minute versions. GraphQL provides historical events, computed stats and recap history. These remain replaceable demo repositories. Azure SQL/Cosmos adapters, Stream Analytics and generated narratives are still planned.
 
 The broker check publishes a unique run through the actual SDKs, verifies first-event redelivery and selected match watermarks, reads both GraphQL services and observes the `narratives` integration subscription. It restores the current live watermark afterwards. Isolated backend tests use empty broker settings and their existing HTTP doubles. No cloud throughput or distributed ownership is proved by these checks.
 
 Run broker probes serially while replay is idle or finished. They share the demo narrative cursor: a running match correctly suppresses older probe snapshots from live publication. Both probes refuse an active replay and detect it starting during their wait; they never stop or reset the viewer.
 
-`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend` starts the [12-minute GRF recording](../data-generation/docs/grf-demo.md). `./dev` mounts `.local/grf-demo-chelsea-united-v3/match.mp4` automatically when present, or accepts `DEMO_VIDEO_PATH`. Media stays ignored; the event/stat/narrative demo works without it.
+`./dev reset backend` creates a fresh match run (account profiles remain; match-scoped state resets). `./dev replay backend [minute]` starts the [90-minute GRF recording](../data-generation/docs/grf-demo.md) in real time, optionally from a minute after a fast catch-up. `./dev` mounts `.local/grf-demo-chelsea-united-90/` automatically when present, or accepts `DEMO_MEDIA_DIR`; the backend publishes its HLS segments live on the replay clock. Media stays ignored; the event/stat/narrative demo works without it.
 
 `./dev test`: three demo profiles, two Postgres databases, Cosmos document write/read/delete. Creates narrative containers if absent.
 

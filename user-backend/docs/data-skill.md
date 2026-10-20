@@ -17,7 +17,7 @@ Enable experimentally with `AGENT_DATA_SKILL=feed ./dev up backend`; `off` is th
 | File | Responsibility |
 | --- | --- |
 | [SKILL.md](../backend/agents/skills/event-data/SKILL.md) | How to read the supplied data dictionary |
-| [Feed profile](../backend/adapters/feed_profiles/opta-inspired-v1.json) | Application-owned meanings and coverage |
+| [Feed profile](../backend/adapters/feed_profiles/opta-inspired-v2.json) | Application-owned meanings and coverage |
 | [Reference builder](../backend/adapters/feed_reference.py) | Derive types, enums and bounds from the current event model; check dictionary coverage |
 | [Adapter](../backend/adapters/events.py) | Select the profile belonging to this feed and normalize vendor keys |
 | [Composition root](../backend/lab_factory.py) | Pass that adapter's reference into the workflow |

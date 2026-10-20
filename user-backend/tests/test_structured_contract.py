@@ -33,7 +33,7 @@ def test_defaulted_fields_keep_original_types_and_constraints():
     assert set(goal['required']) == set(goal['properties'])
     assert goal['properties']['event_types']['type'] == 'array'
     assert 'anyOf' not in goal['properties']['event_types']
-    assert goal['properties']['operation']['enum'] == ['count', 'sum']
+    assert goal['properties']['operation']['enum'] == ['count', 'sum', 'average', 'percentage', 'ratio', 'difference']
     assert {'type':'null'} in goal['properties']['after_seconds']['anyOf']
     assert goal['properties']['after_seconds']['anyOf'][0]['maximum'] == 12000
     assert branch(schema, 'ClarificationWire')['properties']['options']['maxItems'] == 5

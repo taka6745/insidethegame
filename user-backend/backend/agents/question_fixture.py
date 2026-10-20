@@ -1,9 +1,13 @@
 """Explicit development double. Does not masquerade as a general language model."""
 from backend.models.questions import QuestionDraft
+from .question import replay_draft
+from .replay_fixture import FixtureReplayAgent, is_replay
 
 class FixtureQuestionAgent:
     mode = 'fixture'
     async def answer(self, prompt, context, tools):
+        if is_replay(prompt):
+            return replay_draft(await FixtureReplayAgent().plan(prompt, context, tools.replay))
         text = prompt.lower().strip().rstrip('?')
         if text in ('what is offside', "what's offside", 'explain offside'):
             return QuestionDraft(answer_kind='football',status='answer', text='A player can be offside when they become involved in play from an offside position as a teammate plays the ball. Being in that position alone is not an offence.')

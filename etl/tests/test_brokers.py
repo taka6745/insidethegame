@@ -6,10 +6,10 @@ from types import SimpleNamespace
 import pytest
 from fastapi.testclient import TestClient
 
-from demo_etl.adapters.brokers import BrokerRuntime, MatchEventHandler
+from demo_etl.adapters.brokers import BrokerRuntime, MatchEventHandler, SnapshotPublisher
 from demo_etl.routes.http import create_app
 from demo_etl.services.match import MatchService
-from test_etl import MemoryHistory, MemoryStats, payload, recording
+from test_etl import MemoryHistory, MemoryStats, owned_payload, payload, recording
 
 
 class Partition:
@@ -25,21 +25,23 @@ class Publisher:
         self.fail_once = False
 
     async def publish(self, snapshot):
+        await self.publish_many([snapshot])
+
+    async def publish_many(self, snapshots):
         self.calls += 1
         # Notification must never precede readable history and stats.
-        self.service.payload(snapshot.snapshot.id)
+        for snapshot in snapshots:
+            self.service.payload(snapshot.snapshot.id)
         if self.fail_once:
             self.fail_once = False
             raise RuntimeError('Temporary broker outage')
-        self.messages.append(snapshot)
+        self.messages.extend(snapshots)
 
 
 @pytest.fixture
 def setup(tmp_path):
     service = MatchService(MemoryHistory(), MemoryStats(), recording(tmp_path))
-    data = payload()
-    data.snapshot.recording_hash = service.recording.fingerprint
-    data.snapshot.id = data.digest()
+    data = owned_payload(service.recording)
     metadata = data.model_copy(update={'events': []})
     body = {'type': 'MatchEvent', 'version': 1,
             'snapshot': metadata.model_dump(mode='json'),
@@ -91,10 +93,11 @@ def test_retry_incomplete_store_before_notification(setup):
     assert publisher.calls == 1
 
 
-@pytest.mark.parametrize('change', ['event', 'cursor', 'hash', 'events', 'version'])
+@pytest.mark.parametrize('change', ['event', 'video', 'cursor', 'hash', 'events', 'version'])
 def test_invalid_message_is_rejected_without_notification_or_storage(setup, change):
     service, publisher, body = setup
     if change == 'event': body['event']['event_type'] = 'goal'
+    elif change == 'video': body['event']['video_seconds'] = 99.0
     elif change == 'cursor': body['snapshot']['snapshot']['cursor'] = 99
     elif change == 'hash': body['snapshot']['snapshot']['recording_hash'] = 'foreign'
     elif change == 'events': body['snapshot']['events'] = [body['event']]
@@ -174,3 +177,99 @@ def test_runtime_shutdown_cancels_receiver_and_closes_clients():
         assert runtime.task.cancelled()
         assert runtime.consumer.closed and runtime.publisher.closed
     asyncio.run(run())
+
+
+def test_runtime_starts_before_now_and_resumes_each_partition_after_reconnect(monkeypatch):
+    from datetime import datetime, timezone
+    sleep = asyncio.sleep
+    monkeypatch.setattr('demo_etl.adapters.brokers.asyncio.sleep', lambda _: sleep(0))
+    seen = datetime(2026, 10, 19, tzinfo=timezone.utc)
+    positions = []
+
+    class Consumer:
+        async def get_partition_ids(self):
+            return ['0', '1']
+
+        async def receive_batch(self, on_event_batch, max_batch_size, starting_position):
+            positions.append(starting_position)
+            if len(positions) == 1:
+                await on_event_batch(SimpleNamespace(partition_id='1'), [SimpleNamespace(enqueued_time=seen)])
+                raise RuntimeError('connection lost')
+            raise asyncio.CancelledError
+
+    class Handler:
+        async def on_event_batch(self, partition, events):
+            pass
+
+    runtime = BrokerRuntime.__new__(BrokerRuntime)
+    runtime.consumer, runtime.handler = Consumer(), Handler()
+    with pytest.raises(asyncio.CancelledError):
+        asyncio.run(runtime.run())
+    start = positions[0]['0']
+    assert positions[0] == {'0': start, '1': start} and start < datetime.now(timezone.utc)
+    assert positions[1] == {'0': start, '1': seen}
+
+
+def test_producer_may_omit_v3_fields_owned_by_the_recording(setup):
+    service, publisher, body = setup
+    for key in ('sequence', 'video_seconds', 'x', 'y', 'possession_id', 'qualifiers'):
+        body['event'].pop(key)
+    partition = Partition()
+    asyncio.run(MatchEventHandler(service, publisher, retry_seconds=0).on_event(partition, delivery(body)))
+    assert publisher.calls == 1
+    assert service.payload(body['snapshot']['snapshot']['id']).events[-1].video_seconds == 2
+
+
+def test_batch_commits_and_announces_only_the_newest_snapshot_and_checkpoints_once(setup):
+    service, publisher, body = setup
+    invalid = delivery({'type': 'MatchEvent', 'version': 1})
+    partition = Partition()
+    events = [delivery(body), invalid, delivery(body)]
+    asyncio.run(MatchEventHandler(service, publisher, retry_seconds=0).on_event_batch(partition, events))
+    assert service.payload(body['snapshot']['snapshot']['id']).events
+    assert publisher.calls == 1 and partition.checkpoints == [events[-1]]
+    assert len(publisher.messages) == 1  # Same snapshot twice: only the newest is announced.
+
+
+def test_backlog_commits_only_its_newest_snapshot_with_full_history(tmp_path):
+    service = MatchService(MemoryHistory(), MemoryStats(), recording(tmp_path, count=2))
+    publisher = Publisher(service)
+    events = list(service.recording.events)
+    bodies = []
+    for count in (len(events) - 1, len(events)):
+        data = payload(events[:count])
+        data.snapshot.recording_hash = service.recording.fingerprint
+        data.snapshot.id = data.digest()
+        bodies.append({'type': 'MatchEvent', 'version': 1,
+                       'snapshot': data.model_copy(update={'events': []}).model_dump(mode='json'),
+                       'event': data.events[-1].model_dump(mode='json')})
+    asyncio.run(MatchEventHandler(service, publisher, retry_seconds=0).on_event_batch(
+        Partition(), [delivery(body) for body in bodies]))
+    assert [m.snapshot.id for m in publisher.messages] == [bodies[-1]['snapshot']['snapshot']['id']]
+    assert len(service.payload(bodies[-1]['snapshot']['snapshot']['id']).events) == len(events)
+    with pytest.raises(KeyError):
+        service.payload(bodies[0]['snapshot']['snapshot']['id'])
+
+
+def test_publisher_splits_announcements_that_exceed_one_send():
+    """Service Bus rejects oversized sends; a burst is split into size-bounded batches, in order."""
+    class Batch(list):
+        def add_message(self, message):
+            if len(self) == 2:
+                raise ValueError('MessageSizeExceededError')
+            self.append(message.message_id)
+
+    class Sender:
+        sent = []
+
+        async def create_message_batch(self):
+            return Batch()
+
+        async def send_messages(self, batch):
+            self.sent.append(list(batch))
+
+    snapshots = [SimpleNamespace(snapshot=SimpleNamespace(id=f's{i}'), model_dump=lambda mode: {}) for i in range(5)]
+    publisher = SnapshotPublisher.__new__(SnapshotPublisher)
+    publisher.sender = Sender()
+    asyncio.run(publisher.publish_many(snapshots))
+    assert publisher.sender.sent == [['s0', 's1'], ['s2', 's3'], ['s4']]

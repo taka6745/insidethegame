@@ -29,6 +29,9 @@ class RuleHarness:
         expected = goal.target_rule(match_id)
         if candidate.calculation_id != expected.calculation_id:
             raise ValueError("Rule does not exactly preserve the goal's operation, entities and time boundaries")
+        if candidate.composite:
+            # Exact canonical identity also verifies both independently validated leaves.
+            return
         # Exercise contributions on a representative event, time edges and a different match.
         # Expected meaning is established by the goal, never supplied by the coding model.
         base = {"event_id": "validation", "match_id": match_id,

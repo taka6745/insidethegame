@@ -8,5 +8,7 @@
 !benchmarks/*.py
 !benchmarks/prompts/*.txt
 !benchmarks/prompts/*.json
+!benchmarks/replay_cases.json
+!benchmarks/question_cases.json
 **/__pycache__
 **/*.pyc

@@ -834,7 +834,7 @@ dialog .muted {
     display: none;
   }
   .workspace {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0,1fr);
   }
   .setup {
     padding: 22px;
@@ -846,8 +846,14 @@ dialog .muted {
     gap: 15px;
   }
   .club {
-    width: 100px;
+    width: auto;
+    flex: 1;
+    min-width: 0;
     gap: 8px;
+  }
+  .match-center {
+    gap: 10px;
+    padding: 4px 14px 16px;
   }
   .club h2 {
     font-size: 12px;

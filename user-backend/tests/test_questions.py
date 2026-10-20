@@ -49,6 +49,8 @@ def test_standard_stats_are_upstream_and_no_custom_rule_or_history(store):
         assert reply['status'] == 'answer',reply
         assert reply['snapshot']['match_id'] == lab.source.match_id
         assert reply['snapshot']['cursor'] == 15
+        # Every reply carries its usage; fixture answers make no model calls.
+        assert reply['usage']['calls'] == 0 and reply['usage']['seconds'] >= 0
         assert reply['evidence'][0]['id'] == 'stat:all:shots'
         assert reply['offers'][0]['kind'] == 'standard'
         assert reply['offers'][0]['standard_stat_id'] == 'all:shots'
@@ -312,7 +314,28 @@ def test_statistical_fallback_propagates_planner_clarification_or_unsupported(st
         assert reply['offers']==[]
         assert '999' not in reply['text']
         if planner_status=='clarification':assert reply['text']=='Which kind of header?'
-        else:assert reply['text'].startswith('Sorry')
+        else:assert reply['text']=='Sorry, I cannot answer that. Which kind of header?'
+
+
+def test_failed_plan_and_exceptions_stay_generic(store):
+    from backend.agents.models import PlanOutcome
+    class Statistical:
+        mode='fixture'
+        async def answer(self,*args):
+            return QuestionDraft(answer_kind='statistic',status='answer',text='?',statistic_request='headers')
+    class Planner:
+        calls=0
+        async def plan(self,request,context):
+            self.calls+=1
+            if self.calls>1:
+                raise RuntimeError('provider body must not leak')
+            return PlanOutcome(status='failed',source='fixture',message='Could not validate the calculation after 3 repairs.')
+    lab,service,_,app=build(store,Statistical())
+    service.planner=Planner()
+    with TestClient(app) as client:
+        token=session(client)
+        assert ask(client,token,'headers').json()['text']=='Sorry, I cannot answer that from the information available.'
+        assert ask(client,token,'headers').json()['text']=='Sorry, I could not answer that. Please try again.'
 
 
 def test_missing_statistic_source_does_not_accept_numerical_prose(store):
@@ -354,3 +377,25 @@ def test_followup_gets_prior_validated_goal_and_can_prepare_changed_scope(store)
         assert second['offers'][0]['value']==0
         assert second['goal']['period']==2
         assert lab.engine.count==0
+
+
+def test_saved_replay_pages_reuse_their_bound_and_reject_bad_pages_and_runs(store):
+    lab, service, apps, app = build(store)
+    recording = {key: value for key, value in lab.source.spec.items() if key != 'presets'}
+    # Replays cut footage, so the recording needs a video timeline.
+    recording['events'] = [{**e, 'videoSeconds': 30.0 * index} for index, e in enumerate(recording['events'])]
+    with TestClient(app) as client:
+        assert client.post('/lab/recording', content=json.dumps(recording).encode()).status_code == 200
+        for _ in range(len(lab.source.events)): client.portal.call(lab.advance)
+        token = session(client)
+        reply = ask(client, token, 'show me all the shots so far').json()
+        assert reply['status'] == 'answer' and reply['replay']['clips'], reply
+        turn = client.get(f'/lab/chat/{token}').json()['turns'][-1]
+        page = client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/0').json()
+        assert page['clips'] == reply['replay']['clips']
+        assert page['observed_until'] == reply['replay']['observed_until']
+        for bad in (reply['replay']['page_count'], -1):
+            assert client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/{bad}').status_code == 404
+        assert client.get(f'/lab/chat/{token}/turns/999999/replay/0').status_code == 404
+        client.post('/lab/reset')
+        assert client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/0').status_code == 409

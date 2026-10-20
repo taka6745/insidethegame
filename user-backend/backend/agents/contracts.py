@@ -6,7 +6,7 @@ from typing import Literal, get_args
 from pydantic import BaseModel, ConfigDict, Field, create_model
 from pydantic_core import PydanticUndefined
 
-from .models import Clarification, Goal, GoalDecision
+from .models import AggregateGoal, Clarification, Goal, GoalDecision
 
 
 def decision_contract() -> dict:
@@ -52,12 +52,15 @@ def _required_model(source: type[BaseModel]) -> type[BaseModel]:
     for name, original in source.model_fields.items():
         # Tightening nested JSON Schema without changing its validator can silently
         # fill missing fields or drop extras. Require an explicit wire adapter first.
-        if contains_model(original.annotation):
+        annotation = original.annotation
+        if name == "inputs" and issubclass(source, Goal):
+            annotation = tuple[_required_model(AggregateGoal), ...]
+        elif contains_model(original.annotation):
             raise ValueError("Nested model fields require an explicit strict wire adapter")
         field = deepcopy(original)
         field.default = PydanticUndefined
         field.default_factory = None
-        fields[name] = (original.annotation, field)
+        fields[name] = (annotation, field)
     return create_model(f"{source.__name__}Wire", __base__=source, **fields)
 
 

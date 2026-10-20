@@ -1,10 +1,27 @@
-# Optional aligned local GRF match video. Not part of the application image.
+# Optional local GRF match media (ignored .local/ output). Not part of any application image.
+# The backend publishes packaged HLS segments on the replay clock into a shared volume;
+# nginx serves only what has been published, so footage past the live edge is unreachable.
 services:
-  frontend:
+  backend:
+    environment:
+      HLS_SOURCE_DIR: /media-source/hls
+      HLS_PUBLISH_DIR: /media-live
+      REPLAY_HLS_PLAYLIST: /media-source/hls/match.m3u8
+      REPLAY_HLS_BASE: /media/hls/
     volumes:
       - type: bind
-        source: ${DEMO_VIDEO_PATH:?Set DEMO_VIDEO_PATH to an absolute local MP4 path}
-        target: /usr/share/nginx/html/media/simulator.mp4
+        source: ${DEMO_MEDIA_DIR:?Set DEMO_MEDIA_DIR to an absolute packaged GRF output directory}
+        target: /media-source
         read_only: true
         bind:
           create_host_path: false
+      - live-media:/media-live
+  frontend:
+    volumes:
+      - type: volume
+        source: live-media
+        target: /usr/share/nginx/html/media/hls
+        read_only: true
+
+volumes:
+  live-media:

@@ -10,12 +10,15 @@ from .question_instructions import QUESTION_INSTRUCTIONS
 from .question_contracts import QuestionDecision
 from .question_intent import QuestionIntentRouter
 from .football_reference import load_reference
+from .replay import ReplayAgent
+from .measurement_support import measurement_support
 
 class QuestionAgent:
     mode = 'local'
-    def __init__(self, settings=None, *, router=None):
+    def __init__(self, settings=None, *, router=None, replay=None):
         self.settings = settings or LocalJsonModel.from_env(name='match_question')
         self.router = router or QuestionIntentRouter(self.settings)
+        self.replay = replay or ReplayAgent(self.settings)
 
     async def answer(self, prompt, context, tools):
         tools.original_prompt = prompt
@@ -26,11 +29,16 @@ class QuestionAgent:
             return QuestionDraft(answer_kind="statistic", status="answer",
                                  text="Checking the requested statistic.")
         if intent.route == "clarification":
-            return QuestionDraft(answer_kind="match", status="clarification", text=intent.question)
+            return QuestionDraft(answer_kind="match", status="clarification", text=intent.question,
+                                 clarification={"question": intent.question, "options": intent.options,
+                                                "allow_free_text": intent.allow_free_text})
+        if intent.route == "replay":
+            return replay_draft(await self.replay.plan(prompt, context, tools.replay))
         if intent.route == "unsupported":
             return QuestionDraft(answer_kind="match", status="unsupported",
-                                 text="Sorry, I cannot answer that.")
-        context = {**context, "request_kind": intent.route}
+                                 text="Sorry, I can only answer questions about football and this match.")
+        context = {**context, "request_kind": intent.route,
+                   "measurement_support": measurement_support(context.get('data_reference', {}))}
         if intent.route == "football":
             context["football_reference"] = load_reference()
         @tool(max_invocations=6)
@@ -70,3 +78,10 @@ class QuestionAgent:
         if response.finish_reason == 'length':
             raise ValueError('Truncated question answer')
         return QuestionDecision.model_validate_json(response.text).draft(tools)
+
+
+def replay_draft(decision):
+    """The specialist's evidence plan becomes a reply; clip seconds are cut by the service."""
+    return QuestionDraft(answer_kind='replay', status=decision.status, text=decision.text,
+                         replay_items=[item.model_dump() for item in decision.items],
+                         refine_offer=decision.refine_offer)

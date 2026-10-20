@@ -5,12 +5,13 @@ from unittest.mock import AsyncMock
 import pytest
 from fastapi.testclient import TestClient
 
-from narrative_demo.adapters.service_bus import handle_message
+from narrative_demo.adapters.service_bus import handle_message, handle_messages
 from narrative_demo.app import create_app
 from narrative_demo.models.brokers import SnapshotReady
 from narrative_demo.repositories.snapshots import SnapshotRepository
 from narrative_demo.services.broker_delivery import NarrativeDelivery
-from test_narrative_demo import payload, setup
+from synthetic import payload
+from test_narrative_demo import setup
 
 
 def metadata(cursor=2, run='run', captured='2026-10-19T01:00:00+00:00'):
@@ -24,7 +25,7 @@ class Service:
     def __init__(self, repository):
         self.repository = repository
         self.capture = AsyncMock()
-        self.document = {'items': [{'id': 'narrative', 'text': 'Chelsea keep possession.'}],
+        self.document = {'items': [{'id': 'narrative', 'text': 'Chelsea keep possession.', 'buckets': ['home:simple']}],
                          'events': [], 'audience_revision': 'one'}
 
     def read(self, snapshot_id, operation):
@@ -216,3 +217,21 @@ def test_final_cursor_cannot_roll_back_period_or_finished_clock():
         service.capture.assert_awaited_with(final, viewer=True)
         assert publisher.send.await_count == 1
     asyncio.run(check())
+
+
+def test_live_message_keeps_latest_minutes_per_bucket_within_limit():
+    from narrative_demo.services.broker_delivery import LIVE_PER_BUCKET, live_window
+    items = [{'id': f'p1-m{minute}:{bucket}', 'buckets': [bucket]} for minute in range(1, 96)
+             for bucket in ('home:simple', 'away:simple')]
+    kept = live_window(items)
+    assert len(kept) == 2 * LIVE_PER_BUCKET and kept == items[-len(kept):]
+
+
+def test_backlog_narrates_only_the_newest_snapshot_and_settles_all():
+    receiver, delivery = AsyncMock(), AsyncMock()
+    messages = [json.dumps({'type': 'MatchSnapshotReady', 'version': 1, 'snapshot': metadata(cursor).model_dump()})
+                for cursor in (2, 3, 4)] + ['not JSON']
+    asyncio.run(handle_messages(receiver, messages, delivery))
+    assert [call.args[0].snapshot.cursor for call in delivery.capture.await_args_list] == [4]
+    assert [call.args[0] for call in receiver.complete_message.await_args_list] == messages[:3]
+    receiver.dead_letter_message.assert_awaited_once()

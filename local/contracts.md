@@ -40,7 +40,7 @@ The replay source loads `GET /demo/recording`, then publishes versioned `MatchEv
 
 ETL publishes ready snapshots to `match-notifications`. The narrative stub reads the ETL demo snapshot endpoint, archives neutral recaps and releases authored versions to `narratives`. GraphQL remains the read path for stats, raw event investigations and historical recaps. Emulator delivery uses Azure SDKs; the recording and repositories remain demo implementations, not Stream Analytics or cloud deployment.
 
-The narrative engine reads `GET /matches/{match_id}/audience-config` from the backend. Connected combinations are enabled; all 12 definitions remain. The manual stub contains 12 releases × 12 buckets but only returns currently enabled combinations. Question reads never trigger bucket generation. Jev, clips and delayed playback remain Phase 2.
+The narrative engine reads `GET /matches/{match_id}/audience-config` from the backend. Connected combinations are enabled; all 12 definitions remain. The manual stub contains 92 minute releases × 12 buckets but only returns currently enabled combinations. Question reads never trigger bucket generation. Chat replay clips are implemented; Jev and delayed live playback remain Phase 2.
 
 ## Product viewer projection
 

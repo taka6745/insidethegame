@@ -4,6 +4,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .clock import position
+
 
 class Checkpoint(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -30,9 +32,9 @@ class SnapshotInput(BaseModel):
             raise ValueError('Snapshot cursor must equal its observed delivery count')
         if any(event.get('match_id') != self.snapshot.match_id for event in self.events):
             raise ValueError('Event belongs to another match')
-        if any(event.get('match_time_seconds', -1) < 0 or
-               event['match_time_seconds'] > (self.snapshot.clock_seconds or 0)
-               for event in self.events):
+        # Broadcast clock restarts each period, so compare (period, seconds).
+        observed = (self.snapshot.period or 1, self.snapshot.clock_seconds or 0)
+        if any(event.get('match_time_seconds', -1) < 0 or position(event) > observed for event in self.events):
             raise ValueError('Event exceeds the observed match clock')
         raw = self.model_dump(mode='json')
         raw['snapshot'].pop('id')

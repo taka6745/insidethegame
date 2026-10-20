@@ -1,62 +1,84 @@
 {
-  "recording_hash": "348a339fcfac735019b0bef96fcf2649ecad208043abd40363b1f55a246a9e43",
+  "recording": "data-generation/recordings/chelsea-united-grf.json",
+  "recording_hash": "099cff6bdb9cae0190bc8becd4b2dd73f355738c2fb2d7f25b0e25b4ed2d4bcf",
+  "match_id": "product-demo-match",
   "cases": [
     {
       "id": "standard",
-      "prompt": "How many shots has Madrid had this game?",
-      "review": "5, including goals as shots; one-off no live rule",
-      "standard_stat_id": "madrid:shots"
+      "prompt": "How many shots has Chelsea had this game?",
+      "review": "16 (14 shots + 2 goals); ETL stat, no custom rule",
+      "standard_stat_id": "chelsea:shots",
+      "offers": [["chelsea:shots", 16]]
+    },
+    {
+      "id": "standard-restarts",
+      "prompt": "How many corners has Manchester United taken?",
+      "review": "3 corners taken",
+      "standard_stat_id": "manutd:corners",
+      "offers": [["manutd:corners", 3]]
+    },
+    {
+      "id": "possession",
+      "prompt": "What is the possession split?",
+      "review": "ETL possession per team, never an event count: Chelsea 53.2%, United 46.8%",
+      "standard_stat_id": "all:possession",
+      "offers": [["chelsea:possession", 53.2], ["manutd:possession", 46.8]]
     },
     {
       "id": "custom",
-      "prompt": "How many headed shots has Mbapp\u00e9 had this game, including goals?",
-      "review": "3; offer tracking; no live registration before click",
-      "offer_value": 3
+      "prompt": "How many passes did Chelsea make in the second half?",
+      "review": "479; custom period-2 count, offer Track, no live registration",
+      "offer_value": 479
     },
     {
       "id": "followup",
-      "prompt": "What about in the second half?",
-      "review": "2 for Mbappe headed shots including goals",
-      "offer_value": 2
+      "prompt": "What about Manchester United?",
+      "review": "291 United second-half passes; period kept",
+      "offer_value": 291
     },
     {
-      "id": "ambiguous",
-      "prompt": "How many headers?",
-      "review": "Clarify headed passes, headed shots, all recorded headed contacts, whose",
-      "status": "clarification"
+      "id": "composite",
+      "prompt": "What percentage of Chelsea's passes were completed in the second half?",
+      "review": "358 / 479 = 74.74%; composite percentage, unknown outcomes excluded (none here)",
+      "offer_value": 74.739
     },
     {
       "id": "clarification",
-      "prompt": "All recorded headed contacts by Mbapp\u00e9 across the whole match.",
-      "review": "6; not just shots",
-      "offer_value": 6
+      "prompt": "How many shots has he had?",
+      "review": "Ask which player; no guess",
+      "status": "clarification"
     },
     {
-      "id": "time",
-      "prompt": "How many Chelsea corners were awarded after 60:00, excluding exactly 60:00?",
-      "review": "5",
-      "offer_value": 5
+      "id": "clarification-answer",
+      "prompt": "Reece James",
+      "review": "4 (2 shots + 2 goals); shots metric kept",
+      "offer_value": 4
     },
     {
-      "id": "overview",
+      "id": "match",
       "prompt": "How is Chelsea looking this game?",
-      "review": "Current score 1-0, Chelsea red card at74, no invented possession or pressure."
+      "review": "Chelsea won 2-1: Reece James 27' and 66', Šeško 60'; Mainoo sent off (second yellow 51'). No invented tactics or xG.",
+      "answer_kind": "match"
     },
     {
-      "id": "archive",
-      "prompt": "What happened up to and including 10:00 in the first half?",
-      "review": "Recorded Mbappe headed pass at2 and saved headed shot at10; archive/event drilldown"
-    },
-    {
-      "id": "general",
+      "id": "football",
       "prompt": "What does offside mean?",
-      "review": "Short football explanation, no match invention"
+      "review": "Short football explanation, no match invention",
+      "answer_kind": "football"
     },
     {
-      "id": "unsupported",
-      "prompt": "What is Mbapp\u00e9\u2019s current heart rate?",
-      "review": "Short apology, no substitute stat or invented number",
-      "status": "unsupported"
+      "id": "unsupported-speed",
+      "prompt": "What is Cole Palmer's top speed?",
+      "review": "Names the missing tracking/speed data; no substitute stat",
+      "status": "unsupported",
+      "text_includes": ["speed"]
+    },
+    {
+      "id": "unsupported-xg",
+      "prompt": "What is Chelsea's xG?",
+      "review": "Names missing xG; no substitute stat",
+      "status": "unsupported",
+      "text_includes": ["xg"]
     }
   ]
 }

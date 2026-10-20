@@ -25,6 +25,12 @@ class BrokerQuestionData(GraphQLQuestionData):
         except TimeoutError as exc:
             raise RuleError('snapshot_unavailable', 'The match feed is catching up. Please try again.', 503) from exc
 
+    async def observed_cursor(self, snapshot):
+        """Narratives skip backlog snapshots; questions pin to one the service observed."""
+        if self.inbox is None:
+            return None
+        return await asyncio.to_thread(self.inbox.latest_cursor, snapshot.run_id, snapshot.cursor)
+
     async def read(self, snapshot, operation, **filters):
         if operation != 'viewer' or self.inbox is None:
             return await super().read(snapshot, operation, **filters)

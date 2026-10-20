@@ -155,7 +155,7 @@ def test_provider_ignoring_native_schema_gets_same_prompt_contract_and_one_repai
         async def complete(self, instructions, payload, *, response_schema):
             self.calls += 1
             assert payload["routing_schema"] == response_schema
-            assert set(response_schema["required"]) == {"route", "question"}
+            assert set(response_schema["required"]) == {"route", "question", "options", "allow_free_text"}
             assert "route" in payload["routing_schema"]["properties"]
             if self.calls == 1:
                 return {"intent": "statistic"}  # Actual non-enforcing provider response.

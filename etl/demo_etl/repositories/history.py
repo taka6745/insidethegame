@@ -42,14 +42,18 @@ class HistoryRepository:
                 raise ValueError('Run identity or catalogue cannot change')
             conn.execute('INSERT INTO demo_runs VALUES (%s,%s,%s) ON CONFLICT DO NOTHING',
                          (run,payload.snapshot.recording_hash,Jsonb(catalogue)))
-            existing = conn.execute('SELECT position,event FROM demo_deliveries WHERE run_id=%s AND position<=%s ORDER BY position',
-                                    (run,payload.snapshot.cursor)).fetchall()
-            for position, event in existing:
-                if event != payload.events[position-1].model_dump(mode='json'):
+            # Deliveries are append-only: the stored count and its last row identify the prefix,
+            # so a publish costs only its new deliveries, not a rescan of the whole match.
+            stored = conn.execute('SELECT count(*) FROM demo_deliveries WHERE run_id=%s', (run,)).fetchone()[0]
+            common = min(stored, payload.snapshot.cursor)
+            if common:
+                last = conn.execute('SELECT event FROM demo_deliveries WHERE run_id=%s AND position=%s',
+                                    (run, common)).fetchone()[0]
+                if last != payload.events[common-1].model_dump(mode='json'):
                     raise ValueError('A published delivery prefix is immutable')
             with conn.cursor() as cursor:
                 cursor.executemany('INSERT INTO demo_deliveries VALUES (%s,%s,%s) ON CONFLICT DO NOTHING',
-                    [(run,index+1,Jsonb(e.model_dump(mode='json'))) for index,e in enumerate(payload.events) if index >= len(existing)])
+                    [(run,index+1,Jsonb(e.model_dump(mode='json'))) for index,e in enumerate(payload.events) if index >= stored])
             conn.execute('INSERT INTO demo_snapshots (id,run_id,cursor,metadata) VALUES (%s,%s,%s,%s) ON CONFLICT DO NOTHING',
                          (payload.snapshot.id,run,payload.snapshot.cursor,Jsonb(meta)))
 

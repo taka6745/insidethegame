@@ -128,7 +128,7 @@ services:
       AGENT_GOAL_OUTPUT_MODE: ${AGENT_GOAL_OUTPUT_MODE:-prompt}
       AGENT_DATA_SKILL: ${AGENT_DATA_SKILL:-off}
       AGENT_PLAN_TIMEOUT_SECONDS: ${AGENT_PLAN_TIMEOUT_SECONDS:-60}
-      QUESTION_TIMEOUT_SECONDS: ${QUESTION_TIMEOUT_SECONDS:-60}
+      QUESTION_TIMEOUT_SECONDS: ${QUESTION_TIMEOUT_SECONDS:-90}
       QUESTION_MAX_ACTIVE: ${QUESTION_MAX_ACTIVE:-4}
       BACKEND_MODE: fixture
       ENABLE_DEV_FEED: "1"
@@ -206,6 +206,10 @@ services:
       DEMO_RECORDING_URL: ""
       MATCH_EVENTHUB_CONNECTION_STRING: ""
       NARRATIVE_SERVICEBUS_CONNECTION_STRING: ""
+    # The shipped recording and narrative fixtures, for tests that check against real match data.
+    volumes:
+      - ../data-generation/recordings:/data-generation/recordings:ro
+      - ../narrative-engine/fixtures:/narrative-engine/fixtures:ro
 
   frontend:
     build: ../frontend

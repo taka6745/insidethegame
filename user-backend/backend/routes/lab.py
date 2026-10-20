@@ -34,7 +34,7 @@ def lab_router(service):
         async for chunk in request.stream():
             content.extend(chunk)
             if len(content) > MAX_RECORDING_BYTES:
-                raise RuleError("recording_too_large", "Recording must be no larger than 2 MiB", 413)
+                raise RuleError("recording_too_large", "Recording must be no larger than 16 MiB", 413)
         filename = unquote(request.headers.get("X-Recording-Filename", "recording.json"))
         return await service.load_recording(bytes(content), filename)
 
@@ -52,7 +52,7 @@ def lab_router(service):
 
     @router.post("/replay/start")
     async def start(body: StartReplay):
-        return await service.start(body.interval_ms)
+        return await service.start(body.interval_ms, body.from_seconds)
 
     @router.post("/reset")
     async def reset():

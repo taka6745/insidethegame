@@ -21,8 +21,9 @@ def event(id='e1', **changes):
 
 def payload(events=None, **changes):
     events = events if events is not None else [event()]
+    latest = max(events,key=lambda e:(e.period,e.match_time_seconds),default=None)
     watermark = Watermark(id='',run_id='run',match_id='match',recording_hash='recording',cursor=len(events),
-        clock_seconds=max((e.match_time_seconds for e in events),default=None),period=1 if events else None,captured_at='2026-10-19T00:00:00Z',**changes)
+        clock_seconds=latest and latest.match_time_seconds,period=latest and latest.period,captured_at='2026-10-19T00:00:00Z',**changes)
     result = SnapshotInput(snapshot=watermark,events=events,teams=[{'id':'chelsea','name':'Chelsea'},{'id':'manutd','name':'Manchester United'}],players=[{'id':'palmer','name':'Cole Palmer','team_id':'chelsea'}],data_reference={})
     result.snapshot.id = result.digest()
     return result
@@ -102,7 +103,8 @@ def test_history_filters_and_pagination(service):
     assert first['has_more'] and first['total']==3
     page = service.read(data.snapshot.id,'events',start=60,end=70,eventType='pass',playerId='palmer',period=2)
     assert [e['event_id'] for e in page['items']] == ['e2']
-    with pytest.raises(ValueError): service.read(data.snapshot.id,'events',limit=101)
+    with pytest.raises(ValueError): service.read(data.snapshot.id,'events',limit=1001)
+    with pytest.raises(ValueError): service.read(data.snapshot.id,'stats',limit=101)
 
 
 def test_bad_identity_and_wrong_match_rejected(service):
@@ -121,17 +123,22 @@ def test_graphql_and_compatibility_contract(service):
     assert client.get('/demo/snapshots/'+data.snapshot.id).json()['events'][0]['event_id']=='e1'
 
 
-def recording(tmp_path):
+def recording(tmp_path, count=1):
     data = payload()
     raw = {'synthetic':True,'match_id':'match','teams':data.teams,'players':data.players,
-        'events':[{'eventId':'e1','matchId':'match','typeName':'pass','teamId':'chelsea','playerId':'palmer','periodId':1,'timeMin':0,'timeSec':20,'videoSeconds':2}],
+        'events':[{'eventId':f'e{i+1}','matchId':'match','typeName':'pass','teamId':'chelsea','playerId':'palmer','periodId':1,'timeMin':0,'timeSec':20+i,'videoSeconds':2+i} for i in range(count)],
         'possession_samples':[{'video_seconds':1,'team_id':'chelsea','duration_seconds':1},{'video_seconds':3,'team_id':'manutd','duration_seconds':1}]}
     path=tmp_path/'match.json';path.write_text(json.dumps(raw));return RecordingSource(path)
 
 
+def owned_payload(source):
+    data=payload(list(source.events));data.snapshot.recording_hash=source.fingerprint;data.snapshot.id=data.digest()
+    return data
+
+
 def test_owned_recording_materializes_metadata_only_prefix(service,tmp_path):
     service.recording=recording(tmp_path)
-    data=payload();data.snapshot.recording_hash=service.recording.fingerprint;data.snapshot.id=data.digest()
+    data=owned_payload(service.recording)
     body=data.model_dump();body.pop('events')
     client=TestClient(create_app(service))
     assert client.post('/demo/viewer-snapshots',json=body).status_code==200
@@ -177,7 +184,7 @@ def test_final_clock_exposes_tail_ownership_but_not_future_events(service,tmp_pa
     source=recording(tmp_path)
     source.document['playback']={'football_duration_seconds':5400,'duration_seconds':720}
     service.recording=source
-    data=payload();data.snapshot.recording_hash=source.fingerprint
+    data=owned_payload(source)
     data.snapshot.clock_seconds=5400;data.snapshot.period=2;data.snapshot.id=data.digest()
     service.publish(data.model_copy(update={'events':[]}),owned=True)
     assert values(service.read(data.snapshot.id,'stats')['stats'])['possession']['value']==50

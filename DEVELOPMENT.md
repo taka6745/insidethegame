@@ -16,7 +16,7 @@ For the **runnable user-backend harness**, use:
 ```sh
 ACCEPT_EULA=Y ./dev up backend  # viewer + API + demo services + messaging, then tests
 ./dev reset backend     # fresh GRF match run; account profiles stay
-./dev replay backend    # start the 12-minute aligned replay
+./dev replay backend    # start the aligned 90-minute replay (optional start minute)
 ```
 
 [Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a preset or type a request, add the validated filter, then start events. Default fixture mode needs no model account; [optional local LLM](user-backend/docs/local-llm.md) enables flexible requests. Review the [Microsoft emulator licences](local/README.md#licences) before starting. No Azure login is needed. `./dev test backend` reruns isolated backend tests and a real broker round trip without resetting the live match.
@@ -65,6 +65,6 @@ Recorded GRF events → Event Hubs → ETL → history + stats → GraphQL
                      viewer + video
 ```
 
-The checked-in recording is the exact rendered Chelsea–United simulation. Large footage remains ignored. If `.local/grf-demo-chelsea-united-v3/match.mp4` exists, `./dev` mounts it automatically; otherwise set `DEMO_VIDEO_PATH` to the matching file. See [generation instructions](data-generation/docs/grf-demo.md). Playback is 12 minutes with a 90-minute football clock; no scrubbing.
+The checked-in recording is the exact rendered Chelsea–United simulation. Large footage remains ignored. If `.local/grf-demo-chelsea-united-90/hls/match.m3u8` exists, `./dev` mounts that directory automatically; otherwise set `DEMO_MEDIA_DIR` to the matching packaged output. See [generation instructions](data-generation/docs/grf-demo.md). Playback is real time (90 minutes plus stoppage) as live HLS; viewers can ask in chat for replay clips ([replay](user-backend/docs/replay-plan.md)), with live kept as picture-in-picture.
 
 ETL owns separate local PostgreSQL history/stat databases; the narrative stub owns a SQLite archive. These are replaceable development repositories for planned Azure SQL/Cosmos. The replay publishes recorded events and snapshot watermarks through the Event Hubs emulator. ETL publishes ready snapshots through Service Bus; the narrative stub publishes authored bucket versions through another Service Bus topic. History and standard-stat reads still use GraphQL. Stream Analytics is not part of this demo. No backend standard-stat calculations or authored match stories are used by this runtime.

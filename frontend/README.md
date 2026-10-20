@@ -4,7 +4,7 @@
 
 ![Live match, statistics and two conversation tabs](architecture.svg)
 
-**Match viewer:** one live match, fixed stat slots, bucketed insights and a question tab. The stream-first layout reserves the main area for match footage, with five stat slots below and a compact Insights / Ask companion. The optional 12-minute Chelsea–United GRF video shares its timeline with the ETL recording. Start/resume and reconnect follow the shared replay clock. Clips and rewind remain phase 2. The separate filter lab stays at `/lab/`.
+**Match viewer:** one live match, fixed stat slots, bucketed insights and a question tab. The stream-first layout reserves the main area for match footage, with five stat slots below and a compact Insights / Ask companion. The optional 90-minute Chelsea–United GRF footage (live HLS) shares its timeline with the ETL recording. Start/resume and reconnect follow the shared replay clock. Replay answers play clip reels on the stage while live continues in a corner (browser-verified 20 October 2026); per-viewer rewind remains planned. Each answer shows a receipt (facts, tokens, seconds, estimated cost); the ⚙ modal sets the fixed prices used for the estimate. The separate filter lab stays at `/lab/`.
 
 ```text
 Static HTML / CSS / modules ← CDN or nginx

@@ -1,6 +1,6 @@
 # Viewer verification
 
-Latest aligned GRF, upstream-service and question/pinning checks verified locally on 19 October 2026. Earlier visual and icon checks are retained below. This is a synthetic demonstration, not a real fixture or a production capacity certification.
+Latest aligned GRF, upstream-service and question/pinning checks verified locally on 19 October 2026. Earlier visual and icon checks are retained below. This is a synthetic demonstration, not a real fixture or a production capacity certification. Rows mentioning the 12-minute recording or 144 versions are historical; the 90-minute recording with live HLS and chat replay was browser-verified on 20 October 2026.
 
 | Check | Result |
 |---|---|

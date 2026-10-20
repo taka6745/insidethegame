@@ -1,0 +1,80 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { LabView } from '../lab/view.ts';
+import { stub } from './support.ts';
+
+interface NodeDouble { textContent: string; hidden?: boolean; disabled?: boolean; replaceChildren?(): void }
+const useDocument = (getElementById: (id: string) => NodeDouble | undefined) => {
+  globalThis.document = stub<Document>({ getElementById, createElement: () => ({ textContent: '' }) });
+};
+
+test('reuse response displays its explanation without an Add action or fabricated rule', () => {
+  const nodes = new Map(['plan-result', 'plan-message', 'plan-rule', 'add-plan', 'plan-options', 'reply-form', 'reply-label', 'plan-rule-details'].map((id): [string, NodeDouble] => [id, { textContent: '', hidden: false }]));
+  const original = globalThis.document;
+  useDocument(id => nodes.get(id));
+  try {
+    new LabView().plan({ status: 'reuse', message: 'ETL already provides this standard stat.', rule: null });
+    assert.equal(nodes.get('plan-result')!.hidden, false);
+    assert.equal(nodes.get('plan-message')!.textContent, 'ETL already provides this standard stat.');
+    assert.equal(nodes.get('plan-rule')!.textContent, '');
+    assert.equal(nodes.get('plan-rule')!.hidden, true);
+    assert.equal(nodes.get('add-plan')!.hidden, true);
+  } finally { globalThis.document = original; }
+});
+
+test('clarification shows question and reply form without an executable rule', () => {
+  const nodes = new Map(['plan-result', 'plan-message', 'plan-rule', 'add-plan', 'plan-options', 'reply-form', 'reply-label', 'plan-rule-details'].map((id): [string, NodeDouble] => [id, { textContent: '', hidden: false }]));
+  const original = globalThis.document;
+  useDocument(id => nodes.get(id));
+  try {
+    new LabView().plan({ status: 'clarification', conversation_id: 'opaque', clarification: { question: 'Which player?', options: ['Mbappe', 'Palmer'] } });
+    assert.equal(nodes.get('plan-message')!.textContent, 'Which player?');
+    assert.equal(nodes.get('plan-options')!.textContent, 'Mbappe · Palmer');
+    assert.equal(nodes.get('reply-form')!.hidden, false);
+    assert.equal(nodes.get('add-plan')!.hidden, true);
+  } finally { globalThis.document = original; }
+});
+
+test('event details render untrusted raw JSON as text', () => {
+  const detail: NodeDouble = { textContent: '' };
+  const original = globalThis.document;
+  useDocument(() => detail);
+  try {
+    new LabView().inspectEvent({ raw: { text: '<script>alert(1)</script>' }, canonical: { event_type: 'pass' } });
+    assert.deepEqual(JSON.parse(detail.textContent), { raw: { text: '<script>alert(1)</script>' }, canonical: { event_type: 'pass' } });
+  } finally { globalThis.document = original; }
+});
+
+test('recording metadata uses the loaded filename and real delivery counts', () => {
+  let presetText: string[] = [];
+  const nodes = new Map(['home-team', 'away-team', 'recording-name', 'recording-meta', 'presets', 'preset-description'].map((id): [string, NodeDouble] => [id, { textContent: '',
+    replaceChildren(...children: NodeDouble[]) { if (id === 'presets') presetText = children.map(c => c.textContent); } }]));
+  const original = globalThis.document;
+  useDocument(id => nodes.get(id));
+  try {
+    new LabView().scenario({ teams: [], presets: [], recording: { filename: 'my-match.json', format: 'Opta-inspired', synthetic: true, delivery_count: 45, event_count: 42 } });
+    assert.equal(nodes.get('recording-name')!.textContent, 'my-match.json');
+    assert.equal(nodes.get('recording-meta')!.textContent, 'Synthetic fixture · Opta-inspired · 45 deliveries · 42 events');
+    assert.deepEqual(presetText, ['No ready-made requests for this recording']);
+  } finally { globalThis.document = original; }
+});
+
+test('ETL-owned recordings disable lab uploads without disabling replay', () => {
+  const nodes = new Map<string, NodeDouble>();
+  const original = globalThis.document;
+  useDocument(id => {
+    if (!nodes.has(id)) nodes.set(id, { textContent: '', replaceChildren() {} });
+    return nodes.get(id);
+  });
+  try {
+    const view = new LabView();
+    view.scenario({ teams: [], presets: [], recording_editable: false });
+    view.controls({ status: 'ready', llm: { configured: true } }, false);
+    assert.equal(nodes.get('load-recording')!.disabled, true);
+    assert.equal(nodes.get('start')!.disabled, false);
+    assert.match(nodes.get('recording-meta')!.textContent, /Source managed by ETL/);
+    view.scenario({ teams: [], presets: [], recording_editable: true });
+    view.controls({ status: 'ready' }, false);
+    assert.equal(nodes.get('load-recording')!.disabled, false);
+  } finally { globalThis.document = original; }
+});

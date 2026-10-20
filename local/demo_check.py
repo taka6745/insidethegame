@@ -20,13 +20,15 @@ async def main():
     etl = GraphQLQuestionData(etl_url, bridge='demo')
     narrative = GraphQLQuestionData(narrative_url, bridge='demo')
     run = str(uuid4())
-    for minute in (0, 1, 6, 12):
-        cursor = next((i + 1 for i,t in enumerate(source.video_times) if t >= minute * 60), len(source.events)) if minute else 0
+    half_time = next(i for i, e in enumerate(source.events) if e.event_type == 'period_end')
+    for minute in (0, 1, source.video_times[half_time] / 60 + 1, 'full'):
+        cursor = len(source.events) if minute == 'full' else next(
+            (i + 1 for i,t in enumerate(source.video_times) if t >= minute * 60), len(source.events)) if minute else 0
         events = list(source.history(cursor))
         latest = events[-1] if events else None
         snapshot = MatchSnapshot(id='',run_id=run,match_id=source.match_id,recording_hash=source.fingerprint,
-            cursor=cursor,clock_seconds=5400 if minute == 12 else latest.match_time_seconds if latest else None,
-            period=2 if minute == 12 else latest.period if latest else None,captured_at=datetime.now(timezone.utc).isoformat())
+            cursor=cursor,clock_seconds=latest.match_time_seconds if latest else None,
+            period=latest.period if latest else None,captured_at=datetime.now(timezone.utc).isoformat())
         payload = SnapshotInput(snapshot=snapshot,events=events,teams=source.spec['teams'],players=source.spec['players'],data_reference=source.data_reference())
         data = payload.model_dump(mode='json'); data['snapshot'].pop('id'); data['snapshot'].pop('captured_at')
         snapshot.id = hashlib.sha256(json.dumps(data,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -35,7 +37,7 @@ async def main():
         stats = {s['id']:s for s in (await etl.stats(snapshot))['stats']}
         expected = sum(e.event_type == 'goal' and not e.deleted for e in events)
         assert stats['all:goals']['value'] == expected
-        assert not stats['all:cards']['available'], 'Unrecorded cards cannot become false zeros'
+        assert stats['all:cards']['available'] == ('card' in source.data_reference()['capabilities']['supported_event_types'])
         page = await etl.events(snapshot,limit=100)
         assert page['total'] == len(events)
         compact = await narrative.compact(snapshot)

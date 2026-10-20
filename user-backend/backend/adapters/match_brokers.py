@@ -35,10 +35,15 @@ class MatchBrokers:
 
     async def events(self, accept):
         from azure.eventhub.aio import EventHubConsumerClient
+        # No checkpoint store: reading all retention on restart takes minutes. Deliveries before
+        # this process started belong to its predecessor; a reconnect resumes each partition after
+        # its last handled event.
+        start, resume = datetime.now(timezone.utc), {}
 
         async def receive(partition, event):
             if event is None:
                 return
+            resume[partition.partition_id] = event.enqueued_time
             try:
                 body = json.loads(event.body_as_str())
                 if not isinstance(body, dict) or body.get('type') != 'MatchEvent':
@@ -68,7 +73,9 @@ class MatchBrokers:
             try:
                 async with EventHubConsumerClient.from_connection_string(self.event_connection,
                         consumer_group=self.group, eventhub_name=self.hub) as client:
-                    await client.receive(on_event=receive, starting_position='-1')
+                    partitions = await client.get_partition_ids()
+                    await client.receive(on_event=receive,
+                                         starting_position={p: resume.get(p, start) for p in partitions})
             except asyncio.CancelledError:
                 raise
             except Exception:

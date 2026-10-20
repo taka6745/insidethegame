@@ -15,6 +15,7 @@ from backend.adapters.llm import LocalJsonModel
 from backend.agents.compiler import StructuredRuleCompiler
 from backend.agents.data_skill import EventDataSkill
 from backend.agents.semantics import GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS
+from backend.agents.measurement_support import MEASUREMENT_POLICY
 from backend.agents.orchestrator import GoalAgent
 from backend.agents.settings import AgentSettings
 from backend.agents.workflow import RuleWorkflow
@@ -79,7 +80,8 @@ def build_workflow(model_config, variant, case_timeout, observer, candidate_inst
         agent = GoalAgent(model, response_mode='schema')
     elif variant in {'skill', 'schema_skill', 'skill_added', 'schema_skill_added'}:
         structured = variant.startswith('schema')
-        instructions = ((STRUCTURED_GOAL_INSTRUCTIONS if structured else GOAL_INSTRUCTIONS)
+        # "Added" keeps the default prompt byte-identical, so only the data skill differs.
+        instructions = (MEASUREMENT_POLICY + (STRUCTURED_GOAL_INSTRUCTIONS if structured else GOAL_INSTRUCTIONS)
                         if variant.endswith('_added') else None)
         agent = GoalAgent(model, response_mode='schema' if structured else 'prompt', instructions=instructions,
                           data_skill=EventDataSkill(OptaInspiredAdapter().data_reference()))

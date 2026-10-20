@@ -1,6 +1,10 @@
 *
 !Dockerfile
 !nginx.conf
+!package.json
+!package-lock.json
+!.npmrc
+!tsconfig.json
 !lab/
 !lab/**
 !match/
@@ -10,6 +14,7 @@
 !assets/icons/*.svg
 !tools/
 !tools/build.sh
+!tools/vendor.sh
 !assets/league/
 !assets/league/*.svg
 !assets/league/fonts/

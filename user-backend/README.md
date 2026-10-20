@@ -31,8 +31,8 @@ The diagram and components below describe the target architecture; the [developm
 
 Custom stats follow **interpret / clarify → compile → validate → calculate → optional pin**. The local default uses one successful model call per turn; the model-based rule coder remains optional. Allow `AGENT_MAX_REPAIRS` repairs (default 3). Equivalent requests share one match-scoped calculation. A pin replaces the lowest-priority default stat; it is a live card, not an alert.
 
-One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. The viewer chooses any of three match allegiances and four styles independently. Connected combinations enable narrative generation targets in PostgreSQL; all twelve definitions remain stored. Phase 2 adds Jev subscriptions, clip resolution and playback-aware state.
+One active session per demo profile. Restore chat and pins on reconnect; a new tab takes over. The viewer chooses any of three match allegiances and four styles independently. Connected combinations enable narrative generation targets in PostgreSQL; all twelve definitions remain stored. Phase 2 adds Jev subscriptions. Chat replay clips are implemented: a specialist replay agent picks evidence IDs and code cuts VOD playlists ([replay](docs/replay-plan.md)).
 
-[Custom-rule storage and execution](docs/custom-calculations.md) · [Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
+[Composite metrics and follow-up choices](docs/composite-metrics.md) · [Custom-rule storage and execution](docs/custom-calculations.md) · [Full decisions and acceptance scenarios](architecture.md) · [Repository plan](../README.md)
 
 [Opt-in correctness and performance harness](benchmarks/README.md): 100 hand-authored stat cases plus negative prompts; 100–100m unique-filter stress tiers, bounded by time and memory. Excluded from normal pytest.

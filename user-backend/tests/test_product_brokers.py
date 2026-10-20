@@ -103,6 +103,8 @@ def test_narrative_inbox_revision_is_monotonic_and_survives_restart(store):
         assert not inbox.save(bucket(payload, 1))
         assert not inbox.save(bucket(payload, 2))
         assert NarrativeInbox(store).read(payload.snapshot.id)['audience_revision'] == 2
+        assert inbox.latest_cursor(payload.snapshot.run_id, 5) == 0
+        assert inbox.latest_cursor('another-run', 5) is None
     asyncio.run(run())
 
 

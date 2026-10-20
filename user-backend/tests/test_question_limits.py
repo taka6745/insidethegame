@@ -148,3 +148,27 @@ def test_reset_between_register_and_offer_link_cannot_report_tracking_success(st
 def test_invalid_active_question_limit_fails_early(limit):
     with pytest.raises(ValueError, match='QUESTION_MAX_ACTIVE'):
         QuestionService(None, None, None, None, None, None, max_active=limit)
+
+
+def test_errored_run_blocks_questions_but_not_startup_identity(store):
+    lab = make_lab(store)
+    lab.status = 'error'
+    snapshots = LabSnapshotProvider(lab)
+    with pytest.raises(RuleError):
+        asyncio.run(snapshots.identity())
+    assert asyncio.run(snapshots.identity(allow_error=True)).run_id == str(lab.run_id)
+
+
+def test_question_pins_to_newest_observed_narrative_cursor_never_later(store):
+    lab, service, app = build(store)
+    with TestClient(app) as client:
+        for _ in range(12):
+            client.portal.call(lab.advance)
+        async def observed(snapshot):
+            return 5
+        service.narratives.observed_cursor = observed
+        assert client.portal.call(service._capture).snapshot.cursor == 5
+        async def ahead(snapshot):
+            return snapshot.cursor + 3
+        service.narratives.observed_cursor = ahead
+        assert client.portal.call(service._capture).snapshot.cursor == lab.position

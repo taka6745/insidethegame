@@ -13,7 +13,7 @@ Run **`ACCEPT_EULA=Y ./dev up backend`**, then **`./dev test backend`** after ch
 | Data integrity | Duplicate/conflicting events, wrong match, VAR cancellation, invalid/stale stat selections |
 | Coding workflow | Missing data rejected before generation; wrong results/errors repaired; stop after initial attempt + three repairs |
 | ETL ownership | Standard values pass through unchanged; no raw-history query or standard recalculation, even when a custom pin is active |
-| Running stack | Recorded events → Event Hubs → ETL history/stats → Service Bus narratives; GraphQL snapshots at video minutes 0, 1, 6 and 12 |
+| Running stack | Recorded events → Event Hubs → ETL history/stats → Service Bus narratives; GraphQL snapshots at start, duplicate first event, minute 1, just after half-time and full time |
 | Structured filters | 26 scenario presets, time boundaries, membership/ranges, count/sum, corrections and retractions |
 | Shared index | 100,000 distinct rules; fixed probe bound and relevant candidate counts; equivalent-rule reuse |
 | Filter lab | Real Postgres registration, late backfill, versions, restart, reset and API validation |
@@ -22,7 +22,7 @@ Run **`ACCEPT_EULA=Y ./dev up backend`**, then **`./dev test backend`** after ch
 | Question agent | Intent routing before numeric context, snapshot-bound reads, selected one-off offers, clarification, bounded admission, persistence and reset/takeover races |
 | Narrative transport | Real Service Bus delivery into a durable inbox; unchanged bucket text; acknowledgement/dead-letter/retry unit checks |
 
-`tests/` runs domain checks plus real-Postgres tests in isolated schemas. `./dev test backend` then runs two real AMQP checks: `local/broker_check.py` verifies Event Hubs delivery, ETL GraphQL history/stats and Service Bus narratives at video minutes 0, 1, 6 and 12; `local/backend_broker_check.py` verifies the backend custom index, duplicate handling, database restore, durable narrative inbox and disabled HTTP checkpoint writes. These use separate runs, consumer groups/subscriptions and an isolated backend schema, then restore the active viewer watermark without resetting its replay or sessions. They do not test browser playback or cloud deployment.
+`tests/` runs domain checks plus real-Postgres tests in isolated schemas. `./dev test backend` then runs two real AMQP checks: `local/broker_check.py` verifies Event Hubs delivery, ETL GraphQL history/stats and Service Bus narratives at start, duplicate first event, minute 1, just after half-time and full time; `local/backend_broker_check.py` verifies the backend custom index, duplicate handling, database restore, durable narrative inbox and disabled HTTP checkpoint writes. These use separate runs, consumer groups/subscriptions and an isolated backend schema, then restore the active viewer watermark without resetting its replay or sessions. They do not test browser playback or cloud deployment.
 
 The older `backend/smoke.py` and `backend/lab_smoke.py` remain fixture-only tools, excluded from `./dev test backend`. They assume their old synthetic scenarios and can reset shared state; do not point them at the GRF demonstration. Upstream service tests run separately: [ETL](../../etl/docs/development.md) and [narrative](../../narrative-engine/docs/development.md).
 

@@ -10,6 +10,7 @@ import subprocess
 import time
 
 from .roster import TEAMS, players
+from .scenario import REALISM
 from .telemetry import TelemetryAdapter
 
 
@@ -17,14 +18,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--seconds", type=int, default=720)
+    parser.add_argument("--seconds", type=int, default=5400)
     parser.add_argument("--no-video", action="store_true")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     os.environ.setdefault("GRF_HIDDEN_WINDOW", "1")
+    os.environ["GRF_HALF_SECONDS"] = str(args.seconds // 2)
+    for name, value in REALISM.items():
+        os.environ.setdefault(name, str(value))
     import gfootball.scenarios
     from gfootball.env import create_environment
-    from gfootball.env.football_action_set import action_builtin_ai
+    from gfootball.env.football_action_set import (action_builtin_ai, action_long_pass,
+                                                    action_release_long_pass)
 
     gfootball.scenarios.__path__.append(str(Path(__file__).parent))
     env = create_environment(
@@ -49,7 +54,7 @@ def main():
     native.telemetry_enabled = True
     for left in (True, False):
         native.perform_action(action_builtin_ai._backend_action, left, 0)
-    adapter = TelemetryAdapter()
+    adapter = TelemetryAdapter(args.seconds // 2)
     encoder = None
     if not args.no_video:
         encoder = subprocess.Popen(
@@ -85,6 +90,7 @@ def main():
             stdin=subprocess.PIPE,
         )
     frames, halfway, last, started = 0, None, None, time.monotonic()
+    live_since, nudged, nudges, pressed, nudge = 0.0, 0.0, [], None, []
     completed = False
     try:
         with (
@@ -94,6 +100,17 @@ def main():
             ) as frame_file,
         ):
             while True:
+                # Native AIs occasionally freeze around a stationary owner. The owner's team
+                # presses and releases long pass (the native controller passes on release), then
+                # control returns to the built-in AI. Each stall costs one counted nudge.
+                if nudge:
+                    native.perform_action(nudge.pop(0)._backend_action, pressed, 0)
+                elif (last and last["in_play"] and last["owner"][0] in (0, 1)
+                        and video - live_since > 8 and video - nudged > 4):
+                    pressed = last["owner"][0] == 0
+                    native.perform_action(action_long_pass._backend_action, pressed, 0)
+                    nudge = [action_release_long_pass, action_builtin_ai]
+                    nudged, nudges = video, nudges + [round(video, 2)]
                 native.step()
                 video = frames / 25
                 for raw in native.drain_telemetry():
@@ -106,6 +123,8 @@ def main():
                         + "\n"
                     )
                     adapter.consume(row, video)
+                    if row["kind"] == "touch" or (row["kind"] == "frame" and not row["in_play"]):
+                        live_since = video
                     if row["kind"] == "frame":
                         last = row
                         if row["phase"] >= 2 and halfway is None:
@@ -133,12 +152,15 @@ def main():
                     }
                     (args.output / "progress.json").write_text(json.dumps(progress))
                     print(json.dumps(progress), flush=True)
+                if video - live_since > 60:
+                    # Native AIs occasionally freeze around a stationary owner; never ship that.
+                    raise RuntimeError(f"Simulation stalled at {video:.0f}s: no contact for 60 s of live play")
                 if last["match_ms"] >= args.seconds * 1000:
                     completed = True
                     break
-                if time.monotonic() - started > 2400:
+                if time.monotonic() - started > args.seconds * 10 / 3:
                     raise TimeoutError(
-                        "Capture exceeded 40 minutes; partial outputs retained"
+                        "Capture exceeded its time limit; partial outputs retained"
                     )
         adapter.finish(last, frames / 25)
     finally:
@@ -169,8 +191,10 @@ def main():
             "native_video_seconds": frames / 25,
             "native_halftime_video_seconds": halfway,
             "active_play_seconds": args.seconds,
+            "realism": {name: float(os.environ[name]) for name in REALISM},
+            # Scripted presses that un-freeze native AIs: traceable, never silent.
+            "stall_nudge_seconds": nudges,
             "score": last["score"],
-            "clock_scale": 7.5,
             "raw_sha256": hashlib.sha256(
                 (args.output / "raw.jsonl.gz").read_bytes()
             ).hexdigest(),
@@ -180,7 +204,9 @@ def main():
                 "Headed pass/shot classification requires an executed header with explicit native action intent.",
                 "Pass completion means first subsequent intentional teammate touch; event time is resolution.",
                 "Possession measures confirmed native ownership ticks; loose-ball and stoppage time excluded.",
-                "No inferred xG, successful tackles, interceptions, saves or on-target classifications; referee decisions and taken restarts are native observations.",
+                "Referee decisions and taken restarts are native observations; tackles, interceptions, saves, shot outcomes, aerials, take-ons and recoveries are rule-derived from native tracking (docs/opta-events.md).",
+                "No xG, substitutions, injuries, VAR or own-goal attribution.",
+                "Engine patched for realism (prepare_realism.py); knob values in provenance.realism.",
             ],
         },
     }

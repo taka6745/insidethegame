@@ -1,0 +1,62 @@
+name: CI
+
+# Unit and integration tests for every active service. No cloud calls and no model calls:
+# agent paths run against fixture doubles; the backend uses a throwaway local PostgreSQL.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Data generation
+        run: |
+          pip install pytest
+          cd data-generation && python -m pytest -q
+      - name: Narrative engine
+        run: |
+          pip install -r narrative-engine/requirements-dev.txt
+          cd narrative-engine && python -m pytest -q
+
+  etl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --target test -t itg-etl-test etl && docker run --rm itg-etl-test
+
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE: docker compose --env-file local/env.defaults -f local/compose.yaml
+    steps:
+      - uses: actions/checkout@v4
+      - run: $COMPOSE up -d --wait postgres
+      - run: $COMPOSE run --rm --build --no-deps backend-tests
+      - if: always()
+        run: $COMPOSE down -v
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run: {working-directory: frontend}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22", cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - run: npm ci --ignore-scripts
+      - run: npx tsc --noEmit -p .
+      - run: npm test
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./dev terraform check

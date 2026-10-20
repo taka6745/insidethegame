@@ -7,6 +7,19 @@ from datetime import datetime
 from ..models.brokers import BucketNarratives
 from ..models.snapshots import SnapshotInput
 
+LIVE_PER_BUCKET = 40  # 12 buckets × 40 fits the 480-item message; full history stays in GraphQL.
+
+
+def live_window(items):
+    """Most recent narratives per bucket, in their original chronological order."""
+    kept, counts = [], {}
+    for item in reversed(items):
+        bucket = item['buckets'][0]
+        counts[bucket] = counts.get(bucket, 0) + 1
+        if counts[bucket] <= LIVE_PER_BUCKET:
+            kept.append(item)
+    return kept[::-1]
+
 
 class NarrativeDelivery:
     def __init__(self, service, publisher):
@@ -45,7 +58,7 @@ class NarrativeDelivery:
     async def _publish(self, metadata, *, force=False):
         await self.service.capture(metadata, viewer=True)
         document = self.service.read(metadata.snapshot.id, 'viewer')
-        message = BucketNarratives(snapshot=metadata.snapshot, items=document['items'],
+        message = BucketNarratives(snapshot=metadata.snapshot, items=live_window(document['items']),
                                    events=document['events'], audience_revision=document['audience_revision'])
         body = message.model_dump(mode='json')
         # Capture timestamps are transport metadata, not new commentary.

@@ -57,7 +57,8 @@ def test_native_event_categories_are_queryable_and_extra_qualifiers_stay_upstrea
     event = OptaInspiredAdapter().adapt(raw)
     rule = Rule(match_id=event.match_id, predicates=[{'field': 'event_type', 'op': 'eq', 'value': kind}])
     assert rule.matches(event)
-    assert 'restartType' not in event.model_dump()
+    assert 'restartType' not in event.model_dump() and 'restartType' not in event.qualifiers
+    assert event.qualifiers['relatedEventId'] == 'native-20'
     assert kind in OptaInspiredAdapter().data_reference()['events']
 
 

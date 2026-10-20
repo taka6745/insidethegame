@@ -8,6 +8,7 @@ from backend.adapters.replay_source import FixtureEventSource
 from backend.agents.fixtures import FixtureCodingAgent, FixtureGoalAgent
 from backend.agents.workflow import RuleWorkflow
 from backend.app import create_app
+from backend.models.recording import MAX_RECORDING_BYTES
 from backend.repositories.lab import PostgresLabRepository
 from backend.services.lab import FilterLabService
 
@@ -177,7 +178,7 @@ def test_uploaded_recording_survives_restart_reset_and_default_restore(store):
         assert client.get("/lab/scenario").json()["recording"]["filename"] == "filter-lab.json"
 
 
-@pytest.mark.parametrize("content,expected", [(b"not json", 422), (b"{}", 422), (b"x" * (2*1024*1024+1), 413)])
+@pytest.mark.parametrize("content,expected", [(b"not json", 422), (b"{}", 422), (b"x" * (MAX_RECORDING_BYTES + 1), 413)])
 def test_invalid_recordings_preserve_current_run(store, content, expected):
     lab = make_lab(store)
     with TestClient(create_app(store, lab=lab)) as client:

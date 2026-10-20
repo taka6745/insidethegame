@@ -331,3 +331,145 @@
   from { opacity: .35; transform: translateY(1px); }
   to { opacity: 1; transform: translateY(-2px); }
 }
+
+.clarification {
+  display: grid;
+  gap: 10px;
+  padding: 4px 12px 12px;
+}
+.clarification-label {
+  color: var(--muted);
+  font-size: .75rem;
+}
+.clarification-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.clarification-option, .clarification-write {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 9px 13px;
+  border: 1px solid #825a8b;
+  border-radius: 16px;
+  background: #310b3e;
+  color: inherit;
+  font: inherit;
+  font-size: .85rem;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.clarification-option:hover:not(:disabled) { background: #4a155b; }
+.clarification-option:disabled, .clarification-write:disabled { opacity: .45; cursor: default; }
+.clarification-option:focus-visible, .clarification-write:focus-visible {
+  outline: 2px solid #00ffb2;
+  outline-offset: 3px;
+}
+.clarification-write { justify-self: start; border: 0; background: transparent; text-decoration: underline; }
+
+/* Answer receipts: facts, tokens, time and estimated cost, in one quiet line. */
+.answer-receipt {
+  margin: 4px 0 0;
+}
+.answer-receipt-line {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #a98fb6;
+  font: inherit;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+button.answer-receipt-line {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+button.answer-receipt-line:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+.answer-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+.answer-facts li {
+  padding: 2px 7px;
+  border: 1px solid #5a3a66;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #d9c7e1;
+}
+.price-settings {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #5a3a66;
+  border-radius: 50%;
+  background: transparent;
+  color: #c8b1d2;
+  font-size: 16px;
+}
+.price-settings:hover, .price-settings:focus-visible {
+  color: #fff;
+  border-color: var(--mint);
+}
+.price-dialog {
+  width: min(360px, calc(100vw - 32px));
+  padding: 18px;
+  border: 1px solid #785482;
+  border-radius: 10px;
+  background: #230530;
+  color: #fff;
+}
+.price-dialog::backdrop {
+  background: rgb(10 0 14 / 60%);
+}
+.price-dialog h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+.price-dialog p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: #c8b1d2;
+}
+.price-dialog label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.price-dialog input {
+  width: 110px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #785482;
+  border-radius: 5px;
+  background: #18001f;
+  color: #fff;
+  font: inherit;
+}
+.price-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 14px;
+}
+.price-save {
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--mint);
+  color: var(--bg);
+  font-weight: 700;
+}

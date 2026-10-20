@@ -37,7 +37,8 @@ class ProductService:
         self._audience_generation += 1
 
     async def initialize(self):
-        identity = await self.questions.snapshots.identity()
+        # A failed replay must not block startup; the viewer is told to start a new run.
+        identity = await self.questions.snapshots.identity(allow_error=True)
         await self.presence.initialize(identity.match_id, identity.run_id)
         self._task = asyncio.create_task(self._updates())
 
@@ -77,6 +78,13 @@ class ProductService:
             self.lab.changed.clear()
             try:
                 await self.refresh()
+            except RuleError as exc:
+                if exc.code != 'snapshot_unavailable':
+                    raise
+                # Upstream is still consuming the newest deliveries: keep the last consistent
+                # state on screen (if any) and try the newer cursor again shortly.
+                await asyncio.sleep(0.5)
+                self.lab.changed.set()
             except Exception:
                 logging.getLogger(__name__).warning('Product projection unavailable', exc_info=True)
                 async with self._refresh_lock:
@@ -92,13 +100,20 @@ class ProductService:
     async def refresh(self):
         async with self._refresh_lock:
             audience_generation = self._audience_generation
-            payload = await self.questions.snapshots.capture()
+            live = await self.questions.snapshots.capture()
             if self.brokers:
-                await self.brokers.prepare(payload)
+                await self.brokers.prepare(live)
             state = await self.lab.state()
-            if state['position'] != payload.snapshot.cursor or str(state['run_id']) != payload.snapshot.run_id:
+            if str(state['run_id']) != live.snapshot.run_id:
                 self.lab.changed.set()
                 return
+            if state['position'] != live.snapshot.cursor:
+                # Deliveries outpaced this capture. Publish the consistent captured snapshot rather
+                # than starve viewers, and refresh again for the newer one.
+                self.lab.changed.set()
+            # The next narrative delivery triggers another refresh when this is pinned behind live.
+            payload = await self.questions.pin(live)
+            state = {**state, 'position': payload.snapshot.cursor}
             # Commit active targets before the narrative service reads them.
             await self.presence.match(payload.snapshot.match_id, payload.snapshot.run_id)
             if self.shared and self.shared['snapshot_id'] == payload.snapshot.id and audience_generation == self._published_audience_generation:
@@ -135,7 +150,9 @@ class ProductService:
                     'stats': stats['stats'], 'calculations': {c['id']: c for c in state['calculations']}}
                 if self.lab.source.timed:
                     self.shared['match']['media'] = {'aligned': True, 'seconds': state['playback_seconds'],
-                        'sampled_at': state['playback_sampled_at'], 'url': '/media/simulator.mp4'}
+                        'sampled_at': state['playback_sampled_at'],
+                        'url': '/media/hls/live.m3u8' if self.lab.hls else '/media/simulator.mp4',
+                        'live': bool(self.lab.hls)}
                 for peer in self.live.active():
                     if peer.viewer['run_id'] != payload.snapshot.run_id:
                         peer.close(4001)
@@ -214,8 +231,10 @@ class ProductService:
                     for kind in ('goals', 'shots', 'passes', 'possession', 'pass_accuracy')]
         if any(i in available and not available[i].get('available', True) for i in stat_ids):
             stat_ids = [*stat_ids, *fallback]
+        # Both teams' possession is 100% by definition: a split question, never a card.
         defaults = [{**available[i], 'kind': 'standard'} for i in dict.fromkeys(stat_ids)
-                    if i in available and available[i].get('available', True) and i not in pinned_standard]
+                    if i in available and available[i].get('available', True) and i not in pinned_standard
+                    and i != 'all:possession']
         return {key: shared[key] for key in ('type','version','projection_epoch','synthetic','mode','match','events')} | {
             'profile': profile, 'audience': viewer['audience'], 'bucket': bucket, 'bucket_id': bucket_id,
             'cards': defaults[:self.slots - len(tracked)] + tracked,

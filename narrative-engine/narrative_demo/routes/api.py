@@ -8,17 +8,26 @@ from ..models.snapshots import GraphQLQuery, SnapshotInput
 
 def routes(service, *, broker_enabled=False):
     router = APIRouter()
+    # Authored reads are bounded by the requested snapshot's observed cursor.
     schema = build_schema('''scalar JSON
         type Query { questionData(snapshotId:ID!, operation:String!, offset:Int, limit:Int,
-        ids:[String!], tier:String, start:Int, end:Int, eventType:String, playerId:String, period:Int):JSON }''')
+        ids:[String!], tier:String, start:Int, end:Int, eventType:String, playerId:String, period:Int):JSON
+        keyMoments(snapshotId:ID!, offset:Int, limit:Int, period:Int):JSON
+        minuteRecaps(snapshotId:ID!, offset:Int, limit:Int, ids:[String!], period:Int):JSON
+        tierRecaps(snapshotId:ID!, offset:Int, limit:Int, ids:[String!], tier:String, period:Int):JSON
+        narrativeContext(snapshotId:ID!):JSON }''')
     schema.type_map['JSON'].serialize = lambda value: value
-    schema.query_type.fields['questionData'].resolve = lambda root, info, snapshotId, operation, **filters: service.read(snapshotId, operation, **filters)
+    fields = schema.query_type.fields
+    fields['questionData'].resolve = lambda root, info, snapshotId, operation, **filters: service.read(snapshotId, operation, **filters)
+    for name, operation in (('keyMoments', 'key_moments'), ('minuteRecaps', 'minute_recaps'),
+                            ('tierRecaps', 'tier_recaps'), ('narrativeContext', 'context')):
+        fields[name].resolve = lambda root, info, snapshotId, operation=operation, **filters: service.read(snapshotId, operation, **filters)
 
     @router.get('/health')
     async def health():
         return {'status': 'ok', 'role': 'narrative', 'mode': 'authored-demo-stub',
                 'transport': 'service-bus' if broker_enabled else 'http-fixture',
-                'authored_items': len(service.commentary.document['items']), 'synthetic': True}
+                'authored_minutes': len(service.commentary.document.minutes), 'synthetic': True}
 
     async def capture(body, viewer):
         if broker_enabled:

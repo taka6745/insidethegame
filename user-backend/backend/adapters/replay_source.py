@@ -14,7 +14,7 @@ class FixtureEventSource:
         path = path or Path(__file__).parents[2] / "fixtures/filter-lab.json"
         content = Path(path).read_bytes() if content is None else content
         if len(content) > self.MAX_BYTES:
-            raise ValueError("Recording must be no larger than 2 MiB")
+            raise ValueError("Recording must be no larger than 16 MiB")
         self.content = content
         self.filename = Path((filename or Path(path).name).replace("\\", "/")).name[:160]
         if not self.filename or any(ord(char) < 32 for char in self.filename):
@@ -40,7 +40,7 @@ class FixtureEventSource:
         revisions = {}
         for event in self.events:
             key = event.event_id, event.revision
-            if key in revisions and revisions[key] != event:
+            if key in revisions and not revisions[key].same_content(event):
                 raise ValueError("The same event revision has conflicting contents")
             revisions[key] = event
 
@@ -74,7 +74,7 @@ class FixtureEventSource:
                 'Named-player counts cover attributed attempts only; do not present them as complete totals. '
                 'Team shooting totals still count the scoring attempt once.']
         if capabilities := self.spec.get('capabilities'):
-            reference['capabilities'] = capabilities
+            reference['capabilities'] = dict(capabilities)
             reference['unavailable'] = [*reference['unavailable'],
                 'Only event categories listed in capabilities.supported_event_types are captured in this recording. '
                 'Missing categories are unavailable, not observed zero counts.']
@@ -94,10 +94,24 @@ class FixtureEventSource:
                 reference['guarantees'].append(
                     'Restart records count actual executions; accompanying pass/shot/goal records describe '
                     'the action. Raw restart and related-event qualifiers are not queryable canonical fields.')
+            if capabilities.get('coordinates') == 'opta_0_100':
+                reference['contract_id'] = 'synthetic-grf-opta-v3'
+                # v3 derives goals from the attempt, so the scorer is the attempting player.
+                reference['events']['goal'] = reference['events']['goal'].split(' In this GRF recording')[0]
+            if (self.spec.get('provenance', {}).get('source') ==
+                    'Google Research Football instrumented native runtime' and
+                    'touch' in capabilities.get('supported_event_types', ())):
+                # Native touch is the coalesced contact underlying action records.
+                # Its tagged subset is countable even without exhaustive body-part coverage.
+                reference['capabilities']['recorded_body_part_event_groups'] = [['touch']]
             if 'body_part_event_types' in capabilities:
                 reference['guarantees'].append(
                     'Body-part filters require an explicit event category covered by body_part_event_types '
-                    'unless body_parts is true. Missing contact metadata remains unknown.')
+                    'unless body_parts is true. Recorded-only counts may use recorded_body_part_event_groups; '
+                    'unclassified records are excluded, never inferred. Missing contact metadata remains unknown.')
+        if not (self.spec.get('capabilities') or {}).get('coordinates'):
+            reference['unavailable'] = [*reference['unavailable'],
+                'This recording has no x/y coordinates, possession_id or extended qualifiers; those fields are null or empty.']
         return reference
 
     def history(self, position):

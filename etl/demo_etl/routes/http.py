@@ -1,4 +1,5 @@
 """HTTP and GraphQL transport only; services own reads and publication."""
+import json
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Response
@@ -77,10 +78,18 @@ def create_app(service, *, brokers=None):
     def demo_snapshot(payload: SnapshotInput):
         return publish(payload,True)
 
+    identities = {}
+
     @app.get('/demo/snapshots/{snapshot_id}')
     def read_snapshot(snapshot_id: str):
         try:
-            return service.payload(snapshot_id)
+            # Identity shape only; v3 event detail is read through GraphQL. Snapshots are immutable,
+            # so the encoded body is cached: every delivery is read by the narrative service.
+            if snapshot_id not in identities:
+                if len(identities) >= 8:
+                    identities.pop(next(iter(identities)))
+                identities[snapshot_id] = json.dumps(service.payload(snapshot_id).identity_dump())
+            return Response(identities[snapshot_id], media_type='application/json')
         except KeyError as exc:
             raise HTTPException(404,'Snapshot unavailable') from exc
 

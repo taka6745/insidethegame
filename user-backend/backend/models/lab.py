@@ -18,3 +18,5 @@ class PlanRequest(BaseModel):
 class StartReplay(BaseModel):
     model_config = ConfigDict(extra="forbid")
     interval_ms: int = Field(default=500, ge=50, le=5000)
+    # Development only: a fresh timed run starts this far in, catching up earlier deliveries first.
+    from_seconds: float = Field(default=0, ge=0, le=21600)

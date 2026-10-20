@@ -4,10 +4,10 @@ cd "$(dirname "$0")"
 compose() {
   local files=(-f local/compose.yaml)
   if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
-  if [[ -z "${DEMO_VIDEO_PATH:-}" && -f .local/grf-demo-chelsea-united-v3/match.mp4 ]]; then
-    export DEMO_VIDEO_PATH="$PWD/.local/grf-demo-chelsea-united-v3/match.mp4"
+  if [[ -z "${DEMO_MEDIA_DIR:-}" && -f .local/grf-demo-chelsea-united-90/hls/match.m3u8 ]]; then
+    export DEMO_MEDIA_DIR="$PWD/.local/grf-demo-chelsea-united-90"
   fi
-  if [[ -n "${DEMO_VIDEO_PATH:-}" ]]; then files+=(-f local/compose.media.yaml); fi
+  if [[ -n "${DEMO_MEDIA_DIR:-}" ]]; then files+=(-f local/compose.media.yaml); fi
   docker compose --env-file local/env.defaults "${files[@]}" "$@"
 }
 docker_ready() {
@@ -36,11 +36,12 @@ usage() {
                          Includes the match viewer at http://localhost:18020 (filter lab: /lab/)
 ./dev test [azure|backend] Test dependencies or backend behaviour + live replay
 ./dev replay             Send the tiny synthetic fixture to Event Hubs
-./dev replay backend     Start the aligned GRF match (12-minute forward replay)
+./dev replay backend [m] Start the aligned 90-minute GRF match (real time; optional start minute m)
 ./dev reset backend      Start a fresh match run; keep account profiles
 ./dev benchmark filters  Opt-in filter performance test (no models or network)
 ./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
 ./dev benchmark values   Opt-in cached value read benchmark
+./dev benchmark replay   Opt-in replay golden set against local model (fixture: --agent fixture)
 ./dev status             Show this project's containers
 ./dev logs [service]     Show recent logs
 ./dev down               Stop this stack; keep SQL/Postgres volumes
@@ -83,7 +84,7 @@ case "${1:-help}" in
   replay)
     docker_ready
     if [[ "${2:-}" == backend ]]; then
-      compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py start
+      compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py start --from-minute "${3:-0}"
     elif [[ -z "${2:-}" ]]; then
       compose run --rm --build --no-deps tools python local/replay.py
     else
@@ -100,10 +101,14 @@ case "${1:-help}" in
       filters) module=benchmarks.performance; extra=(--output /results/performance) ;;
       agents) module=benchmarks.correctness; extra=(--agents --output /results/agents) ;;
       values) module=benchmarks.value_reads; extra=(--output /results/performance/value-reads.json) ;;
-      *) echo "Choose filters, agents or values." >&2; exit 2 ;;
+      replay) module=benchmarks.replay_eval
+              extra=(--agent local --recording /data-generation/recordings/chelsea-united-grf.json
+                     --narratives /narrative-engine/fixtures/grf-narratives.json --output /results/replay/report.json) ;;
+      *) echo "Choose filters, agents, values or replay." >&2; exit 2 ;;
     esac
     compose run --rm --build --no-deps --user "$(id -u):$(id -g)" \
       -v "$PWD/user-backend:/app:ro" -v "$PWD/data-generation:/data-generation:ro" \
+      -v "$PWD/narrative-engine:/narrative-engine:ro" \
       -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
     ;;
   status) compose --profile azure --profile backend ps ;;

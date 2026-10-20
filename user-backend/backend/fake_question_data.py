@@ -9,7 +9,7 @@ from .fake_product_narratives import viewer_narratives
 
 
 def snapshot_id(payload):
-    data = payload.model_dump(mode='json')
+    data = payload.identity_dump()
     data['snapshot'].pop('id', None)
     data['snapshot'].pop('captured_at', None)
     return hashlib.sha256(json.dumps(data, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
@@ -21,7 +21,7 @@ def observed_events(deliveries):
         previous = latest.get(event.event_id)
         if previous is None or event.revision > previous.revision:
             latest[event.event_id] = event
-    return sorted((e for e in latest.values() if not e.deleted), key=lambda e: (e.match_time_seconds, e.event_id))
+    return sorted((e for e in latest.values() if not e.deleted), key=lambda e: (e.period, e.match_time_seconds, e.event_id))
 
 
 def standard_stats(payload, events):
@@ -64,7 +64,7 @@ class FakeQuestionData:
         payload = self.snapshots.get(snapshotId) or self.viewer_snapshots.get(snapshotId)
         if payload is None:
             raise ValueError('Snapshot unavailable; capture it again')
-        if offset < 0 or not 1 <= limit <= 100:
+        if offset < 0 or not 1 <= limit <= (1000 if operation == "events" else 100):  # Matches ETL.
             raise ValueError('Invalid page')
         events = observed_events(payload.events)
         result = {'snapshot_id': snapshotId, 'match_id': payload.snapshot.match_id, 'complete': True, 'synthetic': True}

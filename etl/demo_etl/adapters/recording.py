@@ -5,6 +5,9 @@ import math
 from pathlib import Path
 from demo_etl.models.snapshot import Event
 
+MAX_BYTES = 16 * 1024 * 1024
+MAX_EVENTS = 100000
+
 
 def adapt_event(raw):
     qualifiers = {q['type']: q['value'] for q in raw.get('qualifiers', [])}
@@ -16,14 +19,16 @@ def adapt_event(raw):
         event_type=raw['typeName'], team_id=raw.get('teamId'), player_id=raw.get('playerId'),
         body_part=qualifiers.get('bodyPart'), period=raw['periodId'],
         match_time_seconds=raw['timeMin'] * 60 + raw['timeSec'], outcome=raw.get('outcome'),
-        distance_metres=qualifiers.get('distanceMetres'), deleted=raw.get('deleted', False))
+        distance_metres=qualifiers.get('distanceMetres'), deleted=raw.get('deleted', False),
+        sequence=raw.get('sequence'), video_seconds=raw.get('videoSeconds'), x=raw.get('x'), y=raw.get('y'),
+        possession_id=raw.get('possessionId'), qualifiers=qualifiers)
 
 
 class RecordingSource:
     def __init__(self, path):
         self.content = Path(path).read_bytes()
-        if len(self.content) > 2 * 1024 * 1024:
-            raise ValueError('Demo recording exceeds 2 MiB')
+        if len(self.content) > MAX_BYTES:
+            raise ValueError('Demo recording exceeds 16 MiB')
         self.fingerprint = hashlib.sha256(self.content).hexdigest()
         self.document = json.loads(self.content)
         if self.document.get('synthetic') is not True:
@@ -31,8 +36,8 @@ class RecordingSource:
         self.events = tuple(adapt_event(row) for row in self.document['events'])
         teams = {row['id'] for row in self.document['teams']}
         players = {row['id'] for row in self.document['players']}
-        if len(teams) != 2 or not 0 < len(self.events) <= 20000:
-            raise ValueError('Expected two teams and 1–20000 deliveries')
+        if len(teams) != 2 or not 0 < len(self.events) <= MAX_EVENTS:
+            raise ValueError(f'Expected two teams and 1–{MAX_EVENTS} deliveries')
         if any(e.match_id != self.document['match_id'] or e.team_id is not None and e.team_id not in teams
                or e.player_id is not None and e.player_id not in players for e in self.events):
             raise ValueError('Unknown recording participant or match')
@@ -51,21 +56,23 @@ class RecordingSource:
         expected = self.events[:payload.snapshot.cursor]
         if payload.events and tuple(payload.events) != expected:
             raise ValueError('Consumer cannot replace ETL-owned events')
+        # Broadcast clock: first-half stoppage can pass 45:00, so compare (period, time), never seconds alone.
         latest = max(expected, key=lambda e: (e.period, e.match_time_seconds), default=None)
-        clock = (payload.snapshot.clock_seconds, payload.snapshot.period)
-        expected_clock = (latest.match_time_seconds, latest.period) if latest else (None, None)
-        duration = self.document.get('playback', {}).get('football_duration_seconds')
-        finished = payload.snapshot.cursor == len(self.events) and duration is not None and clock == (duration, 2)
+        clock = (payload.snapshot.period, payload.snapshot.clock_seconds)
+        expected_clock = (latest.period, latest.match_time_seconds) if latest else (None, None)
+        # Finished means fully released; the producer may then declare its own final-whistle clock.
+        finished = (payload.snapshot.cursor == len(self.events) and None not in clock
+                    and clock[0] >= expected_clock[0])
         if clock != expected_clock and not finished:
             raise ValueError('Clock does not match the observed recording prefix')
         return payload.model_copy(update={'events': list(expected)})
 
-    def possession(self, cursor, clock_seconds=None):
+    def possession(self, cursor):
         if not cursor:
             return {}
         video_time = max(row.get('videoSeconds', 0) for row in self.document['events'][:cursor])
         playback = self.document.get('playback', {})
-        if cursor == len(self.events) and clock_seconds == playback.get('football_duration_seconds'):
+        if cursor == len(self.events):
             video_time = playback.get('duration_seconds', video_time)
         totals = {}
         for sample in self.document.get('possession_samples', []):

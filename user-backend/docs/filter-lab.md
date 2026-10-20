@@ -12,7 +12,7 @@ The default is **[`fixtures/filter-lab.json`](../fixtures/filter-lab.json)**. Ev
 
 **Download** saves the active recording. Edit a copy and choose **Load JSON** to validate it and start a fresh run. **Use demo** restores the repository file. Uploaded recordings are saved in the local Match App database and survive backend restarts. Each received event opens an inspector showing its original JSON and canonical fields.
 
-Files must be UTF-8 JSON, at most **2 MiB**, with `synthetic: true`, `match_id`, two `teams`, `players`, and a nonempty `events` array. `presets` is optional. Use the default file as the format example; its event meanings are documented [here](../fixtures/filter-lab.md). Invalid uploads preserve the current run. Loading is disabled while replay or a model request is in progress. The download includes the whole recording; live inspection only exposes already-received deliveries.
+Files must be UTF-8 JSON, at most **16 MiB** and 100,000 events, with `synthetic: true`, `match_id`, two `teams`, `players`, and a nonempty `events` array. `presets` is optional. Use the default file as the format example; its event meanings are documented [here](../fixtures/filter-lab.md). Invalid uploads preserve the current run. Loading is disabled while replay or a model request is in progress. The download includes the whole recording; live inspection only exposes already-received deliveries.
 
 ```mermaid
 flowchart LR
@@ -42,7 +42,7 @@ The GRF recording declares its own coverage. Native v2 distinguishes restarts ta
 | `adapters/events.py` | Map provider keys into canonical events; swap this for a different feed. |
 | `adapters/replay_source.py` | Disposable event source and observed history; exposes no future events to the UI. |
 | `models/recording.py` | Validate recording metadata, entity lists and preset rules. |
-| `models/rules.py` | Validate, normalize and evaluate typed count/sum rules. |
+| `models/rules.py` | Validate aggregate leaves and bounded composite definitions. |
 | `services/filter_engine.py` + `time_index.py` | Share predicate families, index clock windows, apply event deltas and corrections. |
 | `agents/` + `adapters/llm.py` | Interpret or clarify a goal, compile a bounded rule, validate it. |
 | `repositories/lab.py` | Store rule definitions, values, versions and replay position in Match App Postgres. |
@@ -68,3 +68,5 @@ This is one shared, unauthenticated development run in one backend process. The 
 Standard stats still come from **ETL GraphQL**. The production custom-stat worker will receive shared Event Hubs events and backfill through ETL GraphQL; it does not create a publication per user or rule.
 
 [Tests](testing.md) · [Development practices](../../DEVELOPMENT-PRACTICES.md)
+
+[Composite metrics](composite-metrics.md) reuse shared count/sum inputs for percentage, ratio, difference and recorded-distance mean cards.
