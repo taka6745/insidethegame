@@ -1,0 +1,47 @@
+{
+  "_about": "Opta event type, qualifier and period codes used by ETL. Codes 900+ are synthetic extensions; replace them when data-generation settles the real VAR representation.",
+  "eventTypes": {
+    "1": "Pass",
+    "4": "Foul",
+    "6": "Corner awarded",
+    "7": "Tackle",
+    "8": "Interception",
+    "10": "Save",
+    "12": "Clearance",
+    "13": "Miss",
+    "14": "Post",
+    "15": "Attempt saved",
+    "16": "Goal",
+    "17": "Card",
+    "18": "Player off",
+    "19": "Player on",
+    "30": "End",
+    "32": "Start",
+    "49": "Ball recovery",
+    "900": "VAR decision (synthetic extension)"
+  },
+  "qualifiers": {
+    "2": "Cross",
+    "5": "Free kick taken",
+    "6": "Corner taken",
+    "9": "Penalty (shot is a penalty; on a foul, a penalty was awarded)",
+    "28": "Own goal",
+    "31": "Yellow card",
+    "32": "Second yellow",
+    "33": "Red card",
+    "55": "Related event ID (eventId of the related event, same contestant)",
+    "82": "Blocked",
+    "124": "Goal kick",
+    "140": "Pass end X",
+    "141": "Pass end Y",
+    "279": "Kick off",
+    "901": "VAR outcome (synthetic extension): goal-overturned"
+  },
+  "periods": {
+    "1": "First half",
+    "2": "Second half",
+    "3": "Extra time, first half",
+    "4": "Extra time, second half",
+    "5": "Penalty shoot-out"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://insidethegame.local/contracts/match-event.schema.json",
+  "title": "Match stream message",
+  "description": "One Event Hubs message. MA1 = match info (sent once, first). MA3 = one Opta-style match event. Partition key = matchId.",
+  "oneOf": [{ "$ref": "#/$defs/ma1" }, { "$ref": "#/$defs/ma3" }],
+  "$defs": {
+    "envelope": {
+      "type": "object",
+      "required": ["feed", "schemaVersion", "matchId", "synthetic"],
+      "properties": {
+        "feed": { "enum": ["MA1", "MA3"] },
+        "schemaVersion": { "const": 1 },
+        "matchId": { "type": "string", "maxLength": 64 },
+        "synthetic": { "type": "boolean", "description": "True for generated data. Never drop this label." }
+      }
+    },
+    "contestant": {
+      "type": "object",
+      "required": ["id", "name", "position"],
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string" },
+        "shortName": { "type": "string" },
+        "code": { "type": "string" },
+        "position": { "enum": ["home", "away"] },
+        "lineup": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["playerId", "name", "shirtNumber", "starter"],
+            "properties": {
+              "playerId": { "type": "string" },
+              "name": { "type": "string" },
+              "shirtNumber": { "type": "integer" },
+              "position": { "type": "string" },
+              "starter": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "ma1": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "required": ["feed", "contestant", "scheduledKickoff", "timeStamp"],
+      "properties": {
+        "feed": { "const": "MA1" },
+        "description": { "type": "string" },
+        "scheduledKickoff": { "type": "string", "format": "date-time" },
+        "timeStamp": { "type": "string", "format": "date-time", "description": "Wall-clock send time; Stream Analytics needs one on every message." },
+        "provenance": { "type": "string" },
+        "contestant": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/contestant" } }
+      }
+    },
+    "ma3": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "required": ["feed", "seq", "id", "eventId", "typeId", "periodId", "timeMin", "timeSec", "contestantId", "outcome", "timeStamp", "qualifier"],
+      "properties": {
+        "feed": { "const": "MA3" },
+        "seq": { "type": "integer", "description": "Order within the match stream." },
+        "id": { "type": "integer", "description": "Unique event ID (Opta id)." },
+        "eventId": { "type": "integer", "description": "Per-contestant sequence (Opta eventId); qualifier 55 refers to it." },
+        "typeId": { "type": "integer", "description": "See opta-codes.json eventTypes." },
+        "periodId": { "type": "integer", "description": "1-5; see opta-codes.json periods." },
+        "timeMin": { "type": "integer", "description": "Match clock minute; continues through added time (45+2 = 47 in period 1); period 2 starts at 45." },
+        "timeSec": { "type": "integer", "minimum": 0, "maximum": 59 },
+        "contestantId": { "type": "string" },
+        "playerId": { "type": ["string", "null"] },
+        "playerName": { "type": ["string", "null"] },
+        "outcome": { "enum": [0, 1] },
+        "x": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "0-100, contestant attacking left to right." },
+        "y": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "timeStamp": { "type": "string", "format": "date-time", "description": "Wall-clock UTC time. Stream Analytics uses it for TIMESTAMP BY." },
+        "qualifier": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["qualifierId"],
+            "properties": {
+              "qualifierId": { "type": "integer" },
+              "value": { "type": "string", "description": "Omitted for flag qualifiers." }
+            }
+          }
+        }
+      }
+    }
+  }
+}

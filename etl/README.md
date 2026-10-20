@@ -1,18 +1,34 @@
 # Match data / ETL
 
-[Development](docs/development.md) · [Demo API](docs/demo-api.md)
+[Documentation](docs/README.md) · [Demo API](docs/demo-api.md) · [Shared local setup](../DEVELOPMENT.md)
 
 ![ETL owns standard statistics and historical events](architecture.svg)
 
-**Working local demo:** GRF recording → Event Hubs → ETL-owned replay prefix → stored history + standard statistics → GraphQL. Service Bus announces each readable snapshot. The user backend reads these results; it does not recalculate standard cards.
+**Implemented, tested and deployed to dev.** Turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus.
 
-| Data | Local demo | Planned Azure |
-| --- | --- | --- |
-| Original events + immutable history | `etl_history` PostgreSQL database | Azure SQL |
-| Standard stat projections | `etl_stats` PostgreSQL database | Cosmos DB |
-| Ingestion | Event Hubs emulator + recorded GRF match | Event Hubs + Stream Analytics |
-| Read API | Python GraphQL on port 8000 | Container Apps GraphQL |
+The shared local Docker stack runs a **recorded-match stand-in** instead (`demo_etl/`: the GRF recording, PostgreSQL, Python GraphQL, `MatchSnapshotReady` notifications), described in [docs/components/demo-etl.md](docs/components/demo-etl.md).
 
-`demo_etl/` is a replaceable demo implementation, separate from the future Stream Analytics job. It preserves corrections, tombstones and snapshot watermarks. Possession comes from measured simulator ownership; unsupported metrics are unavailable. Synthetic football is not an official Opta feed or a real fixture.
+| | |
+| --- | --- |
+| **Documentation** | [docs/](docs/README.md): overview, architecture, one page per component, development, deployment, decisions |
+| **For consumers** | [contracts/](contracts/README.md): GraphQL queries, Service Bus messages, key-event conventions (Azure pipeline); [demo-api.md](docs/demo-api.md) (stand-in) |
 
-The broker adapters use the Azure SDKs; prefix recovery remains specific to this recording stub. No Azure SQL/Cosmos writer or ASA job is implemented here. The local DAB container remains an independent SQL infrastructure check.
+```sh
+cd etl && python -m venv .venv && .venv/Scripts/pip install -r requirements-test.txt   # Windows path shown
+.venv/Scripts/python -m pytest tests
+.venv/Scripts/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
+```
+
+| Folder | Contents |
+| --- | --- |
+| `contracts/` | Event schema, Opta codes, what consumers can rely on |
+| `seeder/` | Synthetic match and replay to Event Hubs (temporary, until data generation exists) |
+| `stream-analytics/` | The Stream Analytics query and JavaScript UDFs |
+| `sql/` | Database migrations: tables and the `matchStatsAsOf` view |
+| `dab/` | Data API builder configuration (the GraphQL API) |
+| `reference/` | The same rules in Python: the expected result for tests and verification |
+| `devtools/` | Developer commands: local stack, loading, verification, job start/stop |
+| `infra/` | Terraform for Azure dev |
+| `tests/` | Pytest suite (pipeline and stand-in) |
+| `docs/` | Documentation; original design material in `docs/design/` |
+| `demo_etl/` | The [recorded-match stand-in](docs/components/demo-etl.md) for the local Docker stack (`Dockerfile`) |

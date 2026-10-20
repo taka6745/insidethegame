@@ -1,0 +1,175 @@
+{
+  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v2.1.5/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "@env('DATABASE_CONNECTION_STRING')",
+    "options": {
+      "set-session-context": false
+    }
+  },
+  "runtime": {
+    "rest": {
+      "enabled": false,
+      "path": "/api",
+      "request-body-strict": false
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "mcp": {
+      "enabled": false,
+      "path": "/mcp"
+    },
+    "host": {
+      "cors": {
+        "origins": [],
+        "allow-credentials": false
+      },
+      "authentication": {
+        "provider": "Unauthenticated"
+      },
+      "mode": "production"
+    }
+  },
+  "autoentities": {},
+  "entities": {
+    "Match": {
+      "source": {
+        "object": "dbo.matches",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Match",
+          "plural": "Matches"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "RawEvent": {
+      "source": {
+        "object": "dbo.rawEvents",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "RawEvent",
+          "plural": "RawEvents"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "KeyEvent": {
+      "source": {
+        "object": "dbo.keyEvents",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "KeyEvent",
+          "plural": "KeyEvents"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "MinuteStat": {
+      "source": {
+        "object": "dbo.minuteStats",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "MinuteStat",
+          "plural": "MinuteStats"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "MatchStatsAsOf": {
+      "source": {
+        "object": "dbo.matchStatsAsOf",
+        "type": "view",
+        "key-fields": [
+          "matchId",
+          "contestantId",
+          "periodId",
+          "timeMin"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "MatchStatsAsOf",
+          "plural": "MatchStatsAsOfs"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

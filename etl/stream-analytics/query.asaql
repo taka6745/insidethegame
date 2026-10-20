@@ -1,0 +1,134 @@
+-- ETL Stream Analytics job. Rules mirror reference/opta.py; codes in contracts/opta-codes.json.
+-- Terraform renders this file: ${window_seconds} is the tumbling window (60 / replay speed).
+
+WITH Stream AS (
+    SELECT * FROM [match-events] TIMESTAMP BY timeStamp
+),
+
+Events AS (
+    SELECT
+        s.matchId, s.id, s.seq, s.eventId, s.typeId, s.periodId, s.timeMin, s.timeSec,
+        s.contestantId, s.playerId, s.outcome, s.x, s.y,
+        CAST(s.timeStamp AS datetime) AS eventTime,
+        udf.toJson(s) AS payload,
+        udf.hasQ(s.qualifier, 9) AS qPenalty,
+        udf.hasQ(s.qualifier, 28) AS qOwnGoal,
+        udf.hasQ(s.qualifier, 31) AS qYellow,
+        udf.hasQ(s.qualifier, 32) AS qSecondYellow,
+        udf.hasQ(s.qualifier, 33) AS qRed,
+        udf.hasQ(s.qualifier, 82) AS qBlocked,
+        udf.qValue(s.qualifier, 55) AS relatedEventId,
+        udf.qValue(s.qualifier, 901) AS varOutcome
+    FROM Stream s
+    WHERE s.feed = 'MA3'
+),
+
+KeyCandidates AS (
+    SELECT
+        matchId, id, typeId, contestantId, playerId, periodId, timeMin, timeSec, eventTime,
+        TRY_CAST(relatedEventId AS bigint) AS relatedEventId,
+        CASE
+            WHEN typeId = 16 AND qOwnGoal = 1 THEN 'OwnGoal'
+            WHEN typeId = 16 THEN 'Goal'
+            WHEN (typeId = 13 OR typeId = 14 OR typeId = 15) AND qPenalty = 1 THEN 'PenaltyMissed'
+            WHEN typeId = 4 AND outcome = 0 AND qPenalty = 1 THEN 'PenaltyAwarded'
+            WHEN typeId = 17 AND (qSecondYellow = 1 OR qRed = 1) THEN 'RedCard'
+            WHEN typeId = 900 AND varOutcome = 'goal-overturned' THEN 'VarOverturn'
+            ELSE NULL
+        END AS keyType,
+        CASE
+            WHEN typeId = 16 AND qOwnGoal = 0 AND qPenalty = 1 THEN 'penalty'
+            WHEN typeId = 4 THEN 'conceded'
+            WHEN typeId = 17 AND qSecondYellow = 1 THEN 'second-yellow'
+            WHEN typeId = 900 AND qOwnGoal = 1 THEN 'own-goal-overturned'
+            WHEN typeId = 900 THEN 'goal-overturned'
+            ELSE NULL
+        END AS detail
+    FROM Events
+),
+
+Detected AS (
+    SELECT * FROM KeyCandidates WHERE keyType IS NOT NULL
+),
+
+MatchInfo AS (
+    SELECT udf.matchInfo(s) AS info FROM Stream s WHERE s.feed = 'MA1'
+),
+
+-- One output, three message kinds: a shared column set; fields a kind does not use are null.
+-- messageId feeds Service Bus duplicate detection; see contracts/README.md.
+NotificationRows AS (
+    SELECT
+        'KeyEventDetected' AS messageType,
+        CONCAT(matchId, ':key:', CAST(id AS nvarchar(max))) AS messageId,
+        matchId, periodId, timeMin, timeSec, eventTime, CAST(NULL AS datetime) AS windowEnd,
+        id, keyType, detail, typeId, contestantId, playerId, relatedEventId
+    FROM Detected
+    UNION
+    SELECT
+        'MinuteClosed' AS messageType,
+        CONCAT(matchId, ':minute:', CAST(periodId AS nvarchar(max)), ':', CAST(CAST(MAX(timeMin) AS bigint) AS nvarchar(max))) AS messageId,
+        matchId, periodId, CAST(MAX(timeMin) AS bigint) AS timeMin, CAST(NULL AS bigint) AS timeSec, CAST(NULL AS datetime) AS eventTime,
+        System.Timestamp() AS windowEnd,
+        CAST(NULL AS bigint) AS id, CAST(NULL AS nvarchar(max)) AS keyType, CAST(NULL AS nvarchar(max)) AS detail,
+        CAST(NULL AS bigint) AS typeId, CAST(NULL AS nvarchar(max)) AS contestantId, CAST(NULL AS nvarchar(max)) AS playerId,
+        CAST(NULL AS bigint) AS relatedEventId
+    FROM Events
+    GROUP BY matchId, periodId, TumblingWindow(second, ${window_seconds})
+    UNION
+    SELECT
+        CASE WHEN typeId = 32 THEN 'PeriodStarted' ELSE 'PeriodEnded' END AS messageType,
+        CONCAT(matchId, ':', CASE WHEN typeId = 32 THEN 'PeriodStarted' ELSE 'PeriodEnded' END, ':', CAST(periodId AS nvarchar(max))) AS messageId,
+        matchId, periodId, timeMin, timeSec, eventTime, CAST(NULL AS datetime) AS windowEnd,
+        CAST(NULL AS bigint) AS id, CAST(NULL AS nvarchar(max)) AS keyType, CAST(NULL AS nvarchar(max)) AS detail,
+        typeId, contestantId, CAST(NULL AS nvarchar(max)) AS playerId, CAST(NULL AS bigint) AS relatedEventId
+    FROM Events
+    WHERE typeId = 32 OR typeId = 30
+)
+
+-- 1. Match info
+SELECT
+    m.info.matchId, m.info.description, m.info.homeContestantId, m.info.homeName,
+    m.info.awayContestantId, m.info.awayName, CAST(m.info.scheduledKickoff AS datetime) AS scheduledKickoff,
+    m.info.synthetic, m.info.payload
+INTO [matches]
+FROM MatchInfo m
+
+-- 2. Raw events
+SELECT
+    matchId, id, seq, eventId, typeId, periodId, timeMin, timeSec, contestantId, playerId,
+    outcome, x, y, eventTime, payload
+INTO [rawEvents]
+FROM Events
+
+-- 3. Key-event ledger
+SELECT matchId, id, keyType, detail, typeId, contestantId, playerId, periodId, timeMin, timeSec, eventTime, relatedEventId
+INTO [keyEvents]
+FROM Detected
+
+-- 4. Per-minute deltas. Grouping by match minute keeps rows correct even if a window spans two minutes.
+SELECT
+    matchId, contestantId, periodId, timeMin,
+    System.Timestamp() AS windowEnd,
+    CAST(SUM(CASE WHEN typeId = 1 THEN 1 ELSE 0 END) AS bigint) AS passes,
+    CAST(SUM(CASE WHEN typeId = 1 AND outcome = 1 THEN 1 ELSE 0 END) AS bigint) AS passesCompleted,
+    CAST(SUM(CASE WHEN (typeId = 13 OR typeId = 14 OR typeId = 15 OR typeId = 16) AND qOwnGoal = 0 THEN 1 ELSE 0 END) AS bigint) AS shots,
+    CAST(SUM(CASE WHEN (typeId = 16 AND qOwnGoal = 0) OR (typeId = 15 AND qBlocked = 0) THEN 1 ELSE 0 END) AS bigint) AS shotsOnTarget,
+    CAST(SUM(CASE WHEN typeId = 16 AND qOwnGoal = 0 THEN 1
+             WHEN typeId = 900 AND varOutcome = 'goal-overturned' AND qOwnGoal = 0 THEN -1 ELSE 0 END) AS bigint) AS goals,
+    CAST(SUM(CASE WHEN typeId = 16 AND qOwnGoal = 1 THEN 1
+             WHEN typeId = 900 AND varOutcome = 'goal-overturned' AND qOwnGoal = 1 THEN -1 ELSE 0 END) AS bigint) AS ownGoals,
+    CAST(SUM(CASE WHEN typeId = 6 AND outcome = 1 THEN 1 ELSE 0 END) AS bigint) AS corners,
+    CAST(SUM(CASE WHEN typeId = 4 AND outcome = 0 THEN 1 ELSE 0 END) AS bigint) AS fouls,
+    CAST(SUM(CASE WHEN typeId = 17 AND qYellow = 1 THEN 1 ELSE 0 END) AS bigint) AS yellowCards,
+    CAST(SUM(CASE WHEN typeId = 17 AND (qSecondYellow = 1 OR qRed = 1) THEN 1 ELSE 0 END) AS bigint) AS redCards,
+    CAST(COUNT(*) AS bigint) AS events
+INTO [minuteStats]
+FROM Events
+GROUP BY matchId, contestantId, periodId, timeMin, TumblingWindow(second, ${window_seconds})
+
+-- 5. Notifications (Service Bus). Stream Analytics strips property columns from the body, so the
+-- Service Bus property (notificationType) and MessageId (sbMessageId) come from duplicate columns.
+SELECT *, messageType AS notificationType, messageId AS sbMessageId
+INTO [notifications]
+FROM NotificationRows
