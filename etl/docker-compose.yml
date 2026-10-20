@@ -1,11 +1,11 @@
 # Local ETL stack: SQL Server (stands in for Azure SQL) and Data API builder.
-# Start with `python -m etltools.dev local-up`, which writes .env and applies migrations.
+# Start with `python -m devtools local-up`, which writes .env and applies migrations.
 services:
   sql:
     image: mcr.microsoft.com/mssql/server:2025-CU9-ubuntu-24.04
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: ${LOCAL_SA_PASSWORD:?run python -m etltools.dev local-up}
+      MSSQL_SA_PASSWORD: ${LOCAL_SA_PASSWORD:?run python -m devtools local-up}
     ports: ["14330:1433"]
     volumes: [sqldata:/var/opt/mssql]
 

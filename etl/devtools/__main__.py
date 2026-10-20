@@ -1,13 +1,13 @@
 """ETL developer commands.
 
-    python -m etltools.dev local-up                  start local SQL + DAB, apply migrations
-    python -m etltools.dev migrate [--azure SERVER]  apply sql/migrations (Azure uses your az login)
-    python -m etltools.dev load-local REPLAY.jsonl   insert what the cloud job would write for a replay
-    python -m etltools.dev verify REPLAY.jsonl       compare GraphQL results with the reference pipeline
-    python -m etltools.dev local-down [--wipe]
-    python -m etltools.dev azure-setup               after terraform apply: migrations + identity grants
-    python -m etltools.dev asa start|stop|status     Stream Analytics bills only while running
-    python -m etltools.dev check-notifications REPLAY.jsonl   peek Service Bus and compare with the reference
+    python -m devtools local-up                  start local SQL + DAB, apply migrations
+    python -m devtools migrate [--azure SERVER]  apply sql/migrations (Azure uses your az login)
+    python -m devtools load-local REPLAY.jsonl   insert what the cloud job would write for a replay
+    python -m devtools verify REPLAY.jsonl       compare GraphQL results with the reference pipeline
+    python -m devtools local-down [--wipe]
+    python -m devtools azure-setup               after terraform apply: migrations + identity grants
+    python -m devtools asa start|stop|status     Stream Analytics bills only while running
+    python -m devtools check-notifications REPLAY.jsonl   peek Service Bus and compare with the reference
 """
 import argparse
 import json
@@ -20,7 +20,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from etltools import pipeline
+from reference import pipeline
 
 ETL = Path(__file__).resolve().parents[1]
 ENV_FILE = ETL / ".env"
@@ -274,7 +274,7 @@ def check_notifications(replay, window, subscription="narrative-engine"):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(prog="python -m devtools", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("local-up")
     down = sub.add_parser("local-down")

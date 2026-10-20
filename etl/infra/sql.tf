@@ -1,5 +1,5 @@
 # Entra-only auth: you are the admin; Stream Analytics and DAB connect with managed identities.
-# Schema and identity grants are applied after `terraform apply` by `python -m etltools.dev azure-setup`.
+# Schema and identity grants are applied after `terraform apply` by `python -m devtools azure-setup`.
 resource "azurerm_mssql_server" "etl" {
   name                          = "${local.name}-sql"
   location                      = azurerm_resource_group.etl.location

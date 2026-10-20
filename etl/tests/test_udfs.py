@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from etltools import opta
+from reference import opta
 from seeder.generate import MatchBuilder
 
 UDFS = Path(__file__).resolve().parents[1] / "stream-analytics" / "udfs"

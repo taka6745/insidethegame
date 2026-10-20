@@ -1,6 +1,6 @@
 -- Running match statistics: one row per match, contestant and match minute, holding
 -- totals as of the end of that minute. Filter by minute for "as of"; take the latest
--- minute for current stats. Mirrors etltools/pipeline.py stats_as_of.
+-- minute for current stats. Mirrors reference/pipeline.py stats_as_of.
 CREATE OR ALTER VIEW dbo.matchStatsAsOf AS
 WITH perMinute AS (
     SELECT matchId, contestantId, periodId, timeMin,

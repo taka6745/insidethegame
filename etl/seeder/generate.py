@@ -14,7 +14,7 @@ import random
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from etltools import opta
+from reference import opta
 
 NOMINAL_KICKOFF = datetime(2026, 1, 1, 15, 0, tzinfo=timezone.utc)
 HALF_TIME_BREAK = timedelta(minutes=15)
