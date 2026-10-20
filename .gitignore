@@ -7,6 +7,7 @@ __pycache__/
 *curl*.txt
 projects-export/
 .local/
+.venv/
 
 .ruff_cache/
 
@@ -19,3 +20,6 @@ projects-export/
 *.tfvars.json
 crash.log
 local/compose.override.yaml
+
+# Contains a private API key; keep its settings in narrative-engine/.env
+narrative-engine/Luke-LLM-Setup.md

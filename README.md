@@ -19,7 +19,7 @@ What works today, locally (tested; not yet deployed):
 
 [![Master target architecture](master-plan.svg)](master-plan.svg)
 
-**Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; live messaging uses Microsoft emulators; cloud deployment remains to build. These diagrams describe the agreed application design.
+**Runnable development lab.** Build custom filters from a request or preset, then watch synthetic match events update shared calculations. Python agents, an indexed rule engine, Postgres and a small browser UI run locally. The match viewer adds live cards, bucketed insights and questions; live messaging uses Microsoft emulators. The ETL and the narrative engine are also built for Azure and deployed to a dev environment, each with its own Terraform. These diagrams describe the agreed application design.
 
 **[Start developing →](DEVELOPMENT.md)** · [Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md)
 
@@ -29,13 +29,13 @@ ACCEPT_EULA=Y ./dev up backend
 
 Open the [match viewer](http://localhost:18020) for the Chelsea–Manchester United demo, or the [event filter lab](http://localhost:18020/lab/). Pick filters, then replay and inspect each event and live value. The connected demo recording is managed by ETL; standalone lab mode also supports JSON uploads. [How it works](user-backend/docs/filter-lab.md).
 
-| Folder | What it does |
-| --- | --- |
-| [data-generation](data-generation/) | Prepare and replay an existing synthetic match into Event Hubs. |
-| [etl](etl/) | Store events, calculate match statistics and expose them through GraphQL. |
-| [narrative-engine](narrative-engine/) | Build shared match memory and write narratives for enabled DB-defined audience buckets. |
-| [user-backend](user-backend/) | Answer questions, build custom stats and deliver each viewer's experience. |
-| [frontend](frontend/) | Show the live match, stat cards, chat and narrative feed. |
+| Folder | What it does | Status |
+| --- | --- | --- |
+| [data-generation](data-generation/) | Prepare and replay an existing synthetic match into Event Hubs. | Runs locally |
+| [etl](etl/) | Store events, calculate match statistics and expose them through GraphQL. | Azure pipeline deployed (dev) · local stand-in · [docs](etl/docs/README.md) |
+| [narrative-engine](narrative-engine/) | Build shared match memory and write narratives for enabled DB-defined audience buckets. | Engine deployed (dev) · local stand-in · [docs](narrative-engine/docs/README.md) |
+| [user-backend](user-backend/) | Answer questions, build custom stats and deliver each viewer's experience. | Runs locally |
+| [frontend](frontend/) | Show the live match, stat cards, chat and narrative feed. | Runs locally |
 
 The demo has **one live match**, selectable profiles and one active session per profile. Viewer questions do not trigger narrative generation. Viewers can ask in chat for replay clips while live continues picture-in-picture; semantic subscriptions are Phase 2.
 
@@ -43,12 +43,12 @@ Each folder has a short service guide and a closer diagram. Azure products are d
 
 **Event paths:** Event Hubs streams independently to ETL and the backend's custom filters. Live backend events do not pass through a database. Historical events and computed standard stats come from ETL GraphQL.
 
-**Narrative boundary:** the backend exposes bucket definitions through a read-only API; the narrative engine owns framing. The backend receives finished bucket versions and routes them. [Diagram and current implementation](user-backend/docs/narrative-framing.md).
+**Narrative boundary:** the backend exposes bucket definitions through a read-only API; the narrative engine owns framing. The backend receives finished bucket versions and routes them. [Diagram and current implementation](user-backend/docs/narrative-framing.md). The deployed engine still uses audience presence and per-minute ETL notifications; aligning it with this boundary is an [open item](narrative-engine/docs/decisions.md#3-open-items).
 
 [Original Excalidraw board](legacy/design/plan.excalidraw) · [Archived research and simulator](legacy/README.md) · [Detailed user-backend decisions](user-backend/architecture.md)
 
 [Review results](docs/reviews/2026-10-19.md) · [Hackathon readiness](docs/reviews/hackathon-readiness.md) · [Azure deployment gaps](terraform/deployment-readiness.md)
 
-Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). [CI](.github/workflows/ci.yml) runs every service's tests. No cloud deployment is configured.
+Render the diagrams with `python3 .github/scripts/render_architecture.py`. Icons come from the preserved [engineering library](legacy/docs/icon-libraries/README.md); [attribution](.github/diagram-assets/README.md). The ETL and narrative engine deploy with their own Terraform (`<service>/infra/`); [CI](.github/workflows/ci.yml) runs every service's tests.
 
 The master board is generated with `python3 .github/scripts/render_master_plan.py`. Its shapes, labels, connectors and embedded icons are editable in Excalidraw. Regenerating replaces manual edits, so keep a copy before doing that. Export `master-plan.svg` through the Excalidraw CLI after updates. The original board remains preserved in `legacy/design/`.

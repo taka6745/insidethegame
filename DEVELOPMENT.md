@@ -40,7 +40,7 @@ ACCEPT_EULA=Y ./dev up azure
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | One live match, cards and two chat tabs. |
 
-The stack includes a **working match viewer and structured-filter lab**, backed by a persisted demo ETL and a separate authored narrative stub. It runs typed rules rather than generated Python. Aligned GRF footage is generated locally. Stream Analytics, LLM narrative generation and Azure deployment remain planned. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
+The stack includes a **working match viewer and structured-filter lab**, backed by a persisted demo ETL and a separate authored narrative stub. It runs typed rules rather than generated Python. Aligned GRF footage is generated locally. The Stream Analytics pipeline and the LLM narrative engine are built and deployed to Azure dev ([ETL docs](etl/docs/README.md), [narrative docs](narrative-engine/docs/README.md)) but are not part of this local stack yet. The browser uses a labelled synthetic event source that can be replaced behind an adapter.
 
 ## Work independently
 

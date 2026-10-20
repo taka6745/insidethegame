@@ -1,3 +1,4 @@
+# The recorded-match stand-in (demo_etl/) used by the local Docker stack; see docs/components/demo-etl.md.
 FROM python:3.12-slim AS base
 WORKDIR /app
 COPY requirements.txt ./

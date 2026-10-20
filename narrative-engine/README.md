@@ -1,27 +1,30 @@
 # Narrative engine
 
-[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+[Documentation](docs/README.md) · [Shared local setup](../DEVELOPMENT.md)
 
 ![Shared match context becomes narratives for active audience buckets](architecture.svg)
 
-**Runnable demo stub; production agents remain planned.** The stub owns authored commentary for the recorded synthetic match and factual neutral recap history. It never calls an LLM. The original [prompts](prompts/README.md) are preserved for the real implementation.
+**Implemented, tested and deployed to dev.** Turns the ETL's live match data into short narratives for up to 12 audience buckets (home, away or neutral × simple, casual, experienced or analyst), using Microsoft Agent Framework agents on Foundry. Narratives go to Cosmos DB, Service Bus and a history GraphQL API.
 
-Authored [fixtures](fixtures/README.md) (schema v2) cover the 90-minute broadcast-clock recording: 92 minutes × 12 buckets, minute/tier recaps and key moments.
+The shared local Docker stack still runs an **authored stand-in** (`narrative_demo/`, no model calls) with a different message contract; its authored [fixtures](fixtures/README.md) cover the 90-minute recording (92 minutes × 12 buckets, recaps and key moments); reconciling the two is an [open item](docs/decisions.md#3-open-items).
 
-```text
-Service Bus checkpoint → neutral recap archive → GraphQL → user backend
-                       ↓
-Authored commentary + enabled audiences → Service Bus → user backend
+| | |
+| --- | --- |
+| **Documentation** | [docs/](docs/README.md): overview, architecture, one page per component, development, deployment, decisions |
+| **For consumers** | [contracts/](contracts/README.md): history GraphQL, the `narratives` topic, the presence message |
+| **Inputs** | [ETL contracts](../etl/contracts/README.md): Service Bus notifications and GraphQL |
+
+```sh
+cd narrative-engine && py -3.11 -m venv .venv && .venv/Scripts/pip install -r requirements-dev.txt
+PYTHONUTF8=1 .venv/Scripts/python -m pytest tests
+.venv/Scripts/python -m narrative_engine.devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl   # offline match, fake agents
 ```
 
-The backend owns audience definitions; this service reads its `generation_targets` and returns those already-framed versions unchanged. Questions read neutral context and never author narratives. Events and standard statistics remain ETL-owned.
-
-| Demo now | Planned replacement |
+| Folder | Contents |
 | --- | --- |
-| Python/FastAPI service | Container Apps orchestrator |
-| Authored match-specific commentary | Agent Framework + Foundry author |
-| Deterministic factual recap tiers | Summariser/compressor agents |
-| SQLite archive, owned by this service | Cosmos DB |
-| Service Bus notifications/live delivery + GraphQL history | Production producers and durable Azure storage |
-
-Run locally: `pip install -r requirements-dev.txt`, then `python -m pytest` or `uvicorn narrative_demo.app:from_env --factory --port 18030`. Set ETL, audience and storage paths as described in the guide. The authored stub now uses the real Service Bus SDK against local emulators. It remains a single-process demo, not a production narrative engine. HTTP checkpoint mode remains available for isolated fixture tests.
+| `narrative_engine/` | The engine: `core/`, `context/`, `agents/`, `match_data/`, `store/`, `transport/`, `api.py`, `service.py`, `devtools/` |
+| `contracts/` | What the user backend can rely on |
+| `infra/` | Terraform for Azure dev |
+| `tests/` | Pytest suite (engine and stand-in) and synthetic fixtures |
+| `docs/` | Documentation; original design material in `docs/design/` |
+| `narrative_demo/`, `fixtures/`, `tools/`, `prototypes/` | The [authored stand-in](docs/components/narrative-demo.md) for the local Docker stack (`demo.Dockerfile`) |

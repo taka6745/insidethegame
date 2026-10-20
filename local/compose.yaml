@@ -185,7 +185,7 @@ services:
       retries: 20
 
   narrative:
-    build: ../narrative-engine
+    build: {context: ../narrative-engine, dockerfile: demo.Dockerfile}
     profiles: [backend]
     environment:
       ETL_BASE_URL: http://etl:8000

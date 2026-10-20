@@ -1,6 +1,6 @@
 # Context and trigger rules
 
-Design notes transcribed from the [original board](../legacy/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
+Design notes transcribed from the [original board](../../../legacy/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
 
 ## Shared memory
 
@@ -36,6 +36,6 @@ The three example prompt files remain unchanged. The board requests structured J
 
 ## Audience ownership
 
-The backend stores audience layers, options, semantic descriptions and available combinations, and exposes a [read-only API](../user-backend/docs/audience-api.md). The narrative engine fetches the catalogue before framing. Generate only enabled `generation_targets`; the backend maintains their union from connected viewer selections. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
+The backend stores audience layers, options, semantic descriptions and available combinations, and exposes a [read-only API](../../../user-backend/docs/audience-api.md). The narrative engine fetches the catalogue before framing. Generate only enabled `generation_targets`; the backend maintains their union from connected viewer selections. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
 
-The original 12 buckets are seeds. A retained [prototype](prototypes/bucket_framing/README.md) preserves the authoring code; API consumption, batching and generation still need integration into this engine. The backend serves configuration but never invokes a narrative framing model.
+The original 12 buckets are seeds. A retained [prototype](../../prototypes/bucket_framing/README.md) preserves the authoring code; API consumption, batching and generation still need integration into this engine. The backend serves configuration but never invokes a narrative framing model.
