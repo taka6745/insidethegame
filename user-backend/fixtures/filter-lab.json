@@ -1,0 +1,1305 @@
+{
+  "synthetic": true,
+  "match_id": "filter-lab-match",
+  "description": "Fictional Chelsea vs Madrid fixture. No real match, licensed feed or official vendor schema.",
+  "teams": [
+    {
+      "id": "chelsea",
+      "name": "Chelsea"
+    },
+    {
+      "id": "madrid",
+      "name": "Madrid"
+    }
+  ],
+  "players": [
+    {
+      "id": "mbappe",
+      "name": "Kylian Mbapp\u00e9",
+      "team_id": "madrid"
+    },
+    {
+      "id": "palmer",
+      "name": "Cole Palmer",
+      "team_id": "chelsea"
+    },
+    {
+      "id": "colwill",
+      "name": "Levi Colwill",
+      "team_id": "chelsea"
+    },
+    {
+      "id": "vinicius",
+      "name": "Vin\u00edcius",
+      "team_id": "madrid"
+    },
+    {
+      "id": "camavinga",
+      "name": "Camavinga",
+      "team_id": "madrid"
+    },
+    {
+      "id": "courtois",
+      "name": "Courtois",
+      "team_id": "madrid"
+    }
+  ],
+  "events": [
+    {
+      "eventId": "e1",
+      "matchId": "filter-lab-match",
+      "sequence": 1,
+      "revision": 1,
+      "typeName": "pass",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 1,
+      "timeMin": 2,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        },
+        {
+          "type": "distanceMetres",
+          "value": 8
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e2",
+      "matchId": "filter-lab-match",
+      "sequence": 2,
+      "revision": 1,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 1,
+      "timeMin": 10,
+      "timeSec": 0,
+      "outcome": "saved",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e3",
+      "matchId": "filter-lab-match",
+      "sequence": 3,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 1,
+      "timeMin": 20,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e4",
+      "matchId": "filter-lab-match",
+      "sequence": 4,
+      "revision": 1,
+      "typeName": "pass",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 1,
+      "timeMin": 25,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "right_foot"
+        },
+        {
+          "type": "distanceMetres",
+          "value": 12
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e5",
+      "matchId": "filter-lab-match",
+      "sequence": 5,
+      "revision": 1,
+      "typeName": "pass",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 1,
+      "timeMin": 27,
+      "timeSec": 0,
+      "outcome": "failure",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "right_foot"
+        },
+        {
+          "type": "distanceMetres",
+          "value": 20
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e6",
+      "matchId": "filter-lab-match",
+      "sequence": 6,
+      "revision": 1,
+      "typeName": "card",
+      "teamId": "madrid",
+      "playerId": "camavinga",
+      "periodId": 1,
+      "timeMin": 30,
+      "timeSec": 0,
+      "outcome": "yellow",
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e7",
+      "matchId": "filter-lab-match",
+      "sequence": 7,
+      "revision": 1,
+      "typeName": "goal",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 1,
+      "timeMin": 40,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e7",
+      "matchId": "filter-lab-match",
+      "sequence": 8,
+      "revision": 2,
+      "typeName": "goal",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 1,
+      "timeMin": 40,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": true,
+      "synthetic": true
+    },
+    {
+      "eventId": "e8",
+      "matchId": "filter-lab-match",
+      "sequence": 9,
+      "revision": 1,
+      "typeName": "clearance",
+      "teamId": "chelsea",
+      "playerId": "colwill",
+      "periodId": 1,
+      "timeMin": 46,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e9",
+      "matchId": "filter-lab-match",
+      "sequence": 10,
+      "revision": 1,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 46,
+      "timeSec": 0,
+      "outcome": "saved",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "right_foot"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e10",
+      "matchId": "filter-lab-match",
+      "sequence": 11,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 60,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e11",
+      "matchId": "filter-lab-match",
+      "sequence": 12,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 60,
+      "timeSec": 1,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e12",
+      "matchId": "filter-lab-match",
+      "sequence": 13,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "madrid",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 61,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e13",
+      "matchId": "filter-lab-match",
+      "sequence": 14,
+      "revision": 1,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 64,
+      "timeSec": 0,
+      "outcome": "off_target",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e14",
+      "matchId": "filter-lab-match",
+      "sequence": 15,
+      "revision": 1,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "vinicius",
+      "periodId": 2,
+      "timeMin": 65,
+      "timeSec": 0,
+      "outcome": "saved",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e15",
+      "matchId": "filter-lab-match",
+      "sequence": 16,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 67,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e16",
+      "matchId": "filter-lab-match",
+      "sequence": 17,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 70,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e17",
+      "matchId": "filter-lab-match",
+      "sequence": 18,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 71,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e18",
+      "matchId": "filter-lab-match",
+      "sequence": 19,
+      "revision": 1,
+      "typeName": "pass",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 72,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        },
+        {
+          "type": "distanceMetres",
+          "value": 5
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e19",
+      "matchId": "filter-lab-match",
+      "sequence": 20,
+      "revision": 1,
+      "typeName": "tackle",
+      "teamId": "chelsea",
+      "playerId": "colwill",
+      "periodId": 2,
+      "timeMin": 73,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e20",
+      "matchId": "filter-lab-match",
+      "sequence": 21,
+      "revision": 1,
+      "typeName": "card",
+      "teamId": "chelsea",
+      "playerId": "colwill",
+      "periodId": 2,
+      "timeMin": 74,
+      "timeSec": 0,
+      "outcome": "red",
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e21",
+      "matchId": "filter-lab-match",
+      "sequence": 22,
+      "revision": 1,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 75,
+      "timeSec": 0,
+      "outcome": "saved",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "right_foot"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e21",
+      "matchId": "filter-lab-match",
+      "sequence": 23,
+      "revision": 2,
+      "typeName": "shot",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 75,
+      "timeSec": 0,
+      "outcome": "saved",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e22",
+      "matchId": "filter-lab-match",
+      "sequence": 24,
+      "revision": 1,
+      "typeName": "goal",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 2,
+      "timeMin": 80,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e23",
+      "matchId": "filter-lab-match",
+      "sequence": 25,
+      "revision": 1,
+      "typeName": "pass",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 2,
+      "timeMin": 82,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "right_foot"
+        },
+        {
+          "type": "distanceMetres",
+          "value": 15
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e24",
+      "matchId": "filter-lab-match",
+      "sequence": 26,
+      "revision": 1,
+      "typeName": "save",
+      "teamId": "madrid",
+      "playerId": "courtois",
+      "periodId": 2,
+      "timeMin": 83,
+      "timeSec": 0,
+      "outcome": "success",
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e25",
+      "matchId": "filter-lab-match",
+      "sequence": 27,
+      "revision": 1,
+      "typeName": "foul",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 2,
+      "timeMin": 84,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e26",
+      "matchId": "filter-lab-match",
+      "sequence": 28,
+      "revision": 1,
+      "typeName": "touch",
+      "teamId": "madrid",
+      "playerId": "mbappe",
+      "periodId": 2,
+      "timeMin": 85,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [
+        {
+          "type": "bodyPart",
+          "value": "head"
+        }
+      ],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e27",
+      "matchId": "filter-lab-match",
+      "sequence": 29,
+      "revision": 1,
+      "typeName": "interception",
+      "teamId": "chelsea",
+      "playerId": "palmer",
+      "periodId": 2,
+      "timeMin": 86,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e28",
+      "matchId": "filter-lab-match",
+      "sequence": 30,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 88,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e28",
+      "matchId": "filter-lab-match",
+      "sequence": 31,
+      "revision": 2,
+      "typeName": "corner",
+      "teamId": "madrid",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 88,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e29",
+      "matchId": "filter-lab-match",
+      "sequence": 32,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 89,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e29",
+      "matchId": "filter-lab-match",
+      "sequence": 33,
+      "revision": 2,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 89,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": true,
+      "synthetic": true
+    },
+    {
+      "eventId": "e30",
+      "matchId": "filter-lab-match",
+      "sequence": 34,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 95,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    },
+    {
+      "eventId": "e17",
+      "matchId": "filter-lab-match",
+      "sequence": 18,
+      "revision": 1,
+      "typeName": "corner",
+      "teamId": "chelsea",
+      "playerId": null,
+      "periodId": 2,
+      "timeMin": 71,
+      "timeSec": 0,
+      "outcome": null,
+      "qualifiers": [],
+      "deleted": false,
+      "synthetic": true
+    }
+  ],
+  "presets": [
+    {
+      "id": "mbappe-headers",
+      "label": "Track all recorded headed touches by Mbapp\u00e9",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "eq",
+            "value": "mbappe"
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ]
+      },
+      "expected_final": 6
+    },
+    {
+      "id": "mbappe-headed-shots",
+      "label": "Track Mbapp\u00e9 headed shots, including goals",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "eq",
+            "value": "mbappe"
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          }
+        ]
+      },
+      "expected_final": 3
+    },
+    {
+      "id": "chelsea-corners-after-60",
+      "label": "Track Chelsea corners awarded after 60:00",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600
+          }
+        ]
+      },
+      "expected_final": 5
+    },
+    {
+      "id": "all-corners-after-60",
+      "label": "Track either team\u2019s corners awarded after 60:00",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600
+          }
+        ]
+      },
+      "expected_final": 7
+    },
+    {
+      "id": "chelsea-corners-from-60",
+      "label": "Track Chelsea corners awarded from 60:00 inclusive",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 3600
+          }
+        ]
+      },
+      "expected_final": 6
+    },
+    {
+      "id": "chelsea-corners-after-70",
+      "label": "Track Chelsea corners awarded after 70:00",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4200
+          }
+        ]
+      },
+      "expected_final": 2
+    },
+    {
+      "id": "corners-60-to-70",
+      "label": "Track Chelsea corners after 60:00 through 70:00",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 4200
+          }
+        ]
+      },
+      "expected_final": 3
+    },
+    {
+      "id": "first-half-headers",
+      "label": "Track headed touches in the first half, including stoppage time",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ]
+      },
+      "expected_final": 3
+    },
+    {
+      "id": "second-half-mbappe-headers",
+      "label": "Track Mbapp\u00e9 headed touches in the second half",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "player_id",
+            "op": "eq",
+            "value": "mbappe"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ]
+      },
+      "expected_final": 4
+    },
+    {
+      "id": "all-headers",
+      "label": "Track recorded headed touches across both teams",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ]
+      },
+      "expected_final": 9
+    },
+    {
+      "id": "all-corners",
+      "label": "Track all corners awarded",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          }
+        ]
+      },
+      "expected_final": 9
+    },
+    {
+      "id": "madrid-corners",
+      "label": "Track Madrid corners awarded",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "madrid"
+          }
+        ]
+      },
+      "expected_final": 2
+    },
+    {
+      "id": "chelsea-goals",
+      "label": "Track Chelsea goals",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "goal"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          }
+        ]
+      },
+      "expected_final": 1
+    },
+    {
+      "id": "madrid-goals",
+      "label": "Track Madrid goals",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "goal"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "madrid"
+          }
+        ]
+      },
+      "expected_final": 0
+    },
+    {
+      "id": "all-cards",
+      "label": "Track cards",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "card"
+          }
+        ]
+      },
+      "expected_final": 2
+    },
+    {
+      "id": "red-cards",
+      "label": "Track red cards",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "card"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "red"
+          }
+        ]
+      },
+      "expected_final": 1
+    },
+    {
+      "id": "successful-chelsea-passes",
+      "label": "Track completed Chelsea passes",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ]
+      },
+      "expected_final": 2
+    },
+    {
+      "id": "failed-chelsea-passes",
+      "label": "Track incomplete Chelsea passes",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ]
+      },
+      "expected_final": 1
+    },
+    {
+      "id": "successful-pass-metres",
+      "label": "Track completed Chelsea pass distance in metres",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "expected_final": 27
+    },
+    {
+      "id": "mbappe-headed-pass-metres",
+      "label": "Track Mbapp\u00e9 headed pass distance in metres",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "pass"
+          },
+          {
+            "field": "player_id",
+            "op": "eq",
+            "value": "mbappe"
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "expected_final": 13
+    },
+    {
+      "id": "early-corners",
+      "label": "Track corners before 60:00",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 3600
+          }
+        ]
+      },
+      "expected_final": 1
+    },
+    {
+      "id": "through-60-corners",
+      "label": "Track corners through 60:00 inclusive",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 3600
+          }
+        ]
+      },
+      "expected_final": 2
+    },
+    {
+      "id": "chelsea-defensive-actions",
+      "label": "Track Chelsea tackles, clearances and interceptions",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle",
+              "clearance",
+              "interception"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "eq",
+            "value": "chelsea"
+          }
+        ]
+      },
+      "expected_final": 3
+    },
+    {
+      "id": "saved-mbappe-shots",
+      "label": "Track saved Mbapp\u00e9 shots",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "shot"
+          },
+          {
+            "field": "player_id",
+            "op": "eq",
+            "value": "mbappe"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ]
+      },
+      "expected_final": 3
+    },
+    {
+      "id": "all-events",
+      "label": "Track all active events in this synthetic feed",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": []
+      },
+      "expected_final": 28
+    },
+    {
+      "id": "stoppage-corners",
+      "label": "Track second-half corners after 90 minutes",
+      "rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "eq",
+            "value": "corner"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 5400
+          }
+        ]
+      },
+      "expected_final": 1
+    }
+  ]
+}

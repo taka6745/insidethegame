@@ -1,0 +1,138 @@
+{
+  "scope": "single-process FilterEngine.ingest only; no model, database, network, subscriber routing or serialization",
+  "python": "3.12.12",
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "machine": "arm64",
+  "logical_cpus": 10,
+  "engine_sha256": "d54be7952ba21d10692cfeb435fd56b72fbf60edf40eb59f425ecb5516231be6",
+  "recording_sha256": "f138f9277cae3428743aa9c1273b440a474e6806cb148fb1071672f7fc0a90ee",
+  "memory_limit_mb": 1024,
+  "build_timeout_seconds": 30,
+  "replay_timeout_seconds": 10.0,
+  "cases": [
+    {
+      "workload": "selective",
+      "requested_rules": 100000,
+      "status": "measured",
+      "baseline_mb": 72.171875,
+      "event_order": "spread",
+      "registered_rules": 100000,
+      "build_seconds": 5.401058791961987,
+      "peak_rss_mb": 461.78125,
+      "recording_events": 14018,
+      "measured_events": 1841,
+      "full_match": false,
+      "replay_wall_seconds": 10.001350250036921,
+      "throughput_events_per_second": 184.18185323355934,
+      "latency": {
+        "mean_ms": 5.429416538294405,
+        "p50_ms": 4.817417,
+        "p95_ms": 6.164000000000001,
+        "p99_ms": 9.094750000000001,
+        "max_ms": 566.0177910000001
+      },
+      "candidates_mean": 763.1249321021185,
+      "candidates_max": 764,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.005429416538294405,
+          "p95_response_ms": 6.164000000012493,
+          "max_response_ms": 566.017790999993,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 0.027147082691472025,
+          "p95_response_ms": 6.170250000025135,
+          "max_response_ms": 566.0177910000002,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 0.5429416538294406,
+          "p95_response_ms": 155.92600399999833,
+          "max_response_ms": 566.017791,
+          "backlog_after_sample_ms": 0
+        }
+      ]
+    },
+    {
+      "workload": "overlapping",
+      "requested_rules": 100000,
+      "status": "measured",
+      "baseline_mb": 72.15625,
+      "event_order": "spread",
+      "registered_rules": 100000,
+      "build_seconds": 2.998271458025556,
+      "peak_rss_mb": 328.921875,
+      "recording_events": 14018,
+      "measured_events": 21,
+      "full_match": false,
+      "replay_wall_seconds": 10.029692541982513,
+      "throughput_events_per_second": 2.0938422281852676,
+      "latency": {
+        "mean_ms": 477.5909027619048,
+        "p50_ms": 481.968875,
+        "p95_ms": 594.191584,
+        "p99_ms": 643.17325,
+        "max_ms": 643.17325
+      },
+      "candidates_mean": 100000.0,
+      "candidates_max": 100000,
+      "index_probes_max": 64,
+      "reference_checks": 4,
+      "arrival_models": [
+        {
+          "events_per_second": 1,
+          "utilization": 0.47759090276190475,
+          "p95_response_ms": 594.1915840000007,
+          "max_response_ms": 643.1732500000003,
+          "backlog_after_sample_ms": 0
+        },
+        {
+          "events_per_second": 5,
+          "utilization": 2.3879545138095235,
+          "p95_response_ms": 5727.352833,
+          "max_response_ms": 6029.408957999999,
+          "backlog_after_sample_ms": 5829.408957999999
+        },
+        {
+          "events_per_second": 100,
+          "utilization": 47.75909027619047,
+          "p95_response_ms": 9337.352833,
+          "max_response_ms": 9829.408958,
+          "backlog_after_sample_ms": 9819.408957999998
+        }
+      ]
+    }
+  ],
+  "shared_viewer_model": [
+    {
+      "viewers": 100000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": null
+    },
+    {
+      "viewers": 1000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": null
+    },
+    {
+      "viewers": 10000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": null
+    },
+    {
+      "viewers": 100000000,
+      "distinct_filters": 100,
+      "note": "Same 100 rules computed once, independent of viewer count. No subscriber objects allocated or delivery cost measured.",
+      "measured_compute_p95_ms": null
+    }
+  ]
+}

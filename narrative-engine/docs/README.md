@@ -20,13 +20,14 @@ docs/
 │   ├── store.md           Cosmos DB and in-memory stores
 │   ├── transport.md       Service Bus and JSONL files
 │   ├── api.md             narrative history GraphQL API
-│   └── devtools.md        local runs, Azure dev helpers, HTML report
+│   ├── devtools.md        local runs, Azure dev helpers, HTML report
+│   └── narrative-demo.md  the authored stand-in used by the shared local Docker stack
 ├── development.md         local setup, stand-ins for Azure, commands, tests
 ├── deployment.md          Terraform, image build, deploy, monitoring, costs
 ├── decisions.md           design versus implementation, open items, LATER list
-└── design/                original design material, kept for history (not updated)
+└── design/                original design material, kept for history
     ├── narrative-generation-engine.md   the detailed original design
-    ├── design-notes.md                  context and trigger rules from the design board
+    ├── design-notes.md                  context and trigger rules from the design board, audience ownership
     ├── implementation-plan.md           the phase-by-phase build plan and decision log
     ├── example-prompts/                 the board's original prompts, unchanged
     └── design-board.svg                 export of the board's narrative-engine section
@@ -40,6 +41,7 @@ docs/
 | See how the parts fit and how a minute flows through | [architecture.md](architecture.md) |
 | Consume narratives (user backend) | [../contracts/README.md](../contracts/README.md) |
 | Run it on your machine | [development.md](development.md) |
+| Run the whole product locally (stand-in narratives) | [../../DEVELOPMENT.md](../../DEVELOPMENT.md), [narrative-demo](components/narrative-demo.md) |
 | Deploy or change a model | [deployment.md](deployment.md) |
 | Know what differs from the original design and why | [decisions.md](decisions.md) |
 
@@ -56,6 +58,7 @@ docs/
 | `narrative_engine/transport/` | Service Bus, JSONL files | [transport](components/transport.md) |
 | `narrative_engine/api.py` | History GraphQL API | [api](components/api.md) |
 | `narrative_engine/devtools/` | Developer commands (not deployed) | [devtools](components/devtools.md) |
+| `narrative_demo/`, `fixtures/`, `tools/`, `prototypes/` | The authored stand-in for the local Docker stack | [narrative-demo](components/narrative-demo.md) |
 | `contracts/` | What consumers can rely on | [contracts](../contracts/README.md) |
 | `infra/` | Terraform for Azure dev | [deployment](deployment.md) |
-| `tests/` | Pytest suite and fixtures | [development](development.md#4-tests) |
+| `tests/` | Pytest suite (engine and stand-in) and fixtures | [development](development.md#4-tests) |

@@ -1,0 +1,2004 @@
+{
+  "started_at": "2026-10-18T08:56:57.947463+00:00",
+  "cohort": "transfer",
+  "models": [
+    {
+      "label": "mid-20b",
+      "model": "gpt-oss-20b",
+      "expected_models": [
+        "openai/gpt-oss-20b",
+        "@cf/openai/gpt-oss-20b",
+        "gpt-oss:20b",
+        "gpt-oss-20b"
+      ]
+    }
+  ],
+  "variants": [
+    "current"
+  ],
+  "case_ids": [
+    "transfer-01",
+    "transfer-02",
+    "transfer-03",
+    "transfer-04",
+    "transfer-05",
+    "transfer-06",
+    "transfer-07",
+    "transfer-08",
+    "transfer-09",
+    "transfer-10",
+    "transfer-11",
+    "transfer-12"
+  ],
+  "cases_sha256": "ed43bb4022a1a26797bd6a9c5839e8b038bd9361072bec7f9598c28d06fe312e",
+  "fixture_sha256": "4e60acb182180a8c1c1b4db48981c91af50698541c72f7a7880014684935618d",
+  "concurrency": 2,
+  "case_timeout_seconds": 45.0,
+  "suite_timeout_seconds": 300.0,
+  "max_repairs": 3,
+  "gold": [
+    {
+      "id": "transfer-01",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-02",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-03",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-04",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-05",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-06",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-07",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-08",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-09",
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-10",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-11",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "transfer-12",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "results": [
+    {
+      "id": "transfer-02",
+      "intent_id": "transfer-intent-008",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.097,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "I'd like a running count of Mbappé's passes made with his head, whether they reach a teammate or not.",
+          "status": "ready",
+          "seconds": 3.097,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 2.706,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Mbappé's head passes",
+            "operation": "count",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Mbappé's head passes",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1807,
+            "completion_tokens": 277,
+            "total_tokens": 2084
+          },
+          "status": "ok",
+          "request_bytes": 7447,
+          "request_sha256": "c3e82cbd09552e431c062a4955d8cee5900e59c0287928fd343cfadaeb76bce3",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 2.657
+        }
+      ]
+    },
+    {
+      "id": "transfer-03",
+      "intent_id": "transfer-intent-012",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.931,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many attempts has Vinícius made with his head? Keep any that go in in the total too.",
+          "status": "ready",
+          "seconds": 0.931,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.921,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all head attempts by Vinícius",
+            "operation": "count",
+            "event_types": [
+              "shot",
+              "goal"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "vinicius"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot",
+                  "goal"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "vinicius"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all head attempts by Vinícius",
+        "operation": "count",
+        "event_types": [
+          "shot",
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "vinicius"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "vinicius"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1803,
+            "completion_tokens": 421,
+            "total_tokens": 2224
+          },
+          "status": "ok",
+          "request_bytes": 7434,
+          "request_sha256": "a383b7c92303aae99c2f076ca2dc935e88b910b0f6b8bfe11d33e7f9a5a4b43e",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.917
+        }
+      ]
+    },
+    {
+      "id": "transfer-01",
+      "intent_id": "transfer-intent-003",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.418,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep a count of every time Mbappé uses his head in the first half, including added time.",
+          "status": "ready",
+          "seconds": 4.418,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.403,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all head contacts by Mbappé in the first half",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all head contacts by Mbappé in the first half",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1804,
+            "completion_tokens": 516,
+            "total_tokens": 2320
+          },
+          "status": "ok",
+          "request_bytes": 7434,
+          "request_sha256": "1655cad793a7e9c6f66adb33dabdee9fe5fabe0f45fd11519b76e0d656ab69d2",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 3.913
+        }
+      ]
+    },
+    {
+      "id": "transfer-04",
+      "intent_id": "transfer-intent-014",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.864,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Mbappé's headers that miss the target when he's shooting.",
+          "status": "ready",
+          "seconds": 0.864,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.854,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Mbappé's headed shots that miss the target",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": "off_target",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "off_target"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Mbappé's headed shots that miss the target",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": "off_target",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "off_target"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1796,
+            "completion_tokens": 358,
+            "total_tokens": 2154
+          },
+          "status": "ok",
+          "request_bytes": 7409,
+          "request_sha256": "e531a93a6126889ed6ad10de8c07cc15e852c5076c0592f9b4fd8c959ac24f56",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.851
+        }
+      ]
+    },
+    {
+      "id": "transfer-05",
+      "intent_id": "transfer-intent-019",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.839,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Add up all headed contacts from both sides before half-time, including first-half stoppage time.",
+          "status": "ready",
+          "seconds": 0.839,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.828,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all headed contacts",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": "head",
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 3.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all headed contacts",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1798,
+            "completion_tokens": 369,
+            "total_tokens": 2167
+          },
+          "status": "ok",
+          "request_bytes": 7436,
+          "request_sha256": "6157564baf9f1f054ff851fc2db265fa9b4082ad80f24b761c95347ae6a150e2",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.825
+        }
+      ]
+    },
+    {
+      "id": "transfer-06",
+      "intent_id": "transfer-intent-027",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.593,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Show me how many corners either side got in the first half, including added time.",
+          "status": "ready",
+          "seconds": 0.593,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.583,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all corners in the first half including added time",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all corners in the first half including added time",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1796,
+            "completion_tokens": 172,
+            "total_tokens": 1968
+          },
+          "status": "ok",
+          "request_bytes": 7421,
+          "request_sha256": "7b6e5300b3a810edb6525af629c9c433881a5b57ed5417f7819d828743a01741",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.58
+        }
+      ]
+    },
+    {
+      "id": "transfer-07",
+      "intent_id": "transfer-intent-036",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.762,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep counting Real Madrid corners after 70:00; don't include one exactly at 70:00.",
+          "status": "ready",
+          "seconds": 0.762,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.751,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Real Madrid corners after 70:00",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [
+              "madrid"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": 4200.0,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "madrid"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gt",
+                "value": 4200.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Real Madrid corners after 70:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "madrid"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 4200.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "madrid"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1800,
+            "completion_tokens": 228,
+            "total_tokens": 2028
+          },
+          "status": "ok",
+          "request_bytes": 7422,
+          "request_sha256": "32f532b69a52a542e2f47020d50f1da9ae530cce9c190db77f646523558cc2a1",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.748
+        }
+      ]
+    },
+    {
+      "id": "transfer-09",
+      "intent_id": "transfer-intent-049",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.679,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Add together the distance of Chelsea's passes in metres, including their unsuccessful passes.",
+          "status": "ready",
+          "seconds": 0.679,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.669,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Sum distance of Chelsea passes including unsuccessful",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [
+              "chelsea"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "chelsea"
+                ]
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 47.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Sum distance of Chelsea passes including unsuccessful",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 47.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1795,
+            "completion_tokens": 218,
+            "total_tokens": 2013
+          },
+          "status": "ok",
+          "request_bytes": 7433,
+          "request_sha256": "6fedb1831b12f138379e964fdbd615924237101f7532a57ad8ad72a0dc322bb4",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.665
+        }
+      ]
+    },
+    {
+      "id": "transfer-10",
+      "intent_id": "transfer-intent-054",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 1.212,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many metres do both teams' completed passes add up to in the second half? Keep that total updated.",
+          "status": "unsupported",
+          "seconds": 1.212,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.21
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "unsupported"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "unsupported",
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": false,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1801,
+            "completion_tokens": 742,
+            "total_tokens": 2543
+          },
+          "status": "ok",
+          "request_bytes": 7442,
+          "request_sha256": "48583f861d692df8118508cb3839071d179cb3af9c1e20e78a5fa3bb902d96b3",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 1.208
+        }
+      ]
+    },
+    {
+      "id": "transfer-08",
+      "intent_id": "transfer-intent-039",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 2.815,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count either team's corners starting exactly at 60:00, but stop before 61:00.",
+          "status": "ready",
+          "seconds": 2.815,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 2.804,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all corners between 60:00 and 61:00",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": 3600.0,
+            "before_seconds": 3660.0,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gte",
+                "value": 3600.0
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "lt",
+                "value": 3660.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all corners between 60:00 and 61:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": 3600.0,
+        "before_seconds": 3660.0,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lt",
+            "value": 3660.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1800,
+            "completion_tokens": 351,
+            "total_tokens": 2151
+          },
+          "status": "ok",
+          "request_bytes": 7417,
+          "request_sha256": "a04f02b2d15f6345ba799e3f6f652d4bbfc465598bc286c6d1b468548a80f7e3",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 2.802
+        }
+      ]
+    },
+    {
+      "id": "transfer-12",
+      "intent_id": "transfer-intent-096",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 0.415,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Give me one combined count of goals and cards for both teams throughout this match.",
+          "status": "ready",
+          "seconds": 0.415,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 0.405,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all goals and cards",
+            "operation": "count",
+            "event_types": [
+              "goal",
+              "card"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "goal",
+                  "card"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 3.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all goals and cards",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "card"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1795,
+            "completion_tokens": 245,
+            "total_tokens": 2040
+          },
+          "status": "ok",
+          "request_bytes": 7423,
+          "request_sha256": "c5a9577352eebcd9f381e6268d42b6279875eb9b3e284b21571f4d72080a8993",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 0.401
+        }
+      ]
+    },
+    {
+      "id": "transfer-11",
+      "intent_id": "transfer-intent-080",
+      "quality": "transfer",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.839,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Track cards shown to either side strictly after the clock passes 60:00, red or yellow.",
+          "status": "clarification",
+          "seconds": 5.18,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 5.178
+          },
+          "goal_failure_reasons": [
+            "truncated_output"
+          ],
+          "question": "Do you want to count both red and yellow cards?",
+          "clarification": {
+            "question": "Do you want to count both red and yellow cards?",
+            "options": [],
+            "missing_fields": []
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "All card events after 60:00, excluding the boundary.",
+          "status": "ready",
+          "seconds": 5.659,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.649,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all card events after 60:00",
+            "operation": "count",
+            "event_types": [
+              "card"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": 3600.0,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "card"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gt",
+                "value": 3600.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 3,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 1,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all card events after 60:00",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
+      "schema_sha256": "63d90a04e4c0ca86d598def771f8aef62246fa29a0486f88fae926dc02032630",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b",
+        "openai/gpt-oss-20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1799,
+            "completion_tokens": 3000,
+            "total_tokens": 4799
+          },
+          "status": "ok",
+          "request_bytes": 7426,
+          "request_sha256": "78f77f7f41397290c7ce979c34046314ae15d16e7184b6c342720b0d76774400",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 3.498
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "openai/gpt-oss-20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1799,
+            "completion_tokens": 1396,
+            "total_tokens": 3195
+          },
+          "status": "ok",
+          "request_bytes": 7426,
+          "request_sha256": "78f77f7f41397290c7ce979c34046314ae15d16e7184b6c342720b0d76774400",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 1.674
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 1845,
+            "completion_tokens": 761,
+            "total_tokens": 2606
+          },
+          "status": "ok",
+          "request_bytes": 7610,
+          "request_sha256": "c73aef875fce918c69bba5303c0bedf23d5b74d32cf6207fdeb0cfbf9755e7c8",
+          "requested_model": "gpt-oss-20b",
+          "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
+          "seconds": 5.647
+        }
+      ]
+    }
+  ]
+}
