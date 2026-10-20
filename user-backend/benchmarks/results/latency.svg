@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="430" viewBox="0 0 820 430">
+<rect width="820" height="430" fill="#131b23"/>
+<g font-family="system-ui,sans-serif" fill="#eef3f7">
+<text x="28" y="36" font-size="22">Time to process one event</text>
+<text x="28" y="61" font-size="12" fill="#afbbc6">p95 milliseconds · log scale · measured prefixes · lower is better</text>
+<path d="M220.0 90V365" stroke="#33414d"/>
+<text x="220.0" y="390" text-anchor="middle" font-size="11">0.1 ms</text>
+<path d="M355.0 90V365" stroke="#33414d"/>
+<text x="355.0" y="390" text-anchor="middle" font-size="11">1 ms</text>
+<path d="M490.0 90V365" stroke="#33414d"/>
+<text x="490.0" y="390" text-anchor="middle" font-size="11">10 ms</text>
+<path d="M625.0 90V365" stroke="#33414d"/>
+<text x="625.0" y="390" text-anchor="middle" font-size="11">100 ms</text>
+<path d="M760.0 90V365" stroke="#33414d"/>
+<text x="760.0" y="390" text-anchor="middle" font-size="11">1000 ms</text>
+<text x="28" y="108" font-size="12">100 · selective</text>
+<rect x="220" y="94" width="9.579723633126065" height="16" rx="3" fill="#87dcab"/>
+<text x="237.57972363312606" y="107" font-size="11">0.12</text>
+<text x="28" y="140" font-size="12">1,000 · selective</text>
+<rect x="220" y="126" width="18.848403231819447" height="16" rx="3" fill="#87dcab"/>
+<text x="246.84840323181945" y="139" font-size="11">0.14</text>
+<text x="28" y="172" font-size="12">10,000 · selective</text>
+<rect x="220" y="158" width="104.30877170150984" height="16" rx="3" fill="#87dcab"/>
+<text x="332.30877170150984" y="171" font-size="11">0.59</text>
+<text x="28" y="204" font-size="12">100,000 · selective</text>
+<rect x="220" y="190" width="234.80576372398735" height="16" rx="3" fill="#87dcab"/>
+<text x="462.80576372398735" y="203" font-size="11">5.49</text>
+<text x="28" y="236" font-size="12">100 · overlapping</text>
+<rect x="220" y="222" width="88.76178564895963" height="16" rx="3" fill="#efb179"/>
+<text x="316.76178564895963" y="235" font-size="11">0.45</text>
+<text x="28" y="268" font-size="12">1,000 · overlapping</text>
+<rect x="220" y="254" width="218.04610658221094" height="16" rx="3" fill="#efb179"/>
+<text x="446.04610658221094" y="267" font-size="11">4.12</text>
+<text x="28" y="300" font-size="12">10,000 · overlapping</text>
+<rect x="220" y="286" width="336.7493014251444" height="16" rx="3" fill="#efb179"/>
+<text x="564.7493014251444" y="299" font-size="11">31.22</text>
+<text x="28" y="332" font-size="12">100,000 · overlapping</text>
+<rect x="220" y="318" width="480.3008078458274" height="16" rx="3" fill="#efb179"/>
+<text x="708.3008078458274" y="331" font-size="11">361.23</text>
+</g></svg>

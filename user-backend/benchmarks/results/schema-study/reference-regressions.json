@@ -1,0 +1,691 @@
+{
+  "started_at": "2026-10-18T09:17:02.874857+00:00",
+  "cohort": "balanced",
+  "models": [
+    {
+      "label": "higher-ranked-reference",
+      "model": "dots-studio/dots-3-note-preview:free",
+      "expected_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ]
+    }
+  ],
+  "variants": [
+    "current"
+  ],
+  "case_ids": [
+    "balanced-09-poor",
+    "balanced-15-poor",
+    "balanced-18-average",
+    "balanced-30-average"
+  ],
+  "cases_sha256": "24ce0981149b71132ad6d5781a33a06376dbed7941f5b5f7afee71cc87783bc1",
+  "fixture_sha256": "4e60acb182180a8c1c1b4db48981c91af50698541c72f7a7880014684935618d",
+  "concurrency": 2,
+  "case_timeout_seconds": 45.0,
+  "suite_timeout_seconds": 180.0,
+  "max_repairs": 3,
+  "gold": [
+    {
+      "id": "balanced-09-poor",
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "balanced-15-poor",
+      "ok": true,
+      "final_value": 60.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "balanced-18-average",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "balanced-30-average",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "results": [
+    {
+      "id": "balanced-15-poor",
+      "intent_id": "intent-15",
+      "quality": "poor",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.022,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "track passing for both sides",
+          "status": "ready",
+          "seconds": 9.022,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.695,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all passes for both teams",
+            "operation": "count",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "wrong_event_value",
+            "delivery": 1,
+            "expected": 8.0,
+            "actual": 1.0
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": false,
+      "missed_clarification": true,
+      "unsafe_guess": true,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 1,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all passes for both teams",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": false,
+      "reason": "missed_clarification",
+      "final_check": {
+        "ok": false,
+        "reason": "wrong_event_value",
+        "delivery": 1,
+        "expected": 8.0,
+        "actual": 1.0
+      },
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": false,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1954,
+            "completion_tokens": 495,
+            "total_tokens": 2449
+          },
+          "status": "ok",
+          "request_bytes": 8496,
+          "request_sha256": "1506f2189c932e45de98b35f34683817ed9ba7e0de14cb82d9d38a6984707531",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.584
+        }
+      ]
+    },
+    {
+      "id": "balanced-18-average",
+      "intent_id": "intent-18",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.781,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Palmer successful passes with his right foot.",
+          "status": "ready",
+          "seconds": 9.78,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.767,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Palmer's successful passes with his right foot",
+            "operation": "count",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "palmer"
+            ],
+            "body_part": "right_foot",
+            "period": null,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "palmer"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "right_foot"
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Palmer's successful passes with his right foot",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "palmer"
+        ],
+        "body_part": "right_foot",
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "palmer"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "right_foot"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1957,
+            "completion_tokens": 709,
+            "total_tokens": 2666
+          },
+          "status": "ok",
+          "request_bytes": 8513,
+          "request_sha256": "7246e3f924bbf0e1e9452adc85117b28cc628d88257601005b207021296b4304",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 9.763
+        }
+      ]
+    },
+    {
+      "id": "balanced-09-poor",
+      "intent_id": "intent-09",
+      "quality": "poor",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.859,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Chelsea corners between 60 and 70",
+          "status": "clarification",
+          "seconds": 11.619,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.612
+          },
+          "goal_failure_reasons": [],
+          "question": "Should the time range between 60 and 70 minutes include the boundaries (60 and 70) or be exclusive?",
+          "clarification": {
+            "question": "Should the time range between 60 and 70 minutes include the boundaries (60 and 70) or be exclusive?",
+            "options": [
+              "Inclusive (60 to 70 minutes)",
+              "Exclusive (after 60 to before 70 minutes)"
+            ],
+            "missing_fields": [
+              "time_window"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "I mean: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive.",
+          "status": "ready",
+          "seconds": 8.24,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.228,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [
+              "chelsea"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": 3600.0,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": 4200.0,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "chelsea"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gt",
+                "value": 3600.0
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "lte",
+                "value": 4200.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 3.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [
+          "chelsea"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": 4200.0,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "chelsea"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "lte",
+            "value": 4200.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 3.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1959,
+            "completion_tokens": 814,
+            "total_tokens": 2773
+          },
+          "status": "ok",
+          "request_bytes": 8501,
+          "request_sha256": "f631729a469625df19b33a0f3fd867fcfae82b6ab13e7f332ab5885345e1f3f8",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 11.248
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 2065,
+            "completion_tokens": 596,
+            "total_tokens": 2661
+          },
+          "status": "ok",
+          "request_bytes": 8854,
+          "request_sha256": "3eb421417027aa698fade4b5a255c098dd311984f4f421623b3390590dc8dba6",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.224
+        }
+      ]
+    },
+    {
+      "id": "balanced-30-average",
+      "intent_id": "intent-30",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 1.345,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Mbappé headers after 60, before 75; exclude both boundaries.",
+          "status": "failed",
+          "seconds": 1.345,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.344
+          },
+          "goal_failure_reasons": [
+            "http_400"
+          ],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "failed"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": false,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": false,
+      "pin_reason": "no_successful_model_response",
+      "actual_models": [],
+      "calls": [
+        {
+          "http_status": 400,
+          "actual_models": [],
+          "tokens": {},
+          "status": "http_error",
+          "request_bytes": 8534,
+          "request_sha256": "e39cd2bd6714cc5d85589b4650f36b6ab5ee0ea272e8275929441cb747b83da5",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 1.341
+        }
+      ]
+    }
+  ]
+}

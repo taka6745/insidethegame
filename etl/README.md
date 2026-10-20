@@ -1,16 +1,20 @@
 # Match data / ETL
 
-![Match events become queryable history, stats and notifications](architecture.svg)
+[Documentation](docs/README.md) · [Demo API](docs/demo-api.md) · [Shared local setup](../DEVELOPMENT.md)
+
+![ETL owns standard statistics and historical events](architecture.svg)
 
 **Implemented, tested and deployed to dev.** Turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus.
+
+The shared local Docker stack runs a **recorded-match stand-in** instead (`demo_etl/`: the GRF recording, PostgreSQL, Python GraphQL, `MatchSnapshotReady` notifications), described in [docs/components/demo-etl.md](docs/components/demo-etl.md).
 
 | | |
 | --- | --- |
 | **Documentation** | [docs/](docs/README.md): overview, architecture, one page per component, development, deployment, decisions |
-| **For consumers** | [contracts/](contracts/README.md): GraphQL queries, Service Bus messages, key-event conventions |
+| **For consumers** | [contracts/](contracts/README.md): GraphQL queries, Service Bus messages, key-event conventions (Azure pipeline); [demo-api.md](docs/demo-api.md) (stand-in) |
 
 ```sh
-cd etl && python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows path shown
+cd etl && python -m venv .venv && .venv/Scripts/pip install -r requirements-test.txt   # Windows path shown
 .venv/Scripts/python -m pytest tests
 .venv/Scripts/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
 ```
@@ -25,5 +29,6 @@ cd etl && python -m venv .venv && .venv/Scripts/pip install -r requirements.txt 
 | `reference/` | The same rules in Python: the expected result for tests and verification |
 | `devtools/` | Developer commands: local stack, loading, verification, job start/stop |
 | `infra/` | Terraform for Azure dev |
-| `tests/` | Pytest suite |
+| `tests/` | Pytest suite (pipeline and stand-in) |
 | `docs/` | Documentation; original design material in `docs/design/` |
+| `demo_etl/` | The [recorded-match stand-in](docs/components/demo-etl.md) for the local Docker stack (`Dockerfile`) |

@@ -1,19 +1,23 @@
 # Frontend
 
+[Run locally](docs/development.md) · [Design references](docs/design-references.md) · [Icon checks](assets/README.md) · [Verification](docs/verification.md)
+
 ![Live match, statistics and two conversation tabs](architecture.svg)
 
-**Planned interface; not implemented.** Show one live match with stat cards and two tabs: agent chat and the narrative feed/backlog.
+**Match viewer:** one live match, fixed stat slots, bucketed insights and a question tab. The stream-first layout reserves the main area for match footage, with five stat slots below and a compact Insights / Ask companion. The optional 12-minute Chelsea–United GRF video shares its timeline with the ETL recording. Start/resume and reconnect follow the shared replay clock. Clips and rewind remain phase 2. The separate filter lab stays at `/lab/`.
 
-- Select a demo profile; use its team and fan style to resolve the bucket.
-- Send questions and pin/unpin actions to the user backend. Receive replies and live updates.
-- A custom pin replaces the lowest-priority default card. Keep the slot count fixed.
-- Restore chat and pins after reconnecting. A new session takes over the previous one.
-- Mid-match viewers receive narrative history and current bucket stats.
+```text
+Static HTML / CSS / modules ← CDN or nginx
+             ↓ one live connection
+User backend → match state + cards + narratives
+             ↔ questions + Track / Untrack
+```
 
-**Boundary:** the browser talks to the user backend for application data, and to the footage source for video. It does not query databases or run agents.
+- Choose either team or Neither, plus Analytical, Simple, Casual or Experienced. Chat and pins stay with the same demo identity; already-framed narratives come from upstream. Only combinations with connected viewers are enabled in the demo audience catalogue.
+- Standard statistics come from ETL through the backend. The browser never calculates match statistics.
+- Tracking a standard or custom stat replaces the lowest-priority default card; untracking restores the default.
+- Questions keep their as-of snapshot while live cards advance. Sessions restore on refresh; a new session takes over the previous tab.
 
-**Azure / framework:** hosting and frontend framework are undecided. Live transport and card count are also open; diagram cards are illustrative.
-
-**Phase 2** (grey/dashed): play requested clip segments, pause/rewind, and align stats and narratives with playback position. The backend returns source IDs and timestamps; the browser plays the segments.
+**Scale boundary:** static files can be distributed independently. One push connection per viewer, bounded UI state and shared backend projection avoid per-viewer polling or agent loops. The local single-process harness is not an EPL-capacity demonstration. [Production boundaries](../user-backend/docs/scaling.md).
 
 [Repository plan](../README.md)

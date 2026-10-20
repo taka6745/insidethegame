@@ -1,0 +1,1507 @@
+{
+  "started_at": "2026-10-18T09:13:36.982144+00:00",
+  "cohort": "balanced",
+  "models": [
+    {
+      "label": "small-3b",
+      "model": "llama-3.2-3b",
+      "expected_models": [
+        "@cf/meta/llama-3.2-3b-instruct"
+      ]
+    },
+    {
+      "label": "mid-20b",
+      "model": "gpt-oss-20b",
+      "expected_models": [
+        "openai/gpt-oss-20b",
+        "@cf/openai/gpt-oss-20b",
+        "gpt-oss:20b",
+        "gpt-oss-20b"
+      ]
+    },
+    {
+      "label": "higher-ranked-reference",
+      "model": "dots-studio/dots-3-note-preview:free",
+      "expected_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ]
+    }
+  ],
+  "variants": [
+    "schema"
+  ],
+  "case_ids": [
+    "balanced-01-clear",
+    "balanced-01-average",
+    "balanced-01-poor"
+  ],
+  "cases_sha256": "7ba68293b5c75275b30dbb9bafbb982ccc572fd316236229438d4ddd17a56194",
+  "fixture_sha256": "4e60acb182180a8c1c1b4db48981c91af50698541c72f7a7880014684935618d",
+  "concurrency": 1,
+  "case_timeout_seconds": 25.0,
+  "suite_timeout_seconds": 180.0,
+  "max_repairs": 3,
+  "gold": [
+    {
+      "id": "balanced-01-clear",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "balanced-01-average",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "balanced-01-poor",
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "results": [
+    {
+      "id": "balanced-01-clear",
+      "intent_id": "intent-01",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 1.368,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "ready",
+          "seconds": 1.368,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.361,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count every headed contact Mbapp",
+            "operation": "count",
+            "event_types": [
+              "touch"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "touch"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "wrong_event_value",
+            "delivery": 1,
+            "expected": 1.0,
+            "actual": 0.0
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 1,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count every headed contact Mbapp",
+        "operation": "count",
+        "event_types": [
+          "touch"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "touch"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 1,
+      "expected": 1.0,
+      "actual": 0.0,
+      "model_label": "small-3b",
+      "requested_model": "llama-3.2-3b",
+      "variant": "schema",
+      "interpretation_ok": false,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "@cf/meta/llama-3.2-3b-instruct"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "@cf/meta/llama-3.2-3b-instruct"
+          ],
+          "tokens": {
+            "prompt_tokens": 2227,
+            "completion_tokens": 121,
+            "total_tokens": 2348
+          },
+          "status": "ok",
+          "request_bytes": 13110,
+          "request_sha256": "6560f7b0e9f6734e1168c897b288cf6e86611282a110e2ce1121d8699b9f75f3",
+          "requested_model": "llama-3.2-3b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 0.989
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-average",
+      "intent_id": "intent-01",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 1.14,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Mbappé's headers this game.",
+          "status": "ready",
+          "seconds": 1.14,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.137,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Track Mbappe's headers this game.",
+            "operation": "count",
+            "event_types": [
+              "touch"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "touch"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "wrong_event_value",
+            "delivery": 1,
+            "expected": 1.0,
+            "actual": 0.0
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 1,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Track Mbappe's headers this game.",
+        "operation": "count",
+        "event_types": [
+          "touch"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "touch"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 1,
+      "expected": 1.0,
+      "actual": 0.0,
+      "model_label": "small-3b",
+      "requested_model": "llama-3.2-3b",
+      "variant": "schema",
+      "interpretation_ok": false,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "@cf/meta/llama-3.2-3b-instruct"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "@cf/meta/llama-3.2-3b-instruct"
+          ],
+          "tokens": {
+            "prompt_tokens": 2220,
+            "completion_tokens": 123,
+            "total_tokens": 2343
+          },
+          "status": "ok",
+          "request_bytes": 13068,
+          "request_sha256": "4eaa82dc88a7d3ad32672e143365032f0e448099612961115e02925ca82dfdf6",
+          "requested_model": "llama-3.2-3b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 1.132
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-poor",
+      "intent_id": "intent-01",
+      "quality": "poor",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 1.981,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "his headers pls",
+          "status": "clarification",
+          "seconds": 0.002,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": "Which player in this match do you mean?",
+          "clarification": {
+            "question": "Which player in this match do you mean?",
+            "options": [
+              "Kylian Mbappé",
+              "Cole Palmer",
+              "Levi Colwill",
+              "Vinícius",
+              "Camavinga"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "I mean: Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "ready",
+          "seconds": 1.978,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 1.974,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count every headed contact Mbapp",
+            "operation": "count",
+            "event_types": [
+              "touch"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "touch"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "wrong_event_value",
+            "delivery": 1,
+            "expected": 1.0,
+            "actual": 0.0
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 1,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count every headed contact Mbapp",
+        "operation": "count",
+        "event_types": [
+          "touch"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "touch"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": false,
+      "reason": "wrong_event_value",
+      "delivery": 1,
+      "expected": 1.0,
+      "actual": 0.0,
+      "model_label": "small-3b",
+      "requested_model": "llama-3.2-3b",
+      "variant": "schema",
+      "interpretation_ok": false,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "@cf/meta/llama-3.2-3b-instruct"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "@cf/meta/llama-3.2-3b-instruct"
+          ],
+          "tokens": {
+            "prompt_tokens": 2303,
+            "completion_tokens": 121,
+            "total_tokens": 2424
+          },
+          "status": "ok",
+          "request_bytes": 13363,
+          "request_sha256": "e4fb37ca43cbb6699287b0ecf2eb7c615454eb46257dc10346d5f7fca2a5204b",
+          "requested_model": "llama-3.2-3b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 1.97
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-clear",
+      "intent_id": "intent-01",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.148,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "ready",
+          "seconds": 3.148,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 3.136,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count every headed contact Mbappé makes this match, across all event types.",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 6.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count every headed contact Mbappé makes this match, across all event types.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "schema",
+      "interpretation_ok": true,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 2274,
+            "completion_tokens": 351,
+            "total_tokens": 2625
+          },
+          "status": "ok",
+          "request_bytes": 13109,
+          "request_sha256": "34f34d76b1b233c1c78354e663cca5edafb9270daee37edd1efb0d3e5319bd40",
+          "requested_model": "gpt-oss-20b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 3.132
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-average",
+      "intent_id": "intent-01",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 2.971,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Mbappé's headers this game.",
+          "status": "ready",
+          "seconds": 2.971,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 2.959,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Mbappé's headers in the match",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 6.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Mbappé's headers in the match",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "schema",
+      "interpretation_ok": true,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 2267,
+            "completion_tokens": 359,
+            "total_tokens": 2626
+          },
+          "status": "ok",
+          "request_bytes": 13067,
+          "request_sha256": "f7cd3046b16fbdbb3217e7b35f2904a79275c0fec5403a59b31a75b36a98f079",
+          "requested_model": "gpt-oss-20b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 2.955
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-poor",
+      "intent_id": "intent-01",
+      "quality": "poor",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 3.011,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "his headers pls",
+          "status": "clarification",
+          "seconds": 0.001,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": "Which player in this match do you mean?",
+          "clarification": {
+            "question": "Which player in this match do you mean?",
+            "options": [
+              "Kylian Mbappé",
+              "Cole Palmer",
+              "Levi Colwill",
+              "Vinícius",
+              "Camavinga"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "I mean: Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "ready",
+          "seconds": 3.009,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 2.999,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count every headed contact Mbappé makes this match across all event types.",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 6.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count every headed contact Mbappé makes this match across all event types.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35,
+      "model_label": "mid-20b",
+      "requested_model": "gpt-oss-20b",
+      "variant": "schema",
+      "interpretation_ok": true,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "gpt-oss:20b"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "gpt-oss:20b"
+          ],
+          "tokens": {
+            "prompt_tokens": 2350,
+            "completion_tokens": 340,
+            "total_tokens": 2690
+          },
+          "status": "ok",
+          "request_bytes": 13362,
+          "request_sha256": "6acb28fef0b1b8ceaadacbeb58ab0c69ca430dbbecaf213751dd14b83433d364",
+          "requested_model": "gpt-oss-20b",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 2.996
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-clear",
+      "intent_id": "intent-01",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.519,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "ready",
+          "seconds": 10.518,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.508,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count every headed contact made by Mbappé across all event types in the match.",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [],
+            "player_ids": [
+              "mbappe"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mbappe"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 6.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count every headed contact made by Mbappé across all event types in the match.",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [],
+        "player_ids": [
+          "mbappe"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mbappe"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 6.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "schema",
+      "interpretation_ok": true,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 2222,
+            "completion_tokens": 364,
+            "total_tokens": 2586
+          },
+          "status": "ok",
+          "request_bytes": 13134,
+          "request_sha256": "8f189d1a050106deed97810a2fbe4d0bacc80b4c0e4b6884b9178b4c265c98a9",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 10.506
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-average",
+      "intent_id": "intent-01",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 0.078,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Mbappé's headers this game.",
+          "status": "failed",
+          "seconds": 0.078,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 0.076
+          },
+          "goal_failure_reasons": [
+            "http_429",
+            "http_429"
+          ],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "failed"
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "schema",
+      "interpretation_ok": false,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": false,
+      "pin_reason": "no_successful_model_response",
+      "actual_models": [],
+      "calls": [
+        {
+          "http_status": 429,
+          "actual_models": [],
+          "tokens": {},
+          "status": "http_error",
+          "request_bytes": 13092,
+          "request_sha256": "f2bce3d5406f0a5386c89383bb5ad03af840905ba22ec88781920272a625ba1b",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 0.033
+        },
+        {
+          "http_status": 429,
+          "actual_models": [],
+          "tokens": {},
+          "status": "http_error",
+          "request_bytes": 13092,
+          "request_sha256": "f2bce3d5406f0a5386c89383bb5ad03af840905ba22ec88781920272a625ba1b",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 0.037
+        }
+      ]
+    },
+    {
+      "id": "balanced-01-poor",
+      "intent_id": "intent-01",
+      "quality": "poor",
+      "must_clarify": true,
+      "attempts": 0,
+      "status": "failed",
+      "seconds": 0.173,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "his headers pls",
+          "status": "clarification",
+          "seconds": 0.001,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "goal_failure_reasons": [],
+          "question": "Which player in this match do you mean?",
+          "clarification": {
+            "question": "Which player in this match do you mean?",
+            "options": [
+              "Kylian Mbappé",
+              "Cole Palmer",
+              "Levi Colwill",
+              "Vinícius",
+              "Camavinga"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "I mean: Count every headed contact Mbappé makes this match, across all event types.",
+          "status": "failed",
+          "seconds": 0.171,
+          "model_calls": 2,
+          "stage_seconds": {
+            "goal": 0.17
+          },
+          "goal_failure_reasons": [
+            "http_429",
+            "http_429"
+          ],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "failed"
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "failed",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "schema",
+      "interpretation_ok": false,
+      "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
+      "schema_sha256": "15f38422f9f2908777cd55c4df9bca6cc836793ff8bee9646a59366b8f08cdac",
+      "pin_verified": false,
+      "pin_reason": "no_successful_model_response",
+      "actual_models": [],
+      "calls": [
+        {
+          "http_status": 429,
+          "actual_models": [],
+          "tokens": {},
+          "status": "http_error",
+          "request_bytes": 13387,
+          "request_sha256": "3125954963e448dd9af96921262c730fb69dcb61c826c2b76c9322094fd29884",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 0.035
+        },
+        {
+          "http_status": 429,
+          "actual_models": [],
+          "tokens": {},
+          "status": "http_error",
+          "request_bytes": 13387,
+          "request_sha256": "3125954963e448dd9af96921262c730fb69dcb61c826c2b76c9322094fd29884",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "json_schema",
+          "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
+          "strict_requested": true,
+          "system_prompt_sha256": "6e3c4adfb0424c024609b213f417fb9b55fabaaa1fb135561bb1d7fcbc95dfc4",
+          "seconds": 0.129
+        }
+      ]
+    }
+  ]
+}

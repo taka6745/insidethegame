@@ -1,0 +1,67 @@
+{
+  "version": "ifab-basics-2026-27-v1",
+  "reviewed_on": "2026-10-18",
+  "scope": "Original short summaries of common IFAB rules, not the complete Laws or competition regulations. No match evidence or evaluation answers. Rules can change; this is an offline reference, not live web search.",
+  "entries": [
+    {
+      "law": 3,
+      "topic": "Players and substitutions",
+      "source": "https://www.theifab.com/laws/latest/the-players/",
+      "summary": "Each team has at most eleven players, including a goalkeeper. A match normally cannot start or continue with fewer than seven; protocols have specific temporary-absence exceptions. Substitution limits depend on competition rules, so do not infer a particular competition's allowance from the general Laws. A player sent off after kick-off cannot be replaced."
+    },
+    {
+      "law": 7,
+      "topic": "Halves, added time and extra time",
+      "source": "https://www.theifab.com/laws/latest/the-duration-of-the-match/",
+      "summary": "A standard match has two 45-minute halves. The referee adds time for stoppages such as injuries, substitutions and disciplinary delays. The displayed added time is a minimum and can increase. Half-time is at most fifteen minutes under the usual rules. Added time within a half is different from extra time used by some competitions to resolve a draw."
+    },
+    {
+      "law": 9,
+      "topic": "Ball out of play",
+      "source": "https://www.theifab.com/laws/latest/the-ball-in-and-out-of-play/",
+      "summary": "The entire ball must cross a boundary line to be out, whether airborne or on the ground. Play also stops when the referee stops it. A rebound from the frame of the goal or a corner flag normally remains in play. Contact with an official requires a dropped ball in specified situations, such as a change of possession or the start of a promising attack."
+    },
+    {
+      "law": 10,
+      "topic": "Goals and match outcomes",
+      "source": "https://www.theifab.com/laws/latest/determining-the-outcome-of-a-match/",
+      "summary": "A valid goal requires the whole ball to cross the goal line within the goal, without an offence by the scoring team. The higher final goal total wins; equal totals mean a draw unless competition rules require a tiebreak. Extra time and shoot-outs depend on those rules. A score while play continues establishes the current lead, not the final winner."
+    },
+    {
+      "law": 11,
+      "topic": "Offside position and offence",
+      "source": "https://www.theifab.com/laws/latest/offside/",
+      "summary": "Assess relevant head, body or feet position when a teammate plays or touches the ball: the attacker must be in the opponents' half and ahead of both the ball and the second-last opponent. Hands and arms do not count; level is onside. Position alone is not an offence: subsequent involvement must interfere with play or an opponent, or gain the specified advantage from a rebound, deflection or save. The ball's travel direction is not a requirement. Direct reception from a throw-in, corner or goal kick is exempt. A deliberate opponent play generally resets the situation; a deliberate save does not. An offence leads to an indirect free kick."
+    },
+    {
+      "law": 12,
+      "topic": "Fouls, handball and discipline",
+      "source": "https://www.theifab.com/laws/latest/fouls-and-misconduct/",
+      "summary": "For physical challenges, careless conduct can be a foul without a card, recklessness calls for a caution, and excessive force can require sending off. Yellow means caution; red means sending off, including a second caution in the same match. Hand contact is not automatically handball: intent, body position and the scoring circumstances matter. A direct-free-kick offence inside the offender's own penalty area normally results in a penalty. A goalkeeper holding the ball with hands or arms beyond eight seconds concedes a corner under this edition."
+    },
+    {
+      "law": 13,
+      "topic": "Direct and indirect free kicks",
+      "source": "https://www.theifab.com/laws/latest/free-kicks/",
+      "summary": "A direct free kick can score straight into the opponents' goal. An indirect free kick needs another player's touch before a goal can count; the referee signals it with a raised arm. The restart type follows the offence, rather than whether the kicker chooses to pass or shoot."
+    },
+    {
+      "law": 15,
+      "topic": "Throw-ins",
+      "source": "https://www.theifab.com/laws/latest/the-throw-in/",
+      "summary": "When the whole ball crosses the touchline, the opponents of its last toucher normally take the throw-in. A legal throw uses both hands from behind and over the head while facing the pitch, with part of each foot on the line or outside it on the ground. A goal cannot be scored straight from a throw-in."
+    },
+    {
+      "law": 16,
+      "topic": "Goal kicks",
+      "source": "https://www.theifab.com/laws/latest/the-goal-kick/",
+      "summary": "A goal kick normally follows a ball crossing the defending goal line outside a valid goal after an attacker touched it last. It is taken from the goal area. The ball is live once kicked and clearly moving; it need not leave the penalty area first."
+    },
+    {
+      "law": 17,
+      "topic": "Corners",
+      "source": "https://www.theifab.com/laws/latest/the-corner-kick/",
+      "summary": "A corner normally follows the ball crossing a team's goal line without a goal after a defender touched it last. It is taken from the nearer corner area and can score directly against the opposing team. This edition also awards a corner for excessive goalkeeper hand control and specified goal-kick delay offences."
+    }
+  ]
+}

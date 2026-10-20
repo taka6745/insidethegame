@@ -1,0 +1,26 @@
+[
+  {
+    "icon": "pitch",
+    "foreground_iou": 0.9356,
+    "minimum": 0.8,
+    "shapes": 3,
+    "path_commands": 10,
+    "passed": true
+  },
+  {
+    "icon": "insight",
+    "foreground_iou": 0.8994,
+    "minimum": 0.8,
+    "shapes": 2,
+    "path_commands": 16,
+    "passed": true
+  },
+  {
+    "icon": "track",
+    "foreground_iou": 0.8306,
+    "minimum": 0.8,
+    "shapes": 2,
+    "path_commands": 10,
+    "passed": true
+  }
+]

@@ -1,0 +1,3796 @@
+[
+  {
+    "id": "balanced-01-clear",
+    "prompt": "Count every headed contact Mbapp\u00e9 makes this match, across all event types.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-01",
+    "gold_case_id": "stat-001",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count every headed contact Mbapp\u00e9 makes this match, across all event types.",
+      "Please use this exact meaning: Count every headed contact Mbapp\u00e9 makes this match, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-01-average",
+    "prompt": "Track Mbapp\u00e9's headers this game.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-01",
+    "gold_case_id": "stat-001",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count every headed contact Mbapp\u00e9 makes this match, across all event types.",
+      "Please use this exact meaning: Count every headed contact Mbapp\u00e9 makes this match, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-01-poor",
+    "prompt": "his headers pls",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-01",
+    "gold_case_id": "stat-001",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count every headed contact Mbapp\u00e9 makes this match, across all event types.",
+      "Please use this exact meaning: Count every headed contact Mbapp\u00e9 makes this match, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-02-clear",
+    "prompt": "Count Mbapp\u00e9's headed contacts in the second half, across all event types.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-02",
+    "gold_case_id": "stat-002",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts in the second half, across all event types.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts in the second half, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-02-average",
+    "prompt": "Mbapp\u00e9 headers, second half only.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-02",
+    "gold_case_id": "stat-002",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts in the second half, across all event types.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts in the second half, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-02-poor",
+    "prompt": "mbape hed touches 2nd half pls",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1,
+      "e21@2": 1,
+      "e26@1": 1
+    },
+    "intent_id": "intent-02",
+    "gold_case_id": "stat-002",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts in the second half, across all event types.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts in the second half, across all event types."
+    ]
+  },
+  {
+    "id": "balanced-03-clear",
+    "prompt": "Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-03",
+    "gold_case_id": "stat-007",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-03-average",
+    "prompt": "Mbapp\u00e9 headed shots including goals.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-03",
+    "gold_case_id": "stat-007",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-03-poor",
+    "prompt": "his head shots incl goals",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e13@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-03",
+    "gold_case_id": "stat-007",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shot attempts, including goals, throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-04-clear",
+    "prompt": "Count goals scored with the head by Mbapp\u00e9 throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "intent_id": "intent-04",
+    "gold_case_id": "stat-009",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count goals scored with the head by Mbapp\u00e9 throughout the match.",
+      "Please use this exact meaning: Count goals scored with the head by Mbapp\u00e9 throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-04-average",
+    "prompt": "How many headed goals for Mbapp\u00e9?",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "intent_id": "intent-04",
+    "gold_case_id": "stat-009",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count goals scored with the head by Mbapp\u00e9 throughout the match.",
+      "Please use this exact meaning: Count goals scored with the head by Mbapp\u00e9 throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-04-poor",
+    "prompt": "mbappe head goalls",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1
+    },
+    "intent_id": "intent-04",
+    "gold_case_id": "stat-009",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count goals scored with the head by Mbapp\u00e9 throughout the match.",
+      "Please use this exact meaning: Count goals scored with the head by Mbapp\u00e9 throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-05-clear",
+    "prompt": "Count Colwill's headed clearances throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "intent_id": "intent-05",
+    "gold_case_id": "stat-011",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Colwill's headed clearances throughout the match.",
+      "Please use this exact meaning: Count Colwill's headed clearances throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-05-average",
+    "prompt": "Colwill headed clearances please.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "intent_id": "intent-05",
+    "gold_case_id": "stat-011",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Colwill's headed clearances throughout the match.",
+      "Please use this exact meaning: Count Colwill's headed clearances throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-05-poor",
+    "prompt": "that player's head clearances",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "colwill"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "clearance"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1
+    },
+    "intent_id": "intent-05",
+    "gold_case_id": "stat-011",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Colwill's headed clearances throughout the match.",
+      "Please use this exact meaning: Count Colwill's headed clearances throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-06-clear",
+    "prompt": "Count Mbapp\u00e9's headed shots that were saved throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-06",
+    "gold_case_id": "stat-013",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shots that were saved throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shots that were saved throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-06-average",
+    "prompt": "Mbapp\u00e9 headers that the keeper saved.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-06",
+    "gold_case_id": "stat-013",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shots that were saved throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shots that were saved throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-06-poor",
+    "prompt": "mbape head shots savd",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-06",
+    "gold_case_id": "stat-013",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed shots that were saved throughout the match.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed shots that were saved throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-07-clear",
+    "prompt": "Count Chelsea corners strictly after 60:00, excluding the exact boundary.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-07",
+    "gold_case_id": "stat-021",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00, excluding the exact boundary.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00, excluding the exact boundary."
+    ]
+  },
+  {
+    "id": "balanced-07-average",
+    "prompt": "Chelsea corners after the 60th minute.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-07",
+    "gold_case_id": "stat-021",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00, excluding the exact boundary.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00, excluding the exact boundary."
+    ]
+  },
+  {
+    "id": "balanced-07-poor",
+    "prompt": "our corners after 60",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-07",
+    "gold_case_id": "stat-021",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00, excluding the exact boundary.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00, excluding the exact boundary."
+    ]
+  },
+  {
+    "id": "balanced-08-clear",
+    "prompt": "Count Chelsea corners from 60:00 onward, including 60:00.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-08",
+    "gold_case_id": "stat-022",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners from 60:00 onward, including 60:00.",
+      "Please use this exact meaning: Count Chelsea corners from 60:00 onward, including 60:00."
+    ]
+  },
+  {
+    "id": "balanced-08-average",
+    "prompt": "Chelsea corners since minute 60, including that minute's start.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-08",
+    "gold_case_id": "stat-022",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners from 60:00 onward, including 60:00.",
+      "Please use this exact meaning: Count Chelsea corners from 60:00 onward, including 60:00."
+    ]
+  },
+  {
+    "id": "balanced-08-poor",
+    "prompt": "chelse cornr frm 60 inclusive",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1,
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1,
+      "e17@1": 1,
+      "e28@1": 1,
+      "e29@1": 1,
+      "e30@1": 1
+    },
+    "intent_id": "intent-08",
+    "gold_case_id": "stat-022",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners from 60:00 onward, including 60:00.",
+      "Please use this exact meaning: Count Chelsea corners from 60:00 onward, including 60:00."
+    ]
+  },
+  {
+    "id": "balanced-09-clear",
+    "prompt": "Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1
+    },
+    "intent_id": "intent-09",
+    "gold_case_id": "stat-030",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive."
+    ]
+  },
+  {
+    "id": "balanced-09-average",
+    "prompt": "Chelsea corners after 60 through 70, include 70 itself.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1
+    },
+    "intent_id": "intent-09",
+    "gold_case_id": "stat-030",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive."
+    ]
+  },
+  {
+    "id": "balanced-09-poor",
+    "prompt": "Chelsea corners between 60 and 70",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lte",
+          "value": 4200
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e11@1": 1,
+      "e15@1": 1,
+      "e16@1": 1
+    },
+    "intent_id": "intent-09",
+    "gold_case_id": "stat-030",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive.",
+      "Please use this exact meaning: Count Chelsea corners strictly after 60:00 and up to 70:00 inclusive."
+    ]
+  },
+  {
+    "id": "balanced-10-clear",
+    "prompt": "Count all corners from 60:00 inclusive until 60:01 exclusive.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3601
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1
+    },
+    "intent_id": "intent-10",
+    "gold_case_id": "stat-033",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all corners from 60:00 inclusive until 60:01 exclusive.",
+      "Please use this exact meaning: Count all corners from 60:00 inclusive until 60:01 exclusive."
+    ]
+  },
+  {
+    "id": "balanced-10-average",
+    "prompt": "Corners from 60:00, stop before 60:01.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3601
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1
+    },
+    "intent_id": "intent-10",
+    "gold_case_id": "stat-033",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all corners from 60:00 inclusive until 60:01 exclusive.",
+      "Please use this exact meaning: Count all corners from 60:00 inclusive until 60:01 exclusive."
+    ]
+  },
+  {
+    "id": "balanced-10-poor",
+    "prompt": "corners in that second",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gte",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 3601
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e10@1": 1
+    },
+    "intent_id": "intent-10",
+    "gold_case_id": "stat-033",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count all corners from 60:00 inclusive until 60:01 exclusive.",
+      "Please use this exact meaning: Count all corners from 60:00 inclusive until 60:01 exclusive."
+    ]
+  },
+  {
+    "id": "balanced-11-clear",
+    "prompt": "Count Chelsea second-half corners strictly after 90:00.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e30@1": 1
+    },
+    "intent_id": "intent-11",
+    "gold_case_id": "stat-035",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea second-half corners strictly after 90:00.",
+      "Please use this exact meaning: Count Chelsea second-half corners strictly after 90:00."
+    ]
+  },
+  {
+    "id": "balanced-11-average",
+    "prompt": "Chelsea second-half corners after 90 minutes.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e30@1": 1
+    },
+    "intent_id": "intent-11",
+    "gold_case_id": "stat-035",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea second-half corners strictly after 90:00.",
+      "Please use this exact meaning: Count Chelsea second-half corners strictly after 90:00."
+    ]
+  },
+  {
+    "id": "balanced-11-poor",
+    "prompt": "chelse 2nd half corners aft 90",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "corner"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 5400
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e30@1": 1
+    },
+    "intent_id": "intent-11",
+    "gold_case_id": "stat-035",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea second-half corners strictly after 90:00.",
+      "Please use this exact meaning: Count Chelsea second-half corners strictly after 90:00."
+    ]
+  },
+  {
+    "id": "balanced-12-clear",
+    "prompt": "Count every pass event from both teams, regardless of outcome.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e5@1": 1,
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-12",
+    "gold_case_id": "stat-041",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count every pass event from both teams, regardless of outcome.",
+      "Please use this exact meaning: Count every pass event from both teams, regardless of outcome."
+    ]
+  },
+  {
+    "id": "balanced-12-average",
+    "prompt": "All passes, either team, successful or not.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e5@1": 1,
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-12",
+    "gold_case_id": "stat-041",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count every pass event from both teams, regardless of outcome.",
+      "Please use this exact meaning: Count every pass event from both teams, regardless of outcome."
+    ]
+  },
+  {
+    "id": "balanced-12-poor",
+    "prompt": "all pass events both sides any outcom",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e1@1": 1,
+      "e4@1": 1,
+      "e5@1": 1,
+      "e18@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-12",
+    "gold_case_id": "stat-041",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count every pass event from both teams, regardless of outcome.",
+      "Please use this exact meaning: Count every pass event from both teams, regardless of outcome."
+    ]
+  },
+  {
+    "id": "balanced-13-clear",
+    "prompt": "Count Chelsea's completed passes throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-13",
+    "gold_case_id": "stat-042",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea's completed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's completed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-13-average",
+    "prompt": "Chelsea completed passes.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-13",
+    "gold_case_id": "stat-042",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea's completed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's completed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-13-poor",
+    "prompt": "our completed passes",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-13",
+    "gold_case_id": "stat-042",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Chelsea's completed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's completed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-14-clear",
+    "prompt": "Count Chelsea's failed passes throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e5@1": 1
+    },
+    "intent_id": "intent-14",
+    "gold_case_id": "stat-043",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea's failed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's failed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-14-average",
+    "prompt": "Chelsea incomplete passes please.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e5@1": 1
+    },
+    "intent_id": "intent-14",
+    "gold_case_id": "stat-043",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea's failed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's failed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-14-poor",
+    "prompt": "chelse faild pases count",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "failure"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e5@1": 1
+    },
+    "intent_id": "intent-14",
+    "gold_case_id": "stat-043",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea's failed passes throughout the match.",
+      "Please use this exact meaning: Count Chelsea's failed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-15-clear",
+    "prompt": "Sum the recorded distance of all passes from both teams in metres.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e18@1": 5.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-15",
+    "gold_case_id": "stat-048",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum the recorded distance of all passes from both teams in metres.",
+      "Please use this exact meaning: Sum the recorded distance of all passes from both teams in metres."
+    ]
+  },
+  {
+    "id": "balanced-15-average",
+    "prompt": "Total pass metres, both sides, all outcomes.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e18@1": 5.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-15",
+    "gold_case_id": "stat-048",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum the recorded distance of all passes from both teams in metres.",
+      "Please use this exact meaning: Sum the recorded distance of all passes from both teams in metres."
+    ]
+  },
+  {
+    "id": "balanced-15-poor",
+    "prompt": "track passing for both sides",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e4@1": 12.0,
+      "e5@1": 20.0,
+      "e18@1": 5.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-15",
+    "gold_case_id": "stat-048",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Sum the recorded distance of all passes from both teams in metres.",
+      "Please use this exact meaning: Sum the recorded distance of all passes from both teams in metres."
+    ]
+  },
+  {
+    "id": "balanced-16-clear",
+    "prompt": "Sum Chelsea's recorded completed-pass distance in metres throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-16",
+    "gold_case_id": "stat-050",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum Chelsea's recorded completed-pass distance in metres throughout the match.",
+      "Please use this exact meaning: Sum Chelsea's recorded completed-pass distance in metres throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-16-average",
+    "prompt": "Chelsea successful pass metres.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-16",
+    "gold_case_id": "stat-050",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum Chelsea's recorded completed-pass distance in metres throughout the match.",
+      "Please use this exact meaning: Sum Chelsea's recorded completed-pass distance in metres throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-16-poor",
+    "prompt": "chelse completed pas dist metres",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e4@1": 12.0,
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-16",
+    "gold_case_id": "stat-050",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum Chelsea's recorded completed-pass distance in metres throughout the match.",
+      "Please use this exact meaning: Sum Chelsea's recorded completed-pass distance in metres throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-17-clear",
+    "prompt": "Sum the recorded distance of Mbapp\u00e9's headed passes in metres.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e18@1": 5.0
+    },
+    "intent_id": "intent-17",
+    "gold_case_id": "stat-052",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum the recorded distance of Mbapp\u00e9's headed passes in metres.",
+      "Please use this exact meaning: Sum the recorded distance of Mbapp\u00e9's headed passes in metres."
+    ]
+  },
+  {
+    "id": "balanced-17-average",
+    "prompt": "Mbapp\u00e9 headed pass metres.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e18@1": 5.0
+    },
+    "intent_id": "intent-17",
+    "gold_case_id": "stat-052",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum the recorded distance of Mbapp\u00e9's headed passes in metres.",
+      "Please use this exact meaning: Sum the recorded distance of Mbapp\u00e9's headed passes in metres."
+    ]
+  },
+  {
+    "id": "balanced-17-poor",
+    "prompt": "his head pass distance metres",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e1@1": 8.0,
+      "e18@1": 5.0
+    },
+    "intent_id": "intent-17",
+    "gold_case_id": "stat-052",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Sum the recorded distance of Mbapp\u00e9's headed passes in metres.",
+      "Please use this exact meaning: Sum the recorded distance of Mbapp\u00e9's headed passes in metres."
+    ]
+  },
+  {
+    "id": "balanced-18-clear",
+    "prompt": "Count Palmer's completed right-footed passes throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-18",
+    "gold_case_id": "stat-059",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Palmer's completed right-footed passes throughout the match.",
+      "Please use this exact meaning: Count Palmer's completed right-footed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-18-average",
+    "prompt": "Palmer successful passes with his right foot.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-18",
+    "gold_case_id": "stat-059",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Palmer's completed right-footed passes throughout the match.",
+      "Please use this exact meaning: Count Palmer's completed right-footed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-18-poor",
+    "prompt": "palmer right foot completed pases",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "right_foot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "success"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e4@1": 1,
+      "e23@1": 1
+    },
+    "intent_id": "intent-18",
+    "gold_case_id": "stat-059",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Palmer's completed right-footed passes throughout the match.",
+      "Please use this exact meaning: Count Palmer's completed right-footed passes throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-19-clear",
+    "prompt": "Sum Palmer's recorded second-half pass distance in metres, for all outcomes.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-19",
+    "gold_case_id": "stat-060",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum Palmer's recorded second-half pass distance in metres, for all outcomes.",
+      "Please use this exact meaning: Sum Palmer's recorded second-half pass distance in metres, for all outcomes."
+    ]
+  },
+  {
+    "id": "balanced-19-average",
+    "prompt": "Palmer second-half pass metres, successful or not.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-19",
+    "gold_case_id": "stat-060",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Sum Palmer's recorded second-half pass distance in metres, for all outcomes.",
+      "Please use this exact meaning: Sum Palmer's recorded second-half pass distance in metres, for all outcomes."
+    ]
+  },
+  {
+    "id": "balanced-19-poor",
+    "prompt": "palmer pass distance this half",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "sum",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "pass"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        }
+      ],
+      "sum_field": "distance_metres"
+    },
+    "expected_weights": {
+      "e23@1": 15.0
+    },
+    "intent_id": "intent-19",
+    "gold_case_id": "stat-060",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Sum Palmer's recorded second-half pass distance in metres, for all outcomes.",
+      "Please use this exact meaning: Sum Palmer's recorded second-half pass distance in metres, for all outcomes."
+    ]
+  },
+  {
+    "id": "balanced-20-clear",
+    "prompt": "Count all goals scored by either team throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-20",
+    "gold_case_id": "stat-061",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all goals scored by either team throughout the match.",
+      "Please use this exact meaning: Count all goals scored by either team throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-20-average",
+    "prompt": "Goals for both teams combined.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-20",
+    "gold_case_id": "stat-061",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all goals scored by either team throughout the match.",
+      "Please use this exact meaning: Count all goals scored by either team throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-20-poor",
+    "prompt": "all goals both sides",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "goal"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e7@1": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-20",
+    "gold_case_id": "stat-061",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all goals scored by either team throughout the match.",
+      "Please use this exact meaning: Count all goals scored by either team throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-21-clear",
+    "prompt": "Count all shot attempts from either team, including goals.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e9@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e21@1": 1,
+      "e21@2": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-21",
+    "gold_case_id": "stat-067",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all shot attempts from either team, including goals.",
+      "Please use this exact meaning: Count all shot attempts from either team, including goals."
+    ]
+  },
+  {
+    "id": "balanced-21-average",
+    "prompt": "Total shots including goals, everyone.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e9@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e21@1": 1,
+      "e21@2": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-21",
+    "gold_case_id": "stat-067",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all shot attempts from either team, including goals.",
+      "Please use this exact meaning: Count all shot attempts from either team, including goals."
+    ]
+  },
+  {
+    "id": "balanced-21-poor",
+    "prompt": "both sides shots incl goals",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "shot",
+            "goal"
+          ]
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e2@1": 1,
+      "e7@1": 1,
+      "e9@1": 1,
+      "e13@1": 1,
+      "e14@1": 1,
+      "e21@1": 1,
+      "e21@2": 1,
+      "e22@1": 1
+    },
+    "intent_id": "intent-21",
+    "gold_case_id": "stat-067",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all shot attempts from either team, including goals.",
+      "Please use this exact meaning: Count all shot attempts from either team, including goals."
+    ]
+  },
+  {
+    "id": "balanced-22-clear",
+    "prompt": "Count shots from either team that went off target throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "off_target"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1
+    },
+    "intent_id": "intent-22",
+    "gold_case_id": "stat-070",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count shots from either team that went off target throughout the match.",
+      "Please use this exact meaning: Count shots from either team that went off target throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-22-average",
+    "prompt": "All off-target shots please.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "off_target"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1
+    },
+    "intent_id": "intent-22",
+    "gold_case_id": "stat-070",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count shots from either team that went off target throughout the match.",
+      "Please use this exact meaning: Count shots from either team that went off target throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-22-poor",
+    "prompt": "off targt shots both",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "off_target"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1
+    },
+    "intent_id": "intent-22",
+    "gold_case_id": "stat-070",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count shots from either team that went off target throughout the match.",
+      "Please use this exact meaning: Count shots from either team that went off target throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-23-clear",
+    "prompt": "Count Mbapp\u00e9's second-half shots that were saved.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e9@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-23",
+    "gold_case_id": "stat-072",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's second-half shots that were saved.",
+      "Please use this exact meaning: Count Mbapp\u00e9's second-half shots that were saved."
+    ]
+  },
+  {
+    "id": "balanced-23-average",
+    "prompt": "Mbapp\u00e9 saved shots in the second half.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e9@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-23",
+    "gold_case_id": "stat-072",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's second-half shots that were saved.",
+      "Please use this exact meaning: Count Mbapp\u00e9's second-half shots that were saved."
+    ]
+  },
+  {
+    "id": "balanced-23-poor",
+    "prompt": "his saved shots 2nd half",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "shot"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "period",
+          "op": "eq",
+          "value": 2
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "saved"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e9@1": 1,
+      "e21@1": 1,
+      "e21@2": 1
+    },
+    "intent_id": "intent-23",
+    "gold_case_id": "stat-072",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's second-half shots that were saved.",
+      "Please use this exact meaning: Count Mbapp\u00e9's second-half shots that were saved."
+    ]
+  },
+  {
+    "id": "balanced-24-clear",
+    "prompt": "Count all red-card events throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "red"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "intent_id": "intent-24",
+    "gold_case_id": "stat-074",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all red-card events throughout the match.",
+      "Please use this exact meaning: Count all red-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-24-average",
+    "prompt": "Red cards, both teams.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "red"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "intent_id": "intent-24",
+    "gold_case_id": "stat-074",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all red-card events throughout the match.",
+      "Please use this exact meaning: Count all red-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-24-poor",
+    "prompt": "red crds all",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "red"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e20@1": 1
+    },
+    "intent_id": "intent-24",
+    "gold_case_id": "stat-074",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all red-card events throughout the match.",
+      "Please use this exact meaning: Count all red-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-25-clear",
+    "prompt": "Count Real Madrid's yellow-card events throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "yellow"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "intent_id": "intent-25",
+    "gold_case_id": "stat-077",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Real Madrid's yellow-card events throughout the match.",
+      "Please use this exact meaning: Count Real Madrid's yellow-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-25-average",
+    "prompt": "Madrid yellow cards.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "yellow"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "intent_id": "intent-25",
+    "gold_case_id": "stat-077",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Real Madrid's yellow-card events throughout the match.",
+      "Please use this exact meaning: Count Real Madrid's yellow-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-25-poor",
+    "prompt": "our yellows",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "card"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "madrid"
+        },
+        {
+          "field": "outcome",
+          "op": "eq",
+          "value": "yellow"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e6@1": 1
+    },
+    "intent_id": "intent-25",
+    "gold_case_id": "stat-077",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Real Madrid's yellow-card events throughout the match.",
+      "Please use this exact meaning: Count Real Madrid's yellow-card events throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-26-clear",
+    "prompt": "Count all saves made by Courtois throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "save"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "courtois"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e24@1": 1
+    },
+    "intent_id": "intent-26",
+    "gold_case_id": "stat-082",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all saves made by Courtois throughout the match.",
+      "Please use this exact meaning: Count all saves made by Courtois throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-26-average",
+    "prompt": "Courtois saves this game.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "save"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "courtois"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e24@1": 1
+    },
+    "intent_id": "intent-26",
+    "gold_case_id": "stat-082",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all saves made by Courtois throughout the match.",
+      "Please use this exact meaning: Count all saves made by Courtois throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-26-poor",
+    "prompt": "his saves",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "save"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "courtois"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e24@1": 1
+    },
+    "intent_id": "intent-26",
+    "gold_case_id": "stat-082",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count all saves made by Courtois throughout the match.",
+      "Please use this exact meaning: Count all saves made by Courtois throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-27-clear",
+    "prompt": "Count all fouls committed by Chelsea throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "foul"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e25@1": 1
+    },
+    "intent_id": "intent-27",
+    "gold_case_id": "stat-083",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all fouls committed by Chelsea throughout the match.",
+      "Please use this exact meaning: Count all fouls committed by Chelsea throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-27-average",
+    "prompt": "Chelsea fouls committed.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "foul"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e25@1": 1
+    },
+    "intent_id": "intent-27",
+    "gold_case_id": "stat-083",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all fouls committed by Chelsea throughout the match.",
+      "Please use this exact meaning: Count all fouls committed by Chelsea throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-27-poor",
+    "prompt": "chelse fouls commited",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "foul"
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e25@1": 1
+    },
+    "intent_id": "intent-27",
+    "gold_case_id": "stat-083",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all fouls committed by Chelsea throughout the match.",
+      "Please use this exact meaning: Count all fouls committed by Chelsea throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-28-clear",
+    "prompt": "Count all interception events by Palmer throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "interception"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e27@1": 1
+    },
+    "intent_id": "intent-28",
+    "gold_case_id": "stat-086",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all interception events by Palmer throughout the match.",
+      "Please use this exact meaning: Count all interception events by Palmer throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-28-average",
+    "prompt": "Palmer interceptions.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "interception"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e27@1": 1
+    },
+    "intent_id": "intent-28",
+    "gold_case_id": "stat-086",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count all interception events by Palmer throughout the match.",
+      "Please use this exact meaning: Count all interception events by Palmer throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-28-poor",
+    "prompt": "that player's interceptions",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "eq",
+          "value": "interception"
+        },
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "palmer"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e27@1": 1
+    },
+    "intent_id": "intent-28",
+    "gold_case_id": "stat-086",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count all interception events by Palmer throughout the match.",
+      "Please use this exact meaning: Count all interception events by Palmer throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-29-clear",
+    "prompt": "Count Chelsea tackles, clearances and interceptions combined throughout the match.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "tackle",
+            "clearance",
+            "interception"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1,
+      "e19@1": 1,
+      "e27@1": 1
+    },
+    "intent_id": "intent-29",
+    "gold_case_id": "stat-091",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea tackles, clearances and interceptions combined throughout the match.",
+      "Please use this exact meaning: Count Chelsea tackles, clearances and interceptions combined throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-29-average",
+    "prompt": "Chelsea tackles plus clearances plus interceptions.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "tackle",
+            "clearance",
+            "interception"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1,
+      "e19@1": 1,
+      "e27@1": 1
+    },
+    "intent_id": "intent-29",
+    "gold_case_id": "stat-091",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Chelsea tackles, clearances and interceptions combined throughout the match.",
+      "Please use this exact meaning: Count Chelsea tackles, clearances and interceptions combined throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-29-poor",
+    "prompt": "our tackles clearances interceptions combined",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "event_type",
+          "op": "in",
+          "value": [
+            "tackle",
+            "clearance",
+            "interception"
+          ]
+        },
+        {
+          "field": "team_id",
+          "op": "eq",
+          "value": "chelsea"
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e8@1": 1,
+      "e19@1": 1,
+      "e27@1": 1
+    },
+    "intent_id": "intent-29",
+    "gold_case_id": "stat-091",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Chelsea tackles, clearances and interceptions combined throughout the match.",
+      "Please use this exact meaning: Count Chelsea tackles, clearances and interceptions combined throughout the match."
+    ]
+  },
+  {
+    "id": "balanced-30-clear",
+    "prompt": "Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00.",
+    "quality": "clear",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1
+    },
+    "intent_id": "intent-30",
+    "gold_case_id": "stat-100",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00."
+    ]
+  },
+  {
+    "id": "balanced-30-average",
+    "prompt": "Mbapp\u00e9 headers after 60, before 75; exclude both boundaries.",
+    "quality": "average",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1
+    },
+    "intent_id": "intent-30",
+    "gold_case_id": "stat-100",
+    "must_clarify": false,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00."
+    ]
+  },
+  {
+    "id": "balanced-30-poor",
+    "prompt": "mbappe headers between 60 and 75",
+    "quality": "poor",
+    "expected_status": [
+      "ready"
+    ],
+    "expected_rule": {
+      "match_id": "filter-lab-match",
+      "operation": "count",
+      "predicates": [
+        {
+          "field": "player_id",
+          "op": "eq",
+          "value": "mbappe"
+        },
+        {
+          "field": "body_part",
+          "op": "eq",
+          "value": "head"
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "gt",
+          "value": 3600
+        },
+        {
+          "field": "match_time_seconds",
+          "op": "lt",
+          "value": 4500
+        }
+      ],
+      "sum_field": null
+    },
+    "expected_weights": {
+      "e13@1": 1,
+      "e18@1": 1
+    },
+    "intent_id": "intent-30",
+    "gold_case_id": "stat-100",
+    "must_clarify": true,
+    "replies": [
+      "I mean: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00.",
+      "Please use this exact meaning: Count Mbapp\u00e9's headed contacts strictly after 60:00 and strictly before 75:00."
+    ]
+  },
+  {
+    "id": "balanced-control-01",
+    "intent_id": "control-01",
+    "prompt": "Track Chelsea corners in a continuously sliding five-minute window.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Track Chelsea corners in a continuously sliding five-minute window.",
+      "I still mean: Track Chelsea corners in a continuously sliding five-minute window."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-02",
+    "intent_id": "control-02",
+    "prompt": "Track the ratio of Chelsea passes to Real Madrid passes.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Track the ratio of Chelsea passes to Real Madrid passes.",
+      "I still mean: Track the ratio of Chelsea passes to Real Madrid passes."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-03",
+    "intent_id": "control-03",
+    "prompt": "Count sequences of five uninterrupted Real Madrid passes.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Count sequences of five uninterrupted Real Madrid passes.",
+      "I still mean: Count sequences of five uninterrupted Real Madrid passes."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-04",
+    "intent_id": "control-04",
+    "prompt": "Count Chelsea corners only while Chelsea are losing.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Count Chelsea corners only while Chelsea are losing.",
+      "I still mean: Count Chelsea corners only while Chelsea are losing."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-05",
+    "intent_id": "control-05",
+    "prompt": "Track Mbapp\u00e9's expected-goals total, using xG values.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Track Mbapp\u00e9's expected-goals total, using xG values.",
+      "I still mean: Track Mbapp\u00e9's expected-goals total, using xG values."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-06",
+    "intent_id": "control-06",
+    "prompt": "Count Mbapp\u00e9's touches inside the penalty area using their pitch coordinates.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Count Mbapp\u00e9's touches inside the penalty area using their pitch coordinates.",
+      "I still mean: Count Mbapp\u00e9's touches inside the penalty area using their pitch coordinates."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-07",
+    "intent_id": "control-07",
+    "prompt": "Track how tired Palmer looks from watching the video.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Track how tired Palmer looks from watching the video.",
+      "I still mean: Track how tired Palmer looks from watching the video."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-08",
+    "intent_id": "control-08",
+    "prompt": "Calculate Palmer's average running speed in kilometres per hour.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Calculate Palmer's average running speed in kilometres per hour.",
+      "I still mean: Calculate Palmer's average running speed in kilometres per hour."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-09",
+    "intent_id": "control-09",
+    "prompt": "Track the distance Palmer has run, not the distance of his passes.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Track the distance Palmer has run, not the distance of his passes.",
+      "I still mean: Track the distance Palmer has run, not the distance of his passes."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  },
+  {
+    "id": "balanced-control-10",
+    "intent_id": "control-10",
+    "prompt": "Predict whether Mbapp\u00e9 will score another goal later in this match.",
+    "quality": "control",
+    "must_clarify": false,
+    "replies": [
+      "Yes, specifically this request: Predict whether Mbapp\u00e9 will score another goal later in this match.",
+      "I still mean: Predict whether Mbapp\u00e9 will score another goal later in this match."
+    ],
+    "expected_status": [
+      "unsupported"
+    ]
+  }
+]

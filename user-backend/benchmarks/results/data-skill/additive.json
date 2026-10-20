@@ -1,0 +1,6405 @@
+{
+  "started_at": "2026-10-18T09:40:36.684118+00:00",
+  "cohort": "data-transfer",
+  "models": [
+    {
+      "label": "higher-ranked-reference",
+      "model": "dots-studio/dots-3-note-preview:free",
+      "expected_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ]
+    }
+  ],
+  "variants": [
+    "current",
+    "skill_added"
+  ],
+  "case_ids": [
+    "data-transfer-01",
+    "data-transfer-02",
+    "data-transfer-03",
+    "data-transfer-04",
+    "data-transfer-05",
+    "data-transfer-06",
+    "data-transfer-07",
+    "data-transfer-08",
+    "data-transfer-09",
+    "data-transfer-10",
+    "data-transfer-11",
+    "data-transfer-12",
+    "data-transfer-13",
+    "data-transfer-14",
+    "data-transfer-15",
+    "data-transfer-16",
+    "data-control-01",
+    "data-control-02",
+    "data-control-03",
+    "data-control-04"
+  ],
+  "cases_sha256": "e58bf587f93857ece40429544bb58fc80c8cc582e24f55b8ca5807a2c5af683f",
+  "fixture_sha256": "6e826550b67f6af772f79610a58dd55657be73c6e95825ea0d87676c2254c253",
+  "concurrency": 2,
+  "case_timeout_seconds": 30.0,
+  "suite_timeout_seconds": 420.0,
+  "max_repairs": 3,
+  "gold": [
+    {
+      "id": "data-transfer-01",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-02",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-03",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-04",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-05",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-06",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-07",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-08",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-09",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-10",
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-11",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-12",
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-13",
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-14",
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-15",
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35
+    },
+    {
+      "id": "data-transfer-16",
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35
+    }
+  ],
+  "results": [
+    {
+      "id": "data-transfer-01",
+      "intent_id": "data-intent-008",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.617,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep tally of Noah Laurent's passes using his head, successful or otherwise.",
+          "status": "ready",
+          "seconds": 6.617,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.598,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's headed passes, successful or otherwise",
+            "operation": "count",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's headed passes, successful or otherwise",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1963,
+            "completion_tokens": 362,
+            "total_tokens": 2325
+          },
+          "status": "ok",
+          "request_bytes": 8555,
+          "request_sha256": "2d645d95eb819facaca29bb2819e055156c6f0b6ce477db7c7984ffc546ce8bb",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.206
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-02",
+      "intent_id": "data-intent-013",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.831,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Noah Laurent's headed attempts that the keeper stops \u2014 can I see that count?",
+          "status": "ready",
+          "seconds": 7.831,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.531,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's headed shots saved by the goalkeeper",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's headed shots saved by the goalkeeper",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3596,
+            "completion_tokens": 576,
+            "total_tokens": 4172
+          },
+          "status": "ok",
+          "request_bytes": 16079,
+          "request_sha256": "ea5e3a724f3aa5e2f97caa860385b09ae76e842002edfac9182123c40dcf3003",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.486
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-01",
+      "intent_id": "data-intent-008",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.909,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep tally of Noah Laurent's passes using his head, successful or otherwise.",
+          "status": "ready",
+          "seconds": 4.909,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.899,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's headed passes, successful or otherwise",
+            "operation": "count",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's headed passes, successful or otherwise",
+        "operation": "count",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3589,
+            "completion_tokens": 299,
+            "total_tokens": 3888
+          },
+          "status": "ok",
+          "request_bytes": 16073,
+          "request_sha256": "86977bdf25b7c0797a364eb3beeedb5cf81bef76815afc5c4581ae3042638eb2",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 4.896
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-02",
+      "intent_id": "data-intent-013",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.684,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Noah Laurent's headed attempts that the keeper stops \u2014 can I see that count?",
+          "status": "ready",
+          "seconds": 10.684,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.674,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's headed shot attempts saved by the goalkeeper",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's headed shot attempts saved by the goalkeeper",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1970,
+            "completion_tokens": 715,
+            "total_tokens": 2685
+          },
+          "status": "ok",
+          "request_bytes": 8561,
+          "request_sha256": "95c4d7be4032a4ca40d4ce5f1830919852179c0207b64bc47e07a65074e5358a",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 10.671
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-03",
+      "intent_id": "data-intent-072",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 9.091,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half.",
+          "status": "ready",
+          "seconds": 9.091,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.08,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half.",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": null,
+            "period": 2,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half.",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": null,
+        "period": 2,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1963,
+            "completion_tokens": 652,
+            "total_tokens": 2615
+          },
+          "status": "ok",
+          "request_bytes": 8562,
+          "request_sha256": "b0f30272d81eda03acf38a1e680ff9ac3618ef85f7975420546afc349a6b707f",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 9.077
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-04",
+      "intent_id": "data-intent-082",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 5.148,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many saves has Hugo Voss made? Keep that number on screen.",
+          "status": "ready",
+          "seconds": 5.148,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.139,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all saves made by Hugo Voss",
+            "operation": "count",
+            "event_types": [
+              "save"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "hugo-voss"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "save"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "hugo-voss"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all saves made by Hugo Voss",
+        "operation": "count",
+        "event_types": [
+          "save"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "hugo-voss"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "save"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "hugo-voss"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3589,
+            "completion_tokens": 361,
+            "total_tokens": 3950
+          },
+          "status": "ok",
+          "request_bytes": 16059,
+          "request_sha256": "dae418f15ff368524ec374f23127c07de6511dbd53556f4c3c7c70e5dcc1b80f",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 5.136
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-03",
+      "intent_id": "data-intent-072",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.155,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half.",
+          "status": "ready",
+          "seconds": 6.155,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.144,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "noah-laurent"
+            ],
+            "body_part": null,
+            "period": 2,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "noah-laurent"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Noah Laurent's shots saved by the opposing goalkeeper during the second half",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "noah-laurent"
+        ],
+        "body_part": null,
+        "period": 2,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "noah-laurent"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3589,
+            "completion_tokens": 423,
+            "total_tokens": 4012
+          },
+          "status": "ok",
+          "request_bytes": 16080,
+          "request_sha256": "b27950002a32f5ad7126c22f6a46085b0a2d94c6a81004d5906f6916b5e0ed26",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.142
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-04",
+      "intent_id": "data-intent-082",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.315,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many saves has Hugo Voss made? Keep that number on screen.",
+          "status": "ready",
+          "seconds": 7.315,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.305,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count saves by Hugo Voss",
+            "operation": "count",
+            "event_types": [
+              "save"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "hugo-voss"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "save"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "hugo-voss"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count saves by Hugo Voss",
+        "operation": "count",
+        "event_types": [
+          "save"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "hugo-voss"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "save"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "hugo-voss"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1963,
+            "completion_tokens": 480,
+            "total_tokens": 2443
+          },
+          "status": "ok",
+          "request_bytes": 8541,
+          "request_sha256": "3a3bfac720000b34d58aec6c690fedc2ea525bf7327c208ed9a0844dc2dd5792",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.302
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-05",
+      "intent_id": "data-intent-090",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.077,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+          "status": "ready",
+          "seconds": 8.077,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.067,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+            "operation": "count",
+            "event_types": [
+              "clearance"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "clearance"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+        "operation": "count",
+        "event_types": [
+          "clearance"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "clearance"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1965,
+            "completion_tokens": 576,
+            "total_tokens": 2541
+          },
+          "status": "ok",
+          "request_bytes": 8563,
+          "request_sha256": "ee38ef8ba72e5e245d099d8c256b97f2bfd11a8e6ab0697645778efa8d85043e",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.064
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-05",
+      "intent_id": "data-intent-090",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.627,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+          "status": "ready",
+          "seconds": 8.627,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.617,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+            "operation": "count",
+            "event_types": [
+              "clearance"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": 1,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "clearance"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 1
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Harbour FC clearances in the first half, with first-half injury time included.",
+        "operation": "count",
+        "event_types": [
+          "clearance"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 1,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "clearance"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 1
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3591,
+            "completion_tokens": 707,
+            "total_tokens": 4298
+          },
+          "status": "ok",
+          "request_bytes": 16081,
+          "request_sha256": "fb64bde86fdeb2be8b992d0524936f8dacbe04edff3bc87d543e007cb82f2e38",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.613
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-07",
+      "intent_id": "data-intent-077",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.628,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep Ridge United's yellows on the screen as a count.",
+          "status": "ready",
+          "seconds": 4.628,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.618,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count yellow cards for Ridge United",
+            "operation": "count",
+            "event_types": [
+              "card"
+            ],
+            "team_ids": [
+              "ridge"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "yellow",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "card"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "ridge"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "yellow"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count yellow cards for Ridge United",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [
+          "ridge"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "yellow",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "ridge"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "yellow"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1961,
+            "completion_tokens": 233,
+            "total_tokens": 2194
+          },
+          "status": "ok",
+          "request_bytes": 8532,
+          "request_sha256": "d51dec778fc15d3c93ba23e6b30bd33d5ec8d5679b9d0e376a1bb6b7bd43a0bb",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 4.615
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-07",
+      "intent_id": "data-intent-077",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.128,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Keep Ridge United's yellows on the screen as a count.",
+          "status": "ready",
+          "seconds": 4.128,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.118,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count yellow cards for Ridge United",
+            "operation": "count",
+            "event_types": [
+              "card"
+            ],
+            "team_ids": [
+              "ridge"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "yellow",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "card"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "ridge"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "yellow"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count yellow cards for Ridge United",
+        "operation": "count",
+        "event_types": [
+          "card"
+        ],
+        "team_ids": [
+          "ridge"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "yellow",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "card"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "ridge"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "yellow"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3587,
+            "completion_tokens": 286,
+            "total_tokens": 3873
+          },
+          "status": "ok",
+          "request_bytes": 16050,
+          "request_sha256": "1e43e552679f35fa006605f0219ef652b858d441650027525c50bee301e6d4f8",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 4.114
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-08",
+      "intent_id": "data-intent-084",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 4.265,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many fouls has Mateo Silva committed in this game?",
+          "status": "ready",
+          "seconds": 4.265,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.255,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count fouls committed by Mateo Silva",
+            "operation": "count",
+            "event_types": [
+              "foul"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "foul"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count fouls committed by Mateo Silva",
+        "operation": "count",
+        "event_types": [
+          "foul"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "foul"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3587,
+            "completion_tokens": 239,
+            "total_tokens": 3826
+          },
+          "status": "ok",
+          "request_bytes": 16051,
+          "request_sha256": "d87656e22fa5f42f7133fa08ab6a382577d67a7899fa774eab609b5528fa68ed",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 4.25
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-06",
+      "intent_id": "data-intent-088",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 27.143,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Harbour FC tackles that succeeded, as a running total please.",
+          "status": "ready",
+          "seconds": 27.143,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 27.131,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count successful tackles for Harbour FC",
+            "operation": "count",
+            "event_types": [
+              "tackle"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "tackle"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count successful tackles for Harbour FC",
+        "operation": "count",
+        "event_types": [
+          "tackle"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "tackle"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3587,
+            "completion_tokens": 2127,
+            "total_tokens": 5714
+          },
+          "status": "ok",
+          "request_bytes": 16058,
+          "request_sha256": "0a10a33e18dd04e1a2b65ce4368fdf5f5d2aeb082753195e5c3573f3cd81befb",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 27.128
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-08",
+      "intent_id": "data-intent-084",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.298,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "How many fouls has Mateo Silva committed in this game?",
+          "status": "ready",
+          "seconds": 10.298,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.284,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count fouls committed by Mateo Silva",
+            "operation": "count",
+            "event_types": [
+              "foul"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "foul"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count fouls committed by Mateo Silva",
+        "operation": "count",
+        "event_types": [
+          "foul"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "foul"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1961,
+            "completion_tokens": 736,
+            "total_tokens": 2697
+          },
+          "status": "ok",
+          "request_bytes": 8533,
+          "request_sha256": "5e954c72e62bb4fcfc20e6ca3d6c191f9e67a7677dd780faacf757ad843949c6",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 10.281
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-09",
+      "intent_id": "data-intent-051",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 7.077,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Add up the recorded metres of Harbour FC's unsuccessful passes. I want distance, not a pass count.",
+          "status": "ready",
+          "seconds": 7.077,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.065,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Sum the distance of Harbour FC's unsuccessful passes",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "failure",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "failure"
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 20.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Sum the distance of Harbour FC's unsuccessful passes",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "failure",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1969,
+            "completion_tokens": 260,
+            "total_tokens": 2229
+          },
+          "status": "ok",
+          "request_bytes": 8577,
+          "request_sha256": "e200f227f5f14406fc33adb78617dfe27653edbf34a1e50ae3aa5f5812ff359f",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.06
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-06",
+      "intent_id": "data-intent-088",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 16.191,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Harbour FC tackles that succeeded, as a running total please.",
+          "status": "unsupported",
+          "seconds": 16.191,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 16.189
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "unsupported"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": false,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": false,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": false,
+      "reason": "status",
+      "expected_status": [
+        "ready"
+      ],
+      "actual_status": "unsupported",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": false,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1961,
+            "completion_tokens": 1205,
+            "total_tokens": 3166
+          },
+          "status": "ok",
+          "request_bytes": 8540,
+          "request_sha256": "2f2744b6cb45e45acf5ea03f5310b3b98b79a6cd2fea68c73958a7c825a2a67c",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 16.186
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-09",
+      "intent_id": "data-intent-051",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.773,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Add up the recorded metres of Harbour FC's unsuccessful passes. I want distance, not a pass count.",
+          "status": "ready",
+          "seconds": 6.773,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.764,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Sum the distance of Harbour FC's unsuccessful passes",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "failure",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "failure"
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 20.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Sum the distance of Harbour FC's unsuccessful passes",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "failure",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "failure"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3595,
+            "completion_tokens": 370,
+            "total_tokens": 3965
+          },
+          "status": "ok",
+          "request_bytes": 16095,
+          "request_sha256": "073b146b094634d15fb580b04cfb2006f63c8c8f9b928912f116353033152c1c",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.76
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-10",
+      "intent_id": "data-intent-054",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.559,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Total metres of completed passes after half-time, both sides together.",
+          "status": "ready",
+          "seconds": 8.559,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.548,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Total metres of completed passes in the second half for both teams",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": 2,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 20.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Total metres of completed passes in the second half for both teams",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3587,
+            "completion_tokens": 705,
+            "total_tokens": 4292
+          },
+          "status": "ok",
+          "request_bytes": 16067,
+          "request_sha256": "c8e11aac6ce43d9c08e738f22807c9dcf83c5a8b6f160b7abf1b56539977127e",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.545
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-10",
+      "intent_id": "data-intent-054",
+      "quality": "average",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 8.897,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Total metres of completed passes after half-time, both sides together.",
+          "status": "ready",
+          "seconds": 8.897,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.885,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Total metres of completed passes after half-time",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": 2,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 20.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Total metres of completed passes after half-time",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 20.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1961,
+            "completion_tokens": 501,
+            "total_tokens": 2462
+          },
+          "status": "ok",
+          "request_bytes": 8549,
+          "request_sha256": "69be9df1cd082029c9191ad7bcf7fc00aef1b81d097b908fea39710ae9a9bac2",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.881
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-11",
+      "intent_id": "data-intent-097",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 11.842,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "One counter for Harbour FC's goals and corners combined in the second half.",
+          "status": "ready",
+          "seconds": 11.842,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.832,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Harbour FC's goals and corners in the second half",
+            "operation": "count",
+            "event_types": [
+              "goal",
+              "corner"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": 2,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "goal",
+                  "corner"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 7.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Harbour FC's goals and corners in the second half",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "corner"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1963,
+            "completion_tokens": 854,
+            "total_tokens": 2817
+          },
+          "status": "ok",
+          "request_bytes": 8554,
+          "request_sha256": "38ce88d03bc85fb0658f22bc29a442551662bc97df6698b74bf7e4f1785f55de",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 11.828
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-11",
+      "intent_id": "data-intent-097",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.825,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "One counter for Harbour FC's goals and corners combined in the second half.",
+          "status": "ready",
+          "seconds": 6.825,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.815,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count Harbour FC's goals and corners combined in the second half",
+            "operation": "count",
+            "event_types": [
+              "goal",
+              "corner"
+            ],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": null,
+            "period": 2,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "goal",
+                  "corner"
+                ]
+              },
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "period",
+                "op": "eq",
+                "value": 2
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 7.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count Harbour FC's goals and corners combined in the second half",
+        "operation": "count",
+        "event_types": [
+          "goal",
+          "corner"
+        ],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": null,
+        "period": 2,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal",
+              "corner"
+            ]
+          },
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "period",
+            "op": "eq",
+            "value": 2
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3589,
+            "completion_tokens": 516,
+            "total_tokens": 4105
+          },
+          "status": "ok",
+          "request_bytes": 16072,
+          "request_sha256": "dd4ff504e199bd7c6ddf9da1609dbeeb002385c87297879160e70d02eed1fae1",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.813
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-12",
+      "intent_id": "data-intent-069",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.595,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count shot attempts saved by the keepers, with shooters from either side included.",
+          "status": "ready",
+          "seconds": 19.595,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 19.584,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count shot attempts saved by the keepers, with shooters from either side included.",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 4.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count shot attempts saved by the keepers, with shooters from either side included.",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3590,
+            "completion_tokens": 1627,
+            "total_tokens": 5217
+          },
+          "status": "ok",
+          "request_bytes": 16079,
+          "request_sha256": "ac891d9198dd1948d49772ec97c2f349ee5dd07fa2424c27aef624266e52b386",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 19.581
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-13",
+      "intent_id": "data-intent-005",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 17.311,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Track our headed contacts across all event types.",
+          "status": "clarification",
+          "seconds": 9.428,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.425
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which team's headed contacts are you referring to?",
+          "clarification": {
+            "question": "Which team's headed contacts are you referring to?",
+            "options": [],
+            "missing_fields": [
+              "team"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Harbour FC.",
+          "status": "ready",
+          "seconds": 7.883,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.872,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all headed contacts for Harbour FC across all event types",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all headed contacts for Harbour FC across all event types",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1957,
+            "completion_tokens": 614,
+            "total_tokens": 2571
+          },
+          "status": "ok",
+          "request_bytes": 8528,
+          "request_sha256": "480f7a84d9c8f6e35900bc9d9e668f787e22f1f34b60bea34360c9dfc8f0bab2",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 9.421
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1992,
+            "completion_tokens": 378,
+            "total_tokens": 2370
+          },
+          "status": "ok",
+          "request_bytes": 8674,
+          "request_sha256": "56ed588aeab0b232eb4966c8de50bb53bbc4b783c7fc960fe9cb08faff086e4a",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.868
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-12",
+      "intent_id": "data-intent-069",
+      "quality": "clear",
+      "must_clarify": false,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 14.884,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count shot attempts saved by the keepers, with shooters from either side included.",
+          "status": "ready",
+          "seconds": 14.884,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 14.874,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count shot attempts saved by the keepers, with shooters from either side included.",
+            "operation": "count",
+            "event_types": [
+              "shot"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": "saved",
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "shot"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "saved"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 4.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": true,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count shot attempts saved by the keepers, with shooters from either side included.",
+        "operation": "count",
+        "event_types": [
+          "shot"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": "saved",
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "shot"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "saved"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 4.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1964,
+            "completion_tokens": 1124,
+            "total_tokens": 3088
+          },
+          "status": "ok",
+          "request_bytes": 8561,
+          "request_sha256": "34e984e19a0c9f8afb3df4169dde2877914669618c8deacfe07f4d1496784ac6",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 14.87
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-14",
+      "intent_id": "data-intent-099",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 10.373,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Track his completed-pass distance in metres since 80:00, including 80:00.",
+          "status": "clarification",
+          "seconds": 0.002,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which player in this match do you mean?",
+          "clarification": {
+            "question": "Which player in this match do you mean?",
+            "options": [
+              "Noah Laurent",
+              "Mateo Silva",
+              "Owen Reed",
+              "Luca Costa",
+              "Elias Nouri"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Mateo Silva.",
+          "status": "ready",
+          "seconds": 10.371,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.361,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Sum of completed pass distance in metres for Mateo Silva from 80:00 onwards",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": 4800.0,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gte",
+                "value": 4800.0
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 15.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Sum of completed pass distance in metres for Mateo Silva from 80:00 onwards",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": 4800.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 4800.0
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3661,
+            "completion_tokens": 783,
+            "total_tokens": 4444
+          },
+          "status": "ok",
+          "request_bytes": 16300,
+          "request_sha256": "a15dd56daa0b9d2be544783e943384c3df772b86515035aa4514d814a2e23e0b",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 10.358
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-13",
+      "intent_id": "data-intent-005",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.62,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Track our headed contacts across all event types.",
+          "status": "clarification",
+          "seconds": 11.49,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.488
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which team is 'our' team?",
+          "clarification": {
+            "question": "Which team is 'our' team?",
+            "options": [
+              "Ridge United",
+              "Harbour FC"
+            ],
+            "missing_fields": [
+              "team"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Harbour FC.",
+          "status": "ready",
+          "seconds": 12.13,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.118,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count headed contacts for Harbour FC across all event types",
+            "operation": "count",
+            "event_types": [],
+            "team_ids": [
+              "harbour"
+            ],
+            "player_ids": [],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "team_id",
+                "op": "in",
+                "value": [
+                  "harbour"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 2.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count headed contacts for Harbour FC across all event types",
+        "operation": "count",
+        "event_types": [],
+        "team_ids": [
+          "harbour"
+        ],
+        "player_ids": [],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "team_id",
+            "op": "in",
+            "value": [
+              "harbour"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 2.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3583,
+            "completion_tokens": 851,
+            "total_tokens": 4434
+          },
+          "status": "ok",
+          "request_bytes": 16046,
+          "request_sha256": "ee033a12f2c4d8e9ff0d5a0b54134d955fc5d4963a3ec284e5aa13c109e6450d",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 11.485
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3629,
+            "completion_tokens": 999,
+            "total_tokens": 4628
+          },
+          "status": "ok",
+          "request_bytes": 16212,
+          "request_sha256": "a485e2f6460e4e95f5c778a58948dc62d81a930bc05e3e6e40ade2a6f2346471",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 12.114
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-14",
+      "intent_id": "data-intent-099",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 6.901,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Track his completed-pass distance in metres since 80:00, including 80:00.",
+          "status": "clarification",
+          "seconds": 0.003,
+          "model_calls": 0,
+          "stage_seconds": {
+            "goal": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which player in this match do you mean?",
+          "clarification": {
+            "question": "Which player in this match do you mean?",
+            "options": [
+              "Noah Laurent",
+              "Mateo Silva",
+              "Owen Reed",
+              "Luca Costa",
+              "Elias Nouri"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Mateo Silva.",
+          "status": "ready",
+          "seconds": 6.898,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.888,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Sum of completed pass distance in metres for Mateo Silva from 80:00 onwards",
+            "operation": "sum",
+            "event_types": [
+              "pass"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": null,
+            "period": null,
+            "outcome": "success",
+            "after_seconds": null,
+            "from_seconds": 4800.0,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": "distance_metres"
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "sum",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "pass"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              },
+              {
+                "field": "outcome",
+                "op": "eq",
+                "value": "success"
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gte",
+                "value": 4800.0
+              }
+            ],
+            "sum_field": "distance_metres"
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 15.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Sum of completed pass distance in metres for Mateo Silva from 80:00 onwards",
+        "operation": "sum",
+        "event_types": [
+          "pass"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": null,
+        "period": null,
+        "outcome": "success",
+        "after_seconds": null,
+        "from_seconds": 4800.0,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": "distance_metres"
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "sum",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "pass"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          },
+          {
+            "field": "outcome",
+            "op": "eq",
+            "value": "success"
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gte",
+            "value": 4800.0
+          }
+        ],
+        "sum_field": "distance_metres"
+      },
+      "ok": true,
+      "final_value": 15.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 2035,
+            "completion_tokens": 523,
+            "total_tokens": 2558
+          },
+          "status": "ok",
+          "request_bytes": 8782,
+          "request_sha256": "873473d53c609ab14e7ee401090153fee48219f3c923ae714bb82a739eafb4ec",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.886
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-15",
+      "intent_id": "data-intent-023",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 19.774,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Count both teams' corners strictly after that minute.",
+          "status": "clarification",
+          "seconds": 8.342,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.341
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which minute should I count corners after?",
+          "clarification": {
+            "question": "Which minute should I count corners after?",
+            "options": [],
+            "missing_fields": [
+              "time_window"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "After 60:00; exclude anything exactly at 60:00.",
+          "status": "ready",
+          "seconds": 11.431,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.421,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count both teams' corners after 60:00",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": 3600.0,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gt",
+                "value": 3600.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 7.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count both teams' corners after 60:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1958,
+            "completion_tokens": 477,
+            "total_tokens": 2435
+          },
+          "status": "ok",
+          "request_bytes": 8532,
+          "request_sha256": "d1d75bf6ebbb5afe4c2d849b60195c360bd931bfd9944fe3abe5f070a7a0c0d7",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.337
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 2006,
+            "completion_tokens": 946,
+            "total_tokens": 2952
+          },
+          "status": "ok",
+          "request_bytes": 8706,
+          "request_sha256": "f6bd260ebaedc97f49b798893d6bdd13d1844a29f457d3e8e10ec74d296895a6",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 11.419
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-16",
+      "intent_id": "data-intent-010",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 18.431,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "How many headed goals has that player scored?",
+          "status": "clarification",
+          "seconds": 7.73,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.728
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which player are you referring to?",
+          "clarification": {
+            "question": "Which player are you referring to?",
+            "options": [],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Mateo Silva.",
+          "status": "ready",
+          "seconds": 10.701,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.692,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count headed goals scored by Mateo Silva",
+            "operation": "count",
+            "event_types": [
+              "goal"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "goal"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count headed goals scored by Mateo Silva",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3583,
+            "completion_tokens": 498,
+            "total_tokens": 4081
+          },
+          "status": "ok",
+          "request_bytes": 16042,
+          "request_sha256": "ee055c31594b0acdedca725f6a46f8ce6e8d7584be25ce969de766679d3ae529",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.724
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3615,
+            "completion_tokens": 821,
+            "total_tokens": 4436
+          },
+          "status": "ok",
+          "request_bytes": 16173,
+          "request_sha256": "117ea80ad8596cf2f1b4c7f79072585d832fb78114304fa0ce5f16ae042b33ea",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 10.689
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-15",
+      "intent_id": "data-intent-023",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 20.829,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "Count both teams' corners strictly after that minute.",
+          "status": "clarification",
+          "seconds": 9.841,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.84
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which minute should I count corners after?",
+          "clarification": {
+            "question": "Which minute should I count corners after?",
+            "options": [],
+            "missing_fields": [
+              "time_window"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "After 60:00; exclude anything exactly at 60:00.",
+          "status": "ready",
+          "seconds": 10.988,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 10.978,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count all corners for both teams strictly after 60:00",
+            "operation": "count",
+            "event_types": [
+              "corner"
+            ],
+            "team_ids": [],
+            "player_ids": [],
+            "body_part": null,
+            "period": null,
+            "outcome": null,
+            "after_seconds": 3600.0,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "corner"
+                ]
+              },
+              {
+                "field": "match_time_seconds",
+                "op": "gt",
+                "value": 3600.0
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 7.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count all corners for both teams strictly after 60:00",
+        "operation": "count",
+        "event_types": [
+          "corner"
+        ],
+        "team_ids": [],
+        "player_ids": [],
+        "body_part": null,
+        "period": null,
+        "outcome": null,
+        "after_seconds": 3600.0,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "corner"
+            ]
+          },
+          {
+            "field": "match_time_seconds",
+            "op": "gt",
+            "value": 3600.0
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 7.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3584,
+            "completion_tokens": 584,
+            "total_tokens": 4168
+          },
+          "status": "ok",
+          "request_bytes": 16050,
+          "request_sha256": "64f2b78dd7208c96c655afe22d9b920efa082b04d2b23101c0ab5bf1745a3e76",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 9.835
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3632,
+            "completion_tokens": 902,
+            "total_tokens": 4534
+          },
+          "status": "ok",
+          "request_bytes": 16224,
+          "request_sha256": "4d1e12ba77d6e454d4633f5363cb16967c2ff076bff79df89af2b0cd7c17e858",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 10.974
+        }
+      ]
+    },
+    {
+      "id": "data-transfer-16",
+      "intent_id": "data-intent-010",
+      "quality": "ambiguous",
+      "must_clarify": true,
+      "attempts": 1,
+      "status": "ready",
+      "seconds": 23.505,
+      "turn_count": 2,
+      "turns": [
+        {
+          "prompt": "How many headed goals has that player scored?",
+          "status": "clarification",
+          "seconds": 11.175,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 11.173
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": "Which player are you referring to?",
+          "clarification": {
+            "question": "Which player are you referring to?",
+            "options": [
+              "Noah Laurent",
+              "Mateo Silva",
+              "Owen Reed",
+              "Luca Costa",
+              "Elias Nouri"
+            ],
+            "missing_fields": [
+              "player"
+            ]
+          },
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": false,
+            "reason": "status",
+            "expected_status": [
+              "ready"
+            ],
+            "actual_status": "clarification"
+          }
+        },
+        {
+          "prompt": "Mateo Silva.",
+          "status": "ready",
+          "seconds": 12.33,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 12.32,
+            "compile_validate": 0.0
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": {
+            "description": "Count of headed goals by Mateo Silva",
+            "operation": "count",
+            "event_types": [
+              "goal"
+            ],
+            "team_ids": [],
+            "player_ids": [
+              "mateo-silva"
+            ],
+            "body_part": "head",
+            "period": null,
+            "outcome": null,
+            "after_seconds": null,
+            "from_seconds": null,
+            "before_seconds": null,
+            "through_seconds": null,
+            "sum_field": null
+          },
+          "actual_rule": {
+            "match_id": "filter-lab-match",
+            "operation": "count",
+            "predicates": [
+              {
+                "field": "event_type",
+                "op": "in",
+                "value": [
+                  "goal"
+                ]
+              },
+              {
+                "field": "player_id",
+                "op": "in",
+                "value": [
+                  "mateo-silva"
+                ]
+              },
+              {
+                "field": "body_part",
+                "op": "eq",
+                "value": "head"
+              }
+            ],
+            "sum_field": null
+          },
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "final_value": 1.0,
+            "deliveries_checked": 35
+          }
+        }
+      ],
+      "model_calls": 2,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 1,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": {
+        "description": "Count of headed goals by Mateo Silva",
+        "operation": "count",
+        "event_types": [
+          "goal"
+        ],
+        "team_ids": [],
+        "player_ids": [
+          "mateo-silva"
+        ],
+        "body_part": "head",
+        "period": null,
+        "outcome": null,
+        "after_seconds": null,
+        "from_seconds": null,
+        "before_seconds": null,
+        "through_seconds": null,
+        "sum_field": null
+      },
+      "actual_rule": {
+        "match_id": "filter-lab-match",
+        "operation": "count",
+        "predicates": [
+          {
+            "field": "event_type",
+            "op": "in",
+            "value": [
+              "goal"
+            ]
+          },
+          {
+            "field": "player_id",
+            "op": "in",
+            "value": [
+              "mateo-silva"
+            ]
+          },
+          {
+            "field": "body_part",
+            "op": "eq",
+            "value": "head"
+          }
+        ],
+        "sum_field": null
+      },
+      "ok": true,
+      "final_value": 1.0,
+      "deliveries_checked": 35,
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1957,
+            "completion_tokens": 660,
+            "total_tokens": 2617
+          },
+          "status": "ok",
+          "request_bytes": 8524,
+          "request_sha256": "e979642dd2498b8fb68e46ffe3115cf5f17e606586dee237dca08e836d2bd47c",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 11.169
+        },
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 2019,
+            "completion_tokens": 949,
+            "total_tokens": 2968
+          },
+          "status": "ok",
+          "request_bytes": 8749,
+          "request_sha256": "9a624caa1dbf6690346558d80e644d36597760b3b7700117306ab33c6e3a6702",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 12.315
+        }
+      ]
+    },
+    {
+      "id": "data-control-01",
+      "intent_id": "data-control-01",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 5.609,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Show Noah Laurent's cumulative xG from the shot-quality values.",
+          "status": "unsupported",
+          "seconds": 5.609,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.608
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1961,
+            "completion_tokens": 338,
+            "total_tokens": 2299
+          },
+          "status": "ok",
+          "request_bytes": 8542,
+          "request_sha256": "15ac01cdff103b2466619b4360955138c3fb1369a0a71ea92115890c352ab262",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 5.605
+        }
+      ]
+    },
+    {
+      "id": "data-control-01",
+      "intent_id": "data-control-01",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 4.005,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Show Noah Laurent's cumulative xG from the shot-quality values.",
+          "status": "unsupported",
+          "seconds": 4.005,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 4.003
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3587,
+            "completion_tokens": 242,
+            "total_tokens": 3829
+          },
+          "status": "ok",
+          "request_bytes": 16060,
+          "request_sha256": "72e96a8edaf9333db35b37592bbc90a94e1369f310bf462ae374d3bc3043eb35",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 3.999
+        }
+      ]
+    },
+    {
+      "id": "data-control-02",
+      "intent_id": "data-control-02",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 5.64,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Harbour FC possession as a percentage of playing time.",
+          "status": "unsupported",
+          "seconds": 5.64,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.638
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3585,
+            "completion_tokens": 378,
+            "total_tokens": 3963
+          },
+          "status": "ok",
+          "request_bytes": 16057,
+          "request_sha256": "48574614ab7d57773b3808ea621c0398329114b54e2dbca42d822f288293ab6d",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 5.635
+        }
+      ]
+    },
+    {
+      "id": "data-control-02",
+      "intent_id": "data-control-02",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 5.61,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Track Harbour FC possession as a percentage of playing time.",
+          "status": "unsupported",
+          "seconds": 5.61,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 5.608
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1959,
+            "completion_tokens": 219,
+            "total_tokens": 2178
+          },
+          "status": "ok",
+          "request_bytes": 8539,
+          "request_sha256": "b14bd671803185321ed00b0d7e24f1fb74f67d7de4b28460f5f2bb8e718d8c0c",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 5.604
+        }
+      ]
+    },
+    {
+      "id": "data-control-03",
+      "intent_id": "data-control-03",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 9.486,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Mateo Silva's touches inside the penalty box using event locations.",
+          "status": "unsupported",
+          "seconds": 9.486,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 9.484
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1962,
+            "completion_tokens": 644,
+            "total_tokens": 2606
+          },
+          "status": "ok",
+          "request_bytes": 8552,
+          "request_sha256": "c4d44610336b479f09ec186689038075b3a7bc9efb557718c2d92642513b87b3",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 9.48
+        }
+      ]
+    },
+    {
+      "id": "data-control-04",
+      "intent_id": "data-control-04",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 6.423,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Show the distance Owen Reed has run in metres so far.",
+          "status": "unsupported",
+          "seconds": 6.423,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 6.422
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3586,
+            "completion_tokens": 503,
+            "total_tokens": 4089
+          },
+          "status": "ok",
+          "request_bytes": 16050,
+          "request_sha256": "4f1170910e96df508d7e4820719daa4bfb2d954b3bccc5a53ed6b8e8143ad538",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 6.419
+        }
+      ]
+    },
+    {
+      "id": "data-control-03",
+      "intent_id": "data-control-03",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 8.657,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Count Mateo Silva's touches inside the penalty box using event locations.",
+          "status": "unsupported",
+          "seconds": 8.657,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 8.656
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "skill_added",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "data_skill_sha256": "157b79284e5aac810ef6d63d0d44075431880e7c221e06a67e8481e1fa053f85",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 3588,
+            "completion_tokens": 726,
+            "total_tokens": 4314
+          },
+          "status": "ok",
+          "request_bytes": 16070,
+          "request_sha256": "38646e9a35802b2cd758cecef4407676a41d05a04395d2a091a0244d97d98607",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 8.652
+        }
+      ]
+    },
+    {
+      "id": "data-control-04",
+      "intent_id": "data-control-04",
+      "quality": "control",
+      "must_clarify": false,
+      "attempts": 0,
+      "status": "unsupported",
+      "seconds": 7.883,
+      "turn_count": 1,
+      "turns": [
+        {
+          "prompt": "Show the distance Owen Reed has run in metres so far.",
+          "status": "unsupported",
+          "seconds": 7.883,
+          "model_calls": 1,
+          "stage_seconds": {
+            "goal": 7.882
+          },
+          "goal_failure_reasons": [],
+          "goal_validation_errors": [],
+          "question": null,
+          "clarification": null,
+          "goal": null,
+          "actual_rule": null,
+          "timed_out": false,
+          "check": {
+            "ok": true,
+            "reason": "status"
+          }
+        }
+      ],
+      "model_calls": 1,
+      "first_turn_correct": true,
+      "first_turn_ready_correct": false,
+      "final_answer_correct": true,
+      "required_clarification_satisfied": true,
+      "missed_clarification": false,
+      "unsafe_guess": false,
+      "clarification_count": 0,
+      "unnecessary_clarifications": 0,
+      "wrong_ready_values": 0,
+      "wrong_ready_constraints": 0,
+      "unexpected_ready": 0,
+      "timeout_count": 0,
+      "goal": null,
+      "actual_rule": null,
+      "ok": true,
+      "reason": "status",
+      "model_label": "higher-ranked-reference",
+      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "variant": "current",
+      "interpretation_ok": true,
+      "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
+      "schema_sha256": "f70f4f72155afb02b5c0f14cf19863b9dc377fdb8288c48717151e283ce567df",
+      "pin_verified": true,
+      "pin_reason": "verified",
+      "actual_models": [
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "calls": [
+        {
+          "http_status": 200,
+          "actual_models": [
+            "dots-studio/dots-3-note-preview:free"
+          ],
+          "tokens": {
+            "prompt_tokens": 1960,
+            "completion_tokens": 552,
+            "total_tokens": 2512
+          },
+          "status": "ok",
+          "request_bytes": 8532,
+          "request_sha256": "528843c12920a9b97f6524a6c0daecdca47335e3ce82923bdeef80f2169027d8",
+          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "response_format": "prompt",
+          "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
+          "seconds": 7.878
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Inside the Game · Event lab</title>
+    <link rel="stylesheet" href="/lab/styles.css">
+    <script type="module" src="/lab/controller.js"></script>
+    <script type="module" src="/lab/chat-controller.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Inside the Game filter lab"><span class="brand-mark">ig.</span><span>Inside the Game<small>EVENT LAB</small></span></a>
+      <div class="environment"><span></span> Local development <b>LIVE WORKSPACE</b></div>
+    </header>
+    <main>
+      <section class="heading">
+        <div><h1>Event lab<span class="heading-slash"> / </span><span>Make it measurable.</span></h1><p>Prepare rules, replay a recording and inspect live values.</p></div>
+        <span class="sample-label">Events → rules → live values</span>
+      </section>
+      <div id="notice" class="notice" role="alert" hidden></div>
+      <div class="workspace">
+        <aside class="setup panel">
+          <div class="workspace-tabs" role="tablist" aria-label="Workspace">
+            <button class="button ghost" role="tab" data-workspace-tab="rule-workspace" aria-selected="true">Build filters</button>
+            <button class="button ghost" role="tab" data-workspace-tab="question-workspace" aria-selected="false">Questions</button>
+          </div>
+          <section id="rule-workspace">
+          <div class="section-heading"><h2>What are we tracking?</h2></div>
+          <p class="muted">Define your metric before the recording starts.</p>
+          <label for="presets">Ready-made requests</label>
+          <select id="presets" disabled><option>Loading examples…</option></select>
+          <p id="preset-description" class="preset-description"></p>
+          <button id="add-preset" class="button secondary full" disabled><span>＋</span> Add request</button>
+          <div class="divider"><span>or describe a request</span></div>
+          <form id="prompt-form">
+            <label for="prompt">Your request</label>
+            <textarea id="prompt" rows="3" maxlength="1500" placeholder="Track Chelsea’s corners after the 60th minute"></textarea>
+            <div class="model-status" id="model-status">Checking local model…</div>
+            <button id="prepare" class="button primary full" type="submit" disabled>Prepare request <span>↗</span></button>
+          </form>
+          <div id="plan-result" class="plan-result" hidden aria-live="polite">
+            <p id="plan-message"></p>
+            <p id="plan-options" class="muted"></p>
+            <details id="plan-rule-details" hidden><summary>Inspect structured rule</summary><pre id="plan-rule" hidden></pre></details>
+            <button id="add-plan" class="button secondary full" hidden>Add this filter</button>
+            <form id="reply-form" hidden>
+              <label id="reply-label" for="reply">Your answer</label>
+              <textarea id="reply" rows="2" maxlength="2000" placeholder="Add the missing detail or correct the request"></textarea>
+              <button id="send-reply" class="button secondary full" type="submit">Send reply ↗</button>
+            </form>
+          </div>
+          <div class="boundary-note"><span>↳</span><p>The agent prepares a structured rule once. Live events update the value without another model call.</p></div>
+          </section>
+          <section id="question-workspace" hidden>
+            <h2>Ask the match.</h2>
+            <label for="chat-profile">Demo profile</label>
+            <div class="chat-profile-row"><select id="chat-profile"><option>Loading…</option></select><button id="chat-reconnect" class="button ghost" type="button">Reconnect</button></div>
+            <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+            <form id="chat-form">
+              <label for="chat-prompt">Your question</label>
+              <textarea id="chat-prompt" rows="3" maxlength="2000" placeholder="How is the match going?"></textarea>
+              <p id="chat-status" class="model-status">Connecting…</p>
+              <button id="chat-send" class="button primary full" type="submit" disabled>Ask ↗</button>
+            </form>
+          </section>
+        </aside>
+        <section class="match-area">
+          <section class="match panel" aria-labelledby="match-heading">
+            <div class="match-top"><span id="match-heading">MATCH RECORDING</span><span class="status" id="status">Connecting</span></div>
+            <div class="recording-source"><div><span class="source-label">SOURCE FILE</span><strong id="recording-name">Loading recording…</strong><p id="recording-meta">Reading source metadata</p></div><div class="source-actions"><input id="recording-file" type="file" accept=".json,application/json" hidden><button id="load-recording" class="button secondary" disabled>Load JSON</button><button id="default-recording" class="button ghost" disabled>Use demo</button><a class="button ghost" href="/api/recording" download>Download ↗</a></div></div><div class="match-center"><div class="club"><span class="crest home" aria-hidden="true">H</span><h2 id="home-team">Home</h2></div><div class="match-clock"><span id="clock">00:00</span><small>MATCH CLOCK</small></div><div class="club"><span class="crest away" aria-hidden="true">A</span><h2 id="away-team">Away</h2></div></div>
+            <div class="replay-controls"><p id="progress">Waiting for match data</p><div><button id="reset" class="button ghost" disabled>New run</button><button id="start" class="button primary" disabled>▶ Start replay</button></div></div>
+            <div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div>
+          </section>
+          <section class="stats-section" aria-labelledby="stats-heading"><div class="section-heading"><h2 id="stats-heading">Live metrics</h2><span class="hint">Select a metric to inspect its rule</span></div><div id="cards" class="cards"><div class="empty-stats"><span>＋</span><p>Your custom stats will appear here.<small>Add a filter to get started.</small></p></div></div></section>
+          <section class="activity panel" aria-labelledby="activity-heading">
+            <div class="activity-heading"><div class="section-heading"><h2 id="activity-heading">Event ledger</h2></div><span id="event-count" class="muted">0 deliveries</span></div>
+            <div class="metrics"><div><strong id="total-rules">0</strong><span>active rules</span></div><span class="metric-arrow">→</span><div><strong id="candidates">0</strong><span>candidates on last event</span></div><span class="metric-arrow">→</span><div><strong id="changes">0</strong><span>values changed</span></div></div>
+            <div class="ledger-labels" aria-hidden="true"><span>Clock</span><span>Event / participant</span><span>Event ID</span></div><div id="events" class="events" aria-label="Recent match events"><div class="empty-events">The feed starts when you press <b>Start replay</b>.<br>Events move forward only. Match time is compressed for testing.</div></div>
+          </section>
+        </section>
+      </div>
+      <footer><span>Inside the Game / Event lab</span><span>Development fixture · Forward replay · No footage</span></footer>
+    </main>
+    <dialog id="rule-dialog"><div class="dialog-heading"><h2 id="rule-title">Calculation rule</h2><button id="close-dialog" class="button ghost" aria-label="Close rule details">✕</button></div><p id="detail-description" class="muted">Stored by the backend. Indexed and evaluated against incoming events.</p><pre id="rule-detail"></pre></dialog>
+  </body>
+</html>

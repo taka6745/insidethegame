@@ -1,21 +1,25 @@
 # Narrative engine
 
+[Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
+
 ![Shared match context becomes narratives for active audience buckets](architecture.svg)
 
-**Planned service; not implemented or deployed.** The retained [example prompts](prompts/README.md) are its only implementation inputs so far.
+**Runnable demo stub; production agents remain planned.** The stub owns authored commentary for the recorded synthetic match and factual neutral recap history. It never calls an LLM. The original [prompts](prompts/README.md) are preserved for the real implementation.
 
-One minute summariser and context compressor build neutral, shared match memory. The author then writes for each active audience bucket: home, away or neutral × simple, casual, experienced or analytical. At most 12 buckets share the same facts; viewer questions never trigger this workflow.
+```text
+Service Bus checkpoint → neutral recap archive → GraphQL → user backend
+                       ↓
+Authored commentary + enabled audiences → Service Bus → user backend
+```
 
-| Component | Role in this design |
+The backend owns audience definitions; this service reads its `generation_targets` and returns those already-framed versions unchanged. Questions read neutral context and never author narratives. Events and standard statistics remain ETL-owned.
+
+| Demo now | Planned replacement |
 | --- | --- |
-| Azure Container Apps | One Python orchestrator replica for the demo. |
-| Microsoft Agent Framework SDK | Coordinate summariser, compressor and author agents. |
-| Microsoft Foundry | Small model for summaries; stronger model for authoring. Exact deployments TBD. |
-| Azure Cosmos DB | Context blocks, bucket narratives and match checkpoints. |
-| Service Bus | Receive match/presence notifications; deliver new narratives to the user backend. |
+| Python/FastAPI service | Container Apps orchestrator |
+| Authored match-specific commentary | Agent Framework + Foundry author |
+| Deterministic factual recap tiers | Summariser/compressor agents |
+| SQLite archive, owned by this service | Cosmos DB |
+| Service Bus notifications/live delivery + GraphQL history | Production producers and durable Azure storage |
 
-**Input:** ETL GraphQL events, key-event ledger and statistics; match/presence notifications.
-
-**Output:** bucket-tagged narratives and structured stat-selection instructions. New narratives travel through Service Bus. This service owns a GraphQL interface for narrative history; the user backend never reads Cosmos DB directly.
-
-[Context and trigger rules](design-notes.md) · [Original design board](../legacy/design/plan.excalidraw) · [Repository plan](../README.md)
+Run locally: `pip install -r requirements-dev.txt`, then `python -m pytest` or `uvicorn narrative_demo.app:from_env --factory --port 18030`. Set ETL, audience and storage paths as described in the guide. The authored stub now uses the real Service Bus SDK against local emulators. It remains a single-process demo, not a production narrative engine. HTTP checkpoint mode remains available for isolated fixture tests.

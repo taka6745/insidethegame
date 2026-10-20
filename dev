@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+compose() {
+  local files=(-f local/compose.yaml)
+  if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
+  if [[ -z "${DEMO_VIDEO_PATH:-}" && -f .local/grf-demo-chelsea-united-v3/match.mp4 ]]; then
+    export DEMO_VIDEO_PATH="$PWD/.local/grf-demo-chelsea-united-v3/match.mp4"
+  fi
+  if [[ -n "${DEMO_VIDEO_PATH:-}" ]]; then files+=(-f local/compose.media.yaml); fi
+  docker compose --env-file local/env.defaults "${files[@]}" "$@"
+}
+docker_ready() {
+  command -v docker >/dev/null || { echo "Install Docker Desktop (or Docker Engine + Compose), then retry." >&2; exit 1; }
+  docker info >/dev/null 2>&1 || { echo "Cannot reach Docker. Start it and check your user's Docker access, then retry." >&2; exit 1; }
+  docker compose version >/dev/null 2>&1 || { echo "Install the Docker Compose plugin, then retry." >&2; exit 1; }
+}
+check_mode() {
+  case "${1:-base}" in base|azure|backend) ;; *) echo "Choose base, azure or backend." >&2; exit 2 ;; esac
+}
+check() {
+  if [[ "$1" == backend ]]; then
+    compose run --rm --build --no-deps backend-tests
+    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/broker_check.py
+    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/backend_broker_check.py
+  else
+    compose run --rm --build --no-deps tools python local/check.py "$1"
+  fi
+}
+usage() {
+  cat <<'EOF'
+./dev doctor             Check Docker before first setup
+./dev up                 Start + check Postgres and Cosmos (no accounts)
+./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
+./dev up backend         Build + test backend, demo services, Postgres and messaging
+                         Includes the match viewer at http://localhost:18020 (filter lab: /lab/)
+./dev test [azure|backend] Test dependencies or backend behaviour + live replay
+./dev replay             Send the tiny synthetic fixture to Event Hubs
+./dev replay backend     Start the aligned GRF match (12-minute forward replay)
+./dev reset backend      Start a fresh match run; keep account profiles
+./dev benchmark filters  Opt-in filter performance test (no models or network)
+./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
+./dev benchmark values   Opt-in cached value read benchmark
+./dev status             Show this project's containers
+./dev logs [service]     Show recent logs
+./dev down               Stop this stack; keep SQL/Postgres volumes
+./dev terraform check    Format-check, validate and mock-test Azure infrastructure
+
+For backend or Azure emulators, first review local/README.md licence links, then run:
+ACCEPT_EULA=Y ./dev up backend
+ACCEPT_EULA=Y ./dev up azure
+This accepts Microsoft's emulator and SQL Server terms. No cloud deployment.
+EOF
+}
+case "${1:-help}" in
+  doctor)
+    docker_ready
+    docker version --format 'Docker engine: {{.Server.Version}}'
+    docker compose version
+    docker info --format 'Docker CPU: {{.Architecture}}; available memory: {{.MemTotal}} bytes'
+    compose --profile azure --profile backend config --quiet
+    echo "Docker and Compose configuration are ready. First startup checks actual service connectivity."
+    ;;
+  up)
+    check_mode "${2:-base}"
+    docker_ready
+    if [[ "${2:-}" == backend ]]; then
+      [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
+      compose --profile backend up -d --build --wait --wait-timeout 240 frontend
+    elif [[ "${2:-}" == azure ]]; then
+      [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
+      compose --profile azure up -d
+    else
+      compose up -d
+    fi
+    check "${2:-base}"
+    ;;
+  test)
+    check_mode "${2:-base}"
+    docker_ready
+    check "${2:-base}"
+    ;;
+  replay)
+    docker_ready
+    if [[ "${2:-}" == backend ]]; then
+      compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py start
+    elif [[ -z "${2:-}" ]]; then
+      compose run --rm --build --no-deps tools python local/replay.py
+    else
+      usage; exit 2
+    fi
+    ;;
+  benchmark)
+    docker_ready
+    kind="${2:-filters}"
+    shift
+    if [[ $# -gt 0 ]]; then shift; fi
+    mkdir -p .local/benchmarks
+    case "$kind" in
+      filters) module=benchmarks.performance; extra=(--output /results/performance) ;;
+      agents) module=benchmarks.correctness; extra=(--agents --output /results/agents) ;;
+      values) module=benchmarks.value_reads; extra=(--output /results/performance/value-reads.json) ;;
+      *) echo "Choose filters, agents or values." >&2; exit 2 ;;
+    esac
+    compose run --rm --build --no-deps --user "$(id -u):$(id -g)" \
+      -v "$PWD/user-backend:/app:ro" -v "$PWD/data-generation:/data-generation:ro" \
+      -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
+    ;;
+  status) compose --profile azure --profile backend ps ;;
+  reset)
+    [[ "${2:-}" == backend ]] || { usage; exit 2; }
+    docker_ready
+    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py reset
+    ;;
+  logs) shift; compose --profile azure --profile backend logs --tail 60 "$@" ;;
+  down) compose --profile azure --profile backend down ;;
+  terraform)
+    [[ "${2:-}" == check ]] || { usage; exit 2; }
+    docker_ready
+    docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
+      -v "$PWD/terraform:/work" -w /work --entrypoint sh \
+      hashicorp/terraform:1.13.4 -ec \
+      'terraform fmt -check -recursive && terraform init -backend=false -input=false && terraform validate && terraform test'
+    ;;
+  help|-h|--help) usage ;;
+  *) usage; exit 2 ;;
+esac

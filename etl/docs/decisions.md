@@ -36,6 +36,7 @@
 
 | Item | Notes |
 | --- | --- |
+| Reconcile with the demo stand-in's contract | The local stack and user backend use [`demo_etl/`](components/demo-etl.md)'s `MatchSnapshotReady` and `questionData` GraphQL; the Azure pipeline publishes per-minute notifications and serves the DAB schema, with stats in Azure SQL (root `AGENTS.md` plans Cosmos DB). Agree one contract with the user backend and narrative engine, then swap the stand-in out |
 | Real-time (1x) run | `window_seconds = 60`, probably larger late tolerance; waits for the other services |
 | Late, duplicate and out-of-order injection | The seeder cannot inject them yet |
 | Subscription backlog | Consider a TTL on `narrative-engine`, or purging before a match |
