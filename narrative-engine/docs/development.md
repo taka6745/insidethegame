@@ -1,65 +1,89 @@
-# Develop shared narratives
+# Development
 
-![Service boundary](../architecture.svg)
+> **In short:** a plain Python virtual environment, no Docker needed. Each Azure dependency has a local stand-in (in-memory store, fixture files, JSONL transport, fake agents), so the whole engine runs offline; the same code then points at Azure dev resources one piece at a time.
 
-**Own:** neutral memory, bucket narratives and narrative history. ETL owns events/statistics; the backend owns audience definitions. Questions never start narrative authoring.
+| | |
+| --- | --- |
+| **Needs** | Python 3.11; Azure CLI and Terraform only for Azure work; Docker only to build the image |
+| **Settings** | Ignored `narrative-engine/.env` (never committed) |
+| **Tests** | `pytest tests` (104 pass, 2 skip without Azure: 66 engine, 38 stand-in) |
+| **Whole product locally** | The shared Docker stack runs the [stand-in](components/narrative-demo.md), not this engine: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
 
-## Run the replaceable demo
+## 1. Setup
+
+*In short: one virtual environment for the engine and the stand-in.*
 
 ```sh
 cd narrative-engine
-pip install -r requirements-dev.txt
-python -m pytest
-ETL_BASE_URL=http://localhost:18001 \
-AUDIENCE_BASE_URL=http://localhost:18000 \
-NARRATIVE_DATABASE_PATH=../.local/narrative-demo.sqlite3 \
-NARRATIVE_FIXTURE_PATH=fixtures/grf-narratives.json \
-uvicorn narrative_demo.app:from_env --factory --port 18030
+py -3.11 -m venv .venv                       # Windows; python3.11 elsewhere
+.venv/Scripts/pip install -r requirements-dev.txt     # requirements.txt plus pytest
+PYTHONUTF8=1 .venv/Scripts/python -m pytest tests
 ```
 
-| Setting | Purpose |
+On Windows, `PYTHONUTF8=1` is needed for the stand-in's fixture tests, which read UTF-8 files with the default encoding.
+
+## 2. Local stand-ins
+
+*In short: every Azure service has an offline replacement, swapped in by settings.*
+
+| Azure piece | Local stand-in | Switch |
+| --- | --- | --- |
+| Cosmos DB | `MemoryStore` (dictionaries) | `COSMOS_ENDPOINT` unset |
+| ETL GraphQL | `FixtureMatchData` over `tests/fixtures/` (synthetic match `itg-syn-0001`), or the ETL's local DAB in Docker on :5000 | `--data fixture\|graphql` |
+| Service Bus in | ETL notifications JSONL (`etl/.local/notifications.jsonl` from the ETL's `load-local`, or `tests/fixtures/itg-syn-0001-notifications.jsonl`) | `devtools.local` |
+| Service Bus out | `.local/narratives.jsonl` | `devtools.local --out` |
+| Foundry | `FakeAgents`, or any OpenAI-compatible API in `.env` | `--agents fake\|llm` |
+
+The `MemoryStore` and Cosmos store share a contract test, and a fake-agent run over the fixture matches a run against the Azure dev DAB, so passing locally means the same behaviour in Azure.
+
+## 3. Common runs
+
+*In short: from fastest and most offline to closest to production.*
+
+```sh
+# 1. Whole match, fake agents, offline (seconds)
+.venv/Scripts/python -m narrative_engine.devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl
+
+# 2. Real models, two buckets (about 5 minutes on Foundry)
+.venv/Scripts/python -m narrative_engine.devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl \
+  --agents llm --presence '{"neutral:casual": 1, "home:analyst": 1}'
+
+# 3. Real models and the Azure dev ETL data
+ETL_GRAPHQL_URL=<dev graphql url> .venv/Scripts/python -m narrative_engine.devtools.local \
+  tests/fixtures/itg-syn-0001-notifications.jsonl --data graphql --match-id itg-syn-0001-cloud4 --agents llm
+
+# 4. The full service on your machine against Azure dev (Service Bus, Cosmos DB)
+.venv/Scripts/python -m narrative_engine.devtools.azure env      # settings into .env
+MATCH_IDS=<matchId> .venv/Scripts/python -m narrative_engine.service
+```
+
+Look at the results with the history API (`python -m narrative_engine.api .local/narratives.jsonl`) or, for Cosmos data, the HTML report (`devtools.azure report --match-id X`).
+
+## 4. Tests
+
+*In short: fast unit and integration tests; Azure-backed tests skip when Azure is not configured.*
+
+| File | Covers |
 | --- | --- |
-| `ETL_BASE_URL` | Read-only access to ETL's captured checkpoints |
-| `AUDIENCE_BASE_URL` | Backend's read-only audience catalogue |
-| `NARRATIVE_DATABASE_PATH` | Demo SQLite archive; preserve its volume across restart |
-| `NARRATIVE_FIXTURE_PATH` | Authored commentary bound to the exact recording hash |
+| `test_models.py` | Clock, labels, message parsing |
+| `test_compression.py` | Compression rules against the design's worked example |
+| `test_render.py` | Prompt text from ETL rows |
+| `test_orchestrator.py` | Full matches, triggers, idempotency, backlog equals live, restarts, retries, report |
+| `test_llm_agents.py` | Agents against a mocked API: parsing, retries, per-role settings, prompt templates |
+| `test_graphql_data.py` | ETL GraphQL client against a fake DAB, no future leakage |
+| `test_graphql_live.py` | Read-only checks against a real DAB (skips when unreachable) |
+| `test_store_contract.py` | Memory and Cosmos stores behave the same (Cosmos part skips without `COSMOS_ENDPOINT`) |
+| `test_api.py` | History GraphQL queries and errors |
+| `test_servicebus.py` | Router, settling, publisher |
+| `test_narrative_demo.py`, `test_brokers.py`, `test_recorded_commentary.py` | The [stand-in](components/narrative-demo.md): HTTP and GraphQL, broker mode, authored fixture evidence |
 
-In isolated HTTP fixture mode, `POST /demo/viewer-snapshots` accepts checkpoint metadata with `events: []`. ETL must already own that checkpoint. This service retrieves `GET /demo/snapshots/{id}` from ETL, validates the observed delivery hash and watermark, archives neutral recaps, and selects authored narratives for current `generation_targets`. Empty targets publishes nothing; a catalogue error fails explicitly rather than silently enabling everyone. Same-cursor audience changes can reread existing authored versions.
+Fixtures in `tests/fixtures/` are synthetic and labelled so.
 
-`POST /demo/question-snapshots` materializes neutral context from that same ETL checkpoint if needed. It never fetches audience configuration or authors/publishes bucket narratives. This allows a question to race the viewer update safely.
+## 5. Conventions
 
-`POST /graphql` exposes the existing bounded `questionData(snapshotId, operation, …)` contract:
+*In short: keep components in their folders and secrets out of Git.*
 
-- `viewer`: observed, enabled bucket narratives and recent canonical events.
-- `compact`: a nonoverlapping frontier of neutral context, unfinished-minute events and key-event ledger.
-- `recaps`: retained blocks filtered by IDs, tier or interval, in pages of at most 100.
-
-Minute, five-minute, ten-minute, twenty-minute and half-time blocks remain readable after compaction. Only completed intervals exist. A full 90-minute checkpoint uses two half blocks; the archived children remain available for deeper questions. Football clock is separate from the accelerated recording's video time.
-
-## Broker mode
-
-Set `SNAPSHOT_SERVICEBUS_CONNECTION_STRING` to enable the lifespan-managed consumer. Set `NARRATIVE_SERVICEBUS_CONNECTION_STRING` for its publisher, or omit it to reuse the input connection. Connection strings belong in ignored local configuration.
-
-| Setting | Default |
-| --- | --- |
-| `SNAPSHOT_SERVICEBUS_TOPIC` | `match-notifications` |
-| `SNAPSHOT_SERVICEBUS_SUBSCRIPTION` | `narrative-engine` |
-| `NARRATIVE_SERVICEBUS_TOPIC` | `narratives` |
-
-Input: `{type: "MatchSnapshotReady", version: 1, snapshot: <SnapshotInput metadata>}`. The nested metadata contains `events: []`; ETL must have committed the referenced snapshot before publishing. Output: `{type: "BucketNarratives", version: 1, snapshot: <checkpoint watermark>, items, events, audience_revision}`. Items are already bucket-framed and remain unchanged in the backend. The output is a bounded current document (up to 480 narratives and 30 recent events), not a per-viewer message.
-
-The service archives before sending and acknowledges input only after publishing succeeds. Invalid JSON/contracts dead-letter. Transient ETL, audience, storage or publishing failures retry in place with exponential backoff capped at 15 seconds; automatic lock renewal runs for up to five minutes. Cancellation propagates without acknowledging unfinished work. If the lock expires, the receiver reconnects for broker redelivery. An outage exceeding repeated renewal windows can still exhaust the broker delivery limit; inspect the dead-letter queue and republish the current checkpoint after recovery. This stub has no separate durable retry scheduler. Integration probes settle without creating commentary. Repeated input notifications republish the current document, allowing a backend startup checkpoint to recover a lost emulator queue. Periodic audience refresh skips unchanged documents. The current metadata and published signature persist in SQLite; a restart resumes audience refresh every two seconds. Regressive same-run `(cursor, period, clock_seconds)` watermarks and older capture times from previous runs cannot replace the active polling snapshot; unseen stale checkpoints are archived as neutral history without live publishing. The backend must additionally reject messages for any inactive run; timestamps are demo ordering metadata, not a production ownership fence.
-
-Both HTTP snapshot POST routes return 409 in broker mode. GraphQL history remains available. Audience changes reselect authored versions for the latest observed checkpoint without a question or an HTTP capture triggering generation. This is at-least-once delivery: a crash after send and before durable signature save can resend, so consumers must be idempotent.
-
-## Commentary fidelity
-
-`fixtures/grf-narratives.json` is authored fixture data, not a model output. Each item declares its bucket, observed release cursor, clock and exact source events. A different recording hash, future release, deleted evidence or changed evidence suppresses that item. Templates never infer pressure, tactics, possession or player intent from a lone event. The backend displays supplied text unchanged.
-
-The broker path uses Microsoft's real Service Bus SDK and emulator. Archive persistence is still single-process SQLite, not Cosmos. HTTP checkpoint mode is retained only for isolated tests and is disabled when the broker connection is configured. No viewer IDs, account data, provider credentials or per-user model workflows enter this service. Archived backend test doubles may remain isolated in backend tests; they are not its runtime implementation.
-
-## Build next
-
-Keep the HTTP/models/services/repository/adapter boundaries. Replace authored fixtures with Microsoft Agent Framework summariser, compressor and author agents; replace SQLite with Cosmos while preserving archive-before-publish ordering and a transactional outbox for production. The original [prompts](../prompts/README.md) remain unchanged and their text-vs-JSON output conflict still needs resolution. Keep all canonical bucket IDs from the [audience API](../../user-backend/docs/audience-api.md), and read enabled targets before each shared generation cycle.
-
-The committed [commentary fixture](../fixtures/README.md) contains 144 manually authored versions (one per bucket per video minute). `tools/bind_commentary.py` binds that prose to an independent ETL canonical export after explicit recording-hash review. It adds no text. Its prefix digest invalidates a narrative if any earlier factual input changes; the last minute additionally requires football clock 5400. Run the fixture tests from the repository checkout so the committed recording is available for the independent evidence check.
+- New code goes in the folder whose name says what it is ([code layout](README.md#code-layout-at-a-glance)).
+- Original prompts stay unchanged in `docs/design/example-prompts/`; runtime prompts get a new versioned file.
+- Secrets live in `.env`, Terraform outputs or Container App secrets; commands read them without printing.
+- `.local/` holds run output and is never committed.
