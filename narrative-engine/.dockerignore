@@ -1,0 +1,6 @@
+# Belt and braces: `dev build` already sends a clean context.
+*
+!Dockerfile
+!requirements.txt
+!narrative_engine/
+**/__pycache__

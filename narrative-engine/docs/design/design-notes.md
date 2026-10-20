@@ -1,6 +1,6 @@
 # Context and trigger rules
 
-Design notes transcribed from the [original board](../legacy/design/plan.excalidraw), with the agreed service interfaces. No runtime exists yet.
+Design notes transcribed from the [original board](../../../legacy/design/plan.excalidraw), with the agreed service interfaces. No runtime exists yet.
 
 ## Shared memory
 

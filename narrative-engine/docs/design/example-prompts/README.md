@@ -1,6 +1,6 @@
 # Example prompts
 
-Extracted unchanged from the [original design board](../../legacy/design/plan.excalidraw). These are prompt examples, not implemented agents.
+Extracted unchanged from the [original design board](../../../../legacy/design/plan.excalidraw). These are prompt examples, not implemented agents.
 
 | Prompt | Purpose | Source element |
 | --- | --- | --- |
