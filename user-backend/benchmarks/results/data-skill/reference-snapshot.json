@@ -1,0 +1,180 @@
+{
+  "instructions": "Use the accompanying `feed_reference` to understand the data available for this match. It describes normalized records after the event adapter, not a universal Opta schema. Its contract ID and schema fingerprint identify the active version.\n\nIdentify the action being measured, the actor credited with that action, and its qualifiers separately. Similar football words can describe opposite participants in an incident. A record's player is the actor defined for its event category; it is not automatically the viewer's subject. Read category definitions and field meanings together.\n\nDistinguish the measure from the topic: action count, recorded distance and completion are different quantities. Preserve the requested scope and ask when the measure or boundary is unresolved. A familiar football statistic may require fields this feed does not provide; do not invent missing qualifiers or substitute a related statistic.\n\nUse the decision schema for supported outputs and operators. The dictionary explains data meaning and availability; it does not add execution capabilities. Match participants and IDs come from the supplied catalogue. No event history, future events, expected totals or evaluation answers are included in this skill.\n\nThe current calculation engine supports independent static field predicates with count or sum. It cannot express ratios, event sequences, joins, rolling windows or conditions depending on another event. Those limitations apply even when the necessary raw records exist.",
+  "feed_reference": {
+    "contract_id": "synthetic-opta-inspired-v1",
+    "schema_sha256": "1dbfc5fda01456d2ac62cf514aed68a3aa1589be414f9c51e4b338fa299012c9",
+    "provenance": "Application-owned synthetic feed. Opta-inspired structure, not a licensed Opta wire schema. These definitions describe normalized records after the adapter.",
+    "fields": {
+      "event_id": {
+        "meaning": "Stable identity of one recorded action, including later corrections.",
+        "schema": {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "match_id": {
+        "meaning": "Identity of the match containing the action.",
+        "schema": {
+          "maxLength": 120,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "revision": {
+        "meaning": "Increasing correction version for the same event identity; not another action.",
+        "schema": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "event_type": {
+        "meaning": "Category of the recorded action. A category and a body-part qualifier are independent dimensions.",
+        "schema": {
+          "enum": [
+            "pass",
+            "shot",
+            "goal",
+            "corner",
+            "card",
+            "save",
+            "tackle",
+            "clearance",
+            "interception",
+            "foul",
+            "touch"
+          ],
+          "type": "string"
+        }
+      },
+      "team_id": {
+        "meaning": "Team credited with this recorded action, not necessarily the team benefiting from its outcome.",
+        "schema": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "player_id": {
+        "meaning": "Actor credited with this record. For a shot, the shooter; for a save, the goalkeeper; for a pass, the passer. Never the implicit opponent or receiver.",
+        "schema": {
+          "anyOf": [
+            {
+              "maxLength": 120,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "body_part": {
+        "meaning": "Contact method of this action. Headed actions can belong to many event categories; this is not a header-only event category. Missing means unknown, not foot.",
+        "schema": {
+          "anyOf": [
+            {
+              "enum": [
+                "head",
+                "left_foot",
+                "right_foot",
+                "foot",
+                "other",
+                "hand"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "period": {
+        "meaning": "Football period: 1 first half, 2 second half, 3/4 extra-time halves, 5 shootout. Added time remains in its period.",
+        "schema": {
+          "maximum": 5,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "match_time_seconds": {
+        "meaning": "Whole-match football clock in seconds, not wall-clock or seconds since the current half began. Period is separate because added time can overlap clock ranges.",
+        "schema": {
+          "maximum": 12000,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "outcome": {
+        "meaning": "Result or subtype of this action: success/failure for completion; saved/off_target/blocked for unsuccessful shots; red/yellow for cards. A saved shot is attributed to its shooter, not the saving goalkeeper.",
+        "schema": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "distance_metres": {
+        "meaning": "Recorded travel distance of this pass, including unsuccessful passes when supplied. Not distance run by its player. Missing is not evidence of zero distance.",
+        "schema": {
+          "anyOf": [
+            {
+              "maximum": 200,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "deleted": {
+        "meaning": "Correction withdrawing this event; it no longer contributes to current totals.",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    },
+    "events": {
+      "pass": "Ball distribution by the passer. Count measures number of actions; sum of distance_metres measures ball travel. Completion is outcome success/failure. These are distinct measures, neither is implied by the topic passing alone.",
+      "shot": "Unsuccessful attempt at goal by the shooter. Saved shots retain the shooter as player_id and outcome saved. Goalkeeper actions are separate save records.",
+      "goal": "Successful scoring attempt by the scorer, stored separately from shot. All shooting attempts span shot and goal; a scored attempt is not also a shot record in this feed. Own-goal attribution is not modeled.",
+      "corner": "Corner awarded to the attacking team. This record does not establish who took the corner or whether it has been taken.",
+      "card": "Disciplinary card shown to its recipient; outcome records its colour.",
+      "save": "Goalkeeper's save action. Its actor is the goalkeeper. Counting these records for an attacking player does not measure that player's shots being saved.",
+      "tackle": "Tackle action by the tackler; outcome describes success or failure.",
+      "clearance": "Defensive clearance by the clearing player; contact method is independent.",
+      "interception": "Interception credited to the intercepting player.",
+      "foul": "Foul committed by the recorded player/team. Does not identify the player fouled.",
+      "touch": "Explicit standalone touch record. It is not an umbrella record for every pass, shot or other ball contact."
+    },
+    "guarantees": [
+      "One latest non-deleted revision contributes per event_id; duplicate delivery does not mean another action.",
+      "A shot record and a save record may describe opposite participants in one football incident. They are not interchangeable actors, and summing them double-counts that incident.",
+      "Whole-match scope has no period restriction. Clock bounds do not imply a half; half selection includes its added time.",
+      "Player and team restrictions are separate. A player's known club is not an implicit requested team filter.",
+      "Unknown qualifier keys are ignored by this adapter; only normalized fields listed here are queryable."
+    ],
+    "unavailable": [
+      "Player running distance, speed, coordinates, possession, xG, opponent/recipient identity and event-to-event links.",
+      "Corner-taker identity, own-goal classification, shot-on-target last-line-block classification and richer provider qualifiers.",
+      "This describes data availability only. Allowed calculation operators and output fields are defined by the supplied decision schema and compiler, not by football knowledge."
+    ]
+  }
+}

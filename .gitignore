@@ -7,14 +7,19 @@ __pycache__/
 *curl*.txt
 projects-export/
 .local/
+.venv/
 
 .ruff_cache/
-.venv/
-.terraform/
+
+# Local infrastructure / credentials. Commit provider lock files, never state.
+**/.terraform/
 *.tfstate
 *.tfstate.*
 *.tfplan
-local.auto.tfvars
+*.tfvars
+*.tfvars.json
+crash.log
+local/compose.override.yaml
 
 # Contains a private API key; keep its settings in narrative-engine/.env
 narrative-engine/Luke-LLM-Setup.md

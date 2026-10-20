@@ -1,0 +1,100 @@
+{
+  "id": "EQ187ohgCbo",
+  "title": "Build AI-powered soccer insights apps with AKS and ACA",
+  "channel": "Microsoft Reactor",
+  "channel_url": "https://www.youtube.com/channel/UCkm6luGCS3hD25jcEhvRMIA",
+  "webpage_url": "https://www.youtube.com/watch?v=EQ187ohgCbo",
+  "upload_date": "20261015",
+  "duration": 3817,
+  "duration_string": "1:03:37",
+  "description": "Learn how to build and deploy AI-powered applications that analyze football match and player data using AKS and ACA. \n\nUsing Premier League-inspired scenarios such as identifying team play styles, analyzing counterattacks, or uncovering player performance patterns, we'll walk through a reference architecture for developing, deploying, and operating AI applications and agents on Azure. \n\nAttendees will leave with practical guidance and ideas they can extend into their hackathon projects.\n\n\ud83d\udccc This event is part of a series. Learn more here: https://aka.ms/PremierLeagueHack\n\n0:00 Introduction and housekeeping\n 1:13 Premier League hackathon details and goals\n 2:56 Live demo of the football results dashboard\n 4:49 Exploring 150 years of international football data\n 8:19 Presentation agenda\n 9:17 Reference architecture overview (AKS and ACA)\n 11:29 Application data flow and ingestion process\n 12:33 Deterministic code vs. Microsoft Foundry logic\n 14:43 Security and Microsoft Entra ID implementation\n 18:01 Reviewing the Azure resource group and components\n 20:41 Data sources and handling in the repository\n 27:06 Challenges in data reconciliation and naming\n 31:13 AKS versus ACA infrastructure comparison\n 38:03 Scaling, revisions, and rolling updates\n 42:41 Building the app with GitHub Copilot\n 43:40 Reviewing the generation prompt structure\n 57:00 Final thoughts, hackathon resources, and Q&A\n\n#MicrosoftReactor #LearnConnectBuild #PremierLeagueHackathon\n\n[eventID:27536]",
+  "chapters": [
+    {
+      "start_time": 0.0,
+      "title": "Introduction and housekeeping",
+      "end_time": 73.0
+    },
+    {
+      "start_time": 73.0,
+      "title": "Premier League hackathon details and goals",
+      "end_time": 176.0
+    },
+    {
+      "start_time": 176.0,
+      "title": "Live demo of the football results dashboard",
+      "end_time": 289.0
+    },
+    {
+      "start_time": 289.0,
+      "title": "Exploring 150 years of international football data",
+      "end_time": 499.0
+    },
+    {
+      "start_time": 499.0,
+      "title": "Presentation agenda",
+      "end_time": 557.0
+    },
+    {
+      "start_time": 557.0,
+      "title": "Reference architecture overview (AKS and ACA)",
+      "end_time": 689.0
+    },
+    {
+      "start_time": 689.0,
+      "title": "Application data flow and ingestion process",
+      "end_time": 753.0
+    },
+    {
+      "start_time": 753.0,
+      "title": "Deterministic code vs. Microsoft Foundry logic",
+      "end_time": 883.0
+    },
+    {
+      "start_time": 883.0,
+      "title": "Security and Microsoft Entra ID implementation",
+      "end_time": 1081.0
+    },
+    {
+      "start_time": 1081.0,
+      "title": "Reviewing the Azure resource group and components",
+      "end_time": 1241.0
+    },
+    {
+      "start_time": 1241.0,
+      "title": "Data sources and handling in the repository",
+      "end_time": 1626.0
+    },
+    {
+      "start_time": 1626.0,
+      "title": "Challenges in data reconciliation and naming",
+      "end_time": 1873.0
+    },
+    {
+      "start_time": 1873.0,
+      "title": "AKS versus ACA infrastructure comparison",
+      "end_time": 2283.0
+    },
+    {
+      "start_time": 2283.0,
+      "title": "Scaling, revisions, and rolling updates",
+      "end_time": 2561.0
+    },
+    {
+      "start_time": 2561.0,
+      "title": "Building the app with GitHub Copilot",
+      "end_time": 2620.0
+    },
+    {
+      "start_time": 2620.0,
+      "title": "Reviewing the generation prompt structure",
+      "end_time": 3420.0
+    },
+    {
+      "start_time": 3420.0,
+      "title": "Final thoughts, hackathon resources, and Q&A",
+      "end_time": 3817
+    }
+  ],
+  "view_count": 2052,
+  "tags": []
+}

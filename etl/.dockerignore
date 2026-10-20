@@ -1,0 +1,6 @@
+*
+!requirements*.txt
+!demo_etl/**
+!tests/**
+**/__pycache__
+**/*.pyc

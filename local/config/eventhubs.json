@@ -1,0 +1,10 @@
+{
+  "UserConfig": {
+    "NamespaceConfig": [{
+      "Type": "EventHub", "Name": "itg-local",
+      "Entities": [{"Name": "match-events", "PartitionCount": 2,
+        "ConsumerGroups": [{"Name": "etl"}, {"Name": "user-backend"}, {"Name": "integration"}]}]
+    }],
+    "LoggingConfig": {"Type": "Console"}
+  }
+}

@@ -46,7 +46,8 @@
 
 | Item | Owner | Notes |
 | --- | --- | --- |
-| Presence contract | User backend + engine | [Proposed format](../contracts/README.md#input-presence-proposed) is implemented in the engine |
+| Reconcile with the demo stand-in's contract | User backend + engine | The local stack and backend use [`narrative_demo/`](components/narrative-demo.md)'s `MatchSnapshotReady` → `BucketNarratives` boundary and the backend's `generation_targets` API; the engine uses the Azure ETL's per-minute notifications, one message per narrative and presence. Agree one contract, then swap the stand-in for the engine |
+| Presence contract | User backend + engine | [Proposed format](../contracts/README.md#input-presence-proposed) is implemented in the engine; superseded if `generation_targets` is adopted |
 | Real-time (1x) full match | Both | Needs the ETL window at 60 s and the other services ready |
 | Second-half live check on Agent Framework | Engine | The 20 Oct run stopped at half time (local memory) |
 | Odd phrasing ("Half an hour? Sorry—20 minutes") | Engine | Prompt or model; try with a stronger author model |

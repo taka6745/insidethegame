@@ -1,0 +1,287 @@
+{
+  "$defs": {
+    "Clarification": {
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 5,
+          "title": "Options",
+          "type": "array"
+        },
+        "missing_fields": {
+          "items": {
+            "enum": [
+              "player",
+              "team",
+              "metric",
+              "time_window"
+            ],
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question"
+      ],
+      "title": "Clarification",
+      "type": "object"
+    },
+    "Goal": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "operation": {
+          "default": "count",
+          "enum": [
+            "count",
+            "sum"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "event_types": {
+          "default": [],
+          "items": {
+            "enum": [
+              "pass",
+              "shot",
+              "goal",
+              "corner",
+              "card",
+              "save",
+              "tackle",
+              "clearance",
+              "interception",
+              "foul",
+              "touch"
+            ],
+            "type": "string"
+          },
+          "title": "Event Types",
+          "type": "array"
+        },
+        "team_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Team Ids",
+          "type": "array"
+        },
+        "player_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Player Ids",
+          "type": "array"
+        },
+        "body_part": {
+          "anyOf": [
+            {
+              "enum": [
+                "head",
+                "left_foot",
+                "right_foot",
+                "foot",
+                "other",
+                "hand"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Body Part"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "success",
+                "failure",
+                "saved",
+                "off_target",
+                "blocked",
+                "red",
+                "yellow"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Outcome"
+        },
+        "after_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After Seconds"
+        },
+        "from_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From Seconds"
+        },
+        "before_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Before Seconds"
+        },
+        "through_seconds": {
+          "anyOf": [
+            {
+              "maximum": 12000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Through Seconds"
+        },
+        "sum_field": {
+          "anyOf": [
+            {
+              "const": "distance_metres",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sum Field"
+        }
+      },
+      "required": [
+        "description"
+      ],
+      "title": "Goal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "custom",
+        "reuse",
+        "clarification",
+        "unsupported"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "goal": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Goal"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "clarification": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Clarification"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "standard_stat_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Standard Stat Id"
+    },
+    "message": {
+      "default": "",
+      "maxLength": 1000,
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "GoalDecision",
+  "type": "object"
+}

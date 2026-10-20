@@ -6,18 +6,21 @@
 | --- | --- |
 | **Needs** | Python 3.11; Azure CLI and Terraform only for Azure work; Docker only to build the image |
 | **Settings** | Ignored `narrative-engine/.env` (never committed) |
-| **Tests** | `pytest tests` (66 pass, 2 skip without Azure) |
+| **Tests** | `pytest tests` (104 pass, 2 skip without Azure: 66 engine, 38 stand-in) |
+| **Whole product locally** | The shared Docker stack runs the [stand-in](components/narrative-demo.md), not this engine: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
 
 ## 1. Setup
 
-*In short: one virtual environment.*
+*In short: one virtual environment for the engine and the stand-in.*
 
 ```sh
 cd narrative-engine
 py -3.11 -m venv .venv                       # Windows; python3.11 elsewhere
-.venv/Scripts/pip install -r requirements.txt
-.venv/Scripts/python -m pytest tests
+.venv/Scripts/pip install -r requirements-dev.txt     # requirements.txt plus pytest
+PYTHONUTF8=1 .venv/Scripts/python -m pytest tests
 ```
+
+On Windows, `PYTHONUTF8=1` is needed for the stand-in's fixture tests, which read UTF-8 files with the default encoding.
 
 ## 2. Local stand-ins
 
@@ -72,6 +75,7 @@ Look at the results with the history API (`python -m narrative_engine.api .local
 | `test_store_contract.py` | Memory and Cosmos stores behave the same (Cosmos part skips without `COSMOS_ENDPOINT`) |
 | `test_api.py` | History GraphQL queries and errors |
 | `test_servicebus.py` | Router, settling, publisher |
+| `test_narrative_demo.py`, `test_brokers.py`, `test_recorded_commentary.py` | The [stand-in](components/narrative-demo.md): HTTP and GraphQL, broker mode, authored fixture evidence |
 
 Fixtures in `tests/fixtures/` are synthetic and labelled so.
 

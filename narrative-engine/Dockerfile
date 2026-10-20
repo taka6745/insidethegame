@@ -5,7 +5,7 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 PYTHONUTF8=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 WORKDIR /app
 COPY requirements.txt .
-RUN grep -v '^pytest' requirements.txt > runtime.txt && pip install -r runtime.txt
+RUN pip install -r requirements.txt
 COPY narrative_engine narrative_engine
 RUN useradd --uid 10001 engine
 USER engine

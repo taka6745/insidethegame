@@ -1,0 +1,53 @@
+{
+  "contract_id": "synthetic-opta-inspired-v1",
+  "provenance": "Application-owned synthetic feed. Opta-inspired structure, not a licensed Opta wire schema. These definitions describe normalized records after the adapter.",
+  "fields": {
+    "event_id": "Stable identity of one recorded action, including later corrections.",
+    "match_id": "Identity of the match containing the action.",
+    "revision": "Increasing correction version for the same event identity; not another action.",
+    "event_type": "Category of the recorded action. A category and a body-part qualifier are independent dimensions.",
+    "team_id": "Team credited with this recorded action, not necessarily the team benefiting from its outcome.",
+    "player_id": "Actor credited with this record. For a shot, the shooter; for a save, the goalkeeper; for a pass, the passer. Never the implicit opponent or receiver.",
+    "body_part": "Contact method of this action. Headed actions can belong to many event categories; this is not a header-only event category. Missing means unknown, not foot.",
+    "period": "Football period: 1 first half, 2 second half, 3/4 extra-time halves, 5 shootout. Added time remains in its period.",
+    "match_time_seconds": "Whole-match football clock in seconds, not wall-clock or seconds since the current half began. Period is separate because added time can overlap clock ranges.",
+    "outcome": "Result or subtype of this action: success/failure for completion; saved/off_target/blocked for unsuccessful shots; red/yellow/second_yellow for cards. A saved shot is attributed to its shooter, not the saving goalkeeper.",
+    "distance_metres": "Recorded travel distance of this pass, including unsuccessful passes when supplied. Not distance run by its player. Missing is not evidence of zero distance.",
+    "deleted": "Correction withdrawing this event; it no longer contributes to current totals."
+  },
+  "events": {
+    "pass": "Ball distribution by the passer. Count measures number of actions; sum of distance_metres measures ball travel. Completion is outcome success/failure. These are distinct measures, neither is implied by the topic passing alone.",
+    "shot": "Unsuccessful attempt at goal by the shooter. Saved shots retain the shooter as player_id and outcome saved. Goalkeeper actions are separate save records.",
+    "goal": "Successful scoring attempt by the scorer, stored separately from shot. All shooting attempts span shot and goal; a scored attempt is not also a shot record in this feed. Own-goal attribution is not modeled.",
+    "corner": "Corner awarded to the attacking team. This record does not establish who took the corner or whether it has been taken.",
+    "card": "Disciplinary card shown to its recipient; outcome records its colour.",
+    "save": "Goalkeeper's save action. Its actor is the goalkeeper. Counting these records for an attacking player does not measure that player's shots being saved.",
+    "tackle": "Tackle action by the tackler; outcome describes success or failure.",
+    "clearance": "Defensive clearance by the clearing player; contact method is independent.",
+    "interception": "Interception credited to the intercepting player.",
+    "foul": "Foul committed by the recorded player/team. Does not identify the player fouled.",
+    "touch": "Explicit standalone touch record. It is not an umbrella record for every pass, shot or other ball contact.",
+    "throw_in": "Throw-in actually taken by the recorded player/team. Its distribution may also have a pass record; these are not two passes.",
+    "free_kick": "Free kick actually taken. A restart record alone is not a pass, shot or foul; the corresponding action and offence are separate records.",
+    "goal_kick": "Goal kick actually taken by the recorded player/team. A related pass record describes the distribution.",
+    "kick_off": "Kick-off restart executed by the recorded team. It is not a goal or pass count by itself.",
+    "penalty": "Penalty kick actually taken; the attempt is recorded separately as shot or goal. This is not a penalty award or a shootout result.",
+    "offside": "Referee offside decision attributed to the offending player/team. Offside is not a foul.",
+    "foul_won": "Whistled foul attributed to its victim and benefiting team. The offender has a separate foul record; adding these doubles the incident count.",
+    "keeper_claim": "Goalkeeper taking possession of the ball without a confirmed linked shot. Do not count these as saves.",
+    "period_start": "Match period begins. Administrative record; player and team may be unknown.",
+    "period_end": "Match period ends. Administrative record; player and team may be unknown."
+  },
+  "guarantees": [
+    "One latest non-deleted revision contributes per event_id; duplicate delivery does not mean another action.",
+    "A shot record and a save record may describe opposite participants in one football incident. They are not interchangeable actors, and summing them double-counts that incident.",
+    "Whole-match scope has no period restriction. Clock bounds do not imply a half; half selection includes its added time.",
+    "Player and team restrictions are separate. A player's known club is not an implicit requested team filter.",
+    "Unknown qualifier keys are ignored by this adapter; only normalized fields listed here are queryable."
+  ],
+  "unavailable": [
+    "Player running distance, speed, coordinates, possession, xG, opponent/recipient identity and event-to-event links.",
+    "Corner-taker identity, own-goal classification, shot-on-target last-line-block classification and richer provider qualifiers.",
+    "This describes data availability only. Allowed calculation operators and output fields are defined by the supplied decision schema and compiler, not by football knowledge."
+  ]
+}
