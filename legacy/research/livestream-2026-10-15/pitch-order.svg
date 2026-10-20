@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="210" viewBox="0 0 1000 210" role="img" aria-labelledby="title desc">
+  <title id="title">How he presents</title>
+  <desc id="desc">Five steps: demo first, why trust it, data honesty, honest trade-offs, then receipts, the build story and slogan close.</desc>
+  <rect width="1000" height="210" rx="14" fill="#101e2b"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="28" y="38" font-size="23" font-weight="700" fill="#edf5fa" text-anchor="start">How he presents: his talk order</text>
+    <text x="28" y="64" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">Reactor livestream · our 1:55 video script adapts this (winner-profile §5)</text>
+    <rect x="28" y="88" width="172" height="96" rx="10" fill="#18293a" stroke="#69baff" stroke-width="1.5"/>
+    <text x="42" y="116" font-size="15" font-weight="700" fill="#edf5fa" text-anchor="start">1  Demo first</text>
+    <text x="42" y="144" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">A real answer on</text>
+    <text x="42" y="164" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">screen before slides</text>
+    <path d="M203 136 h14 m-6 -6 l6 6 l-6 6" fill="none" stroke="#69baff" stroke-width="2"/>
+    <rect x="222" y="88" width="172" height="96" rx="10" fill="#18293a" stroke="#69baff" stroke-width="1.5"/>
+    <text x="236" y="116" font-size="15" font-weight="700" fill="#edf5fa" text-anchor="start">2  Why trust it</text>
+    <text x="236" y="144" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">Code computes, model</text>
+    <text x="236" y="164" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">explains; keyless [9–20]</text>
+    <path d="M397 136 h14 m-6 -6 l6 6 l-6 6" fill="none" stroke="#69baff" stroke-width="2"/>
+    <rect x="416" y="88" width="172" height="96" rx="10" fill="#18293a" stroke="#69baff" stroke-width="1.5"/>
+    <text x="430" y="116" font-size="15" font-weight="700" fill="#edf5fa" text-anchor="start">3  Data honesty</text>
+    <text x="430" y="144" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">Attribution, cleanup,</text>
+    <text x="430" y="164" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">a live refusal [20–30]</text>
+    <path d="M591 136 h14 m-6 -6 l6 6 l-6 6" fill="none" stroke="#69baff" stroke-width="2"/>
+    <rect x="610" y="88" width="172" height="96" rx="10" fill="#18293a" stroke="#69baff" stroke-width="1.5"/>
+    <text x="624" y="116" font-size="15" font-weight="700" fill="#edf5fa" text-anchor="start">4  Trade-offs</text>
+    <text x="624" y="144" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">AKS or ACA by use</text>
+    <text x="624" y="164" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">case, not a winner [31–37]</text>
+    <path d="M785 136 h14 m-6 -6 l6 6 l-6 6" fill="none" stroke="#69baff" stroke-width="2"/>
+    <rect x="804" y="88" width="172" height="96" rx="10" fill="#18293a" stroke="#69baff" stroke-width="1.5"/>
+    <text x="818" y="116" font-size="15" font-weight="700" fill="#edf5fa" text-anchor="start">5  Receipts, build</text>
+    <text x="818" y="144" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">Receipts, evals [38–41],</text>
+    <text x="818" y="164" font-size="13" font-weight="400" fill="#a4bbc9" text-anchor="start">Copilot [42–56], thesis</text>
+  </g>
+</svg>
