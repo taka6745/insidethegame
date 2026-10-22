@@ -251,7 +251,8 @@ class QuestionService:
 
 
 def _chain(exc):
-    """The exception and its causes, outermost first."""
+    """The exception and its causes, outermost first. A `raise … from None` (the model adapter hiding provider bodies)
+    ends the chain."""
     while exc is not None:
         yield exc
-        exc = exc.__cause__ or exc.__context__
+        exc = exc.__cause__ or (None if exc.__suppress_context__ else exc.__context__)

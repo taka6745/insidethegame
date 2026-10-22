@@ -234,7 +234,7 @@ D1, tested in unit tests (feed 24 + Postgres 4, demo control 7, frontend 6); not
 - **Main game** (22 Oct, feed migration `005_demo_main.sql`): `demo_settings.main_fixture` (default `arsenal-liverpool`, editable in `/dev/`) starts first, so it is always furthest along, and leads the fixture list; `/demo-api/state` names its run (`main_match_id`). After Start demo, or on landing on `/` while a demo is live, the viewer opens the main game; "← All matches" (`/?choose`) keeps the picker, main game first, for switching to the other two. Tests: feed 31 + Postgres, demo control 10, frontend 169.
 - **Start progress**: demo control `GET /status` (public `/demo-api/status`) reports each stage from a real check, which also wakes apps scaled to zero: feed `/health`; Event Hubs = a demo run's MA1 accepted by the hub (feed run `position` ≥ 1; staggered runs send theirs minutes later); ETL `/health`; Service Bus = ETL and engine both up (no separate probe yet); engine `/health`; backend `/health`; viewer = the backend lists every demo match whose MA1 has gone out. It lives in demo control, not the backend, so no product service learns about the others. Seed-restore progress joins it with D2.
 - **Viewer**: picker shows Start demo with the start-point select (unrecorded points disabled), or Cancel demo while one is on; while a demo is on only its matches are listed. The audience bucket is fixed while a match is live.
-- **Azure (not done)**: needs a `demo-control` Container App (internal ingress; ETL and engine admin tokens; `DEMO_FEED_URL`, `ETL_ADMIN_URL`, `ENGINE_ADMIN_URL`, `BACKEND_URL`) and `DEMO_CONTROL_UPSTREAM` on the frontend. Until then `/demo-api/` returns 502 and the viewer hides the controls.
+- **Azure (built, §11)**: a `demo-control` Container App (`terraform/demo_control.tf`: internal ingress, one replica; ETL and engine admin tokens; `DEMO_FEED_URL`, `ETL_ADMIN_URL`, `ENGINE_ADMIN_URL`, `BACKEND_URL`) and `DEMO_CONTROL_UPSTREAM` on the frontend. Without it `/demo-api/` returns 502 and the viewer hides the controls.
 - **Open**: one viewer's Cancel stops the demo for every viewer (as asked); a confirm dialog guards it.
 
 **Seeds (D2, built 22 Oct; tested in unit tests and on the local stack).** A seed is recorded, not reconstructed:
@@ -245,7 +245,7 @@ run's seq, the engine has summarised the last minute with nothing queued, the ba
 engine narrative), exports each owner's rows and names the seed on the feed's start point. So nothing past the
 point exists in a seed by construction, and HT, 60′ and 85′ are recorded as a chain (each from the previous seed).
 Locally seeds live in `.local/seeds/{seed_id}/` (mounted into demo control as `/seeds`); on Azure the same
-layout on a mounted share or Blob (not built yet). Layout: `manifest.json` (format 2, seed id, point, created_at,
+layout on an Azure Files share mounted at `/seeds` (`terraform/demo_control.tf`). Layout: `manifest.json` (format 2, seed id, point, created_at,
 each owner's schema fingerprint, per fixture the source match and run ids, seq and video second) and
 `{owner}/{fixture}.json`. A seed of another format, or that an owner's schema no longer fits, is refused (`409`:
 record it again), as is one whose seq differs from where the feed resumes:
@@ -255,14 +255,14 @@ record it again), as is one whose seq differs from where the feed resumes:
 | feed | none | the run resumes at the point (`resume_point`), position and seq taken as delivered, no MA1 |
 | ETL | `GET /admin/matches/export?match_id=` / `POST /admin/matches/restore {match_id, max_seq, schema, tables}` | every match table (events, SPADL, trends inputs, progress, windows); the worker reloads its state from SQL |
 | engine | `POST /admin/matches/export` / `POST /admin/matches/restore {match_id, max_seq, schema, containers}` | checkpoint (follow state cleared), context blocks, narratives, analyses, storylines; viewers' follow decisions and narratives are not seeded |
-| backend | `POST /admin/matches/export` / `POST /admin/matches/restore {match_id, max_seq, schema, tables}` | received match and events, gaps, audience catalogue, engine narratives (the insights history); sessions, follows, questions and calculations belong to viewers |
+| backend | `POST /admin/matches/export` / `POST /admin/matches/restore {match_id, max_seq, schema, tables}` | received match and events, gaps, audience catalogue, engine narratives (the insights history) and their key-event clips (`narrative_clips`); sessions, follows, questions and calculations belong to viewers |
 
 **Demo-only adapter (DEMO_SEEDS).** Seeding lives in one demo adapter per service, mounted only when `DEMO_SEEDS=1`: backend `backend/demo/seeds.py` (router added in `app.py`), engine `narrative_engine/demo/seeds.py` (an ASGI layer in front of the service app), ETL `local_stream/demo_seeds.py` (routes handed to the admin server), and in the feed (the provider simulator) the held/resumed runs, seeded `/demo/start` points and `POST /runs/{id}/release`. Without it a service has no export or restore route and the feed refuses seed recording (403) and seeded starts (409). Restore tricks the system through its normal shapes: it writes rows and documents as the live pipeline writes them, then the owner adopts the match the way it recovers after a restart (backend `MatchRegistry.adopt`, ETL worker `load`, engine `Router.engine`); core services never branch on a demo. Local compose and the Azure judge build set `DEMO_SEEDS=1`; a production release leaves it unset. Tests: each service proves the routes are absent without it (backend `test_seed_routes_exist_only_with_the_demo_setting`, engine `test_without_the_demo_setting_the_service_has_no_seed_routes`, ETL `test_seed_routes_are_mounted_only_with_the_demo_setting`, feed `test_without_demo_seeds_there_is_no_seed_path`) and the seed round trips pass unchanged with it on.
 
 **Restore and continue.** `POST /demo-api/start {point}` with a seeded point: the feed creates the three runs
 *waiting* (`awaiting_restore`; not launched, nothing sent); demo control rewrites each fixture's seed to the new
-matchId and runId (and its MA1 time to now, so later purge-all cut-offs do not drop it), restores ETL, engine and
-backend in that order (each refuses another schema, a known or tombstoned match, rows of another match, and rows
+matchId and runId (and its MA1 time to now, so later purge-all cut-offs do not drop it), restores ETL alongside the
+backend, then the engine (which asks the backend for the match's targets; each refuses another schema, a known or tombstoned match, rows of another match, and rows
 past the seed's seq), then releases the runs (`POST /runs/{id}/release`), main game first, staggered: each clock
 starts at the point 5 s later, plus the stagger. Any failure purges the runs everywhere (`503`; a stale seed `409`).
 While a seed is being recorded its held runs are no demo: `state` leaves them out and `start` answers `409`. Each run carries `started_from`; `/demo-api/state` returns

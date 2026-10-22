@@ -157,6 +157,24 @@ def test_another_matchs_story_reaches_the_follow_view_marked_and_bounded_by_that
         assert run.client.get(path(token) + '/follows').json()['follows'] == []
 
 
+def test_purging_the_viewers_match_ends_its_follow_of_another_match_with_a_new_revision(store):
+    with two_matches(store) as run:
+        run.send(20)
+        run.send(9, match_id=OTHER)
+        token = start(run.client)['session_token']
+        response = run.client.post(path(token) + '/follows', json={
+            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Liverpool'}, 'match_id': OTHER})
+        assert response.status_code == 200, response.text
+        before = run.client.get(f'/matches/{OTHER}/subscription-targets')
+        assert before.json()['topics']
+        assert run.client.post('/admin/matches/purge', json={'match_id': MATCH}).status_code == 200
+        # The engine re-reads targets only on a new revision: an unchanged one would keep the orphaned topic alive.
+        after = run.client.get(f'/matches/{OTHER}/subscription-targets',
+                               headers={'If-None-Match': before.headers['etag']})
+        assert after.status_code == 200 and after.json()['topics'] == []
+        assert after.json()['revision'] != before.json()['revision']
+
+
 def test_a_pinned_stat_from_another_match_shows_its_value_there_marked():
     shared = {'match': {'id': OTHER, 'fixture': 'arsenal-liverpool',
                         'teams': [{'id': 'arsenal', 'name': 'Arsenal', 'score': 2}, {'id': 'liverpool', 'name': 'Liverpool'}]},

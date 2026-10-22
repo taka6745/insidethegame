@@ -16,7 +16,7 @@ import demo_control
 class DemoControlTests(unittest.TestCase):
     def setUp(self):
         self.runs, self.calls, self.down, self.listed = [], [], set(), []
-        self.refuse_restore, self.resume_seq, self.refuse_status = set(), 7, 409
+        self.refuse_restore, self.resume_seq, self.refuse_status, self.refuse_purge = set(), 7, 409, set()
         self.gate = threading.Event()
         self.gate.set()
         self.settings = {"fixtures": ["b", "a", "c"], "main_fixture": "b", "stagger_seconds": 120, "start_points": [{"id": "kickoff", "label": "Kick-off", "period": 1, "minute": 0, "seed": None},
@@ -50,6 +50,8 @@ class DemoControlTests(unittest.TestCase):
                     return httpx.Response(self.refuse_status, json={"detail": "refused"})
                 return httpx.Response(200, json={"match_id": body["match_id"], "restored": {}})
             if path == "/admin/matches/purge":
+                if request.url.host in self.refuse_purge:
+                    return httpx.Response(500, json={"detail": "down"})
                 if request.url.host == "feed":
                     self.gate.wait(5)
                     self.runs = [] if body.get("all") else [r for r in self.runs if r["match_id"] != body["match_id"]]
@@ -122,16 +124,19 @@ class DemoControlTests(unittest.TestCase):
         result = self.client.post("/start", json={"point": "20"}).json()
         self.assertEqual(result["live_from"], "20′")
         restores = [(host, body) for host, path, body in self.calls if path == "/admin/matches/restore"]
-        self.assertEqual([h for h, _ in restores[:3]], ["etl-stream", "narrative-live", "backend"])  # ETL first
-        etl, engine, backend = (b for _, b in restores[:3])
-        # the main game ("b", m1) is restored and released first
-        self.assertEqual((etl["match_id"], etl["max_seq"], engine["max_seq"], backend["max_seq"]), ("m1", 7, 7, 7))
+        # The runs restore in parallel; per run the ETL alongside the backend, then the engine.
+        main = {h: b for h, b in restores if b["match_id"] == "m1"}  # the main game ("b", m1)
+        hosts = [h for h, b in restores if b["match_id"] == "m1"]
+        self.assertEqual(sorted(hosts), ["backend", "etl-stream", "narrative-live"])
+        self.assertLess(hosts.index("backend"), hosts.index("narrative-live"))
+        etl, engine, backend = main["etl-stream"], main["narrative-live"], main["backend"]
+        self.assertEqual((etl["max_seq"], engine["max_seq"], backend["max_seq"]), (7, 7, 7))
         ma1 = json.loads(etl["tables"]["matches"][0]["payload"])
         self.assertEqual(ma1["matchId"], "m1")
         self.assertNotEqual(ma1["timeStamp"], "2026-01-01T00:00:00Z")  # sent now: later than any purge cut-off
         self.assertEqual(engine["containers"]["checkpoints"][0]["matchId"], "m1")
         self.assertEqual(backend["tables"]["received_matches"][0]["run_id"], "r1")
-        self.assertEqual({b["schema"] for _, b in restores[:3]}, {"etl-v1", "engine-v1", "backend-v1"})
+        self.assertEqual({b["schema"] for b in main.values()}, {"etl-v1", "engine-v1", "backend-v1"})
         self.assertNotIn("rec-", json.dumps([b for _, b in restores]))
         self.assertEqual([r["after"] for r in self.runs], [125, 5, 245])  # a, b (main: furthest along), c
 
@@ -165,6 +170,13 @@ class DemoControlTests(unittest.TestCase):
         self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 503)
         self.assertEqual({m for _, m in self.purged()}, {"m0", "m1", "m2"})
         self.assertFalse([c for c in self.calls if c[1].endswith("/release")])
+
+    def test_an_owner_failing_its_purge_after_a_failed_restore_still_frees_every_run(self):
+        self.seed()
+        self.refuse_restore, self.refuse_status, self.refuse_purge = {"backend"}, 500, {"etl-stream"}
+        self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 503)
+        self.assertEqual({m for host, m in self.purged() if host == "feed"}, {"m0", "m1", "m2"})
+        self.assertEqual(self.runs, [])  # no run left waiting on a seed that will not come
 
     def test_status_reports_each_stage_from_real_checks(self):
         self.down = {"narrative-live"}

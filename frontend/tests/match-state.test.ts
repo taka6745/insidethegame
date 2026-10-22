@@ -329,6 +329,28 @@ test("opening the page resumes this tab's session; only Reconnect starts a new o
   assert.deepEqual(calls, ["restore:mine", "session"]);
 });
 
+test("a resuming tab's retry while its match details load keeps its own session", async () => {
+  const calls: string[] = [], timers: (() => void)[] = [];
+  const f = fixture({
+    match: "m1",
+    profiles: async () => ({ profiles: [{ id: "one" }] }),
+    restore: async (token: string) => {
+      calls.push(`restore:${token}`);
+      if (calls.length < 2) throw Object.assign(new Error("Not available yet"), { status: 503, code: "snapshot_unavailable" });
+      return { session_token: token, turns: [], snapshot: snapshot() };
+    },
+    session: async () => { calls.push("session"); return { session_token: "fresh", turns: [], snapshot: snapshot() }; },
+    socketUrl: () => "ws://local",
+  });
+  f.controller.timers = stub<Timers>({ setTimeout: (fn: () => void) => timers.push(fn), clearTimeout() {} });
+  f.controller.storage.setItem("match-session:m1:one", "mine");
+  await f.controller.start();
+  timers.shift()!();
+  await new Promise((done) => setImmediate(done));
+  assert.deepEqual(calls, ["restore:mine", "restore:mine"]);
+  assert.equal(f.controller.token, "mine");
+});
+
 test("a purged or unknown match (404) stops the viewer and returns to the picker", async () => {
   let gone = 0, stopped = 0;
   const f = fixture({

@@ -204,9 +204,9 @@ export class MatchController {
     } catch (caught) {
       if (generation !== this.generation) return;
       const error = caught as ServiceError;
-      if (error.status === 404 && error.code === "match_not_started") return this.wait(generation);
+      if (error.status === 404 && error.code === "match_not_started") return this.wait(generation, "waiting", restore);
       // Just opened: ETL has not served the match details yet.
-      if (error.status === 503 && error.code === "snapshot_unavailable") return this.wait(generation, "connecting");
+      if (error.status === 503 && error.code === "snapshot_unavailable") return this.wait(generation, "connecting", restore);
       if (error.status === 404) return this.connection("gone");
       this.view.connection(
         error.code === "session_replaced" || error.status === 409
@@ -218,12 +218,13 @@ export class MatchController {
     }
   }
   /** Linked before its MA1 arrived (or its details): say so and try again until the match opens. */
-  wait(generation: number, state: "waiting" | "connecting" = "waiting") {
+  /** Retries keep the attempt's `restore`, so a tab resuming its own session never takes it over from itself. */
+  wait(generation: number, state: "waiting" | "connecting" = "waiting", restore = false) {
     this.view.connection(state);
     this.questions.status(state === "waiting"
       ? "Questions open with the match, about a minute before kick-off." : "Connecting to your match…", true);
     this.pendingTimer = this.timers.setTimeout(() => {
-      if (generation === this.generation) void this.connect();
+      if (generation === this.generation) void this.connect({ restore });
     }, 5000);
   }
   async selectAudience(selection: Audience) {

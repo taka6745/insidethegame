@@ -30,13 +30,14 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
     with store.connect() as conn:
         applied = [row['version'] for row in conn.execute('SELECT version FROM schema_migrations ORDER BY version')]
         config = conn.execute('SELECT name, revision FROM backend_config ORDER BY name').fetchall()
-    assert applied[-19:] == ['024_subscriptions.py', '025_grounded_prompts.py',
+    assert applied[-20:] == ['024_subscriptions.py', '025_grounded_prompts.py',
                              '026_storyline_policy.py', '027_follow_triggers.py', '028_key_moment_labels.py',
                              '029_policy_prompts.py', '030_grounded_patterns.py', '031_policy_limits.py',
                              '032_follow_retries.py', '033_comparison_claim.py', '034_result_claim.py',
                              '035_author_trim.py', '036_score_claim_reopen.py', '037_replay_playback.py',
                              '038_follow_clips.py', '039_follow_clip_step.py',
-                             '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py']
+                             '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
+                             '043_narrative_clips_match.sql']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:

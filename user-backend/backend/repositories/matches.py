@@ -124,6 +124,15 @@ class MatchRepository:
             for identifier in ids:
                 conn.execute('INSERT INTO match_tombstones (match_id) VALUES (%s) ON CONFLICT DO NOTHING', (identifier,))
             for identifier in ids:
+                # This match's viewers' follows of another match go with their conversations (cascade): that
+                # match's engine re-reads its targets only on a new revision.
+                conn.execute('''INSERT INTO subscription_revisions (match_id, revision)
+                    SELECT DISTINCT s.match_id, 1 FROM subscriptions s
+                    JOIN question_conversations c ON c.id = s.conversation_id
+                    JOIN received_matches m ON m.match_id = s.match_id
+                    WHERE c.match_id = %s AND s.match_id <> %s
+                    ON CONFLICT (match_id) DO UPDATE SET revision = subscription_revisions.revision + 1''',
+                             (identifier, identifier))
                 for table, condition in MATCH_TABLES:
                     cursor = conn.execute(sql.SQL('DELETE FROM {} WHERE ').format(sql.Identifier(table))
                                           + sql.SQL(condition), (identifier,))

@@ -44,7 +44,7 @@
 | Stream Analytics query | MA1/MA3 outputs were deployed (dev, deleted 2026-10-21); a 10x replay matched the reference for GraphQL and Service Bus. Multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API: implemented and tested against the reference and local stream; applied 22 Oct, Azure match run pending ([decisions](decisions.md#3-open-items)) |
 | Data API builder | Applied 22 Oct (internal ingress, scales to zero) |
 | Stream schedule (spend guard) | Applied 22 Oct: match events start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
-| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested, used for the local seeds; not yet recorded on Azure |
+| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested, used for the local seeds; the 20′ seed recorded on Azure 22 Oct (HT, 60′, 85′ not yet) |
 | Real-time (1x) match | `./dev azure up` sets `window_seconds = 60`; Azure run part of the pending acceptance |
 | Local stream stand-in (`local_stream/`) | Implemented, unit- and SQL-tested, runs 1x replays in the local Docker stack; not deployed as a worker. Also MatchEvent v2, POS, watermarks, the stat catalogue, per-match purge and demo seeds (`DEMO_SEEDS=1`) ([local-stream](components/local-stream.md)) |
 

@@ -19,6 +19,7 @@ PATHS = ("/admin/matches/export", "/admin/matches/restore")
 DOCUMENT_VERSION = 1
 COSMOS_SYSTEM = ("_rid", "_self", "_etag", "_attachments", "_ts")
 BATCH_DOCUMENTS = 100  # Cosmos's limit on operations in one transactional batch
+BATCH_BYTES = 1_500_000  # under Cosmos's 2 MB request limit for one batch (an analysis document is ~60 KB)
 
 
 class SeedRefused(ValueError):
@@ -53,6 +54,20 @@ async def export(store, match_id):
             "storylines": [copy.deepcopy(d) for d in store.storyline_docs.values() if d["matchId"] == match_id]}
 
 
+def batches(docs):
+    """Consecutive runs of documents within one transactional batch's operation and size limits."""
+    batch, size = [], 0
+    for doc in docs:
+        length = len(json.dumps(doc))
+        if batch and (len(batch) == BATCH_DOCUMENTS or size + length > BATCH_BYTES):
+            yield batch
+            batch, size = [], 0
+        batch.append(doc)
+        size += length
+    if batch:
+        yield batch
+
+
 async def _load(store, match_id, containers):
     from narrative_engine.store.memory import MemoryStore
     if not isinstance(store, MemoryStore):
@@ -62,9 +77,8 @@ async def _load(store, match_id, containers):
         by_name = _cosmos(store)
 
         async def write(name, docs):
-            for i in range(0, len(docs), BATCH_DOCUMENTS):
-                await by_name[name].execute_item_batch([("upsert", (doc,)) for doc in docs[i:i + BATCH_DOCUMENTS]],
-                                                       partition_key=match_id)
+            for batch in batches(docs):
+                await by_name[name].execute_item_batch([("upsert", (doc,)) for doc in batch], partition_key=match_id)
         await asyncio.gather(*(write(name, docs) for name, docs in containers.items() if name != "checkpoints"))
         await write("checkpoints", containers.get("checkpoints", []))
         return {name: len(docs) for name, docs in containers.items()}

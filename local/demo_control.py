@@ -204,8 +204,11 @@ def restore_runs(http, seed_id, runs, stagger, log=print):
                           json={'after_seconds': RELEASE_LEAD + i * stagger}).raise_for_status().json()
                 for i, run in enumerate(runs)]
     except Exception:
-        for run in runs:
-            purge(http, {'match_id': run['match_id']}, log=lambda _: None)
+        for run in runs:  # every run, whatever one purge does; the restore's error is what the caller sees
+            try:
+                purge(http, {'match_id': run['match_id']}, log=lambda _: None)
+            except Exception as exc:
+                log(f"Could not purge {run['match_id']} after a failed restore: {type(exc).__name__}")
         raise
 
 

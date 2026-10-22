@@ -31,3 +31,13 @@ def test_failure_log_names_the_cause():
             raise RuntimeError("") from cause
     except RuntimeError as exc:
         assert [str(e) for e in _chain(exc)] == ["", "Function tools with reasoning_effort are not supported"]
+
+
+def test_failure_log_stops_where_the_adapter_hid_the_provider_body():
+    try:
+        try:
+            raise ValueError("provider body")
+        except ValueError:
+            raise RuntimeError("Local model request failed") from None
+    except RuntimeError as exc:
+        assert [str(e) for e in _chain(exc)] == ["Local model request failed"]

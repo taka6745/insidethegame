@@ -113,7 +113,8 @@ class SubscriptionService:
 
     async def _bucket(self, target, viewer):
         """The bucket of `target`'s catalogue a cross-match follow is written for: an enabled one backing neither
-        team (the viewer's side names a position in their own match), sharing most of the viewer's other choices."""
+        team when any is (the viewer's side names a position in their own match), sharing most of the viewer's other
+        choices."""
         catalog, _ = await self.product.audiences.read(target)
         enabled = [b for b in catalog['buckets'] if b['enabled']]
         if not enabled:

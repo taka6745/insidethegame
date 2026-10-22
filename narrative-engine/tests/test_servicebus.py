@@ -536,6 +536,15 @@ def test_a_seed_restores_under_a_new_match_id_and_the_match_carries_on_from_it()
     asyncio.run(go())
 
 
+def test_seed_batches_stay_within_cosmos_operation_and_size_limits():
+    from narrative_engine.demo import seeds
+    small = [{"id": str(i)} for i in range(250)]
+    assert [len(b) for b in seeds.batches(small)] == [100, 100, 50]
+    large = [{"id": str(i), "text": "x" * 600_000} for i in range(5)]
+    assert [len(b) for b in seeds.batches(large)] == [2, 2, 1]
+    assert [d for b in seeds.batches(large) for d in b] == large
+
+
 def test_without_the_demo_setting_the_service_has_no_seed_routes():
     """A production release (DEMO_SEEDS off) serves no export or restore; they fall through to GraphQL."""
     import httpx

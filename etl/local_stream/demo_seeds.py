@@ -156,13 +156,17 @@ def export(worker, seeds, match_id):
 def restore(worker, seeds, match_id, tables, max_seq, schema):
     """Load a seed, then reload the worker's match and window state from SQL (as after a restart)."""
     began = time.monotonic()
-    try:  # The rows go in outside the worker's lock (their own transaction); only the reload takes it.
-        if schema != seeds.schema():
-            raise RestoreRefused("The seed was exported from another ETL schema; record it again")
-        counts = seeds.restore(match_id, tables, max_seq)
-    except Exception:
-        seeds.rollback()
-        raise
+    # The schema check reads the worker's shared connection, so it takes the worker's lock (as export does); the
+    # rows go in outside it, on their own connection and transaction (seeds.restore rolls that back on failure).
+    with worker.lock:
+        try:
+            current = seeds.schema()
+        except Exception:
+            seeds.rollback()
+            raise
+    if schema != current:
+        raise RestoreRefused("The seed was exported from another ETL schema; record it again")
+    counts = seeds.restore(match_id, tables, max_seq)
     written = time.monotonic()
     if hasattr(worker, "load"):
         worker.load()

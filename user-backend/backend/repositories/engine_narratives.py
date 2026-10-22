@@ -27,13 +27,12 @@ class EngineNarratives:
         """A key event's clip for the shared narratives of its buckets (models.EngineMomentClip). True if any row is
         new; redeliveries and unknown or purged matches change nothing."""
         with self.store.connect() as conn, conn.cursor() as cursor:
-            if not conn.execute('SELECT 1 FROM received_matches WHERE match_id=%s', (clip.matchId,)).fetchone():
-                return False
             added = 0
             for bucket in dict.fromkeys(clip.buckets):
                 cursor.execute('''INSERT INTO narrative_clips (match_id, bucket_id, moment_id, event_seq, step_id)
-                    VALUES (%s,%s,%s,%s,%s) ON CONFLICT DO NOTHING''',
-                               (clip.matchId, bucket, f'km:{clip.eventId}', clip.eventSeq, clip.stepId))
+                    SELECT %s,%s,%s,%s,%s WHERE EXISTS (SELECT 1 FROM received_matches WHERE match_id=%s)
+                    ON CONFLICT DO NOTHING''',
+                               (clip.matchId, bucket, f'km:{clip.eventId}', clip.eventSeq, clip.stepId, clip.matchId))
                 added += cursor.rowcount
             return added > 0
 

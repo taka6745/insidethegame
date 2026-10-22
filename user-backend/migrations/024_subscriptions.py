@@ -110,7 +110,7 @@ CONFIG = {
         'min_name_match': 0.5,
         # Entities offered back when a follow-chat name is ambiguous (031).
         'max_candidates': 4,
-        # Moment clips in a follow's playlist (037): asked with `decision` on these key events only.
+        # Moment clips in a follow's playlist (038): asked with `decision` on these key events only.
         'clips': {'enabled': True,
                   'key_types': ['Goal', 'OwnGoal', 'RedCard', 'PenaltyAwarded', 'PenaltyMissed', 'VarOverturn'],
                   'instructions': "How much would this story's followers want to watch this moment as a clip?",
