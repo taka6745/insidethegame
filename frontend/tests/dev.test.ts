@@ -129,7 +129,7 @@ test("config tables use ETag polling and revision-checked saves with conflicts k
   assert.deepEqual(JSON.parse(String(calls[2]![1].body)), { value: { slots: 4 }, expected_revision: 3 });
   await assert.rejects(api.saveTable("presentation", {}, 2, '"old"'), ConflictError);
   assert.deepEqual(CONFIG_TABLES.map((t) => t.id), ["presentation", "replay-timing", "key-moment-ranks", "prices", "stream",
-    "subscriptions", "key-moment-feed", "storyline-policy", "cross-match", "follow-offer"]);
+    "subscriptions", "key-moment-feed", "storyline-policy", "cross-match", "follow-offer", "models"]);
   assert.equal(parseDraft('{"a":1}').issue, "");
   assert.match(parseDraft("{").issue, /Not valid JSON/);
   assert.match(parseDraft(" ").issue, /empty/);
@@ -143,11 +143,14 @@ test("developer consoles are gated in nginx; media proxies only per-match playli
   assert.match(nginx, /location ~ "\^\/media\/hls\/\(\[a-z0-9\]\[a-z0-9-\]\{0,63\}\)\/\(\[A-Za-z0-9_-\]\{1,64\}\\\.\(\?:m3u8\|ts\)\)\$" \{\s+proxy_pass http:\/\/media_origin\/hls\/\$1\/\$2;/);
   assert.match(nginx, /location \/media\/ \{\s+return 404;/);
   assert.doesNotMatch(nginx, /try_files \$uri =404;\s+\}\s+# No other media/);
-  // The public demo API: only these four routes, method-limited and rate-limited.
+  // The public demo API: only these five routes (start, cancel, skip; state, status), method- and rate-limited.
   assert.deepEqual([...nginx.matchAll(/location[^{]*demo-api[^{]*\{/g)].map(([found]) => found),
-    ['location ~ "^/demo-api/(start|cancel)$" {', 'location ~ "^/demo-api/(state|status)$" {']);
-  assert.match(nginx, /\(start\|cancel\)\$" \{\s+limit_except POST \{ deny all; \}\s+limit_req zone=demo_write /);
-  assert.match(nginx, /\(state\|status\)\$" \{\s+limit_except GET \{ deny all; \}\s+limit_req zone=demo_read /);
+    ['location ~ "^/demo-api/(?<demo_write_op>start|cancel|skip)$" {', 'location ~ "^/demo-api/(?<demo_read_op>state|status)$" {']);
+  assert.match(nginx, /start\|cancel\|skip\)\$" \{\s+limit_except POST \{ deny all; \}\s+limit_req zone=demo_write /);
+  assert.match(nginx, /state\|status\)\$" \{\s+limit_except GET \{ deny all; \}\s+limit_req zone=demo_read /);
+  // limit_req evaluates the key map's regex, which resets numbered captures: rate-limited routes use named ones.
+  for (const [, block] of nginx.matchAll(/location[^{]*demo-api[^{]*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}/g))
+    assert.doesNotMatch(block!, /\$\d/);
   // The per-client key is the last X-Forwarded-For hop (appended by the ingress), never a client-sent value.
   const key = /"(~[^"]+)" \$last_hop;/.exec(nginx)?.[1]?.slice(1).replace("(?<last_hop>", "(");
   assert.ok(key);
