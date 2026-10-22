@@ -72,16 +72,21 @@ Canonical AS (
 -- Watermark marks (reference/pipeline.py progress_marks), in send order: the highest event, MA3 seq and
 -- POS sampleId sent so far per match. Azure SQL turns a mark into matchProgress once all it covers is
 -- committed (sql/azure/asa-progress.sql), so the outputs' independent write order does not matter.
+-- The highest is taken over the last 10 minutes, not the whole match: MAX OVER keeps every row of its
+-- window in memory, and a start reads back the longest window, so a day of earlier demos on the hub ran
+-- the job out of memory (no marks, no watermark). Seqs only rise and a match never goes 10 minutes without
+-- any MA3 or POS message; after a longer quiet spell (half time) a 0 leaves unchecked only rows sent
+-- before it, long committed by then.
 Sent AS (
     SELECT
         p.matchId, p.seq, p.feed, System.Timestamp() AS arrivedAt,
         CASE WHEN p.feed IS NULL AND p.type = 'MatchEvent' AND p.version = 2 THEN 1 ELSE 0 END AS isEvent,
         CASE WHEN p.feed = 'POS' THEN p.sampleId ELSE 0 END AS posSample,
         CASE WHEN p.feed = 'MA3' THEN p.seq ELSE 0 END AS ma3Row,
-        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1)
+        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(minute, 10)
                                   WHEN p.feed IS NULL AND p.type = 'MatchEvent' AND p.version = 2), 0) AS eventSeen,
-        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1) WHEN p.feed = 'MA3'), 0) AS ma3Seen,
-        COALESCE(MAX(p.sampleId) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1) WHEN p.feed = 'POS'), 0) AS sampleSeen
+        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(minute, 10) WHEN p.feed = 'MA3'), 0) AS ma3Seen,
+        COALESCE(MAX(p.sampleId) OVER (PARTITION BY p.matchId LIMIT DURATION(minute, 10) WHEN p.feed = 'POS'), 0) AS sampleSeen
     FROM [match-progress] p
     WHERE p.matchId IS NOT NULL
 ),
@@ -97,13 +102,14 @@ SentSoFar AS (
 ),
 
 -- Quiet spell: no message of this match for ${idle_seconds} s. Sessions are per match (OVER), so other
--- matches' traffic does not hold one open; one closed by its maximum length (a day) is skipped.
+-- matches' traffic does not hold one open; one closed by its maximum length (4 hours, longer than any match,
+-- and the read-back on start) is skipped.
 -- (System.Timestamp() is allowed only in SELECT, so the window end is a column filtered in ProgressMarks.)
 QuietSpells AS (
     SELECT matchId, MAX(eventSeq) AS seq, MAX(ma3Seq) AS ma3Seq, MAX(sampleId) AS sampleId,
            MAX(arrivedAt) AS lastArrived, System.Timestamp() AS windowEnd
     FROM SentSoFar
-    GROUP BY matchId, SessionWindow(second, ${idle_seconds}, 86400) OVER (PARTITION BY matchId)
+    GROUP BY matchId, SessionWindow(second, ${idle_seconds}, 14400) OVER (PARTITION BY matchId)
     HAVING MAX(eventSeq) > 0
 ),
 

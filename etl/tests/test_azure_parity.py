@@ -2,6 +2,7 @@
 and status Azure SQL derives from its marks) equals the local stream worker row for row, and the
 JavaScript UDFs equal the reference."""
 import json
+import re
 import shutil
 import subprocess
 from functools import cache
@@ -15,6 +16,7 @@ from reference import pipeline
 from test_local_stream import Clock, FakeRepository, bodies, canonical
 
 UDFS = Path(__file__).resolve().parents[1] / "stream-analytics" / "udfs"
+QUERY = UDFS.parent / "query.asaql"
 
 
 @cache
@@ -82,3 +84,22 @@ def test_udfs_equal_reference_rows(fixture):
     assert normal(actual["teams"]) == normal(expected["matchTeams"])
     assert normal(actual["players"]) == normal(expected["matchPlayers"])
     assert normal(actual["events"]) == normal(expected["canonicalEvents"])
+
+
+@pytest.mark.parametrize("fixture", v2_stream.FIXTURES)
+def test_progress_lookback_covers_every_gap_and_sessions_outlast_a_match(fixture):
+    """The marks' running highs look back a bounded time (a day of history ran the job out of memory), so the
+    reference's unbounded highs hold only if no match goes that long without each kind of message."""
+    query = QUERY.read_text()
+    lookbacks = set(re.findall(r"LIMIT DURATION\(minute, (\d+)\)", query))
+    assert len(lookbacks) == 1 and "LIMIT DURATION(day" not in query
+    lookback = int(lookbacks.pop()) * 60
+    session = int(re.search(r"SessionWindow\(second, \$\{idle_seconds\}, (\d+)\)", query).group(1))
+    times = {}
+    for m in stream(fixture):
+        if pipeline.kind(m) in ("MA3", "POS", "MatchEvent"):
+            times.setdefault(pipeline.kind(m), []).append(pipeline.parse_time(m["timeStamp"]))
+    for kind, sent in times.items():
+        assert max((b - a).total_seconds() for a, b in zip(sent, sent[1:])) < lookback, kind
+    first, last = min(min(t) for t in times.values()), max(max(t) for t in times.values())
+    assert (last - first).total_seconds() < session
