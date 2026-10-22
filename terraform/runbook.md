@@ -58,7 +58,7 @@ Rerun `up` after a failure: it keeps the apps on the last complete up's image ta
 
 *In short: press Start demo at `<url>/`, or start a match from /dev/.*
 
-- The viewer's **Start demo** calls demo control (`/demo-api/`, internal app, one replica, scales to zero): three matches, main game first; seeded start points need seeds on the `seeds` Azure Files share (recorded with the winning model: `demo_control.py record`/`capture` against the Azure apps; not yet done).
+- The viewer's **Start demo** calls demo control (`/demo-api/`, internal app, one replica, scales to zero): three matches, main game first; seeded start points need seeds on the `seeds` Azure Files share (recorded with the winning model: `demo_control.py record`/`capture` run inside demo control with `az containerapp exec`; 20′, HT, 60′ and 85′ recorded on sol 23 Oct, PLAN.md §11).
 - Open `<url>/dev/` (user `dev`, password in `.local/terraform/dev-admin-password.txt`) → Matches → start. Matches start at the next whole minute, from 00:00.
 - The viewer is `<url>/`. Questions, replays and the follow planner use Azure OpenAI `gpt-6.1-sol` (deployment `questions`, effort low) on the engine's Foundry account; narratives use the engine's deployments, and story follows and claim checks its Microsoft-Decision-1 deployment.
 - The `/dev/` panel's purge reaches every owner: the feed and backend directly, the ETL purge API and the engine through `/purge-api/{etl,engine}`, where nginx adds each owner's bearer token (Container Apps secrets). Only the frontend is public; DAB, engine, purge API, feed and backend have internal ingress.
