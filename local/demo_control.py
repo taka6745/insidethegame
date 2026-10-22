@@ -23,19 +23,20 @@ OWNERS = (('feed', FEED + '/admin/matches/purge', None),
           ('backend', os.environ.get('BACKEND_URL', 'http://backend:8000') + '/admin/matches/purge', None))
 
 def _number(name, default):
+    """An env override of the default's type (seconds are floats, so `0.5` works)."""
     return type(default)(os.environ.get(name, default))
 
 
-PURGE_TIMEOUT = _number('DEMO_PURGE_TIMEOUT', 300)  # Seconds; a purge waits for the stream's current batch.
+PURGE_TIMEOUT = _number('DEMO_PURGE_TIMEOUT', 300.0)  # Seconds; a purge waits for the stream's current batch.
 PURGE_RETRIES = _number('DEMO_PURGE_RETRIES', 10)  # 503 means retry; purge is idempotent.
-PURGE_RETRY_SECONDS = _number('DEMO_PURGE_RETRY_SECONDS', 2)
+PURGE_RETRY_SECONDS = _number('DEMO_PURGE_RETRY_SECONDS', 2.0)
 CHECK_TIMEOUT = 3  # Seconds per readiness probe.
 WAKE_TIMEOUT = 60  # Seconds a wake-up call waits for an app scaled to zero.
 SEED_ROOT = Path(os.environ.get('DEMO_SEED_ROOT', '/seeds'))  # seeds/{seed_id}/: manifest + one file per owner
 SEED_OWNERS = ('etl', 'engine', 'backend')  # restore_runs: the ETL alongside the backend, then the engine
-RELEASE_LEAD = _number('DEMO_RELEASE_LEAD', 5)  # Seconds from the last restore to the first run reading the point.
-CAPTURE_POLL = _number('DEMO_CAPTURE_POLL', 5)  # Seconds: a held run's owners must settle before a capture.
-CAPTURE_TIMEOUT = _number('DEMO_CAPTURE_TIMEOUT', 1800)
+RELEASE_LEAD = _number('DEMO_RELEASE_LEAD', 5.0)  # Seconds from the last restore to the first run reading the point.
+CAPTURE_POLL = _number('DEMO_CAPTURE_POLL', 5.0)  # Seconds: a held run's owners must settle before a capture.
+CAPTURE_TIMEOUT = _number('DEMO_CAPTURE_TIMEOUT', 1800.0)
 SEED_FORMAT = 2  # manifest layout; 2 adds each owner's schema fingerprint and the source run id
 
 

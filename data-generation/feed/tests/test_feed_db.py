@@ -19,8 +19,9 @@ class FeedRepositoryTests(unittest.TestCase):
         repo, run_id = self.repository, str(uuid.uuid4())
         match_id = f"test-{run_id[:8]}"
         kickoff = datetime(2026, 10, 20, 15, tzinfo=timezone.utc)
-        row = repo.create_run(run_id, match_id, "chelsea-united", kickoff)
-        self.assertEqual((row["run_id"], row["status"], row["position"]), (run_id, "scheduled", 0))
+        row = repo.create_run(run_id, match_id, "chelsea-united", kickoff, hold_seconds=1200.0, hold_point="20")
+        self.assertEqual((row["run_id"], row["status"], row["position"], row["hold_point"]),
+                         (run_id, "scheduled", 0, "20"))  # a recording run keeps its point (006)
         repo.progress(run_id, 12, 7, "live")
         mine = next(r for r in repo.runs() if r["match_id"] == match_id)
         self.assertEqual((mine["position"], mine["seq"], mine["status"]), (12, 7, "live"))
