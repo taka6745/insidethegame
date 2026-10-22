@@ -351,7 +351,8 @@ def app(http=None, clock=time.monotonic):
     # Start's cleanup has its own worker, so cold keep-warm wakes on `background` cannot delay the release it gates.
     cleaner = ThreadPoolExecutor(max_workers=1)
     finished_at = {}  # match_id -> clock() when the sweep first saw it finished (the feed lists no finish time)
-    preloaded = {'seeds': frozenset()}  # the seed ids last read into memory (preload_seeds)
+    # The seed ids last read into memory (preload_seeds), and when a viewer at the picker last woke the owners.
+    preloaded = {'seeds': frozenset(), 'woken': None}
 
     def submit(action, run):
         def job():
@@ -402,6 +403,9 @@ def app(http=None, clock=time.monotonic):
         if offered != preloaded['seeds']:  # a viewer is at the picker: have the seeds in memory before Start
             preloaded['seeds'] = offered
             background.submit(preload_seeds, offered, tuple(settings['fixtures']))
+        if not active and (preloaded['woken'] is None or clock() - preloaded['woken'] >= KEEP_WARM_SECONDS):
+            preloaded['woken'] = clock()  # and wake the owners now: a cold app took ~20 s of a seeded start
+            wake()
         # A demo started from a seed: its runs' clocks began past kick-off ("live from" that point).
         seeded = {p['id']: p for p in settings['start_points'] if p['seed']}
         live_from = next((p['label'] for p in seeded.values() for r in active if r.get('started_from') == p['id']), None)
@@ -434,10 +438,7 @@ def app(http=None, clock=time.monotonic):
     @api.post('/start')
     def start_demo(body: Start | None = None):
         point = (body or Start()).point
-        for name, (url, token) in checks.items():  # wake every owner now, in parallel, before the purge needs them
-            pool.submit(ok, url, token, WAKE_TIMEOUT)
-        for url in KEEP_WARM_URLS:  # and every other app the demo needs (the ETL data API, ...)
-            background.submit(ok, url.strip(), None, WAKE_TIMEOUT)
+        wake()
         if not work['pending']:
             active = split()[0]
             if active:
@@ -500,6 +501,14 @@ def app(http=None, clock=time.monotonic):
               'engine': (OWNERS[2][1].removesuffix('/admin/matches/purge') + '/health', None),
               'backend': (backend_url + '/health', None)}
     pool = ThreadPoolExecutor(max_workers=len(checks))
+
+    def wake():
+        """Wake every owner in parallel (apps scaled to zero start on a request), and every other app the demo
+        needs (the ETL data API, ...); nothing waits on it."""
+        for url, token in checks.values():
+            pool.submit(ok, url, token, WAKE_TIMEOUT)
+        for url in KEEP_WARM_URLS:
+            background.submit(ok, url.strip(), None, WAKE_TIMEOUT)
 
     def health_all():
         """Every owner's health at once, so apps scaled to zero wake in parallel rather than one by one."""

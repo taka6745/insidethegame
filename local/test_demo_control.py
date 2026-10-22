@@ -346,6 +346,26 @@ class DemoControlTests(unittest.TestCase):
         manifest.write_text(json.dumps({**json.loads(manifest.read_text()), "format": 1}))
         self.assertEqual([p["ready"] for p in self.client.get("/state").json()["points"]], [True, False])
 
+    def test_a_viewer_at_the_picker_wakes_every_owner_at_most_once_a_keep_warm_round(self):
+        def woken():
+            for _ in range(100):  # the wake-ups run on a worker
+                hosts = {host for host, path, _ in self.calls if path == "/health"}
+                if len(hosts) == 4:
+                    return hosts
+                time.sleep(0.01)
+            return {host for host, path, _ in self.calls if path == "/health"}
+        self.client.get("/state")
+        self.assertEqual(woken(), {"feed", "etl-stream", "narrative-live", "backend"})
+        self.calls.clear()
+        self.client.get("/state")
+        self.now += demo_control.KEEP_WARM_SECONDS - 1
+        self.client.get("/state")
+        time.sleep(0.05)
+        self.assertEqual([path for _, path, _ in self.calls if path == "/health"], [])
+        self.now += 1
+        self.client.get("/state")
+        self.assertEqual(woken(), {"feed", "etl-stream", "narrative-live", "backend"})
+
     def test_keep_warm_touches_every_owner_only_while_a_demo_is_live(self):
         warm = self.client.app.state.keep_warm_once
         self.calls.clear()
