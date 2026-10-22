@@ -77,6 +77,14 @@ resource "azurerm_container_app" "demo_control" {
     }
   }
 
+  dynamic "secret" {
+    for_each = nonsensitive(var.stream_start_url != null) ? [1] : []
+    content {
+      name  = "stream-start-url"
+      value = var.stream_start_url
+    }
+  }
+
   ingress {
     external_enabled           = false
     allow_insecure_connections = true
@@ -112,6 +120,14 @@ resource "azurerm_container_app" "demo_control" {
         content {
           name        = env.value.env
           secret_name = env.key
+        }
+      }
+
+      dynamic "env" {
+        for_each = nonsensitive(var.stream_start_url != null) ? [1] : []
+        content {
+          name        = "DEMO_STREAM_START_URL"
+          secret_name = "stream-start-url"
         }
       }
 

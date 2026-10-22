@@ -63,3 +63,10 @@ variable "demo_seeds" {
   default     = false
   description = "Demo seed export/restore routes (DEMO_SEEDS=1; PLAN.md §10.6). On for the judge build (`./dev azure up`), off for a production release."
 }
+
+variable "stream_start_url" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "terraform/guard's stream-start webhook: demo control calls it on Start so Stream Analytics need not wait for the Event Hubs traffic alert."
+}

@@ -91,6 +91,23 @@ class DemoControlTests(unittest.TestCase):
         self.assertFalse(self.client.post("/start").json()["started"])
         self.assertTrue(self.client.get("/state").json()["live"])
 
+    def test_start_asks_the_guard_to_start_stream_analytics_at_once_when_configured(self):
+        self.client.post("/start")
+        self.settle()
+        self.assertNotIn("guard", [host for host, _, _ in self.calls])  # local: no stream to start
+        url, demo_control.STREAM_START_URL = demo_control.STREAM_START_URL, "https://guard/webhooks?token=secret"
+        try:
+            self.runs = []
+            self.client.post("/start")
+            self.settle()
+            for _ in range(500):
+                if ("guard", "/webhooks", None) in self.calls:
+                    break
+                time.sleep(0.01)
+            self.assertIn(("guard", "/webhooks", None), self.calls)
+        finally:
+            demo_control.STREAM_START_URL = url
+
     def test_cancel_purges_every_run_from_every_owner_feed_first(self):
         self.client.post("/start")
         self.settle()

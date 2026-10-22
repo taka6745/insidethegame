@@ -43,6 +43,9 @@ KEEP_WARM_SECONDS = _number('DEMO_KEEP_WARM_SECONDS', 60.0)
 SWEEP_GRACE_SECONDS = _number('DEMO_SWEEP_GRACE_SECONDS', 900.0)
 # Extra URLs to keep warm beyond the owners' health checks (comma-separated), e.g. the ETL data API and this app.
 KEEP_WARM_URLS = [u for u in os.environ.get('DEMO_KEEP_WARM_URLS', '').split(',') if u.strip()]
+# Azure only: the spend guard's stream-start webhook (a secret URL). Stream Analytics otherwise starts on an Event Hubs
+# traffic alert, minutes after a demo's first events; a Start asks for it at once (a no-op while it runs).
+STREAM_START_URL = os.environ.get('DEMO_STREAM_START_URL', '')
 SEED_ROOT = Path(os.environ.get('DEMO_SEED_ROOT', '/seeds'))  # seeds/{seed_id}/: manifest + one file per owner
 SEED_OWNERS = ('etl', 'engine', 'backend')  # restore_runs: the ETL alongside the backend, then the engine
 RELEASE_LEAD = _number('DEMO_RELEASE_LEAD', 5.0)  # Seconds from the last restore to the first run reading the point.
@@ -439,6 +442,8 @@ def app(http=None, clock=time.monotonic):
     def start_demo(body: Start | None = None):
         point = (body or Start()).point
         wake()
+        if STREAM_START_URL:
+            background.submit(start_stream)
         if not work['pending']:
             active = split()[0]
             if active:
@@ -509,6 +514,14 @@ def app(http=None, clock=time.monotonic):
             pool.submit(ok, url, token, WAKE_TIMEOUT)
         for url in KEEP_WARM_URLS:
             background.submit(ok, url.strip(), None, WAKE_TIMEOUT)
+
+    def start_stream():
+        """Ask the spend guard to start Stream Analytics now (its URL is a secret: never logged)."""
+        try:
+            print(f'Stream start requested: HTTP {http.post(STREAM_START_URL, timeout=WAKE_TIMEOUT).status_code}',
+                  flush=True)
+        except httpx.HTTPError as exc:
+            print(f'Stream start request failed: {type(exc).__name__}', flush=True)
 
     def health_all():
         """Every owner's health at once, so apps scaled to zero wake in parallel rather than one by one."""

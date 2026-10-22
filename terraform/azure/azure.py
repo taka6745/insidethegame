@@ -66,9 +66,9 @@ class Stack:
         self.name, self.dir, self.settings = name, STACKS.get(name, GUARD), settings
         self.state = STATE / name / "terraform.tfstate"
 
-    def tf(self, *args, capture=False):
+    def tf(self, *args, capture=False, env=None):
         return tool(["terraform", *args], workdir=f"/repo/{self.dir}", capture=capture,
-                    env={"TF_DATA_DIR": f"/repo/.local/terraform/{self.name}/.terraform"})
+                    env={"TF_DATA_DIR": f"/repo/.local/terraform/{self.name}/.terraform", **(env or {})})
 
     def init(self):
         (STATE / self.name).mkdir(parents=True, exist_ok=True)
@@ -94,9 +94,11 @@ class Stack:
         values.update(extra or {})
         return [f"-var={k}={v}" for k, v in values.items()]
 
-    def apply(self, **extra):
+    def apply(self, secrets=None, **extra):
+        """`secrets`: variable -> value, passed as TF_VAR_ environment (never on the command line)."""
         say(f"terraform apply {self.dir}")
-        self.tf("apply", "-auto-approve", *self.variables(extra))
+        self.tf("apply", "-auto-approve", *self.variables(extra),
+                env={f"TF_VAR_{k}": v for k, v in (secrets or {}).items()})
 
     def plan(self, upstream):
         say(f"terraform plan {self.dir}")
@@ -267,7 +269,7 @@ def up(settings, yes):
     feed.apply(image_tag=tag)
 
     app = stacks["app"]
-    app.apply(image_tag=tag)
+    app.apply(image_tag=tag, secrets={"stream_start_url": guard.outputs()["stream_start_webhook_url"]})
     result = app.outputs()
     password = STATE / "dev-admin-password.txt"
     if result.get("dev_admin_password"):
