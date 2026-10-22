@@ -1,12 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { attachDemoVideo } from "../match/video.ts";
+import { attachDemoVideo, STREAM_RETRY_MS, STREAM_START_WAIT_MS } from "../match/video.ts";
 import type { DemoVideo } from "../match/video.ts";
 import { stub } from "./support.ts";
 
 interface ElementDouble {
   [attribute: string]: unknown;
   hidden: boolean;
+  dataset: Record<string, string>;
   listeners: Record<string, (event?: unknown) => unknown>;
   paused?: boolean;
   src?: string;
@@ -23,7 +24,7 @@ interface ElementDouble {
 function setup(options?: { reducedMotion?: boolean }) {
   const elements: Record<string, ElementDouble> = Object.fromEntries(
     ["match-video", "video-empty"].map(id => [id, {
-      hidden: true, listeners: {},
+      hidden: true, listeners: {}, dataset: {},
       setAttribute(name: string, value: unknown) { this[name] = value; },
       addEventListener(name: string, fn: () => unknown) { this.listeners[name] = fn; },
       removeAttribute(name: string) { if (name === "src") this.src = ""; },
@@ -88,6 +89,7 @@ test("media without live HLS never loads footage, even at full time", async () =
     assert.equal(video.src ?? "", "");
     assert.equal(video.hidden, true);
     assert.equal(elements.empty.hidden, false);
+    assert.equal(elements.empty.dataset.state, "unavailable");  // no media: never "starting"
   }
   assert.equal(elements.controller.playhead(), null);
 });
@@ -145,4 +147,38 @@ test("after full time live HLS opens paused at the final picture, not at kick-of
   assert.equal(configs[0]!.startPosition, 5514.5);
   assert.equal(video.paused, true);
   assert.equal(live.playhead(), null); // A still picture releases held insights.
+});
+
+test("a stream not yet published shows Starting and retries; unavailable only after the bounded wait", async () => {
+  const elements = setup({ reducedMotion: true }), video = elements.video;
+  Object.assign(video, { canPlayType: () => "", load() {}, removeAttribute() {} });
+  let clock = 0, attempts = 0;
+  const pending: (() => void)[] = [];
+  const timers = { setTimeout: (fn: () => void) => pending.push(fn), clearTimeout() {} };
+  const live = attachDemoVideo(stub<Document>({ getElementById: (id: string) =>
+    id === "match-video" ? video : elements.empty }), {
+    reducedMotion: true, now: () => clock, timers, loader: async () => { attempts += 1; return null; } });
+  const flush = () => new Promise((done) => setTimeout(done));
+  const tick = async () => {
+    clock += STREAM_RETRY_MS;
+    pending.splice(0).forEach((fn) => fn());
+    await flush();
+  };
+  const match = { id: "m1", media: { seconds: 0, url: "/media/hls/m1/live.m3u8" } };
+  live.sync({ ...match, status: "scheduled" });  // before kick-off it waits as long as it takes
+  await flush();
+  for (let waited = 0; waited <= STREAM_START_WAIT_MS; waited += STREAM_RETRY_MS) await tick();
+  assert.equal(elements.empty.dataset.state, "starting");
+  live.sync({ ...match, status: "live" });  // the bounded wait starts at kick-off (or a seeded start)
+  await flush();
+  const before = attempts;
+  await tick();
+  assert.equal(attempts, before + 1);  // retries by itself, with no new snapshot
+  assert.equal(elements.empty.dataset.state, "starting");
+  assert.equal(elements.empty.hidden, false);
+  while (clock < STREAM_START_WAIT_MS * 3 && elements.empty.dataset.state === "starting") await tick();
+  assert.equal(elements.empty.dataset.state, "unavailable");
+  assert.equal(pending.length, 0);  // no more self-retries once unavailable
+  video.listeners.loadeddata!();  // footage arriving later still shows
+  assert.deepEqual([video.hidden, elements.empty.hidden], [false, true]);
 });

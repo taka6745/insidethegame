@@ -131,10 +131,17 @@
                 <span id="replay-marks" class="replay-marks"></span>
               </div>
             </div>
-            <div id="video-empty" class="video-empty">
-              <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true"><rect x="3" y="8" width="36" height="26" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="m18 15 10 6-10 6V15Z" fill="currentColor"/></svg>
-              <p>Demo footage unavailable</p>
-              <span>Live insights and stats are ready.</span>
+            <div id="video-empty" class="video-empty" data-state="starting" role="status">
+              <div class="video-state video-starting">
+                <div class="video-spinner" aria-hidden="true"></div>
+                <p>Starting the stream…</p>
+                <span>The picture appears as soon as the first live footage is published.</span>
+              </div>
+              <div class="video-state video-unavailable">
+                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" aria-hidden="true"><rect x="3" y="8" width="36" height="26" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="m18 15 10 6-10 6V15Z" fill="currentColor"/></svg>
+                <p>Demo footage unavailable</p>
+                <span>Live insights and stats are ready.</span>
+              </div>
             </div>
           </section>
           <section class="stats-section" aria-labelledby="stats-title">

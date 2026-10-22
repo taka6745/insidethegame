@@ -344,9 +344,34 @@ option {
   font-size: 17px;
   color: #e8dfed;
 }
-.video-empty > span {
+.video-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.video-state > span {
   margin-top: 6px;
   font-size: 11px;
+}
+.video-empty[data-state="starting"] .video-unavailable,
+.video-empty:not([data-state="starting"]) .video-starting {
+  display: none;
+}
+/* Starting the stream: the demo progress ring, turning. */
+.video-spinner {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  border: 3px solid #2a3a4c;
+  border-top-color: #f5b84a;
+  animation: video-spin 1s linear infinite;
+}
+@keyframes video-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-spinner { animation: none; border-color: #f5b84a; }
 }
 
 .primary {

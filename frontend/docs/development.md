@@ -90,7 +90,7 @@ Run `npm run build` in `frontend`, then `node frontend/benchmarks/client.ts` fro
 
 ## Live footage
 
-The feed stands in for an external match provider. It writes each run's played segments and nginx proxies `/media/hls/{matchId}/{playlist or segment}.m3u8|.ts` to its HLS origin (`MEDIA_ORIGIN`, default `feed:8000`, path `/hls/{matchId}/…`), as a CDN would. Nothing is mounted into the frontend; any other `/media/` path is `404`, and there is no MP4. Playlists are `no-cache`, segments immutable. Without a published stream the viewer shows its unavailable state. Live footage follows the published edge, opens paused at the final picture after full time and does not allow independent seeking.
+The feed stands in for an external match provider. It writes each run's played segments and nginx proxies `/media/hls/{matchId}/{playlist or segment}.m3u8|.ts` to its HLS origin (`MEDIA_ORIGIN`, default `feed:8000`, path `/hls/{matchId}/…`), as a CDN would. Nothing is mounted into the frontend; any other `/media/` path is `404`, and there is no MP4. Playlists are `no-cache`, segments immutable. Until the playlist's first segment plays the viewer shows "Starting the stream…" and retries every `STREAM_RETRY_MS`; it shows its unavailable state when the match has no stream, or once a live or finished match's playlist has stayed unplayable for `STREAM_START_WAIT_MS` (`match/video.ts`; before kick-off it keeps waiting). Live footage follows the published edge, opens paused at the final picture after full time and does not allow independent seeking.
 
 The recordings are synthetic: real club and player names on simulated (Google Research Football) play, never an actual match. Production footage should use a media delivery service/CDN, not user-backend fan-out.
 
