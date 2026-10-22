@@ -405,21 +405,56 @@ def test_the_follow_chat_picks_the_match_whose_name_fits_best_not_the_first_that
     assert found['team_id'] == 'skybridge' and found['match_id'] == 'city'
 
 
-def test_another_match_stands_where_etl_has_it_with_stoppage_minutes():
-    """The listing reads another match at ETL's watermarks, not its newest delivery, and labels stoppage 45+N′."""
+def test_another_match_stands_where_etl_has_it_with_stoppage_minutes_and_its_score():
+    """The listing reads another match at ETL's watermarks, not its newest delivery, labels stoppage 45+N′ and
+    carries each match's score at that position (this one's at the viewer's snapshot)."""
     here, other = SimpleNamespace(match_id='here', purged=False), SimpleNamespace(match_id='other', purged=False)
-    played = SimpleNamespace(period=1, match_time_seconds=46 * 60 + 10)  # 47th minute of the first half
+    played = SimpleNamespace(match_id='other', seq=40, period=1, clock_seconds=46 * 60 + 10)  # 47th minute
+    viewer = SimpleNamespace(match_id='here', seq=7, period=1, clock_seconds=600)
+    goals = {('here', 7): {'here-a': 0, 'here-b': 2}, ('other', 40): {'other-a': 1}}
 
     async def info(match):
-        return {'teams': [{'name': f'{match.match_id} A'}, {'name': f'{match.match_id} B'}]}
+        return {'teams': [{'id': f'{match.match_id}-a', 'name': f'{match.match_id} A'},
+                          {'id': f'{match.match_id}-b', 'name': f'{match.match_id} B'}]}
 
     async def at_etl(match):
         return played
 
+    async def score(snapshot, teams):
+        return goals[(snapshot.match_id, snapshot.seq)]
+
     async def settings():
         return SimpleNamespace(enabled=True)
     cross = CrossMatch(SimpleNamespace(matches={'here': here, 'other': other}),
-                       SimpleNamespace(info=info, played=at_etl), None)
+                       SimpleNamespace(info=info, played=at_etl, score=score), None)
     cross.settings = settings
-    rows = asyncio.run(cross.listing(here, SimpleNamespace(period=1, clock_seconds=600)))
-    assert [(r['match_id'], r['minute']) for r in rows] == [('here', '11′'), ('other', '45+2′')]
+    rows = asyncio.run(cross.listing(here, viewer))
+    assert [(r['match_id'], r['minute'], r['score']) for r in rows] == [('here', '11′', [0, 2]),
+                                                                       ('other', '45+2′', [1, 0])]
+
+
+def test_the_follow_planner_is_told_each_live_matchs_score_and_minute():
+    """PLAN.md §11: the planner said it had no score for the other match; the listing's score is in its prompt."""
+    from backend.agents.subscription_planner import SubscriptionPlanner
+    seen = {}
+
+    class Model:
+        async def complete(self, system, payload, response_schema=None):
+            seen['system'] = system
+            return {'action': 'none', 'kind': None, 'subject': None, 'focus': '', 'label': '', 'options': [],
+                    'reply': 'ok'}
+
+    class Prompts:
+        async def template(self, role):
+            return 'Matches being played now:\n{live_matches}'
+    live = [{'match_id': 'a', 'this_match': True, 'teams': ['Redcastle Town', 'Port Albion'], 'minute': '30′',
+             'score': [0, 0]},
+            {'match_id': 'b', 'this_match': False, 'teams': ['Skybridge City', 'Whitmore Wanderers'], 'minute': '69′',
+             'score': [1, 1]},
+            {'match_id': 'c', 'this_match': False, 'teams': ['Riverton Rovers', 'Forgeham United'], 'minute': None,
+             'score': None}]
+    asyncio.run(SubscriptionPlanner(Model(), Prompts()).plan('follow Whitmore', teams=[], players=[], storylines=[],
+                                                             follow=None, turns=[], live_matches=live))
+    assert seen['system'].splitlines()[1:] == ['- Redcastle Town 0–0 Port Albion (30′) (this match)',
+                                               '- Skybridge City 1–1 Whitmore Wanderers (69′)',
+                                               '- Riverton Rovers v Forgeham United']

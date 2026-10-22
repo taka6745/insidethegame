@@ -60,8 +60,9 @@ class CrossMatch:
         return None
 
     async def listing(self, match, snapshot=None):
-        """Every live match a viewer of `match` can ask about: its teams and minute played (this one's at the
-        viewer's snapshot when given), for the question agent and follow planner as context. [] when reach is off."""
+        """Every live match a viewer of `match` can ask about: its teams, minute played and score (this one's at
+        the viewer's snapshot when given), for the question agent and follow planner as context. [] when reach is
+        off."""
         if not (await self.settings()).enabled:
             return []
         rows = []
@@ -69,15 +70,26 @@ class CrossMatch:
             info = await self.info_of(m)
             if not info:
                 continue
-            if m is match:  # never past the viewer's picture
-                period, seconds = (snapshot.period, snapshot.clock_seconds) if snapshot else (None, None)
-            else:  # the other match where ETL has it (its watermarks), not its newest delivery
-                last = await self.match_data.played(m)
-                period, seconds = (last.period, last.match_time_seconds) if last else (None, None)
+            # This match never past the viewer's picture; another where ETL has it (its watermarks), not its newest
+            # delivery.
+            at = snapshot if m is match else await self.match_data.played(m)
+            seconds = at and at.clock_seconds
             rows.append({'match_id': m.match_id, 'this_match': m is match,
                          'teams': [t['name'] for t in info['teams']],
-                         'minute': None if seconds is None else minute_label(period, seconds), 'period': period})
+                         'minute': None if seconds is None else minute_label(at.period, seconds),
+                         'period': at and at.period, 'score': await self._score(at, info)})
         return rows
+
+    async def _score(self, snapshot, info):
+        """Goals per team in `info`'s team order at `snapshot` (ETL's key events), or None when unknown."""
+        if snapshot is None:
+            return None
+        try:
+            goals = await self.match_data.score(snapshot, [t['id'] for t in info['teams']])
+        except RuleError:
+            log.info('Score of %s unavailable for cross-match reach', snapshot.match_id)
+            return None
+        return [goals.get(t['id'], 0) for t in info['teams']]
 
     async def info_of(self, match):
         try:

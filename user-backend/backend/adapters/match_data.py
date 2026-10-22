@@ -30,14 +30,16 @@ class EtlDabMatchData:
         return match.info
 
     async def played(self, match):
-        """The last event both ETL (its watermark and SPADL watermark) and this service have committed, uncapped
-        by any viewer: where another match stands. None before any, or while ETL is unavailable."""
+        """The snapshot at the last event both ETL (its watermark and SPADL watermark) and this service have
+        committed, uncapped by any viewer: where another match stands. None before any, or while ETL is
+        unavailable."""
         try:
             mark = (await self.dab.watermarks([match.match_id])).get(match.match_id, {'seq': 0})
         except EtlUnavailable:
             return None
         events = match.history(min(mark['seq'], mark.get('spadl_seq', 0)))
-        return events[-1] if events else None
+        return MatchSnapshot.at(match.match_id, len(events), events[-1], datetime.now(timezone.utc).isoformat()) \
+            if events else None
 
     async def capture(self, match, seq=None):
         """The newest snapshot both ETL and this service have committed, capped at `seq` when given
