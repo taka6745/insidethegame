@@ -16,10 +16,12 @@ import logging
 
 from narrative_engine.agents.prompt_source import render_template
 from narrative_engine.audience.targets import framing
+from narrative_engine.context.render import score
 from narrative_engine.core.models import AgentResult, MatchClock, Narrative, Trigger
 from narrative_engine.follows import pipeline
 
 log = logging.getLogger(__name__)
+SCORE_CHANGES = ("Goal", "OwnGoal", "VarOverturn")  # key types render.score counts
 PREFILTER = {"keyEvent": "key_events", "scheduled": "minute_recaps", "storylineTurn": "storyline_updates"}
 
 
@@ -295,7 +297,7 @@ class FollowSteps:
         clock = MatchClock.parse(pending["clock"])
         kind = pending["triggerType"]
         if kind == "keyEvent":
-            return e._key_reason(pending, info)
+            return e._key_reason(pending, info) + await self._score_change(pending, info)
         if kind == "catchUp":
             return pending["reason"]
         if kind == "storylineTurn":
@@ -314,6 +316,20 @@ class FollowSteps:
         head = f"Minute recap at {clock.label}" if kind == "scheduled" else pending["reason"].rstrip(".") + \
             f" at {clock.label}"
         return f"{head}: {recap}" if recap else f"{head}."
+
+    async def _score_change(self, pending, info):
+        """For a key event that changes the score: the score before and after it, from ETL's key-event ledger at
+        the horizon ("" for any other event, or while the ledger does not have this one yet)."""
+        if pending["keyRow"]["keyType"] not in SCORE_CHANGES:
+            return ""
+        p, m, s = pending["horizon"]
+        rows = sorted(await self.e.data.key_events(self.e.match_id, MatchClock(p, m), s),
+                      key=lambda r: (r["periodId"], r["timeMin"], r["timeSec"]))
+        at = next((i for i, r in enumerate(rows) if str(r["id"]) == str(pending["eventIds"][0])), None)
+        if at is None:
+            return ""
+        line = lambda goals: f"{info.home.name} {goals[info.home.id]}-{goals[info.away.id]} {info.away.name}"
+        return f". Score before: {line(score(rows[:at], info))}; score now: {line(score(rows[:at + 1], info))}"
 
     async def _last_text(self, topic_id, horizon):
         """The topic's latest narrative before `horizon` (its first bucket's version), or None."""

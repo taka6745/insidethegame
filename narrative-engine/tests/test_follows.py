@@ -5,6 +5,7 @@ stored decision instead of asking again; a purge removes the follow documents.""
 import asyncio
 import copy
 import hashlib
+import re
 from pathlib import Path
 
 import pytest
@@ -135,7 +136,8 @@ def test_one_score_per_candidate_novelty_only_with_a_last_narrative_and_the_fire
             answers["t1n"] = Answer("noul", probability=novelty)
         return pipeline.verdicts(cands, answers, keys, config)["t-team"]["fired"]
     assert fire(2.0, novelty=0.5) and fire(3.0, novelty=0.9)
-    assert not fire(1.9, novelty=0.9) and not fire(2.0, 0.2, novelty=0.9) and not fire(2.0, novelty=0.4)
+    assert not fire(1.4, novelty=0.9) and not fire(2.0, 0.2, novelty=0.9) and not fire(2.0, novelty=0.4)
+    assert fire(1.95, novelty=0.9)  # Decision-1's expected level counts at its nearest level, like the clip score
     assert not fire(3.0)  # novelty asked but declined: a no
     off = {**CONFIG, "novelty": {**CONFIG["novelty"], "enabled": False}}
     asked, keys = pipeline.questions(cands, off, {"t-team": "x"}, INFO, LINES)
@@ -446,6 +448,21 @@ def test_the_decision_state_and_the_follow_author_get_the_authors_inputs(runs):
     assert any(v["story_so_far"] != "Nothing yet." for v in authors)
     assert first.text.startswith(f"[{first.userType}] ")
     assert asyncio.run(store.subscription_narratives(MATCH, first.topicId, first.userType))[0].seq == 1
+
+
+def test_a_goal_reaches_the_decision_with_the_score_before_and_after_it(runs):
+    """PLAN.md §11: an equaliser against a followed team fired nothing; the update itself now carries the score it
+    changed (from the ETL ledger), and a team follow is asked as everything about that team."""
+    live, _ = runs
+    updates = [s.split("The update being judged:\n", 1)[1].split("\n", 1)[0] for s, _ in live["calls"]
+               if "The update being judged:" in s]
+    goals = [u for u in updates if ": Goal for " in u or ": Own goal by " in u]
+    assert goals and all(re.search(r"\. Score before: .+ \d+-\d+ .+; score now: .+ \d+-\d+ .+$", u) for u in goals)
+    first = goals[0]
+    assert first.split("Score before: ")[1].split(";")[0].count(" 0-0 ") == 1  # the opening goal starts from 0-0
+    assert not any("Score before" in u for u in updates if u not in goals)  # only events that change the score
+    team = [q for _, qs in live["calls"] for q in qs.values() if "Riverton Rovers." in q.instructions]
+    assert team and all("everything about the team Riverton Rovers" in q.instructions for q in team)
 
 
 def test_viewer_text_appears_only_in_its_own_topics_questions_never_in_the_shared_state(runs):

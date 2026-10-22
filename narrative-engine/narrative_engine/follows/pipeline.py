@@ -11,7 +11,7 @@
 3. At half and full time with `limits.period_end_wrap_up`, every candidate fires without a question (its
    followers get the period's wrap-up). Otherwise one batched decision call: a `Score` per candidate, plus the novelty `Noul` for each candidate that has a
    last narrative (shown in that question). Viewer text (a topic's focus) goes only in that topic's questions.
-4. Fire when score ≥ trigger_level, confidence ≥ min_confidence and, with novelty enabled and a last
+4. Fire when the score's nearest level ≥ trigger_level, confidence ≥ min_confidence and, with novelty enabled and a last
    narrative, P(new) ≥ min_probability. A declined answer is a no.
 5. Moment clips (`clips`, PLAN.md §10.2 D3): on a key event of `clips.key_types`, the same call also asks each
    candidate the clip `Score`; at or above `clips.min_level` with `clips.min_confidence` the verdict carries
@@ -92,17 +92,19 @@ def within_gap(last, horizon, limits):
 
 
 def subject(spec, info, lines):
-    """The followed story's subject in words, without the viewers' focus text."""
+    """The followed story's subject in words, without the viewers' focus text. A team or player follow is about
+    everything that happens to them (the follow planner's definition), not one storyline."""
     kind = spec["kind"]
     if kind == "storyline":
         line = lines.get(spec.get("storyline_id"))
         return f"the storyline \"{line['label'] if line else spec.get('label')}\""
     if kind == "team":
-        return f"the team {info.team(spec['team_id']).name}" if spec.get("team_id") in (info.home.id, info.away.id) \
-            else f"the team {spec.get('label')}"
+        return "everything about the team " + (info.team(spec["team_id"]).name if spec.get("team_id") in
+                                               (info.home.id, info.away.id) else spec.get("label"))
     if kind == "player":
         team = info.team(spec["team_id"]).name if spec.get("team_id") in (info.home.id, info.away.id) else None
-        return f"the player {info.player(spec.get('player_id'), spec.get('label'))}" + (f" ({team})" if team else "")
+        return f"everything about the player {info.player(spec.get('player_id'), spec.get('label'))}" + (
+            f" ({team})" if team else "")
     return "a theme its viewers described"
 
 
@@ -175,7 +177,8 @@ def verdicts(candidates, answers, keys, config, clip=False):
             out[topic_id]["novelty"] = answer.probability
     asked_novelty = {topic_id for topic_id, what in keys.values() if what == "novelty"}
     for topic_id, v in out.items():
-        moved = v["score"] is not None and v["score"] >= decision["trigger_level"] \
+        # Like the clip score: the level the answer reached is the nearest one to Decision-1's expected level.
+        moved = v["score"] is not None and round(v["score"]) >= decision["trigger_level"] \
             and (v["confidence"] or 0.0) >= decision["min_confidence"]
         new = topic_id not in asked_novelty or (v["novelty"] or 0.0) >= novelty["min_probability"]
         v["fired"] = bool(moved and new) or v["clip"]  # a clip comes with its follow narrative
