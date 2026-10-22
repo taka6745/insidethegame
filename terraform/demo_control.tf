@@ -92,10 +92,12 @@ resource "azurerm_container_app" "demo_control" {
     max_replicas = 1 # one operator: start and cancel are serialised in the process
 
     container {
-      name   = "demo-control"
-      image  = "${local.etl.registry_login_server}/demo-control:${var.image_tag}"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      name  = "demo-control"
+      image = "${local.etl.registry_login_server}/demo-control:${var.image_tag}"
+      # Seeded starts parse and write three matches' seeds at once (CPU-bound JSON); 0.25 vCPU took 10 s at 60′.
+      # Scales to zero, so the size costs only while it runs.
+      cpu    = 1
+      memory = "2Gi"
 
       dynamic "env" {
         for_each = local.demo_env

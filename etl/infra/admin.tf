@@ -64,10 +64,12 @@ resource "azurerm_container_app" "admin" {
     max_replicas = 1
 
     container {
-      name   = "admin"
-      image  = "${azurerm_container_registry.etl.login_server}/etl-stream:${var.admin_image_tag}"
-      cpu    = 0.25
-      memory = "0.5Gi"
+      name  = "admin"
+      image = "${azurerm_container_registry.etl.login_server}/etl-stream:${var.admin_image_tag}"
+      # Seeded starts parse and write three matches' seeds at once (CPU-bound JSON); 0.25 vCPU took 10 s at 60′.
+      # Scales to zero, so the size costs only while it runs.
+      cpu    = 1
+      memory = "2Gi"
 
       env {
         name  = "ETL_ROLE"
