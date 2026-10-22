@@ -25,7 +25,7 @@ def plan(model, coder=None):
 def test_missing_and_extra_field_diagnostics_survive_success_without_values():
     model = Scripted([
         {'status':'custom','goal':{'private-key-secret':'private-value-secret'}},
-        {'status':'custom','goal':{'description':'Corners','event_types':['corner']}},
+        {'status':'custom','goal':{'description':'Corners','action_types':['corner_crossed','corner_short']}},
     ])
     result = plan(model)
     assert result.status == 'ready'

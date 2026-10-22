@@ -1,401 +1,392 @@
-"""Question integration uses real Postgres and separate HTTP fake upstream apps."""
+"""Question integration: real Postgres, stream-fed matches and ETL GraphQL doubles."""
 import asyncio
 import json
-from uuid import uuid4
 from concurrent.futures import ThreadPoolExecutor
 from threading import Event as ThreadEvent
+from uuid import uuid4
 
 import httpx
 import pytest
-from fastapi.testclient import TestClient
-from backend.adapters.question_data import GraphQLQuestionData
-from backend.agents.question_fixture import FixtureQuestionAgent
+
 from backend.models.questions import QuestionDraft
-from backend.app import create_app
-from backend.fakes import create_fake
-from backend.repositories.questions import QuestionRepository
-from backend.services.question_snapshot import LabSnapshotProvider
-from backend.services.questions import QuestionService
-from test_lab_api import make_lab
-
-
-def build(store, agent=None, timeout=5):
-    lab = make_lab(store)
-    upstreams = [create_fake('etl'), create_fake('narrative')]
-    adapters = [GraphQLQuestionData('http://fake/graphql',bridge=True,transport=httpx.ASGITransport(app=app)) for app in upstreams]
-    questions = QuestionService(QuestionRepository(store),LabSnapshotProvider(lab),*adapters,agent or FixtureQuestionAgent(),lab.planner,timeout=timeout)
-    return lab, questions, upstreams, create_app(store,lab=lab,questions=questions)
-
-
-def session(client, profile='chelsea-analytical'):
-    response = client.post('/lab/chat/sessions',json={'profile_id':profile})
-    assert response.status_code == 200,response.text
-    return response.json()['session_token']
-
-
-def ask(client, token, prompt, request_id=None):
-    return client.post(f'/lab/chat/{token}/messages',json={'prompt':prompt,'request_id':request_id or str(uuid4())})
+from benchmarks.doubles.recording import FixtureEventSource
+from harness import MATCH, Running, Upstream, ask, session
 
 
 def test_standard_stats_are_upstream_and_no_custom_rule_or_history(store):
-    lab, service, apps, app = build(store)
-    async def forbidden(*args,**kwargs):
-        raise AssertionError('Standard stats must not read events or compile rules')
-    service.match_data.events = service.planner.plan = forbidden
-    with TestClient(app) as client:
-        for _ in range(15): client.portal.call(lab.advance)
-        token = session(client)
-        reply = ask(client,token,'how many Both teams shots').json()
-        assert reply['status'] == 'answer',reply
-        assert reply['snapshot']['match_id'] == lab.source.match_id
-        assert reply['snapshot']['cursor'] == 15
+    with Running(store) as run:
+        async def forbidden(*args, **kwargs):
+            raise AssertionError('Standard stats must not compile rules')
+        run.service.planner.plan = forbidden
+        run.send(15)
+        token = session(run.client)
+        reply = ask(run.client, token, 'how many Both teams shots').json()
+        assert reply['status'] == 'answer', reply
+        assert reply['snapshot']['id'] == f'{MATCH}:15' and reply['snapshot']['seq'] == 15
         # Every reply carries its usage; fixture answers make no model calls.
         assert reply['usage']['calls'] == 0 and reply['usage']['seconds'] >= 0
         assert reply['evidence'][0]['id'] == 'stat:all:shots'
-        assert reply['offers'][0]['kind'] == 'standard'
-        assert reply['offers'][0]['standard_stat_id'] == 'all:shots'
-        assert 'rule' not in reply['offers'][0]
-        assert lab.engine.count == 0
-        assert all(len(next(iter(a.state.question_data.snapshots.values())).events) == 15 for a in apps)
+        assert reply['offers'][0]['kind'] == 'standard' and reply['offers'][0]['standard_stat_id'] == 'all:shots'
+        assert reply['offers'][0]['match_id'] == MATCH and 'rule' not in reply['offers'][0]
+        assert run.match().engine.count == 0
+
+
+def test_snapshot_never_passes_etl_watermark_or_received_events(store):
+    with Running(store) as run:
+        run.send(10)
+        run.send(5, commit=False)  # Received here, not yet committed by ETL.
+        reply = ask(run.client, session(run.client), 'how many Both teams shots').json()
+        assert reply['snapshot']['seq'] == 10
 
 
 def test_one_off_offer_track_catches_up_and_shared_rule_reuse(store):
-    lab, service, _, app = build(store)
-    with TestClient(app) as client:
-        for _ in range(10): client.portal.call(lab.advance)
-        token = session(client)
-        reply = ask(client,token,"Track Mbappe's headed shots").json()
-        assert reply['status'] == 'answer',reply
+    with Running(store) as run:
+        run.send(10)
+        token = session(run.client)
+        reply = ask(run.client, token, "Track Mbappe's headed shots").json()
+        assert reply['status'] == 'answer', reply
         offer = reply['offers'][0]
-        assert offer['value'] == 1
-        assert lab.engine.count == 0
-        for _ in range(12): client.portal.call(lab.advance)
-        expected = 2  # duplicate deliveries and a corrected shot must not be double counted
-        tracked = client.post(f'/lab/chat/{token}/offers/{offer["id"]}/track').json()
-        assert tracked['calculation']['value'] == expected
-        duplicate = client.post(f'/lab/chat/{token}/offers/{offer["id"]}/track').json()
-        assert duplicate['calculation'] == tracked['calculation']
-        assert lab.engine.count == 1
-        other = session(client,'united-casual')
-        assert client.post(f'/lab/chat/{other}/offers/{offer["id"]}/track').status_code == 404
-        saved = client.get(f'/lab/chat/{token}').json()
-        assert saved['offers'][0]['calculation_id'] == tracked['calculation']['id']
-        client.post('/lab/reset')
-        assert client.post(f'/lab/chat/{token}/offers/{offer["id"]}/track').status_code == 409
+        assert offer['value'] == 1 and run.match().engine.count == 0
+        run.send(12)
+        path = f'/lab/matches/{MATCH}/chat'
+        tracked = run.client.post(f'{path}/{token}/offers/{offer["id"]}/track').json()
+        assert tracked['calculation']['value'] == 2  # duplicates and a corrected shot count once
+        assert run.client.post(f'{path}/{token}/offers/{offer["id"]}/track').json()['calculation'] == tracked['calculation']
+        assert run.match().engine.count == 1
+        other = session(run.client, profile='united-casual')
+        assert run.client.post(f'{path}/{other}/offers/{offer["id"]}/track').status_code == 404
+        assert run.client.get(f'{path}/{token}').json()['offers'][0]['calculation_id'] == tracked['calculation']['id']
+        assert run.client.post('/admin/matches/purge', json={'match_id': MATCH}).status_code == 200
+        assert run.client.post(f'{path}/{token}/offers/{offer["id"]}/track').status_code == 404
 
 
-def test_retry_takeover_restore_and_new_run(store):
-    lab, service, _, app = build(store)
-    with TestClient(app) as client:
-        token = session(client)
+def test_retry_takeover_and_restore(store):
+    upstream = Upstream()
+    with Running(store, upstream=upstream) as run:
+        token = session(run.client)
         identifier = str(uuid4())
-        first = ask(client,token,'what is offside',identifier)
-        retry = ask(client,token,'what is offside',identifier)
-        assert first.json() == retry.json()
-        assert ask(client,token,'different',identifier).status_code == 409
-        replacement = session(client)
-        assert client.get(f'/lab/chat/{token}').status_code == 409
-        assert len(client.get(f'/lab/chat/{replacement}').json()['turns']) == 1
-    lab2, service2, _, app2 = build(store)
-    with TestClient(app2) as client:
-        restored = client.get(f'/lab/chat/{replacement}')
-        assert restored.status_code == 200
-        assert restored.json()['turns'][0]['reply']['status'] == 'answer'
-        client.post('/lab/reset')
-        new = session(client)
-        assert client.get(f'/lab/chat/{new}').json()['turns'] == []
+        first = ask(run.client, token, 'what is offside', identifier)
+        assert first.json() == ask(run.client, token, 'what is offside', identifier).json()
+        assert ask(run.client, token, 'different', identifier).status_code == 409
+        replacement = session(run.client)
+        assert run.client.get(f'/lab/matches/{MATCH}/chat/{token}').status_code == 409
+        assert len(run.client.get(f'/lab/matches/{MATCH}/chat/{replacement}').json()['turns']) == 1
+    with Running(store, upstream=upstream, matches=()) as run:
+        restored = run.client.get(f'/lab/matches/{MATCH}/chat/{replacement}')
+        assert restored.status_code == 200 and restored.json()['turns'][0]['reply']['status'] == 'answer'
 
 
 def test_snapshot_does_not_change_while_model_waits_and_duplicate_busy(store):
     entered, release = ThreadEvent(), ThreadEvent()
+
     class Waiting:
         mode = 'fixture'
-        async def answer(self,prompt,context,tools):
+
+        async def answer(self, prompt, context, tools):
             entered.set()
-            await asyncio.to_thread(release.wait,3)
+            await asyncio.to_thread(release.wait, 3)
             result = await tools.standard(['all:shots'])
-            return QuestionDraft(answer_kind='match',status='answer',text=str(result['stats'][0]['value']),evidence_ids=['stat:all:shots'])
-    lab,service,_,app = build(store,Waiting())
-    with TestClient(app) as client, ThreadPoolExecutor() as pool:
-        for _ in range(10): client.portal.call(lab.advance)
-        token, identifier = session(client), str(uuid4())
-        pending = pool.submit(ask,client,token,'shots',identifier)
+            return QuestionDraft(answer_kind='match', status='answer', text=str(result['stats'][0]['value']),
+                                 evidence_ids=['stat:all:shots'])
+    with Running(store, agent=Waiting()) as run, ThreadPoolExecutor() as pool:
+        run.send(10)
+        token, identifier = session(run.client), str(uuid4())
+        pending = pool.submit(ask, run.client, token, 'shots', identifier)
         assert entered.wait(3)
-        assert ask(client,token,'shots',identifier).status_code == 409
-        assert ask(client,token,'another question').status_code == 409
-        for _ in range(10): client.portal.call(lab.advance)
+        assert ask(run.client, token, 'shots', identifier).status_code == 409
+        assert ask(run.client, token, 'another question').status_code == 409
+        run.send(10)
         release.set()
-        reply = pending.result().json()
-        assert reply['snapshot']['cursor'] == 10
-        assert lab.position == 20
+        assert pending.result().json()['snapshot']['seq'] == 10
+        assert run.match().seq == 20
 
 
-@pytest.mark.parametrize('change',['reset','takeover'])
-def test_stale_model_callback_cannot_commit(store,change):
-    entered,release = ThreadEvent(),ThreadEvent()
+@pytest.mark.parametrize('change', ['purge', 'takeover'])
+def test_stale_model_callback_cannot_commit(store, change):
+    entered, release = ThreadEvent(), ThreadEvent()
+
     class Waiting:
-        mode='fixture'
-        async def answer(self,*args):
-            entered.set(); await asyncio.to_thread(release.wait,3)
-            return QuestionDraft(answer_kind='match',status='answer',text='A late answer')
-    lab,service,_,app=build(store,Waiting())
-    with TestClient(app) as client, ThreadPoolExecutor() as pool:
-        token=session(client)
-        pending=pool.submit(ask,client,token,'question')
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            entered.set()
+            await asyncio.to_thread(release.wait, 3)
+            return QuestionDraft(answer_kind='match', status='answer', text='A late answer')
+    with Running(store, agent=Waiting()) as run, ThreadPoolExecutor() as pool:
+        token = session(run.client)
+        pending = pool.submit(ask, run.client, token, 'question')
         assert entered.wait(3)
-        if change=='reset': client.post('/lab/reset')
-        else: session(client)
+        if change == 'purge':
+            run.client.post('/admin/matches/purge', json={'match_id': MATCH})
+        else:
+            session(run.client)
         release.set()
-        assert pending.result().status_code==409
-        new=session(client)
-        assert all(t.get('reply',{}).get('text')!='A late answer' for t in client.get(f'/lab/chat/{new}').json()['turns'])
+        assert pending.result().status_code in (404, 409)
+        if change == 'takeover':
+            new = session(run.client)
+            turns = run.client.get(f'/lab/matches/{MATCH}/chat/{new}').json()['turns']
+            assert all(t.get('reply', {}).get('text') != 'A late answer' for t in turns)
 
 
 def test_clarification_and_prior_goal_persist_in_context(store):
-    seen=[]
+    seen = []
+
     class Clarifying:
-        mode='fixture'
-        async def answer(self,prompt,context,tools):
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
             seen.append(context)
-            if prompt=='headers':
-                return QuestionDraft(answer_kind='match',status='clarification',text='Headed shots or all recorded contacts?')
-            assert context['history'][-1]['reply']['status']=='clarification'
-            return QuestionDraft(answer_kind='match',status='answer',text='Understood.')
-    lab,service,_,app=build(store,Clarifying())
-    with TestClient(app) as client:
-        token=session(client)
-        assert ask(client,token,'headers').json()['status']=='clarification'
-        assert ask(client,token,'all contacts').json()['status']=='answer'
-        assert len(seen[1]['history'])==1
+            if prompt == 'headers':
+                return QuestionDraft(answer_kind='match', status='clarification', text='Headed shots or all recorded contacts?')
+            assert context['history'][-1]['reply']['status'] == 'clarification'
+            return QuestionDraft(answer_kind='match', status='answer', text='Understood.')
+    with Running(store, agent=Clarifying()) as run:
+        token = session(run.client)
+        assert ask(run.client, token, 'headers').json()['status'] == 'clarification'
+        assert ask(run.client, token, 'all contacts').json()['status'] == 'answer'
+        assert len(seen[1]['history']) == 1
 
 
-def test_wrong_snapshot_upstream_and_timeout_do_not_leave_pending(store):
+def test_timeout_does_not_leave_pending(store):
     class Slow:
-        mode='fixture'
-        async def answer(self,*args):
-            await asyncio.sleep(1)
-    lab,service,_,app=build(store,Slow(),timeout=.05)
-    with TestClient(app) as client:
-        token=session(client)
-        response=ask(client,token,'question').json()
-        assert response['status']=='unsupported'
-        row=client.get(f'/lab/chat/{token}').json()
-        assert row['turns'][0]['status']=='failed'
-        assert 'Sorry' in row['turns'][0]['reply']['text']
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            from backend.adapters.usage import record
+            record(b'{"usage":{"prompt_tokens":100,"completion_tokens":5}}')
+            await asyncio.sleep(30)
+    with Running(store, agent=Slow(), question_timeout=2) as run:
+        token = session(run.client)
+        response = ask(run.client, token, 'question').json()
+        assert response['status'] == 'unsupported' and 'timed out' in response['text']
+        assert response['usage']['input_tokens'] == 100 and response['usage']['calls'] == 1
+        row = run.client.get(f'/lab/matches/{MATCH}/chat/{token}').json()
+        assert row['turns'][0]['status'] == 'failed' and row['turns'][0]['reply']['usage']['output_tokens'] == 5
 
 
-def test_uploaded_match_identity_no_default_fixture_leak(store):
+def test_each_match_is_its_own_identity_with_no_other_match_leak(store):
+    data = json.loads(FixtureEventSource().content)
+    data['teams'][0]['name'] = 'North Stars'
+    mapping = {t['id']: f'team-{i}' for i, t in enumerate(data['teams'])}
+    for t in data['teams']:
+        t['id'] = mapping[t['id']]
+    for p in data['players']:
+        p['team_id'] = mapping[p['team_id']]
+    for e in data['events']:
+        e['teamId'] = mapping.get(e.get('teamId'), e.get('teamId'))
+    data['presets'] = []
+    upstream = Upstream()
+    upstream.add('north-stars-0000aaaa', FixtureEventSource(content=json.dumps(data).encode()))
+    upstream.add(MATCH)
+
     class Inspect:
-        mode='fixture'
-        async def answer(self,prompt,context,tools):
-            assert context['snapshot']['match_id']=='another-match'
-            assert context['teams'][0]['name']=='North Stars'
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            assert context['snapshot']['match_id'] == 'north-stars-0000aaaa'
+            assert context['teams'][0]['name'] == 'North Stars'
             assert all('chelsea' not in json.dumps(s).lower() for s in context['standard_stats'])
-            return QuestionDraft(answer_kind='match',status='answer',text='North Stars are playing.')
-    lab,service,_,app=build(store,Inspect())
-    with TestClient(app) as client:
-        data=json.loads(lab.source.content)
-        data['match_id']='another-match'
-        data['teams'][0]['name']='North Stars'
-        for e in data['events']: e['matchId']='another-match'
-        for preset in data['presets']: preset['rule']['match_id']='another-match'
-        # Rename IDs too so no accidental default-fixture joins can pass.
-        mapping={t['id']:f'team-{i}' for i,t in enumerate(data['teams'])}
-        for t in data['teams']:t['id']=mapping[t['id']]
-        for p in data['players']:p['team_id']=mapping[p['team_id']]
-        for e in data['events']:
-            if e.get('teamId') in mapping:e['teamId']=mapping[e['teamId']]
-        data['presets']=[]
-        result=client.post('/lab/recording',content=json.dumps(data),headers={'content-type':'application/json','x-recording-filename':'another.json'})
-        assert result.status_code==200,result.text
-        for _ in range(5):client.portal.call(lab.advance)
-        token=session(client)
-        assert ask(client,token,'who is playing').json()['status']=='answer'
+            return QuestionDraft(answer_kind='match', status='answer', text='North Stars are playing.')
+    with Running(store, agent=Inspect(), upstream=upstream, matches=('north-stars-0000aaaa', MATCH)) as run:
+        run.send(5, 'north-stars-0000aaaa')
+        run.send(9, MATCH)
+        token = session(run.client, 'north-stars-0000aaaa')
+        assert ask(run.client, token, 'who is playing', match_id='north-stars-0000aaaa').json()['status'] == 'answer'
+        # A token belongs to its match.
+        assert run.client.get(f'/lab/matches/{MATCH}/chat/{token}').status_code == 404
 
 
 def test_unverified_evidence_fails_closed_and_does_not_create_offer(store):
     class Invented:
-        mode='fixture'
-        async def answer(self,*args):
-            return QuestionDraft(answer_kind='match',status='answer',text='A made-up fact',evidence_ids=['event:future:1'])
-    lab,service,_,app=build(store,Invented())
-    with TestClient(app) as client:
-        token=session(client)
-        answer=ask(client,token,'what happened').json()
-        assert answer['status']=='unsupported'
-        assert answer['offers']==[]
-        assert client.get(f'/lab/chat/{token}').json()['turns'][0]['status']=='failed'
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            return QuestionDraft(answer_kind='match', status='answer', text='A made-up fact', evidence_ids=['event:future:1'])
+    with Running(store, agent=Invented()) as run:
+        token = session(run.client)
+        answer = ask(run.client, token, 'what happened').json()
+        assert answer['status'] == 'unsupported' and answer['offers'] == []
+        assert run.client.get(f'/lab/matches/{MATCH}/chat/{token}').json()['turns'][0]['status'] == 'failed'
 
 
-def test_upstream_failure_is_visible_and_no_fixture_fallback(store):
-    lab,service,_,app=build(store)
-    called=[]
-    async def unavailable(snapshot):
-        raise httpx.ConnectError('Upstream unavailable')
-    async def forbidden(*args):
-        called.append(True)
-        raise AssertionError('Agent must not run without context')
-    service.narratives.compact=unavailable
-    service.agent.answer=forbidden
-    with TestClient(app) as client:
-        answer=ask(client,session(client),'question').json()
-        assert answer['status']=='unsupported'
-        assert not called
+def test_upstream_failure_is_visible_and_no_fallback(store):
+    called = []
+    with Running(store) as run:
+        async def unavailable(snapshot):
+            raise httpx.ConnectError('Upstream unavailable')
+
+        async def forbidden(*args):
+            called.append(True)
+            raise AssertionError('Agent must not run without context')
+        run.service.narratives.compact = unavailable
+        run.service.agent.answer = forbidden
+        answer = ask(run.client, session(run.client), 'question').json()
+        assert answer['status'] == 'unsupported' and not called
+
+
+def test_no_model_refuses_questions_and_health_is_not_ready(store):
+    with Running(store, agent=None, planner=None) as run:
+        token = session(run.client)
+        refused = ask(run.client, token, 'what is offside')
+        assert refused.status_code == 503 and refused.json()['code'] == 'model_unavailable'
+        plan = run.client.post(f'/lab/matches/{MATCH}/plan', json={'prompt': 'corners'})
+        assert plan.status_code == 503
+        for path in ('/health', '/ready'):
+            health = run.client.get(path)
+            assert health.status_code == 503 and health.json()['checks']['model'] == 'missing'
+    with Running(store) as run:
+        assert run.client.get('/ready').status_code == 200
 
 
 def test_startup_recovers_interrupted_turn(store):
-    lab,service,_,app=build(store)
-    with TestClient(app) as client:
-        token=session(client)
-        service.repository.begin(token,str(uuid4()),'Interrupted question')
-        assert client.get(f'/lab/chat/{token}').json()['turns'][0]['status']=='pending'
-    lab,service,_,app=build(store)
-    with TestClient(app) as client:
-        row=client.get(f'/lab/chat/{token}').json()
-        assert row['turns'][0]['status']=='failed'
-        assert 'interrupted' in row['turns'][0]['reply']['text']
+    upstream = Upstream()
+    with Running(store, upstream=upstream) as run:
+        token = session(run.client)
+        run.service.repository.begin(token, str(uuid4()), 'Interrupted question')
+        assert run.client.get(f'/lab/matches/{MATCH}/chat/{token}').json()['turns'][0]['status'] == 'pending'
+    with Running(store, upstream=upstream, matches=()) as run:
+        row = run.client.get(f'/lab/matches/{MATCH}/chat/{token}').json()
+        assert row['turns'][0]['status'] == 'failed' and 'interrupted' in row['turns'][0]['reply']['text']
 
 
 def test_statistical_draft_cannot_skip_deterministic_calculation_or_offer(store):
     class SkipsTool:
-        mode='fixture'
-        async def answer(self,prompt,context,tools):
-            return QuestionDraft(answer_kind='statistic',status='answer',text='I counted 999 headers myself.',
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            return QuestionDraft(answer_kind='statistic', status='answer', text='I counted 999 headers myself.',
                                  statistic_request="Track Mbappe's headed shots")
-    lab,service,_,app=build(store,SkipsTool())
-    with TestClient(app) as client:
-        for _ in range(10):client.portal.call(lab.advance)
-        token=session(client)
-        reply=ask(client,token,'How many headed shots has Mbappe had?').json()
-        assert reply['status']=='answer'
-        assert reply['answer_kind']=='statistic'
-        assert reply['offers'][0]['value']==1
-        assert reply['goal']['player_ids']==['mbappe']
-        assert '999' not in reply['text']
-        assert reply['evidence_ids']==['offer:'+reply['offers'][0]['id']]
-        assert lab.engine.count==0
-        restored=client.get(f'/lab/chat/{token}').json()['turns'][0]['reply']
-        assert restored['goal']==reply['goal']
+    with Running(store, agent=SkipsTool()) as run:
+        run.send(10)
+        token = session(run.client)
+        reply = ask(run.client, token, 'How many headed shots has Mbappe had?').json()
+        assert reply['status'] == 'answer' and reply['answer_kind'] == 'statistic'
+        assert reply['offers'][0]['value'] == 1 and reply['goal']['player_ids'] == ['mbappe']
+        assert '999' not in reply['text'] and reply['evidence_ids'] == ['offer:' + reply['offers'][0]['id']]
+        assert run.match().engine.count == 0
+        restored = run.client.get(f'/lab/matches/{MATCH}/chat/{token}').json()['turns'][0]['reply']
+        assert restored['goal'] == reply['goal']
 
 
 def test_statistical_draft_uses_upstream_stat_without_compiling_or_history(store):
     class Standard:
-        mode='fixture'
-        async def answer(self,*args):
-            return QuestionDraft(answer_kind='statistic',status='answer',standard_stat_id='all:shots',text='999 shots.')
-    lab,service,_,app=build(store,Standard())
-    async def forbidden(*args,**kwargs):
-        raise AssertionError('Existing stat must not compile or query raw events')
-    service.match_data.events=service.planner.plan=forbidden
-    with TestClient(app) as client:
-        reply=ask(client,session(client),'How many shots?').json()
-        assert reply['status']=='answer'
-        assert reply['text']=='Both teams shots: 0.'
-        assert reply['offers'][0]['standard_stat_id']=='all:shots'
-        assert reply['standard_stat_id']=='all:shots'
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            return QuestionDraft(answer_kind='statistic', status='answer', standard_stat_id='all:shots', text='999 shots.')
+    with Running(store, agent=Standard()) as run:
+        async def forbidden(*args, **kwargs):
+            raise AssertionError('Existing stat must not compile a rule')
+        run.service.planner.plan = forbidden
+        reply = ask(run.client, session(run.client), 'How many shots?').json()
+        assert reply['status'] == 'answer' and reply['text'] == 'Both teams shots: 0.'
+        assert reply['offers'][0]['standard_stat_id'] == reply['standard_stat_id'] == 'all:shots'
 
 
-@pytest.mark.parametrize('planner_status',['clarification','unsupported'])
-def test_statistical_fallback_propagates_planner_clarification_or_unsupported(store,planner_status):
+@pytest.mark.parametrize('planner_status', ['clarification', 'unsupported'])
+def test_statistical_fallback_propagates_planner_clarification_or_unsupported(store, planner_status):
     from backend.agents.models import PlanOutcome
+
     class Statistical:
-        mode='fixture'
-        async def answer(self,*args):
-            return QuestionDraft(answer_kind='statistic',status='answer',text='999 headers.',statistic_request='headers')
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            return QuestionDraft(answer_kind='statistic', status='answer', text='999 headers.', statistic_request='headers')
+
     class Planner:
-        async def plan(self,request,context):
-            assert request=='headers'
-            return PlanOutcome(status=planner_status,source='fixture',message='Which kind of header?')
-    lab,service,_,app=build(store,Statistical())
-    service.planner=Planner()
-    with TestClient(app) as client:
-        reply=ask(client,session(client),'headers').json()
-        assert reply['status']==planner_status
-        assert reply['offers']==[]
-        assert '999' not in reply['text']
-        if planner_status=='clarification':assert reply['text']=='Which kind of header?'
-        else:assert reply['text']=='Sorry, I cannot answer that. Which kind of header?'
+        async def plan(self, request, context):
+            assert request == 'headers'
+            return PlanOutcome(status=planner_status, source='fixture', message='Which kind of header?')
+    with Running(store, agent=Statistical(), planner=Planner()) as run:
+        reply = ask(run.client, session(run.client), 'headers').json()
+        assert reply['status'] == planner_status and reply['offers'] == [] and '999' not in reply['text']
+        assert reply['text'] == ('Which kind of header?' if planner_status == 'clarification'
+                                 else 'Sorry, I cannot answer that. Which kind of header?')
 
 
 def test_failed_plan_and_exceptions_stay_generic(store):
     from backend.agents.models import PlanOutcome
+
     class Statistical:
-        mode='fixture'
-        async def answer(self,*args):
-            return QuestionDraft(answer_kind='statistic',status='answer',text='?',statistic_request='headers')
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            return QuestionDraft(answer_kind='statistic', status='answer', text='?', statistic_request='headers')
+
     class Planner:
-        calls=0
-        async def plan(self,request,context):
-            self.calls+=1
-            if self.calls>1:
+        calls = 0
+
+        async def plan(self, request, context):
+            self.calls += 1
+            if self.calls > 1:
                 raise RuntimeError('provider body must not leak')
-            return PlanOutcome(status='failed',source='fixture',message='Could not validate the calculation after 3 repairs.')
-    lab,service,_,app=build(store,Statistical())
-    service.planner=Planner()
-    with TestClient(app) as client:
-        token=session(client)
-        assert ask(client,token,'headers').json()['text']=='Sorry, I cannot answer that from the information available.'
-        assert ask(client,token,'headers').json()['text']=='Sorry, I could not answer that. Please try again.'
+            return PlanOutcome(status='failed', source='fixture', message='Could not validate the calculation after 3 repairs.')
+    with Running(store, agent=Statistical(), planner=Planner()) as run:
+        token = session(run.client)
+        assert ask(run.client, token, 'headers').json()['text'] == 'Sorry, I cannot answer that from the information available.'
+        assert ask(run.client, token, 'headers').json()['text'] == 'Sorry, I could not answer that. Please try again.'
 
 
 def test_missing_statistic_source_does_not_accept_numerical_prose(store):
     class Unbacked:
-        mode='fixture'
-        async def answer(self,*args):
-            return QuestionDraft(answer_kind='statistic',status='answer',text='999 goals.')
-    lab,service,_,app=build(store,Unbacked())
-    with TestClient(app) as client:
-        reply=ask(client,session(client),'How many goals?').json()
-        assert reply['status']=='unsupported'
-        assert '999' not in reply['text']
+        mode = 'fixture'
+
+        async def answer(self, *args):
+            return QuestionDraft(answer_kind='statistic', status='answer', text='999 goals.')
+    with Running(store, agent=Unbacked()) as run:
+        reply = ask(run.client, session(run.client), 'How many goals?').json()
+        assert reply['status'] == 'unsupported' and '999' not in reply['text']
 
 
 def test_followup_gets_prior_validated_goal_and_can_prepare_changed_scope(store):
-    from backend.agents.models import Goal,PlanOutcome
+    from backend.agents.models import Goal, PlanOutcome
+
     class Followup:
-        mode='fixture'
-        async def answer(self,prompt,context,tools):
-            if prompt=='second half?':
-                goal=context['history'][-1]['reply']['goal']
-                assert goal['player_ids']==['mbappe']
-                assert goal['body_part']=='head'
-                assert goal['event_types']==['shot','goal']
-                request='Mbappe headed shots in the second half'
-            else:request='Mbappe headed shots in the whole match'
-            return QuestionDraft(answer_kind='statistic',status='answer',text='Checking.',statistic_request=request)
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            if prompt == 'second half?':
+                goal = context['history'][-1]['reply']['goal']
+                assert goal['player_ids'] == ['mbappe'] and goal['bodyparts'] == ['head']
+                assert goal['action_types'] == ['shot', 'shot_penalty', 'shot_freekick']
+                request = 'Mbappe headed shots in the second half'
+            else:
+                request = 'Mbappe headed shots in the whole match'
+            return QuestionDraft(answer_kind='statistic', status='answer', text='Checking.', statistic_request=request)
+
     class Planner:
-        async def plan(self,request,context):
-            goal=Goal(description=request,player_ids=('mbappe',),body_part='head',event_types=('shot','goal'),period=2 if 'second half' in request else None)
-            return PlanOutcome(status='ready',source='fixture',goal=goal,rule=goal.target_rule(context['match_id']))
-    lab,service,_,app=build(store,Followup());service.planner=Planner()
-    with TestClient(app) as client:
-        for _ in range(10):client.portal.call(lab.advance)
-        token=session(client)
-        first=ask(client,token,'headed shots?').json()
-        second=ask(client,token,'second half?').json()
-        assert first['offers'][0]['value']==1
-        assert second['offers'][0]['value']==0
-        assert second['goal']['period']==2
-        assert lab.engine.count==0
+        async def plan(self, request, context):
+            goal = Goal(description=request, player_ids=('mbappe',), bodyparts=('head',),
+                        action_types=('shot', 'shot_penalty', 'shot_freekick'),
+                        period=2 if 'second half' in request else None)
+            return PlanOutcome(status='ready', source='fixture', goal=goal, rule=goal.target_rule(context['match_id']))
+    with Running(store, agent=Followup(), planner=Planner()) as run:
+        run.send(10)
+        token = session(run.client)
+        first = ask(run.client, token, 'headed shots?').json()
+        second = ask(run.client, token, 'second half?').json()
+        assert first['offers'][0]['value'] == 1 and second['offers'][0]['value'] == 0
+        assert second['goal']['period'] == 2 and run.match().engine.count == 0
 
 
-def test_saved_replay_pages_reuse_their_bound_and_reject_bad_pages_and_runs(store):
-    lab, service, apps, app = build(store)
-    recording = {key: value for key, value in lab.source.spec.items() if key != 'presets'}
-    # Replays cut footage, so the recording needs a video timeline.
-    recording['events'] = [{**e, 'videoSeconds': 30.0 * index} for index, e in enumerate(recording['events'])]
-    with TestClient(app) as client:
-        assert client.post('/lab/recording', content=json.dumps(recording).encode()).status_code == 200
-        for _ in range(len(lab.source.events)): client.portal.call(lab.advance)
-        token = session(client)
-        reply = ask(client, token, 'show me all the shots so far').json()
+def test_saved_replay_pages_reuse_their_bound_and_reject_bad_pages_and_matches(store):
+    spec = json.loads(FixtureEventSource().content)
+    spec['presets'] = []
+    # Replays cut footage, so the events need a video timeline.
+    spec['events'] = [{**e, 'videoSeconds': 30.0 * index} for index, e in enumerate(spec['events'])]
+    upstream = Upstream()
+    upstream.add(MATCH, FixtureEventSource(content=json.dumps(spec).encode()))
+    with Running(store, upstream=upstream) as run:
+        run.send(len(spec['events']))
+        token = session(run.client)
+        reply = ask(run.client, token, 'show me all the shots so far').json()
         assert reply['status'] == 'answer' and reply['replay']['clips'], reply
-        turn = client.get(f'/lab/chat/{token}').json()['turns'][-1]
-        page = client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/0').json()
-        assert page['clips'] == reply['replay']['clips']
-        assert page['observed_until'] == reply['replay']['observed_until']
+        path = f'/lab/matches/{MATCH}/chat/{token}'
+        turn = run.client.get(path).json()['turns'][-1]
+        page = run.client.get(f'{path}/turns/{turn["id"]}/replay/0').json()
+        assert page['clips'] == reply['replay']['clips'] and page['observed_until'] == reply['replay']['observed_until']
         for bad in (reply['replay']['page_count'], -1):
-            assert client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/{bad}').status_code == 404
-        assert client.get(f'/lab/chat/{token}/turns/999999/replay/0').status_code == 404
-        client.post('/lab/reset')
-        assert client.get(f'/lab/chat/{token}/turns/{turn["id"]}/replay/0').status_code == 409
+            assert run.client.get(f'{path}/turns/{turn["id"]}/replay/{bad}').status_code == 404
+        assert run.client.get(f'{path}/turns/999999/replay/0').status_code == 404
+        run.client.post('/admin/matches/purge', json={'match_id': MATCH})
+        assert run.client.get(f'{path}/turns/{turn["id"]}/replay/0').status_code == 404

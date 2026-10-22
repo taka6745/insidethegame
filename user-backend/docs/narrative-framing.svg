@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 750" role="img" aria-labelledby="title desc">
-<title id="title">Bucketed before it reaches the backend</title><desc id="desc">Backend stores audience definitions and exposes an API. The narrative engine frames; the backend routes supplied versions without model calls.. Planned architecture, not deployed infrastructure.</desc>
+<title id="title">Bucketed before it reaches the backend</title><desc id="desc">Backend stores audience definitions and exposes an API. The narrative engine frames; the backend routes supplied versions without model calls.. Planned design, not deployed infrastructure.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="#5d7185"/></marker></defs>
 <style>text{font-family:Arial,Helvetica,sans-serif} .title{font-size:32px;font-weight:700} .body{font-size:16px} .small{font-size:14px}</style>
 <rect width="1440" height="750" fill="white"/>

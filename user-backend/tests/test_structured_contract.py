@@ -31,8 +31,8 @@ def test_defaulted_fields_keep_original_types_and_constraints():
     schema = strict_decision_contract()
     goal = branch(schema, 'GoalWire')
     assert set(goal['required']) == set(goal['properties'])
-    assert goal['properties']['event_types']['type'] == 'array'
-    assert 'anyOf' not in goal['properties']['event_types']
+    assert goal['properties']['action_types']['type'] == 'array'
+    assert 'anyOf' not in goal['properties']['action_types']
     assert goal['properties']['operation']['enum'] == ['count', 'sum', 'average', 'percentage', 'ratio', 'difference']
     assert {'type':'null'} in goal['properties']['after_seconds']['anyOf']
     assert goal['properties']['after_seconds']['anyOf'][0]['maximum'] == 12000
@@ -48,7 +48,7 @@ def test_defaulted_fields_keep_original_types_and_constraints():
 
 
 @pytest.mark.parametrize('decision', [
-    {'status':'custom','goal':Goal(description='Count corners', event_types=['corner']).model_dump(mode='json')},
+    {'status':'custom','goal':Goal(description='Count corners', action_types=['corner_crossed', 'corner_short']).model_dump(mode='json')},
     {'status':'clarification','clarification':Clarification(question='Which player?').model_dump(mode='json')},
     {'status':'reuse','standard_stat_id':'goals'},
     {'status':'unsupported','message':'No video data'},
@@ -64,7 +64,7 @@ def test_wire_decisions_validate_and_round_trip_to_current_contract(decision):
     {'decision':{'status':'reuse','standard_stat_id':''}},
     {'decision':{'status':'unsupported','message':''}},
     {'decision':{'status':'unsupported','message':'No','goal':{'description':'x'}}},
-    {'decision':{'status':'custom','goal':{'description':'x','event_types':None}}},
+    {'decision':{'status':'custom','goal':{'description':'x','action_types':None}}},
     {'decision':{'status':'custom','goal':{'description':'x','unknown':True}}},
     {'decision':{'status':'custom','goal':{'description':'x','operation':'sum'}}},
     {'decision':{'status':'custom','goal':{'description':'x','after_seconds':75,'before_seconds':60}}},
@@ -87,7 +87,7 @@ def test_goal_schema_evolves_without_mutating_original_models():
     assert 'anyOf' not in props['confidence_note']
     assert 'confidence_note' not in branch(strict_decision_contract(), 'GoalWire')['properties']
     assert [model.model_json_schema() for model in (Goal, GoalDecision, Clarification)] == snapshots
-    assert Goal(description='Default still works').event_types == ()
+    assert Goal(description='Default still works').action_types == ()
 
 
 @pytest.mark.parametrize('container', ['direct', 'optional', 'array'])
@@ -103,7 +103,7 @@ def test_nested_schema_changes_require_explicit_wire_support(container):
 
 @pytest.mark.parametrize('field', list(Goal.model_fields))
 def test_wire_rejects_each_missing_goal_field_even_when_source_has_default(field):
-    payload = Goal(description='Count corners', event_types=['corner']).model_dump(mode='json')
+    payload = Goal(description='Count corners', action_types=['corner_crossed', 'corner_short']).model_dump(mode='json')
     del payload[field]
     with pytest.raises(ValidationError):
         decision_envelope_model().model_validate({'decision':{'status':'custom','goal':payload}})
@@ -121,7 +121,7 @@ def test_required_subclasses_preserve_cross_field_and_numeric_validators():
     payload = Goal(description='Count corners').model_dump(mode='json')
     envelope = decision_envelope_model()
     for changes in ({'after_seconds':75,'before_seconds':60}, {'period':8}, {'operation':'sum'},
-                    {'description':''}, {'event_types':['unknown']}, {'team_ids':None}):
+                    {'description':''}, {'action_types':['unknown']}, {'team_ids':None}):
         with pytest.raises(ValidationError):
             envelope.model_validate({'decision':{'status':'custom','goal':{**payload, **changes}}})
     assert Goal(description='Unchanged').operation == 'count'

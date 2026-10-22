@@ -1,5 +1,7 @@
-"""Replay golden set, in-process: the real tools and clip builder over the recording and bound
-narrative fixtures, with the fixture double or the configured model choosing evidence.
+"""Replay golden set, in-process: the real tools and clip builder over the recording's SPADL actions
+(ETL's converter) and its MA3 cards, with the fixture double or the configured model choosing evidence. Narrative
+fixtures are bound to the archived recording, so key-moment cases ("recording": "archive") run against it; the rest
+run against the shipped recording with no narratives.
 
 Hard failures (any one fails the run): future leakage, invented or unobserved IDs, a clip that
 does not contain its event, and broken caps. Quality: precision/recall for enumerable requests,
@@ -7,48 +9,86 @@ key-moment coverage for summaries, honest refusals for absent players.
 """
 import argparse
 import asyncio
+import hashlib
 import json
 import re
 import time
 from pathlib import Path
 from types import SimpleNamespace
 
-from backend.agents.replay_fixture import FixtureReplayAgent
-from backend.services.replay import ReplayBuilder, ReplayTools
-from backend.services.replay_clips import MAX_CLIPS, MAX_ITEMS, MAX_SECONDS, ReplayPlanError
+from benchmarks.doubles.replay_agent import FixtureReplayAgent
+from benchmarks.doubles.spadl import recording_actions
+from backend.adapters.ma3 import card
+from backend.adapters.match_data import periods
+from backend.models.actions import SpadlAction
+from backend.services.replay import ReplayBuilder, ReplayTools, false_save
+from backend.services.replay_clips import ReplayPlanError
+from benchmarks.doubles.config import seeded
+
+REPLAY = seeded('replay-timing')  # The seeded configuration (migrations/016_config.sql).
+MAX_CLIPS, MAX_ITEMS, MAX_SECONDS = REPLAY.max_clips, REPLAY.max_items, REPLAY.max_seconds
 
 ROOT = Path(__file__).resolve().parents[2]
+NO_NARRATIVES = {"minutes": [], "tiers": [], "key_moments": []}
 ABSENT = re.compile(r"(\bnot|n't) (in|playing in|part of|involved in|named in) (this|the) (match|game|squad|line-?ups?)", re.I)
 
 
-def etl_row(event):
-    """Canonical recording event in the ETL GraphQL history shape the backend reads."""
-    return {"event_id": event["eventId"], "revision": event["revision"], "event_type": event["typeName"],
-            "team_id": event["teamId"], "player_id": event["playerId"], "period": event["periodId"],
-            "match_time_seconds": event["timeMin"] * 60 + event["timeSec"], "outcome": event["outcome"],
-            "video_seconds": event["videoSeconds"], "x": event.get("x"), "y": event.get("y"),
-            "possession_id": event.get("possessionId"), "sequence": event["sequence"],
-            "qualifiers": {q["type"]: q["value"] for q in event["qualifiers"]}}
+class Recording:
+    """The shipped recording as ETL serves it: SPADL actions (etl/reference/spadl.py), MA3 card rows and the
+    canonical period boundaries the backend received. Converted once per run."""
+
+    def __init__(self, path, recording):
+        actions, raw = recording_actions(path, recording["teams"][0]["id"])
+        self.match_id, self.home = recording["match_id"], recording["teams"][0]["id"]
+        self.actions = [SpadlAction.from_row(a, self.match_id, self.home) for a in actions]
+        self.cards = [card(row) for row in raw if row["typeId"] == 17]
+        self.events = recording["events"]
+        # Canonical event id -> evidence id (its first action, or its card), for key-moment fixtures.
+        self.evidence = {}
+        for action in self.actions:
+            if action.source_event_id:
+                self.evidence.setdefault(action.source_event_id, action.id)
+        for row in raw:
+            if row["typeId"] == 17:
+                self.evidence[json.loads(row["payload"]).get("sourceEventId")] = f"card:{row['id']}"
+
+    def seq_at(self, at_video):
+        """The snapshot seq a viewer at that video time holds: the last canonical event shown."""
+        return max((e["sequence"] for e in self.events if e["videoSeconds"] <= at_video), default=0)
 
 
 class RecordingHistory:
-    def __init__(self, recording, at_video):
-        self.rows = [etl_row(e) for e in recording["events"] if e["videoSeconds"] <= at_video]
+    """match_data at one snapshot: final actions, cards and periods up to its seq."""
 
-    async def events(self, snapshot, offset=0, limit=100, **unused):
+    def __init__(self, recording, at_video):
+        seq = recording.seq_at(at_video)
+        self.rows = [a.row() for a in recording.actions if a.final_seq <= seq]
+        self.card_rows = [c for c in recording.cards if c["seq"] <= seq]
+        self.events = [SimpleNamespace(event_type=e["typeName"], period=e["periodId"], deleted=False,
+                                       video_seconds=e["videoSeconds"]) for e in recording.events if e["sequence"] <= seq]
+
+    async def actions(self, snapshot, offset=0, limit=100, **unused):
         return {"items": self.rows[offset:offset + limit], "has_more": offset + limit < len(self.rows),
                 "complete": True}
+
+    async def cards(self, snapshot):
+        return self.card_rows
+
+    async def periods(self, snapshot):
+        return periods(self.events)
 
 
 class FixtureNarratives:
     """Bound narrative fixtures released by video time, as Narrative GraphQL would."""
 
-    def __init__(self, fixtures, at_video):
+    def __init__(self, fixtures, at_video, evidence=None):
         released = lambda row: row["release"]["video_seconds"] <= at_video
         self.minutes = [m for m in fixtures["minutes"] if released(m)]
         self.tiers = [t for t in fixtures["tiers"] if released(t)]
         moments = sorted((k for k in fixtures["key_moments"] if released(k)), key=lambda k: k["rank"])
-        self.moments = [{**k, "rank": i + 1} for i, k in enumerate(moments)]
+        # Fixture moments cite canonical events; the backend's evidence is SPADL actions and cards.
+        mapped = lambda ids: list(dict.fromkeys((evidence or {}).get(i, i) for i in ids))
+        self.moments = [{**k, "rank": i + 1, "event_ids": mapped(k.get("event_ids") or [])} for i, k in enumerate(moments)]
 
     async def read(self, snapshot, operation, period=None, tier=None, **unused):
         keep = lambda row: period is None or row["period"] == period
@@ -60,8 +100,18 @@ class FixtureNarratives:
 
 
 def expected_ids(tools, spec):
-    specs = spec if isinstance(spec, list) else [spec]  # A list is a union, e.g. goals or saved shots.
-    return [r["event_id"] for r in tools.history if any(tools.matches(r, s) for s in specs)]
+    """Evidence a filter selects (independent of the agent): SPADL actions, or cards for {"cards": ...}."""
+    specs = spec if isinstance(spec, list) else [spec]  # A list is a union, e.g. goals or own goals.
+    found = []
+    for s in specs:
+        if "cards" in s:
+            colours = {"yellow", "second_yellow"} if s["cards"] == "yellow" else {"red", "second_yellow"} \
+                if s["cards"] == "red" else None
+            rest = {k: v for k, v in s.items() if k != "cards"}
+            found += [r["id"] for r in tools.cards if (colours is None or r["colour"] in colours) and tools._scope(r, rest)]
+        else:
+            found += [r["id"] for r in tools.history if tools.matches(r, s)]
+    return list(dict.fromkeys(found))
 
 
 def footage(tools, ids):
@@ -121,7 +171,8 @@ def score(case, decision, built, tools, at_video, released_moments):
         quality["coverage"] = hits / len(top) if top else 1.0
         quality["pass"] = quality["coverage"] >= rule.get("min", 0.8) and len(decision.text) > 40
     elif "window_minutes" in expect:
-        latest = max((r["video_seconds"] for r in tools.history), default=0.0)
+        latest = max((r["video_seconds"] for r in [*tools.history, *tools.cards] if r.get("video_seconds") is not None),
+                     default=0.0)
         start = latest - expect["window_minutes"] * 60
         seconds = footage(tools, [i["source_id"] for i in items if i["kind"] == "event"]) + footage(
             tools, [e for i in items if i["kind"] == "key_moment" for e in tools.moments.get(i["source_id"], {}).get("event_ids", [])[-1:]])
@@ -136,14 +187,22 @@ def score(case, decision, built, tools, at_video, released_moments):
         # Out-of-scope asks (e.g. "the whole match"): at most one page; hard checks cover the clips.
         quality["items"] = len(items)
         quality["pass"] = len(items) <= MAX_CLIPS
+    # Reported: an off-target shot captioned or summarised as saved. Every case checks captions.
+    false = [i["source_id"] for i in items if i["kind"] == "event" and i["source_id"] in tools.events
+             and false_save(tools.events[i["source_id"]], i.get("caption"))]
+    banned = [word for word in expect.get("text_excludes", []) if word.lower() in decision.text.lower()]
+    if false or banned:
+        quality.update(false_saves=false, text_excludes=banned)
+        quality["pass"] = False
     return hard, quality
 
 
-async def run_case(case, agent, recording, fixtures, builder):
+async def run_case(case, agent, recording, fixtures, builder, converted):
     at_video = resolve_at(recording, case["at"])
-    match_data, narratives = RecordingHistory(recording, at_video), FixtureNarratives(fixtures, at_video)
+    match_data = RecordingHistory(converted, at_video)
+    narratives = FixtureNarratives(fixtures, at_video, converted.evidence)
     tools = ReplayTools(SimpleNamespace(id=f"golden-{case['id']}"), match_data, narratives,
-                        recording["players"], recording["teams"])
+                        recording["players"], recording["teams"], REPLAY)
     await tools.load()
     context = {"players": recording["players"], "teams": recording["teams"],
                "profile": case.get("profile", {"team": "neutral", "fan_style": "casual"}),
@@ -170,21 +229,33 @@ async def run_case(case, agent, recording, fixtures, builder):
 async def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--recording", type=Path, default=ROOT / "data-generation/recordings/chelsea-united-grf.json")
-    parser.add_argument("--narratives", type=Path, default=ROOT / "narrative-engine/fixtures/grf-narratives.json")
+    parser.add_argument("--archive", type=Path, default=ROOT / "narrative-engine/fixtures/archive/chelsea-united-grf.json")
+    parser.add_argument("--narratives", type=Path, default=ROOT / "narrative-engine/fixtures/grf-narratives.json",
+                        help="narrative fixtures bound to --archive")
     parser.add_argument("--cases", type=Path, default=Path(__file__).with_name("replay_cases.json"))
     parser.add_argument("--agent", choices=("fixture", "local"), default="fixture")
     parser.add_argument("--case-id", action="append")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
-    recording, fixtures = json.loads(args.recording.read_text()), json.loads(args.narratives.read_text())
     cases = [c for c in json.loads(args.cases.read_text())["cases"] if not args.case_id or c["id"] in args.case_id]
+    recording = json.loads(args.recording.read_text())
+    sources = {None: (recording, NO_NARRATIVES, Recording(args.recording, recording))}
+    if any(c.get("recording") == "archive" for c in cases):
+        content, fixtures = args.archive.read_bytes(), json.loads(args.narratives.read_text())
+        if fixtures["recording_hash"] != hashlib.sha256(content).hexdigest():
+            raise SystemExit(f"{args.narratives} is not bound to {args.archive}")
+        archive = json.loads(content)
+        sources["archive"] = (archive, fixtures, Recording(args.archive, archive))
     if args.agent == "local":
         from backend.agents.replay import ReplayAgent
         agent = ReplayAgent()
     else:
         agent = FixtureReplayAgent()
     builder = ReplayBuilder()  # Cut points only; playlists need media.
-    results = [await run_case(case, agent, recording, fixtures, builder) for case in cases]
+    results = []
+    for case in cases:
+        recording, fixtures, converted = sources[case.get("recording")]
+        results.append(await run_case(case, agent, recording, fixtures, builder, converted))
     hard = sum(bool(r["hard_failures"]) for r in results)
     passed = sum(bool(r["quality"].get("pass")) and not r["hard_failures"] for r in results)
     report = {"agent": args.agent, "cases": len(results), "passed": passed, "hard_failures": hard,

@@ -8,7 +8,8 @@ import os
 from decimal import Decimal
 from pathlib import Path
 
-from backend.adapters.events import OptaInspiredAdapter
+from benchmarks.doubles.events import OptaInspiredAdapter
+from backend.adapters.match_reference import data_reference
 from backend.agents.workflow import workflow_from_env
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
@@ -18,6 +19,7 @@ from .balanced_cases import balanced_cases
 from .conversation_eval import evaluate_conversation
 from .transfer_cases import transfer_cases
 from .data_transfer_cases import data_transfer_cases, remap_fixture
+from .spadl_corpus import expected_trace, fixture_actions
 
 COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases,
            "transfer": transfer_cases, "data-transfer": data_transfer_cases}
@@ -25,37 +27,30 @@ COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cas
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures/filter-lab.json"
 
 
-def expected_trace(case, raw_events):
-    """Revision ledger using hand-written per-revision weights, not rule logic."""
-    seen, current, trace = {}, {}, []
-    for event in raw_events:
-        key, revision = event["eventId"], event["revision"]
-        if revision > seen.get(key, 0):
-            seen[key] = revision
-            current[key] = Decimal(str(case["expected_weights"].get(f"{key}@{revision}", 0)))
-        trace.append(float(sum(current.values(), Decimal(0))))
-    return trace
-
-
 def evaluate_rule(case, candidate, events, raw_events):
-    expected = expected_trace(case, raw_events)
+    """Gold per delivery prefix (hand-written weights) against the rule over the fixture's SPADL actions."""
+    # Any home team works: the double mirrors and the action model un-mirrors with the same one.
+    actions = fixture_actions(events, next(e.team_id for e in events if e.team_id))
+    expected = expected_trace(case, actions, raw_events)
     engine = FilterEngine()
     calc = engine.register(candidate)
-    for index, event in enumerate(events):
-        engine.ingest(event)
+    queue = sorted(actions, key=lambda a: a.action_id)
+    for index in range(len(raw_events)):
+        while queue and queue[0].final_seq <= index + 1:
+            engine.ingest(queue.pop(0))
         actual = engine.get(calc.calculation_id).value
         if actual != expected[index]:
             return {"ok": False, "reason": "wrong_event_value", "delivery": index + 1,
                     "expected": expected[index], "actual": actual}
     # Late registration must also reconstruct the same result.
-    backfill = FilterEngine().register(candidate, events).value
+    backfill = FilterEngine().register(candidate, actions).value
     if backfill != expected[-1]:
         return {"ok": False, "reason": "wrong_backfill", "expected": expected[-1], "actual": backfill}
     # A matching fixture alone is insufficient: disallow changed constraints that
     # happen to produce the same answer on this match. eq/singleton-in normalize.
     if candidate.calculation_id != Rule.model_validate(case["expected_rule"]).calculation_id:
         return {"ok": False, "reason": "different_constraints", "actual_rule": candidate.model_dump(mode="json")}
-    return {"ok": True, "final_value": expected[-1], "deliveries_checked": len(events)}
+    return {"ok": True, "final_value": expected[-1], "deliveries_checked": len(raw_events)}
 
 
 def gold_check(scenario, events, selected=None):
@@ -75,7 +70,7 @@ async def agent_check(args, scenario, events, output):
     if args.limit:
         selected = selected[:args.limit]
     rows = []
-    workflow = workflow_from_env(data_reference=OptaInspiredAdapter().data_reference())
+    workflow = workflow_from_env(data_reference=data_reference(None))
     if workflow.source != "local":
         raise ValueError("Agent evaluation requires LOCAL_LLM_MODE=local; fixture answers are not an evaluation")
     workflow.timeout_seconds = args.case_timeout

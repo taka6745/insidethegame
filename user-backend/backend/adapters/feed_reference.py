@@ -1,58 +1,57 @@
-"""Versioned feed meanings paired with the executable canonical event schema."""
+"""The versioned SPADL data dictionary (feed_profiles/spadl-v1.json), checked against the action model."""
 import hashlib
 import json
+from functools import cache
 from pathlib import Path
+from typing import get_args
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from backend.models.events import Event
+from backend.models.actions import ActionType, Bodypart, PASS_FAMILY, Result, SHOT_FAMILY, SpadlAction, Zone
+
+PROFILE = Path(__file__).parent / 'feed_profiles' / 'spadl-v1.json'
 
 
 class FeedReference(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(extra='forbid', frozen=True)
     contract_id: str = Field(min_length=1)
     provenance: str
     fields: dict[str, str]
+    derived: dict[str, str]
     events: dict[str, str]
+    results: dict[str, str]
+    bodyparts: dict[str, str]
+    zones: dict[str, str]
+    families: dict[str, str]
+    outside_spadl: list[str]
     guarantees: list[str]
     unavailable: list[str]
 
     @classmethod
-    def load(cls, path: Path):
+    def load(cls, path: Path = PROFILE):
         return cls.model_validate_json(path.read_text())
 
-    def describe(self, event_model=Event) -> dict:
-        schema = event_model.model_json_schema()
-        # Inline references so each exported field schema remains self-contained
-        # when a future Literal becomes an Enum or another referenced type.
-        def compact(value, refs=()):
-            if isinstance(value, list):
-                return [compact(item, refs) for item in value]
-            if isinstance(value, dict):
-                if "$ref" in value:
-                    ref = value["$ref"]
-                    if ref in refs or not ref.startswith("#/$defs/"):
-                        raise ValueError("Recursive or external field schemas need explicit reference support")
-                    definition = schema["$defs"][ref.removeprefix("#/$defs/")]
-                    return compact({**definition, **{k: v for k, v in value.items() if k != "$ref"}}, (*refs, ref))
-                return {key: compact(item, refs) for key, item in value.items()
-                        if key not in {"title", "default"}}
-            return value
-        properties = compact(schema["properties"])
-        if set(self.fields) != set(properties):
-            raise ValueError("Feed reference fields differ from the canonical event schema; review the profile")
-        event_schema = properties["event_type"]
-        categories = event_schema.get("enum", [event_schema.get("const")])
-        if set(self.events) != set(categories):
-            raise ValueError("Feed reference event meanings differ from the event enum; review the profile")
-        # Types/enums/bounds come from code, never from a second manually copied schema.
-        return {
-            "contract_id": self.contract_id,
-            "schema_sha256": hashlib.sha256(json.dumps(schema, sort_keys=True).encode()).hexdigest(),
-            "provenance": self.provenance,
-            "fields": {name: {"meaning": meaning, "schema": compact(properties[name])}
-                       for name, meaning in self.fields.items()},
-            "events": self.events,
-            "guarantees": self.guarantees,
-            "unavailable": self.unavailable,
-        }
+    def describe(self, model=SpadlAction) -> dict:
+        """The dictionary agents read; every key set must equal the model's fields and enums."""
+        schema = model.model_json_schema()
+        checks = {'fields': set(schema['properties']), 'events': set(get_args(ActionType)),
+                  'results': set(get_args(Result)), 'bodyparts': set(get_args(Bodypart)), 'zones': set(get_args(Zone))}
+        for name, expected in checks.items():
+            if set(getattr(self, name)) != expected:
+                raise ValueError(f'SPADL profile {name} differ from the action model; review the profile')
+        for family, members in (('passes', PASS_FAMILY), ('shots', SHOT_FAMILY)):
+            if not all(kind in self.families[family] for kind in members):
+                raise ValueError(f'SPADL profile family {family} differs from the contract')
+        return {'contract_id': self.contract_id,
+                'schema_sha256': hashlib.sha256(json.dumps(schema, sort_keys=True).encode()).hexdigest(),
+                **self.model_dump(exclude={'contract_id'})}
+
+
+@cache
+def spadl_reference() -> str:
+    return json.dumps(FeedReference.load().describe())
+
+
+def reference() -> dict:
+    """A fresh copy: callers adapt it per match."""
+    return json.loads(spadl_reference())

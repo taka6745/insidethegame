@@ -73,8 +73,8 @@ CONTROLS = [
      "Expected-goals values, not a count of shots or goals."),
     ("Track Harbour FC possession as a percentage of playing time.",
      "Possession time percentage, not pass share."),
-    ("Count Mateo Silva's touches inside the penalty box using event locations.",
-     "Only touches inside the box, determined by pitch coordinates."),
+    ("Count Mateo Silva's aerial duels won.",
+     "Contested headers he won, not his headed passes."),
     ("Show the distance Owen Reed has run in metres so far.",
      "The player's running distance, not pass distance."),
 ]
@@ -87,7 +87,7 @@ def data_transfer_cases():
         gold = original[number - 1]
         result.append({**gold, "id": f"data-transfer-{index:02}",
                        "gold_case_id": gold["id"], "intent_id": f"data-intent-{number:03}",
-                       "expected_rule": remap_fixture(gold["expected_rule"]),
+                       **({"expected_rule": remap_fixture(gold["expected_rule"])} if "expected_rule" in gold else {}),
                        "prompt": prompt, "quality": quality,
                        "must_clarify": quality == "ambiguous", "replies": [reply]})
     result.extend({"id": f"data-control-{index:02}", "intent_id": f"data-control-{index:02}",

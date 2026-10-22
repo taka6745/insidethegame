@@ -2,12 +2,14 @@ import { ChatApi } from './chat-api.ts';
 import { ChatView } from './chat-view.ts';
 import type { ChatSession, LabState, ServiceError } from './types.ts';
 
+const UNAVAILABLE = 'Answers unavailable · no model is configured';
+
 /** Independent question requests never block the event replay poller. */
 export class ChatController {
   api: ChatApi;
   view: ChatView;
   storage: Pick<Storage, 'getItem' | 'setItem'>;
-  runId: string | null | undefined;
+  matchId: string | null | undefined;
   token: string | null;
   generation: number;
   busy: boolean;
@@ -17,9 +19,11 @@ export class ChatController {
   retry: { prompt: string; id: string } | null;
   restoreAllowed: boolean;
   profile?: string;
+  /** No model configured: the backend refuses questions, so the chat never opens a session. */
+  unavailable = false;
   constructor(api: ChatApi, view: ChatView, storage: Pick<Storage, 'getItem' | 'setItem'> = sessionStorage) {
     this.api = api; this.view = view; this.storage = storage;
-    this.runId = null; this.token = null; this.generation = 0; this.busy = false; this.session = null;
+    this.matchId = null; this.token = null; this.generation = 0; this.busy = false; this.session = null;
     this.polling = false; this.polledAt = 0; this.retry = null;
     this.restoreAllowed = typeof performance !== 'undefined' && (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'reload';
   }
@@ -27,10 +31,11 @@ export class ChatController {
     const data = await this.api.profiles();
     const profile = document.getElementById('chat-profile') as HTMLSelectElement;
     this.view.profiles(data.profiles, this.storage.getItem('chat-profile'));
+    this.unavailable = data.mode === 'unavailable';
     this.profile = profile.value;
     profile.addEventListener('change', event => {
       this.profile = (event.target as HTMLSelectElement).value; this.storage.setItem('chat-profile', this.profile);
-      this.connect(true);
+      this.connect(false);
     });
     (document.getElementById('chat-reconnect') as HTMLElement).addEventListener('click', () => this.connect(true));
     (document.getElementById('chat-form') as HTMLFormElement).addEventListener('submit', event => {
@@ -39,15 +44,17 @@ export class ChatController {
       const prompt = field.value.trim();
       if (prompt) { field.value = ''; this.send(prompt); }
     });
-    window.addEventListener('lab-state', event => this.updateRun(event.detail));
-    if (window.labState) this.updateRun(window.labState);
+    window.addEventListener('lab-state', event => this.updateMatch(event.detail));
+    if (window.labState) this.updateMatch(window.labState);
   }
-  async updateRun(state: LabState) {
-    if (state.run_id === this.runId) {
+  /** The lab's selected match scopes the chat; switching match opens that match's chat. */
+  async updateMatch(state: LabState) {
+    if (state.match_id === this.matchId) {
       if (this.token && !this.busy && !this.polling && Date.now() - this.polledAt > 1500) await this.pollHistory();
       return;
     }
-    this.runId = state.run_id;
+    this.matchId = state.match_id;
+    this.api.match = state.match_id ?? '';
     await this.connect(false);
   }
   async connect(takeover: boolean) {
@@ -55,15 +62,17 @@ export class ChatController {
     this.busy = true; this.token = null; this.retry = null;
     this.view.render({ turns: [], offers: [] }, () => {});
     this.view.status('Opening match chat…', true);
-    const key = `chat-token:${this.profile}:${this.runId}`;
+    const key = `chat-token:${this.profile}:${this.matchId}`;
     try {
       const saved = takeover || !this.restoreAllowed ? null : this.storage.getItem(key);
       this.restoreAllowed = false;
+      // Opening a session takes over the profile's viewer, so wait until the lab chat is used.
+      if (this.unavailable) return this.view.status(UNAVAILABLE, true);
+      if (!saved && !takeover) return this.view.status('Ask a question to open the match chat.', false);
       let session: ChatSession;
       if (saved) session = await this.api.history(saved);
       else session = await this.api.session(this.profile as string);
       if (generation !== this.generation) return;
-      if (session.run_id !== this.runId) return;
       this.token = session.session_token as string;
       this.storage.setItem(key, this.token);
       this.show(session);
@@ -88,9 +97,12 @@ export class ChatController {
     this.session = session;
     this.view.render(session, id => this.track(id));
     const pending = session.turns.some(t => t.status === 'pending');
-    this.view.status(`${session.mode === 'local' ? 'Microsoft Agent Framework · Local model' : 'Fixture agent · Listed examples only'} · Synthetic match`, pending);
+    if (session.mode === 'unavailable') return this.view.status(UNAVAILABLE, true);
+    this.view.status(`Microsoft Agent Framework${session.mode === 'local' ? ' · Local model' : ''} · Synthetic match`, pending);
   }
   async send(prompt: string) {
+    if (this.unavailable) return;
+    if (!this.token && !this.busy) await this.connect(true);
     if (this.busy || !this.token) return;
     const generation = this.generation, token = this.token;
     const session = this.session as ChatSession;

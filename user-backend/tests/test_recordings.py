@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from backend.adapters.replay_source import FixtureEventSource
+from benchmarks.doubles.recording import FixtureEventSource
 
 
 @pytest.mark.parametrize("change", ["wrong_match", "unknown_player", "conflicting_revision", "real_data", "invalid_preset"])

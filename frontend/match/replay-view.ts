@@ -1,5 +1,5 @@
 import { node } from "./dom.ts";
-import { absolutePlaylist, attachStream, captureFrame } from "./media.ts";
+import { attachStream, captureFrame } from "./media.ts";
 import type { Stream, StreamOptions } from "./media.ts";
 import { playableClips, reelProgress, reelTimeline, ReplayPlayer } from "./replay.ts";
 import type { ReplayAction } from "./replay.ts";
@@ -7,44 +7,41 @@ import type { Replay } from "./types.ts";
 
 export interface ReplayStageOptions {
   attach?: (video: HTMLVideoElement, url: string, options: StreamOptions) => Promise<Stream>;
-  urls?: Pick<typeof URL, "createObjectURL" | "revokeObjectURL">;
-  origin?: string;
-}
-
-/** A replay plays the published stream URL; older saved replays carry stitched playlist text. */
-function replaySource(replay: Replay, urls: NonNullable<ReplayStageOptions["urls"]>, origin: string) {
-  const playlist = String(replay.playlist);
-  if (!playlist.startsWith("#EXTM3U")) return { url: playlist, release() {} };
-  const url = urls.createObjectURL(new Blob([absolutePlaylist(playlist, origin)],
-    { type: "application/vnd.apple.mpegurl" }));
-  return { url, release: () => urls.revokeObjectURL(url) };
+  /** prefers-reduced-motion: no sting and no slow motion. */
+  reducedMotion?: () => boolean;
+  timers?: { set: (run: () => void, ms: number) => unknown; clear: (id: unknown) => void };
 }
 
 /** Replay on the main stage; live shrinks to a muted corner picture and keeps playing. */
 export class ReplayStage {
   document: Document;
   attach: NonNullable<ReplayStageOptions["attach"]>;
-  urls: NonNullable<ReplayStageOptions["urls"]>;
-  origin: string;
   player: ReplayPlayer | null = null;
   stream: Stream | null = null;
-  release = () => {};
   opener: HTMLElement | null = null;
   generation = 0;
   loaded = false;
   timeline: ReturnType<typeof reelTimeline> | null = null;
+  reducedMotion: () => boolean;
+  timers: NonNullable<ReplayStageOptions["timers"]>;
+  timer: unknown = null;
+  stingTimer: unknown = null;
   constructor(document: Document, {
     attach = attachStream,
-    urls = URL,
-    origin = globalThis.location?.origin || "",
+    reducedMotion = () => Boolean(document.defaultView?.matchMedia?.("(prefers-reduced-motion: reduce)").matches),
+    timers = { set: (run, ms) => setTimeout(run, ms), clear: (id) => clearTimeout(id as ReturnType<typeof setTimeout>) },
   }: ReplayStageOptions = {}) {
     this.document = document;
     this.attach = attach;
-    this.urls = urls;
-    this.origin = origin;
+    this.reducedMotion = reducedMotion;
+    this.timers = timers;
     const video = this.video;
-    video.addEventListener("timeupdate", () => this.apply(this.player?.time(video.currentTime)));
-    video.addEventListener("ended", () => this.apply(this.player?.finish()));
+    video.addEventListener("timeupdate", () => {
+      this.apply(this.player?.time(video.currentTime));
+      this.pace();
+    });
+    // Footage that stops short of a clip's out point ends that clip, not the reel.
+    video.addEventListener("ended", () => this.apply(this.player?.time(Number.POSITIVE_INFINITY)));
     // Only the first load seeks to the clip: hls.js media recovery reloads metadata mid-clip.
     video.addEventListener("loadedmetadata", () => {
       if (this.loaded) return;
@@ -74,11 +71,10 @@ export class ReplayStage {
     this.stop();
     const generation = ++this.generation;
     this.opener = opener || null;
-    this.player = new ReplayPlayer(clips);
+    this.player = new ReplayPlayer(clips, replay.playback ?? null, { reducedMotion: this.reducedMotion() });
+    this.cueSting();
     this.loaded = false;
     this.timeline = null;
-    const source = replaySource(replay, this.urls, this.origin);
-    this.release = source.release;
     const video = this.video;
     video.muted = true;
     video.hidden = false;
@@ -87,7 +83,8 @@ export class ReplayStage {
     this.get("pip-return").hidden = false;
     this.show();
     this.get("replay-close").focus?.();
-    this.attach(video, source.url, {
+    // The replay plays the match's published stream; clip times are match video seconds.
+    this.attach(video, String(replay.playlist), {
       live: false,
       start: clips[0]!.playlist_start,
       onError: () => this.caption("Footage unavailable"),
@@ -98,7 +95,7 @@ export class ReplayStage {
       } else stream.destroy();
     });
   }
-  /** Back to live: restore the stage, release the playlist and return focus. */
+  /** Back to live: restore the stage, release the player and return focus. */
   close() {
     if (!this.player) return;
     this.stop();
@@ -111,27 +108,96 @@ export class ReplayStage {
     this.opener = null;
   }
   stop() {
+    this.wait(null);
+    this.sting(undefined);
     this.generation += 1;
     this.stream?.destroy();
     this.stream = null;
     this.video.pause();
-    this.release();
-    this.release = () => {};
+    this.video.playbackRate = 1;
     this.player = null;
     this.ended(false);
   }
-  apply(action?: ReplayAction) {
+  apply(action?: ReplayAction): void {
     if (!action || !this.player) return;
+    // A sting that failed to load would only cover the picture: cut straight to the next clip.
+    if (action.sting === "in" && this.stingVideo.error) return this.apply(this.player.skip());
     const video = this.video;
     if (action.seek !== undefined && Math.abs(video.currentTime - action.seek) > 0.25) video.currentTime = action.seek;
-    if (action.ended) video.pause();
-    else if (action.seek !== undefined && video.paused) video.play().catch(() => {});
+    if (action.ended || action.pause) video.pause();
+    else if ((action.play || action.seek !== undefined) && video.paused) video.play().catch(() => {});
+    if (Object.keys(action).length) {  // Time updates return {} and change nothing.
+      if (action.sting || this.player.phase !== "sting") this.sting(action.sting);
+      this.wait(action.wait ?? null);
+    }
+    this.pace();
     this.show();
+  }
+  /** One timer at a time: a new action replaces the last wait. */
+  wait(seconds: number | null) {
+    if (this.timer !== null) this.timers.clear(this.timer);
+    this.timer = seconds === null ? null : this.timers.set(() => {
+      this.timer = null;
+      this.apply(this.player?.advance());
+    }, seconds * 1000);
+  }
+  /** Slow motion around the clip's events (the player decides the rate). */
+  pace() {
+    const rate = this.player?.rate(this.video.currentTime) ?? 1;
+    if (Math.abs(this.video.playbackRate - rate) > 0.01) this.video.playbackRate = rate;
+  }
+  get stingLayer(): HTMLElement {
+    return this.get("replay-sting");
+  }
+  get stingVideo(): HTMLVideoElement {
+    return this.get("replay-sting-video") as HTMLVideoElement;
+  }
+  /** Loads the sting asset when the reel opens, so it is ready at the first cut. */
+  cueSting() {
+    const transitions = this.player?.transitions;
+    if (!transitions || this.player?.reducedMotion || this.player!.clips.length < 2) return;
+    const video = this.stingVideo;
+    if (video.getAttribute("src") !== transitions.asset) {
+      video.setAttribute("src", transitions.asset);
+      video.preload = "auto";
+      // Parked at its start point, so the first frame shown is already the right one.
+      video.addEventListener("loadedmetadata", () => this.park(), { once: true });
+    }
+    this.stingLayer.style.setProperty("--sting-fade", `${transitions.fade_seconds}s`);
+  }
+  /** "in": fade the sting in from its start point; "out": fade it out, then hide it; nothing: hide now. */
+  sting(state: "in" | "out" | undefined) {
+    const layer = this.stingLayer, video = this.stingVideo;
+    const transitions = this.player?.transitions;
+    if (this.stingTimer !== null) this.timers.clear(this.stingTimer);
+    this.stingTimer = null;
+    if (state === "in" && transitions) {
+      layer.hidden = false;
+      if (Math.abs(video.currentTime - transitions.asset_start_seconds) > 0.05) this.park();
+      video.play().catch(() => {});
+      void layer.offsetWidth;  // Start the fade from transparent.
+      layer.dataset.state = "in";
+    } else if (state === "out" && !layer.hidden) {
+      layer.dataset.state = "out";
+      this.stingTimer = this.timers.set(() => this.sting(undefined), (transitions?.fade_seconds ?? 0) * 1000);
+    } else if (!state) {
+      layer.dataset.state = "";
+      layer.hidden = true;
+      video.pause();
+      this.park();
+    }
+  }
+  /** The sting video waits at its start point between uses. */
+  park() {
+    const start = this.player?.transitions?.asset_start_seconds;
+    if (start === undefined) return;
+    try { this.stingVideo.currentTime = start; } catch { /* not loaded yet: loadedmetadata parks it */ }
   }
   toggle() {
     const player = this.player;
     if (!player) return;
-    if (player.ended) this.apply(player.go(0));
+    if (player.phase === "holding" || player.phase === "sting") this.apply(player.skip());
+    else if (player.ended) this.apply(player.go(0));
     else if (this.video.paused) this.video.play().catch(() => {});
     else this.video.pause();
   }
@@ -160,13 +226,17 @@ export class ReplayStage {
     return line;
   }
   ended(value: boolean) {
-    this.get("match-stage").dataset.ended = String(value);
+    const stage = this.get("match-stage"), changed = stage.dataset.ended !== String(value);
+    stage.dataset.ended = String(value);
     this.get("replay-end").hidden = !value;
     this.get("replay-close").hidden = value;
-    if (value) this.get("replay-again").focus?.();
+    // Focus follows the control that replaces the one just hidden, once per change.
+    if (changed && this.player) this.get(value ? "replay-again" : "replay-close").focus?.();
   }
   caption(text: string) {
-    this.get("replay-caption").textContent = text;
+    // Rewriting the same text on every time update would make the live region announce it again.
+    const caption = this.get("replay-caption");
+    if (caption.textContent !== text) caption.textContent = text;
   }
 }
 
@@ -189,15 +259,8 @@ export function queueStill(canvas: HTMLCanvasElement, draw: () => Promise<unknow
 /** Chat card still: the middle of the first clip, from the same replay playlist. */
 export async function replayStill(replay: Replay, canvas: HTMLCanvasElement, {
   attach = attachStream,
-  urls = URL,
-  origin = globalThis.location?.origin || "",
 }: ReplayStageOptions = {}): Promise<boolean> {
   const clip = playableClips(replay)[0];
   if (!clip) return false;
-  const source = replaySource(replay, urls, origin);
-  try {
-    return await captureFrame(canvas, source.url, (clip.playlist_start + clip.playlist_end) / 2, attach);
-  } finally {
-    source.release();
-  }
+  return captureFrame(canvas, String(replay.playlist), (clip.playlist_start + clip.playlist_end) / 2, attach);
 }

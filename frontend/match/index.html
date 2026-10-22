@@ -9,6 +9,7 @@
       content="Inside the Game — a live football companion. Synthetic match demonstration."
     />
     <title>Match Centre · Inside the Game</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/insight.svg" />
     <link rel="stylesheet" href="/match/companion.css" />
     <link rel="stylesheet" href="/match/styles.css" />
     <script type="module" src="/match/main.js"></script>
@@ -35,20 +36,33 @@
         ><a href="https://www.premierleague.com/en/news">News</a
         ><a href="https://www.premierleague.com/en/clubs">Clubs</a>
       </nav>
-      <div class="audience-controls" role="group" aria-label="Your match perspective">
-        <label class="sr-only" for="audience-team">Team you support</label>
-        <select id="audience-team" disabled><option>Team…</option></select>
-        <label class="sr-only" for="audience-style">Viewer style</label>
-        <select id="audience-style" disabled>
-          <option value="analytical">Analytical</option>
-          <option value="simple">Simple</option>
-          <option value="casual">Casual</option>
-          <option value="experienced">Experienced</option>
-        </select>
+      <div class="audience-controls" id="audience-controls" role="group" aria-label="Your match perspective" hidden>
+        <label class="sr-only" for="audience-bucket">Your perspective</label>
+        <select id="audience-bucket" disabled></select>
       </div>
     </header>
     <main id="match-main">
+      <section id="match-picker" class="match-picker" aria-labelledby="picker-title" hidden>
+        <div class="picker-heading">
+          <h1 id="picker-title">Matches</h1>
+          <span id="picker-updated" class="picker-updated" role="status"></span>
+        </div>
+        <div id="demo-controls" class="demo-controls" hidden>
+          <label class="sr-only" for="demo-point">Start from</label>
+          <select id="demo-point"></select>
+          <button id="demo-start" type="button">Start demo</button>
+          <button id="demo-cancel" class="text-button" type="button" hidden>Cancel demo</button>
+          <p id="demo-live-from" class="demo-live-from" hidden></p>
+        </div>
+        <section id="demo-progress" class="demo-progress" aria-label="Demo starting" aria-live="polite" hidden></section>
+        <p id="picker-notice" class="notice" role="alert" hidden></p>
+        <ul id="match-list" class="match-list" aria-live="polite">
+          <li class="match-empty">Loading matches…</li>
+        </ul>
+      </section>
+      <div id="match-view">
       <h1 class="sr-only">Match Centre</h1>
+      <a class="all-matches" href="/?choose">← All matches</a>
       <section class="scoreboard" id="overview" aria-label="Match score">
         <div class="team home" id="home-banner">
           <img class="crest-watermark" id="home-watermark" alt="" hidden />
@@ -92,6 +106,7 @@
           <span id="connection" role="status">Connecting…</span>
           <button id="reconnect" hidden>Reconnect ↗</button>
         </div>
+        <p id="match-live-from" class="demo-live-from" hidden></p>
 
       </div>
       <div id="notice" class="notice" role="alert" hidden></div>
@@ -100,6 +115,7 @@
           <section class="match-stage" id="match-stage" aria-label="Match stream" data-mode="live">
             <video id="match-video" playsinline preload="none" aria-label="Match footage" hidden></video>
             <video id="replay-video" playsinline muted preload="auto" aria-label="Replay footage" hidden></video>
+            <div id="replay-sting" class="replay-sting" aria-hidden="true" hidden><video id="replay-sting-video" playsinline muted preload="none"></video></div>
             <button id="pip-return" class="pip-return" type="button" aria-label="Back to live" hidden><span>Live</span></button>
             <div id="replay-overlay" class="replay-overlay" hidden>
               <span id="replay-badge" class="replay-badge" aria-hidden="true">Replay</span>
@@ -120,10 +136,6 @@
               <span>Live insights and stats are ready.</span>
             </div>
           </section>
-          <div class="demo-controls">
-            <button id="start-demo" class="primary"><span id="start-demo-label">Start match</span><span aria-hidden="true">↗</span></button>
-            <button id="reset-demo" class="text-button" hidden>Start a new demo</button>
-          </div>
           <section class="stats-section" aria-labelledby="stats-title">
             <div class="section-heading">
               <h2 id="stats-title">Your stats</h2>
@@ -146,22 +158,7 @@
               <h2>Inside the Game</h2>
               <p id="perspective">Your match companion</p>
             </div>
-            <button id="price-settings" class="price-settings" type="button" aria-label="Answer cost settings"
-              aria-haspopup="dialog">⚙</button>
           </div>
-          <dialog id="price-dialog" class="price-dialog" aria-labelledby="price-title">
-            <form id="price-form" method="dialog">
-              <h3 id="price-title">Answer cost estimate</h3>
-              <p>Receipts estimate each answer's cost from these fixed prices, in US dollars per million tokens.</p>
-              <label>Input tokens <input id="price-input" type="number" min="0" step="0.01" inputmode="decimal" required /></label>
-              <label>Output tokens <input id="price-output" type="number" min="0" step="0.01" inputmode="decimal" required /></label>
-              <div class="price-actions">
-                <button id="price-reset" type="button" class="text-button">Defaults</button>
-                <button value="cancel" type="button" id="price-cancel" class="text-button">Cancel</button>
-                <button value="save" class="price-save">Save</button>
-              </div>
-            </form>
-          </dialog>
           <div class="tabs" role="tablist" aria-label="Match companion">
             <button
               id="stories-tab"
@@ -187,14 +184,36 @@
             role="tabpanel"
             aria-labelledby="stories-tab"
           >
+            <div id="follow-banner" class="follow-banner" hidden>
+              <span class="follow-banner-text">Following <strong id="follow-label"></strong></span>
+              <button id="follow-stop" type="button">Stop following</button>
+            </div>
+            <div id="follow-origin" class="follow-origin" hidden></div>
             <div id="narratives" class="narrative-list">
               <div class="story-empty">
                 <span class="empty-symbol" aria-hidden="true">✦</span>
                 <h3>Waiting for kick-off.</h3>
                 <p>
-                  Your match insights will appear here.
+                  Insights appear here.
                 </p>
               </div>
+            </div>
+            <button id="follow-open" class="follow-open" type="button">Customise · follow a story</button>
+            <div id="follow-chat" class="follow-chat" hidden>
+              <div class="follow-setup-head">
+                <p class="follow-help">Follow a player, team or story, here or in another match.</p>
+                <button id="follow-cancel" type="button">Cancel</button>
+              </div>
+              <div id="follow-messages" class="follow-messages" aria-live="polite" hidden></div>
+              <div id="follow-suggestions" class="follow-chips" role="group" aria-label="Stories to follow" hidden></div>
+              <form id="follow-form">
+                <label class="sr-only" for="follow-input">Follow a story</label>
+                <div class="composer">
+                  <input id="follow-input" maxlength="2000" autocomplete="off" placeholder="Follow a player, team or story…" disabled
+                  /><button id="follow-send" type="submit" aria-label="Send follow request" disabled>↗</button>
+                </div>
+                <span id="follow-status" class="follow-status" role="status"></span>
+              </form>
             </div>
           </section>
           <section
@@ -255,7 +274,8 @@
           </div>
         </aside>
       </div>
+      </div>
     </main>
-    <footer><span>Hackathon demo · Simulated match with pre-written AI narratives · Not an official Premier League product</span><a href="/lab/">Developer lab ↗</a></footer>
+    <footer><span>Hackathon demo · Simulated matches with AI-generated insights · Not an official Premier League product</span><span><a href="/lab/">Developer lab ↗</a> · <a href="/dev/">Config ↗</a></span></footer>
   </body>
 </html>

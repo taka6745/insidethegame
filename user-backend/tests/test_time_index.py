@@ -2,7 +2,7 @@
 import random
 from decimal import Decimal
 
-from backend.models.events import Event
+from backend.models.actions import SpadlAction
 from backend.models.rules import Predicate, Rule
 from backend.services.filter_engine import FilterEngine
 from backend.services.time_index import TimeIndex
@@ -12,9 +12,11 @@ def term(op, value, field="match_time_seconds"):
     return Predicate(field=field, op=op, value=value)
 
 
-def event(identifier="event", revision=1, **values):
-    return Event(event_id=identifier, match_id="match", revision=revision,
-                 event_type="pass", match_time_seconds=60, **values)
+def event(identifier=0, **values):
+    base = {"match_id": "match", "action_id": identifier, "action_type": "pass", "result": "success",
+            "bodypart": "foot", "team_id": "team", "match_time_seconds": 60, "period": 1, "start_x": 0.0, "start_y": 34.0,
+            "end_x": 0.0, "end_y": 34.0, "start_zone": "own_box", "end_zone": "own_box", "seq": 1, "final_seq": 1}
+    return SpadlAction(**(base | values))
 
 
 def test_time_index_fractional_integer_endpoints_and_conjunctions():
@@ -32,7 +34,7 @@ def test_time_index_fractional_integer_endpoints_and_conjunctions():
     for number, terms in enumerate(definitions):
         index.add(str(number), terms)
     for second in [0, 59, 60, 61, 62, 12000]:
-        item = Event(event_id="e", match_id="match", event_type="pass", match_time_seconds=second)
+        item = event(match_time_seconds=second)
         expected = {str(n) for n, terms in enumerate(definitions) if all(t.matches(item) for t in terms)}
         actual = index.matching(second)
         assert set(actual) == expected
@@ -60,14 +62,12 @@ def test_overlapping_windows_share_predicates_but_emit_every_changed_result():
     assert engine.last_candidate_count == 1000
     assert engine.last_family_evaluation_count == 1
     assert all(result.value == 1 and result.version == 2 for result in changed)
-    # Same contribution at a new revision should not change values or versions.
-    assert engine.ingest(event(revision=2, distance_metres=10.0)) == []
-    assert engine.last_candidate_count == 1000
-    assert engine.last_family_evaluation_count == 2
-    assert len(engine.ingest(event(revision=3, deleted=True))) == 1000
+    # A redelivered final action changes nothing and evaluates no family.
+    assert engine.ingest(event()) == []
+    assert engine.last_candidate_count == 0
 
 
-def test_random_window_prefixes_corrections_and_late_registration_match_scalar_oracle():
+def test_random_window_prefixes_and_late_registration_match_scalar_oracle():
     rng = random.Random(93017)
     engine = FilterEngine()
     rules = []
@@ -85,20 +85,16 @@ def test_random_window_prefixes_corrections_and_late_registration_match_scalar_o
         if rule.calculation_id not in {r.calculation_id for r in rules}:
             rules.append(rule)
             engine.register(rule)
-    latest = {}
+    seen = []
     versions = {r.calculation_id: 1 for r in rules}
     totals = {r.calculation_id: Decimal(0) for r in rules}
     for step in range(100):
-        identifier = str(rng.randrange(15))
-        revision = latest[identifier].revision + 1 if identifier in latest else 1
-        item = Event(event_id=identifier, match_id="match", revision=revision, event_type="pass",
-                     match_time_seconds=rng.choice([0, 59, 60, 61, 12000]), period=rng.choice([1, 2]),
-                     player_id=rng.choice([None, "a", "b", "c"]), distance_metres=rng.choice([None, 0.1, 0.2, 10.5]),
-                     deleted=step % 9 == 0)
-        latest[identifier] = item
+        item = event(step, match_time_seconds=rng.choice([0, 59, 60, 61, 12000]), period=rng.choice([1, 2]),
+                     player_id=rng.choice([None, "a", "b", "c"]), end_x=rng.choice([0.0, 0.1, 0.2, 10.5]))
+        seen.append(item)
         changes = {r.calculation_id: r for r in engine.ingest(item)}
         for rule in rules:
-            expected = sum((Decimal(str(rule.contribution(e))) for e in latest.values()), Decimal(0))
+            expected = sum((Decimal(str(rule.contribution(e))) for e in seen), Decimal(0))
             identifier = rule.calculation_id
             if expected != totals[identifier]:
                 versions[identifier] += 1
@@ -111,4 +107,4 @@ def test_random_window_prefixes_corrections_and_late_registration_match_scalar_o
             assert result.version == versions[identifier]
         assert engine.ingest(item) == []
     for rule in rules:
-        assert FilterEngine().register(rule, latest.values()).value == engine.get(rule.calculation_id).value
+        assert FilterEngine().register(rule, seen).value == engine.get(rule.calculation_id).value

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1320 870" role="img" aria-labelledby="title desc">
-<title id="title">Frontend</title><desc id="desc">Application data comes from the user backend. Video comes from the footage source.. Planned architecture, not deployed infrastructure.</desc>
+<title id="title">Frontend</title><desc id="desc">Application data comes from the user backend; demo start, cancel and progress from demo control. Video is the feed’s played HLS.. What exists now, with its status.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="#5d7185"/></marker></defs>
 <style>text{font-family:Arial,Helvetica,sans-serif} .title{font-size:32px;font-weight:700} .body{font-size:16px} .small{font-size:14px}</style>
 <rect width="1320" height="870" fill="white"/>
@@ -43,9 +43,16 @@
 <text x="1197.0" y="309" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">API + live</text>
 <polyline points="1041,280 1110,280" fill="none" stroke="#5d7185" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
 <text x="385" y="642" font-size="15" fill="#5d7185" font-weight="400" text-anchor="start">Pin → replace a default</text>
-<rect x="36" y="693" width="1248" height="84" rx="14" fill="#f7f9fc" stroke="#82909e" stroke-width="1.5" stroke-dasharray="7 5"/>
-<text x="58" y="725" font-size="13" fill="#82909e" font-weight="700" text-anchor="start">PHASE 2</text>
-<text x="58" y="752" font-size="17" fill="#82909e" font-weight="400" text-anchor="start">Clips · pause · rewind</text>
+<rect x="1110" y="430" width="174" height="180" rx="14" fill="white" stroke="#d8e3ed" stroke-width="1.5"/>
+<text x="1197.0" y="464" font-size="19" fill="#17324d" font-weight="700" text-anchor="middle">Demo control</text>
+<text x="1197.0" y="491" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">/demo-api/</text>
+<text x="1197.0" y="514" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">start · cancel</text>
+<text x="1197.0" y="537" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">status</text>
+<text x="1197.0" y="596" font-size="12" fill="#168366" font-weight="700" text-anchor="middle">Deployed 22 Oct</text>
+<polyline points="1041,520 1110,520" fill="none" stroke="#5d7185" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<rect x="36" y="693" width="1248" height="84" rx="14" fill="#eef9f0" stroke="#69ad7d" stroke-width="1.5"/>
+<text x="58" y="725" font-size="13" fill="#168366" font-weight="700" text-anchor="start">BUILT 22 OCT · unit + headless tests</text>
+<text x="58" y="752" font-size="17" fill="#17324d" font-weight="400" text-anchor="start">Start demo + start progress · main game · follow view · clip preview cards · sting + slow motion · other-match marking</text>
 <path d="M36,820 H1284" stroke="#d8e3ed"/>
-<text x="36" y="845" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">PLANNED · Solid: data / calls · Dashed: messages / Phase 2</text>
+<text x="36" y="845" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">NOW · Solid: calls · Green: built and tested (unit, headless) · Demo control applied on Azure 22 Oct</text>
 </svg>

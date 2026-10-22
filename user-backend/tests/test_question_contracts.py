@@ -46,25 +46,26 @@ def test_missing_request_recovery_preserves_clarification():
     assert result.status=='clarification' and result.text=='Which player?'
 
 
-def test_explicit_inclusive_event_boundary_is_translated_without_dropping_exact_event():
+def test_explicit_inclusive_action_boundary_is_translated_without_dropping_exact_action():
     from backend.services.question_tools import QuestionTools
+    from backend.models.actions import SpadlAction
     from backend.models.questions import MatchSnapshot,SnapshotInput
-    from backend.fake_question_data import snapshot_id
-    from backend.fakes import create_fake
-    from backend.adapters.question_data import GraphQLQuestionData
-    import httpx
-    from backend.models.events import Event
-    data=SnapshotInput(snapshot=MatchSnapshot(id='',run_id='run',match_id='m',recording_hash='h',cursor=3,clock_seconds=601,period=1,captured_at='test'),
-        teams=[],players=[],data_reference={},events=[Event(event_id=str(second),match_id='m',event_type='shot',match_time_seconds=second) for second in (599,600,601)])
-    data.snapshot.id=snapshot_id(data)
-    adapter=GraphQLQuestionData('http://fake/graphql',bridge=True,transport=httpx.ASGITransport(app=create_fake('etl')))
+    from backend.adapters.match_data import EtlDabMatchData
+    actions=[SpadlAction(match_id='m',action_id=i,period=1,match_time_seconds=second,team_id='t',action_type='shot',
+                         result='fail',bodypart='foot',start_x=90.0,start_y=34.0,end_x=105.0,end_y=34.0,
+                         start_zone='opp_box',end_zone='opp_box',seq=i+1,final_seq=i+1)
+             for i,second in enumerate((599,600,601))]
+    data=SnapshotInput(snapshot=MatchSnapshot.at('m',3,None,'test'),teams=[],players=[],data_reference={},events=[],
+                       actions=actions)
+    match=SimpleNamespace(actions_at=lambda seq: [a for a in actions if a.final_seq<=seq])
+    adapter=EtlDabMatchData(None,SimpleNamespace(get=lambda match_id: match))
     async def run():
-        await adapter.capture(data)
         tools=QuestionTools(data,adapter,None,None,[],{},[])
-        exclusive=await tools.events(end=600)
-        inclusive=await tools.events(end=600,end_inclusive=True)
+        exclusive=await tools.actions(end=600)
+        inclusive=await tools.actions(end=600,end_inclusive=True)
         assert [e['match_time_seconds'] for e in exclusive['items']]==[599]
         assert [e['match_time_seconds'] for e in inclusive['items']]==[599,600]
+        assert inclusive['items'][0]['evidence_id']=='action:a0' and 'start_x' not in inclusive['items'][0]
     asyncio.run(run())
 
 
@@ -125,7 +126,7 @@ def test_original_recovery_keeps_constraints_after_900_characters():
             assert history[0]['content']==original
             assert history[0]['content'].endswith('Only after minute 60.')
             return PlanOutcome(status='clarification',source='fixture',message='Which player?')
-    payload=SnapshotInput(snapshot=MatchSnapshot(id='s',run_id='r',match_id='m',recording_hash='h',cursor=0,captured_at='test'),events=[],teams=[],players=[],data_reference={})
+    payload=SnapshotInput(snapshot=MatchSnapshot.at('m',0,None,'test'),events=[],teams=[],players=[],data_reference={})
     tools=QuestionTools(payload,None,None,Planner(),[],{},[{'user':original,'reply':{'text':'Which player?'}}])
     tools.original_prompt='For that player too'
     assert asyncio.run(tools.prepare_original())['status']=='clarification'
@@ -147,7 +148,7 @@ def test_standard_percentage_keeps_unit_in_answer_and_track_offer():
     stat = {'id': 'home:possession', 'label': 'Chelsea possession', 'value': 35.9,
             'unit': '%', 'available': True, 'complete': True}
     tools = SimpleNamespace(stats=[stat], offers=[], goal=None,
-                            payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', run_id='run')))
+                            payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', match_id='match')))
     result = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer',
         standard_stat_id=stat['id'], text='Ignored'), tools))
     assert result.text == 'Chelsea possession: 35.9%.'

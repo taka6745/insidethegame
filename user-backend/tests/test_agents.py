@@ -7,7 +7,7 @@ import pytest
 
 from backend.adapters.llm import LocalJsonModel, ModelError
 from backend.agents.compiler import RuleCodingAgent
-from backend.agents.fixtures import FixtureGoalAgent, FixtureCodingAgent
+from benchmarks.doubles.agents import FixtureGoalAgent, FixtureCodingAgent
 from backend.agents.models import Goal
 from backend.agents.orchestrator import GoalAgent
 from backend.agents.workflow import RuleWorkflow, workflow_from_env
@@ -15,7 +15,7 @@ from backend.agents.workflow import RuleWorkflow, workflow_from_env
 
 CONTEXT = {"match_id": "match-1", "players": [{"id": "mbappe", "name": "Mbappé"}],
            "teams": [{"id": "chelsea", "name": "Chelsea"}], "standard_stats": []}
-GOAL = Goal(description="Chelsea corners after minute 60", event_types=("corner",),
+GOAL = Goal(description="Chelsea corners after minute 60", action_types=("corner_crossed", "corner_short"),
             team_ids=("chelsea",), after_seconds=3600)
 
 
@@ -50,7 +50,7 @@ def test_goal_compiler_validated_rule():
 
 
 def test_semantically_wrong_valid_rule_is_repaired():
-    wrong = Goal(description="All corners", event_types=("corner",)).target_rule("match-1")
+    wrong = Goal(description="All corners", action_types=("corner_crossed", "corner_short")).target_rule("match-1")
     result, model = run([goal_decision(), wrong.model_dump(mode="json"), GOAL.target_rule("match-1").model_dump(mode="json")])
     assert result.status == "ready" and result.attempts == 2
     assert "preserve" in model.calls[2]["validation_feedback"]
@@ -121,7 +121,7 @@ def test_fixture_requests_are_explicit_and_boundaries_preserved():
         ("Track Chelsea's corners after the 60th minute", "match_time_seconds", "gt", 3600),
         ("Track headers since minute 20", "match_time_seconds", "gte", 1200),
         ("Track second-half corners", "period", "eq", 2),
-        ("Track total headers in this game by Mbappé", "body_part", "eq", "head"),
+        ("Track total headers in this game by Mbappé", "bodypart", "in", ("head",)),
     ]:
         result = asyncio.run(workflow.plan(prompt, CONTEXT))
         assert result.status == "ready" and result.source == "fixture"
@@ -131,7 +131,7 @@ def test_fixture_requests_are_explicit_and_boundaries_preserved():
 
 
 def test_goal_rejects_unsupported_categories_and_invalid_windows():
-    for fields in ({"event_types": ["header"]}, {"after_seconds": 60, "from_seconds": 60},
+    for fields in ({"action_types": ["header"]}, {"after_seconds": 60, "from_seconds": 60},
                    {"after_seconds": 120, "before_seconds": 60}):
         with pytest.raises(ValueError):
             Goal(description="Bad goal", **fields)
@@ -190,16 +190,14 @@ def test_auth_failure_is_not_retryable():
     assert failure.value.reason == "http_401" and not failure.value.retryable
 
 
-def test_factory_requires_explicit_valid_mode(monkeypatch):
-    monkeypatch.setenv("LOCAL_LLM_MODE", "fixture")
-    assert workflow_from_env().source == "fixture"
-    monkeypatch.setenv("LOCAL_LLM_MODE", "local")
+def test_factory_has_no_fixture_mode_and_no_model_means_none(monkeypatch):
     monkeypatch.delenv("LOCAL_LLM_BASE_URL", raising=False)
-    with pytest.raises(ModelError):
-        workflow_from_env()
-    monkeypatch.setenv("LOCAL_LLM_MODE", "typo")
-    with pytest.raises(ValueError):
-        workflow_from_env()
+    monkeypatch.delenv("LOCAL_LLM_MODE", raising=False)
+    assert workflow_from_env() is None  # Callers refuse visibly; there is no silent double.
+    for mode in ("fixture", "typo"):
+        monkeypatch.setenv("LOCAL_LLM_MODE", mode)
+        with pytest.raises(ValueError):
+            workflow_from_env()
 
 
 def test_framework_agents_and_workflow_repair_end_to_end(monkeypatch):
@@ -220,7 +218,7 @@ def test_framework_agents_and_workflow_repair_end_to_end(monkeypatch):
         if "decision_schema" in payload:
             response = goal_decision()
         elif payload["validation_feedback"] is None:
-            response = Goal(description="Wrong: all corners", event_types=("corner",)).target_rule("match-1").model_dump(mode="json")
+            response = Goal(description="Wrong: all corners", action_types=("corner_crossed", "corner_short")).target_rule("match-1").model_dump(mode="json")
         else:
             response = GOAL.target_rule("match-1").model_dump(mode="json")
         return httpx.Response(200, json=completion(json.dumps(response)))
@@ -299,16 +297,21 @@ def test_configurable_repair_budget(repairs):
     assert len(model.calls) == repairs + 2
 
 
+def configured(monkeypatch):
+    monkeypatch.setenv("LOCAL_LLM_BASE_URL", "http://local.invalid/v1")
+    monkeypatch.setenv("LOCAL_LLM_MODEL", "development-model")
+
+
 @pytest.mark.parametrize('value', ['-1', '21', 'invalid', '1.5'])
 def test_invalid_repair_environment_fails_at_startup(monkeypatch, value):
-    monkeypatch.setenv('LOCAL_LLM_MODE', 'fixture')
+    configured(monkeypatch)
     monkeypatch.setenv('AGENT_MAX_REPAIRS', value)
     with pytest.raises(ValueError, match='AGENT_MAX_REPAIRS'):
         workflow_from_env()
 
 
 def test_repair_environment_factory(monkeypatch):
-    monkeypatch.setenv('LOCAL_LLM_MODE', 'fixture')
+    configured(monkeypatch)
     monkeypatch.setenv('AGENT_MAX_REPAIRS', '2')
     assert workflow_from_env().max_repairs == 2
 
@@ -323,12 +326,15 @@ def test_local_factory_uses_deterministic_compilation(monkeypatch):
     assert workflow.timeout_seconds == 60
 
 
-def test_goal_schema_exposes_event_and_outcome_vocabulary():
+def test_goal_schema_exposes_spadl_vocabulary():
     schema = Goal.model_json_schema()
-    assert "corner" in schema["properties"]["event_types"]["items"]["enum"]
+    enum = lambda name: schema["properties"][name]["items"].get("enum") or schema["$defs"][
+        schema["properties"][name]["items"]["$ref"].split("/")[-1]]["enum"]
+    assert "corner_crossed" in enum("action_types") and "opp_box" in enum("end_zones")
+    assert set(enum("results")) >= {"success", "fail", "offside", "owngoal"}
     for invalid in ("completed", "failed", "goal"):
         with pytest.raises(ValueError):
-            Goal(description="Invalid provider outcome", outcome=invalid)
+            Goal(description="Invalid result", results=[invalid])
 
 
 def test_clarification_then_reply_preserves_conversation_without_gold():
@@ -370,20 +376,20 @@ def test_invalid_conversation_does_not_call_model(history):
 
 def test_goal_schema_repair_includes_safe_field_feedback():
     model = ScriptedModel([
-        {"status": "custom", "goal": {"description": "passes", "event_types": ["pass"], "outcome": "completed"}},
+        {"status": "custom", "goal": {"description": "passes", "action_types": ["pass"], "results": ["completed"]}},
         goal_decision(),
     ])
     workflow = RuleWorkflow(GoalAgent(model), FixtureCodingAgent())
     result = asyncio.run(workflow.plan("Chelsea corners after minute 60", CONTEXT))
     assert result.status == "ready" and result.model_calls == 2
     feedback = model.calls[1]["context"]["goal_validation_errors"]
-    assert {"path": "goal.outcome", "type": "literal_error"} in feedback
+    assert any(item["path"].startswith("goal.results") and item["type"] == "literal_error" for item in feedback)
     assert "completed" not in json.dumps(feedback)
 
 
 @pytest.mark.parametrize("timeout", ["0", "301", "invalid"])
 def test_invalid_plan_timeout_fails_startup(monkeypatch, timeout):
-    monkeypatch.setenv("LOCAL_LLM_MODE", "fixture")
+    configured(monkeypatch)
     monkeypatch.setenv("AGENT_PLAN_TIMEOUT_SECONDS", timeout)
     with pytest.raises(ValueError):
         workflow_from_env()

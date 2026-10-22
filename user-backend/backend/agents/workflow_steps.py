@@ -58,6 +58,12 @@ class DefineGoal(Executor):
             try:
                 calls += int(hasattr(self.agent, "model"))
                 decision = await self.agent.define(request.prompt, context)
+                checked = measure_decision(request.prompt, decision, request.context)
+                if checked is not decision and checked.status == "unsupported" and not attempt:
+                    # A share answered by a plain count: ask once for a formula or catalogue reuse.
+                    context["goal_validation_errors"] = [{"path": "goal.operation", "type": "share_not_count"}]
+                    failures.append("share_not_count")
+                    continue
                 break
             except (ModelError, ValueError) as exc:
                 if isinstance(exc, ValidationError):
@@ -87,7 +93,8 @@ class DefineGoal(Executor):
                                               message="Could not define a validated goal. Please try again."))
         elif decision.status != "custom":
             await ctx.yield_output(PlanOutcome(status=decision.status, source=self.source, goal=decision.goal,
-                                              standard_stat_id=decision.standard_stat_id, clarification=decision.clarification, message=decision.message,
+                                              standard_stat_id=decision.standard_stat_id, standard_stat_ids=decision.standard_stat_ids,
+                                              formula=decision.formula, clarification=decision.clarification, message=decision.message,
                                               model_calls=calls, goal_failure_reasons=failures, goal_validation_errors=validation_errors, stage_seconds={"goal": seconds}))
         else:
             await ctx.send_message(CodingRequest(decision.goal, request.context["match_id"], goal_seconds=seconds,

@@ -1,0 +1,27 @@
+#!/bin/sh
+# Sourced by the nginx image's entrypoint before templates are rendered.
+# NGINX_RESOLVER=auto: use this container's DNS server (Azure Container Apps) from /etc/resolv.conf.
+if [ "${NGINX_RESOLVER:-}" = auto ]; then
+  NGINX_RESOLVER=$(awk '/^nameserver/ { print $2; exit }' /etc/resolv.conf)
+  export NGINX_RESOLVER
+fi
+# DEV_ADMIN_PASSWORD set: the developer consoles need basic auth (user `dev`); otherwise none (local).
+# The file stays inside the container; {PLAIN} is nginx's plain-text scheme.
+auth=/etc/nginx/dev-admin-auth.conf
+if [ -n "${DEV_ADMIN_PASSWORD:-}" ]; then
+  umask 077
+  printf 'dev:{PLAIN}%s\n' "$DEV_ADMIN_PASSWORD" > /etc/nginx/dev-admin.htpasswd
+  chown nginx /etc/nginx/dev-admin.htpasswd 2>/dev/null || true
+  printf 'auth_basic "InsideTheGame developer consoles";\nauth_basic_user_file /etc/nginx/dev-admin.htpasswd;\n' > "$auth"
+else
+  : > "$auth"
+fi
+unset DEV_ADMIN_PASSWORD
+# Azure: each owner's purge needs its bearer token. nginx sets it upstream (replacing the browser's
+# basic-auth header); locally there is no token and the header is just dropped.
+token_conf() {
+  (umask 077; printf 'proxy_set_header Authorization "%s";\n' "${2:+Bearer $2}" > "/etc/nginx/$1-admin-token.conf")
+}
+token_conf etl "${ETL_ADMIN_TOKEN:-}"
+token_conf engine "${ENGINE_ADMIN_TOKEN:-}"
+unset ETL_ADMIN_TOKEN ENGINE_ADMIN_TOKEN

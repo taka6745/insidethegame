@@ -6,7 +6,7 @@ from typing import Literal, get_args
 from pydantic import BaseModel, ConfigDict, Field, create_model
 from pydantic_core import PydanticUndefined
 
-from .models import AggregateGoal, Clarification, Goal, GoalDecision
+from .models import LocationBound, AggregateGoal, Clarification, Goal, GoalDecision
 
 
 def decision_contract() -> dict:
@@ -55,6 +55,8 @@ def _required_model(source: type[BaseModel]) -> type[BaseModel]:
         annotation = original.annotation
         if name == "inputs" and issubclass(source, Goal):
             annotation = tuple[_required_model(AggregateGoal), ...]
+        elif name == "locations" and issubclass(source, AggregateGoal):
+            annotation = tuple[_required_model(LocationBound), ...]
         elif contains_model(original.annotation):
             raise ValueError("Nested model fields require an explicit strict wire adapter")
         field = deepcopy(original)

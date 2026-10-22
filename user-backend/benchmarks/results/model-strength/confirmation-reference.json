@@ -4,9 +4,9 @@
   "models": [
     {
       "label": "higher-ranked-reference",
-      "model": "dots-studio/dots-3-note-preview:free",
+      "model": "reference model D",
       "expected_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ]
     }
   ],
@@ -783,7 +783,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -791,13 +791,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -807,7 +807,7 @@
           "status": "ok",
           "request_bytes": 7404,
           "request_sha256": "9d9915df23cb62cfda9616878e92a09ffc59ebc94d811a4b27f88948853858eb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.546
         }
@@ -932,7 +932,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -940,13 +940,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1749,
@@ -956,7 +956,7 @@
           "status": "ok",
           "request_bytes": 7446,
           "request_sha256": "a740bf324445260e294e1db3e666a2cc3e23fdb77e811a1f0353ffcc861e36eb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.519
         }
@@ -1116,7 +1116,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1124,13 +1124,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1827,
@@ -1140,7 +1140,7 @@
           "status": "ok",
           "request_bytes": 7699,
           "request_sha256": "969ae09b0767fc10c72a4fad29985942e2a8dbc2ac8f18eb2001532e3edfb27d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.695
         }
@@ -1275,7 +1275,7 @@
       "final_value": 4.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1283,13 +1283,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1750,
@@ -1299,7 +1299,7 @@
           "status": "ok",
           "request_bytes": 7445,
           "request_sha256": "6e2dd346678c92ac0a5e6df31d1559263081077ed4789599a39f93aae476cd1d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.737
         }
@@ -1434,7 +1434,7 @@
       "final_value": 4.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1442,13 +1442,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -1458,7 +1458,7 @@
           "status": "ok",
           "request_bytes": 7395,
           "request_sha256": "7e6d1c707d6c200ce997079828fc415c4a14e582331033d1c044fa8122b87c9a",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.059
         }
@@ -1593,7 +1593,7 @@
       "final_value": 4.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1601,13 +1601,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -1617,7 +1617,7 @@
           "status": "ok",
           "request_bytes": 7404,
           "request_sha256": "4ed5a6a04f79a15c1b195bb29bbf9a20ce217c321dee5ea2ace57e9acfe66e9a",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 12.528
         }
@@ -1764,7 +1764,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1772,13 +1772,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1749,
@@ -1788,7 +1788,7 @@
           "status": "ok",
           "request_bytes": 7446,
           "request_sha256": "64c5480f4a3230098c979b74cd53b0cdffb4f0298651759aa01482113357b6e2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.298
         }
@@ -1935,7 +1935,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1943,13 +1943,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -1959,7 +1959,7 @@
           "status": "ok",
           "request_bytes": 7407,
           "request_sha256": "5de1802db7d508c96ef3409af33e2daa24a81e74b4c20785d7d3dd988ce99726",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.759
         }
@@ -2102,7 +2102,7 @@
       "final_value": 0.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2110,13 +2110,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1747,
@@ -2126,7 +2126,7 @@
           "status": "ok",
           "request_bytes": 7435,
           "request_sha256": "f65449690b85c9ffb95d578959ac18cae97dd579ba5f9ada97b59bc09bca28ba",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.812
         }
@@ -2308,7 +2308,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2316,13 +2316,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1829,
@@ -2332,7 +2332,7 @@
           "status": "ok",
           "request_bytes": 7709,
           "request_sha256": "f04b97320a3bb59ccac42b63a972d93e8c782dfb132f0782c842c0b53f4a6ea2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 10.942
         }
@@ -2475,7 +2475,7 @@
       "final_value": 0.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2483,13 +2483,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -2499,7 +2499,7 @@
           "status": "ok",
           "request_bytes": 7404,
           "request_sha256": "2dd6ac7cfe2122f417d830bb68c0e682283e5e51b107fd801315b800e04faa02",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.866
         }
@@ -2642,7 +2642,7 @@
       "final_value": 0.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2650,13 +2650,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -2666,7 +2666,7 @@
           "status": "ok",
           "request_bytes": 7383,
           "request_sha256": "758276c589c351dc4810ddba4b051f04f3b6a22a1c44f9cb690b483a928b286c",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.767
         }
@@ -2809,7 +2809,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2817,13 +2817,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -2833,7 +2833,7 @@
           "status": "ok",
           "request_bytes": 7420,
           "request_sha256": "23fd48ef2b93c9bf0470d8c6680d3460ca303e9966530e403f6b7840022c6b1e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.886
         }
@@ -2976,7 +2976,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -2984,13 +2984,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -3000,7 +3000,7 @@
           "status": "ok",
           "request_bytes": 7398,
           "request_sha256": "7755571586fcd66a875c0aae5f720c3a6b9d483776f545e2055968bec3d3c9cb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.215
         }
@@ -3153,7 +3153,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -3161,13 +3161,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1747,
@@ -3177,7 +3177,7 @@
           "status": "ok",
           "request_bytes": 7436,
           "request_sha256": "f2384c995d507811c6de2403e4ddbd46fc25a1b8b65a301e41d037c6102dfcf2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.394
         }
@@ -3355,7 +3355,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -3363,13 +3363,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1821,
@@ -3379,7 +3379,7 @@
           "status": "ok",
           "request_bytes": 7687,
           "request_sha256": "cf9db3df4518939776bfa8868c8bee9c82649313b9adc02ef5af3f35b55e5fab",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 10.584
         }
@@ -3532,7 +3532,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -3540,13 +3540,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -3556,7 +3556,7 @@
           "status": "ok",
           "request_bytes": 7386,
           "request_sha256": "dc2299541ad5c3180d0f334e11efe21a4c35376e7809148983a169d62a42dcb2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.606
         }
@@ -3709,7 +3709,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -3717,13 +3717,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -3733,7 +3733,7 @@
           "status": "ok",
           "request_bytes": 7408,
           "request_sha256": "d7d890a689412f0f9c2d459f01edb32a00d5e82baff3e21674784c04124b135a",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.618
         }
@@ -3876,7 +3876,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -3884,13 +3884,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -3900,7 +3900,7 @@
           "status": "ok",
           "request_bytes": 7403,
           "request_sha256": "5b9e76c6eecee62ffb63e334da8cef321efbc374efe597dad97904401bbdd0a6",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.965
         }
@@ -4043,7 +4043,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4051,13 +4051,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1746,
@@ -4067,7 +4067,7 @@
           "status": "ok",
           "request_bytes": 7438,
           "request_sha256": "9d45664bf58dfa3e4338e8d0bdd1cc6dbe86deea4f51b50a45aeb3fe6f53312d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 11.519
         }
@@ -4242,7 +4242,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4250,13 +4250,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -4266,14 +4266,14 @@
           "status": "ok",
           "request_bytes": 7385,
           "request_sha256": "2901f33a6133855496d699dea51af8373df4d7e07d1c34e657d75186733043b9",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.053
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1792,
@@ -4283,7 +4283,7 @@
           "status": "ok",
           "request_bytes": 7608,
           "request_sha256": "39b8957c10361207000a599973803445456d51d15fd7ee236804d7a1bf40b70e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.159
         }
@@ -4426,7 +4426,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4434,13 +4434,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1749,
@@ -4450,7 +4450,7 @@
           "status": "ok",
           "request_bytes": 7422,
           "request_sha256": "d0016dc8a17ecb356c6e5317de2fca7465da111edcc677ab018d19e14e26e4be",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.922
         }
@@ -4593,7 +4593,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4601,13 +4601,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1743,
@@ -4617,7 +4617,7 @@
           "status": "ok",
           "request_bytes": 7428,
           "request_sha256": "7a64de613c6b642645ba974a9998f218b1ae3c9669ac0ffd71324a3ab6a91313",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.946
         }
@@ -4760,7 +4760,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4768,13 +4768,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -4784,7 +4784,7 @@
           "status": "ok",
           "request_bytes": 7394,
           "request_sha256": "3d803e3efaa5bc270e9f074f1e7249b0875a50ea9bc7f6805ce1b292bb67404b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.184
         }
@@ -4937,7 +4937,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -4945,13 +4945,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1751,
@@ -4961,7 +4961,7 @@
           "status": "ok",
           "request_bytes": 7434,
           "request_sha256": "78408f264da6739b13be0c7d3213be419695e832c58cc518a0f3ae71f5cc98bd",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.277
         }
@@ -5114,7 +5114,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5122,13 +5122,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1746,
@@ -5138,7 +5138,7 @@
           "status": "ok",
           "request_bytes": 7420,
           "request_sha256": "c77a5a237727d44d01dbae88b01467bf29d7440ce469d0a7e3a38c6f9c43d3cb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.616
         }
@@ -5273,7 +5273,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5281,13 +5281,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1749,
@@ -5297,7 +5297,7 @@
           "status": "ok",
           "request_bytes": 7426,
           "request_sha256": "523430802d8c0d8ff064c89ad379dddde7a27b71130b4e5386f1f9082561e2a7",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.056
         }
@@ -5458,7 +5458,7 @@
         "actual": 1.0
       },
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5466,13 +5466,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -5482,7 +5482,7 @@
           "status": "ok",
           "request_bytes": 7398,
           "request_sha256": "5c9b1a7748208188ea9dd3c7c2e6ceee9e086113a368aab28fb971f876bb648e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 14.513
         }
@@ -5617,7 +5617,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5625,13 +5625,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1748,
@@ -5641,7 +5641,7 @@
           "status": "ok",
           "request_bytes": 7403,
           "request_sha256": "56bd5cc7df0733f9b06fc6bb2102f709bee16c818719e60169a0f004b9ba8ffc",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.936
         }
@@ -5794,7 +5794,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5802,13 +5802,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1743,
@@ -5818,7 +5818,7 @@
           "status": "ok",
           "request_bytes": 7420,
           "request_sha256": "e1db6032fbd93d6a22fe8c8ba2fd84fa4881d6a693b22b512ee1b7cf6e3220a5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.689
         }
@@ -5982,7 +5982,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -5990,13 +5990,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -6006,14 +6006,14 @@
           "status": "ok",
           "request_bytes": 7387,
           "request_sha256": "4785b62434ae956fda570b3b563c2d75b9ab18ba173cd3982c087f06c2c3b9b5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.195
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1789,
@@ -6023,7 +6023,7 @@
           "status": "ok",
           "request_bytes": 7598,
           "request_sha256": "63cbb5d205cb76586f322125ae0d0f002cebf831df63c59a4737473c7ab1e243",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.761
         }
@@ -6176,7 +6176,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6184,13 +6184,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -6200,7 +6200,7 @@
           "status": "ok",
           "request_bytes": 7410,
           "request_sha256": "dc26588c590d96c3d30bb14a452cd3e082af2d4efa1f1ffd08967c40121f9af4",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.578
         }
@@ -6353,7 +6353,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6361,13 +6361,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -6377,7 +6377,7 @@
           "status": "ok",
           "request_bytes": 7395,
           "request_sha256": "fd7a0e396045be9d200ebd19fdce25db02f24d81ecbb1d94ff8109f8ccba67c1",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.427
         }
@@ -6492,7 +6492,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6500,13 +6500,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -6516,7 +6516,7 @@
           "status": "ok",
           "request_bytes": 7427,
           "request_sha256": "dd2955f117881f1e4cc744e4c917279fa47263754d0804b8a1076c1092b07cf8",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.203
         }
@@ -6631,7 +6631,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6639,13 +6639,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -6655,7 +6655,7 @@
           "status": "ok",
           "request_bytes": 7408,
           "request_sha256": "8e34d2dbad509f0e30fc519bbdafb4dd9fbb8992f4a5b0439b65b3075b1c9a50",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.283
         }
@@ -6770,7 +6770,7 @@
       "final_value": 5.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6778,13 +6778,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -6794,7 +6794,7 @@
           "status": "ok",
           "request_bytes": 7402,
           "request_sha256": "935e363af6405c3ea6b12fd552d521c7a8557b30bf90ff211c602043b39d86da",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.909
         }
@@ -6937,7 +6937,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -6945,13 +6945,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1733,
@@ -6961,7 +6961,7 @@
           "status": "ok",
           "request_bytes": 7390,
           "request_sha256": "2fa27b87ea3d22cf422b6c852f10e0eb1d5c33b07aff01fa9eaf9a60b76274fa",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.435
         }
@@ -7104,7 +7104,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7112,13 +7112,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -7128,7 +7128,7 @@
           "status": "ok",
           "request_bytes": 7419,
           "request_sha256": "a34194fcf060514708abca0352d5fc46658e03b71df213e22deccd7c26fa83c3",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 10.636
         }
@@ -7271,7 +7271,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7279,13 +7279,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -7295,7 +7295,7 @@
           "status": "ok",
           "request_bytes": 7416,
           "request_sha256": "6766dfadac013ec1d18eb9e9895fe6935123025afa15cde5c6cb80ea3c89c4de",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.881
         }
@@ -7438,7 +7438,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7446,13 +7446,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -7462,7 +7462,7 @@
           "status": "ok",
           "request_bytes": 7398,
           "request_sha256": "2a0c03115ec46b8580b51e202197f6b2fc3afeed43ef88bd0f2085aac29913d3",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 3.929
         }
@@ -7637,7 +7637,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7645,13 +7645,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1733,
@@ -7661,14 +7661,14 @@
           "status": "ok",
           "request_bytes": 7385,
           "request_sha256": "3666170c177128ff19c22632d168f2a39a32de4ce9dc97ef0c79e925c5579e64",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.058
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1780,
@@ -7678,7 +7678,7 @@
           "status": "ok",
           "request_bytes": 7579,
           "request_sha256": "7437bf1f4c4e86f49b927def8adcb55d352406a5ef368f04d50c9814d99c9b7f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.433
         }
@@ -7821,7 +7821,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7829,13 +7829,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1737,
@@ -7845,7 +7845,7 @@
           "status": "ok",
           "request_bytes": 7389,
           "request_sha256": "ceaf46ff7a2ae9bf04102ad04ae21e36c92243d9a624936deaa7ab0f661c721f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.311
         }
@@ -7960,7 +7960,7 @@
       "final_value": 60.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -7968,13 +7968,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -7984,7 +7984,7 @@
           "status": "ok",
           "request_bytes": 7409,
           "request_sha256": "97ae57d7c30a5b67796113dcf132fdbc05ad8a5e815c394a21ed5be3c0ee403b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.273
         }
@@ -8099,7 +8099,7 @@
       "final_value": 60.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8107,13 +8107,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -8123,7 +8123,7 @@
           "status": "ok",
           "request_bytes": 7431,
           "request_sha256": "9842291ee91b94f198177984bf3f4b2498782cf477454fa1653ab2266909397e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 12.333
         }
@@ -8246,7 +8246,7 @@
         "actual": 1.0
       },
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8254,13 +8254,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -8270,7 +8270,7 @@
           "status": "ok",
           "request_bytes": 7393,
           "request_sha256": "52f3742d7b008d8ff9dc36c6477bd1343d8a91c71167f0b8bd17b105154b9b86",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.226
         }
@@ -8413,7 +8413,7 @@
       "final_value": 27.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8421,13 +8421,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -8437,7 +8437,7 @@
           "status": "ok",
           "request_bytes": 7443,
           "request_sha256": "a86e129d9a5b021218854738c1e080ffa838defb7e17967b80d9a712708605b9",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.203
         }
@@ -8580,7 +8580,7 @@
       "final_value": 27.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8588,13 +8588,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -8604,7 +8604,7 @@
           "status": "ok",
           "request_bytes": 7396,
           "request_sha256": "bf089c85fbfcc152b66f0ade7311b60e2e089076cbb1627e116a86dd28739189",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.334
         }
@@ -8747,7 +8747,7 @@
       "final_value": 27.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8755,13 +8755,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -8771,7 +8771,7 @@
           "status": "ok",
           "request_bytes": 7397,
           "request_sha256": "a985cbf2a304873d68814df4219ec62e0c899ec2f26e272806ab7b42af669ca4",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.123
         }
@@ -8914,7 +8914,7 @@
       "final_value": 13.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -8922,13 +8922,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1747,
@@ -8938,7 +8938,7 @@
           "status": "ok",
           "request_bytes": 7433,
           "request_sha256": "c26db873ac5de5e2d0e9d13ffa325adc95dd75313f62da06eb020bbd99881301",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.964
         }
@@ -9081,7 +9081,7 @@
       "final_value": 13.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -9089,13 +9089,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -9105,7 +9105,7 @@
           "status": "ok",
           "request_bytes": 7397,
           "request_sha256": "233bfa4f5e6704988b43884aa878a3dbfb13eba50be851659636ecc04c75aff4",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.892
         }
@@ -9283,7 +9283,7 @@
       "final_value": 13.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -9291,13 +9291,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1827,
@@ -9307,7 +9307,7 @@
           "status": "ok",
           "request_bytes": 7700,
           "request_sha256": "b9263994bd9a3bac983830ed756ac7dcb852044f43bf66840c9e151d1ea4f9df",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.522
         }
@@ -9460,7 +9460,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -9468,13 +9468,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -9484,7 +9484,7 @@
           "status": "ok",
           "request_bytes": 7431,
           "request_sha256": "f4fd6e6dabeadc93f3dd5af3facbb20bc296bffe9fc1d2671a070bb2b5d02fe6",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.082
         }
@@ -9691,7 +9691,7 @@
       "ok": false,
       "reason": "different_constraints",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -9699,13 +9699,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -9715,7 +9715,7 @@
           "status": "ok",
           "request_bytes": 7410,
           "request_sha256": "5faf6ce74cdd72a3e635ae426daf5dc2e2102762772139d3a09394573173695d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.455
         }
@@ -9868,7 +9868,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -9876,13 +9876,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1737,
@@ -9892,7 +9892,7 @@
           "status": "ok",
           "request_bytes": 7398,
           "request_sha256": "958d946dd71b2c61b7d4d86616c1983f882eea6c8fcb28f7942f830fb2641c93",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.923
         }
@@ -10035,7 +10035,7 @@
       "final_value": 15.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10043,13 +10043,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1744,
@@ -10059,7 +10059,7 @@
           "status": "ok",
           "request_bytes": 7441,
           "request_sha256": "347f5734f4594d882dd79469871dde6ee4d316ea38c474e1b09be1bc2955d1aa",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.165
         }
@@ -10202,7 +10202,7 @@
       "final_value": 15.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10210,13 +10210,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -10226,7 +10226,7 @@
           "status": "ok",
           "request_bytes": 7415,
           "request_sha256": "c5e84da888966d9a22137c40c20da9d37526b709fc6d8f8d58471eec603cf65f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 10.887
         }
@@ -10341,7 +10341,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10349,13 +10349,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -10365,7 +10365,7 @@
           "status": "ok",
           "request_bytes": 7424,
           "request_sha256": "44e7a4af45e66201842604ae7946b13cd556c92d05c013e1727a697f433d5cd7",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.625
         }
@@ -10540,7 +10540,7 @@
       "final_value": 15.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10548,13 +10548,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -10564,14 +10564,14 @@
           "status": "ok",
           "request_bytes": 7395,
           "request_sha256": "8534eea19943a0b254921615a27382aee00105f3e0410a4fd855c01873fbeeb2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.264
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1797,
@@ -10581,7 +10581,7 @@
           "status": "ok",
           "request_bytes": 7648,
           "request_sha256": "bec927ae4a118b91fc7695bb422090954bf255d68b51cbfc9906de373ad587ad",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 11.048
         }
@@ -10696,7 +10696,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10704,13 +10704,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -10720,7 +10720,7 @@
           "status": "ok",
           "request_bytes": 7395,
           "request_sha256": "75cb4569f51aa23dc27e56a6dbc22730f9c88ffa6bbb1e6326fd2dbe9ebba66d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.151
         }
@@ -10835,7 +10835,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10843,13 +10843,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -10859,7 +10859,7 @@
           "status": "ok",
           "request_bytes": 7385,
           "request_sha256": "3781734fc87a4bc72448a062597b962565bfe56ac6372a35e82533224362e58e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 4.14
         }
@@ -10978,7 +10978,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -10986,13 +10986,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -11002,7 +11002,7 @@
           "status": "ok",
           "request_bytes": 7423,
           "request_sha256": "b6c39f53c30bef8fe15de3d2f05cd126557553504586622f86c85d14c06afbcc",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.994
         }
@@ -11121,7 +11121,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11129,13 +11129,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -11145,7 +11145,7 @@
           "status": "ok",
           "request_bytes": 7403,
           "request_sha256": "edbdc67713a881eb1060dcc50d6020b4164f1815ee93c66079b7004885538f80",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.938
         }
@@ -11264,7 +11264,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11272,13 +11272,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -11288,7 +11288,7 @@
           "status": "ok",
           "request_bytes": 7392,
           "request_sha256": "09e914e2bcb069cb69fdb2bfe07bcb36330637946a2ff01904cbb9c7e8723fa2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.27
         }
@@ -11413,7 +11413,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11421,13 +11421,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -11437,7 +11437,7 @@
           "status": "ok",
           "request_bytes": 7436,
           "request_sha256": "39b34d660075a6cf62494d84e21a7b8a4326991373b36f002199fa380d9a94ab",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.793
         }
@@ -11562,7 +11562,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11570,13 +11570,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -11586,7 +11586,7 @@
           "status": "ok",
           "request_bytes": 7385,
           "request_sha256": "dbcf0f11434656ec97da1c0874e1a36c00916449014be2d744c64cc7187871df",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.038
         }
@@ -11711,7 +11711,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11719,13 +11719,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -11735,7 +11735,7 @@
           "status": "ok",
           "request_bytes": 7393,
           "request_sha256": "61a6ffab6946432b1fd8fd0da9f05332197698e8b685d4115b3036f19d7e1043",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.313
         }
@@ -11888,7 +11888,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -11896,13 +11896,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1743,
@@ -11912,7 +11912,7 @@
           "status": "ok",
           "request_bytes": 7409,
           "request_sha256": "ff962cfff071ff79b61a10a852eb0291c843051ddf2eb5e042a747eb73100298",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.733
         }
@@ -12065,7 +12065,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12073,13 +12073,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1745,
@@ -12089,7 +12089,7 @@
           "status": "ok",
           "request_bytes": 7420,
           "request_sha256": "cd7ae6d0506e8986cdb21effa2f151bac6cd535d7e8205a6b32594044a844045",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 11.763
         }
@@ -12214,7 +12214,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12222,13 +12222,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -12238,7 +12238,7 @@
           "status": "ok",
           "request_bytes": 7412,
           "request_sha256": "6413eebe77eb0bb1e27c6c4512f0e8de33f7c5fcb8b2315b8918687e12504d5d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.13
         }
@@ -12426,7 +12426,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12434,13 +12434,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1827,
@@ -12450,7 +12450,7 @@
           "status": "ok",
           "request_bytes": 7682,
           "request_sha256": "e530df5f6e4e27385abb6d86f8b40da1347de854a886ff546ea656d0f28a98fb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 12.939
         }
@@ -12575,7 +12575,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12583,13 +12583,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1735,
@@ -12599,7 +12599,7 @@
           "status": "ok",
           "request_bytes": 7387,
           "request_sha256": "3898a7b5407ef21c7a2af15fbfd80d95a939ca965b98e134c8e354e59510f4a1",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.879
         }
@@ -12742,7 +12742,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12750,13 +12750,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -12766,7 +12766,7 @@
           "status": "ok",
           "request_bytes": 7425,
           "request_sha256": "d77c6c779b8878f6e1cb23a91891eadd394323ca496ec7107107a88696436dd5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 4.243
         }
@@ -12891,7 +12891,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -12899,13 +12899,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -12915,7 +12915,7 @@
           "status": "ok",
           "request_bytes": 7377,
           "request_sha256": "29e72678fbeac300c955241ad5a86ca81aaca72318c5e4dcca8b2da22fa133e3",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.531
         }
@@ -13058,7 +13058,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13066,13 +13066,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -13082,7 +13082,7 @@
           "status": "ok",
           "request_bytes": 7385,
           "request_sha256": "61781bbbaa604588afc2c22129b963eb7773cbe8dfe5077caa23d17473f9bea4",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.293
         }
@@ -13215,7 +13215,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13223,13 +13223,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -13239,7 +13239,7 @@
           "status": "ok",
           "request_bytes": 7419,
           "request_sha256": "371df74ffbe0125702f78c94cc01d3c1e94211dc17172bb466814b2e5eef392e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.348
         }
@@ -13414,7 +13414,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13422,13 +13422,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1733,
@@ -13438,14 +13438,14 @@
           "status": "ok",
           "request_bytes": 7376,
           "request_sha256": "7045c6961accd782a2ae0004b325ab892adbd5e438d35c8b0a90e5cc7d1f8408",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.61
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1787,
@@ -13455,7 +13455,7 @@
           "status": "ok",
           "request_bytes": 7590,
           "request_sha256": "0a271c2a1d0a5560b4ab11c33c3d13297faea62a1a2ad0feb83589c8600eb87b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.843
         }
@@ -13588,7 +13588,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13596,13 +13596,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -13612,7 +13612,7 @@
           "status": "ok",
           "request_bytes": 7390,
           "request_sha256": "abc8760f3f3a3a0d7fed36b5b68aa6a6e06037d2229202610d6e58075ea07059",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.258
         }
@@ -13780,7 +13780,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13788,13 +13788,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1818,
@@ -13804,7 +13804,7 @@
           "status": "ok",
           "request_bytes": 7666,
           "request_sha256": "ef757d37a8a8b05b610420335bf0e2300ffccca927c283edf78fecf11db3c122",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.081
         }
@@ -13937,7 +13937,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -13945,13 +13945,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -13961,7 +13961,7 @@
           "status": "ok",
           "request_bytes": 7423,
           "request_sha256": "935416186d1269ce90c21f328b656ef78b98489a05e33686ef429d4c095bd422",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.386
         }
@@ -14094,7 +14094,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14102,13 +14102,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1734,
@@ -14118,7 +14118,7 @@
           "status": "ok",
           "request_bytes": 7389,
           "request_sha256": "1b35258db85f4fd242506ce4a426bee7108292b0a2bf5a4fbca2f2e745c1dd42",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.355
         }
@@ -14251,7 +14251,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14259,13 +14259,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -14275,7 +14275,7 @@
           "status": "ok",
           "request_bytes": 7386,
           "request_sha256": "3c0d83cc816baefb2704f3407d3d12500bfd590b2cda7de8b81c3dd81c4fea1f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.314
         }
@@ -14408,7 +14408,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14416,13 +14416,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -14432,7 +14432,7 @@
           "status": "ok",
           "request_bytes": 7426,
           "request_sha256": "1a715b5a3dbba13c88f22d48a828ea0bf7679e46a7d8c6068aed125c6be4f601",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.704
         }
@@ -14565,7 +14565,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14573,13 +14573,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1733,
@@ -14589,7 +14589,7 @@
           "status": "ok",
           "request_bytes": 7386,
           "request_sha256": "1f942041a5df1c16156fc4d246b8ba3ca192eea9f0ea619130513a718b9156a9",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.468
         }
@@ -14757,7 +14757,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14765,13 +14765,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1818,
@@ -14781,7 +14781,7 @@
           "status": "ok",
           "request_bytes": 7691,
           "request_sha256": "d2057146e8ec00bf2617ab7da534efb8a23deedcf0c78c47fe126b7130e7f3e9",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.123
         }
@@ -14922,7 +14922,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -14930,13 +14930,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1742,
@@ -14946,7 +14946,7 @@
           "status": "ok",
           "request_bytes": 7447,
           "request_sha256": "3a5180435d1231d87bd4416565634d1afb80d1a1b4de2f8bd787623648c85683",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.871
         }
@@ -15087,7 +15087,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15095,13 +15095,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1737,
@@ -15111,7 +15111,7 @@
           "status": "ok",
           "request_bytes": 7416,
           "request_sha256": "9320b6f17a0b6a84cbef1d8657f74924c1d228670e86fd0f53c46766495aef63",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 9.602
         }
@@ -15284,7 +15284,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15292,13 +15292,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1736,
@@ -15308,14 +15308,14 @@
           "status": "ok",
           "request_bytes": 7410,
           "request_sha256": "5cc3a8548d5ce2ad166517a387b481d57bdedbd50ff347c84b716abe266e8731",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.647
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1793,
@@ -15325,7 +15325,7 @@
           "status": "ok",
           "request_bytes": 7653,
           "request_sha256": "1f96c42257869e1c5c5ce2bd16e96a009e4d99f8e79a1c93f84797f7641947f7",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.122
         }
@@ -15470,7 +15470,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15478,13 +15478,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1758,
@@ -15494,7 +15494,7 @@
           "status": "ok",
           "request_bytes": 7449,
           "request_sha256": "b9c1d82e0aabcf5a7eff3ed01b97a4d9f924ec7b8297c1648b535501441ec7fc",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 10.567
         }
@@ -15643,7 +15643,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15651,13 +15651,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1751,
@@ -15667,7 +15667,7 @@
           "status": "ok",
           "request_bytes": 7431,
           "request_sha256": "3a145ecfe2c176077862823460b2e207320995e15234b334e8b797e0ea6dd4f2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 7.717
         }
@@ -15721,7 +15721,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15729,13 +15729,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -15745,7 +15745,7 @@
           "status": "ok",
           "request_bytes": 7432,
           "request_sha256": "acd2eb3c033284609b54c252764929942f64dee5b9d3e3e64be354146b31db24",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 4.843
         }
@@ -15799,7 +15799,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15807,13 +15807,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -15823,7 +15823,7 @@
           "status": "ok",
           "request_bytes": 7421,
           "request_sha256": "9ae54798b2156fe83b108bc05d923aa4d64294418278843cabbf3a8ec865ad94",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.683
         }
@@ -15877,7 +15877,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15885,13 +15885,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -15901,7 +15901,7 @@
           "status": "ok",
           "request_bytes": 7422,
           "request_sha256": "8ec24494cc3bfaa3a29f216002b680bfd1de68c626479d61610455b6f7e5f1b5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.029
         }
@@ -15955,7 +15955,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -15963,13 +15963,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1738,
@@ -15979,7 +15979,7 @@
           "status": "ok",
           "request_bytes": 7417,
           "request_sha256": "655d3c413eeb955472624148b818da2bd14c1a490f443639ff611474ac40cfbd",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.156
         }
@@ -16156,7 +16156,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16164,13 +16164,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1741,
@@ -16180,14 +16180,14 @@
           "status": "ok",
           "request_bytes": 7397,
           "request_sha256": "59650196f48d046ee76f0b015410596c89a598fb15f30e0776e2811ed5d6d14f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 17.81
         },
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1848,
@@ -16197,7 +16197,7 @@
           "status": "ok",
           "request_bytes": 7764,
           "request_sha256": "02a9fa4aa56eaea1431122ab070787bc3b8bfa8ec23c74c33e63e86da027cb1d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 11.319
         }
@@ -16251,7 +16251,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16259,13 +16259,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1748,
@@ -16275,7 +16275,7 @@
           "status": "ok",
           "request_bytes": 7424,
           "request_sha256": "1e7892fd46a9baedc2ddc9c1afe9d3e96ef8e07e6b0dff6522fa22d57fe19a2b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.153
         }
@@ -16329,7 +16329,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16337,13 +16337,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1748,
@@ -16353,7 +16353,7 @@
           "status": "ok",
           "request_bytes": 7448,
           "request_sha256": "6fcec7b1e97d95cc65efbf72023c8d1841c5c37e8517b228f167db4342fc6d38",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.837
         }
@@ -16407,7 +16407,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16415,13 +16415,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1739,
@@ -16431,7 +16431,7 @@
           "status": "ok",
           "request_bytes": 7418,
           "request_sha256": "aa7efca7d8b64b106dc7a1e12c05152bb9d71b0ba1ca326e17a21b1b1c6f08f5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 8.193
         }
@@ -16485,7 +16485,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16493,13 +16493,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1740,
@@ -16509,7 +16509,7 @@
           "status": "ok",
           "request_bytes": 7429,
           "request_sha256": "d46fde5fa8d5267fc3a0f846a5432c6b6115ca19d9f983b0ab61ab7e91c81447",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 4.747
         }
@@ -16563,7 +16563,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16571,13 +16571,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1747,
@@ -16587,7 +16587,7 @@
           "status": "ok",
           "request_bytes": 7438,
           "request_sha256": "ca09da3148a88dab9cf74f91bb225401f3bf56c86a786ba293e7b775ba18498e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 3.536
         }
@@ -16641,7 +16641,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -16649,13 +16649,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1743,
@@ -16665,7 +16665,7 @@
           "status": "ok",
           "request_bytes": 7431,
           "request_sha256": "86baf937cc595107897517931e6173676679149ea913c8e713be7acca2c2fbe5",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 6.294
         }

@@ -29,9 +29,13 @@ resource "azurerm_cosmosdb_sql_database" "narrative" {
   account_name        = azurerm_cosmosdb_account.narrative.name
 }
 
-# All partitioned by matchId (docs/design/narrative-generation-engine.md section 8).
+# All partitioned by matchId (docs/design/narrative-generation-engine.md section 8); analyses are
+# immutable storyline snapshots, storylines their current projection; subscriptionDecisions are the
+# immutable story-follow decisions, subscriptionNarratives the follow narratives. A purge deletes all but
+# the tombstones.
 resource "azurerm_cosmosdb_sql_container" "containers" {
-  for_each              = toset(["checkpoints", "contextBlocks", "narratives"])
+  for_each = toset(["checkpoints", "contextBlocks", "narratives", "analyses", "storylines", "subscriptionDecisions",
+  "subscriptionNarratives", "tombstones"])
   name                  = each.key
   resource_group_name   = azurerm_resource_group.narrative.name
   account_name          = azurerm_cosmosdb_account.narrative.name
@@ -40,7 +44,7 @@ resource "azurerm_cosmosdb_sql_container" "containers" {
   partition_key_version = 2
 }
 
-# You, for local runs and tests (DefaultAzureCredential via `az login`). Phase 7 adds the engine's identity.
+# You, for local runs and tests (DefaultAzureCredential via `az login`). The engine's identity: app.tf.
 resource "azurerm_cosmosdb_sql_role_assignment" "me" {
   resource_group_name = azurerm_resource_group.narrative.name
   account_name        = azurerm_cosmosdb_account.narrative.name

@@ -1,12 +1,12 @@
 # Transport
 
-> **In short:** how messages get in and narratives get out. `servicebus.py` listens to the ETL and presence topics and publishes to `narratives`; `files.py` does the same with JSONL files so a whole match can be replayed locally.
+> **In short:** how messages get in and narratives get out. `servicebus.py` listens to the ETL topic and publishes to `narratives`; `files.py` does the same with JSONL files so a whole match can be replayed locally.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · deployed |
+| **Status** | Implemented · tested · applied to Azure 22 Oct (Azure test; demo acceptance pending) |
 | **Code** | [`narrative_engine/transport/`](../../narrative_engine/transport/): `servicebus.py`, `files.py` |
-| **Topics** | In: `match-notifications` (sub `narrative-engine`), `presence` (sub `narrative-engine`). Out: `narratives` |
+| **Topics** | In: `match-notifications` (sub `narrative-engine` in Azure, `narrative-live` locally). Out: `narratives` |
 | **Auth** | Shared access keys scoped to listen or send (LATER: managed identity) |
 | **Tests** | `test_servicebus.py` |
 
@@ -21,7 +21,7 @@
 | Body is not JSON | Dead-letter at once (`unreadable`) |
 | Lock lost while settling | Logged as a warning; redelivery is harmless because recording is idempotent |
 
-The message type comes from the body's `messageType`, or is fixed (`PresenceChanged`) for the presence topic. Locks are auto-renewed as a safety net.
+The message type comes from the `notificationType` property or the body's `messageType`. Locks are auto-renewed as a safety net.
 
 ## 2. Publishing (`ServiceBusPublisher`)
 
@@ -29,8 +29,9 @@ The message type comes from the body's `messageType`, or is fixed (`PresenceChan
 
 - Body: the narrative document ([contracts](../../contracts/README.md#output-2-service-bus-live-narratives)).
 - `MessageId` = narrative `id`; the topic's duplicate detection (10 minutes) drops repeats.
-- Application properties `userType` and `matchId` for subscription filters.
+- Application properties `userType`, `matchId` and `kind` (`bucket` or `subscription`, a follow narrative) for subscription filters.
 - The sender is opened once under a lock before the first send, which avoids an SDK race when many buckets publish at once.
+- A failed send replaces the sender. A throttled, unreachable or timed-out broker raises `BrokerUnavailable`, which pauses the match's work with backoff (logged as a pause, not a fault); the step then sends again.
 
 ## 3. Files (`files.py`)
 

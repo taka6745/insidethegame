@@ -3,9 +3,9 @@
     python -m devtools local-up                  start local SQL + DAB, apply migrations
     python -m devtools migrate [--azure SERVER]  apply sql/migrations (Azure uses your az login)
     python -m devtools load-local REPLAY.jsonl   insert what the cloud job would write for a replay
-    python -m devtools verify REPLAY.jsonl       compare GraphQL results with the reference pipeline
+    python -m devtools verify REPLAY.jsonl       compare GraphQL results (incl. spadlActions) with the references
     python -m devtools local-down [--wipe]
-    python -m devtools azure-setup               after terraform apply: migrations + identity grants
+    python -m devtools azure-setup               after terraform apply: migrations, Azure triggers, grants
     python -m devtools asa start|stop|status     Stream Analytics bills only while running
     python -m devtools check-notifications REPLAY.jsonl   peek Service Bus and compare with the reference
 """
@@ -20,11 +20,12 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from reference import pipeline
+from reference import pipeline, spadl
 
 ETL = Path(__file__).resolve().parents[1]
 ENV_FILE = ETL / ".env"
 DATABASE = "insidethegame"
+DAB_PROCEDURES = ("statsAtSeq", "trendMinutesAtSeq", "trendsAtSeq", "trendSpellsAtSeq")  # DAB executes these
 LOCAL_GRAPHQL = "http://localhost:5000/graphql"
 
 
@@ -43,9 +44,21 @@ def sqlcmd_args(azure_server=None, database=DATABASE):
     return ["sqlcmd", "-S", "tcp:localhost,14330", "-U", "sa", "-P", local_password(), "-d", database, "-C"]
 
 
+RESUME_WAIT_SECONDS, RESUME_TRIES = 15, 12  # a paused serverless database resumes on the first login (~1 min)
+
+
+def run_sql(args):
+    """Runs sqlcmd; retries while a paused Azure SQL serverless database resumes."""
+    for attempt in range(RESUME_TRIES):
+        result = subprocess.run(args, capture_output=True, text=True)
+        if not result.returncode or "is not currently available" not in result.stdout + result.stderr:
+            return result
+        time.sleep(RESUME_WAIT_SECONDS)
+    return result
+
+
 def sql(query, azure_server=None, database=DATABASE):
-    result = subprocess.run([*sqlcmd_args(azure_server, database), "-b", "-h", "-1", "-W", "-Q",
-                             f"SET NOCOUNT ON; {query}"], capture_output=True, text=True)
+    result = run_sql([*sqlcmd_args(azure_server, database), "-b", "-h", "-1", "-W", "-Q", f"SET NOCOUNT ON; {query}"])
     if result.returncode:
         raise SystemExit(f"sqlcmd failed: {result.stdout}{result.stderr}")
     return result.stdout.strip()
@@ -53,7 +66,7 @@ def sql(query, azure_server=None, database=DATABASE):
 
 def sql_file(path, azure_server=None):
     # -x: payload JSON is data, never sqlcmd $(variables)
-    result = subprocess.run([*sqlcmd_args(azure_server), "-b", "-x", "-i", str(path)], capture_output=True, text=True)
+    result = run_sql([*sqlcmd_args(azure_server), "-b", "-x", "-i", str(path)])
     if result.returncode:
         raise SystemExit(f"{path.name} failed: {result.stdout}{result.stderr}")
 
@@ -187,6 +200,7 @@ def verify(replay, window, url):
     raw = fetch_all(url, "rawEvents", "id", match_id)
     if len(raw) != len(outputs["rawEvents"]):
         problems.append(f"rawEvents: expected {len(outputs['rawEvents'])}, got {len(raw)}")
+    problems += verify_spadl(url, messages, outputs, match_id)
     final = [r for r in actual if key(r)[:2] == max(key(x)[:2] for x in actual)]
     print("final:", {r["position"]: r["goals"] for r in final}, f"| {len(actual)} stat rows, "
           f"{len(key_events)} key events, {len(raw)} raw events")
@@ -194,6 +208,21 @@ def verify(replay, window, url):
         print("\n".join(problems[:40]))
         raise SystemExit(f"{len(problems)} mismatches")
     print("verify: OK")
+
+
+def verify_spadl(url, messages, outputs, match_id):
+    """spadlActions equal the reference conversion of the replay's MA3 rows (feed-style replays only: the
+    post-processor needs MA3 eventSeq and canonical events for the watermark)."""
+    ma3 = [m for m in messages if pipeline.kind(m) == "MA3"]
+    if not ma3 or any("eventSeq" not in m for m in ma3):
+        print("spadlActions: skipped (the replay's MA3 rows carry no eventSeq)")
+        return []
+    expected = spadl.final_actions(ma3, outputs["matches"][0]["homeContestantId"])
+    actual = sorted(fetch_all(url, "spadlActions", " ".join(spadl.COLUMNS), match_id), key=lambda a: a["actionId"])
+    problems = [f"spadlActions: expected {len(expected)}, got {len(actual)}"] if len(actual) != len(expected) else []
+    problems += [f"spadlActions {e['actionId']}: expected {e}, got {a}" for e, a in zip(expected, actual) if e != a]
+    print(f"spadlActions: {len(actual)} rows")
+    return problems
 
 
 def terraform_outputs():
@@ -208,11 +237,26 @@ def az(*args):
 def azure_setup():
     out = terraform_outputs()
     migrate(out["sql_server"])
-    # Managed identities connect as database users named after their resource.
-    for name, roles in ((out["stream_analytics_job"], ("db_datareader", "db_datawriter")),
-                        (out["dab_identity_name"], ("db_datareader",))):
+    # Rerunnable (CREATE OR ALTER): tombstone gate and watermark for Stream Analytics' rows.
+    for path in sorted((ETL / "sql" / "azure").glob("*.sql")):
+        sql_file(path, out["sql_server"])
+        print(f"applied {path.name}")
+    # Managed identities connect as database users named after their resource. The purge API (admin.tf)
+    # and the SPADL post-processor (spadl.tf) exist once admin_image_tag is set; rerun this after that apply.
+    identities = [(out["stream_analytics_job"], ("db_datareader", "db_datawriter")),
+                  (out["dab_identity_name"], ("db_datareader",))]
+    for app in ("admin_identity_name", "spadl_identity_name"):  # purge API, SPADL post-processor
+        if out.get(app):
+            identities.append((out[app], ("db_datareader", "db_datawriter")))
+    for name, roles in identities:
         grants = " ".join(f"ALTER ROLE {role} ADD MEMBER [{name}];" for role in roles)
-        sql(f"IF USER_ID('{name}') IS NULL CREATE USER [{name}] FROM EXTERNAL PROVIDER; {grants}", out["sql_server"])
+        if "db_datawriter" not in roles:  # DAB serves the stat catalogue and trend procedures.
+            grants += "".join(f" GRANT EXECUTE ON OBJECT::dbo.{proc} TO [{name}];" for proc in DAB_PROCEDURES)
+        # Container apps can be recreated with a new identity under the same name: recreate their users
+        # so the grant follows the current identity. The Stream Analytics job keeps its identity.
+        renew = f"IF USER_ID('{name}') IS NOT NULL DROP USER [{name}]; " if name != out["stream_analytics_job"] else ""
+        sql(f"{renew}IF USER_ID('{name}') IS NULL CREATE USER [{name}] FROM EXTERNAL PROVIDER; {grants}",
+            out["sql_server"])
         print(f"granted {', '.join(roles)} to {name}")
 
 
@@ -221,14 +265,18 @@ def asa(action):
     job = (f"/subscriptions/{az('account', 'show', '--query', 'id', '-o', 'tsv').strip()}/resourceGroups/"
            f"{out['resource_group']}/providers/Microsoft.StreamAnalytics/streamingjobs/{out['stream_analytics_job']}")
     api = "?api-version=2020-03-01"
+
+    def state():
+        return az("rest", "--method", "get", "--url", f"https://management.azure.com{job}{api}",
+                  "--query", "properties.jobState", "-o", "tsv").strip()
+    if action == "start" and state() in ("Running", "Starting", "Degraded", "Scaling", "Restarting"):
+        action = "status"  # already running: rerunning `./dev azure up` must not fail here
     if action == "start":
         az("rest", "--method", "post", "--url", f"https://management.azure.com{job}/start{api}",
            "--body", json.dumps({"outputStartMode": "JobStartTime"}))
     elif action == "stop":
         az("rest", "--method", "post", "--url", f"https://management.azure.com{job}/stop{api}")
-    state = az("rest", "--method", "get", "--url", f"https://management.azure.com{job}{api}",
-               "--query", "properties.jobState", "-o", "tsv").strip()
-    print(f"{out['stream_analytics_job']}: {state}")
+    print(f"{out['stream_analytics_job']}: {state()}")
 
 
 def check_notifications(replay, window, subscription="narrative-engine"):

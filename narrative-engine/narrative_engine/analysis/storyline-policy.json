@@ -1,0 +1,103 @@
+{
+  "analysis": {
+    "max_observations": 6,
+    "max_evidence": 8,
+    "confidence_levels": {
+      "low": 0.4,
+      "medium": 0.6,
+      "high": 0.8
+    },
+    "confidence_cap_short": 0.6,
+    "confidence_cap_long": 0.9,
+    "short_windows": [
+      "last5"
+    ],
+    "value_tolerance": 0.011,
+    "relative_tolerance": 0.01,
+    "small_counts_up_to": 3,
+    "label_chars": [
+      3,
+      60
+    ],
+    "headline_max_chars": 140,
+    "explanation_max_chars": 400,
+    "outcome_max_chars": 200
+  },
+  "storylines": {
+    "max_active": 4,
+    "dormant_after": 2,
+    "resolve_after": 4,
+    "quiet_fade": 0.8,
+    "beat_weight": 0.1,
+    "beats_counted": 5,
+    "key_event_boost": {
+      "Goal": 0.5,
+      "OwnGoal": 0.5,
+      "VarOverturn": 0.5,
+      "RedCard": 0.4,
+      "PenaltyAwarded": 0.3,
+      "PenaltyMissed": 0.3
+    },
+    "focus_repeat_penalty": 0.25,
+    "focus_recent_steps": 3,
+    "beats_shown": 4,
+    "resolved_shown_minutes": 10,
+    "author_match_indicators": [
+      "dominance",
+      "possession"
+    ],
+    "reopen_within": 15
+  },
+  "repair": {
+    "analyst_turns": 1,
+    "author_rewrites": 1,
+    "author_trim": true
+  },
+  "claims": {
+    "causal": {
+      "enabled": true,
+      "claim": "Does this sentence claim that one thing caused another, for example that a goal, chance or swing came from a tactic, a pattern of play or a player's action?",
+      "support": "Does the evidence above (a storyline beat, a linked key event, the ledger or a trend) state that same causal link?",
+      "min_claim_probability": 0.5,
+      "min_support_probability": 0.5,
+      "repair": "claims a cause that no storyline beat, key event or trend states; describe what happened side by side instead",
+      "analyst": false
+    },
+    "intent": {
+      "enabled": true,
+      "claim": "Does this sentence say that a player, team or coach acted deliberately, on purpose, by design or to a plan?",
+      "support": "Does the evidence above (a storyline beat, a linked key event, the ledger or a trend) show that intention?",
+      "min_claim_probability": 0.5,
+      "min_support_probability": 0.5,
+      "repair": "claims an intention the data does not show; describe what the players did, not what they meant",
+      "analyst": true
+    },
+    "result": {
+      "enabled": true,
+      "claim": "Does this sentence state or imply how the whole match ended (after full time), for example who won, lost or drew it, or the final score? The score or a lead at half-time, or as the match stands now, is not how it ended.",
+      "support": "Does the evidence above show that the match has ended?",
+      "min_claim_probability": 0.5,
+      "min_support_probability": 0.5,
+      "repair": "describes the match's result before the evidence shows it has ended; describe where the match stands now",
+      "analyst": true
+    },
+    "comparison": {
+      "enabled": true,
+      "claim": "Does this sentence compare the two teams, or a team with itself earlier, saying that one is higher, deeper, more, less, better or worse than the other, or that something rose, fell, grew or faded? Calling one value high or low, or saying it stayed the same, is not a comparison.",
+      "support": "Does the evidence above (the numbers, read with what each measures: for some, lower means more; a storyline beat or outcome; or a minute recap) show that comparison in the same direction?",
+      "min_claim_probability": 0.5,
+      "min_support_probability": 0.5,
+      "repair": "states a comparison the evidence does not support in that direction; check which value is higher and what it measures (for some, lower means more), or leave the comparison out",
+      "analyst": true
+    },
+    "score": {
+      "enabled": true,
+      "claim": "Does this sentence say what a goal did to the score, for example that it equalised, gave a team the lead, extended a lead or pulled one back, or give the score at some point?",
+      "support": "Does the evidence above (the key-event ledger, which gives the score after each goal) show that same score or effect?",
+      "min_claim_probability": 0.5,
+      "min_support_probability": 0.5,
+      "repair": "states a score, or what a goal did to it, that the ledger does not show; check the score after each goal in the ledger",
+      "analyst": true
+    }
+  }
+}

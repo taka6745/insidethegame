@@ -4,7 +4,8 @@ terraform {
     azurerm = { source = "hashicorp/azurerm", version = "~> 5.10" }
     random  = { source = "hashicorp/random", version = "~> 3.6" }
   }
-  # Local state for now (personal dev environment), like etl/infra.
+  # Local state; `./dev azure` keeps it in .local/terraform/<stack> (-backend-config=path=...).
+  backend "local" {}
 }
 
 provider "azurerm" {

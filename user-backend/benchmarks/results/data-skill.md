@@ -6,7 +6,7 @@ Measured 2026-10-18. **There is a small positive signal, not a reliable general 
 
 The [versioned skill](../../backend/agents/skills/event-data/SKILL.md) explains how to read the active adapter's dictionary: event actor, qualifiers, units, corrections and absent fields. For instance, a shot record belongs to the shooter and a save record to the goalkeeper. It contains **no match records, gold filters, expected totals or benchmark requests**.
 
-Types, enum values and bounds come from the executable canonical event model. Human-reviewed meanings live in an adapter-owned JSON profile; new fields or event categories without definitions fail construction. The current profile is synthetic and Opta-inspired, not a licensed Opta wire specification. See [implementation and schema changes](../../docs/data-skill.md).
+Types, enum values and bounds come from the executable canonical event model. Human-reviewed meanings live in an adapter-owned JSON profile; new fields or event categories without definitions fail construction. The current profile is synthetic and Opta-inspired, not a licensed Opta wire specification. See [implementation and schema changes](../../docs/components/agents.md#4-event-data-skill-optional).
 
 Two experiments distinguish different changes:
 
@@ -37,10 +37,10 @@ Twenty requests were independently written without reading the skill, then froze
 
 | Model | Current | Reference replacement | Median seconds, current → reference |
 | --- | ---: | ---: | ---: |
-| Llama 3.2 3B | 0/20 | 0/20 | 0.98 → 1.09 |
-| Llama 3.1 8B | 7/20 | 6/20 | 2.89 → 3.56 |
-| GPT OSS 20B | 17/20 | 17/20 | 4.36 → 4.32 |
-| Dots 3 reference | 19/20 | 18/20 | 9.34 → 8.52 |
+| Small model B (3B) | 0/20 | 0/20 | 0.98 → 1.09 |
+| Small model C (8B) | 7/20 | 6/20 | 2.89 → 3.56 |
+| Open model A (20B) | 17/20 | 17/20 | 4.36 → 4.32 |
+| Reference model D | 19/20 | 18/20 | 9.34 → 8.52 |
 
 The reference-model regression was a saved-shot request: replacement selected `save`, while the baseline correctly selected `shot` with `outcome=saved`. More explanation did not prevent that misunderstanding. [All 160 results](data-skill/transfer.json).
 
@@ -52,8 +52,8 @@ The skill and cases stayed frozen after the first results. Only the integration 
 
 | Model / transport | Current | Reference added | Median seconds, current → added |
 | --- | ---: | ---: | ---: |
-| Dots 3 / prompt | 19/20 | 20/20 | 8.99 → 7.33 |
-| Llama 3.2 3B / schema | 0/20 | 1/20 | See raw report |
+| Reference model D / prompt | 19/20 | 20/20 | 8.99 → 7.33 |
+| Small model B (3B) / schema | 0/20 | 1/20 | See raw report |
 
 The stronger model's one gain was the successful-tackle request previously refused. There were no regressions in that small additive run. This is promising, but **20/20 is not a reliability guarantee** and the additive variant has not been evaluated on the full 100 cases. [Reference-model additive results](data-skill/additive.json) · [3B additive results](data-skill/small-additive.json).
 

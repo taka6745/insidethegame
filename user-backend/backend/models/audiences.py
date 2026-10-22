@@ -15,6 +15,10 @@ class StrictModel(BaseModel):
 class AudienceOption(StrictModel):
     id: Key
     description: Description
+    # Viewer-facing name; `{home}` and `{away}` become the match's team names.
+    label: Annotated[str, Field(min_length=1, max_length=60)] | None = None
+    # The side this option backs. Unset: the engine reads a label naming only `{home}` or `{away}`.
+    team: Literal["home", "away"] | None = None
 
 
 class AudienceLayer(StrictModel):
@@ -57,7 +61,7 @@ class AudienceConfig(StrictModel):
     def targets(self):
         return [{"bucket_id": bucket.id, "selections": bucket.selections, "layers": [
             {"id": layer.id, "description": layer.description,
-             "option": next(o.model_dump() for o in layer.options if o.id == bucket.selections[layer.id])}
+             "option": next(o.model_dump(exclude_none=True) for o in layer.options if o.id == bucket.selections[layer.id])}
             for layer in self.layers]} for bucket in self.buckets if bucket.enabled]
 
 

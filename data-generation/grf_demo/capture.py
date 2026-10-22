@@ -9,8 +9,9 @@ from pathlib import Path
 import subprocess
 import time
 
-from .roster import TEAMS, players
+from .roster import FIXTURE, FIXTURE_NAME, TEAMS, players
 from .scenario import REALISM
+from . import tactics
 from .telemetry import TelemetryAdapter
 
 
@@ -20,6 +21,7 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--seconds", type=int, default=5400)
     parser.add_argument("--no-video", action="store_true")
+    parser.add_argument("--no-tactics", action="store_true", help="Built-in AIs only (comparison runs)")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     os.environ.setdefault("GRF_HIDDEN_WINDOW", "1")
@@ -27,6 +29,7 @@ def main():
     for name, value in REALISM.items():
         os.environ.setdefault(name, str(value))
     import gfootball.scenarios
+    import gfootball_engine
     from gfootball.env import create_environment
     from gfootball.env.football_action_set import (action_builtin_ai, action_long_pass,
                                                     action_release_long_pass)
@@ -55,6 +58,8 @@ def main():
     for left in (True, False):
         native.perform_action(action_builtin_ai._backend_action, left, 0)
     adapter = TelemetryAdapter(args.seconds // 2)
+    script = None if args.no_tactics else tactics.load(FIXTURE_NAME)
+    policy = script and tactics.Policy(script, [team["id"] for team in TEAMS], gfootball_engine.set_tactic)
     encoder = None
     if not args.no_video:
         encoder = subprocess.Popen(
@@ -100,6 +105,11 @@ def main():
             ) as frame_file,
         ):
             while True:
+                if policy and frames % 25 == 0:
+                    # Broadcast minute: the second half starts at 45:00 when the native phase changes.
+                    seconds = frames / 25
+                    minute = seconds / 60 if halfway is None else 45 + (seconds - halfway) / 60
+                    policy.apply(seconds, minute, last["score"] if last else [0, 0])
                 # Native AIs occasionally freeze around a stationary owner. The owner's team
                 # presses and releases long pass (the native controller passes on release), then
                 # control returns to the built-in AI. Each stall costs one counted nudge.
@@ -174,9 +184,9 @@ def main():
     recording = {
         "schema_version": 1,
         "synthetic": True,
-        "match_id": "product-demo-match",
-        "description": "GRF simulated Chelsea–Manchester United. Illustrative real-name lineups; not an actual match.",
-        "teams": TEAMS,
+        "match_id": FIXTURE["match_id"],
+        "description": f"GRF simulated {TEAMS[0]['name']}–{TEAMS[1]['name']}. Illustrative real-name lineups; not an actual match.",
+        "teams": [{"id": team["id"], "name": team["name"]} for team in TEAMS],
         "players": players(),
         "events": adapter.canonical_events(),
         "presets": [],
@@ -186,12 +196,16 @@ def main():
             "telemetry_version": adapter.version,
             "generator": "data-generation/grf_demo/capture.py",
             "seed": args.seed,
+            "fixture": FIXTURE_NAME,
             "source": "Google Research Football instrumented native runtime",
             "source_license": "Apache-2.0 / Gameplay Football Unlicense",
             "native_video_seconds": frames / 25,
             "native_halftime_video_seconds": halfway,
             "active_play_seconds": args.seconds,
             "realism": {name: float(os.environ[name]) for name in REALISM},
+            # Scripted team tactics (tactics.json) and every change the policy made.
+            "tactics": script and {"source": "data-generation/grf_demo/tactics.json", "script": script,
+                                   "changes": policy.changes},
             # Scripted presses that un-freeze native AIs: traceable, never silent.
             "stall_nudge_seconds": nudges,
             "score": last["score"],
@@ -205,8 +219,9 @@ def main():
                 "Pass completion means first subsequent intentional teammate touch; event time is resolution.",
                 "Possession measures confirmed native ownership ticks; loose-ball and stoppage time excluded.",
                 "Referee decisions and taken restarts are native observations; tackles, interceptions, saves, shot outcomes, aerials, take-ons and recoveries are rule-derived from native tracking (docs/opta-events.md).",
-                "No xG, substitutions, injuries, VAR or own-goal attribution.",
+                "No xG, substitutions, injuries or VAR.",
                 "Engine patched for realism (prepare_realism.py); knob values in provenance.realism.",
+                "Team tactics are scripted per fixture (tactics.json) through engine knobs (prepare_tactics.py); the built-in AIs still make every decision. Script and changes in provenance.tactics.",
             ],
         },
     }

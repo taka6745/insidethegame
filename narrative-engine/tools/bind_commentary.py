@@ -9,10 +9,10 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from narrative_demo.models.clock import PERIOD_START_SECONDS, minute_id, minute_label, position  # noqa: E402
-from narrative_demo.models.fixtures import BUCKETS, NarrativeFixture, prefix_digests  # noqa: E402
+from commentary_schema import (BUCKETS, PERIOD_START_SECONDS, NarrativeFixture, minute_id, minute_label,  # noqa: E402
+                               position, prefix_digests)
 
 EVIDENCE_TYPES = {'shot', 'save', 'corner', 'corner_awarded', 'foul', 'foul_won', 'offside', 'card',
                   'free_kick', 'penalty', 'error', 'kick_off', 'period_start', 'period_end'}

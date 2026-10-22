@@ -4,7 +4,7 @@ variable "subscription_id" {
 }
 
 variable "prefix" {
-  description = "Globally unique lowercase prefix, 3-16 letters/digits, starting with a letter."
+  description = "Lowercase prefix, 3-16 letters/digits, starting with a letter."
   type        = string
   default     = "itgdemo"
   validation {
@@ -19,12 +19,47 @@ variable "location" {
   description = "Check regional SKU availability before a cloud deployment."
 }
 
-variable "database_admin_password" {
+variable "etl_state_path" {
+  type    = string
+  default = "../etl/infra/terraform.tfstate"
+}
+
+variable "narrative_state_path" {
+  type    = string
+  default = "../narrative-engine/infra/terraform.tfstate"
+}
+
+variable "feed_state_path" {
+  type    = string
+  default = "../data-generation/infra/terraform.tfstate"
+}
+
+variable "image_tag" {
   type        = string
-  sensitive   = true
-  description = "Cloud-only database admin password; supply outside Git. Local Docker uses public dummy credentials."
-  validation {
-    condition     = length(var.database_admin_password) >= 16
-    error_message = "Use at least 16 characters and satisfy Azure SQL/PostgreSQL complexity requirements."
-  }
+  default     = null
+  description = "user-backend and frontend image tag in the shared (ETL) registry; the apps are created once set."
+}
+
+variable "dev_admin" {
+  type        = bool
+  default     = true
+  description = "Developer consoles behind basic auth (password: `terraform output -raw dev_admin_password`)."
+}
+
+variable "question_model" {
+  type = object({
+    name     = string # the deployment name: generic, so the model is swappable here
+    model    = string
+    version  = string
+    capacity = number           # thousands of tokens per minute
+    effort   = optional(string) # reasoning_effort for a reasoning model; omit for a plain chat model
+  })
+  default     = { name = "questions", model = "gpt-6.1-sol", version = "2026-09-29", capacity = 50, effort = "low" }
+  description = "Azure OpenAI deployment (GlobalStandard) for the backend's question, replay and follow-planner agents."
+}
+
+variable "demo_seeds" {
+  type        = bool
+  default     = false
+  description = "Demo seed export/restore routes (DEMO_SEEDS=1; PLAN.md §10.6). On for the judge build (`./dev azure up`), off for a production release."
 }

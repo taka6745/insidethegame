@@ -1,7 +1,6 @@
 """Provider-independent event contract. Adapters own vendor key mappings.
 
-The serialised field set is shared with ETL (snapshot hashes and broker events),
-so keep it identical to etl/demo_etl/models/snapshot.py.
+It is the `event` of MatchEvent v2 (local/contracts.md §2): strict, extra fields forbidden.
 """
 from typing import Annotated, Literal
 
@@ -20,10 +19,11 @@ QualifierType = Literal[
     "bodyPart", "distanceMetres", "restart", "score", "relatedEventId", "sourceShotEventId",
     "endX", "endY", "angle", "longBall", "cross", "chipped", "switchOfPlay", "offsidePass",
     "situation", "assistEventId", "bigChance", "goalMouthY", "goalMouthZ", "shotOutcome", "woodwork",
-    "saveType", "defensiveBlock", "penaltyAwarded", "cardReason", "leadsTo", "fromShotOffTarget"]
+    "saveType", "defensiveBlock", "penaltyAwarded", "ownGoal", "cardReason", "leadsTo", "fromShotOffTarget"]
 QualifierValue = bool | int | Annotated[float, Field(allow_inf_nan=False)] | Annotated[str, Field(max_length=120)]
 # Opta 0-100 for the acting team; simulated tracking can overshoot a line slightly.
 Coordinate = Annotated[float, Field(ge=-10, le=110, allow_inf_nan=False)]
+MAX_MATCH_EVENTS = 100_000  # Per match; a GRF match has about 14,000.
 _DELIVERY_FIELDS = {"sequence", "video_seconds"}
 # Optional v3 context. Snapshot identities exclude it, as ETL does, so a producer
 # that omits it still names the same observed prefix.
@@ -62,4 +62,11 @@ class Event(BaseModel):
         return self.model_dump(exclude=_DELIVERY_FIELDS) == other.model_dump(exclude=_DELIVERY_FIELDS)
 
 
-CanonicalEvent = Event
+_STOPPAGE_AFTER = {1: 45, 2: 90, 3: 105, 4: 120}
+
+
+def minute_label(period, match_time_seconds):
+    """The broadcast minute a viewer reads: 51:18 is the 52nd minute (52′); first-half
+    stoppage 45:30 is 45+1′. Every label shown to viewers or models uses this one rule."""
+    minute, end = match_time_seconds // 60 + 1, _STOPPAGE_AFTER.get(period, 120)
+    return f"{end}+{minute - end}′" if minute > end else f"{minute}′"

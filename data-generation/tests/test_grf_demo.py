@@ -62,14 +62,15 @@ class TelemetryTests(unittest.TestCase):
         )
         self.assertEqual(self.adapter.events[0]["playerId"], "manutd-1")
 
-    def test_goals_follow_score_not_last_touch_team(self):
+    def test_conceding_teams_last_touch_without_an_attempt_is_its_own_goal(self):
         row = frame(100, score=[1, 0])
         row["last_touch"] = [1, 12]
         self.adapter.consume(row, 0.1)
         event = self.adapter.events[0]
-        self.assertEqual(event["teamId"], "chelsea")
-        self.assertIsNone(event["playerId"])
-        self.assertEqual(event["typeName"], "goal")
+        self.assertEqual((event["typeName"], event["teamId"]), ("goal", "manutd"))
+        self.assertEqual(event["playerId"], self.adapter.players.get((1, 12)))
+        self.assertIn({"type": "ownGoal", "value": True}, event["qualifiers"])
+        self.assertIn({"type": "score", "value": "1-0"}, event["qualifiers"])
 
     def test_possession_excludes_loose_ball_and_clock_jumps(self):
         self.adapter.consume(frame(10, owner=[0, 1]), 0.01)

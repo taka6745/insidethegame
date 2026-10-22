@@ -89,17 +89,27 @@ test("silent connection becomes stale and closes after watchdog", () => {
   assert.equal(f.states.at(-1), "stale");
   assert.equal(f.sockets[0]!.closed, true);
 });
-test("retry budget stops after eight reconnects and stop cancels pending work", () => {
+test("after eight reconnects it shows offline but keeps retrying at the cap; stop cancels pending work", () => {
   const f = fixture();
   f.live.connect("ws://local");
-  for (let index = 0; index < 9; index++) {
+  for (let index = 0; index < 10; index++) {
     f.sockets.at(-1)!.onclose({ code: 1006 });
+    if (index === 9) break;
     const job = [...f.jobs.values()].at(-1)!;
     f.jobs.clear();
-    if (index < 8) job.fn();
+    job.fn();
   }
   assert.equal(f.states.at(-1), "offline");
-  assert.equal(f.sockets.length, 9);
+  assert.equal(f.sockets.length, 10);
+  assert.deepEqual([...f.jobs.values()].map((job) => job.delay), [30000]);
   f.live.stop();
   assert.equal(f.jobs.size, 0);
+});
+test("close 4404 means the match is gone: no reconnect", () => {
+  const f = fixture();
+  f.live.connect("ws://local/viewer-api/matches/m1/sessions/t/live");
+  f.sockets[0]!.onclose({ code: 4404 });
+  assert.equal(f.states.at(-1), "gone");
+  assert.equal(f.jobs.size, 0);
+  assert.equal(f.sockets.length, 1);
 });

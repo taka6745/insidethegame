@@ -6,10 +6,11 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
-from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from backend.adapters.replay_source import FixtureEventSource
+from benchmarks.doubles.recording import FixtureEventSource
+from backend.adapters.match_reference import data_reference
+from backend.models.actions import SpadlAction
 from backend.agents.compiler import StructuredRuleCompiler
 from backend.agents.measurement_support import measurement_support, plain_measure
 from backend.agents.models import Goal
@@ -20,55 +21,68 @@ from backend.agents.workflow import RuleWorkflow
 from backend.models.questions import QuestionDraft
 from backend.services.question_answers import UNAVAILABLE, model_catalogue, resolve_answer, unavailable
 from backend.services.rule_availability import supported_rule, unsupported_reason
-from test_questions import ask, build, session
+from harness import MATCH, Running, Upstream, ask, session
 
 INITIAL = "how many times has the ball touched man utd's head"
 FOLLOW_UP = 'any of them. anytime the ball touched someones head'
-CAPABILITIES = {'supported_event_types': ['pass', 'shot', 'goal', 'touch'],
+CAPABILITIES = {'supported_event_types': ['pass', 'shot', 'goal', 'clearance'],
                 'body_parts': False, 'body_part_event_types': ['pass', 'shot', 'goal'],
-                'distance_event_types': ['pass'], 'shot_outcomes': True,
-                'recorded_body_part_event_groups': [['touch']]}
+                'shot_outcomes': True, 'coordinates': 'opta_0_100'}
+PASS = ['pass', 'cross', 'throw_in', 'freekick_crossed', 'freekick_short', 'corner_crossed', 'corner_short', 'goalkick']
+SHOTS = ['shot', 'shot_penalty', 'shot_freekick']
 
 
 def test_contract_follows_feed_coverage_not_observed_events():
-    reference = {'contract_id': 'partial', 'capabilities': CAPABILITIES,
-                 'events': {'touch': 'Contacts overlap passing actions.'}}
+    reference = data_reference(CAPABILITIES)
     partial = measurement_support(reference)
-    assert partial['recorded_body_part_event_groups'] == [['touch']]
-    assert not partial['all_event_body_parts']
-    assert partial['distance_event_types'] == ['pass']
-    assert partial['event_meanings']['touch'] == 'Contacts overlap passing actions.'
+    assert partial['declared'] and partial['contract_id'] == 'spadl-v1'
+    assert partial['complete_bodypart_types'] == sorted(PASS + SHOTS)
+    assert partial['recorded_bodyparts'] and partial['shot_outcomes'] and partial['locations']
+    assert {'action_type', 'result', 'bodypart', 'start_zone', 'end_zone', 'end_x'} <= set(partial['filters'])
+    assert any('Possession' in text for text in partial['unavailable'])  # Outside SPADL, named.
     assert measurement_support({}) == {'declared': False}
-    assert measurement_support({**reference, 'unavailable': ['No tracking speed.']})['unavailable'] == ['No tracking speed.']
+    assert measurement_support(data_reference(None)) == {'declared': False}
     routed = routing_context({'data_reference': reference, 'compact': {'text': 'secret recap'}})
     assert routed['measurement_support'] == partial
     assert 'secret recap' not in json.dumps(routed)
 
 
-def test_recorded_count_requires_declared_nonoverlapping_group():
-    goal = Goal(description='Recorded contacts', event_types=['touch'], body_part='head', coverage='recorded')
+def action(**changes):
+    base = {'match_id': 'match', 'action_id': 0, 'period': 1, 'match_time_seconds': 60, 'team_id': 'manutd',
+            'player_id': 'manutd-1', 'action_type': 'clearance', 'result': 'success', 'bodypart': 'head',
+            'bodypart_observed': True, 'start_x': 10.0, 'start_y': 30.0, 'end_x': 30.0, 'end_y': 30.0,
+            'start_zone': 'own_box', 'end_zone': 'defensive_third', 'seq': 1, 'final_seq': 1}
+    return SpadlAction(**base | changes)
+
+
+def test_recorded_count_requires_declared_body_parts_and_counts_only_observed():
+    goal = Goal(description='Recorded headers', bodyparts=['head'], coverage='recorded')
     rule = goal.target_rule('match')
     assert supported_rule(rule, CAPABILITIES)
     assert not supported_rule(rule, {})
+    assert not supported_rule(rule, {**CAPABILITIES, 'body_part_event_types': []})
+    # A complete header count needs body parts for every selected type.
     assert not supported_rule(rule.model_copy(update={'coverage': 'complete'}), CAPABILITIES)
+    assert supported_rule(goal.model_copy(update={'coverage': 'complete', 'action_types': tuple(PASS)}).target_rule('match'),
+                          CAPABILITIES)
     assert rule.calculation_id != rule.model_copy(update={'coverage': 'complete'}).calculation_id
-    for categories in ([], ['touch', 'shot'], ['foul']):
-        assert not supported_rule(goal.model_copy(update={'event_types': categories}).target_rule('match'), CAPABILITIES)
-    # A different feed can declare disjoint action records without changing prompts or the engine.
-    disjoint = {**CAPABILITIES, 'recorded_body_part_event_groups': [['pass', 'shot', 'goal']]}
-    actions = goal.model_copy(update={'event_types': ['pass', 'shot', 'goal']}).target_rule('match')
-    assert supported_rule(actions, disjoint)
-    assert not supported_rule(rule, disjoint)
-    # The mechanism also works for another qualifier value, not a header exception.
-    assert supported_rule(goal.model_copy(update={'body_part': 'left_foot'}).target_rule('match'), CAPABILITIES)
+    assert rule.matches(action()) and not rule.matches(action(bodypart_observed=False))
+    assert not rule.matches(action(bodypart='foot_left'))
+    # The mechanism works for any body part, not a header exception.
+    assert supported_rule(goal.model_copy(update={'bodyparts': ('foot_left',)}).target_rule('match'), CAPABILITIES)
     with pytest.raises(ValidationError):
-        Goal(description='Invalid escape hatch', coverage='recorded', event_types=['foul'])
+        Goal(description='Invalid escape hatch', coverage='recorded', operation='sum', sum_field='distance_metres',
+             action_types=['pass'])
+    # Reported: "Cole Palmer's touches" came back recorded with no body part and failed validation
+    # twice, so the viewer got "unsupported". A plain count of every action is a complete count.
+    plain = Goal(description="Cole Palmer's on-ball actions", coverage='recorded', player_ids=['chelsea-1'])
+    assert plain.coverage == 'complete' and supported_rule(plain.target_rule('match'), CAPABILITIES)
 
 
 class CoverageRouterModel:
     async def complete(self, instructions, payload, **kwargs):
         support = payload['measurement_support']
-        assert support['recorded_body_part_event_groups'] == [['touch']]
+        assert support['recorded_bodyparts'], support
         assert "headers" not in instructions.lower()
         assert payload['question'] in (INITIAL, FOLLOW_UP)
         if payload['question'] == FOLLOW_UP:
@@ -78,24 +92,24 @@ class CoverageRouterModel:
 
 class RecordedContactsModel:
     async def complete(self, instructions, payload, **kwargs):
-        assert payload['measurement_support']['recorded_body_part_event_groups'] == [['touch']]
-        assert "headers" not in instructions.lower()
+        # The SPADL metric mapping names bodyparts=[head] for headers; recorded coverage itself is generic.
+        assert payload['measurement_support']['recorded_bodyparts']
         if payload['request'] == FOLLOW_UP:
             assert payload['context']['conversation'][0]['content'] == INITIAL
         return {'status': 'custom', 'goal': {'description': 'Manchester United headers',
-                'team_ids': ['manutd'], 'event_types': ['touch'], 'body_part': 'head', 'coverage': 'recorded'}}
+                'team_ids': ['manutd'], 'bodyparts': ['head'], 'coverage': 'recorded'}}
 
 
 def contact_source():
-    """Independent golden events: two actions with overlapping records, then corrections."""
+    """Independent golden actions: observed headers count, defaults and the other team do not."""
     spec = json.loads((Path(__file__).parents[2] / 'data-generation/recordings/chelsea-united-grf.json').read_text())
-    def row(identifier, kind='touch', part='head', team='manutd', revision=1, deleted=False):
-        return {'eventId': identifier, 'matchId': spec['match_id'], 'revision': revision, 'typeName': kind,
-                'teamId': team, 'playerId': team + '-1', 'periodId': 1, 'timeMin': 1, 'timeSec': 0,
-                'qualifiers': [] if part is None else [{'type': 'bodyPart', 'value': part}], 'deleted': deleted}
-    rows = [row('a'), row('pass-a', 'pass'), row('b'), row('shot-b', 'shot'),
-            row('unknown', part=None), row('foot', part='foot'), row('other-team', team='chelsea'),
-            row('c'), row('b', part='foot', revision=2), row('c'), row('a', revision=2, deleted=True)]
+    def row(identifier, kind='pass', part='head', team='manutd'):
+        return {'eventId': identifier, 'matchId': spec['match_id'], 'revision': 1, 'typeName': kind,
+                'teamId': team, 'playerId': team + '-1', 'periodId': 1, 'timeMin': 1, 'timeSec': 0, 'outcome': 'success',
+                'qualifiers': [] if part is None else [{'type': 'bodyPart', 'value': part}]}
+    rows = [row('a'), row('b', 'shot'), row('unknown', 'clearance', None), row('foot', part='foot'),
+            row('other-team', team='chelsea'), row('tackle', 'tackle', None), row('right', part='right_foot'),
+            row('c'), row('foot-2', part='foot'), row('d', 'clearance'), row('chelsea-2', team='chelsea')]
     for i, event in enumerate(rows, 1):
         event['sequence'] = i
     spec.pop('playback', None)
@@ -106,45 +120,46 @@ def contact_source():
 @pytest.mark.parametrize('legacy_clarification', [False, True])
 def test_exact_united_conversation_answers_pins_and_updates_recorded_count(store, legacy_clarification):
     agent = QuestionAgent(SimpleNamespace(), router=QuestionIntentRouter(CoverageRouterModel()))
-    lab, service, _, app = build(store, agent)
-    lab.source = contact_source()
-    service.planner = RuleWorkflow(GoalAgent(RecordedContactsModel()), StructuredRuleCompiler())
-    with TestClient(app) as client:
-        for _ in range(7):
-            client.portal.call(lab.advance)
-        token = session(client)
+    upstream = Upstream()
+    upstream.add(MATCH, contact_source())
+    planner = RuleWorkflow(GoalAgent(RecordedContactsModel()), StructuredRuleCompiler())
+    chat = f'/lab/matches/{MATCH}/chat'
+    with Running(store, agent=agent, planner=planner, upstream=upstream) as run:
+        sync = lambda: run.client.portal.call(run.service.match_data.capture, run.match())
+        run.send(7)
+        token = session(run.client)
         if legacy_clarification:
-            turn = service.repository.begin(token, uuid4(), INITIAL)
-            service.repository.finish(token, turn['id'], {
+            turn = run.service.repository.begin(token, uuid4(), INITIAL)
+            run.service.repository.finish(token, turn['id'], {
                 'status': 'clarification', 'answer_kind': 'statistic', 'offers': [],
                 'text': 'Do you mean all headed contacts (any touch with the head), headed passes, '
                         'or headed shots by Manchester United?'})
         else:
-            first = ask(client, token, INITIAL).json()
+            first = ask(run.client, token, INITIAL).json()
             assert first['status'] == 'answer', first
             assert first['offers'][0]['value'] == 2
-        second = ask(client, token, FOLLOW_UP).json()
+        second = ask(run.client, token, FOLLOW_UP).json()
         assert second['status'] == 'answer', second
         assert second['text'] == 'Recorded Manchester United headers: 2.'
         assert second['clarification'] is None
-        assert lab.engine.count == 0  # Offered, not auto-pinned.
+        assert run.match().engine.count == 0  # Offered, not auto-pinned.
         offer = second['offers'][0]
-        tracked = client.post(f'/lab/chat/{token}/offers/{offer["id"]}/track')
+        tracked = run.client.post(f'{chat}/{token}/offers/{offer["id"]}/track')
         assert tracked.status_code == 200, tracked.text
         identifier = tracked.json()['calculation']['id']
         assert tracked.json()['calculation']['value'] == 2
-        for expected in (3, 2, 2, 1):
-            client.portal.call(lab.advance)
-            assert lab.engine.get(identifier).value == expected
-        saved = client.get(f'/lab/chat/{token}').json()
+        for expected in (3, 3, 4, 4):
+            run.send(1)
+            sync()
+            assert run.match().engine.get(identifier).value == expected
+        saved = run.client.get(f'{chat}/{token}').json()
         assert [turn['prompt'] for turn in saved['turns']] == [INITIAL, FOLLOW_UP]
         assert saved['offers'][-1]['calculation_id'] == identifier
-    restored_lab, _, _, restored_app = build(store)
-    restored_lab.source = contact_source()
-    with TestClient(restored_app) as client:
-        assert restored_lab.engine.rule(identifier).coverage == 'recorded'
-        assert restored_lab.engine.get(identifier).value == 1
-        assert client.get(f'/lab/chat/{token}').json()['offers'][-1]['calculation_id'] == identifier
+    with Running(store, upstream=upstream, matches=()) as run:
+        run.client.portal.call(run.service.match_data.capture, run.match())  # Actions are read again from ETL.
+        assert run.match().engine.rule(identifier).coverage == 'recorded'
+        assert run.match().engine.get(identifier).value == 4
+        assert run.client.get(f'{chat}/{token}').json()['offers'][-1]['calculation_id'] == identifier
 
 
 TEAMS = [{'id': 'chelsea', 'name': 'Chelsea'}, {'id': 'manutd', 'name': 'Manchester United'}]
@@ -179,12 +194,14 @@ class PlainCountModel:
     ('How much possession has Chelsea had?', {'description': 'Chelsea possession', 'team_ids': ['chelsea']},
      'reuse', 'chelsea:possession'),
     ("What is United's pass accuracy?", {'description': 'United passes', 'team_ids': ['manutd'],
-     'event_types': ['pass'], 'outcome': 'success'}, 'reuse', 'manutd:pass_accuracy'),
+     'action_types': PASS, 'results': ['success']}, 'reuse', 'manutd:pass_accuracy'),
     ('Possession split in the second half?', {'description': 'Possession split', 'period': 2}, 'unsupported', None),
     ("What percentage of Palmer's passes were completed?", {'description': 'Palmer completed passes',
-     'player_ids': ['chelsea-1'], 'event_types': ['pass'], 'outcome': 'success'}, 'unsupported', None),
-    ('How many times did United lose possession?', {'description': 'United dispossessed',
-     'team_ids': ['manutd'], 'event_types': ['dispossessed']}, 'ready', None),
+     'player_ids': ['chelsea-1'], 'action_types': PASS, 'results': ['success']}, 'unsupported', None),
+    ('How many times did United lose possession?', {'description': 'United bad touches',
+     'team_ids': ['manutd'], 'action_types': ['bad_touch']}, 'ready', None),
+    # Reported: declined as "a percentage needs two counts". A split of a count is per team.
+    ('Shots split per team', {'description': 'Shots split per team', 'action_types': SHOTS}, 'ready', None),
 ])
 def test_named_measure_is_never_a_plain_event_count(request_text, goal, status, standard_stat_id):
     context = {'match_id': 'm', 'teams': TEAMS, 'players': [{'id': 'chelsea-1', 'name': 'Cole Palmer'}],
@@ -195,14 +212,14 @@ def test_named_measure_is_never_a_plain_event_count(request_text, goal, status, 
     if status == 'unsupported':
         assert 'not a count of events' in outcome.message or 'two named counts' in outcome.message
     composite = Goal(description='Palmer pass completion %', operation='percentage', inputs=[
-        {'description': 'completed', 'event_types': ['pass'], 'outcome': 'success'},
-        {'description': 'resolved', 'event_types': ['pass'], 'outcomes': ['success', 'failure']}])
+        {'description': 'completed', 'action_types': PASS, 'results': ['success']},
+        {'description': 'all', 'action_types': PASS}])
     assert not plain_measure('pass completion percentage', composite)
 
 
 def tools_for(stats):
     return SimpleNamespace(stats=stats, offers=[], goal=None,
-                           payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', run_id='run')))
+                           payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', match_id='match')))
 
 
 def test_possession_split_answers_each_team_from_etl():
@@ -229,14 +246,45 @@ def test_possession_split_answers_each_team_from_etl():
 
 def test_unsupported_answers_name_the_missing_channel():
     rule = lambda **goal: Goal(description='stat', **goal).target_rule('match')
-    assert unsupported_reason(rule(event_types=['foul']), CAPABILITIES) == 'This recording does not capture foul events.'
-    assert unsupported_reason(rule(event_types=['shot'], operation='sum', sum_field='distance_metres'),
-                              CAPABILITIES) == 'This recording has distance data only for pass events.'
-    assert unsupported_reason(rule(event_types=['touch'], body_part='head'), CAPABILITIES) == (
-        'This recording has body-part data only for goal, pass, shot events.')
-    assert unsupported_reason(rule(event_types=['pass'], body_part='head'), CAPABILITIES) is None
+    bare = {**CAPABILITIES, 'coordinates': None, 'shot_outcomes': False}
+    assert unsupported_reason(rule(action_types=['clearance'], operation='sum', sum_field='distance_metres'),
+                              bare) == 'This recording has no action locations.'
+    assert unsupported_reason(rule(action_types=['pass'], end_zones=['opp_box']), bare) == 'This recording has no action locations.'
+    assert unsupported_reason(rule(action_types=['shot'], shot_outcomes=['saved']), bare) == 'This recording has no shot outcomes.'
+    assert unsupported_reason(rule(action_types=['clearance'], bodyparts=['head']), CAPABILITIES).startswith(
+        'This recording classifies body parts only for corner crossed')
+    assert unsupported_reason(rule(action_types=['pass'], bodyparts=['head']), CAPABILITIES) is None
+    assert unsupported_reason(rule(action_types=['clearance'], operation='sum', sum_field='distance_metres'),
+                              CAPABILITIES) is None
     assert unavailable('This recording has no tracking speed or distance data.').text == (
         'Sorry, I cannot answer that. This recording has no tracking speed or distance data.')
     # Model-written reasons cannot carry numbers; unknown reasons stay generic.
     for reason in (None, '', 'Palmer ran 11 km.', 'x' * 241):
         assert unavailable(reason).text == UNAVAILABLE
+
+
+def test_plain_saves_read_real_goalkeeper_saves():
+    from backend.agents.measurement_support import measure_decision
+    from backend.agents.models import GoalDecision
+    context = {'standard_stats': [{'id': f'{s}:{k}'} for s in ('all', 'home') for k in ('saves', 'shots_saved')]}
+    reuse = measure_decision('How many saves has each team made?',
+                             GoalDecision(status='reuse', standard_stat_ids=['home:saves', 'all:saves']), context)
+    assert reuse.standard_stat_ids == ['home:shots_saved', 'all:shots_saved'] and reuse.standard_stat_id == 'home:shots_saved'
+    every = GoalDecision(status='reuse', standard_stat_id='all:saves')
+    assert measure_decision('All save events, including blocks', every, context) is every
+    custom = measure_decision('Vicario saves', GoalDecision(status='custom', goal=Goal(
+        description='Saves', action_types=['keeper_save'], player_ids=['p1'])), context)
+    assert custom.goal.save_kinds == ('save',)
+
+
+def test_standard_stat_route_reads_real_goalkeeper_saves():
+    # The question agent's standard_stat route, not only the planner, maps plain 'saves' to shots_saved.
+    stats = [{'id': f'all:{k}', 'label': label, 'value': value, 'available': True, 'complete': True}
+             for k, label, value in (('saves', 'Saves', 9), ('shots_saved', 'Shots saved', 7))]
+    def ask_for(prompt):
+        tools = tools_for(stats)
+        tools.original_prompt = prompt
+        return asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',
+                                                        standard_stat_id='all:saves'), tools))
+    assert ask_for('How many saves so far?').evidence_ids == ['stat:all:shots_saved']
+    assert ask_for('Every save event, including blocks').evidence_ids == ['stat:all:saves']

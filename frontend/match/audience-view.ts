@@ -1,23 +1,24 @@
 import { node } from "./dom.ts";
 import type { Audience, Snapshot } from "./types.ts";
 
-/** Audience choice changes the current viewer, not their demo account identity. */
+/** One dropdown of the match's enabled audience buckets, straight from the snapshot. */
 export class AudienceView {
   document: Document;
-  team: HTMLSelectElement;
-  style: HTMLSelectElement;
-  live: boolean;
-  busy: boolean;
+  select: HTMLSelectElement;
+  controls: HTMLElement;
+  count = 0;
+  live = false;
+  busy = false;
+  /** A live demo match keeps the bucket the viewer started with. */
+  locked = false;
   choicesKey?: string;
   constructor(document: Document) {
     this.document = document;
-    this.team = document.getElementById("audience-team") as HTMLSelectElement;
-    this.style = document.getElementById("audience-style") as HTMLSelectElement;
-    this.live = false;
-    this.busy = false;
+    this.select = document.getElementById("audience-bucket") as HTMLSelectElement;
+    this.controls = document.getElementById("audience-controls") as HTMLElement;
   }
   selection(): Audience {
-    return { team: this.team.value, fan_style: this.style.value };
+    return { bucket_id: this.select.value };
   }
   connection(live: boolean) {
     this.live = live;
@@ -25,27 +26,30 @@ export class AudienceView {
   }
   setBusy(busy: boolean) {
     this.busy = busy;
-    this.team.disabled = this.style.disabled = busy || !this.live;
+    // One bucket (or none) leaves nothing to switch to.
+    this.select.disabled = busy || !this.live || this.count < 2 || this.locked;
+    this.select.title = this.locked ? "Your perspective is fixed while the match is live." : "";
   }
-  render(snapshot: Pick<Snapshot, "match" | "audience">) {
-    const teams = snapshot.match.teams || [];
-    const choices = [
-      ["home", teams[0]?.name || "Home team"],
-      ["away", teams[1]?.name || "Away team"],
-      ["neutral", "Neither"],
-    ] as const;
-    const key = JSON.stringify(choices);
+  render(snapshot: Pick<Snapshot, "audience" | "audience_buckets"> & Partial<Pick<Snapshot, "match">>) {
+    this.locked = snapshot.match?.status === "live";
+    const buckets = snapshot.audience_buckets || [];
+    const key = JSON.stringify(buckets);
     if (key !== this.choicesKey) {
-      this.team.replaceChildren(...choices.map(([value, label]) => {
+      this.select.replaceChildren(...buckets.map(({ id, label }) => {
         const option = node(this.document, "option", label);
-        option.value = value;
+        option.value = id;
         return option;
       }));
       this.choicesKey = key;
+      this.count = buckets.length;
+      this.controls.hidden = !buckets.length;
     }
-    if (snapshot.audience) {
-      this.team.value = snapshot.audience.team;
-      this.style.value = snapshot.audience.fan_style;
-    }
+    if (snapshot.audience?.bucket_id) this.select.value = snapshot.audience.bucket_id;
+    this.setBusy(this.busy);
+  }
+  /** The shown bucket's label, or null when the viewer has none. */
+  label(snapshot: Pick<Snapshot, "audience" | "audience_buckets">): string | null {
+    const id = snapshot.audience?.bucket_id;
+    return (snapshot.audience_buckets || []).find((bucket) => bucket.id === id)?.label ?? null;
   }
 }

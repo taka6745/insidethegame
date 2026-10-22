@@ -4,10 +4,11 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed to dev |
-| **Terraform** | [`infra/`](../infra/), local state |
+| **Status** | Applied 22 Oct by `./dev azure up` for the Azure test ([runbook](../../terraform/runbook.md)): the whole pipeline with the multi-match outputs, `match-progress` input, purge API, SPADL app, `sql/azure` triggers and the stream schedule. Demo acceptance (PLAN.md §10.4) pending |
+| **Demo seeds** | `demo_seeds` (default on, judge build) sets `DEMO_SEEDS=1` on the admin app; `./dev azure up --release` turns it off |
+| **Terraform** | [`infra/`](../infra/), local state (`./dev azure` keeps it in `.local/terraform/etl/`); also hosts the shared Container Apps environment and registry |
 | **Region** | Australia East |
-| **Cost when idle** | Low: SQL auto-pauses (free offer), DAB scales to zero, the job is stopped; Event Hubs and Service Bus Standard bill hourly |
+| **Cost when idle** | Low: SQL auto-pauses (free offer), DAB scales to zero, the job runs only while match events flow (stream schedule); Event Hubs and Service Bus Standard bill hourly |
 
 ## 1. Infrastructure
 
@@ -16,10 +17,13 @@
 | File | Creates |
 | --- | --- |
 | `main.tf` | Resource group, budget alert, naming |
-| `messaging.tf` | Event Hubs namespace, hub and consumer groups; Service Bus namespace, topic `match-notifications`, subscription `narrative-engine`; scoped keys |
+| `messaging.tf` | Event Hubs namespace, hub and consumer groups (`stream-analytics`, `stream-analytics-progress`, `user-backend`); Service Bus namespace, topic `match-notifications`, subscription `narrative-engine`; scoped keys |
 | `sql.tf` | SQL server (Entra-only auth, you as admin), firewall rules, serverless database on the free offer |
-| `stream_analytics.tf` | The job (query rendered with `window_seconds`), input, SQL and Service Bus outputs, UDFs |
+| `stream_analytics.tf` | The job (query rendered with `window_seconds`, `watermark_idle_seconds`), inputs `match-events` and `match-progress`, nine SQL outputs and the Service Bus output, UDFs |
 | `dab.tf` | Log Analytics workspace, Container Apps environment, the DAB app |
+| `admin.tf` | Registry; the purge API (`etl-stream` image, `ETL_ROLE=admin`) once `admin_image_tag` is set; its bearer token |
+| `stream_schedule.tf` | Metric alerts on `match-events`: incoming messages → start the job; `stream_idle_window` (30 min) quiet → stop it; actions are `terraform/guard` webhooks |
+| `spadl.tf` | The SPADL post-processor (`etl-stream` image, `ETL_ROLE=spadl`, 1 replica, no ingress) with the same image tag; `devtools azure-setup` grants its database user |
 | `variables.tf`, `outputs.tf`, `versions.tf` | Inputs, outputs (secrets marked sensitive), providers |
 
 ## 2. Deploying
@@ -31,10 +35,16 @@ cd etl
 cp infra/local.auto.tfvars.example infra/local.auto.tfvars    # subscription and budget emails
 terraform -chdir=infra init
 terraform -chdir=infra apply
-.venv/Scripts/python -m devtools azure-setup                    # migrations + identity grants
+.venv/Scripts/python -m devtools azure-setup                    # migrations, sql/azure triggers, identity grants
+# Purge API: build the image into the registry, apply with its tag, then grant its identity.
+az acr build --registry "$(terraform -chdir=infra output -raw registry)" --image etl-stream:TAG .
+terraform -chdir=infra apply -var admin_image_tag=TAG
+.venv/Scripts/python -m devtools azure-setup
 ```
 
-Stop the job before an apply that changes its query, inputs or outputs.
+Purge: the purge API has internal ingress. The `/dev/` Matches panel calls it through the frontend's `/purge-api/etl`, which adds `Authorization: Bearer <admin_token>`; the browser never sees the token. Body: `{"match_id": …}` or `{"all": true}`.
+
+Stop the job before an apply that changes its query, inputs or outputs. DAB and the job's outputs need the tables from every migration, so run `azure-setup` straight after an apply that adds entities or outputs, then restart the DAB revision. `azure-setup` also grants DAB `EXECUTE` on `statsAtSeq`, applies `sql/azure/` (rerunnable) and, once the purge API exists, grants it read and write.
 
 ## 3. Running a live replay
 
@@ -44,7 +54,10 @@ Stop the job before an apply that changes its query, inputs or outputs.
 .venv/Scripts/python -m devtools asa start
 ETL_EVENTHUB_CONNECTION_STRING=$(terraform -chdir=infra output -raw eventhub_send_connection_string) \
   .venv/Scripts/python -m seeder.replay seeder/matches/itg-syn-0001.jsonl --speed 10 --target eventhub --match-id demo1
-.venv/Scripts/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(terraform -chdir=infra output -raw graphql_url)"
+# DAB has internal ingress: expose it only while verifying, then set it back to internal
+az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type external
+.venv/Scripts/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(terraform -chdir=infra output -raw graphql_url | sed 's/.internal//')"
+az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type internal
 .venv/Scripts/python -m devtools check-notifications .local/replays/demo1.jsonl
 .venv/Scripts/python -m devtools asa stop
 ```
@@ -57,9 +70,10 @@ At ⅓ streaming unit the job runs about two minutes behind a 10x replay. For a 
 
 | Output | For |
 | --- | --- |
-| `graphql_url` | Narrative engine, user backend |
+| `graphql_url` | Narrative engine, user backend (internal address) |
 | `servicebus_listen_connection_string` (sensitive) | Narrative engine (`narrative-engine` subscription) |
 | `eventhub_send_connection_string` (sensitive) | Seeder or data generation |
+| `admin_host`, `admin_token` (sensitive) | Frontend `/purge-api/etl` (the `/dev/` purge on Azure); demo control (purge, seed restore) |
 | Event Hubs consumer group `user-backend` | User backend's live event feed |
 
 ## 5. Operating
@@ -68,7 +82,7 @@ At ⅓ streaming unit the job runs about two minutes behind a 10x replay. For a 
 
 | Symptom | Check |
 | --- | --- |
-| No notifications | Is the job running (`asa status`)? Is a replay sending? |
+| No notifications | Is the job running (`asa status`)? The schedule starts it a minute or two after events arrive. Is a replay sending? Did the guard's last resort stop it (`./dev azure up` restores)? |
 | First query slow | DAB scaled to zero or SQL paused; wait about 30 s |
 | Missing rows | Run `verify`; output errors are dropped, not retried |
 | Subscription backlog | `narrative-engine` has no message TTL; old replays stay until read |

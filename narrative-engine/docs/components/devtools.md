@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Status** | Implemented · used throughout development |
-| **Code** | [`narrative_engine/devtools/`](../../narrative_engine/devtools/): `local.py`, `azure.py`, `report.py` |
+| **Code** | [`narrative_engine/devtools/`](../../narrative_engine/devtools/): `local.py`, `azure.py`, `report.py`, `fixture_data.py` (in-memory `MatchData` test double), `fake_agents.py` (`FakeAgents`, no model calls), `fake_decisions.py` (`FakeDecisions`: fixed answers or a rule), `targets.py` and `follows.py` (fixed buckets and followed topics). The service image excludes this folder (`.dockerignore`) |
 | **Secrets** | Read from Terraform outputs into the ignored `.env`; never printed |
 
 ## 1. Local runs (`local.py`)
@@ -22,7 +22,7 @@ python -m narrative_engine.devtools.local NOTIFICATIONS.jsonl [options]
 | `--data fixture\|graphql` | Replay file (default) or the ETL's GraphQL (`--graphql-url`) |
 | `--match`, `--match-id` | Replay file and match ID override |
 | `--pace N` | 0 = sequential and fast; N = N times the recorded timing, concurrent |
-| `--presence '{"home:casual": 1}'` | Simulated viewers (default all 12) |
+| `--buckets home:casual,away:analyst` | Buckets to write for (default all 12) |
 | `--serve PORT` | Serve the history API during and after the run |
 | `--out` | Narratives JSONL (default `.local/narratives.jsonl`) |
 
@@ -36,8 +36,6 @@ python -m narrative_engine.devtools.local NOTIFICATIONS.jsonl [options]
 | `build --tag X [--local]` | Build the image from a minimal context; `--local` uses Docker and pushes (ACR Tasks are blocked on the trial) |
 | `check-narratives --match-id X` | Drain the `narrative-check` subscription: count a match's narratives by step and bucket, check each `MessageId` equals the narrative `id`, list one bucket's text |
 | `report --match-id X [--no-open]` | Write `.local/report-<id>.html` from Cosmos and open it |
-| `send-presence --match-id X --counts '{…}' --minutes N` | Act as the user backend and send presence with heartbeats |
-
 ## 3. Report (`report.py`)
 
 *In short: one HTML page showing how the engine thought about a match.*

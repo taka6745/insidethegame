@@ -9,7 +9,7 @@ from fractions import Fraction
 
 import pytest
 
-from backend.models.events import Event
+from backend.models.actions import SpadlAction
 from backend.models.rules import Predicate, Rule
 from backend.services.filter_engine import FilterEngine
 from backend.services.time_index import TimeIndex
@@ -17,12 +17,14 @@ from backend.services.time_index import TimeIndex
 COMPARISONS = {"eq": operator.eq, "gt": operator.gt, "gte": operator.ge,
                "lt": operator.lt, "lte": operator.le, "in": lambda actual, values: actual in values}
 CATEGORIES = {
-    "event_type": ["pass", "corner", "shot", "goal", "touch", "card"],
+    "action_type": ["pass", "corner_crossed", "shot", "dribble", "tackle", "clearance"],
     "team_id": ["team-a", "team-b"],
     "player_id": ["player-a", "player-b", "player-c"],
-    "body_part": ["head", "foot", "other"],
-    "outcome": ["success", "failure", "red"],
+    "bodypart": ["head", "foot", "other"],
+    "result": ["success", "fail", "offside"],
+    "end_zone": ["opp_box", "final_third", "own_box"],
 }
+REQUIRED = {"action_type", "team_id", "bodypart", "result", "end_zone"}
 CLOCKS = [0, 1, 59, 60, 61, 2700, 3600, 5400, 12000]
 
 
@@ -51,15 +53,15 @@ def test_segment_decomposition_matches_scalar_predicates_across_entire_clock_dom
 def scalar_total(rule, latest):
     """Read plain contract data, not Rule.matches/contribution or either index."""
     total = Fraction(0)
-    for event in latest.values():
-        if event["deleted"] or event["match_id"] != rule["match_id"]:
+    for action in latest.values():
+        if action["match_id"] != rule["match_id"]:
             continue
-        if not all(event[p["field"]] is not None and
-                   COMPARISONS[p["op"]](event[p["field"]], p["value"])
+        if not all(action[p["field"]] is not None and
+                   COMPARISONS[p["op"]](action[p["field"]], p["value"])
                    for p in rule["predicates"]):
             continue
-        value = 1 if rule["operation"] == "count" else event[rule["sum_field"]] or 0
-        total += Fraction(str(value))
+        # Every generated action runs along x from 0, so its ball distance is end_x.
+        total += Fraction(1) if rule["operation"] == "count" else Fraction(str(action["end_x"]))
     return total
 
 
@@ -92,27 +94,25 @@ def definitions(rng):
     return result
 
 
-def generated_event(rng, latest, history, step):
-    key = rng.choice(["match-a", "match-b"]), str(rng.randrange(20))
+def generated_action(rng, latest, step):
+    key = rng.choice(["match-a", "match-b"]), rng.randrange(20)
     previous = latest.get(key)
     if previous and step % 7 == 0:
-        return Event.model_validate(previous)  # Exact duplicate.
-    if previous and previous["revision"] > 1 and step % 11 == 0:
-        older = [e for e in history if (e.match_id, e.event_id) == key and e.revision < previous["revision"]]
-        return rng.choice(older) if older else Event.model_validate(previous)
-    # Repeated IDs deliberately change categories, clock, measurement and tombstone.
-    values = {field: rng.choice(options + ([None] if field != "event_type" else []))
+        return SpadlAction.model_validate(previous)  # Exact duplicate delivery.
+    if previous:
+        key = key[0], 20 + step  # A final action never changes: a new one gets a new id.
+    values = {field: rng.choice(options + ([None] if field not in REQUIRED else []))
               for field, options in CATEGORIES.items()}
-    return Event(event_id=key[1], match_id=key[0], revision=previous["revision"] + 1 if previous else 2,
-                 period=rng.choice([1, 2, 3]), match_time_seconds=rng.choice(CLOCKS),
-                 distance_metres=rng.choice([None, 0.0, 0.1, 0.2, 12.5, 200.0]),
-                 deleted=step % 9 == 0, **values)
+    return SpadlAction(match_id=key[0], action_id=key[1], period=rng.choice([1, 2, 3]),
+                       match_time_seconds=rng.choice(CLOCKS), start_x=0.0, start_y=34.0,
+                       end_x=rng.choice([0.0, 0.1, 0.2, 12.5, 105.0]), end_y=34.0, start_zone="own_box",
+                       seq=1, final_seq=1, **values)
 
 
 @pytest.mark.parametrize("seed", [11, 29, 97])
-def test_general_dsl_prefixes_late_registration_and_revisions_match_independent_oracle(seed):
+def test_general_dsl_prefixes_late_registration_and_duplicates_match_independent_oracle(seed):
     rng = random.Random(seed)
-    engine, latest, history = FilterEngine(), {}, []
+    engine, latest = FilterEngine(), {}
     active, totals, versions = {}, {}, {}
     rules = definitions(rng)
 
@@ -130,20 +130,18 @@ def test_general_dsl_prefixes_late_registration_and_revisions_match_independent_
     for step in range(150):
         if step == 60:
             register(rules[35:])
-        event = generated_event(rng, latest, history, step)
-        previous = latest.get((event.match_id, event.event_id))
+        action = generated_action(rng, latest, step)
+        previous = latest.get((action.match_id, action.action_id))
         if previous and step % 13 == 0:
-            conflict = Event.model_validate({**previous, "deleted": not previous["deleted"]})
+            conflict = SpadlAction.model_validate({**previous, "end_x": 1.5 if previous["end_x"] != 1.5 else 2.5})
             snapshot = engine.calculations
             with pytest.raises(ValueError, match="Conflicting"):
                 engine.ingest(conflict)
             assert engine.calculations == snapshot
-        results = engine.ingest(event)
+        results = engine.ingest(action)
         assert [r.calculation_id for r in results] == sorted(r.calculation_id for r in results)
         assert len(results) == len({r.calculation_id for r in results})
-        history.append(event)
-        if previous is None or event.revision > previous["revision"]:
-            latest[event.match_id, event.event_id] = event.model_dump()
+        latest[action.match_id, action.action_id] = action.model_dump()
         changed = set()
         for identifier, rule in active.items():
             expected = scalar_total(rule, latest)
@@ -155,12 +153,12 @@ def test_general_dsl_prefixes_late_registration_and_revisions_match_independent_
             assert (actual.value, actual.version) == (float(expected), versions[identifier])
         assert {r.calculation_id for r in results} == changed
 
-    # Registration imports history before computing its initial value; the same
-    # latest-revision set must agree regardless of arrival order and late creation.
+    # Late registration over the same actions, in any arrival order, agrees.
+    history = [SpadlAction.model_validate(row) for row in latest.values()]
     rng.shuffle(history)
     rebuilt = FilterEngine()
-    for event in history:
-        rebuilt.ingest(event)
+    for action in history:
+        rebuilt.ingest(action)
     for rule in rules:
         result = rebuilt.register(rule)
         assert result.value == float(scalar_total(rule.model_dump(mode="json"), latest))

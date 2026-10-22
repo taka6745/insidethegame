@@ -1,0 +1,5 @@
+# Local stream worker (local_stream/); the Azure pipeline uses Stream Analytics instead.
+azure-eventhub==5.15.1
+azure-servicebus==7.15.0
+pymssql==2.3.13
+mssql-python==1.16.0  # Azure SQL with managed identity (ETL_SQL_AUTH=managed-identity)

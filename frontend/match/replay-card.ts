@@ -1,3 +1,4 @@
+import { eventName } from "./capture.ts";
 import { node } from "./dom.ts";
 import { derivedText, duration, hasMore, pageCount, playableClips } from "./replay.ts";
 import type { Replay } from "./types.ts";
@@ -25,6 +26,11 @@ export function replayCard(document: Document, replay: Replay, actions: ReplayCa
   still.setAttribute("aria-hidden", "true");
   play.append(still, node(document, "span", "▶", "replay-frame-icon"),
     node(document, "span", `${count} ${count === 1 ? "clip" : "clips"} · ${duration(replay.seconds)}`, "replay-frame-meta"));
+  // A key moment's preview line (PLAN.md §10.2 D6): its minute and event, when the clip carries its facts. Chat
+  // replays of ordinary events list no captions.
+  const moment = replay.clips[0]?.moments?.[0];
+  if (moment) play.append(node(document, "span", [moment.minute_label, eventName(moment)].filter(Boolean).join(" · "),
+    "replay-frame-caption"));
   card.append(play);
   if (playable) actions.frame?.(replay, still);
   const derived = derivedText(replay.derived);

@@ -1,9 +1,12 @@
 """Hand-authored gold cases. Expected hits are explicit event/revision IDs.
 
+Rules are written in the canonical event vocabulary they were authored in and translated to SPADL
+(spadl_corpus.translate); an intent SPADL cannot express is an expected refusal or catalogue reuse.
+
 Never derive gold answers from the agent or production filter evaluator.
 Use `python -m benchmarks.correctness` to check every delivery and gold rule.
 """
-from backend.models.rules import Rule
+from .spadl_corpus import translate
 
 MATCH = "filter-lab-match"
 
@@ -17,14 +20,18 @@ def case(prompt, hits, quality="clear", operation="count", **terms):
     for item in hits.split():
         event, _, amount = item.partition(":")
         weights[event if "@" in event else event + "@1"] = float(amount) if amount else 1
-    return {"prompt": prompt, "quality": quality, "expected_status": ["ready"],
-            "expected_rule": Rule(match_id=MATCH, operation=operation, predicates=predicates,
-                                  sum_field="distance_metres" if operation == "sum" else None).model_dump(mode="json"),
+    rule, reason = translate({"match_id": MATCH, "operation": operation, "predicates": predicates,
+                              "sum_field": "distance_metres" if operation == "sum" else None})
+    if rule is None:
+        return {"prompt": prompt, "quality": quality, "expected_status": ["unsupported", "reuse"], "spadl_gap": reason}
+    return {"prompt": prompt, "quality": quality, "expected_status": ["ready"], "expected_rule": rule,
             "expected_weights": weights}
 
 
 # All identifiers below refer to fixtures/filter-lab.json, including superseded
 # revisions. A missing revision contributes zero; deletions remove old values.
+# SPADL (2026-10-21): "passes" are the pass family, so taken corners (corner_crossed) count as passes;
+# the five pass-count intents gained their corner events. Only latest revisions carry an action.
 CASES = [
     case("Count all recorded headed touches by Mbappé", "e1 e2 e7 e13 e18 e21@2 e26", player_id="mbappe", body_part="head"),
     case("mbappe headers second half pls", "e13 e18 e21@2 e26", "messy", player_id="mbappe", body_part="head", period=2),
@@ -66,12 +73,12 @@ CASES = [
     case("all corners since 67 minutes inclusive", "e15 e16 e17 e28 e28@2 e29 e30", event_type="corner", match_time_seconds__gte=4020),
     case("corners from 60 up to but not including 61 minutes", "e10 e11", event_type="corner", match_time_seconds__gte=3600, match_time_seconds__lt=3660),
     case("corners after 88:00 but before 90:00", "e29", event_type="corner", match_time_seconds__gt=5280, match_time_seconds__lt=5400),
-    case("Count all pass events", "e1 e4 e5 e18 e23", event_type="pass"),
-    case("Chelsea completed passes", "e4 e23", event_type="pass", team_id="chelsea", outcome="success"),
+    case("Count all pass events", "e1 e4 e5 e18 e23 e3 e10 e11 e12 e15 e16 e17 e28@2 e30", event_type="pass"),
+    case("Chelsea completed passes", "e4 e23 e3 e10 e11 e15 e16 e17 e30", event_type="pass", team_id="chelsea", outcome="success"),
     case("chelsea failed passes count", "e5", "messy", event_type="pass", team_id="chelsea", outcome="failure"),
     case("Mbappé passes", "e1 e18", event_type="pass", player_id="mbappe"),
     case("Palmer passes", "e4 e5 e23", event_type="pass", player_id="palmer"),
-    case("all completed passes", "e1 e4 e18 e23", "average", event_type="pass", outcome="success"),
+    case("all completed passes", "e1 e4 e18 e23 e3 e10 e11 e12 e15 e16 e17 e28@2 e30", "average", event_type="pass", outcome="success"),
     case("all failed passes", "e5", event_type="pass", outcome="failure"),
     case("Total recorded pass distance, both teams, in metres", "e1:8 e4:12 e5:20 e18:5 e23:15", operation="sum", event_type="pass"),
     case("sum chelsea pass metres all outcomes", "e4:12 e5:20 e23:15", "messy", operation="sum", event_type="pass", team_id="chelsea"),
@@ -81,8 +88,8 @@ CASES = [
     case("palmer total pass distance metres", "e4:12 e5:20 e23:15", "average", operation="sum", event_type="pass", player_id="palmer"),
     case("second half completed pass distance in metres", "e18:5 e23:15", operation="sum", event_type="pass", period=2, outcome="success"),
     case("First-half pass distance in metres", "e1:8 e4:12 e5:20", operation="sum", event_type="pass", period=1),
-    case("passes from either team after 70:00", "e18 e23", event_type="pass", match_time_seconds__gt=4200),
-    case("passes before 30 minutes", "e1 e4 e5", "average", event_type="pass", match_time_seconds__lt=1800),
+    case("passes from either team after 70:00", "e18 e23 e17 e28@2 e30", event_type="pass", match_time_seconds__gt=4200),
+    case("passes before 30 minutes", "e1 e4 e5 e3", "average", event_type="pass", match_time_seconds__lt=1800),
     case("right foot passes", "e4 e5 e23", "messy", event_type="pass", body_part="right_foot"),
     case("completed right-foot passes by Palmer", "e4 e23", event_type="pass", body_part="right_foot", player_id="palmer", outcome="success"),
     case("Palmer second-half pass metres", "e23:15", "average", operation="sum", event_type="pass", player_id="palmer", period=2),
@@ -139,7 +146,7 @@ NEGATIVE_CASES = [
     ("Track Chelsea corners only while Chelsea are losing", ["unsupported"]),
     ("Track the ratio of Chelsea passes to Madrid passes", ["unsupported"]),
     ("Track xG for Mbappé", ["unsupported"]),
-    ("Count Mbappé's touches inside the penalty area", ["unsupported"]),
+    ("Count Mbappé's aerial duels won", ["unsupported"]),
     ("Track how tired Palmer looks", ["unsupported"]),
 ]
 

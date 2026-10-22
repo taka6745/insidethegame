@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from backend.adapters.events import OptaInspiredAdapter
+from benchmarks.doubles.events import OptaInspiredAdapter
 
 SCENARIO = json.loads((Path(__file__).parents[1] / "fixtures/filter-lab.json").read_text())
 
@@ -48,18 +48,16 @@ def test_extra_vendor_fields_require_deliberate_adapter_mapping():
     'throw_in', 'free_kick', 'goal_kick', 'kick_off', 'penalty', 'offside',
     'foul_won', 'keeper_claim', 'period_start', 'period_end',
 ])
-def test_native_event_categories_are_queryable_and_extra_qualifiers_stay_upstream(kind):
-    from backend.models.rules import Rule
+def test_native_event_categories_are_accepted_and_extra_qualifiers_stay_upstream(kind):
+    # Canonical events give the clock and ticker; custom rules filter SPADL actions, not these categories.
     raw = SCENARIO['events'][0] | {'typeName': kind, 'qualifiers': [
         {'type': 'restartType', 'value': 'corner'},
         {'type': 'relatedEventId', 'value': 'native-20'},
     ]}
     event = OptaInspiredAdapter().adapt(raw)
-    rule = Rule(match_id=event.match_id, predicates=[{'field': 'event_type', 'op': 'eq', 'value': kind}])
-    assert rule.matches(event)
+    assert event.event_type == kind
     assert 'restartType' not in event.model_dump() and 'restartType' not in event.qualifiers
     assert event.qualifiers['relatedEventId'] == 'native-20'
-    assert kind in OptaInspiredAdapter().data_reference()['events']
 
 
 @pytest.mark.parametrize('outcome', ['yellow', 'second_yellow', 'red'])

@@ -28,8 +28,11 @@ def test_inline_contract_keeps_enums_bounds_and_required_fields():
     goal = schema['properties']['goal']['anyOf'][0]
     assert goal['required'] == ['description']
     assert goal['properties']['after_seconds']['anyOf'][0]['maximum'] == 12000
-    assert 'header' not in goal['properties']['event_types']['items']['enum']
-    assert 'shot' in goal['properties']['event_types']['items']['enum']
+    # SPADL enums are fixed choices in the schema.
+    assert 'header' not in goal['properties']['action_types']['items']['enum']
+    assert 'shot' in goal['properties']['action_types']['items']['enum']
+    assert 'opp_box' in goal['properties']['end_zones']['items']['enum']
+    assert 'owngoal' in goal['properties']['results']['items']['enum']
     assert len(encoded) < len(json.dumps(GoalDecision.model_json_schema()))
 
 
@@ -44,15 +47,15 @@ def test_baseline_schema_and_instructions_remain_selectable():
 
 def test_schema_repairs_preserve_safe_diagnostics_and_never_publish_invalid_goal():
     model = Scripted([
-        {'status': 'custom', 'goal': {'description': 'invalid', 'event_types': ['private-invalid-value']}},
-        {'status': 'custom', 'goal': {'description': 'All corners', 'event_types': ['corner']}},
+        {'status': 'custom', 'goal': {'description': 'invalid', 'action_types': ['private-invalid-value']}},
+        {'status': 'custom', 'goal': {'description': 'All corners', 'action_types': ['corner_crossed', 'corner_short']}},
     ])
     result = asyncio.run(RuleWorkflow(GoalAgent(model), StructuredRuleCompiler()).plan(
         'Count corners', {'match_id': 'match', 'players': [], 'teams': []}))
     assert result.status == 'ready'
     assert result.model_calls == 2 and result.goal_failure_reasons == ['goal_schema']
     assert 'private-invalid-value' not in json.dumps(model.calls[1])
-    assert result.rule.predicates[0].value == ('corner',)
+    assert result.rule.predicates[0].value == ('corner_crossed', 'corner_short')
 
 
 def test_timeout_diagnostics_remain_unknown_instead_of_claiming_no_failures():
@@ -62,11 +65,12 @@ def test_timeout_diagnostics_remain_unknown_instead_of_claiming_no_failures():
         async def complete(self, instructions, payload):
             self.calls += 1
             if self.calls == 1:
-                return {"status": "custom", "goal": {"description": "Bad", "event_types": ["bad"]}}
-            await asyncio.sleep(1)
+                return {"status": "custom", "goal": {"description": "Bad", "action_types": ["bad"]}}
+            await asyncio.sleep(10)
 
     model = RetryTimesOut()
-    result = asyncio.run(RuleWorkflow(GoalAgent(model), StructuredRuleCompiler(), timeout_seconds=0.05).plan(
+    # Long enough for the first call on a loaded machine; the second always outlasts it.
+    result = asyncio.run(RuleWorkflow(GoalAgent(model), StructuredRuleCompiler(), timeout_seconds=1).plan(
         "Count corners", {"match_id": "match", "players": [], "teams": []}))
     assert result.status == "failed" and "timed out" in result.message
     assert model.calls == 2

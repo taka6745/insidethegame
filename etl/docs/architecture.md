@@ -1,6 +1,6 @@
 # Architecture
 
-> **In short:** a managed streaming pipeline with no custom server code. Stream Analytics does all the processing in SQL-like queries, Azure SQL stores the results, Data API builder exposes them as GraphQL, and Service Bus carries notifications. Python exists only for the seeder, the reference implementation and developer tools.
+> **In short:** a managed streaming pipeline with little custom server code. Stream Analytics does the stream processing in SQL-like queries, Azure SQL stores the results, a small Python post-processor converts MA3 into SPADL actions, Data API builder exposes them as GraphQL, and Service Bus carries notifications. Python exists only for the seeder, the reference implementation, developer tools, the SPADL post-processor (`spadl/worker.py`) and the small purge API (`local_stream/admin.py`).
 
 | | |
 | --- | --- |
@@ -8,6 +8,7 @@
 | **Storage** | Azure SQL serverless (free offer, auto-pause) |
 | **API** | Data API builder 2.1.5 on Container Apps |
 | **Delivery** | At least once everywhere; inserts and messages are deduplicated by key |
+| **Azure** | Applied 22 Oct (Azure test); Stream Analytics started and stopped by the spend guard's schedule |
 
 ## 1. Diagram
 
@@ -15,11 +16,12 @@
 
 ```mermaid
 flowchart LR
-    S[Seeder replay<br/>or data generation] --> EH[Event Hubs<br/>match-events]
+    S[Feed (data-generation)<br/>or seeder replay] --> EH[Event Hubs<br/>match-events]
     EH --> ASA[Stream Analytics<br/>query + UDFs]
     EH -- consumer group user-backend --> UB[User backend]
     ASA --> SQL[(Azure SQL serverless<br/>matches, rawEvents,<br/>keyEvents, minuteStats<br/>view matchStatsAsOf)]
     ASA --> SB[Service Bus<br/>match-notifications]
+    SQL <--> SP[SPADL post-processor<br/>MA3 to spadlActions]
     SQL --> DAB[Data API builder<br/>GraphQL]
     DAB --> NE[Narrative engine]
     DAB --> UB
@@ -36,6 +38,8 @@ The rendered overview diagram is [../architecture.svg](../architecture.svg); the
 | --- | --- | --- |
 | [Seeder](components/seeder.md) | `seeder/` | Generate a synthetic match; replay it to Event Hubs or a file |
 | [Stream Analytics](components/stream-analytics.md) | `stream-analytics/` | Parse events, detect key events, aggregate minutes, emit notifications |
+| [Local stream](components/local-stream.md) | `local_stream/` | Local Docker stand-in for the job: same rules (via `reference/`), tables and notifications |
+| [SPADL](components/spadl.md) | `spadl/` | Convert committed MA3 rows into final SPADL actions (`spadlActions`, `spadlSeq`) |
 | [SQL](components/sql.md) | `sql/` | Tables and the running-totals view |
 | [Data API builder](components/dab.md) | `dab/` | GraphQL over the tables and view |
 | [Reference](components/reference.md) | `reference/` | The same rules in Python, the expected result |
@@ -66,21 +70,24 @@ Half time has no events, so no windows close and no `MinuteClosed` fires.
 | `minuteStats` | team, match minute, window | `(matchId, contestantId, periodId, timeMin, windowEnd)` |
 | `matchStatsAsOf` (view) | team, match minute | running totals as of that minute |
 
-All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
+The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `possessionSamples`, `matchProgress`) sit behind `matchWatermarks`; `statsAtSeq` reads `spadlActions`, MA3 card and VAR rows and `possessionSamples` ([sql](components/sql.md#3-multi-match-read-models-003)). The [trend procedures](components/trends.md) read the same rows at a snapshot, with thresholds from `trendDefinitions`. The local stream writes them; the job's outputs for them, its watermark marks and the Azure SQL triggers are implemented and applied 22 Oct (Azure match run pending) ([Stream Analytics](components/stream-analytics.md#5-watermarks)). All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
 
 ## 5. Azure resources
 
 *In short: one resource group, dev-sized everything.*
 
-| Resource | Name (dev) | Size and notes |
+| Resource | Name (dev deployment of 2026-10-21, since deleted; `./dev azure up` mints new suffixes) | Size and notes |
 | --- | --- | --- |
 | Resource group | `rg-itg-etl-dev` | Budget alert at US$50/month |
-| Event Hubs | namespace `itg-etl-dev-0zvxh-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `user-backend` |
+| Event Hubs | namespace `itg-etl-dev-0zvxh-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `stream-analytics-progress`, `user-backend` |
 | Stream Analytics | `itg-etl-dev-0zvxh-asa` | StandardV2, ⅓ streaming unit; created stopped, bills only while running |
 | Azure SQL | server `itg-etl-dev-0zvxh-sql`, database `insidethegame` | General Purpose serverless, free offer, auto-pause after 60 min; Entra-only auth |
 | Container Apps | environment `itg-etl-dev-0zvxh-cae`, app `itg-etl-dev-dab` | DAB, 0–1 replicas; the narrative engine shares this environment |
 | Service Bus | `itg-etl-dev-0zvxh-sbns`, topic `match-notifications` | Standard; duplicate detection 10 min; subscription `narrative-engine` (10 deliveries) |
+| Stream schedule | `stream_schedule.tf` | Two Event Hubs metric alerts call the guard's runbook: match events start the job, 30 min (`stream_idle_window`) without them stop it |
 | Log Analytics | `itg-etl-dev-0zvxh-logs` | Container Apps logs, 0.5 GB/day cap |
+| Registry, purge API | `admin.tf` | Applied 22 Oct: Basic ACR; `itg-etl-dev-admin` (0–1 replicas) once `admin_image_tag` is set; with `demo_seeds` also the seed export/restore routes |
+| SPADL post-processor | `spadl.tf` | Applied 22 Oct: `itg-etl-dev-spadl` (1 replica, no ingress; `ETL_ROLE=spadl`) once `admin_image_tag` is set |
 
 ## 6. Guarantees and limits
 

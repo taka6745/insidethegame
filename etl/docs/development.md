@@ -6,8 +6,8 @@
 | --- | --- |
 | **Needs** | Python 3.11, Docker Desktop, `sqlcmd`, Node (UDF tests); Azure CLI and Terraform for Azure work |
 | **Settings** | Ignored `etl/.env` (local SA password, generated) |
-| **Tests** | `pytest tests` (54 pass, 1 skip without PostgreSQL: 7 pipeline, 47 stand-in) plus `devtools verify` end to end |
-| **Whole product locally** | The shared Docker stack runs the [stand-in](components/demo-etl.md), not this pipeline: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
+| **Tests** | `pytest tests` (77 pass; the 14 SQL Server tests skip without `ETL_TEST_SQL_PASSWORD`, the UDF tests without Node; about 3 minutes with them on an emulated SQL Server) plus `devtools verify` end to end |
+| **Whole product locally** | `ACCEPT_EULA=Y ./dev up backend` runs this pipeline's SQL schema and DAB config with the [local stream](components/local-stream.md) worker in place of Stream Analytics (`etl-stream`, GraphQL `http://localhost:15001/graphql`), read by the backend and the narrative engine: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
 
 ## 1. Setup
 
@@ -32,7 +32,7 @@ python -m venv .venv && .venv/Scripts/pip install -r requirements-test.txt   # r
 | Stream Analytics | `reference/pipeline.py`, run by `devtools load-local`, which inserts the expected rows |
 | Service Bus | `load-local` writes notifications to `.local/notifications.jsonl` |
 
-**Test:** install `requirements-test.txt`, then `PYTHONPATH=. pytest tests`. `tests/test_opta_v3.py` covers the v3 contract (new types/qualifiers, stoppage-time clock, new stats) with small synthetic inputs. Set `ETL_TEST_HISTORY_DATABASE_URL` and `ETL_TEST_STATS_DATABASE_URL` to disposable PostgreSQL databases to include persistence/restart tests. Unit tests use repository doubles; they do not claim database coverage. Docker builds use `--target runtime` for the service and `--target test` for pytest; the runtime excludes tests and test dependencies.
+**Test:** install `requirements-test.txt`, then `python -m pytest tests`. For the SQL tests, point `ETL_TEST_SQL_PASSWORD` (and `ETL_TEST_SQL_HOST`/`PORT`) at a throwaway SQL Server; unit tests use repository doubles and do not claim database coverage. The `Dockerfile` builds the local stream image (`--target stream`), which Azure also runs as the purge API (`ETL_ROLE=admin`).
 
 The SQL Server 2022 image failed on this machine; 2025-CU9 works. Docker Desktop hangs if the C: drive fills, so check free space first.
 
@@ -56,7 +56,18 @@ The SQL Server 2022 image failed on this machine; 2025-CU9 works. Docker Desktop
 | --- | --- |
 | `test_seeder_and_pipeline.py` | Generated match content, replay scheduling and windows, reference outputs (key events, deltas, notifications, running totals) |
 | `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules (skips without Node) |
-| `test_etl.py`, `test_brokers.py`, `test_native_events.py` | The [stand-in](components/demo-etl.md): snapshots, GraphQL, broker mode, native GRF events (Postgres tests skip without `ETL_TEST_*_DATABASE_URL`) |
+| `test_azure_parity.py` | On all three recordings: the reference (Stream Analytics rows, marks → watermark and status) equals the local stream worker row for row and along the match; the row UDFs equal the reference |
+| `test_local_stream.py` | The [local stream](components/local-stream.md): matches the reference on the GRF stream, window closing, redelivery, restart, failed commits; MatchEvent v2 + POS rows, watermark and status, MA1 gate and cut-off, purge (API, restart, redelivery), two interleaved matches; a restored seed carries on as if never stopped; seed routes mounted only with `DEMO_SEEDS=1` |
+| `test_spadl.py` | `reference/spadl.py` equals socceraction 1.5.3 (MA3JSONParser → convert_to_actions → SPADLSchema; test-only, pinned in `requirements-test.txt`) on all three recordings with an empty allow-list (a goal with an unknown scorer passes SPADLSchema with a placeholder player); incremental conversion at every watermark equals whole-match; shots final at once, `period_end` finalises its period; extensions and zones |
+| `test_spadl_worker.py` | The post-processor loop: idle polls back off; with an activity check (Azure: Event Hubs) it closes SQL after the idle time and wakes when the hub receives |
+| `test_spadl_fixture.py` | `tests/fixtures/spadl-chelsea-united.json` (the rows backend and engine tests build on) is the current conversion; the JSON schema lists every column |
+| `test_catalogue.py` | `reference/catalogue.py` on SPADL equals `tests/fixtures/catalogue-golden.json` for all 126 stats at the final seq and 20 prefixes; old ids kept in order; snapshots count only final actions |
+| `test_catalogue_rules.py` | Counting rules on small SPADL inputs: own goals and fouls won for the other team, VAR overturns (goals and own goals) from their seq, pass family and set pieces, on target vs blocked, entries, body-part availability, final-only snapshots, MA3 cards, retired kinds |
+| `test_trends.py` | `reference/trends.py` on small inputs (ball timeline, entries, fast breaks, MA3 components, windows and flags, disabled trends, spells, momentum, bounds, newest seed block) and on Chelsea–United against `tests/fixtures/trends-golden.json` (`python tests/test_trends.py --regenerate` after a deliberate change or a re-rendered recording) |
+| `test_sql_trends.py` | Real SQL Server: the three trend procedures equal the reference on all three recordings at 10 seqs (expected values computed from the recordings), empty above `spadlSeq` or the watermark, the table equals the seed and a re-seed changes flags, full-time calls under 500 ms |
+| `test_sql_catalogue.py` | Real SQL Server: migrations, stream worker and SPADL post-processor; `spadlActions` equal the whole-match conversion and, at 10 intermediate seqs, exactly the actions final there; `statsAtSeq` equals the golden values and the reference (empty above `spadlSeq`), also with VAR overturns; purge leaves 0 rows (SPADL included), survives restart + redelivery and a stale post-processor write; purge all; interleaved matches. Needs a disposable server: `ETL_TEST_SQL_PASSWORD` (and `ETL_TEST_SQL_HOST`/`PORT`); each run creates and drops its own databases |
+| `test_sql_seeds.py` | Real SQL Server: a held run's seed exported, purged and restored under a new matchId equals the recorded rows and carries on to the same rows as an uninterrupted run; refusals (other schema, known match, rows past the seq) |
+| `test_sql_azure.py` | Real SQL Server with `sql/azure`: the job's rows as independent, reordered and parallel output batches give the reference watermark, status and (after the SPADL post-processor) `statsAtSeq`; purge, tombstones and the purge-all cut-off hold against later inserts and post-processor steps |
 
 The SQL view and the deployed query are checked end to end by `devtools verify` and `check-notifications`, locally and in Azure.
 

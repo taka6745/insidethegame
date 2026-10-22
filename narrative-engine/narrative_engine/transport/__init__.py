@@ -1,1 +1,1 @@
-"""Where notifications come from and where narratives go: local files now, Service Bus in phase 6."""
+"""Where notifications come from and where narratives go: Service Bus (the service), local files (devtools)."""

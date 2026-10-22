@@ -2,29 +2,26 @@
 import re
 from typing import get_args
 
-from backend.models.events import EventType
-from backend.models.rules import Predicate
+from backend.models.rules import PredicateField
 from .models import GoalDecision
 
 
-MEASUREMENT_POLICY = """Consult measurement_support BEFORE interpreting a measure or offering choices.
-Use the supplied field meanings, record semantics and executable operations to translate everyday
-wording into a useful statistic. Prefer answering the reasonable interpretation in context.
-Do not interpret conversational words such as 'any' or 'all' as a demand for unobservable physical
-precision. When the feed declares a suitable recorded count, use it and label the result 'Recorded'.
-Preserve the user's entity, time and action scope. A recorded count excludes unclassified records;
-it does not estimate them or promise exhaustive coverage. Use coverage=recorded only for the
-recorded_body_part_event_groups in the contract, selecting categories within ONE group. These
-groups are alternative representations, not quantities to add together. The event meanings
-explain which representation covers the requested actions without duplicate contacts.
-If the user explicitly needs exhaustive coverage including unrecorded/unclassified actions,
-do not substitute a recorded count. If no supported interpretation answers their intent, ask one
-short useful clarification or decline briefly. Missing metadata is not zero. Keep limitations short.
+MEASUREMENT_POLICY = """Consult measurement_support and the SPADL data reference BEFORE interpreting a measure or offering
+choices. Every statistic is defined on SPADL actions (type, result, body part, team-relative zones and
+locations); translate everyday wording into those values. Prefer answering the reasonable interpretation.
+Do not read conversational words such as 'any' or 'all' as a demand for unobservable precision.
+Body parts are complete only for measurement_support.complete_bodypart_types; for other types count
+coverage=recorded (only actions whose body part the provider named) and label the result 'Recorded'.
+Preserve the user's entity, time and action scope. Missing metadata is not zero.
 Clarify only when plausible interpretations would materially change the answer and context cannot
 resolve them. Do not ask again after the viewer has answered. Do not repeat an unsupported option
-from an older clarification. Catalogue statistics remain usable despite raw-event limitations.
-A share, split, percentage, ratio or rate is never a plain event count; possession is a catalogue
-share, not a count of events. When declining, name the missing data from measurement_support.unavailable.
+from an older clarification. Catalogue statistics remain usable.
+A share, split, percentage, ratio or rate is never a plain count; possession is a catalogue share,
+not a count of actions. Cards are outside SPADL: use the cards catalogue stat. When declining, name the
+missing data from measurement_support.unavailable.
+Saves mean goalkeeper saves: use the shots_saved catalogue stat (custom: keeper_save with save_kinds [save]).
+The saves stat also counts outfield blocks and keeper touches of shots going wide; use it only when asked
+for every save event.
 """
 
 # Words naming a share or rate. A plain count/sum cannot answer them.
@@ -33,27 +30,13 @@ TIME_FIELDS = ('period', 'after_seconds', 'from_seconds', 'before_seconds', 'thr
 
 
 def measurement_support(reference: dict) -> dict:
-    capabilities = reference.get('capabilities')
-    if not capabilities:
+    """What this match's feed lets a custom calculation select (meanings are in the data reference)."""
+    availability = reference.get('availability')
+    if not availability:
         return {'declared': False}
-    categories = sorted(set(get_args(EventType)) & set(capabilities.get('supported_event_types', ())))
-    return {
-        'declared': True,
-        'contract_id': reference.get('contract_id'),
-        'event_types': categories,
-        'all_event_body_parts': bool(capabilities.get('body_parts')),
-        'body_part_event_types': categories if capabilities.get('body_parts') else
-            sorted(set(categories) & set(capabilities.get('body_part_event_types', ()))),
-        'recorded_body_part_event_groups': [list(group) for group in
-            capabilities.get('recorded_body_part_event_groups', ())
-            if group and set(group) <= set(categories)],
-        'distance_event_types': sorted(set(categories) & set(capabilities.get('distance_event_types', ()))),
-        'shot_outcomes': bool(capabilities.get('shot_outcomes')),
-        'fields': {name: value for name, value in reference.get('fields', {}).items()
-                   if name in {*get_args(Predicate.model_fields['field'].annotation), 'distance_metres'}},
-        'event_meanings': {kind: reference.get('events', {}).get(kind, '') for kind in categories},
-        'unavailable': list(reference.get('unavailable', ())),
-    }
+    return {'declared': True, 'contract_id': reference.get('contract_id'), **availability,
+            'filters': list(get_args(PredicateField)), 'sum_fields': ['distance_metres'],
+            'unavailable': [*reference.get('unavailable', ()), *reference.get('outside_spadl', ())]}
 
 
 def plain_measure(request: str, goal) -> set[str]:
@@ -62,11 +45,46 @@ def plain_measure(request: str, goal) -> set[str]:
     if goal is None or goal.operation not in ('count', 'sum'):
         return set()
     words = {match.group(0).lower() for match in MEASURE_WORDS.finditer(f'{request} {goal.description}')}
-    return words if words - {'possession'} or (words and not goal.event_types) else set()
+    if words == {'split'} and goal.action_types and goal.operation == 'count':
+        return set()  # "Shots split per team" is each team's count (question_tools.per_team), not a share.
+    return words if words - {'possession'} or (words and not goal.action_types) else set()
+
+
+# "Saves" means goalkeeper saves unless the viewer asks for every save event (blocks, wide touches).
+EVERY_SAVE = re.compile(r'\b(block\w*|wide|off[ -]target|every|all save|save events?|keeper_save|including)\b', re.I)
+
+
+def real_save_id(request: str, stat_id: str, known) -> str:
+    """A plain 'saves' catalogue id becomes its shots_saved row (when that row exists)."""
+    if EVERY_SAVE.search(request) or not stat_id.endswith(':saves'):
+        return stat_id
+    swapped = f'{stat_id[:-len(":saves")]}:shots_saved'
+    return swapped if swapped in known else stat_id
+
+
+def real_saves(request: str, decision, context: dict):
+    """A plain 'saves' request reads real goalkeeper saves: catalogue shots_saved, or save_kind save."""
+    if EVERY_SAVE.search(request):
+        return decision
+    if decision.status == 'reuse':
+        known = {row['id'] for row in context.get('standard_stats', [])}
+        ids = [real_save_id(request, i, known) for i in decision.standard_stat_ids]
+        return decision if ids == decision.standard_stat_ids else decision.model_copy(
+            update={'standard_stat_ids': ids, 'standard_stat_id': ids[0]})
+    goals = [decision.goal, *getattr(decision.goal, 'inputs', ())] if decision.status == 'custom' else []
+    if any(g.action_types == ('keeper_save',) and not g.save_kinds for g in goals):
+        fix = lambda g: g.model_copy(update={'save_kinds': ('save',)}) \
+            if g.action_types == ('keeper_save',) and not g.save_kinds else g
+        goal = fix(decision.goal)
+        if getattr(goal, 'inputs', None):
+            goal = goal.model_copy(update={'inputs': tuple(fix(g) for g in goal.inputs)})
+        return decision.model_copy(update={'goal': goal})
+    return decision
 
 
 def measure_decision(request: str, decision, context: dict):
     """Route a measure to its catalogue stat, or decline; never offer the plain count."""
+    decision = real_saves(request, decision, context)
     words = plain_measure(request, decision.goal) if decision.status == 'custom' else set()
     if not words:
         return decision

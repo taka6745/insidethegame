@@ -31,6 +31,13 @@
         "provider": "Unauthenticated"
       },
       "mode": "production"
+    },
+    "health": {
+      "enabled": true,
+      "roles": [
+        "anonymous"
+      ],
+      "cache-ttl-seconds": 5
     }
   },
   "autoentities": {},
@@ -59,7 +66,29 @@
             }
           ]
         }
-      ]
+      ],
+      "relationships": {
+        "teams": {
+          "cardinality": "many",
+          "target.entity": "MatchTeam",
+          "source.fields": [
+            "matchId"
+          ],
+          "target.fields": [
+            "matchId"
+          ]
+        },
+        "players": {
+          "cardinality": "many",
+          "target.entity": "MatchPlayer",
+          "source.fields": [
+            "matchId"
+          ],
+          "target.fields": [
+            "matchId"
+          ]
+        }
+      }
     },
     "RawEvent": {
       "source": {
@@ -166,6 +195,373 @@
           "actions": [
             {
               "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "MatchTeam": {
+      "source": {
+        "object": "dbo.matchTeams",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "MatchTeam",
+          "plural": "MatchTeams"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "MatchPlayer": {
+      "source": {
+        "object": "dbo.matchPlayers",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "MatchPlayer",
+          "plural": "MatchPlayers"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "MatchWatermark": {
+      "source": {
+        "object": "dbo.matchWatermarks",
+        "type": "view",
+        "key-fields": [
+          "matchId"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "MatchWatermark",
+          "plural": "MatchWatermarks"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "StatDefinition": {
+      "source": {
+        "object": "dbo.statDefinitions",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "StatDefinition",
+          "plural": "StatDefinitions"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "CanonicalEvent": {
+      "source": {
+        "object": "dbo.canonicalEvents",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CanonicalEvent",
+          "plural": "CanonicalEvents"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "PossessionSample": {
+      "source": {
+        "object": "dbo.possessionSamples",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "PossessionSample",
+          "plural": "PossessionSamples"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "SpadlAction": {
+      "source": {
+        "object": "dbo.spadlActions",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "SpadlAction",
+          "plural": "SpadlActions"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "StatsAtSeq": {
+      "source": {
+        "object": "dbo.statsAtSeq",
+        "type": "stored-procedure",
+        "parameters": [
+          {
+            "name": "matchId",
+            "required": true,
+            "description": "Run-scoped match id"
+          },
+          {
+            "name": "seq",
+            "required": true,
+            "description": "Canonical seq at or below the match watermark"
+          }
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "operation": "query",
+        "type": {
+          "singular": "StatsAtSeq",
+          "plural": "StatsAtSeqs"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "execute"
+            }
+          ]
+        }
+      ]
+    },
+    "TrendDefinition": {
+      "source": {
+        "object": "dbo.trendDefinitions",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "TrendDefinition",
+          "plural": "TrendDefinitions"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            }
+          ]
+        }
+      ]
+    },
+    "TrendMinutesAtSeq": {
+      "source": {
+        "object": "dbo.trendMinutesAtSeq",
+        "type": "stored-procedure",
+        "parameters": [
+          {
+            "name": "matchId",
+            "required": true,
+            "description": "Run-scoped match id"
+          },
+          {
+            "name": "seq",
+            "required": true,
+            "description": "Canonical seq at or below the match watermark"
+          }
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "operation": "query",
+        "type": {
+          "singular": "TrendMinutesAtSeq",
+          "plural": "TrendMinutesAtSeqs"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "execute"
+            }
+          ]
+        }
+      ]
+    },
+    "TrendsAtSeq": {
+      "source": {
+        "object": "dbo.trendsAtSeq",
+        "type": "stored-procedure",
+        "parameters": [
+          {
+            "name": "matchId",
+            "required": true,
+            "description": "Run-scoped match id"
+          },
+          {
+            "name": "seq",
+            "required": true,
+            "description": "Canonical seq at or below the match watermark"
+          }
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "operation": "query",
+        "type": {
+          "singular": "TrendsAtSeq",
+          "plural": "TrendsAtSeqs"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "execute"
+            }
+          ]
+        }
+      ]
+    },
+    "TrendSpellsAtSeq": {
+      "source": {
+        "object": "dbo.trendSpellsAtSeq",
+        "type": "stored-procedure",
+        "parameters": [
+          {
+            "name": "matchId",
+            "required": true,
+            "description": "Run-scoped match id"
+          },
+          {
+            "name": "seq",
+            "required": true,
+            "description": "Canonical seq at or below the match watermark"
+          }
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "operation": "query",
+        "type": {
+          "singular": "TrendSpellsAtSeq",
+          "plural": "TrendSpellsAtSeqs"
+        }
+      },
+      "rest": {
+        "enabled": false
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "execute"
             }
           ]
         }

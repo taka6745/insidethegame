@@ -7,11 +7,35 @@ from typing import Protocol
 import httpx
 from agent_framework import Agent
 from agent_framework.exceptions import AgentFrameworkException
-from agent_framework.openai import OpenAIChatCompletionClient
+from agent_framework.openai import OpenAIChatClient, OpenAIChatCompletionClient
 from openai import AsyncOpenAI, APIStatusError, APIConnectionError
 
 from .usage import UsageTransport
 
+
+def model_configured():
+    """True when the local model's endpoint and model are configured (values are never logged)."""
+    return bool(os.getenv("LOCAL_LLM_BASE_URL") and os.getenv("LOCAL_LLM_MODEL"))
+
+
+
+def chat_client(model: str, client):
+    """A chat model answers over Chat Completions. A reasoning model (LOCAL_LLM_EFFORT set, e.g. gpt-6.1-sol on Azure
+    AI Foundry) goes over the Responses API, the only one where it takes function tools with reasoning."""
+    if os.getenv("LOCAL_LLM_EFFORT"):
+        return OpenAIChatClient(model=model, async_client=client)
+    return OpenAIChatCompletionClient(model=model, async_client=client)
+
+
+def chat_options(max_tokens: int) -> dict:
+    """Model call options. A chat model gets temperature 0. A reasoning model rejects temperature, takes a reasoning
+    effort (LOCAL_LLM_EFFORT), and counts its reasoning against max_tokens, so it gets LOCAL_LLM_REASONING_TOKENS
+    more."""
+    effort = os.getenv("LOCAL_LLM_EFFORT")
+    if not effort:
+        return {"temperature": 0, "max_tokens": max_tokens}
+    return {"reasoning": {"effort": effort},
+            "max_tokens": max_tokens + int(os.getenv("LOCAL_LLM_REASONING_TOKENS", "8000"))}
 
 class ModelError(RuntimeError):
     def __init__(self, message: str, *, reason="model_error", retryable=True):
@@ -45,8 +69,8 @@ class LocalJsonModel:
                 async with AsyncOpenAI(base_url=self.base_url, api_key=self.api_key or "local-development",
                                        http_client=http, max_retries=0, timeout=self.timeout) as client:
                     agent = Agent(name=self.name, instructions=system,
-                                  client=OpenAIChatCompletionClient(model=self.model, async_client=client),
-                                  default_options={"temperature": 0, "max_tokens": 3000})
+                                  client=chat_client(self.model, client),
+                                  default_options=chat_options(3000))
                     # Each call is stateless. The workflow carries only the goal and
                     # validation feedback; no conversation is shared between viewers.
                     options = {"response_format": response_schema} if response_schema is not None else {}

@@ -15,11 +15,12 @@ import time
 from decimal import Decimal
 from pathlib import Path
 
-from backend.adapters.events import OptaInspiredAdapter
+from backend.models.actions import SpadlAction
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 
-DEFAULT_RECORDING = Path(__file__).resolve().parents[2] / "data-generation/recordings/grf-full-match.json.gz"
+# SPADL actions of a shipped recording, converted from its MA3 stream by ETL's reference converter.
+DEFAULT_RECORDING = Path(__file__).resolve().parents[2] / "data-generation/recordings/chelsea-united-grf.json"
 
 
 def peak_mb():
@@ -28,13 +29,17 @@ def peak_mb():
 
 
 def load(path):
+    """(recording, its final SPADL actions in action order)."""
+    from benchmarks.doubles.spadl import recording_actions
     with gzip.open(path, "rt") if path.suffix == ".gz" else path.open() as stream:
         recording = json.load(stream)
-    return recording, [OptaInspiredAdapter().adapt(e) for e in recording["events"]]
+    home = recording["teams"][0]["id"]
+    rows, _ = recording_actions(path, home)
+    return recording, [SpadlAction.from_row(row, recording["match_id"], home) for row in rows]
 
 
 def templates(events):
-    return sorted({(e.event_type, e.player_id, e.period) for e in events})
+    return sorted({(e.action_type, e.player_id or "", e.period) for e in events})
 
 
 def generated_rule(index, match_id, workload, keys):
@@ -43,9 +48,9 @@ def generated_rule(index, match_id, workload, keys):
     window = index
     if workload == "selective":
         window, key_index = divmod(index, len(keys))
-        event_type, player_id, period = keys[key_index]
+        action_type, player_id, period = keys[key_index]
         terms = [{"field": field, "op": "eq", "value": value} for field, value in
-                 (("event_type", event_type), ("player_id", player_id), ("period", period))]
+                 (("action_type", action_type), ("player_id", player_id), ("period", period)) if value != ""]
     variant, window = divmod(window, 36_000_000)
     upper, lower = divmod(window, 6000)
     terms += [{"field": "match_time_seconds", "op": "gte" if variant % 2 == 0 else "gt", "value": lower},
@@ -57,14 +62,9 @@ def generated_rule(index, match_id, workload, keys):
 
 def reference_total(rule, events):
     """Deliberately simple independent interpreter; excludes production match/contribution/index code."""
-    latest = {}
-    for e in events:
-        key = (e.match_id, e.event_id)
-        if key not in latest or e.revision > latest[key].revision:
-            latest[key] = e
     total = Decimal(0)
-    for e in latest.values():
-        if e.deleted or e.match_id != rule.match_id:
+    for e in {(e.match_id, e.action_id): e for e in events}.values():
+        if e.match_id != rule.match_id:
             continue
         matches = True
         for p in rule.predicates:
@@ -105,8 +105,8 @@ def worker(args):
     recording, events = load(args.recording)
     keys = templates(events)
     if args.event_order == "spread":
-        if len({(e.match_id, e.event_id) for e in events}) != len(events):
-            raise ValueError("Spread sampling requires unique event IDs; keep correction feeds chronological")
+        if len({(e.match_id, e.action_id) for e in events}) != len(events):
+            raise ValueError("Spread sampling requires unique action IDs")
         random.Random(20261018).shuffle(events)
     # Warm the Python path on a disposable engine; don't warm the measured history.
     warm = FilterEngine()

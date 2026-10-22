@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from narrative_engine.core.models import MatchClock
 
 MINUTE, FIVE_MINUTE, EARLIER = 0, 1, 2
+TIERS = {MINUTE: "minute", FIVE_MINUTE: "five-minute", EARLIER: "twenty-minute"}
+HALF = "half"  # a closed period's single block
 MINUTES_BEFORE_COMPRESS, MINUTES_PER_BLOCK = 11, 5
 BLOCKS_BEFORE_MERGE, BLOCKS_PER_MERGE = 4, 2
 

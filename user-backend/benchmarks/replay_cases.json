@@ -1,16 +1,31 @@
 {
- "description": "Replay golden set over the shipped 90-minute recording. Expectations are filters over the observed prefix, so they stay exact if the recording is regenerated; player-specific cases name players from that recording.",
+ "description": "Replay golden set over the shipped 90-minute recording. Expectations are filters over the observed prefix, so they stay exact if the recording is regenerated; player-specific cases name players from that recording. Since 2026-10-21 expectations are SPADL filters (action_types, results, bodyparts, zones, shot_outcomes) over ETL's converted actions, or {\"cards\": colour} for MA3 cards; evidence ids are a{actionId} or card:{id}. Cases marked \"recording\": \"archive\" (key-moment summaries) run against narrative-engine/fixtures/archive/chelsea-united-grf.json with the narrative fixtures bound to it; every other case runs against the shipped recording with no narratives.",
  "cases": [
   {
    "id": "goals-full-time",
    "prompt": "Replay the goals",
    "at": "full_time",
    "expect": {
-    "filters": {
-     "event_types": [
-      "goal"
-     ]
-    }
+    "filters": [
+     {
+      "action_types": [
+       "shot",
+       "shot_penalty",
+       "shot_freekick"
+      ],
+      "results": [
+       "success"
+      ]
+     },
+     {
+      "action_types": [
+       "bad_touch"
+      ],
+      "results": [
+       "owngoal"
+      ]
+     }
+    ]
    }
   },
   {
@@ -18,19 +33,17 @@
    "prompt": "Show me all the shots on goal so far",
    "at": "full_time",
    "expect": {
-    "filters": [
-     {
-      "event_types": [
-       "goal"
-      ]
-     },
-     {
-      "event_types": [
-       "shot"
-      ],
-      "outcome": "saved"
-     }
-    ]
+    "filters": {
+     "action_types": [
+      "shot",
+      "shot_penalty",
+      "shot_freekick"
+     ],
+     "shot_outcomes": [
+      "goal",
+      "saved"
+     ]
+    }
    }
   },
   {
@@ -39,9 +52,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
      "period": 1
     }
@@ -53,24 +67,26 @@
    "at": 1500,
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ]
     }
    }
   },
   {
    "id": "player-shots",
-   "prompt": "Show me Reece James's shots",
+   "prompt": "Show me Tosin Adarabioyo's shots",
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
-     "player_id": "chelsea-6"
+     "player_id": "chelsea-5"
     }
    }
   },
@@ -80,16 +96,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "qualifiers": {
-      "bodyPart": "head"
-     },
-     "player_id": "chelsea-1",
-     "event_types": [
-      "pass",
-      "shot",
-      "goal",
-      "clearance"
-     ]
+     "bodyparts": [
+      "head"
+     ],
+     "player_id": "chelsea-1"
     }
    }
   },
@@ -99,26 +109,21 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "save"
-     ],
-     "qualifiers": {
-      "defensiveBlock": false
-     }
+     "action_types": [
+      "keeper_save"
+     ]
     }
-   }
+   },
+   "note": "SPADL keeper_save is every Opta save, including keeper touches of off-target shots."
   },
   {
    "id": "cards",
    "prompt": "Show me the yellow cards",
    "at": "full_time",
    "expect": {
-    "filters": {
-     "event_types": [
-      "card"
-     ]
-    }
-   }
+    "empty": true
+   },
+   "note": "No cards in this match: an honest none, read from MA3 cards."
   },
   {
    "id": "corners",
@@ -126,8 +131,9 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "corner"
+     "action_types": [
+      "corner_crossed",
+      "corner_short"
      ]
     }
    }
@@ -138,7 +144,7 @@
    "at": "half_time+120",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "interception"
      ]
     }
@@ -150,16 +156,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "qualifiers": {
-      "bodyPart": "head"
-     },
-     "period": 2,
-     "event_types": [
-      "pass",
-      "shot",
-      "goal",
-      "clearance"
-     ]
+     "bodyparts": [
+      "head"
+     ],
+     "period": 2
     }
    }
   },
@@ -177,8 +177,15 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "pass"
+     "action_types": [
+      "pass",
+      "cross",
+      "throw_in",
+      "freekick_crossed",
+      "freekick_short",
+      "corner_crossed",
+      "corner_short",
+      "goalkick"
      ]
     },
     "list_all": false
@@ -194,7 +201,8 @@
      "top": 5,
      "min": 0.8
     }
-   }
+   },
+   "recording": "archive"
   },
   {
    "id": "second-half-summary",
@@ -206,7 +214,8 @@
      "top": 5,
      "min": 0.8
     }
-   }
+   },
+   "recording": "archive"
   },
   {
    "id": "highlights",
@@ -217,7 +226,8 @@
      "top": 6,
      "min": 0.8
     }
-   }
+   },
+   "recording": "archive"
   },
   {
    "id": "last-ten-minutes",
@@ -230,7 +240,7 @@
   {
    "id": "no-goals-yet",
    "prompt": "Replay the goals",
-   "at": 60,
+   "at": 540,
    "expect": {
     "empty": true
    }
@@ -241,9 +251,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
      "player_id": "chelsea-7"
     }
@@ -251,75 +262,91 @@
   },
   {
    "id": "player-shots-united",
-   "prompt": "Show me Bruno Fernandes's shots",
+   "prompt": "Show me Kobbie Mainoo's shots",
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
-     "player_id": "manutd-7"
+     "player_id": "manutd-9"
     }
    }
   },
   {
    "id": "player-goals",
-   "prompt": "Replay Reece James's goals",
+   "prompt": "Replay Mainoo's goals",
+   "at": "full_time",
+   "expect": {
+    "filters": [
+     {
+      "action_types": [
+       "shot",
+       "shot_penalty",
+       "shot_freekick"
+      ],
+      "results": [
+       "success"
+      ],
+      "player_id": "manutd-9"
+     }
+    ]
+   }
+  },
+  {
+   "id": "headers-by-cunha",
+   "prompt": "Show me Cunha's headers",
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "goal"
+     "bodyparts": [
+      "head"
      ],
-     "player_id": "chelsea-6"
+     "player_id": "manutd-10"
     }
    }
   },
   {
-   "id": "headers-by-dalot",
-   "prompt": "Show me Dalot's headers",
+   "id": "corners-first-half",
+   "prompt": "Show me the corners in the first half",
    "at": "full_time",
    "expect": {
     "filters": {
-     "qualifiers": {
-      "bodyPart": "head"
-     },
-     "player_id": "manutd-6",
-     "event_types": [
-      "pass",
-      "shot",
-      "goal",
-      "clearance"
-     ]
-    }
-   }
-  },
-  {
-   "id": "yellow-cards-first-half",
-   "prompt": "Show me the yellow cards in the first half",
-   "at": "full_time",
-   "expect": {
-    "filters": {
-     "event_types": [
-      "card"
+     "action_types": [
+      "corner_crossed",
+      "corner_short"
      ],
-     "outcome": "yellow",
      "period": 1
     }
    }
   },
   {
-   "id": "yellow-cards-so-far",
-   "prompt": "Show me the yellow cards",
+   "id": "goals-so-far",
+   "prompt": "Replay the goals",
    "at": 1000,
    "expect": {
-    "filters": {
-     "event_types": [
-      "card"
-     ],
-     "outcome": "yellow"
-    }
+    "filters": [
+     {
+      "action_types": [
+       "shot",
+       "shot_penalty",
+       "shot_freekick"
+      ],
+      "results": [
+       "success"
+      ]
+     },
+     {
+      "action_types": [
+       "bad_touch"
+      ],
+      "results": [
+       "owngoal"
+      ]
+     }
+    ]
    }
   },
   {
@@ -327,14 +354,8 @@
    "prompt": "Show me the red card",
    "at": "full_time",
    "expect": {
-    "filters": {
-     "event_types": [
-      "card"
-     ],
-     "outcome": "second_yellow"
-    }
-   },
-   "fixture": false
+    "empty": true
+   }
   },
   {
    "id": "corners-second-half",
@@ -342,8 +363,9 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "corner"
+     "action_types": [
+      "corner_crossed",
+      "corner_short"
      ],
      "period": 2
     }
@@ -355,13 +377,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "save"
+     "action_types": [
+      "keeper_save"
      ],
-     "player_id": "chelsea-0",
-     "qualifiers": {
-      "defensiveBlock": false
-     }
+     "player_id": "chelsea-0"
     }
    }
   },
@@ -371,13 +390,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
-      "save"
+     "action_types": [
+      "keeper_save"
      ],
-     "player_id": "manutd-0",
-     "qualifiers": {
-      "defensiveBlock": false
-     }
+     "player_id": "manutd-0"
     }
    }
   },
@@ -387,10 +403,12 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "tackle"
      ],
-     "outcome": "success",
+     "results": [
+      "success"
+     ],
      "team_id": "chelsea",
      "period": 2
     }
@@ -403,7 +421,7 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "interception"
      ],
      "period": 2
@@ -416,7 +434,17 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
+      "pass",
+      "cross",
+      "throw_in",
+      "freekick_crossed",
+      "freekick_short",
+      "corner_crossed",
+      "corner_short",
+      "goalkick"
+     ],
+     "results": [
       "offside"
      ]
     }
@@ -429,7 +457,7 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "foul"
      ]
     }
@@ -442,16 +470,18 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
-     "qualifiers": {
-      "bigChance": true
-     }
+     "start_zones": [
+      "opp_box"
+     ]
     }
    },
-   "fixture": false
+   "fixture": false,
+   "note": "SPADL has no big-chance flag: shots from inside the opponent's box are the stated proxy."
   },
   {
    "id": "team-shots",
@@ -459,9 +489,10 @@
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
      "team_id": "manutd"
     }
@@ -470,15 +501,16 @@
   },
   {
    "id": "misspelled-player",
-   "prompt": "Show me shots by Reece Jams",
+   "prompt": "Show me shots by Tosin Adarabiyo",
    "at": "full_time",
    "expect": {
     "filters": {
-     "event_types": [
+     "action_types": [
       "shot",
-      "goal"
+      "shot_penalty",
+      "shot_freekick"
      ],
-     "player_id": "chelsea-6"
+     "player_id": "chelsea-5"
     }
    },
    "fixture": false
@@ -502,7 +534,7 @@
   {
    "id": "last-five-minutes",
    "prompt": "What happened in the last 5 minutes?",
-   "at": 3300,
+   "at": 3500,
    "expect": {
     "window_minutes": 5
    }
@@ -512,14 +544,11 @@
    "prompt": "Show me all the touches",
    "at": "full_time",
    "expect": {
-    "filters": {
-     "event_types": [
-      "touch"
-     ]
-    },
+    "filters": {},
     "list_all": false
    },
-   "fixture": false
+   "fixture": false,
+   "note": "SPADL has no touch record: every on-ball action (carries excluded) is the broad set."
   },
   {
    "id": "prompt-injection",
@@ -528,6 +557,34 @@
    "expect": {
     "bounded": true
    }
+  },
+  {
+   "id": "off-target-shots-not-saved",
+   "prompt": "Show me Andrey Santos's shots",
+   "at": "full_time",
+   "expect": {
+    "filters": {
+     "action_types": [
+      "shot",
+      "shot_penalty",
+      "shot_freekick"
+     ],
+     "player_id": "chelsea-9"
+    }
+   },
+   "note": "Every case also fails a caption calling an unsaved shot saved (shot_outcome is the evidence)."
+  },
+  {
+   "id": "last-five-minutes-off-target",
+   "prompt": "What happened in the last 5 minutes?",
+   "at": 1500,
+   "expect": {
+    "window_minutes": 5,
+    "text_excludes": [
+     "saved"
+    ]
+   },
+   "note": "20′–25′: off-target shots by Mainoo and Andrey Santos (Lammens touched the second after it was off target), a foul and an offside; nothing was saved"
   }
  ]
 }

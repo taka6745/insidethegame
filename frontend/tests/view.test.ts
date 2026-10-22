@@ -40,26 +40,34 @@ test('event details render untrusted raw JSON as text', () => {
   const original = globalThis.document;
   useDocument(() => detail);
   try {
-    new LabView().inspectEvent({ raw: { text: '<script>alert(1)</script>' }, canonical: { event_type: 'pass' } });
-    assert.deepEqual(JSON.parse(detail.textContent), { raw: { text: '<script>alert(1)</script>' }, canonical: { event_type: 'pass' } });
+    new LabView().inspectEvent({ seq: 4, canonical: { event_type: 'pass', player_id: '<script>alert(1)</script>' } });
+    assert.deepEqual(JSON.parse(detail.textContent), { event_type: 'pass', player_id: '<script>alert(1)</script>' });
   } finally { globalThis.document = original; }
 });
 
-test('recording metadata uses the loaded filename and real delivery counts', () => {
-  let presetText: string[] = [];
-  const nodes = new Map(['home-team', 'away-team', 'recording-name', 'recording-meta', 'presets', 'preset-description'].map((id): [string, NodeDouble] => [id, { textContent: '',
-    replaceChildren(...children: NodeDouble[]) { if (id === 'presets') presetText = children.map(c => c.textContent); } }]));
+test('match selector lists matches once and names teams from the listing', () => {
+  const options: NodeDouble[][] = [];
+  const nodes = new Map<string, NodeDouble & { value?: string; dataset?: Record<string, string> }>();
   const original = globalThis.document;
-  useDocument(id => nodes.get(id));
+  useDocument(id => {
+    if (!nodes.has(id)) nodes.set(id, { textContent: '', dataset: {}, replaceChildren(...children: NodeDouble[]) { options.push(children); } });
+    return nodes.get(id);
+  });
   try {
-    new LabView().scenario({ teams: [], presets: [], recording: { filename: 'my-match.json', format: 'Opta-inspired', synthetic: true, delivery_count: 45, event_count: 42 } });
-    assert.equal(nodes.get('recording-name')!.textContent, 'my-match.json');
-    assert.equal(nodes.get('recording-meta')!.textContent, 'Synthetic fixture · Opta-inspired · 45 deliveries · 42 events');
-    assert.deepEqual(presetText, ['No ready-made requests for this recording']);
+    const view = new LabView();
+    const matches = [{ match_id: 'm1', status: 'live', teams: [{ name: 'Chelsea' }, { name: 'Manchester United' }] }, { match_id: 'm2', fixture: 'arsenal-spurs', status: 'scheduled' }];
+    view.matches(matches, 'm1');
+    view.matches(matches, 'm1');
+    assert.equal(options.length, 1);
+    assert.deepEqual(options[0]!.map(option => option.textContent), ['Chelsea v Manchester United · Live', 'arsenal-spurs · Scheduled']);
+    assert.equal(nodes.get('match-select')!.value, 'm1');
+    view.match(matches[0]);
+    assert.equal(nodes.get('home-team')!.textContent, 'Chelsea');
+    assert.match(nodes.get('recording-meta')!.textContent, /^m1 · /);
   } finally { globalThis.document = original; }
 });
 
-test('ETL-owned recordings disable lab uploads without disabling replay', () => {
+test('rules can be prepared while a match is live; nothing waits for a replay', () => {
   const nodes = new Map<string, NodeDouble>();
   const original = globalThis.document;
   useDocument(id => {
@@ -68,13 +76,26 @@ test('ETL-owned recordings disable lab uploads without disabling replay', () => 
   });
   try {
     const view = new LabView();
-    view.scenario({ teams: [], presets: [], recording_editable: false });
-    view.controls({ status: 'ready', llm: { configured: true } }, false);
-    assert.equal(nodes.get('load-recording')!.disabled, true);
-    assert.equal(nodes.get('start')!.disabled, false);
-    assert.match(nodes.get('recording-meta')!.textContent, /Source managed by ETL/);
-    view.scenario({ teams: [], presets: [], recording_editable: true });
-    view.controls({ status: 'ready' }, false);
-    assert.equal(nodes.get('load-recording')!.disabled, false);
+    view.controls({ seq: 12, llm: { configured: true } }, false);
+    assert.equal(nodes.get('prepare')!.disabled, false);
+    view.controls(null, false);
+    assert.equal(nodes.get('prepare')!.disabled, true);
+    assert.equal(nodes.has('start') || nodes.has('load-recording'), false);
+  } finally { globalThis.document = original; }
+});
+
+test('header score shows the published values and hides without them', () => {
+  const score: NodeDouble = { textContent: '', hidden: true };
+  const original = globalThis.document;
+  useDocument(id => (id === 'score' ? score : undefined));
+  try {
+    const view = new LabView();
+    view.score([{ id: 'h', name: 'Chelsea', score: 1 }, { id: 'a', name: 'Manchester United', score: 0 }]);
+    assert.equal(score.textContent, 'Chelsea 1 – 0 Manchester United');
+    assert.equal(score.hidden, false);
+    view.score([{ id: 'h', name: 'Chelsea', score: null }, { id: 'a', name: 'Manchester United', score: 0 }]);
+    assert.equal(score.hidden, true);
+    view.score(null);
+    assert.equal(score.hidden, true);
   } finally { globalThis.document = original; }
 });

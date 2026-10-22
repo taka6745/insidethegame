@@ -10,5 +10,4 @@ COSMOS_ENDPOINT = "http://cosmos:8081/"
 # Microsoft's documented public emulator key, not an account credential.
 COSMOS_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 POSTGRES_DSN = "host=postgres user=itg password=local-development-only"
-SQL_PASSWORD = "Local-Only-Password-42!"
-GRAPHQL = "http://graphql:5000/graphql"
+ETL_GRAPHQL = "http://etl-dab:5000/graphql"

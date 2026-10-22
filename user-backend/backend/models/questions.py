@@ -1,33 +1,38 @@
-"""Question contracts: snapshots freeze deliveries, not just the football clock."""
+"""Question contracts: a snapshot is one (matchId, seq) point, not just the football clock."""
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from .clarifications import FollowUpQuestion
-from .events import DETAIL_FIELDS, Event
-from .recording import MAX_RECORDING_EVENTS
+from .actions import MAX_MATCH_ACTIONS, SpadlAction
+from .events import MAX_MATCH_EVENTS, Event
 
 class Strict(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
 class MatchSnapshot(Strict):
+    """`id` = `{match_id}:{seq}`; data at seq is immutable once ETL's watermark has reached it."""
     id: str
-    run_id: str
     match_id: str
-    recording_hash: str
-    cursor: int = Field(ge=0)
+    seq: int = Field(ge=0)
     clock_seconds: int | None = None
     period: int | None = None
+    video_seconds: float | None = None
     captured_at: str
+
+    @classmethod
+    def at(cls, match_id, seq, event=None, captured_at=''):
+        """The snapshot at `seq`, its clock read from the canonical event at that seq."""
+        return cls(id=f'{match_id}:{seq}', match_id=match_id, seq=seq, captured_at=captured_at,
+                   period=event.period if event else None,
+                   clock_seconds=event.match_time_seconds if event else None,
+                   video_seconds=event.video_seconds if event else None)
 
 class SnapshotInput(Strict):
     snapshot: MatchSnapshot
-    events: list[Event] = Field(max_length=MAX_RECORDING_EVENTS)
+    events: list[Event] = Field(max_length=MAX_MATCH_EVENTS)  # Received canonical events: clock and ticker only.
+    actions: list[SpadlAction] = Field(default_factory=list, max_length=MAX_MATCH_ACTIONS)  # finalSeq <= seq.
     teams: list[dict] = Field(max_length=2)
     players: list[dict] = Field(max_length=1000)
     data_reference: dict
-
-    def identity_dump(self):
-        """Hashed snapshot content; must match ETL's SnapshotInput.identity_dump."""
-        return self.model_dump(mode='json', exclude={'events': {'__all__': set(DETAIL_FIELDS)}})
 
 class ReplayItem(Strict):
     source_id: str = Field(min_length=1, max_length=120)
@@ -66,3 +71,8 @@ class QuestionReply(QuestionDraft):
     replay: dict | None = None
     # Token counts, model calls and seconds for this answer; no model or provider identity.
     usage: dict | None = None
+    # Set when the question named another live match of the demo: the answer comes from that match, at its own
+    # position (services/cross_match.header).
+    other_match: dict | None = None
+    # "Follow this story?" (PLAN.md §10.2 D5b): {prompt, other_match}; the viewer sets the follow up themselves.
+    follow_offer: dict | None = None

@@ -3,7 +3,7 @@ from collections import Counter
 from copy import deepcopy
 import json
 
-from backend.adapters.events import OptaInspiredAdapter
+from benchmarks.doubles.events import OptaInspiredAdapter
 from benchmarks.cases import cases
 from benchmarks.correctness import FIXTURE, gold_check, evaluate_rule
 from benchmarks.data_transfer_cases import STAT_REQUESTS, data_transfer_cases, remap_fixture
@@ -21,7 +21,7 @@ def test_frozen_cohort_scope_and_incomplete_requests():
         if row['quality'] == 'control':
             assert row['expected_status'] == ['unsupported']
         else:
-            assert 'expected_rule' in row
+            assert ('expected_rule' in row) != ('spadl_gap' in row)  # Cards have no SPADL rule.
 
 
 def test_entity_remap_preserves_independent_revision_weights_and_source():
@@ -38,11 +38,13 @@ def test_entity_remap_preserves_independent_revision_weights_and_source():
     selected = data_transfer_cases()
     gold = cases()
     for row, (number, _, _, _) in zip(selected, STAT_REQUESTS):
+        if 'expected_rule' not in gold[number - 1]:
+            continue
         assert row['expected_weights'] == gold[number - 1]['expected_weights']
         assert row['expected_rule'] == remap_fixture(gold[number - 1]['expected_rule'])
     events = [OptaInspiredAdapter().adapt(raw) for raw in scenario['events']]
     checks = gold_check(scenario, events, selected)
-    assert len(checks) == 16
+    assert len(checks) == 14  # Two card intents (yellows, cards after 60:00) have no SPADL rule.
     assert all(row['ok'] for row in checks)
     assert all(row['deliveries_checked'] == len(scenario['events']) for row in checks)
 
@@ -52,10 +54,11 @@ def test_oracle_rejects_wrong_actor_category_and_redundant_scope():
     events = [OptaInspiredAdapter().adapt(raw) for raw in scenario['events']]
     case = data_transfer_cases()[2]  # Shooter's saved shots in the second half.
     wrong = deepcopy(case['expected_rule'])
-    wrong['predicates'] = [p for p in wrong['predicates'] if p['field'] != 'outcome']
+    # The goalkeeper's saves instead of the shooter's saved shots: a wrong actor and category.
+    wrong['predicates'] = [p for p in wrong['predicates'] if p['field'] != 'shot_outcome']
     for predicate in wrong['predicates']:
-        if predicate['field'] == 'event_type':
-            predicate['op'], predicate['value'] = 'eq', 'save'
+        if predicate['field'] == 'action_type':
+            predicate['op'], predicate['value'] = 'eq', 'keeper_save'
     assert evaluate_rule(case, Rule.model_validate(wrong), events, scenario['events'])['reason'] == 'wrong_event_value'
     redundant = deepcopy(case['expected_rule'])
     redundant['predicates'].append({'field':'team_id','op':'in','value':['ridge']})

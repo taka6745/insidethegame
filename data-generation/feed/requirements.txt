@@ -1,0 +1,5 @@
+azure-eventhub==5.15.1
+azure-storage-blob==12.26.0
+fastapi==0.143.3
+psycopg[binary]==3.3.6
+uvicorn==0.54.0

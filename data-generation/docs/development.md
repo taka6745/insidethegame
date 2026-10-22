@@ -1,19 +1,43 @@
-# Develop replay
+# Development
 
-![Service boundary](../architecture.svg)
+> **In short:** the feed runs in the shared Docker stack; its tests need only Python (plus a throwaway Postgres for the repository tests). The generator needs the native GRF runtime and is run only to make a new recording.
 
-**Own:** converting an existing synthetic match into timestamped events and aligned footage. The original simulator stays in `legacy/`.
+| | |
+| --- | --- |
+| **Needs** | Python 3.12; Docker for the stack; GRF runtime, OpenCV and FFmpeg only to render |
+| **Tests** | `python -m pytest -q` from `data-generation/` (about 136 pass and 8 skip without `FEED_TEST_DATABASE_URL` and `FEED_TEST_BLOB_CONNECTION_STRING` (Azurite); OpenCV and GRF-clone tests skip without them) |
+| **Whole product** | `ACCEPT_EULA=Y ./dev up backend`, then `./dev demo start` ([../../DEVELOPMENT.md](../../DEVELOPMENT.md)) |
+| **Logs** | `./dev logs feed` |
 
-```text
-Saved match → normalise → timed replay → Event Hubs
+## 1. Run the feed
+
+*In short: the stack starts it; `./dev demo start` purges and starts runs.*
+
+`./dev demo start [fixture…]` purges every owner, then calls `POST /runs` for each fixture with `kickoff: "next-minute"`. The admin API is on `http://localhost:18030` (`/docs`) and, for `/dev/`, behind nginx at `/feed-api/`. The judge demo is started from the viewer's **Start demo** (demo control → `POST /demo/start`); seeds are recorded with `local/demo_control.py record|capture {point}` ([PLAN.md §10.6](../../PLAN.md)). `./dev` mounts each `.local/grf-demo-<fixture>-90/hls/` that exists ([feed §5](components/feed.md#5-recordings-and-media)).
+
+## 2. Tests
+
+*In short: virtual clock for the feed; real recordings for everything else.*
+
+```sh
+cd data-generation
+pip install -r feed/requirements-test.txt
+python -m pytest -q                                                      # everything
+FEED_TEST_DATABASE_URL=postgresql://user:pass@localhost:5432/feed_test python -m pytest -q feed   # + Postgres
 ```
 
-**Start:** follow the root [Docker setup](../../DEVELOPMENT.md), then `./dev replay`. This sends three tiny synthetic fixtures immediately; the full replay runner is still to build.
+| Suite | Proves |
+| --- | --- |
+| `feed/tests/test_feed.py` | MA1 lead, send order and `seq`, nothing ahead of the clock, two concurrent runs, restart resume, HLS gate and 404s, purge (incl. an in-flight segment copy) and tombstones, seek off by default; Start demo (one demo under concurrent calls, main game first, run cap 409), held runs stop at their point, seeded runs wait for release then resume without MA1, no seed path without `DEMO_SEEDS` |
+| `feed/tests/test_feed_db.py` | Migrations, runs, catalogue sync, tombstones and cut-off on real Postgres |
+| `feed/tests/test_blob.py` | Blob Storage HLS gate and purge (Azurite or a throwaway account) |
+| `tests/test_opta_stream.py`, `test_fixture_recordings.py` | Exports reproducible from the recordings; scores, goals, cards and ETL reference totals pinned |
+| `tests/test_opta_events.py`, `test_telemetry_v2.py`, `test_grf_demo.py` | Event derivation rules; the feed's event types and qualifiers equal the backend `Event` contract |
+| `tests/test_fixtures.py` | Rosters, kits, exports follow the recording |
+| `tests/test_tactics.py` | Tactic phases, the shipped scripts, and the engine patch on the pinned source |
 
-**Implemented demo:** [GRF capture, translation and aligned 90-minute video + HLS](grf-demo.md).
+## 3. Make a recording
 
-**Build next:** production broker replay; map its fields to the [event contract](../../local/contracts.md); preserve source IDs/time/provenance; add a controllable replay clock and match partition key. Coordinate rebased UTC time with the ETL service's Stream Analytics windows. Keep original footage aligned with match time.
+*In short: see the generator page.*
 
-**Prove it:** stable IDs/order on repeat runs; explicit synthetic labels; ETL and backend independently receive all events. Test pause/restart and late events without silently double-counting.
-
-**Azure:** Event Hubs is the output. Replay hosting remains undecided. Put actual runner code/tests here, not in shared local tooling. Large match files remain ignored under root `.local/`.
+[components/grf-demo.md](components/grf-demo.md): prepare a source copy, render, then ship the recording and regenerate its exports.

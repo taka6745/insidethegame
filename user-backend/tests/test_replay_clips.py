@@ -2,6 +2,7 @@ import pytest
 
 from backend.adapters.hls_media import parse_segments
 from backend.services.replay_clips import ReplayPlanError, plan_clips
+from benchmarks.doubles.config import seeded
 
 PERIODS = {1: (0.0, 2800.0), 2: (2800.0, None)}
 
@@ -12,7 +13,7 @@ def event(identifier, at, kind="pass", period=1, possession=None):
 
 def plan(items, events, observed=4000.0, **kwargs):
     return plan_clips(items, events=dict(events), moments=kwargs.pop("moments", {}), periods=PERIODS,
-                      observed_video=observed, **kwargs)
+                      observed_video=observed, config=kwargs.pop('config', seeded('replay-timing')), **kwargs)
 
 
 def item(source, caption="c", lead="normal", kind="event"):
@@ -34,7 +35,7 @@ def test_move_lead_in_starts_at_possession_gain_with_a_cap():
 
 
 def test_overlapping_clips_merge_and_keep_both_captions():
-    events = [event("a", 100, "shot"), event("b", 104, "save")]
+    events = [event("a", 100, "shot"), event("b", 104, "keeper_save")]
     clips, *_ = plan([item("a", "Shot"), item("b", "Save")], events)
     assert len(clips) == 1
     assert (clips[0].start, clips[0].end, clips[0].captions) == (94, 107, ["Shot", "Save"])

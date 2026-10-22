@@ -4,18 +4,12 @@ The clock follows the ETL's Opta convention (see etl/contracts/README.md): `time
 0-based, first-half added time keeps counting (46 = 45+2') and the second half restarts
 at 45, so a minute is only unique together with its period.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
 PERIOD_START = {1: 0, 2: 45, 3: 90, 4: 105}
 PERIOD_END = {1: 45, 2: 90, 3: 105, 4: 120}
-
-SUPPORT = ("home", "away", "neutral")
-LEVELS = ("simple", "casual", "experienced", "analyst")
-USER_TYPES = tuple(f"{s}:{l}" for s in SUPPORT for l in LEVELS)
-
-KEY_TYPES = ("Goal", "OwnGoal", "PenaltyAwarded", "PenaltyMissed", "RedCard", "VarOverturn")
 
 
 @dataclass(frozen=True, order=True)
@@ -74,26 +68,22 @@ class PeriodChanged:
     periodId: int
     started: bool
     eventTime: datetime
+    clock: Optional[MatchClock] = None  # the Start/End event's minute and second, when the body has them
+    timeSec: Optional[int] = None
 
 
-@dataclass(frozen=True)
-class PresenceChanged:
-    matchId: str
-    activeUserTypes: dict
-    sentAt: datetime
-
-    @property
-    def active(self):
-        return frozenset(t for t, n in self.activeUserTypes.items() if n > 0 and t in USER_TYPES)
+HANDLED = ("MinuteClosed", "KeyEventDetected", "PeriodStarted", "PeriodEnded")
 
 
 def parse_notification(body, message_type=None):
     """Turn a Service Bus body (plus its `messageType` user property) into a message.
 
     Local replays carry `messageType` in the body; Service Bus carries it as a user
-    property. Returns None for types the engine does not handle.
+    property. Returns None for types the engine does not handle, before reading any field.
     """
     kind = message_type or body.get("messageType")
+    if kind not in HANDLED:
+        return None
     match_id = body["matchId"]
     if kind == "MinuteClosed":
         return MinuteClosed(match_id, MatchClock(int(body["periodId"]), int(body["timeMin"])),
@@ -105,12 +95,10 @@ def parse_notification(body, message_type=None):
             body.get("playerId"), MatchClock(int(body["periodId"]), int(body["timeMin"])), int(body["timeSec"]),
             parse_time(body["eventTime"]), int(related) if related not in (None, "") else None,
         )
-    if kind in ("PeriodStarted", "PeriodEnded"):
-        return PeriodChanged(match_id, int(body["periodId"]), kind == "PeriodStarted", parse_time(body["eventTime"]))
-    if kind == "PresenceChanged":
-        counts = {t: int(n) for t, n in body.get("activeUserTypes", {}).items()}
-        return PresenceChanged(match_id, counts, parse_time(body["sentAt"]))
-    return None
+    period, minute, second = int(body["periodId"]), body.get("timeMin"), body.get("timeSec")
+    timed = minute is not None and second is not None
+    return PeriodChanged(match_id, period, kind == "PeriodStarted", parse_time(body["eventTime"]),
+                         MatchClock(period, int(minute)) if timed else None, int(second) if timed else None)
 
 
 def minutes_between(last, target, period_end):
@@ -137,7 +125,7 @@ def minutes_between(last, target, period_end):
 @dataclass(frozen=True)
 class Trigger:
     """Why a narrative step runs. `ref` makes the step ID deterministic for idempotency."""
-    type: str  # keyEvent, scheduled, halfTime, fullTime, catchUp
+    type: str  # keyEvent, scheduled, halfTime, fullTime, catchUp, storylineTurn (analysis, subscriptionEval/Start: steps)
     ref: str
     reason: str
     eventIds: tuple = ()
@@ -149,6 +137,15 @@ class AgentResult:
     model: Optional[str] = None
     promptVersion: Optional[str] = None
     tokens: Optional[dict] = None
+
+
+def merge_usage(usages):
+    """Token counts summed over several calls (None when none were reported)."""
+    usages = [u for u in usages if u]
+    if not usages:
+        return None
+    keys = ("prompt_tokens", "completion_tokens", "total_tokens")
+    return {k: sum(u.get(k) or 0 for u in usages) for k in keys}
 
 
 @dataclass
@@ -165,6 +162,7 @@ class ContextBlock:
     tokens: Optional[dict]
     createdAt: str
     supersededBy: Optional[str] = None
+    tier: Optional[str] = None  # minute, five-minute, twenty-minute or half (a whole period)
 
 
 @dataclass
@@ -181,3 +179,15 @@ class Narrative:
     promptVersion: Optional[str]
     tokens: Optional[dict]
     createdAt: str
+    timeSec: Optional[int] = None           # second of `matchTime` the step's data reaches
+    audienceRevision: Optional[int] = None  # user-backend audience revision the bucket came from
+    eventSeq: Optional[int] = None          # latest canonical MatchEvent seq in the data it was written from
+    analysisId: Optional[str] = None        # the match analysis (storyline state) the step read
+    storylineIds: list = field(default_factory=list)  # the storyline it advances (the step's focus), if any
+    kind: str = "bucket"                    # or "subscription": a followed topic's narrative for one bucket
+    topicId: Optional[str] = None           # subscription only
+    decision: Optional[dict] = None         # subscription only: score, confidence, novelty, model of the trigger
+
+
+class BrokerUnavailable(RuntimeError):
+    """The narrative broker is throttling or unreachable: the step waits and retries, it is not a fault."""

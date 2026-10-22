@@ -15,7 +15,7 @@
   "players": [
     {
       "id": "mbappe",
-      "name": "Kylian Mbapp\u00e9",
+      "name": "Kylian Mbappé",
       "team_id": "madrid"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "id": "vinicius",
-      "name": "Vin\u00edcius",
+      "name": "Vinícius",
       "team_id": "madrid"
     },
     {
@@ -709,10 +709,9 @@
   "presets": [
     {
       "id": "mbappe-headers",
-      "label": "Track all recorded headed touches by Mbapp\u00e9",
+      "label": "Track all recorded headed actions by Mbappé",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
             "field": "player_id",
@@ -720,37 +719,41 @@
             "value": "mbappe"
           },
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
+            "field": "bodypart",
+            "op": "in",
+            "value": [
+              "head"
+            ]
           }
         ]
       },
-      "expected_final": 6
+      "expected_final": 5
     },
     {
       "id": "mbappe-headed-shots",
-      "label": "Track Mbapp\u00e9 headed shots, including goals",
+      "label": "Track Mbappé headed shots, including goals",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
+          {
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "shot_penalty",
+              "shot_freekick"
+            ]
+          },
           {
             "field": "player_id",
             "op": "eq",
             "value": "mbappe"
           },
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
-          },
-          {
-            "field": "event_type",
+            "field": "bodypart",
             "op": "in",
             "value": [
-              "shot",
-              "goal"
+              "head"
             ]
           }
         ]
@@ -759,15 +762,17 @@
     },
     {
       "id": "chelsea-corners-after-60",
-      "label": "Track Chelsea corners awarded after 60:00",
+      "label": "Track Chelsea corners taken after 60:00",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "team_id",
@@ -785,15 +790,17 @@
     },
     {
       "id": "all-corners-after-60",
-      "label": "Track either team\u2019s corners awarded after 60:00",
+      "label": "Track either team’s corners taken after 60:00",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "match_time_seconds",
@@ -806,15 +813,17 @@
     },
     {
       "id": "chelsea-corners-from-60",
-      "label": "Track Chelsea corners awarded from 60:00 inclusive",
+      "label": "Track Chelsea corners taken from 60:00 inclusive",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "team_id",
@@ -832,15 +841,17 @@
     },
     {
       "id": "chelsea-corners-after-70",
-      "label": "Track Chelsea corners awarded after 70:00",
+      "label": "Track Chelsea corners taken after 70:00",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "team_id",
@@ -861,12 +872,14 @@
       "label": "Track Chelsea corners after 60:00 through 70:00",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "team_id",
@@ -889,15 +902,16 @@
     },
     {
       "id": "first-half-headers",
-      "label": "Track headed touches in the first half, including stoppage time",
+      "label": "Track headed actions in the first half, including stoppage time",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
+            "field": "bodypart",
+            "op": "in",
+            "value": [
+              "head"
+            ]
           },
           {
             "field": "period",
@@ -910,15 +924,16 @@
     },
     {
       "id": "second-half-mbappe-headers",
-      "label": "Track Mbapp\u00e9 headed touches in the second half",
+      "label": "Track Mbappé headed actions in the second half",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
+            "field": "bodypart",
+            "op": "in",
+            "value": [
+              "head"
+            ]
           },
           {
             "field": "player_id",
@@ -932,35 +947,38 @@
           }
         ]
       },
-      "expected_final": 4
+      "expected_final": 3
     },
     {
       "id": "all-headers",
-      "label": "Track recorded headed touches across both teams",
+      "label": "Track recorded headed actions across both teams",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
+            "field": "bodypart",
+            "op": "in",
+            "value": [
+              "head"
+            ]
           }
         ]
       },
-      "expected_final": 9
+      "expected_final": 8
     },
     {
       "id": "all-corners",
-      "label": "Track all corners awarded",
+      "label": "Track all corners taken",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           }
         ]
       },
@@ -968,15 +986,17 @@
     },
     {
       "id": "madrid-corners",
-      "label": "Track Madrid corners awarded",
+      "label": "Track Madrid corners taken",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "team_id",
@@ -992,17 +1012,25 @@
       "label": "Track Chelsea goals",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "goal"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "shot_freekick",
+              "shot_penalty"
+            ]
           },
           {
             "field": "team_id",
             "op": "eq",
             "value": "chelsea"
+          },
+          {
+            "field": "result",
+            "op": "eq",
+            "value": "success"
           }
         ]
       },
@@ -1013,70 +1041,49 @@
       "label": "Track Madrid goals",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "goal"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "shot_freekick",
+              "shot_penalty"
+            ]
           },
           {
             "field": "team_id",
             "op": "eq",
             "value": "madrid"
+          },
+          {
+            "field": "result",
+            "op": "eq",
+            "value": "success"
           }
         ]
       },
       "expected_final": 0
     },
     {
-      "id": "all-cards",
-      "label": "Track cards",
-      "rule": {
-        "match_id": "filter-lab-match",
-        "operation": "count",
-        "predicates": [
-          {
-            "field": "event_type",
-            "op": "eq",
-            "value": "card"
-          }
-        ]
-      },
-      "expected_final": 2
-    },
-    {
-      "id": "red-cards",
-      "label": "Track red cards",
-      "rule": {
-        "match_id": "filter-lab-match",
-        "operation": "count",
-        "predicates": [
-          {
-            "field": "event_type",
-            "op": "eq",
-            "value": "card"
-          },
-          {
-            "field": "outcome",
-            "op": "eq",
-            "value": "red"
-          }
-        ]
-      },
-      "expected_final": 1
-    },
-    {
       "id": "successful-chelsea-passes",
       "label": "Track completed Chelsea passes",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "pass"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short",
+              "cross",
+              "freekick_crossed",
+              "freekick_short",
+              "goalkick",
+              "pass",
+              "throw_in"
+            ]
           },
           {
             "field": "team_id",
@@ -1084,25 +1091,35 @@
             "value": "chelsea"
           },
           {
-            "field": "outcome",
-            "op": "eq",
-            "value": "success"
+            "field": "result",
+            "op": "in",
+            "value": [
+              "success"
+            ]
           }
         ]
       },
-      "expected_final": 2
+      "expected_final": 9
     },
     {
       "id": "failed-chelsea-passes",
       "label": "Track incomplete Chelsea passes",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "pass"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short",
+              "cross",
+              "freekick_crossed",
+              "freekick_short",
+              "goalkick",
+              "pass",
+              "throw_in"
+            ]
           },
           {
             "field": "team_id",
@@ -1110,9 +1127,11 @@
             "value": "chelsea"
           },
           {
-            "field": "outcome",
-            "op": "eq",
-            "value": "failure"
+            "field": "result",
+            "op": "in",
+            "value": [
+              "fail"
+            ]
           }
         ]
       },
@@ -1126,9 +1145,18 @@
         "operation": "sum",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "pass"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short",
+              "cross",
+              "freekick_crossed",
+              "freekick_short",
+              "goalkick",
+              "pass",
+              "throw_in"
+            ]
           },
           {
             "field": "team_id",
@@ -1136,9 +1164,11 @@
             "value": "chelsea"
           },
           {
-            "field": "outcome",
-            "op": "eq",
-            "value": "success"
+            "field": "result",
+            "op": "in",
+            "value": [
+              "success"
+            ]
           }
         ],
         "sum_field": "distance_metres"
@@ -1147,15 +1177,24 @@
     },
     {
       "id": "mbappe-headed-pass-metres",
-      "label": "Track Mbapp\u00e9 headed pass distance in metres",
+      "label": "Track Mbappé headed pass distance in metres",
       "rule": {
         "match_id": "filter-lab-match",
         "operation": "sum",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "pass"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short",
+              "cross",
+              "freekick_crossed",
+              "freekick_short",
+              "goalkick",
+              "pass",
+              "throw_in"
+            ]
           },
           {
             "field": "player_id",
@@ -1163,9 +1202,11 @@
             "value": "mbappe"
           },
           {
-            "field": "body_part",
-            "op": "eq",
-            "value": "head"
+            "field": "bodypart",
+            "op": "in",
+            "value": [
+              "head"
+            ]
           }
         ],
         "sum_field": "distance_metres"
@@ -1177,12 +1218,14 @@
       "label": "Track corners before 60:00",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "match_time_seconds",
@@ -1198,12 +1241,14 @@
       "label": "Track corners through 60:00 inclusive",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "match_time_seconds",
@@ -1219,15 +1264,14 @@
       "label": "Track Chelsea tackles, clearances and interceptions",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
+            "field": "action_type",
             "op": "in",
             "value": [
-              "tackle",
               "clearance",
-              "interception"
+              "interception",
+              "tackle"
             ]
           },
           {
@@ -1241,15 +1285,18 @@
     },
     {
       "id": "saved-mbappe-shots",
-      "label": "Track saved Mbapp\u00e9 shots",
+      "label": "Track saved Mbappé shots",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "shot"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "shot",
+              "shot_freekick",
+              "shot_penalty"
+            ]
           },
           {
             "field": "player_id",
@@ -1257,9 +1304,11 @@
             "value": "mbappe"
           },
           {
-            "field": "outcome",
-            "op": "eq",
-            "value": "saved"
+            "field": "shot_outcome",
+            "op": "in",
+            "value": [
+              "saved"
+            ]
           }
         ]
       },
@@ -1267,25 +1316,25 @@
     },
     {
       "id": "all-events",
-      "label": "Track all active events in this synthetic feed",
+      "label": "Track all SPADL actions",
       "rule": {
-        "match_id": "filter-lab-match",
-        "operation": "count",
-        "predicates": []
+        "match_id": "filter-lab-match"
       },
-      "expected_final": 28
+      "expected_final": 25
     },
     {
       "id": "stoppage-corners",
       "label": "Track second-half corners after 90 minutes",
       "rule": {
         "match_id": "filter-lab-match",
-        "operation": "count",
         "predicates": [
           {
-            "field": "event_type",
-            "op": "eq",
-            "value": "corner"
+            "field": "action_type",
+            "op": "in",
+            "value": [
+              "corner_crossed",
+              "corner_short"
+            ]
           },
           {
             "field": "period",

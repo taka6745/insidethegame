@@ -4,7 +4,26 @@ import argparse
 from pathlib import Path
 import json
 import unicodedata
-from .roster import NAMES
+from .roster import NAMES, TEAMS
+
+# Letters NFKD does not decompose to ASCII.
+ASCII = str.maketrans({"Ø": "O", "ø": "o", "Ł": "L", "ł": "l", "ß": "ss", "Æ": "AE", "æ": "ae"})
+
+
+def recolour(image, kit):
+    """Recolour the kit's saturated pixels; a value rescales brightness, keeping relative shading."""
+    import cv2
+    import numpy as np
+
+    hue, saturation, value = kit
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    saturated = hsv[:, :, 1] > 70
+    if value is not None:
+        brightness = hsv[:, :, 2][saturated].astype(float)
+        hsv[:, :, 2][saturated] = np.clip(brightness * value / np.median(brightness), 0, 255).astype(np.uint8)
+    hsv[:, :, 0][saturated] = hue
+    hsv[:, :, 1][saturated] = saturation
+    return cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
 
 
 def prepare(source):
@@ -16,7 +35,7 @@ def prepare(source):
     ids = [398, 11, 254, 320, 103, 188, 74, 332, 290, 391, 264]
     names = [
         [
-            unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
+            unicodedata.normalize("NFKD", name.translate(ASCII)).encode("ascii", "ignore").decode()
             for name in team
         ]
         for team in NAMES
@@ -36,10 +55,10 @@ def prepare(source):
     team = source / "third_party/gfootball_engine/src/data/teamdata.cpp"
     team.write_text(
         team.read_text()
-        .replace("Frequentists United", "Chelsea")
-        .replace("Real Bayesians", "Manchester United")
-        .replace('"FRQ"', '"CHE"')
-        .replace('"RBA"', '"MUN"')
+        .replace("Frequentists United", TEAMS[0]["name"])
+        .replace("Real Bayesians", TEAMS[1]["name"])
+        .replace('"FRQ"', f'"{TEAMS[0]["code"]}"')
+        .replace('"RBA"', f'"{TEAMS[1]["code"]}"')
     )
     import cv2
 
@@ -47,14 +66,9 @@ def prepare(source):
         source
         / "third_party/gfootball_engine/data/databases/default/images_teams/primeradivision"
     )
-    for name, hue in [("fcbarcelona", 110), ("realmadrid", 0)]:
+    for name, team in zip(("fcbarcelona", "realmadrid"), TEAMS):
         path = kits / f"{name}_kit_02.bmp"
-        image = cv2.imread(str(path))
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        saturated = hsv[:, :, 1] > 70
-        hsv[:, :, 0][saturated] = hue
-        hsv[:, :, 1][saturated] = 225
-        cv2.imwrite(str(path), cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR))
+        cv2.imwrite(str(path), recolour(cv2.imread(str(path)), team["kit"]))
 
     from .prepare_presentation import prepare as prepare_presentation
 

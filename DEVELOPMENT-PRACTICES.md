@@ -19,9 +19,9 @@ HTTP / UI view → application service → domain model / pure engine
 
 **One responsibility per file.** Split files when their reasons to change differ, not at an arbitrary line count. Keep related logic together. Avoid catch-all helpers and duplicated business rules. Existing foundation code can migrate incrementally; new features follow these boundaries.
 
-**Use Microsoft Agent Framework for agent orchestration.** Model-based goal/coding roles use the SDK, and workflow stages use its typed executors and routing. Compile bounded semantic goals deterministically when no further interpretation is needed; avoid a redundant model call just to translate fields. Keep filters and validation separate from model calls. Fixture mode substitutes agent doubles inside the same workflow; do not replace the framework with a parallel custom orchestration implementation.
+**Use Microsoft Agent Framework for agent orchestration.** Model-based goal/coding roles use the SDK, and workflow stages use its typed executors and routing. Compile bounded semantic goals deterministically when no further interpretation is needed; avoid a redundant model call just to translate fields. Keep filters and validation separate from model calls. Tests and benchmarks substitute agent doubles inside the same workflow; do not replace the framework with a parallel custom orchestration implementation.
 
-**Inject dependencies.** Construct adapters/repositories in one composition root. Tests replace them without changing services. A provider-specific key change belongs in its event adapter. The fixture replay is an optional source and UI, not the production pipeline.
+**Inject dependencies.** Construct adapters/repositories in one composition root. Tests replace them without changing services. A provider-specific key change belongs in its event adapter. Runtime code has no fixture mode and never reads recordings: doubles live under `tests/` or `benchmarks/` only.
 
 **Validate at boundaries.** Use strict typed event/rule models. Treat LLM output as untrusted data. Reject unsupported operators, unavailable fields and wrong-match rules. Never use `eval`/`exec` for a structured filter. Future arbitrary Python requires a separate isolated executor.
 
@@ -37,6 +37,6 @@ HTTP / UI view → application service → domain model / pure engine
 
 **Ground agents in the active data contract.** Keep feed meanings in a versioned adapter-owned reference; derive types from executable models. Do not treat public provider definitions as a wire schema. Review semantic changes explicitly, and keep data skills free of benchmark prompts, gold rules and expected totals. Evaluate reference changes on frozen regression and separate transfer cases before enabling them.
 
-**Local model configuration stays local.** Commit only generic variable names and an example configuration. Keep URLs, keys and machine-specific model routing in ignored files. Model failures must be visible; fixture mode must identify itself. Never commit request logs or provider response dumps.
+**Local model configuration stays local.** Commit only generic variable names and an example configuration. Keep URLs, keys and machine-specific model routing in ignored files. Model failures must be visible: with no model configured, the service reports not ready and refuses model work; it never falls back to a double. Never commit request logs or provider response dumps.
 
 **Document briefly.** Service README: purpose, run command, boundaries and current limits. Put deeper contracts in service `docs/`. Mark planned versus implemented. Preserve source provenance for synthetic/vendor-inspired data. No unsolicited CI, new infrastructure or cloud deployments.

@@ -4,9 +4,9 @@
   "models": [
     {
       "label": "higher-ranked-reference",
-      "model": "dots-studio/dots-3-note-preview:free",
+      "model": "reference model D",
       "expected_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ]
     }
   ],
@@ -279,7 +279,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -287,13 +287,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1963,
@@ -303,7 +303,7 @@
           "status": "ok",
           "request_bytes": 8555,
           "request_sha256": "2d645d95eb819facaca29bb2819e055156c6f0b6ce477db7c7984ffc546ce8bb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.206
@@ -458,7 +458,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -467,13 +467,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3596,
@@ -483,7 +483,7 @@
           "status": "ok",
           "request_bytes": 16079,
           "request_sha256": "ea5e3a724f3aa5e2f97caa860385b09ae76e842002edfac9182123c40dcf3003",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.486
@@ -628,7 +628,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -637,13 +637,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3589,
@@ -653,7 +653,7 @@
           "status": "ok",
           "request_bytes": 16073,
           "request_sha256": "86977bdf25b7c0797a364eb3beeedb5cf81bef76815afc5c4581ae3042638eb2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.896
@@ -808,7 +808,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -816,13 +816,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1970,
@@ -832,7 +832,7 @@
           "status": "ok",
           "request_bytes": 8561,
           "request_sha256": "95c4d7be4032a4ca40d4ce5f1830919852179c0207b64bc47e07a65074e5358a",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 10.671
@@ -987,7 +987,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -995,13 +995,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1963,
@@ -1011,7 +1011,7 @@
           "status": "ok",
           "request_bytes": 8562,
           "request_sha256": "b0f30272d81eda03acf38a1e680ff9ac3618ef85f7975420546afc349a6b707f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 9.077
@@ -1146,7 +1146,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1155,13 +1155,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3589,
@@ -1171,7 +1171,7 @@
           "status": "ok",
           "request_bytes": 16059,
           "request_sha256": "dae418f15ff368524ec374f23127c07de6511dbd53556f4c3c7c70e5dcc1b80f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.136
@@ -1326,7 +1326,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1335,13 +1335,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3589,
@@ -1351,7 +1351,7 @@
           "status": "ok",
           "request_bytes": 16080,
           "request_sha256": "b27950002a32f5ad7126c22f6a46085b0a2d94c6a81004d5906f6916b5e0ed26",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.142
@@ -1486,7 +1486,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1494,13 +1494,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1963,
@@ -1510,7 +1510,7 @@
           "status": "ok",
           "request_bytes": 8541,
           "request_sha256": "3a3bfac720000b34d58aec6c690fedc2ea525bf7327c208ed9a0844dc2dd5792",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.302
@@ -1655,7 +1655,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1663,13 +1663,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1965,
@@ -1679,7 +1679,7 @@
           "status": "ok",
           "request_bytes": 8563,
           "request_sha256": "ee38ef8ba72e5e245d099d8c256b97f2bfd11a8e6ab0697645778efa8d85043e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.064
@@ -1824,7 +1824,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1833,13 +1833,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3591,
@@ -1849,7 +1849,7 @@
           "status": "ok",
           "request_bytes": 16081,
           "request_sha256": "fb64bde86fdeb2be8b992d0524936f8dacbe04edff3bc87d543e007cb82f2e38",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.613
@@ -1994,7 +1994,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2002,13 +2002,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1961,
@@ -2018,7 +2018,7 @@
           "status": "ok",
           "request_bytes": 8532,
           "request_sha256": "d51dec778fc15d3c93ba23e6b30bd33d5ec8d5679b9d0e376a1bb6b7bd43a0bb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.615
@@ -2163,7 +2163,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2172,13 +2172,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3587,
@@ -2188,7 +2188,7 @@
           "status": "ok",
           "request_bytes": 16050,
           "request_sha256": "1e43e552679f35fa006605f0219ef652b858d441650027525c50bee301e6d4f8",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.114
@@ -2323,7 +2323,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2332,13 +2332,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3587,
@@ -2348,7 +2348,7 @@
           "status": "ok",
           "request_bytes": 16051,
           "request_sha256": "d87656e22fa5f42f7133fa08ab6a382577d67a7899fa774eab609b5528fa68ed",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.25
@@ -2493,7 +2493,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2502,13 +2502,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3587,
@@ -2518,7 +2518,7 @@
           "status": "ok",
           "request_bytes": 16058,
           "request_sha256": "0a10a33e18dd04e1a2b65ce4368fdf5f5d2aeb082753195e5c3573f3cd81befb",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 27.128
@@ -2653,7 +2653,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2661,13 +2661,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1961,
@@ -2677,7 +2677,7 @@
           "status": "ok",
           "request_bytes": 8533,
           "request_sha256": "5e954c72e62bb4fcfc20e6ca3d6c191f9e67a7677dd780faacf757ad843949c6",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 10.281
@@ -2822,7 +2822,7 @@
       "final_value": 20.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2830,13 +2830,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -2846,7 +2846,7 @@
           "status": "ok",
           "request_bytes": 8577,
           "request_sha256": "e200f227f5f14406fc33adb78617dfe27653edbf34a1e50ae3aa5f5812ff359f",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.06
@@ -2910,7 +2910,7 @@
       ],
       "actual_status": "unsupported",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2918,13 +2918,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1961,
@@ -2934,7 +2934,7 @@
           "status": "ok",
           "request_bytes": 8540,
           "request_sha256": "2f2744b6cb45e45acf5ea03f5310b3b98b79a6cd2fea68c73958a7c825a2a67c",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 16.186
@@ -3079,7 +3079,7 @@
       "final_value": 20.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3088,13 +3088,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3595,
@@ -3104,7 +3104,7 @@
           "status": "ok",
           "request_bytes": 16095,
           "request_sha256": "073b146b094634d15fb580b04cfb2006f63c8c8f9b928912f116353033152c1c",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.76
@@ -3241,7 +3241,7 @@
       "final_value": 20.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3250,13 +3250,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3587,
@@ -3266,7 +3266,7 @@
           "status": "ok",
           "request_bytes": 16067,
           "request_sha256": "c8e11aac6ce43d9c08e738f22807c9dcf83c5a8b6f160b7abf1b56539977127e",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.545
@@ -3403,7 +3403,7 @@
       "final_value": 20.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3411,13 +3411,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1961,
@@ -3427,7 +3427,7 @@
           "status": "ok",
           "request_bytes": 8549,
           "request_sha256": "69be9df1cd082029c9191ad7bcf7fc00aef1b81d097b908fea39710ae9a9bac2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.881
@@ -3576,7 +3576,7 @@
       "final_value": 7.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3584,13 +3584,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1963,
@@ -3600,7 +3600,7 @@
           "status": "ok",
           "request_bytes": 8554,
           "request_sha256": "38ce88d03bc85fb0658f22bc29a442551662bc97df6698b74bf7e4f1785f55de",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 11.828
@@ -3749,7 +3749,7 @@
       "final_value": 7.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3758,13 +3758,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3589,
@@ -3774,7 +3774,7 @@
           "status": "ok",
           "request_bytes": 16072,
           "request_sha256": "dd4ff504e199bd7c6ddf9da1609dbeeb002385c87297879160e70d02eed1fae1",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.813
@@ -3901,7 +3901,7 @@
       "final_value": 4.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3910,13 +3910,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3590,
@@ -3926,7 +3926,7 @@
           "status": "ok",
           "request_bytes": 16079,
           "request_sha256": "ac891d9198dd1948d49772ec97c2f349ee5dd07fa2424c27aef624266e52b386",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 19.581
@@ -4083,7 +4083,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4091,13 +4091,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1957,
@@ -4107,7 +4107,7 @@
           "status": "ok",
           "request_bytes": 8528,
           "request_sha256": "480f7a84d9c8f6e35900bc9d9e668f787e22f1f34b60bea34360c9dfc8f0bab2",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 9.421
@@ -4115,7 +4115,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1992,
@@ -4125,7 +4125,7 @@
           "status": "ok",
           "request_bytes": 8674,
           "request_sha256": "56ed588aeab0b232eb4966c8de50bb53bbc4b783c7fc960fe9cb08faff086e4a",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.868
@@ -4252,7 +4252,7 @@
       "final_value": 4.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4260,13 +4260,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1964,
@@ -4276,7 +4276,7 @@
           "status": "ok",
           "request_bytes": 8561,
           "request_sha256": "34e984e19a0c9f8afb3df4169dde2877914669618c8deacfe07f4d1496784ac6",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 14.87
@@ -4467,7 +4467,7 @@
       "final_value": 15.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4476,13 +4476,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3661,
@@ -4492,7 +4492,7 @@
           "status": "ok",
           "request_bytes": 16300,
           "request_sha256": "a15dd56daa0b9d2be544783e943384c3df772b86515035aa4514d814a2e23e0b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 10.358
@@ -4652,7 +4652,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4661,13 +4661,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3583,
@@ -4677,7 +4677,7 @@
           "status": "ok",
           "request_bytes": 16046,
           "request_sha256": "ee033a12f2c4d8e9ff0d5a0b54134d955fc5d4963a3ec284e5aa13c109e6450d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 11.485
@@ -4685,7 +4685,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3629,
@@ -4695,7 +4695,7 @@
           "status": "ok",
           "request_bytes": 16212,
           "request_sha256": "a485e2f6460e4e95f5c778a58948dc62d81a930bc05e3e6e40ade2a6f2346471",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 12.114
@@ -4886,7 +4886,7 @@
       "final_value": 15.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4894,13 +4894,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 2035,
@@ -4910,7 +4910,7 @@
           "status": "ok",
           "request_bytes": 8782,
           "request_sha256": "873473d53c609ab14e7ee401090153fee48219f3c923ae714bb82a739eafb4ec",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.886
@@ -5067,7 +5067,7 @@
       "final_value": 7.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5075,13 +5075,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1958,
@@ -5091,7 +5091,7 @@
           "status": "ok",
           "request_bytes": 8532,
           "request_sha256": "d1d75bf6ebbb5afe4c2d849b60195c360bd931bfd9944fe3abe5f070a7a0c0d7",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.337
@@ -5099,7 +5099,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 2006,
@@ -5109,7 +5109,7 @@
           "status": "ok",
           "request_bytes": 8706,
           "request_sha256": "f6bd260ebaedc97f49b798893d6bdd13d1844a29f457d3e8e10ec74d296895a6",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 11.419
@@ -5284,7 +5284,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5293,13 +5293,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3583,
@@ -5309,7 +5309,7 @@
           "status": "ok",
           "request_bytes": 16042,
           "request_sha256": "ee055c31594b0acdedca725f6a46f8ce6e8d7584be25ce969de766679d3ae529",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.724
@@ -5317,7 +5317,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3615,
@@ -5327,7 +5327,7 @@
           "status": "ok",
           "request_bytes": 16173,
           "request_sha256": "117ea80ad8596cf2f1b4c7f79072585d832fb78114304fa0ce5f16ae042b33ea",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 10.689
@@ -5484,7 +5484,7 @@
       "final_value": 7.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5493,13 +5493,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3584,
@@ -5509,7 +5509,7 @@
           "status": "ok",
           "request_bytes": 16050,
           "request_sha256": "64f2b78dd7208c96c655afe22d9b920efa082b04d2b23101c0ab5bf1745a3e76",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 9.835
@@ -5517,7 +5517,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3632,
@@ -5527,7 +5527,7 @@
           "status": "ok",
           "request_bytes": 16224,
           "request_sha256": "4d1e12ba77d6e454d4633f5363cb16967c2ff076bff79df89af2b0cd7c17e858",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 10.974
@@ -5708,7 +5708,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5716,13 +5716,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1957,
@@ -5732,7 +5732,7 @@
           "status": "ok",
           "request_bytes": 8524,
           "request_sha256": "e979642dd2498b8fb68e46ffe3115cf5f17e606586dee237dca08e836d2bd47c",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 11.169
@@ -5740,7 +5740,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 2019,
@@ -5750,7 +5750,7 @@
           "status": "ok",
           "request_bytes": 8749,
           "request_sha256": "9a624caa1dbf6690346558d80e644d36597760b3b7700117306ab33c6e3a6702",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 12.315
@@ -5806,7 +5806,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5814,13 +5814,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1961,
@@ -5830,7 +5830,7 @@
           "status": "ok",
           "request_bytes": 8542,
           "request_sha256": "15ac01cdff103b2466619b4360955138c3fb1369a0a71ea92115890c352ab262",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.605
@@ -5886,7 +5886,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5895,13 +5895,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3587,
@@ -5911,7 +5911,7 @@
           "status": "ok",
           "request_bytes": 16060,
           "request_sha256": "72e96a8edaf9333db35b37592bbc90a94e1369f310bf462ae374d3bc3043eb35",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.999
@@ -5967,7 +5967,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5976,13 +5976,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3585,
@@ -5992,7 +5992,7 @@
           "status": "ok",
           "request_bytes": 16057,
           "request_sha256": "48574614ab7d57773b3808ea621c0398329114b54e2dbca42d822f288293ab6d",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.635
@@ -6048,7 +6048,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6056,13 +6056,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1959,
@@ -6072,7 +6072,7 @@
           "status": "ok",
           "request_bytes": 8539,
           "request_sha256": "b14bd671803185321ed00b0d7e24f1fb74f67d7de4b28460f5f2bb8e718d8c0c",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.604
@@ -6128,7 +6128,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6136,13 +6136,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1962,
@@ -6152,7 +6152,7 @@
           "status": "ok",
           "request_bytes": 8552,
           "request_sha256": "c4d44610336b479f09ec186689038075b3a7bc9efb557718c2d92642513b87b3",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 9.48
@@ -6208,7 +6208,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6217,13 +6217,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3586,
@@ -6233,7 +6233,7 @@
           "status": "ok",
           "request_bytes": 16050,
           "request_sha256": "4f1170910e96df508d7e4820719daa4bfb2d954b3bccc5a53ed6b8e8143ad538",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.419
@@ -6289,7 +6289,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6298,13 +6298,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 3588,
@@ -6314,7 +6314,7 @@
           "status": "ok",
           "request_bytes": 16070,
           "request_sha256": "38646e9a35802b2cd758cecef4407676a41d05a04395d2a091a0244d97d98607",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 8.652
@@ -6370,7 +6370,7 @@
       "ok": true,
       "reason": "status",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6378,13 +6378,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 1960,
@@ -6394,7 +6394,7 @@
           "status": "ok",
           "request_bytes": 8532,
           "request_sha256": "528843c12920a9b97f6524a6c0daecdca47335e3ce82923bdeef80f2169027d8",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.878

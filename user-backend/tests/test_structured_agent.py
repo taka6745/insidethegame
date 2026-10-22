@@ -22,13 +22,13 @@ def test_real_sdk_sends_strict_contract_and_unwraps_valid_decision():
         user_payload = json.loads(payload['messages'][-1]['content'])
         assert user_payload['decision_schema']['properties'] == spec['schema']['properties']
         # Some endpoints constrain decoding without exposing field names to model context.
-        value = {'decision': {'status':'custom', 'goal':Goal(description='Count corners', event_types=['corner']).model_dump(mode='json')}}
+        value = {'decision': {'status':'custom', 'goal':Goal(description='Count corners', action_types=['corner_crossed', 'corner_short']).model_dump(mode='json')}}
         return httpx.Response(200, json={'id':'synthetic','object':'chat.completion','created':1,'model':'test',
             'choices':[{'index':0,'finish_reason':'stop','message':{'role':'assistant','content':json.dumps(value)}}]})
     observer = ModelObserver(transport_factory=lambda:httpx.MockTransport(respond))
     agent = GoalAgent(LocalJsonModel('http://local.invalid/v1','test',transport=observer), response_mode='schema')
     result = asyncio.run(agent.define('Count corners', {}))
-    assert result.status == 'custom' and result.goal.event_types == ('corner',)
+    assert result.status == 'custom' and result.goal.action_types == ('corner_crossed', 'corner_short')
     assert observer.calls[0]['strict_requested'] is True
     assert len(observer.calls[0]['wire_schema_sha256']) == 64
 
@@ -62,11 +62,11 @@ def test_output_mode_is_explicit_and_validated(monkeypatch):
 
 
 @pytest.mark.parametrize(('field', 'value'), [('period', '2'), ('after_seconds', '3600'),
-                                             ('event_types', 'corner')])
+                                             ('action_types', 'corner_crossed')])
 def test_schema_ignoring_provider_cannot_coerce_wrong_json_types(field, value):
     class IgnoresTypes:
         async def complete(self, system, payload, *, response_schema):
-            goal = Goal(description='Count corners', event_types=['corner']).model_dump(mode='json')
+            goal = Goal(description='Count corners', action_types=['corner_crossed', 'corner_short']).model_dump(mode='json')
             goal[field] = value
             return {'decision': {'status': 'custom', 'goal': goal}}
     with pytest.raises(ValueError):

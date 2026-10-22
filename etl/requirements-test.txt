@@ -1,3 +1,7 @@
 -r requirements.txt
+-r local_stream/requirements.txt  # pymssql: without it the SQL tests skip, even in CI.
 pytest==9.0.2
-httpx==0.28.1
+# Test-only SPADL oracle (tests/test_spadl.py); never imported at runtime. pandera 0.17 (its dependency)
+# breaks with multimethod 2.
+socceraction==1.5.3
+multimethod==1.12

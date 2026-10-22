@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from backend.models.events import Event
+from backend.models.actions import SpadlAction
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 
@@ -19,17 +19,18 @@ def run(size, events, shared_denominator):
     engine = FilterEngine()
     started = time.perf_counter()
     for index in range(size):
-        scope = [{'field':'event_type','op':'eq','value':'pass'}]
+        scope = [{'field':'action_type','op':'eq','value':'pass'}]
         team = {'field':'team_id','op':'eq','value':f'team-{index}'}
-        success = Rule(match_id='benchmark',predicates=scope+[team,{'field':'outcome','op':'eq','value':'success'}])
-        denominator = Rule(match_id='benchmark',predicates=scope+([] if shared_denominator else [team])+
-                           [{'field':'outcome','op':'in','value':['success','failure']}])
+        success = Rule(match_id='benchmark',predicates=scope+[team,{'field':'result','op':'eq','value':'success'}])
+        denominator = Rule(match_id='benchmark',predicates=scope+([] if shared_denominator else [team]))
         engine.register(Rule(match_id='benchmark',operation='percentage',inputs=(success,denominator)))
     register_seconds = time.perf_counter()-started
     timings, evaluations = [], []
     for index in range(events):
-        event = Event(event_id=str(index),match_id='benchmark',event_type='pass',team_id='team-0',
-                      match_time_seconds=index,outcome='success' if index%2 else 'failure')
+        event = SpadlAction(match_id='benchmark',action_id=index,period=1,match_time_seconds=index,team_id='team-0',
+                            action_type='pass',result='success' if index%2 else 'fail',bodypart='foot',
+                            start_x=50,start_y=34,end_x=60,end_y=34,start_zone='middle_third',
+                            end_zone='middle_third',seq=index+1,final_seq=index+1)
         started=time.perf_counter()
         engine.ingest(event)
         timings.append(time.perf_counter()-started)

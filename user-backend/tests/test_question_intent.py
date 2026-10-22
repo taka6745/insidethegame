@@ -155,7 +155,7 @@ def test_provider_ignoring_native_schema_gets_same_prompt_contract_and_one_repai
         async def complete(self, instructions, payload, *, response_schema):
             self.calls += 1
             assert payload["routing_schema"] == response_schema
-            assert set(response_schema["required"]) == {"route", "question", "options", "allow_free_text"}
+            assert set(response_schema["required"]) == {"route", "question", "options", "allow_free_text", "matches"}
             assert "route" in payload["routing_schema"]["properties"]
             if self.calls == 1:
                 return {"intent": "statistic"}  # Actual non-enforcing provider response.
@@ -178,3 +178,44 @@ def test_router_rejects_invalid_contract_after_one_repair():
     with pytest.raises(ValidationError):
         asyncio.run(QuestionIntentRouter(model).route("How many shots?", {}))
     assert model.calls == 2
+
+
+LIVE = [{"match_id": "ars", "this_match": True, "teams": ["Arsenal", "Liverpool"], "minute": 20, "period": 1},
+        {"match_id": "che", "this_match": False, "teams": ["Chelsea", "Manchester United"], "minute": 18, "period": 1},
+        {"match_id": "mci", "this_match": False, "teams": ["Manchester City", "Tottenham Hotspur"], "minute": 16,
+         "period": 1}]
+
+
+def test_router_sees_the_live_matches_as_data():
+    routed = routing_context({"live_matches": LIVE})
+    assert routed["live_matches"][1] == {"match_id": "che", "this_match": False,
+                                         "teams": ["Chelsea", "Manchester United"], "minute": 18}
+
+
+@pytest.mark.parametrize("route", ["replay", "statistic", "clarification"])
+def test_a_data_request_about_several_other_matches_offers_only_the_real_ones(route):
+    """'Show me the shots on goal from the other matches': the chips are the live matches, never invented ones."""
+    class Router:
+        async def route(self, prompt, context):
+            question = "Which competition?" if route == "clarification" else None
+            options = ["Other Premier League matches", "International matches"] if route == "clarification" else []
+            return QuestionIntent(route=route, question=question, options=options, matches=["che", "mci", "nope"])
+
+    draft = asyncio.run(QuestionAgent(SimpleNamespace(), router=Router()).answer(
+        "show me the shots on goal from the other matches", {"live_matches": LIVE}, SimpleNamespace()))
+    assert draft.status == "clarification"
+    assert draft.clarification.options == ["Chelsea v Manchester United", "Manchester City v Tottenham Hotspur"]
+
+
+def test_a_request_about_one_other_match_or_none_is_not_redirected():
+    class Router:
+        def __init__(self, matches):
+            self.matches = matches
+
+        async def route(self, prompt, context):
+            return QuestionIntent(route="clarification", question="Which player?", matches=self.matches)
+
+    for matches in ([], ["che"]):
+        draft = asyncio.run(QuestionAgent(SimpleNamespace(), router=Router(matches)).answer(
+            "who scored", {"live_matches": LIVE}, SimpleNamespace()))
+        assert draft.clarification.question == "Which player?"

@@ -1,15 +1,15 @@
 """Narrative GraphQL API, served in-process over a fake-agent run of the synthetic match."""
 import asyncio
-from datetime import timedelta
 from pathlib import Path
 
 import httpx
 import pytest
 
-from narrative_engine.agents.fake import FakeAgents
+from narrative_engine.devtools.fake_agents import FakeAgents
 from narrative_engine.api import NarrativeApi, schema
-from narrative_engine.match_data.fixture import FixtureMatchData
-from narrative_engine.core.models import USER_TYPES, MinuteClosed, PresenceChanged
+from narrative_engine.devtools.fixture_data import FixtureMatchData
+from narrative_engine.devtools.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
+from narrative_engine.core.models import MinuteClosed
 from narrative_engine.core.orchestrator import MatchOrchestrator, utcnow
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import JsonlSink, read_narratives, read_notifications
@@ -24,9 +24,10 @@ PAGE = """query ($m: String!, $u: String!, $after: Int, $first: Int) {
 STATE = "query ($m: String!) { matchState(matchId: $m) { status lastSummarised { label } activeUserTypes } }"
 
 
-def replay(store, messages, clock):
+def replay(store, messages, clock, targets=None):
     engine = MatchOrchestrator(MATCH, FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS), FakeAgents(),
-                               store, JsonlSink(clock["out"]), now=lambda: clock["now"])
+                               store, JsonlSink(clock["out"]), now=lambda: clock["now"],
+                               targets=targets or StaticTargets(default_targets()))
 
     async def go():
         for m in messages:
@@ -78,23 +79,23 @@ def test_after_the_latest_seq_is_empty_and_step_ids_link_buckets(run):
 
 def test_bad_arguments_are_graphql_errors(run):
     store, _ = run
-    body = query(store, PAGE, m=MATCH, u="home:expert")
-    assert body["data"] is None and "userType must be one of" in body["errors"][0]["message"]
+    assert query(store, PAGE, m=MATCH, u="home:expert")["data"]["narratives"]["items"] == []  # any catalogue id
+    body = query(store, PAGE, m=MATCH, u="Home Fans!")
+    assert body["data"] is None and "audience bucket id" in body["errors"][0]["message"]
     assert "between 1 and 200" in query(store, PAGE, m=MATCH, u="home:simple", first=500)["errors"][0]["message"]
     assert query(store, "mutation { x }")["errors"]  # read-only: no mutations in the schema
     assert "type Mutation" not in schema.as_str()
 
 
-def test_match_state_follows_presence_and_its_staleness(tmp_path):
+def test_match_state_lists_the_current_targets(tmp_path):
     store, clock = MemoryStore(), {"now": utcnow(), "out": tmp_path / "narratives.jsonl"}
     assert query(store, STATE, m=MATCH)["data"]["matchState"] is None
     messages = [m for _, m in read_notifications(NOTIFICATIONS) if m][:20]
-    replay(store, [PresenceChanged(MATCH, {"home:casual": 2}, clock["now"])] + messages, clock)
+    home = [t for t in default_targets() if t["bucket_id"] == "home:casual"]
+    replay(store, messages, clock, StaticTargets(home))
     state = query(store, STATE, now=lambda: clock["now"], m=MATCH)["data"]["matchState"]
     assert state["status"] == "live" and state["activeUserTypes"] == ["home:casual"]
     assert state["lastSummarised"]["label"] == [m for m in messages if isinstance(m, MinuteClosed)][-1].clock.label
-    later = clock["now"] + timedelta(minutes=5)
-    assert query(store, STATE, now=lambda: later, m=MATCH)["data"]["matchState"]["activeUserTypes"] == list(USER_TYPES)
 
 
 def test_full_run_state_and_jsonl_round_trip(run):
@@ -105,3 +106,23 @@ def test_full_run_state_and_jsonl_round_trip(run):
     for n in read_narratives(clock["out"]):
         asyncio.run(reloaded.add_narrative(n))
     assert query(reloaded, PAGE, m=MATCH, u="neutral:analyst") == query(store, PAGE, m=MATCH, u="neutral:analyst")
+
+
+BLOCKS = """query ($m: String!, $all: Boolean) { contextBlocks(matchId: $m, includeSuperseded: $all) {
+  id level tier summary supersededBy coversFrom { periodId timeMin } coversTo { periodId timeMin } } }"""
+
+
+def test_context_blocks_list_every_summary_or_only_the_active_context(run):
+    store, _ = run
+    every = query(store, BLOCKS, m=MATCH, all=True)["data"]["contextBlocks"]
+    active = query(store, BLOCKS, m=MATCH, all=False)["data"]["contextBlocks"]
+    assert {b["level"] for b in every} >= {0, 1} and all(b["summary"] for b in every)
+    tiers = {0: {"minute"}, 1: {"five-minute"}, 2: {"twenty-minute", "half"}}
+    assert all(b["tier"] in tiers[b["level"]] for b in every) and {b["tier"] for b in every} >= {"minute", "half"}
+    assert all(b["tier"] == "half" for b in active if b["coversFrom"]["periodId"] == 1)  # the closed first half
+    assert [b["id"] for b in active] == [b["id"] for b in every if b["supersededBy"] is None]
+    assert len(active) < len(every)
+    starts = [(b["coversFrom"]["periodId"], b["coversFrom"]["timeMin"]) for b in every]
+    assert starts == sorted(starts)
+    assert query(store, BLOCKS, m="other-match", all=True)["data"]["contextBlocks"] == []
+

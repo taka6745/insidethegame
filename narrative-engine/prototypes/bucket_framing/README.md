@@ -2,7 +2,7 @@
 
 **Owned by the narrative engine. Not connected to its production workflow or database yet.**
 
-The retained `models.py` and `framer.py` describe neutral inputs and bucketed authoring. Fetch layer/option descriptions and combinations from the [backend audience API](../../../user-backend/docs/audience-api.md); the seed and authoritative catalogue live there. A neutral source is internal input to this engine; the output published to the user backend is already bucketed.
+The retained `models.py` and `framer.py` describe neutral inputs and bucketed authoring. Fetch layer/option descriptions and combinations from the [backend audience API](../../../user-backend/docs/components/routes.md#3-audience-configuration); the seed and authoritative catalogue live there. A neutral source is internal input to this engine; the output published to the user backend is already bucketed.
 
 The framer accepts an injected JSON model adapter (the development experiment used Microsoft Agent Framework). The authoring code has no import or database dependency on the user backend; its future orchestrator reads the configuration API. Its fixture double copies source text; it does not assess writing quality.
 

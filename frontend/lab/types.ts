@@ -7,51 +7,28 @@ export interface LabTeam {
   label?: string;
 }
 export type LabTeams = (string | LabTeam)[] | Partial<Record<string, string | LabTeam>> | null | undefined;
-export interface Preset {
-  id: string;
-  label: string;
-  rule: Rule;
+/** The fields of a `GET /product/matches` entry the lab shows. */
+export interface LabMatch {
+  match_id: string;
+  fixture?: string;
+  status: string;
+  clock_seconds?: number | null;
+  teams?: LabTeam[];
 }
-export interface RecordingInfo {
-  filename?: string;
-  title?: string;
-  format?: string;
-  synthetic?: boolean;
-  delivery_count?: number;
-  event_count?: number;
-}
-export interface Scenario {
-  teams?: LabTeams;
-  presets?: Preset[];
-  recording?: RecordingInfo;
-  recording_editable?: boolean;
-}
+/** One received event as the lab state route displays it (names resolved from the match's teams and players). */
 export interface LabEvent {
   id?: string;
-  event_id?: string;
-  eventId?: string;
-  delivery_index?: number;
-  event_type?: string;
+  seq?: number;
   type?: string;
-  typeName?: string;
-  match_time_seconds?: number;
-  elapsed_seconds?: number;
+  player?: string | null;
+  team?: string | null;
   minute?: number;
-  second?: number;
-  timeMin?: number;
-  timeSec?: number;
-  deleted?: boolean;
+  match_time_seconds?: number;
+  period?: number;
+  body_part?: string | null;
+  outcome?: string | null;
   revision?: number;
-  player_name?: string;
-  player?: string;
-  player_id?: string;
-  playerId?: string;
-  team_name?: string;
-  team_id?: string;
-  team?: string;
-  teamId?: string;
-  body_part?: string;
-  key_moment?: boolean;
+  deleted?: boolean;
 }
 export interface Calculation {
   id?: string;
@@ -60,16 +37,18 @@ export interface Calculation {
   rule?: Rule & { label?: string };
 }
 export interface LabState {
-  run_id?: string;
-  status?: string;
+  match_id?: string;
+  fixture?: string;
+  /** Canonical events received for this match. */
+  seq?: number;
   error?: string;
   events?: LabEvent[];
   match_time_seconds?: number | null;
-  position?: number | null;
-  total?: number | null;
   metrics?: { total_rules?: number; candidate_count?: number; changed_count?: number };
   calculations?: Calculation[];
   llm?: { configured?: boolean };
+  /** The backend's published ETL goals for this run; null before the first snapshot. */
+  score?: { id: string; name: string; score: number | null }[] | null;
 }
 export interface PlanResult {
   status?: string;
@@ -80,8 +59,7 @@ export interface PlanResult {
   clarification?: { question?: string; options?: string[] };
 }
 export interface EventPayload {
-  delivery_index?: number;
-  raw?: unknown;
+  seq?: number;
   canonical?: unknown;
 }
 export interface Offer {
@@ -101,7 +79,6 @@ export interface ChatTurn {
   } | null;
 }
 export interface ChatSession {
-  run_id?: string;
   session_token?: string;
   mode?: string;
   turns: ChatTurn[];

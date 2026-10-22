@@ -1,0 +1,25 @@
+This is the state of a live football (soccer) match at one update, for deciding
+whether the stories viewers follow have moved. Each question names one followed
+story; judge it on its own: only what changed at this update counts, read against
+the story so far. Data after this update does not exist yet.
+
+The update being judged:
+{update}
+
+The current game state statistics:
+{game_state_statistics}
+
+The match's storylines:
+{storylines}
+
+The match trends (notable values only):
+{match_trends}
+
+The key event ledger (authoritative; an entry "later overturned by VAR" did not count):
+{key_event_ledger}
+
+The match context (minute and earlier summaries):
+{combined_match_context}
+
+The most recent insights written for the match:
+{narrative_excerpts}

@@ -1,8 +1,8 @@
 # Recorded-match commentary
 
-Bound to the 90-minute Chelsea 2–1 Manchester United GRF recording (seed 37; [event contract](../../data-generation/docs/opta-events.md)): 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
+**Historical test material.** Bound to the earlier 90-minute Chelsea 2–1 Manchester United GRF recording (seed 37, rendered before [scripted tactics](../../data-generation/docs/components/grf-demo.md#4-scripted-tactics); [event contract](../../data-generation/docs/opta-events.md)), kept byte for byte in [`archive/chelsea-united-grf.json`](archive/chelsea-united-grf.json). Its Opta stream export (`archive/chelsea-united-grf.opta-stream.jsonl`, from `grf_demo.opta_stream`) sits beside it for the backend's SPADL double. The shipped `data-generation/recordings/chelsea-united-grf.json` is a newer match; these fixtures do not describe it. They hold 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
 
-Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or an actual Premier League result. The runtime releases only what the viewer's snapshot has already observed.
+Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or an actual Premier League result. No running service serves them; backend tests and the replay benchmark read them.
 
 ```text
 commentary-text.json (authored prose) + ETL canonical export
@@ -61,6 +61,6 @@ Minute IDs are `p{period}-m{minute}`; `minute` is the 1-based broadcast minute (
 | Tier | Its last child's release; also needs every child intact |
 | Key moment | All its events delivered and video passed `end_video_seconds` |
 
-A unit is hidden unless the snapshot reaches its cursor and `(period, clock)`, the recording hash matches, its delivery prefix digest is unchanged and its evidence has no later correction. `narrative_demo/models/fixtures.py` is the executable schema.
+The `release` metadata records when each unit could first be shown; the replay benchmark uses its `video_seconds` to hide later units. [`tools/commentary_schema.py`](../tools/commentary_schema.py) is the executable schema.
 
-Before binding, review **all** prose against the event evidence; the binder checks structure and timing, not natural-language claims. Names are illustrative simulator slots with generic abilities.
+Before binding, review **all** prose against the event evidence; the binder checks structure and timing, not natural-language claims.

@@ -1,4 +1,4 @@
-"""Fixture-backed API with an optional Microsoft Agent Framework custom-stat lab."""
+"""Composition root: the multi-match user backend. Swap adapters here, not in services."""
 import asyncio
 import os
 from contextlib import asynccontextmanager, suppress
@@ -6,125 +6,161 @@ from contextlib import asynccontextmanager, suppress
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from .adapters.engine_history import EngineHistoryData
+from .adapters.match_data import EtlDabMatchData
+from .agents.subscription_planner import SubscriptionPlanner
 from .domain import RuleError
-from .fixtures import FixtureFeed
-from .store import Store
 from .repositories.audiences import AudienceRepository
-from .services.audiences import AudienceService
+from .repositories.config import ConfigRepository
+from .repositories.engine_narratives import EngineNarratives
+from .repositories.matches import MatchRepository
+from .repositories.profiles import ProfileRepository
+from .repositories.prompts import PromptRepository
+from .repositories.questions import QuestionRepository
+from .repositories.subscriptions import SubscriptionRepository
+from .routes.admin import admin_router
 from .routes.audiences import audience_router
+from .routes.product import product_router
+from .routes.config import policy_router
+from .routes.prompts import prompt_router
+from .routes.subscriptions import subscription_router
+from .services.audiences import AudienceService
+from .services.config import ConfigService
+from .services.cross_match import CrossMatch
+from .services.match_registry import MatchRegistry
+from .services.product import ProductService
+from .services.prompts import PromptService
+from .services.questions import QuestionService
+from .services.subscriptions import SubscriptionService
+from .services.replay import ReplayBuilder
+from .store import Store
 
-from .services.viewers import ViewerService
-from .routes.viewers import viewer_router
 
-
-def create_app(store=None, feed=None, *, match_id="synthetic-demo", slots=3, enable_dev_feed=False, lab=None, narrative_connection=None, questions=None, enable_product=False, brokers=None):
-    if enable_product and lab and questions and narrative_connection and brokers is None:
-        raise ValueError("Service Bus ingress currently serves only the legacy viewer harness; "
-                         "the product demo requires its GraphQL checkpoint adapter")
-    if not 1 <= slots <= 4:
-        raise ValueError("Fixture harness supports 1–4 cards; production card count is still undecided")
-    store = store or Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
-    feed = feed or FixtureFeed(match_id, slots)
-    audiences = AudienceService(AudienceRepository(store), match_id)
-    viewers = ViewerService(store, feed, match_id, slots)
-    product = None
-    if enable_product and questions and lab:
-        from .services.product import ProductService
-        product = ProductService(questions, lab, audiences)
-        if brokers:
-            product.brokers = brokers
-            brokers.on_narrative = product.narratives_changed
+def create_app(store, dab, *, narratives=None, narrative_url=None, narrative_transport=None, agent=None, planner=None,
+               follow_model=None, media=None, decide=None,
+               streams=(), enable_dev_feed=False, enable_lab=False, enable_demo_seeds=False, upstream_health=None,
+               max_calculations=10_000, question_timeout=90, max_active=4):
+    """dab: ETL GraphQL (adapters/etl_dab.EtlDab). narratives: the narrative history port, else
+    the engine's GraphQL at narrative_url. agent/planner: None when no model is configured, so
+    questions and custom-stat plans are refused and /ready reports not ready. follow_model: the follow chat's JSON
+    model (adapters/llm.JsonModel), None to refuse the chat (suggestions still work). decide: the yes/no decision
+    model for "Follow this story?" offers (adapters/decision), None for no offers. streams: callables
+    (registry, product) -> coroutine that consume the brokers."""
+    registry = MatchRegistry(MatchRepository(store), max_calculations=max_calculations, dab=dab)
+    config = ConfigService(ConfigRepository(store))
+    match_data = EtlDabMatchData(dab, registry)
+    narratives = narratives or EngineHistoryData(narrative_url, match_data, config, transport=narrative_transport)
+    audiences = AudienceService(AudienceRepository(store), registry)
+    prompts = PromptService(PromptRepository(store))
+    cross = CrossMatch(registry, match_data, config)
+    questions = QuestionService(QuestionRepository(store), registry, match_data, narratives, agent, planner, config,
+                                timeout=question_timeout, max_active=max_active, replays=ReplayBuilder(media),
+                                cross=cross, decide=decide)
+    follows = SubscriptionRepository(store)
+    product = ProductService(questions, registry, audiences, EngineNarratives(store), config, match_data, dab, media,
+                             subscriptions=follows)
+    subscriptions = SubscriptionService(follows, questions, registry, match_data, narratives, config, product,
+                                        SubscriptionPlanner(follow_model, prompts) if follow_model else None, cross)
+    registry.on_purge.append(lambda ids: asyncio.sleep(0, audiences.forget(ids)))
 
     @asynccontextmanager
     async def lifespan(app):
         await asyncio.to_thread(store.initialize)
-        await audiences.initialize()
-        if lab:
-            await lab.initialize()
-        if questions:
-            await questions.initialize()
-        if brokers:
-            await brokers.start()
-        if product:
-            await product.initialize()
-        consumer_task = None
-        if narrative_connection and brokers is None:
-            from .adapters.narratives import NarrativeBusConsumer
-            consumer = NarrativeBusConsumer(narrative_connection, viewers.deliver_narrative)
-            consumer_task = asyncio.create_task(consumer.run())
+        await config.initialize()
+        await prompts.initialize()
+        await questions.initialize()
+        await registry.initialize()
+        tasks = [asyncio.create_task(stream(registry, product)) for stream in streams]
+        tasks.append(asyncio.create_task(registry.watch_gaps(dab.canonical_event, config)))
         try:
             yield
         finally:
-            if consumer_task:
-                consumer_task.cancel()
+            for task in tasks:
+                task.cancel()
+            for task in tasks:
                 with suppress(asyncio.CancelledError):
-                    await consumer_task
-            if product:
-                await product.close()
-            if lab:
-                await lab.close()
-            if brokers:
-                await brokers.close()
+                    await task
+            await product.close()
+            if hasattr(dab, 'aclose'):
+                await dab.aclose()
 
-    app = FastAPI(title="Inside the Game — user backend harness", lifespan=lifespan)
-    app.state.store, app.state.feed = store, feed
-    app.state.viewers = viewers
-    app.include_router(viewer_router(viewers, enable_dev_feed=enable_dev_feed))
+    app = FastAPI(title='Inside the Game — user backend', lifespan=lifespan)
+    app.state.store, app.state.registry, app.state.product = store, registry, product
+    app.state.questions, app.state.config = questions, config
+    app.include_router(product_router(product))
+    app.include_router(subscription_router(subscriptions))
     app.include_router(audience_router(audiences, enable_dev_feed=enable_dev_feed))
-    if product:
-        from .routes.product import product_router
-        app.include_router(product_router(product))
-        app.state.product = product
-    if questions:
-        from .routes.questions import question_router
-        app.include_router(question_router(questions))
-        app.state.questions = questions
-    if lab:
+    app.include_router(prompt_router(prompts, enable_dev_feed=enable_dev_feed))
+    app.include_router(policy_router(config))
+    app.include_router(admin_router(registry))
+    if enable_demo_seeds:  # demo-only adapter (PLAN.md §10.6); a production release leaves DEMO_SEEDS off
+        from .demo.seeds import SeedRepository, demo_seed_router
+        app.include_router(demo_seed_router(registry, SeedRepository(store)))
+    if enable_dev_feed:
+        from .adapters.health import HealthProbe
+        from .routes.config import config_router
+        from .routes.pipeline import pipeline_router
+        from .routes.profiles import profile_router
+        from .services.profiles import ProfileService
+        app.include_router(config_router(config))
+        app.include_router(profile_router(ProfileService(ProfileRepository(store), audiences.repository)))
+        app.include_router(pipeline_router(upstream_health and HealthProbe(upstream_health), registry))
+    if enable_lab:
         from .routes.lab import lab_router
-        app.include_router(lab_router(lab))
-        app.state.lab = lab
+        from .routes.questions import question_router
+        app.include_router(lab_router(registry, planner, product, match_data))
+        app.include_router(question_router(questions))
 
     @app.exception_handler(RuleError)
     async def rule_error(request, exc):
-        return JSONResponse({"code": exc.code, "detail": exc.message}, status_code=exc.status)
+        return JSONResponse({'code': exc.code, 'detail': exc.message}, status_code=exc.status)
 
-    @app.get("/health")
-    async def health():
-        return {"status": "ok", "mode": "fixture", "synthetic": True,
-                "transport": "event-hubs/service-bus" if brokers else "http-fixture"}
+    async def readiness():
+        checks = {'model': 'configured' if agent is not None and planner is not None else 'missing'}
+        try:
+            await asyncio.to_thread(store.ready)
+            checks['database'] = 'ok'
+        except Exception:
+            checks['database'] = 'unavailable'
+        ready = checks == {'model': 'configured', 'database': 'ok'}
+        # A stream gap degrades one match's data, not readiness; it is shown here and on /dev/pipeline.
+        return JSONResponse({'status': 'ok' if ready else 'not_ready', 'synthetic': True, 'checks': checks,
+                             'matches': len(registry.matches), 'gaps': registry.gaps()}, status_code=200 if ready else 503)
 
+    app.get('/health')(readiness)
+    app.get('/ready')(readiness)
     return app
 
 
 def from_env():
-    if os.environ.get("BACKEND_MODE") != "fixture":
-        raise RuntimeError("Only BACKEND_MODE=fixture is implemented; real adapters are not configured")
-    from .upstream import FixtureServices
-    match_id = os.environ.get("MATCH_ID", "synthetic-demo")
-    slots = int(os.environ.get("CARD_SLOTS", "3"))
-    feed = FixtureServices(match_id, slots, os.environ["ETL_GRAPHQL_URL"], os.environ["NARRATIVE_GRAPHQL_URL"])
-    store = Store(os.environ["ACCOUNTS_DATABASE_URL"], os.environ["MATCH_APP_DATABASE_URL"])
-    lab = None
-    if os.environ.get("ENABLE_FILTER_LAB") == "1":
-        from .lab_factory import create_filter_lab
-        lab = create_filter_lab(store)
-    brokers = None
-    if os.getenv('MATCH_EVENTHUB_CONNECTION_STRING'):
-        if lab is None or not os.getenv('NARRATIVE_SERVICEBUS_CONNECTION_STRING'):
-            raise RuntimeError('Broker demo requires the lab and both messaging connections')
-        from .adapters.match_brokers import MatchBrokers
-        from .repositories.broker_inbox import NarrativeInbox
-        from .services.broker_runtime import BrokerRuntime
-        brokers = BrokerRuntime(lab, MatchBrokers(os.environ['MATCH_EVENTHUB_CONNECTION_STRING'],
-            os.environ['NARRATIVE_SERVICEBUS_CONNECTION_STRING'],
-            hub=os.getenv('MATCH_EVENTHUB_NAME', 'match-events'),
-            group=os.getenv('MATCH_EVENTHUB_CONSUMER_GROUP', 'user-backend'),
-            topic=os.getenv('NARRATIVE_SERVICEBUS_TOPIC', 'narratives'),
-            subscription=os.getenv('NARRATIVE_SERVICEBUS_SUBSCRIPTION', 'user-backend')), NarrativeInbox(store))
-    questions = None
-    if lab:
-        from .question_factory import create_question_service
-        questions = create_question_service(store, lab, brokers=brokers)
-    return create_app(store=store, feed=feed, match_id=match_id, slots=slots, lab=lab, questions=questions, enable_product=True, brokers=brokers,
-                      narrative_connection=os.getenv("NARRATIVE_SERVICEBUS_CONNECTION_STRING"),
-                      enable_dev_feed=os.environ.get("ENABLE_DEV_FEED") == "1")
+    from .adapters.etl_dab import EtlDab
+    from .adapters.hls_media import HlsMedia
+    from .adapters.llm import model_configured
+    from .adapters.match_reference import data_reference
+    from .adapters.match_stream import MatchStream, NarrativeStream
+    from .agents.workflow import workflow_from_env
+
+    planner = workflow_from_env(data_reference=data_reference(None))
+    from .adapters.decision import yes_no_from_env
+
+    agent = follow_model = None
+    if model_configured():
+        from .adapters.llm import LocalJsonModel
+        from .agents.question import QuestionAgent
+        agent = QuestionAgent()
+        follow_model = LocalJsonModel.from_env(name='subscription_planner')
+    events, narratives = MatchStream.from_env(), NarrativeStream.from_env()
+    return create_app(
+        Store(os.environ['ACCOUNTS_DATABASE_URL'], os.environ['MATCH_APP_DATABASE_URL']),
+        EtlDab(os.environ['ETL_GRAPHQL_URL']), narrative_url=os.environ['NARRATIVE_GRAPHQL_URL'],
+        agent=agent, planner=planner, follow_model=follow_model, media=HlsMedia.from_env(),
+        decide=yes_no_from_env(follow_model),
+        streams=(lambda registry, product: events.run(registry),
+                 lambda registry, product: narratives.run(product.narrative)),
+        enable_dev_feed=os.environ.get('ENABLE_DEV_FEED') == '1', enable_lab=os.environ.get('ENABLE_FILTER_LAB') == '1',
+        enable_demo_seeds=os.environ.get('DEMO_SEEDS') == '1',
+        upstream_health={name: url.removesuffix('/graphql') + '/health' for name, url in
+                         (('etl', os.environ['ETL_GRAPHQL_URL']), ('narrative', os.environ['NARRATIVE_GRAPHQL_URL']))},
+        max_calculations=int(os.getenv('FILTER_MAX_CALCULATIONS', '10000')),
+        question_timeout=float(os.getenv('QUESTION_TIMEOUT_SECONDS', '90')),
+        max_active=int(os.getenv('QUESTION_MAX_ACTIVE', '4')))

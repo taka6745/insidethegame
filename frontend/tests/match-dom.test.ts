@@ -68,6 +68,14 @@ class Element {
   setAttribute(name: string, value: unknown) {
     this[name] = value;
   }
+  getAttribute(name: string) {
+    return (this[name] as string | undefined) ?? null;
+  }
+  style = {
+    props: {} as Record<string, string>,
+    setProperty(name: string, value: string) { this.props[name] = value; },
+    removeProperty(name: string) { delete this.props[name]; },
+  };
   querySelector(selector: string): Element | null {
     for (const child of this.children) {
       if (
@@ -162,6 +170,19 @@ test("model text, prompts and offer labels are text only; scrolled chat does not
   assert.equal(turn.querySelector(".answer-time")!["aria-label"], "Answer as of 1:40");
   assert.equal(messages.scrollTop, 20);
 });
+test("an answer whose data trails the watched picture by over 10 s names its exact clock", () => {
+  const document = documentStub(),
+    view = new QuestionView(asDocument(document));
+  view.askedAt.set("late", 3400);
+  view.askedAt.set("close", 3305);
+  view.render({
+    turns: ["late", "close"].map((request_id) => ({
+      request_id, prompt: "Any goals?", reply: { text: "No goal so far.", snapshot: { clock_seconds: 3300 } },
+    })),
+  });
+  const stamps = document.getElementById("chat-messages").children.map((t) => t.querySelector(".answer-time")!.textContent);
+  assert.deepEqual(stamps, ["as of 55:00", "55′"]);
+});
 test("question history is capped at fifty turns and unchanged Track button retains identity", () => {
   const document = documentStub(),
     view = new QuestionView(asDocument(document));
@@ -217,26 +238,35 @@ test("changing a live custom value preserves the focused Stop tracking control",
   );
 });
 
-test("audience controls use match teams and keep selection across live updates", () => {
+test("audience dropdown lists only the match's enabled buckets and keeps the selection across updates", () => {
   const document = documentStub();
   const view = new AudienceView(asDocument(document));
-  const team = () => fromElement(view.team), style = () => fromElement(view.style);
-  const state = {match:{teams:[{name:"Chelsea"},{name:"Manchester United"}]},
-    audience:{team:"away",fan_style:"experienced"}};
+  const select = () => fromElement(view.select), controls = () => fromElement(view.controls);
+  const state = {audience: {bucket_id: "away:experienced", selections: {team: "away", fan_style: "experienced"}},
+    audience_buckets: [{id: "home:simple", label: "Chelsea · Simple"}, {id: "away:experienced", label: "Manchester United · Experienced"}]};
   view.render(state);
-  assert.deepEqual(team().children.map(option => [option.value,option.textContent]),
-    [["home","Chelsea"],["away","Manchester United"],["neutral","Neither"]]);
-  assert.deepEqual(view.selection(), state.audience);
-  const option = team().children[1];
-  view.render({...state,version:2} as typeof state);
-  assert.equal(team().children[1], option);
+  assert.deepEqual(select().children.map(option => [option.value, option.textContent]),
+    [["home:simple", "Chelsea · Simple"], ["away:experienced", "Manchester United · Experienced"]]);
+  assert.equal(controls().hidden, false);
+  assert.deepEqual(view.selection(), {bucket_id: "away:experienced"});
+  assert.equal(view.label(state), "Manchester United · Experienced");
+  const option = select().children[1];
+  view.render({...state});
+  assert.equal(select().children[1], option);
   view.connection(true);
-  assert.equal(team().disabled, false);
+  assert.equal(select().disabled, false);
   view.setBusy(true);
-  assert.equal(style().disabled, true);
+  assert.equal(select().disabled, true);
   view.connection(false);
   view.setBusy(false);
-  assert.equal(team().disabled, true);
+  assert.equal(select().disabled, true);
+  // One bucket: nothing to switch to. None: the control is hidden.
+  view.connection(true);
+  view.render({audience: state.audience, audience_buckets: [state.audience_buckets[1]!]});
+  assert.equal(select().disabled, true);
+  view.render({audience: null, audience_buckets: []});
+  assert.equal(controls().hidden, true);
+  assert.equal(view.label({audience: null, audience_buckets: []}), null);
 });
 
 test("standard stat gains tracking controls and removes them after unpin", () => {
@@ -255,27 +285,54 @@ test("standard stat gains tracking controls and removes them after unpin", () =>
   assert.equal(fromElement(view.stat(card, asElement(element))).querySelector("button"), null);
 });
 
-test("match view presents resumable replay controls for a restored partial run", () => {
+test("club colours and crests come from the match data, never a club table", () => {
   const document = documentStub(),
     view = new MatchView(asDocument(document));
+  view.teams = [{ id: "arsenal", branding: { primary_colour: "#ef0107", secondary_colour: "#063672", crest_asset_id: "arsenal" } }];
   view.render({
     match: {
-      status: "ready",
-      position: 10,
-      total: 35,
-      teams: [],
+      status: "live",
+      teams: [
+        { id: "arsenal", name: "Arsenal", code: "ARS", score: 1 },
+        { id: "spurs", name: "Tottenham Hotspur", branding: { primary_colour: "url(x)", crest_asset_id: "../evil" } },
+      ],
       clock_seconds: 1200,
     },
-    bucket: "neutral:casual",
-    cards: [],
-    events: [],
-    narratives: [],
+    bucket_id: "neutral:casual", cards: [], events: [], narratives: [],
   });
-  assert.equal(document.getElementById("start-demo").hidden, false);
-  assert.equal(
-    document.getElementById("start-demo-label").textContent,
-    "Resume match",
-  );
+  const home = document.getElementById("home-banner");
+  assert.equal(home.dataset.club, "branded");
+  assert.deepEqual(home.style.props, { "--club-primary": "#ef0107", "--club-secondary": "#063672" });
+  assert.equal(document.getElementById("home-crest").src, "/assets/league/clubs/arsenal.svg");
+  assert.equal(document.getElementById("home-mark").hidden, true);
+  const away = document.getElementById("away-banner");
+  assert.equal(away.dataset.club, "unknown");
+  assert.deepEqual(away.style.props, {});
+  assert.equal(document.getElementById("away-crest").hidden, true);
+  assert.equal(document.getElementById("away-mark").textContent, "TOT");
+  // A missing crest file falls back to the monogram and stays that way.
+  document.getElementById("home-crest").listeners.error!();
+  view.render({ match: { status: "live", teams: [{ id: "arsenal", name: "Arsenal", code: "ARS" }] },
+    cards: [], events: [], narratives: [] });
+  assert.equal(document.getElementById("home-crest").hidden, true);
+  assert.equal(document.getElementById("home-mark").hidden, false);
+  assert.equal(document.getElementById("home-mark").textContent, "ARS");
+});
+
+test("a scheduled match counts down to kickoff, then shows the live clock", () => {
+  const document = documentStub(), view = new MatchView(asDocument(document));
+  const kickoff = "2026-10-20T15:00:00.000Z", at = Date.parse(kickoff);
+  const state = (match: object) => ({ match: { teams: [{ name: "Chelsea" }, { name: "Manchester United" }], ...match },
+    cards: [], events: [], narratives: [] });
+  view.render(state({ status: "scheduled", scheduled_kickoff: kickoff, clock_seconds: null }));
+  assert.equal(document.getElementById("home-name").textContent, "Chelsea");
+  view.tick(at - 75_000);
+  assert.equal(document.getElementById("match-clock").textContent, "KO in 1:15");
+  view.tick(at + 1000);
+  assert.equal(document.getElementById("match-clock").textContent, "KICK-OFF");
+  view.render(state({ status: "live", clock_seconds: 4 }));
+  view.tick(at + 9000);
+  assert.equal(document.getElementById("match-clock").textContent, "0:04");
 });
 
 test("match snapshots do not render the developer event feed", () => {
@@ -286,8 +343,8 @@ test("match snapshots do not render the developer event feed", () => {
     return get(id);
   };
   view.render({
-    match: { status: "running", position: 1, total: 35, teams: [], clock_seconds: 120 },
-    bucket: "neutral:casual", cards: [], narratives: [],
+    match: { status: "live", teams: [], clock_seconds: 120 },
+    bucket_id: "neutral:casual", cards: [], narratives: [],
     events: [{ event_type: "shot", event_id: "one", match_time_seconds: 120 }],
   });
 });
@@ -341,7 +398,7 @@ test("percentage offers retain ETL units in the chat card", () => {
 });
 
 const replayReply = (over: Partial<Replay> = {}): Replay => ({
-  page: 0, page_size: 2, total_items: 3, seconds: 102, playlist: "#EXTM3U\n",
+  page: 0, page_size: 2, total_items: 3, seconds: 102, playlist: "/media/hls/m1/live.m3u8",
   derived: { first: { event_types: ["pass"], outcome: "failed" }, then: { event_types: ["touch"] },
     within_seconds: 3, then_team: "opponent" },
   refine_offer: "Narrow to the second half?",
@@ -473,7 +530,7 @@ test("only latest unanswered clarification stays interactive; pending, takeover 
   assert.equal(option().disabled, true);
   view.render({ turns: [turn] });
   assert.equal(option().disabled, true, "history refresh cannot unlock a disabled session");
-  view.status("Answers grounded in this match");
+  view.status("Answers grounded in live matches");
   assert.equal(option().disabled, false);
   view.render({ turns: [turn, { id: "answer", prompt: "Headed shots", status: "pending" }] });
   assert.equal(option().disabled, true);

@@ -4,10 +4,10 @@ from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-parts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 430" role="img" aria-labelledby="title desc">',
+parts = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" role="img" aria-labelledby="title desc">',
          '<title id="title">Local development</title>',
-         '<desc id="desc">Docker runs databases, messaging emulators and GraphQL for integration checks without accounts. Terraform is validated with a mock provider. Stream Analytics and real models need separate Azure integration.</desc>',
-         '<rect width="1100" height="430" rx="16" fill="#f6f8fc"/>',
+         '<desc id="desc">Docker runs databases, messaging emulators and GraphQL for integration checks without accounts. Terraform is validated with a mock provider. A Python stand-in replaces Stream Analytics locally; the real job, Foundry models, identity, networking and scale need separate Azure integration. The demo operator records seeds locally and restores them through the demo-only adapter (DEMO_SEEDS=1).</desc>',
+         '<rect width="1100" height="560" rx="16" fill="#f6f8fc"/>',
          '<style>text{font-family:Arial,Helvetica,sans-serif;fill:#17324d}</style>']
 
 
@@ -28,11 +28,15 @@ text("DEVELOP LOCALLY", 30, 34, 12, "#147ac1", 700)
 text("Docker. No cloud account.", 30, 72, 30, weight=700)
 box(30, 240, "Databases", ["postgres", "cosmos", "sql"], "Real reads + writes")
 box(290, 240, "Messaging", ["events", "bus"], "Emulator round trips")
-box(550, 240, "GraphQL", ["graphql"], "Queries against SQL")
+box(550, 240, "GraphQL", ["graphql"], "DAB over SQL")
 box(810, 260, "Terraform", ["containers"], "Validate + mock tests")
-parts.append('<rect x="30" y="300" width="1040" height="97" rx="12" fill="#eef0f4" stroke="#aeb9c6" stroke-dasharray="6 5"/>')
-text("SEPARATE AZURE CHECK", 50, 326, 12, "#5d7185", 700)
-text("Stream Analytics · ETL", 50, 363, 20, weight=700)
-text("Real models · Identity · Networking · Scale", 420, 363, 20)
+parts.append('<rect x="30" y="295" width="1040" height="105" rx="12" fill="#fffaf0" stroke="#e7b65c"/>')
+text("DEMO (backend profile) · DEMO_SEEDS=1", 50, 322, 12, "#9a6500", 700)
+text("demo-control: Start demo · Cancel · status · record / capture seeds", 50, 355, 19, weight=700)
+text(".local/seeds/ → restore ETL, engine, backend → feed releases held runs", 50, 383, 16, "#5d7185")
+parts.append('<rect x="30" y="420" width="1040" height="110" rx="12" fill="#eef0f4" stroke="#aeb9c6" stroke-dasharray="6 5"/>')
+text("AZURE · ./dev azure up · applied 22 Oct, acceptance pending", 50, 447, 12, "#5d7185", 700)
+text("Stream Analytics job · Foundry gpt-6.1-sol + Microsoft-Decision-1", 50, 482, 19, weight=700)
+text("Spend guard · edge proxy (msft-hackathon.koda-software.com) · identity, networking, scale", 50, 510, 16, "#5d7185")
 parts.append('</svg>')
 (ROOT / "local/development.svg").write_text('\n'.join(parts) + '\n')

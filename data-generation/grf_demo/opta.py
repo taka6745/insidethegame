@@ -6,7 +6,7 @@ Opta-style synthetic feed, not Stats Perform data.
 
 from datetime import datetime, timedelta, timezone
 
-from .roster import NAMES, SHIRT_NUMBERS, TEAMS, player_id
+from .roster import fixture_for, player_id
 
 TYPES = {
     "pass": 1, "take_on": 3, "foul": 4, "foul_won": 4, "out": 5, "corner_awarded": 6,
@@ -22,7 +22,7 @@ RESTART = {"free_kick": 5, "corner": 6, "throw_in": 107, "goal_kick": 124, "kick
 SITUATION = {"regular_play": 22, "fast_break": 23, "set_piece": 24, "from_corner": 25,
              "direct_free_kick": 26, "penalty": 9, "from_throw_in": 160}
 FLAGS = {"longBall": 1, "cross": 2, "chipped": 155, "switchOfPlay": 196, "bigChance": 214,
-         "penaltyAwarded": 9, "defensiveBlock": 94, "fromShotOffTarget": 190}
+         "penaltyAwarded": 9, "ownGoal": 28, "defensiveBlock": 94, "fromShotOffTarget": 190}
 VALUES = {"endX": 140, "endY": 141, "distanceMetres": 212, "angle": 213,
           "goalMouthY": 102, "goalMouthZ": 103}
 CARDS = {"yellow": 31, "second_yellow": 32, "red": 33}
@@ -81,9 +81,37 @@ def qualifiers_for(event, ids):
 def type_id(event):
     if event["typeName"] == "shot":
         return SHOT_TYPES.get(event["outcome"], 13)
-    if event["typeName"] == "pass" and any(q["type"] == "offsidePass" for q in event["qualifiers"]):
+    if is_offside_pass(event):
         return 2
     return TYPES.get(event["typeName"])
+
+
+def is_offside_pass(event):
+    return event["typeName"] == "pass" and any(q["type"] == "offsidePass" for q in event["qualifiers"])
+
+
+def credit_offsides(events):
+    """One offside pass (Opta type 2) per offside call, by the offside player's team. The renderer can flag
+    the other team's pass still in flight, or none when a deflection or a loose touch put the player offside:
+    that pass stays a failed pass, and the team's last touch becomes the offside pass, sent with the call (its
+    eventId and time) so it never reveals the future."""
+    out = []
+    for i, event in enumerate(events):
+        call = events[i + 1] if i + 1 < len(events) else None
+        if is_offside_pass(event) and not (call and call["typeName"] == "offside"
+                                           and call["teamId"] == event["teamId"]):
+            event = {**event, "qualifiers": [q for q in event["qualifiers"] if q["type"] != "offsidePass"]}
+        if event["typeName"] == "offside" and event["teamId"] and not (out and is_offside_pass(out[-1])):
+            touch = next((e for e in reversed(out) if e["typeName"] == "touch" and e["teamId"] == event["teamId"]
+                          and e.get("x") is not None), None)
+            if touch:
+                body = [q for q in touch["qualifiers"] if q["type"] == "bodyPart"]
+                out.append({**event, "typeName": "pass", "playerId": touch["playerId"], "x": touch["x"],
+                            "y": touch["y"], "outcome": "failure", "qualifiers": body + [
+                                {"type": "endX", "value": event["x"]}, {"type": "endY", "value": event["y"]},
+                                {"type": "offsidePass", "value": True}]})
+        out.append(event)
+    return out
 
 
 def outcome(event):
@@ -92,36 +120,38 @@ def outcome(event):
     return 0 if event["outcome"] == "failure" else 1
 
 
-def team_setup(team):
-    slots = range(len(NAMES[team]))
+def team_setup(team, fixture):
+    slots = range(len(fixture["names"][team]))
     joined = lambda values: ", ".join(str(value) for value in values)
-    return {"type_id": 34, "period_id": 16, "min": 0, "sec": 0, "team_id": TEAMS[team]["id"],
+    return {"type_id": 34, "period_id": 16, "min": 0, "sec": 0, "team_id": fixture["teams"][team]["id"],
             "outcome": 1, "x": 0.0, "y": 0.0, "qualifiers": [
                 {"qualifier_id": 130, "value": str(FORMATION_433)},
-                {"qualifier_id": 30, "value": joined(player_id(team, i) for i in slots)},
+                {"qualifier_id": 30, "value": joined(player_id(team, i, fixture) for i in slots)},
                 {"qualifier_id": 44, "value": joined(POSITIONS)},
-                {"qualifier_id": 59, "value": joined(SHIRT_NUMBERS[team])},
+                {"qualifier_id": 59, "value": joined(fixture["numbers"][team])},
                 {"qualifier_id": 131, "value": joined(i + 1 for i in slots)}]}
 
 
 def export(recording):
     """F24-style document. Paired and per-team events keep Opta's per-team event_id counter."""
-    events = recording["events"]
+    events = credit_offsides(recording["events"])
+    fixture = fixture_for(recording)
+    teams = fixture["teams"]
     counters, ids, rows = {}, {}, []
     kept = []
     for event in events:
         kind = type_id(event)
         if kind is None:
             continue  # Touches and taken restarts are qualifiers, not F24 events.
-        teams = [event["teamId"]] if event["teamId"] else [team["id"] for team in TEAMS]
-        for team in teams:
+        sides = [event["teamId"]] if event["teamId"] else [team["id"] for team in teams]
+        for team in sides:
             counters[team] = counters.get(team, 0) + 1
             if event["teamId"]:
                 ids[event["eventId"]] = counters[team]
             kept.append((event, kind, team, counters[team]))
     assists = {q["value"] for event in events for q in event["qualifiers"] if q["type"] == "assistEventId"}
     for team in (0, 1):
-        rows.append({"id": len(rows) + 1, "event_id": 0, **team_setup(team)})
+        rows.append({"id": len(rows) + 1, "event_id": 0, **team_setup(team, fixture)})
     for event, kind, team, event_id in kept:
         quals = qualifiers_for(event, ids)
         if event["eventId"] in assists:
@@ -139,10 +169,10 @@ def export(recording):
     return {
         "synthetic": True,
         "description": "Opta F24-style feed generated from a GRF simulation; not Stats Perform data.",
-        "game": {"id": recording["match_id"], "home_team_id": TEAMS[0]["id"], "away_team_id": TEAMS[1]["id"],
+        "game": {"id": recording["match_id"], "home_team_id": teams[0]["id"], "away_team_id": teams[1]["id"],
                  "kick_off": KICK_OFF.isoformat().replace("+00:00", "Z"),
-                 "players": [{"player_id": player_id(team, i), "name": name, "team_id": TEAMS[team]["id"],
-                              "shirt_number": SHIRT_NUMBERS[team][i], "position": POSITIONS[i]}
-                             for team in (0, 1) for i, name in enumerate(NAMES[team])]},
+                 "players": [{"player_id": player_id(team, i, fixture), "name": name, "team_id": teams[team]["id"],
+                              "shirt_number": fixture["numbers"][team][i], "position": POSITIONS[i]}
+                             for team in (0, 1) for i, name in enumerate(fixture["names"][team])]},
         "events": rows,
     }

@@ -25,17 +25,17 @@ class RenderedRecordingTests(unittest.TestCase):
         self.assertEqual(clock, sorted(clock))
         bounds = [(e["periodId"], e["timeMin"], e["timeSec"]) for e in events
                   if e["typeName"] in ("period_start", "period_end")]
-        self.assertEqual(bounds, [(1, 0, 0), (1, 45, 57), (2, 45, 0), (2, 90, 58)])
+        self.assertEqual(bounds, [(1, 0, 0), (1, 46, 18), (2, 45, 0), (2, 91, 6)])
 
     def test_shipped_match_facts(self):
         counts = Counter(e["typeName"] for e in self.events)
-        self.assertEqual(len(self.events), 11392)
-        self.assertEqual(self.recording["provenance"]["score"], [2, 1])
+        self.assertEqual(len(self.events), 11133)
+        self.assertEqual(self.recording["provenance"]["score"], [1, 1])
         goals = [(e["playerId"], e["timeMin"], e["timeSec"]) for e in self.events if e["typeName"] == "goal"]
-        self.assertEqual(goals, [("chelsea-6", 27, 12), ("manutd-2", 60, 40), ("chelsea-6", 66, 55)])
+        self.assertEqual(goals, [("manutd-9", 9, 35), ("chelsea-9", 71, 16)])
         self.assertEqual({kind: counts[kind] for kind in ("shot", "save", "corner", "card", "offside", "foul")},
-                         {"shot": 21, "save": 12, "corner": 6, "card": 4, "offside": 1, "foul": 14})
-        self.assertEqual(self.recording["provenance"]["stall_nudge_seconds"], [2136.2])
+                         {"shot": 12, "save": 4, "corner": 5, "card": 0, "offside": 5, "foul": 30})
+        self.assertEqual(self.recording["provenance"]["stall_nudge_seconds"], [1700.36, 2251.0, 2716.64, 3225.92, 3792.08])
         self.assertEqual(len(self.recording["players"]), 22)
 
     def test_capabilities_match_what_the_events_carry(self):
@@ -56,7 +56,7 @@ class RenderedRecordingTests(unittest.TestCase):
         feed = json.loads((RECORDINGS / "chelsea-united-grf.opta-f24.json").read_text())
         rows = feed["events"]
         self.assertTrue(feed["synthetic"])
-        self.assertEqual(sum(r["type_id"] == 16 for r in rows), 3)
+        self.assertEqual(sum(r["type_id"] == 16 for r in rows), 2)
         self.assertTrue(all(0 <= r["x"] <= 100 and 0 <= r["y"] <= 100 for r in rows))
         ids = {r["source_event_id"] for r in rows if "source_event_id" in r}
         self.assertTrue(ids <= {e["eventId"] for e in self.events})

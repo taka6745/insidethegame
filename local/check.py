@@ -6,22 +6,17 @@ import json
 import time
 import urllib.request
 import uuid
-from pathlib import Path
 
 import psycopg
-import pymssql
 from azure.cosmos import CosmosClient, PartitionKey
 from azure.eventhub import EventData
 from azure.eventhub.aio import EventHubConsumerClient, EventHubProducerClient
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 
 from settings import (
-    COSMOS_ENDPOINT, COSMOS_KEY, EVENTHUB, EVENTHUB_CONNECTION, GRAPHQL,
-    POSTGRES_DSN, SERVICEBUS_CONNECTION, SQL_PASSWORD,
+    COSMOS_ENDPOINT, COSMOS_KEY, ETL_GRAPHQL, EVENTHUB, EVENTHUB_CONNECTION,
+    POSTGRES_DSN, SERVICEBUS_CONNECTION,
 )
-
-FIXTURE = Path(__file__).parent / "fixtures/match-events.jsonl"
-
 
 def wait_for(label, operation, timeout=180):
     print(f"Checking {label} (startup allowance: {timeout}s)", flush=True)
@@ -39,14 +34,12 @@ def wait_for(label, operation, timeout=180):
 
 
 def postgres_check():
-    with psycopg.connect(POSTGRES_DSN + " dbname=accounts", connect_timeout=5) as conn:
-        profiles = {row[0] for row in conn.execute("SELECT id FROM demo_profiles")}
-        assert {"chelsea-analytical", "united-casual", "neutral-simple"} <= profiles
-    with psycopg.connect(POSTGRES_DSN + " dbname=matchapp", connect_timeout=5) as conn:
-        # Roll back the probe; don't leave test tables in the application database.
-        conn.execute("CREATE TEMP TABLE integration_probe (value text)")
-        conn.execute("INSERT INTO integration_probe VALUES (%s)", ("round-trip",))
-        assert conn.execute("SELECT value FROM integration_probe").fetchone()[0] == "round-trip"
+    # Both backend databases; their schemas belong to user-backend/migrations. Temp tables only.
+    for database in ("accounts", "matchapp"):
+        with psycopg.connect(POSTGRES_DSN + f" dbname={database}", connect_timeout=5) as conn:
+            conn.execute("CREATE TEMP TABLE integration_probe (value text)")
+            conn.execute("INSERT INTO integration_probe VALUES (%s)", ("round-trip",))
+            assert conn.execute("SELECT value FROM integration_probe").fetchone()[0] == "round-trip"
 
 
 def cosmos_check():
@@ -62,29 +55,15 @@ def cosmos_check():
         container.delete_item(item["id"], partition_key=item["matchId"])
 
 
-def seed_sql():
-    # Fixtures are inserted directly. This deliberately does NOT substitute for the ETL service's ASA job.
-    with pymssql.connect("sql", "sa", SQL_PASSWORD, "matchdata", login_timeout=5, timeout=10) as conn:
-        with conn.cursor() as cur:
-            for line in FIXTURE.read_text().splitlines():
-                event = json.loads(line)
-                cur.execute("SELECT id FROM dbo.rawEvents WHERE id=%s", (event["id"],))
-                if not cur.fetchone():
-                    fields = ("id", "matchId", "sequence", "eventTime", "matchMinute", "type", "teamId", "synthetic")
-                    cur.execute("INSERT INTO dbo.rawEvents VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                                tuple(event[k] for k in fields) + (line,))
-        conn.commit()
-
-
-def graphql_check():
-    query = '{ rawEvents(filter: {matchId: {eq: "synthetic-demo"}}, first: 10) { items { id type matchMinute } } }'
-    request = urllib.request.Request(GRAPHQL, data=json.dumps({"query": query}).encode(),
+def etl_graphql_check():
+    # Read-only: the ETL's own DAB (etl/dab) over its migrated `insidethegame` schema. Writes nothing.
+    query = "{ statDefinitions(first: 1) { items { statId } } matches(first: 1) { items { matchId } } }"
+    request = urllib.request.Request(ETL_GRAPHQL, data=json.dumps({"query": query}).encode(),
                                      headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(request, timeout=10) as response:
         body = json.load(response)
     assert not body.get("errors"), body
-    ids = {event["id"] for event in body["data"]["rawEvents"]["items"]}
-    assert {"fixture-001", "fixture-002", "fixture-003"} <= ids, body
+    assert body["data"]["statDefinitions"]["items"], "ETL stat catalogue is empty"
 
 
 async def eventhubs_check():
@@ -139,11 +118,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", choices=["base", "azure"], default="base", nargs="?")
     mode = parser.parse_args().mode
-    wait_for("Postgres: profiles + match database read/write", postgres_check)
+    wait_for("Postgres: accounts + match database read/write", postgres_check)
     wait_for("Cosmos: containers + document round trip", cosmos_check)
     if mode == "azure":
-        wait_for("SQL: synthetic fixture seed", seed_sql)
-        wait_for("GraphQL: query SQL fixtures through Data API builder", graphql_check)
+        wait_for("ETL GraphQL: stat catalogue + matches through Data API builder", etl_graphql_check)
         wait_for("Event Hubs health", lambda: health("http://eventhubs:5300/health"))
         asyncio.run(asyncio.wait_for(eventhubs_check(), timeout=60))
         print("PASS Event Hubs: SDK publish/consume")

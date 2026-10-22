@@ -1,14 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")"
+sha() { cksum < "$1" | cut -d' ' -f1; }
 compose() {
   local files=(-f local/compose.yaml)
   if [[ -f local/compose.override.yaml ]]; then files+=(-f local/compose.override.yaml); fi
-  if [[ -z "${DEMO_MEDIA_DIR:-}" && -f .local/grf-demo-chelsea-united-90/hls/match.m3u8 ]]; then
-    export DEMO_MEDIA_DIR="$PWD/.local/grf-demo-chelsea-united-90"
-  fi
-  if [[ -n "${DEMO_MEDIA_DIR:-}" ]]; then files+=(-f local/compose.media.yaml); fi
+  if [[ -z "${ITG_MEDIA_ROOT:-}" ]]; then media_root; fi
+  # Bind-mounted configs are read only at start: their hashes recreate the container when they change.
+  # DAB also reads the SQL schema only at start, so new ETL migrations recreate it too.
+  export ITG_EVENTHUBS_CONFIG_SHA ITG_SERVICEBUS_CONFIG_SHA ITG_DAB_CONFIG_SHA
+  ITG_EVENTHUBS_CONFIG_SHA=$(sha local/config/eventhubs.json)
+  ITG_SERVICEBUS_CONFIG_SHA=$(sha local/config/servicebus.json)
+  ITG_DAB_CONFIG_SHA=$(cat etl/dab/dab-config.json etl/sql/migrations/*.sql etl/local_stream/state.sql | cksum | cut -d' ' -f1)
   docker compose --env-file local/env.defaults "${files[@]}" "$@"
+}
+# The feed's one media mount: {fixture}/hls/ under ITG_MEDIA_ROOT (default .local/media). Packaged
+# .local/grf-demo-{fixture}-90/hls/ are hard-linked in (no copy), so nothing else in .local is mounted.
+# Linked via a staging folder, so a failed link (e.g. another volume) leaves no partial folder; that
+# fixture then plays without video.
+media_root() {
+  local root="$PWD/.local/media" source fixture target
+  for source in .local/grf-demo-*-90/hls; do
+    [[ -f "$source/match.m3u8" ]] || continue
+    fixture="${source#.local/grf-demo-}"; fixture="${fixture%-90/hls}"
+    target="$root/$fixture/hls"
+    [[ -f "$target/match.m3u8" ]] && continue
+    rm -rf "$target.partial"; mkdir -p "$target.partial"
+    if ln "$source"/* "$target.partial/" 2>/dev/null; then
+      rm -rf "$target"; mv "$target.partial" "$target"
+    else
+      rm -rf "$target.partial"
+      echo "Could not hard-link $source into $root (another volume?); $fixture plays without video." >&2
+    fi
+  done
+  if [[ -d "$root" ]]; then export ITG_MEDIA_ROOT="$root"; fi
 }
 docker_ready() {
   command -v docker >/dev/null || { echo "Install Docker Desktop (or Docker Engine + Compose), then retry." >&2; exit 1; }
@@ -21,7 +46,8 @@ check_mode() {
 check() {
   if [[ "$1" == backend ]]; then
     compose run --rm --build --no-deps backend-tests
-    compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/broker_check.py
+    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/etl_stream_check.py
+    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/broker_check.py
     compose run --rm --no-deps -e PYTHONPATH=/app -v "$PWD/local:/checks:ro" backend python /checks/backend_broker_check.py
   else
     compose run --rm --build --no-deps tools python local/check.py "$1"
@@ -31,13 +57,13 @@ usage() {
   cat <<'EOF'
 ./dev doctor             Check Docker before first setup
 ./dev up                 Start + check Postgres and Cosmos (no accounts)
-./dev up azure           Also start Event Hubs, Service Bus, SQL and GraphQL
-./dev up backend         Build + test backend, demo services, Postgres and messaging
-                         Includes the match viewer at http://localhost:18020 (filter lab: /lab/)
-./dev test [azure|backend] Test dependencies or backend behaviour + live replay
-./dev replay             Send the tiny synthetic fixture to Event Hubs
-./dev replay backend [m] Start the aligned 90-minute GRF match (real time; optional start minute m)
-./dev reset backend      Start a fresh match run; keep account profiles
+./dev up azure           Also start Event Hubs, Service Bus, SQL and ETL GraphQL (DAB)
+./dev up backend         Build + test the feed, ETL pipeline stand-in, narrative engine, backend and viewer
+                         (viewer http://localhost:18020, lab /lab/, developer /dev/; ETL GraphQL :15001)
+./dev test [azure|backend] Test dependencies, or backend tests + non-destructive pipeline probes
+./dev demo start [fixture…] Purge every match everywhere, then start one feed run per fixture
+                         (default chelsea-united) at the next whole minute, from 00:00
+./dev demo purge         Purge every match from feed, ETL, engine and backend; keep configuration
 ./dev benchmark filters  Opt-in filter performance test (no models or network)
 ./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
 ./dev benchmark values   Opt-in cached value read benchmark
@@ -45,7 +71,12 @@ usage() {
 ./dev status             Show this project's containers
 ./dev logs [service]     Show recent logs
 ./dev down               Stop this stack; keep SQL/Postgres volumes
-./dev terraform check    Format-check, validate and mock-test Azure infrastructure
+./dev terraform check    Format-check and validate terraform/, terraform/guard, etl/infra,
+                         narrative-engine/infra, data-generation/infra; mock-test those with tests/ (no cloud calls)
+
+./dev azure up|down|status|plan [--yes]
+                         Deploy, destroy, inspect or plan the whole stack on Azure (your az login;
+                         asks first). See terraform/runbook.md.
 
 For backend or Azure emulators, first review local/README.md licence links, then run:
 ACCEPT_EULA=Y ./dev up backend
@@ -67,7 +98,7 @@ case "${1:-help}" in
     docker_ready
     if [[ "${2:-}" == backend ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
-      compose --profile backend up -d --build --wait --wait-timeout 240 frontend
+      compose --profile backend up -d --build --wait --wait-timeout 300 frontend etl-dab etl-stream narrative-live feed demo-control
     elif [[ "${2:-}" == azure ]]; then
       [[ "${ACCEPT_EULA:-N}" == Y ]] || { usage; exit 2; }
       compose --profile azure up -d
@@ -81,15 +112,10 @@ case "${1:-help}" in
     docker_ready
     check "${2:-base}"
     ;;
-  replay)
+  demo)
+    case "${2:-}" in start|purge) ;; *) usage; exit 2 ;; esac
     docker_ready
-    if [[ "${2:-}" == backend ]]; then
-      compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py start --from-minute "${3:-0}"
-    elif [[ -z "${2:-}" ]]; then
-      compose run --rm --build --no-deps tools python local/replay.py
-    else
-      usage; exit 2
-    fi
+    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py "${@:2}"
     ;;
   benchmark)
     docker_ready
@@ -112,20 +138,35 @@ case "${1:-help}" in
       -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
     ;;
   status) compose --profile azure --profile backend ps ;;
-  reset)
-    [[ "${2:-}" == backend ]] || { usage; exit 2; }
-    docker_ready
-    compose run --rm --no-deps -v "$PWD/local:/checks:ro" backend python /checks/demo_control.py reset
-    ;;
   logs) shift; compose --profile azure --profile backend logs --tail 60 "$@" ;;
   down) compose --profile azure --profile backend down ;;
   terraform)
     [[ "${2:-}" == check ]] || { usage; exit 2; }
     docker_ready
+    # Each infra folder is copied without local .terraform state or tfvars (siblings it reads are linked);
+    # init downloads providers only. No cloud calls.
     docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp \
-      -v "$PWD/terraform:/work" -w /work --entrypoint sh \
-      hashicorp/terraform:1.13.4 -ec \
-      'terraform fmt -check -recursive && terraform init -backend=false -input=false && terraform validate && terraform test'
+      -v "$PWD/terraform:/src/terraform/infra:ro" -v "$PWD/terraform/guard:/src/guard/infra:ro" -v "$PWD/etl:/src/etl:ro" \
+      -v "$PWD/narrative-engine:/src/narrative-engine:ro" -v "$PWD/data-generation:/src/data-generation:ro" --entrypoint sh \
+      hashicorp/terraform:1.13.4 -ec '
+        for d in terraform guard etl narrative-engine data-generation; do
+          echo "== $d"; mkdir -p /tmp/$d
+          for x in /src/$d/*; do [ "${x##*/}" = infra ] || ln -s "$x" /tmp/$d/; done
+          cd /src/$d/infra
+          find . -path ./.terraform -prune -o -name "*.tfvars" -o -type f -print | while read -r f; do
+            mkdir -p "/tmp/$d/infra/$(dirname "$f")"; cp "$f" "/tmp/$d/infra/$f"; done
+          cd /tmp/$d/infra
+          terraform fmt -check -recursive
+          terraform init -backend=false -input=false >/dev/null
+          terraform validate
+          if [ -d tests ]; then terraform test; fi
+        done'
+    ;;
+  azure)
+    # Real Azure (asks before up/down unless --yes). Terraform/az run in a toolbox image; see terraform/runbook.md.
+    docker_ready
+    shift
+    exec python3 terraform/azure/azure.py "$@"
     ;;
   help|-h|--help) usage ;;
   *) usage; exit 2 ;;

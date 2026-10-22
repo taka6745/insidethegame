@@ -1,4 +1,4 @@
-"""Opta-style v3 contract: coordinates, new categories and the broadcast clock."""
+"""Opta-style v3 canonical events (MatchEvent v2: clock and ticker) and SPADL capability gates."""
 import json
 from pathlib import Path
 from typing import get_args
@@ -6,14 +6,18 @@ from typing import get_args
 import pytest
 from pydantic import ValidationError
 
-from backend.adapters.events import OptaInspiredAdapter
-from backend.adapters.replay_source import FixtureEventSource
+from benchmarks.doubles.events import OptaInspiredAdapter
+from backend.adapters.feed_reference import FeedReference
+from backend.adapters.match_reference import data_reference
+from benchmarks.doubles.recording import FixtureEventSource
 from backend.agents.models import Goal
-from backend.fake_question_data import observed_events, snapshot_id
-from backend.models.events import DETAIL_FIELDS, Event, EventType
+from backend.models.actions import ActionType, SpadlAction
+from backend.models.events import Event, EventType
 from backend.services.filter_engine import FilterEngine
-from backend.services.question_snapshot import build_snapshot
-from backend.services.rule_availability import supported_rule
+from backend.models.questions import MatchSnapshot
+from backend.services.observed import observed
+from backend.agents.measurement_support import measurement_support
+from backend.services.rule_availability import UNDECLARED, supported_rule, unsupported_reason
 
 SPEC = json.loads((Path(__file__).parents[1] / 'fixtures/filter-lab.json').read_text())
 V3_TYPES = ('clearance', 'dispossessed', 'blocked_pass', 'aerial', 'take_on', 'challenge', 'ball_recovery',
@@ -21,7 +25,8 @@ V3_TYPES = ('clearance', 'dispossessed', 'blocked_pass', 'aerial', 'take_on', 'c
             'save', 'tackle', 'interception')
 CAPABILITIES = {'supported_event_types': [*get_args(EventType)], 'shot_outcomes': True,
                 'distance_event_types': ['pass', 'clearance'], 'coordinates': 'opta_0_100',
-                'clock': 'broadcast_with_stoppage', 'restart_events': 'taken'}
+                'clock': 'broadcast_with_stoppage', 'restart_events': 'taken',
+                'body_parts': False, 'body_part_event_types': ['pass', 'shot', 'goal']}
 
 
 def raw(sequence, kind='pass', period=1, minute=0, second=0, **changes):
@@ -58,20 +63,28 @@ def test_v3_event_keeps_location_possession_video_and_qualifiers():
 
 @pytest.mark.parametrize('kind', V3_TYPES)
 def test_v3_categories_are_accepted_and_defined(kind):
+    # Canonical categories still validate for the clock and ticker; agents read SPADL meanings instead.
     event = OptaInspiredAdapter().adapt(raw(1, kind, outcome='success'))
     assert event.event_type == kind
-    assert OptaInspiredAdapter().data_reference()['events'][kind]
 
 
-@pytest.mark.parametrize('outcome', ['off_target', 'post', 'saved', 'blocked'])
-def test_shot_outcomes_and_shot_qualifiers(outcome):
-    qualifiers = [{'type': 'situation', 'value': 'regular_play'}, {'type': 'bigChance', 'value': True},
-                  {'type': 'goalMouthY', 'value': 53.6}, {'type': 'goalMouthZ', 'value': 8.5},
-                  {'type': 'shotOutcome', 'value': outcome}, {'type': 'assistEventId', 'value': 'v1'}]
-    event = OptaInspiredAdapter().adapt(raw(2, 'shot', outcome=outcome, qualifiers=qualifiers))
-    goal = Goal(description='shots', event_types=('shot',), outcome=outcome)
+def action(**changes):
+    base = {'match_id': SPEC['match_id'], 'action_id': 0, 'period': 1, 'match_time_seconds': 600, 'team_id': 'chelsea',
+            'player_id': 'palmer', 'action_type': 'shot', 'result': 'fail', 'bodypart': 'foot', 'start_x': 90.0,
+            'start_y': 34.0, 'end_x': 105.0, 'end_y': 34.0, 'start_zone': 'opp_box', 'end_zone': 'opp_box', 'seq': 1,
+            'final_seq': 1, 'source_type_id': 15}
+    return SpadlAction(**base | changes)
+
+
+@pytest.mark.parametrize('outcome, changes', [('off_target', {'source_type_id': 13}), ('post', {'source_type_id': 14}),
+                                               ('saved', {}), ('blocked', {'end_x': 95.0}),
+                                               ('goal', {'result': 'success', 'source_type_id': 16})])
+def test_shot_outcome_filters_follow_the_catalogue(outcome, changes):
+    shot = action(**changes)
+    goal = Goal(description='shots', action_types=('shot', 'shot_penalty', 'shot_freekick'), shot_outcomes=(outcome,))
     rule = goal.target_rule(SPEC['match_id'])
-    assert rule.matches(event) and supported_rule(rule, CAPABILITIES)
+    assert shot.shot_outcome == outcome and rule.matches(shot) and supported_rule(rule, CAPABILITIES)
+    assert not supported_rule(rule, CAPABILITIES | {'shot_outcomes': False})
 
 
 @pytest.mark.parametrize('changes', [
@@ -108,13 +121,15 @@ def test_upstream_history_rows_accept_optional_v3_context(row):
 
 
 def test_redelivery_at_another_time_is_not_a_conflict():
-    adapter, engine = OptaInspiredAdapter(), FilterEngine()
+    adapter = OptaInspiredAdapter()
     first = adapter.adapt(raw(1))
-    again = adapter.adapt(raw(1) | {'sequence': 5, 'videoSeconds': 9.0})
-    engine.ingest(first)
-    engine.ingest(again)
+    assert first.same_content(adapter.adapt(raw(1) | {'sequence': 5, 'videoSeconds': 9.0}))
+    assert not first.same_content(adapter.adapt(raw(1) | {'x': 10.0}))
+    engine = FilterEngine()  # Final SPADL actions: a repeat is ignored, different content is refused.
+    engine.ingest(action())
+    assert engine.ingest(action()) == []
     with pytest.raises(ValueError, match='Conflicting'):
-        engine.ingest(adapter.adapt(raw(1) | {'x': 10.0}))
+        engine.ingest(action(end_x=100.0))
 
 
 def stoppage_events():
@@ -130,54 +145,59 @@ def stoppage_events():
 def test_stoppage_time_orders_by_period_not_clock_seconds():
     recording = source(stoppage_events())
     # Second half restarts at 45:00, earlier on the clock than first-half stoppage.
-    snapshot = build_snapshot(recording, 'run', 4).snapshot
-    assert (snapshot.period, snapshot.clock_seconds) == (2, 2700)
-    snapshot = build_snapshot(recording, 'run', 3).snapshot
+    snapshot = MatchSnapshot.at('m', 4, recording.events[3])
+    assert (snapshot.id, snapshot.period, snapshot.clock_seconds) == ('m:4', 2, 2700)
+    snapshot = MatchSnapshot.at('m', 3, recording.events[2])
     assert (snapshot.period, snapshot.clock_seconds) == (1, 2904)
-    ordered = [e.event_id for e in observed_events(recording.history(6))]
+    ordered = [e.event_id for e in observed(recording.history(6))]
     assert ordered == ['v1', 'v2', 'v3', 'v4', 'v5', 'v6']
 
 
-def test_finished_clock_never_rewinds_from_stoppage():
-    recording = source(stoppage_events())
-    snapshot = build_snapshot(recording, 'run', len(recording.events), finished=True).snapshot
-    assert snapshot.clock_seconds > recording.spec['playback']['football_duration_seconds']
-    assert (snapshot.period, snapshot.clock_seconds) == (2, 94 * 60 + 41)
-
-
-def test_finished_clock_reaches_full_time_when_recording_stops_early():
-    recording = source(stoppage_events()[:5])
-    snapshot = build_snapshot(recording, 'run', len(recording.events), finished=True).snapshot
-    assert (snapshot.period, snapshot.clock_seconds) == (2, recording.spec['playback']['football_duration_seconds'])
-
-
-def test_v3_reference_states_coordinates_are_context_not_filters():
+def test_spadl_reference_declares_location_filters_from_capabilities():
     reference = source(stoppage_events()).data_reference()
-    assert reference['contract_id'] == 'synthetic-grf-opta-v3'
-    assert {'x', 'y', 'possession_id', 'video_seconds', 'qualifiers'} <= set(reference['fields'])
-    assert not any('no x/y coordinates' in text for text in reference['unavailable'])
-    assert any('not filterable' in text for text in reference['guarantees'])
-    assert 'unknown scorer' not in reference['events']['goal']
-    older = FixtureEventSource().data_reference()
-    assert any('no x/y coordinates' in text for text in older['unavailable'])
+    assert reference['contract_id'] == 'spadl-v1'
+    assert {'start_x', 'end_y', 'start_zone', 'end_zone'} <= set(reference['fields'])
+    assert reference['availability']['locations'] and reference['availability']['shot_outcomes']
+    assert any('start/end x/y' in text for text in reference['guarantees'])
+    assert 'supported_event_types' not in reference['capabilities']  # The provider's vocabulary stays out.
+    complete = FixtureEventSource().data_reference()['availability']  # The double declares the full test contract.
+    assert complete['recorded_bodyparts'] and complete['shot_outcomes'] and complete['locations']
 
 
-def test_profile_parity_with_canonical_event_schema():
-    reference = OptaInspiredAdapter().data_reference()
-    assert reference['contract_id'] == 'synthetic-opta-inspired-v2'
-    assert set(reference['fields']) == set(Event.model_fields)
-    assert set(reference['events']) == set(get_args(EventType))
+def test_undeclared_capabilities_are_unknown_not_complete():
+    """An MA1 without capabilities: every rule needing body parts, shot outcomes or locations is refused."""
+    reference = data_reference(None)
+    assert 'availability' not in reference and measurement_support(reference) == {'declared': False}
+    def rule(**goal):
+        return Goal(description='x', **goal).target_rule(SPEC['match_id'])
+    assert unsupported_reason(rule(operation='count', action_types=('pass',)), None) is None
+    for gated in (rule(operation='count', action_types=('shot',), bodyparts=('head',)),
+                  rule(operation='count', action_types=('pass',), start_zones=('final_third',)),
+                  rule(operation='count', action_types=('shot',), coverage='recorded', bodyparts=('head',))):
+        assert unsupported_reason(gated, None) == UNDECLARED
+
+
+def test_profile_parity_with_spadl_action_model():
+    reference = FeedReference.load().describe()
+    assert reference['contract_id'] == 'spadl-v1'
+    assert set(reference['fields']) == set(SpadlAction.model_fields)
+    assert set(reference['events']) == set(get_args(ActionType))
 
 
 def test_v3_capability_gates():
     def rule(**goal):
         return Goal(description='x', **goal).target_rule(SPEC['match_id'])
-    assert supported_rule(rule(operation='sum', sum_field='distance_metres', event_types=('clearance',)), CAPABILITIES)
-    older = CAPABILITIES | {'supported_event_types': ['pass', 'shot', 'goal'], 'shot_outcomes': False,
-                            'distance_event_types': ['pass']}
-    assert not supported_rule(rule(event_types=('aerial',)), older)
-    assert not supported_rule(rule(event_types=('shot',), outcome='post'), older)
-    assert not supported_rule(rule(operation='sum', sum_field='distance_metres', event_types=('clearance',)), older)
+    distance = rule(operation='sum', sum_field='distance_metres', action_types=('clearance',))
+    assert supported_rule(distance, CAPABILITIES)
+    older = CAPABILITIES | {'coordinates': None, 'shot_outcomes': False, 'body_part_event_types': ['pass']}
+    assert not supported_rule(distance, older)
+    assert not supported_rule(rule(action_types=('pass',), end_zones=('opp_box',)), older)
+    assert not supported_rule(rule(action_types=('shot',), shot_outcomes=('post',)), older)
+    assert supported_rule(rule(action_types=('pass', 'cross'), bodyparts=('head',)), older)
+    assert not supported_rule(rule(action_types=('shot',), bodyparts=('head',)), older)
+    assert supported_rule(rule(bodyparts=('head',), coverage='recorded'), older)
+    assert data_reference(older)['availability']['complete_bodypart_types'] == [
+        'corner_crossed', 'corner_short', 'cross', 'freekick_crossed', 'freekick_short', 'goalkick', 'pass', 'throw_in']
 
 
 def test_full_match_recording_exceeds_old_size_and_count_caps():
@@ -188,14 +208,3 @@ def test_full_match_recording_exceeds_old_size_and_count_caps():
     recording = FixtureEventSource(content=content)
     assert len(recording.events) == 21000
     assert recording.playback_duration == events[-1]['videoSeconds'] + 25
-
-
-def test_snapshot_identity_matches_without_optional_v3_context():
-    # ETL hashes the same identity, so producers that omit v3 context name the same prefix.
-    payload = build_snapshot(source(stoppage_events()), 'run', 5)
-    bare = payload.model_copy(update={'events': [
-        e.model_copy(update={k: {} if k == 'qualifiers' else None for k in DETAIL_FIELDS}) for e in payload.events]})
-    assert snapshot_id(bare) == payload.snapshot.id
-    changed = payload.model_copy(update={'events': [*payload.events[:-1],
-                                                    payload.events[-1].model_copy(update={'period': 1})]})
-    assert snapshot_id(changed) != payload.snapshot.id

@@ -51,11 +51,5 @@ class LiveViewers:
         if peer := self.peers.get(token):
             peer.viewer = viewer
 
-    def active(self, bucket=None):
-        return [peer for peer in self.peers.values() if not peer.closing and
-                (bucket is None or self.bucket(peer.viewer) == bucket)]
-
-    @staticmethod
-    def bucket(viewer):
-        state = viewer['state']
-        return f"{state['team']}:{state['fan_style']}"
+    def active(self):
+        return [peer for peer in self.peers.values() if not peer.closing]

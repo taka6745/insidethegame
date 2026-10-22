@@ -2,7 +2,7 @@
 
     python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --pace 5
     python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --data graphql
-    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --agents llm --presence '{"home:casual": 1}'
+    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --agents llm --buckets home:casual
     python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --pace 5 --serve 8000
 
 Data comes from a replay file (default) or the ETL's GraphQL API. Agents are fakes unless
@@ -20,19 +20,20 @@ from pathlib import Path
 
 import httpx
 
-from narrative_engine.agents.fake import FakeAgents
+from narrative_engine.devtools.fake_agents import FakeAgents
 from narrative_engine.agents.llm import LLMAgents, LLMError, LLMSettings
 from narrative_engine.api import NarrativeApi
 from narrative_engine.core.config import Settings
 from narrative_engine.match_data.etl_graphql import GraphQLMatchData
-from narrative_engine.match_data.fixture import FixtureMatchData
-from narrative_engine.core.models import PresenceChanged
+from narrative_engine.devtools.fixture_data import FixtureMatchData
+from narrative_engine.devtools.targets import StaticTargets, default_targets
 from narrative_engine.core.orchestrator import MatchOrchestrator
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import JsonlSink, read_notifications, replay
 
 HERE = Path(__file__).resolve().parents[2]
 DEFAULT_MATCH = HERE.parent / "etl" / "seeder" / "matches" / "itg-syn-0001.jsonl"
+DEFAULT_ACTIONS = HERE / "tests" / "fixtures" / "itg-syn-0001-spadl.json"
 
 
 async def run(args):
@@ -43,22 +44,21 @@ async def run(args):
     if args.data == "graphql":
         data = GraphQLMatchData(args.graphql_url)
     else:
-        data = FixtureMatchData(args.match, args.notifications)
+        data = FixtureMatchData(args.match, args.notifications, actions_path=args.actions)
     agents = LLMAgents(LLMSettings.from_env()) if args.agents == "llm" else FakeAgents()
     store = MemoryStore()
-    # A local run's fixed --presence must not go stale part-way through a slow LLM run.
-    settings = Settings(presence_stale_seconds=10 ** 9) if args.presence else Settings()
-    engine = MatchOrchestrator(match_id, data, agents, store, JsonlSink(out), settings)
+    targets = default_targets()
+    if args.buckets:
+        targets = [t for t in targets if t["bucket_id"] in args.buckets.split(",")]
+        print(f"buckets: {[t['bucket_id'] for t in targets]}")
+    engine = MatchOrchestrator(match_id, data, agents, store, JsonlSink(out), Settings(),
+                               targets=StaticTargets(targets))
     if args.serve:
         import uvicorn
-        server = uvicorn.Server(uvicorn.Config(NarrativeApi(store, settings, engine.now), port=args.serve,
+        server = uvicorn.Server(uvicorn.Config(NarrativeApi(store, Settings(), engine.now), port=args.serve,
                                                log_level="warning"))
         serving = asyncio.create_task(server.serve())
         print(f"narrative GraphQL at http://localhost:{args.serve}/graphql")
-    if args.presence:
-        counts = json.loads(args.presence)
-        await engine.handle(PresenceChanged(match_id, counts, engine.now()))
-        print(f"presence: {counts}")
     await replay(args.notifications, engine.handle, pace=args.pace, match_id=match_id)
     narratives = await store.narratives(match_id)
     blocks = await store.active_blocks(match_id)
@@ -80,10 +80,12 @@ def main():
     parser.add_argument("--agents", choices=("fake", "llm"), default="fake")
     parser.add_argument("--graphql-url", default=os.environ.get("ETL_GRAPHQL_URL", "http://localhost:5000/graphql"))
     parser.add_argument("--match", default=str(DEFAULT_MATCH), help="replay/match JSONL for --data fixture")
+    parser.add_argument("--actions", default=str(DEFAULT_ACTIONS),
+                        help="SPADL actions JSON for --data fixture (tools/spadl_fixture.py writes one)")
     parser.add_argument("--match-id", help="defaults to the notifications' matchId")
     parser.add_argument("--pace", type=float, default=0.0,
                         help="0 = sequential and as fast as possible; N = N times the recorded timing, concurrent")
-    parser.add_argument("--presence", help='JSON bucket counts, e.g. \'{"home:casual": 1}\'; default all 12')
+    parser.add_argument("--buckets", help="comma-separated bucket ids, e.g. home:casual,away:analyst; default all 12")
     parser.add_argument("--serve", type=int, metavar="PORT", help="serve the narrative GraphQL API on this port")
     parser.add_argument("--out", default=str(HERE / ".local" / "narratives.jsonl"))
     args = parser.parse_args()

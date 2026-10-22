@@ -9,6 +9,8 @@
 !lab/**
 !match/
 !match/**
+!dev/
+!dev/**
 !assets/
 !assets/icons/
 !assets/icons/*.svg

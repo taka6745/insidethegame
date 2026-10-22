@@ -1,78 +1,95 @@
-"""Match App persistence for audience configuration, with optimistic updates."""
-from pathlib import Path
+"""Audience templates per feed fixture (configuration) and each match's catalogue.
 
+A match's catalogue copies its fixture's template (else the default); the template's `enabled`
+flags alone choose generation targets. Every change to a match's document bumps its revision,
+which the narrative engine polls."""
 from psycopg.types.json import Jsonb
 
 from ..domain import RuleError
 from ..models.audiences import AudienceConfig
+
+DEFAULT = 'default'
 
 
 class AudienceRepository:
     def __init__(self, store):
         self.store = store
 
-    def initialize(self, match_id):
-        root = Path(__file__).parents[2]
-        seed = AudienceConfig.model_validate_json((root / 'fixtures/audiences.json').read_text())
-        with self.store.connect() as conn:
-            conn.execute((root / 'migrations/005_audience_catalog.sql').read_text())
-            conn.execute((root / 'migrations/008_audience_presence.sql').read_text())
-            conn.execute('INSERT INTO audience_catalog(match_id,document) VALUES (%s,%s) '
-                         'ON CONFLICT DO NOTHING', (match_id, Jsonb(seed.model_dump())))
+    @staticmethod
+    def _template(conn, fixture, *, lock=False):
+        """The fixture's own template, else the default one: (row, inherited)."""
+        suffix = ' FOR UPDATE' if lock else ''
+        row = conn.execute('SELECT * FROM audience_templates WHERE fixture=%s' + suffix, (fixture,)).fetchone()
+        if row is not None:
+            return row, False
+        return conn.execute('SELECT * FROM audience_templates WHERE fixture=%s' + suffix, (DEFAULT,)).fetchone(), True
 
-    def clear_viewer_targets(self):
-        """Only the one local product owner uses presence-managed catalogues."""
+    def template(self, fixture):
         with self.store.connect() as conn:
-            rows = conn.execute('SELECT match_id,document FROM audience_catalog WHERE viewer_managed FOR UPDATE').fetchall()
-            for row in rows:
-                self._set_enabled(conn, row['match_id'], row['document'], set())
-
-    def set_viewer_targets(self, match_id, selections):
-        root = Path(__file__).parents[2]
-        seed = AudienceConfig.model_validate_json((root / 'fixtures/audiences.json').read_text())
-        for bucket in seed.buckets:
-            bucket.enabled = False
-        with self.store.connect() as conn:
-            conn.execute('INSERT INTO audience_catalog(match_id,document,viewer_managed) VALUES (%s,%s,true) '
-                         'ON CONFLICT(match_id) DO UPDATE SET viewer_managed=true',
-                         (match_id, Jsonb(seed.model_dump())))
-            row = conn.execute('SELECT document FROM audience_catalog WHERE match_id=%s FOR UPDATE',
-                               (match_id,)).fetchone()
-            self._set_enabled(conn, match_id, row['document'], selections)
+            row, inherited = self._template(conn, fixture)
+        return {'fixture': fixture, 'inherited': inherited, 'revision': row['revision'],
+                'config': AudienceConfig.model_validate(row['document'])}
 
     @staticmethod
-    def _set_enabled(conn, match_id, document, selections):
-        changed = False
-        for bucket in document['buckets']:
-            choice = bucket['selections']
-            enabled = (set(choice) == {'team', 'fan_style'} and
-                       (choice['team'], choice['fan_style']) in selections)
-            changed |= bucket['enabled'] != enabled
-            bucket['enabled'] = enabled
-        if changed:
-            conn.execute('UPDATE audience_catalog SET document=%s,revision=revision+1 WHERE match_id=%s',
-                         (Jsonb(document), match_id))
+    def _apply(conn, match_id, template):
+        """Copy the template into one match's document; bump the revision only on change."""
+        conn.execute('UPDATE audience_catalog SET document=%s, revision=revision+1 WHERE match_id=%s AND document<>%s',
+                     (Jsonb(template['document']), match_id, Jsonb(template['document'])))
+
+    def ensure(self, match_id, fixture):
+        """Create the match's catalogue from its fixture template."""
+        with self.store.connect() as conn:
+            template, _ = self._template(conn, fixture)
+            conn.execute('INSERT INTO audience_catalog (match_id, fixture, document) '
+                         'SELECT %s,%s,%s WHERE EXISTS (SELECT 1 FROM received_matches WHERE match_id=%s) '
+                         'ON CONFLICT DO NOTHING', (match_id, fixture, Jsonb(template['document']), match_id))
+
+    def replace_template(self, fixture, config, expected_revision):
+        with self.store.connect() as conn:
+            # One template writer per fixture, also while its row does not exist yet.
+            conn.execute("SELECT pg_advisory_xact_lock(hashtext('audience-template:' || %s))", (fixture,))
+            row, inherited = self._template(conn, fixture, lock=True)
+            if row['revision'] != expected_revision:
+                raise RuleError('audience_revision_conflict', 'Reload the catalogue before editing', 409)
+            document = config.model_dump()
+            if not inherited and fixture != DEFAULT:
+                default = conn.execute('SELECT * FROM audience_templates WHERE fixture=%s', (DEFAULT,)).fetchone()
+                if document == AudienceConfig.model_validate(default['document']).model_dump():
+                    # An own copy edited back to the default inherits it again.
+                    conn.execute('DELETE FROM audience_templates WHERE fixture=%s', (fixture,))
+                    for match in conn.execute('SELECT match_id FROM audience_catalog WHERE fixture=%s', (fixture,)).fetchall():
+                        self._apply(conn, match['match_id'], default)
+                    return default['revision']
+            saved = conn.execute('INSERT INTO audience_templates (fixture, revision, document) VALUES (%s,%s,%s) '
+                                 'ON CONFLICT (fixture) DO UPDATE SET revision=EXCLUDED.revision, document=EXCLUDED.document '
+                                 'RETURNING *', (fixture, row['revision'] + 1, Jsonb(document))).fetchone()
+            # Every match using this template (the default serves fixtures without their own).
+            matches = conn.execute('SELECT match_id FROM audience_catalog WHERE fixture=%s OR (%s AND fixture NOT IN '
+                                   '(SELECT fixture FROM audience_templates))', (fixture, fixture == DEFAULT)).fetchall()
+            for match in matches:
+                self._apply(conn, match['match_id'], saved)
+            return saved['revision']
+
+    def templates(self):
+        """Every template, and each match's fixture and enabled buckets."""
+        with self.store.connect() as conn:
+            templates = conn.execute('SELECT fixture, revision FROM audience_templates ORDER BY fixture').fetchall()
+            matches = conn.execute('SELECT match_id, fixture, revision, document FROM audience_catalog '
+                                   'ORDER BY match_id').fetchall()
+        return {'templates': templates,
+                'matches': [{'match_id': m['match_id'], 'fixture': m['fixture'], 'revision': m['revision'],
+                             'enabled': [b['id'] for b in m['document']['buckets'] if b['enabled']]} for m in matches]}
+
+    def revision(self, match_id):
+        with self.store.connect() as conn:
+            row = conn.execute('SELECT revision FROM audience_catalog WHERE match_id=%s', (match_id,)).fetchone()
+        if row is None:
+            raise RuleError('match_not_found', 'No audience configuration for this match', 404)
+        return row['revision']
 
     def read(self, match_id):
         with self.store.connect() as conn:
-            row = conn.execute('SELECT revision,document FROM audience_catalog WHERE match_id=%s',
-                               (match_id,)).fetchone()
+            row = conn.execute('SELECT revision, document FROM audience_catalog WHERE match_id=%s', (match_id,)).fetchone()
         if row is None:
             raise RuleError('match_not_found', 'No audience configuration for this match', 404)
         return AudienceConfig.model_validate(row['document']), row['revision']
-
-    def replace(self, match_id, config, expected_revision):
-        with self.store.connect() as conn:
-            current = conn.execute('SELECT document,viewer_managed FROM audience_catalog WHERE match_id=%s FOR UPDATE',
-                                   (match_id,)).fetchone()
-            if current and current['viewer_managed']:
-                active = [bucket['selections'] for bucket in current['document']['buckets'] if bucket['enabled']]
-                config = config.model_copy(deep=True)
-                for bucket in config.buckets:
-                    bucket.enabled = bucket.selections in active
-            row = conn.execute('UPDATE audience_catalog SET document=%s,revision=revision+1 '
-                               'WHERE match_id=%s AND revision=%s RETURNING revision',
-                               (Jsonb(config.model_dump()), match_id, expected_revision)).fetchone()
-        if row is None:
-            raise RuleError('audience_revision_conflict', 'Reload the catalogue before editing', 409)
-        return row['revision']

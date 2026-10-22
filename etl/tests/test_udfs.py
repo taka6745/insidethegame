@@ -6,7 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from reference import opta
+import v2_stream
+from reference import opta, pipeline
 from seeder.generate import MatchBuilder
 
 UDFS = Path(__file__).resolve().parents[1] / "stream-analytics" / "udfs"
@@ -33,8 +34,19 @@ def test_udfs_match_python_rules():
     ids = [9, 28, 31, 32, 33, 55, 82, 901]
     info = outputs[0]["info"]
     assert (info["homeContestantId"], info["awayContestantId"], info["synthetic"]) == ("c-riv", "c-har", 1)
-    assert json.loads(info["payload"]) == MATCH[0]
+    assert json.loads(info["payload"]) == MATCH[0] and info["capabilities"] is None
     for message, out in zip(MATCH[1:], outputs[1:]):
         assert out["has"] == [int(opta.has_q(message, i)) for i in ids]
         assert out["values"] == [opta.q_value(message, i) for i in ids]
         assert json.loads(out["json"]) == message
+
+
+@pytest.mark.skipif(not shutil.which("node"), reason="node not installed")
+def test_match_info_carries_multi_match_columns():
+    ma1 = v2_stream.build()[0]
+    result = subprocess.run(["node", "-e", HARNESS, str(UDFS)], input=json.dumps([ma1]),
+                            capture_output=True, text=True, check=True)
+    info = json.loads(result.stdout)[0]["info"]
+    expected = pipeline.match_rows(ma1)[0]
+    assert {k: info[k] for k in ("fixture", "sourceMatchId", "runId")} == {k: expected[k] for k in ("fixture", "sourceMatchId", "runId")}
+    assert json.loads(info["capabilities"]) == json.loads(expected["capabilities"])

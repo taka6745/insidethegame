@@ -1,13 +1,13 @@
 [
   {
-    "model": "llama-3.1-8b",
+    "model": "small model C (8B)",
     "mode": "prompt",
     "status": 200,
-    "returned_model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+    "returned_model": "small model C (8B) route 1",
     "error_categories": []
   },
   {
-    "model": "llama-3.1-8b",
+    "model": "small model C (8B)",
     "mode": "schema",
     "status": 429,
     "returned_model": null,
@@ -17,14 +17,14 @@
     ]
   },
   {
-    "model": "dots-studio/dots-3-note-preview:free",
+    "model": "reference model D",
     "mode": "prompt",
     "status": 200,
-    "returned_model": "dots-studio/dots-3-note-preview:free",
+    "returned_model": "reference model D",
     "error_categories": []
   },
   {
-    "model": "dots-studio/dots-3-note-preview:free",
+    "model": "reference model D",
     "mode": "schema",
     "status": 429,
     "returned_model": null,

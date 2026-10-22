@@ -53,7 +53,7 @@ const events = Array.from({ length: 60 }, (_, index) => ({
 }));
 const base = {
   type: "snapshot",
-  match: { run_id: "benchmark" },
+  match: { id: "benchmark" },
   events,
   narratives: Array(40).fill({ text: "Synthetic bounded narrative." }),
   cards: Array(5).fill({ value: 1 }),

@@ -8,10 +8,10 @@ Twelve identical cases per model/variant: three intents in three wording bands p
 
 | Model | Old → new meaning passes | Old → new median conversation |
 | --- | ---: | ---: |
-| Llama 3.2 3B | 0/12 → 2/12 | 1.98s → 1.52s |
-| Llama 3.1 8B | 3/12 → 5/12 | 8.75s → 2.62s |
-| GPT OSS 20B* | 11/12 → 11/12 | 3.17s → 2.15s |
-| Dots 3 reference | 11/12 → 11/12 | 8.21s → 6.85s |
+| Small model B (3B) | 0/12 → 2/12 | 1.98s → 1.52s |
+| Small model C (8B) | 3/12 → 5/12 | 8.75s → 2.62s |
+| Open model A (20B)* | 11/12 → 11/12 | 3.17s → 2.15s |
+| Reference model D | 11/12 → 11/12 | 8.21s → 6.85s |
 
 *The screen initially omitted a returned 20B alias from its allowlist: only 4/12 passes per variant qualified as identity-verified. Those records remain unchanged. The subsequent 100-case run explicitly allowed the verified catalogue aliases and checked every successful call. The reference was higher-ranked in the local catalogue; its size is not independently established.*
 
@@ -21,7 +21,7 @@ The 3B model improved its JSON/schema compliance but repeatedly asked unnecessar
 
 Thirty known intents × clear/average/poor wording, plus ten unsupported controls. Prepared replies are sent only if the agent actually asks. A pass may include up to two follow-ups; timings exclude human thinking time. Poor prompts deliberately include requests requiring clarification.
 
-| GPT OSS 20B | Original | Compact v1 |
+| Open model A (20B) | Original | Compact v1 |
 | --- | ---: | ---: |
 | Strict passes | 94/100 | 97/100 |
 | Clear / average / poor | 30 / 27 / 29 of 30 | 30 / 30 / 28 of 30 |
@@ -39,9 +39,9 @@ The v1 misses were headed-touch interpretation, guessing a vague passing request
 
 | Model / set | Strict passes | Median conversation | p95 conversation |
 | --- | ---: | ---: | ---: |
-| GPT OSS 20B / balanced 100 | 94/100 | 2.81s | 8.08s |
-| GPT OSS 20B / transfer 12 | 11/12 | 0.90s | 10.84s |
-| Dots 3 reference / balanced 100 | 96/100 | 7.85s | 14.52s |
+| Open model A (20B) / balanced 100 | 94/100 | 2.81s | 8.08s |
+| Open model A (20B) / transfer 12 | 11/12 | 0.90s | 10.84s |
+| Reference model D / balanced 100 | 96/100 | 7.85s | 14.52s |
 
 All successful responses in these runs matched the allowed model identities. The reference scored clear **30/30**, average **28/30**, poor **28/30**, controls **10/10**; it missed two required clarifications, altered one set of constraints and produced one wrong calculation. Its 107 calls had no workflow timeouts. The two-point difference from the final 20B run is too small and unrepeated to establish a dependable accuracy ranking. The balanced confirmation scored clear **29/30**, average **29/30**, poor **27/30**, controls **9/10**. Its six failures included two schema/output failures, two wrong calculations, one missed clarification and one accepted unsupported request. The transfer miss incorrectly declined supported second-half completed-pass distance.
 

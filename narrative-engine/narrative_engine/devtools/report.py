@@ -7,7 +7,7 @@ from collections import defaultdict
 from html import escape
 
 from narrative_engine.context.compression import EARLIER, FIVE_MINUTE, MINUTE
-from narrative_engine.core.models import USER_TYPES
+from narrative_engine.devtools.targets import DEFAULT_BUCKETS
 
 LEVELS = {MINUTE: "Minute summary", FIVE_MINUTE: "5-minute compression", EARLIER: "Period compression"}
 
@@ -88,7 +88,7 @@ def render(match_id, blocks, narratives):
                          f'<span class="time">{escape(span)}</span><span class="kind">{LEVELS[b.level]}</span>{note}</div>'
                          f'<div>{escape(b.summary)}</div>{_meta(b.model, b.promptVersion, b.tokens, extra)}</div>')
         else:
-            group = sorted(item, key=lambda n: USER_TYPES.index(n.userType))
+            group = sorted(item, key=bucket_order)
             first = group[0]
             buckets = "".join(
                 f'<div class="bucket" data-bucket="{n.userType}"><b>{escape(n.userType)}</b> '
@@ -101,7 +101,7 @@ def render(match_id, blocks, narratives):
 
     minutes = sum(1 for b in blocks if b.level == MINUTE)
     tokens = sum((x.tokens or {}).get("total_tokens", 0) for x in [*blocks, *narratives])
-    present = [t for t in USER_TYPES if any(n.userType == t for n in narratives)]
+    present = sorted({n.userType for n in narratives}, key=bucket_order_id)
     options = '<option value="all">all buckets</option>' + "".join(
         f'<option{" selected" if t == "neutral:casual" else ""}>{t}</option>' for t in present)
     checks = "".join(f'<label><input type="checkbox" data-kind="{k}" checked> {label}</label>'
@@ -114,3 +114,11 @@ def render(match_id, blocks, narratives):
 {len(narratives)} narratives · {tokens:,} tokens</div>
 <div class="controls">{checks}<label>bucket <select id="bucket">{options}</select></label></div></header>
 <main>{''.join(cards)}</main><script>{SCRIPT}</script></body></html>"""
+
+
+def bucket_order_id(bucket_id):
+    return (DEFAULT_BUCKETS.index(bucket_id), "") if bucket_id in DEFAULT_BUCKETS else (len(DEFAULT_BUCKETS), bucket_id)
+
+
+def bucket_order(narrative):
+    return bucket_order_id(narrative.userType)

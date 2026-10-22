@@ -26,11 +26,54 @@ jobs:
           pip install -r narrative-engine/requirements-dev.txt
           cd narrative-engine && python -m pytest -q
 
-  etl:
+  feed:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env: {POSTGRES_USER: feed, POSTGRES_PASSWORD: ci-only, POSTGRES_DB: feed_test}
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U feed" --health-interval 3s --health-retries 20
+      azurite:  # Blob Storage mode (Azure)
+        image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+        ports: ["10000:10000"]
     steps:
       - uses: actions/checkout@v4
-      - run: docker build --target test -t itg-etl-test etl && docker run --rm itg-etl-test
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -r data-generation/feed/requirements-test.txt
+      - name: Feed (unit + Postgres repository + Blob Storage)
+        working-directory: data-generation
+        env:
+          FEED_TEST_DATABASE_URL: "postgresql://feed:ci-only@localhost:5432/feed_test"
+          # Azurite's published development account, not a secret.
+          FEED_TEST_BLOB_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;"
+        run: python -m pytest -q feed
+      - name: Demo control (fake feed and owners)
+        working-directory: local
+        run: python -m pytest -q test_demo_control.py
+
+  etl:
+    runs-on: ubuntu-latest
+    # SQL Server Developer for the migrations, local stream worker and statsAtSeq tests (each run
+    # creates and drops its own databases). Running it accepts the SQL Server licence terms.
+    services:
+      sql:
+        image: mcr.microsoft.com/mssql/server:2025-CU9-ubuntu-24.04  # as etl/docker-compose.yml
+        env: {ACCEPT_EULA: "Y", MSSQL_PID: Developer, MSSQL_SA_PASSWORD: "Ci-Only-Password-42!"}
+        ports: ["1433:1433"]
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Ci-Only-Password-42!' -C -Q 'SELECT 1' -b"
+          --health-interval 5s --health-retries 40 --health-start-period 20s
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -r etl/requirements-test.txt
+      - name: ETL (reference rules, catalogue, local stream, SQL)
+        working-directory: etl
+        env: {ETL_TEST_SQL_PASSWORD: "Ci-Only-Password-42!"}
+        run: python -m pytest -q
 
   backend:
     runs-on: ubuntu-latest
@@ -54,6 +97,11 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx tsc --noEmit -p .
       - run: npm test
+      - run: npm run build
+      # The deny-list itself is private: set the BUNDLE_DENYLIST repository secret to enable the scan.
+      - name: Bundle deny-list scan
+        env: {BUNDLE_DENYLIST: "${{ secrets.BUNDLE_DENYLIST }}"}
+        run: if [ -n "$BUNDLE_DENYLIST" ]; then npm run check:bundle; else echo "BUNDLE_DENYLIST not set; skipped"; fi
 
   terraform:
     runs-on: ubuntu-latest

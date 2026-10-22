@@ -1,11 +1,18 @@
 import type {
   Audience,
+  Follow,
+  FollowOption,
+  FollowReply,
+  FollowSpec,
+  FollowTurn,
+  MatchSummary,
   Profile,
   Replay,
   ServiceError,
   SnapshotResult,
   ViewerSession,
 } from "./types.ts";
+import type { Prices } from "./receipt.ts";
 
 export type Fetcher = (
   input: string,
@@ -15,7 +22,8 @@ interface RequestOptions {
   body?: unknown;
   method?: string;
   signal?: AbortSignal;
-  base?: string;
+  /** Milliseconds before the browser gives up (default 75 s). */
+  timeout?: number;
 }
 interface ErrorBody {
   detail?: unknown;
@@ -24,27 +32,33 @@ interface ErrorBody {
   code?: unknown;
 }
 
+export const QUESTION_TIMEOUT_MS = 255_000;
+
 /** Same-origin application boundary. No provider or database access in the client. */
 export class MatchApi {
   fetcher: Fetcher;
   base: string;
+  /** The match this viewer has open; session routes are scoped by it. */
+  match: string;
   constructor(
     fetcher: Fetcher = (...args) => globalThis.fetch(...args),
     base = "/viewer-api",
+    match = "",
   ) {
     this.fetcher = fetcher;
     this.base = base;
+    this.match = match;
   }
   /** Response bodies are typed by the backend contract; callers narrow live snapshots. */
   async request<T = unknown>(
     path: string,
-    { body, method, signal, base = this.base }: RequestOptions = {},
+    { body, method, signal, timeout = 75000 }: RequestOptions = {},
   ): Promise<T> {
-    const response = await this.fetcher(`${base}${path}`, {
+    const response = await this.fetcher(`${this.base}${path}`, {
       method: method || (body === undefined ? "GET" : "POST"),
       headers: { "Content-Type": "application/json" },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-      signal: signal || AbortSignal.timeout(75000),
+      signal: signal || AbortSignal.timeout(timeout),
     });
     let data: unknown;
     try {
@@ -70,55 +84,93 @@ export class MatchApi {
     }
     return data as T;
   }
+  /** Matches the viewer can open; global, like profiles. */
+  matches(timeout?: number) {
+    return this.request<MatchSummary[]>("/matches", { timeout });
+  }
   profiles() {
     return this.request<{ profiles: Profile[] }>("/profiles");
   }
+  /** Every session route lives under `/matches/{matchId}/sessions`; a token belongs to one match. */
+  sessions(token?: string) {
+    const root = `/matches/${encodeURIComponent(this.match)}/sessions`;
+    return token === undefined ? root : `${root}/${encodeURIComponent(token)}`;
+  }
   session(profileId: string) {
-    return this.request<ViewerSession>("/sessions", { body: { profile_id: profileId } });
+    return this.request<ViewerSession>(this.sessions(), { body: { profile_id: profileId } });
   }
   restore(token: string) {
-    return this.request<ViewerSession>(`/${encodeURIComponent(token)}`);
+    return this.request<ViewerSession>(this.sessions(token));
   }
   audience(token: string, selection: Audience) {
-    return this.request<SnapshotResult>(`/${encodeURIComponent(token)}/audience`, {
+    return this.request<SnapshotResult>(`${this.sessions(token)}/audience`, {
       method: "PUT", body: selection,
     });
   }
-  ask(token: string, prompt: string, requestId: string) {
-    return this.request(`/${encodeURIComponent(token)}/messages`, {
-      body: { prompt, request_id: requestId },
+  /** Configured answer prices (US$ per million tokens); a viewer cannot change them. */
+  prices() {
+    return this.request<Prices & { revision?: number }>("/prices");
+  }
+  /** `seq` is the snapshot the viewer's picture shows: the answer never cites anything after it. */
+  ask(token: string, prompt: string, requestId: string, seq?: number) {
+    // Above the backend's question budget (240 s) and nginx's 250 s, so the server answers first.
+    return this.request(`${this.sessions(token)}/messages`, {
+      body: { prompt, request_id: requestId, ...(Number.isInteger(seq) ? { seq } : {}) },
+      timeout: QUESTION_TIMEOUT_MS,
     });
   }
   track(token: string, id: string) {
     return this.request<SnapshotResult>(
-      `/${encodeURIComponent(token)}/offers/${encodeURIComponent(id)}/track`,
+      `${this.sessions(token)}/offers/${encodeURIComponent(id)}/track`,
       { body: {} },
     );
   }
   unpin(token: string, id: string | number) {
     return this.request(
-      `/${encodeURIComponent(token)}/pins/${encodeURIComponent(id)}`,
+      `${this.sessions(token)}/pins/${encodeURIComponent(id)}`,
       { method: "DELETE" },
     );
   }
   replayPage(token: string, turnId: string | number, page: number) {
     return this.request<Replay>(
-      `/${encodeURIComponent(token)}/turns/${encodeURIComponent(turnId)}/replay/${page}`,
+      `${this.sessions(token)}/turns/${encodeURIComponent(turnId)}/replay/${page}`,
     );
   }
-  startDemo() {
-    return this.request("/replay/start", {
-      base: "/api",
-      body: { interval_ms: 1100 },
+  /** Story follows (contracts §8b): one active follow per viewer. */
+  follows(token: string) {
+    return this.request<{ follow: Follow | null; follows: Follow[]; turns: FollowTurn[] }>(
+      `${this.sessions(token)}/follows`);
+  }
+  /** `matchId`: another live match of the demo whose story this is (a cross-match option); its own position bounds it. */
+  follow(token: string, spec: FollowSpec, seq?: number, matchId?: string) {
+    return this.request<SnapshotResult & { follow: Follow; created: boolean }>(`${this.sessions(token)}/follows`, {
+      body: { spec, ...(Number.isInteger(seq) ? { seq } : {}), ...(matchId ? { match_id: matchId } : {}) },
     });
   }
-  resetDemo() {
-    return this.request("/demo/reset", { body: {} });
+  unfollow(token: string, subscriptionId: string) {
+    return this.request<SnapshotResult>(
+      `${this.sessions(token)}/follows/${encodeURIComponent(subscriptionId)}`, { method: "DELETE" });
+  }
+  followSuggestions(token: string, seq?: number) {
+    return this.request<{ snapshot_id?: string; items: FollowOption[] }>(
+      `${this.sessions(token)}/follow/suggestions${Number.isInteger(seq) ? `?seq=${seq}` : ""}`);
+  }
+  /** One follow-chat turn; a proposal is never a follow until `follow()` confirms it. */
+  followMessage(token: string, prompt: string, requestId: string, seq?: number) {
+    return this.request<FollowReply>(`${this.sessions(token)}/follow/messages`, {
+      body: { prompt, request_id: requestId, ...(Number.isInteger(seq) ? { seq } : {}) },
+      timeout: QUESTION_TIMEOUT_MS,
+    });
   }
   socketUrl(
     token: string,
     location: Pick<Location, "protocol" | "host"> = globalThis.location,
   ) {
-    return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${this.base}/${encodeURIComponent(token)}/live`;
+    return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${this.base}${this.sessions(token)}/live`;
   }
+}
+
+/** Match ids are feed-minted slugs; anything else never reaches a URL. */
+export function validMatchId(value: unknown): value is string {
+  return typeof value === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/.test(value);
 }

@@ -6,7 +6,6 @@ import pytest
 from fastapi.testclient import TestClient
 from psycopg import sql
 
-from backend.app import create_app
 from backend.store import Store
 
 
@@ -19,18 +18,14 @@ def store():
     schema = "test_backend_" + uuid.uuid4().hex
     store = Store(accounts, match, schema)
     yield store
+    store.close()
     with psycopg.connect(match) as conn:
         conn.execute(sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(sql.Identifier(schema)))
 
 
 @pytest.fixture
 def client(store):
-    with TestClient(create_app(store, enable_dev_feed=True)) as client:
+    from harness import build
+    app, _, _ = build(store)
+    with TestClient(app) as client:
         yield client
-
-
-@pytest.fixture
-def token(client):
-    response = client.post("/sessions", json={"profile_id": "chelsea-analytical"})
-    assert response.status_code == 201
-    return response.json()["session_token"]

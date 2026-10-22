@@ -89,6 +89,11 @@ export class LiveConnection {
         this.onState("replaced");
         return;
       }
+      // The match was purged or never existed: never reconnect to it.
+      if (event.code === 4404) {
+        this.onState("gone");
+        return;
+      }
       this.schedule(generation);
     };
   }
@@ -101,11 +106,8 @@ export class LiveConnection {
   }
   schedule(generation: number) {
     this.attempt += 1;
-    if (this.attempt > 8) {
-      this.onState("offline");
-      return;
-    }
-    this.onState("reconnecting");
+    // After 8 failures it says offline but keeps trying every ~30 s; a live match comes back by itself.
+    this.onState(this.attempt > 8 ? "offline" : "reconnecting");
     const delay =
       Math.min(30000, 500 * 2 ** (this.attempt - 1)) *
       (0.75 + this.random() * 0.5);

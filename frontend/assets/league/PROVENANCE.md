@@ -11,7 +11,12 @@ Retrieved from the official public Premier League website on **18 October 2026**
 | `microsoft.svg` | https://www.premierleague.com/resources/v1.54.15/i/svg-files/elements/microsoft-logo-dark-mode.svg |
 | `clubs/chelsea.svg` | https://resources.premierleague.com/premierleague25/badges-alt/8.svg |
 | `clubs/manutd.svg` | https://resources.premierleague.com/premierleague25/badges-alt/1.svg |
+| `clubs/arsenal.svg` | https://resources.premierleague.com/premierleague25/badges-alt/3.svg (retrieved 21 October 2026) |
+| `clubs/liverpool.svg` | https://resources.premierleague.com/premierleague25/badges-alt/14.svg (retrieved 21 October 2026) |
+| `clubs/mancity.svg` | https://resources.premierleague.com/premierleague25/badges-alt/43.svg (retrieved 21 October 2026) |
+| `sting/replay-sting.mp4` | https://cdn.dribbble.com/userupload/22741704/file/original-83c776ca591dc243f60fc51a853c9096.gif (downloaded 22 October 2026). Use permitted per developer: hackathon allows Premier League resources; community GIF. Converted to H.264 MP4, visually identical (800×600, 3.56 s, SSIM 0.997 against the GIF; 0.66 MB instead of 3.56 MB); frames unedited. Played between replay clips (`replay-timing.playback.transitions.asset`). |
+| `clubs/tottenham.svg` | https://resources.premierleague.com/premierleague25/badges-alt/6.svg (retrieved 21 October 2026) |
 
 The font family/weights were verified against the official site's `resources/v1.54.15/styles/screen.css`. The prototype uses two local WOFF2 weights with `font-display: swap`, not an external font dependency. Club-colour banners are our CSS composition with the authentic crests; no match footage or editorial photography is included.
 
-The viewer footer identifies a hackathon demo and says it is not an official Premier League product. It labels the match as simulated and the narratives as pre-written by AI. The app has no real sign-in or account collection. Microsoft attribution describes the Agent Framework implementation; it does not claim to be Copilot or an official released feature.
+The viewer footer identifies a hackathon demo and says it is not an official Premier League product. It labels the matches as simulated and the insights as AI-generated. The app has no real sign-in or account collection. Microsoft attribution describes the Agent Framework implementation; it does not claim to be Copilot or an official released feature.

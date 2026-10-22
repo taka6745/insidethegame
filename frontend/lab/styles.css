@@ -91,6 +91,12 @@ button {
   margin-top: 5px;
 }
 
+.score {
+  margin: 0;
+  font: 600 14px var(--mono);
+  letter-spacing: .4px;
+}
+
 .environment {
   display: flex;
   align-items: center;
@@ -273,32 +279,6 @@ textarea::placeholder {
   width: 100%;
 }
 
-#add-preset {
-  margin-top: 10px;
-}
-
-.preset-description {
-  font: 10px/1.6 var(--mono);
-  color: var(--muted);
-  margin-top: 9px;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 24px 0;
-  color: var(--muted);
-  font-size: 10px;
-}
-
-.divider:before,.divider:after {
-  content: '';
-  height: 1px;
-  background: var(--line);
-  flex: 1;
-}
-
 .model-status {
   font: 9px/1.7 var(--mono);
   color: var(--muted);
@@ -394,9 +374,12 @@ pre {
   margin-bottom: 7px;
 }
 
-.recording-source strong {
-  font: 12px var(--mono);
-  overflow-wrap: anywhere;
+.match-picker {
+  flex: 1;
+}
+
+.match-picker select {
+  width: 100%;
 }
 
 .recording-source p {
@@ -405,22 +388,10 @@ pre {
   margin-top: 6px;
 }
 
-.source-actions {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
 .recording-source>div:first-child {
   min-width: 0;
 }
 
-.source-actions .button {
-  min-height: 32px;
-  padding: 7px 9px;
-  font-size: 9px;
-}
 
 .match-center {
   display: flex;
@@ -497,17 +468,6 @@ pre {
   gap: 8px;
 }
 
-.progress-track {
-  height: 2px;
-  background: #343b2f;
-}
-
-.progress-track>div {
-  height: 100%;
-  background: var(--accent);
-  width: 0;
-  transition: width .4s;
-}
 
 .stats-section {
   margin: 20px 0;
@@ -664,10 +624,6 @@ pre {
   background: #2a3126;
 }
 
-.event-row.key-moment .event-info strong {
-  color: var(--accent);
-}
-
 .event-row time {
   font: 10px var(--mono);
   color: #a8b49b;
@@ -790,9 +746,6 @@ dialog .muted {
     align-items: flex-start;
     flex-wrap: wrap;
   }
-  .source-actions {
-    justify-content: flex-start;
-  }
   .club {
     width: 110px;
   }
@@ -820,6 +773,9 @@ dialog .muted {
   }
   .environment b {
     display: none;
+  }
+  .score {
+    font-size: 11px;
   }
   main {
     padding: 23px 20px 20px;

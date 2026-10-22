@@ -4,26 +4,26 @@
   "models": [
     {
       "label": "small-3b",
-      "model": "llama-3.2-3b",
+      "model": "small model B (3B)",
       "expected_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ]
     },
     {
       "label": "mid-20b",
-      "model": "gpt-oss-20b",
+      "model": "open model A (20B)",
       "expected_models": [
-        "openai/gpt-oss-20b",
-        "@cf/openai/gpt-oss-20b",
-        "gpt-oss:20b",
-        "gpt-oss-20b"
+        "open model A (20B) route 2",
+        "open model A (20B) route 3",
+        "open model A (20B) route 1",
+        "open model A (20B)"
       ]
     },
     {
       "label": "higher-ranked-reference",
-      "model": "dots-studio/dots-3-note-preview:free",
+      "model": "reference model D",
       "expected_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ]
     }
   ],
@@ -203,7 +203,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -211,13 +211,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2227,
@@ -227,7 +227,7 @@
           "status": "ok",
           "request_bytes": 13110,
           "request_sha256": "6560f7b0e9f6734e1168c897b288cf6e86611282a110e2ce1121d8699b9f75f3",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -387,7 +387,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -395,13 +395,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2220,
@@ -411,7 +411,7 @@
           "status": "ok",
           "request_bytes": 13068,
           "request_sha256": "4eaa82dc88a7d3ad32672e143365032f0e448099612961115e02925ca82dfdf6",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -596,7 +596,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -604,13 +604,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2303,
@@ -620,7 +620,7 @@
           "status": "ok",
           "request_bytes": 13363,
           "request_sha256": "e4fb37ca43cbb6699287b0ecf2eb7c615454eb46257dc10346d5f7fca2a5204b",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -748,7 +748,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "schema",
       "interpretation_ok": true,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -756,13 +756,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2274,
@@ -772,7 +772,7 @@
           "status": "ok",
           "request_bytes": 13109,
           "request_sha256": "34f34d76b1b233c1c78354e663cca5edafb9270daee37edd1efb0d3e5319bd40",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -900,7 +900,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "schema",
       "interpretation_ok": true,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -908,13 +908,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2267,
@@ -924,7 +924,7 @@
           "status": "ok",
           "request_bytes": 13067,
           "request_sha256": "f7cd3046b16fbdbb3217e7b35f2904a79275c0fec5403a59b31a75b36a98f079",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1087,7 +1087,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "schema",
       "interpretation_ok": true,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1095,13 +1095,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2350,
@@ -1111,7 +1111,7 @@
           "status": "ok",
           "request_bytes": 13362,
           "request_sha256": "6acb28fef0b1b8ceaadacbeb58ab0c69ca430dbbecaf213751dd14b83433d364",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1239,7 +1239,7 @@
       "final_value": 6.0,
       "deliveries_checked": 35,
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "schema",
       "interpretation_ok": true,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1247,13 +1247,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "dots-studio/dots-3-note-preview:free"
+        "reference model D"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "dots-studio/dots-3-note-preview:free"
+            "reference model D"
           ],
           "tokens": {
             "prompt_tokens": 2222,
@@ -1263,7 +1263,7 @@
           "status": "ok",
           "request_bytes": 13134,
           "request_sha256": "8f189d1a050106deed97810a2fbe4d0bacc80b4c0e4b6884b9178b4c265c98a9",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1331,7 +1331,7 @@
       ],
       "actual_status": "failed",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1347,7 +1347,7 @@
           "status": "http_error",
           "request_bytes": 13092,
           "request_sha256": "f2bce3d5406f0a5386c89383bb5ad03af840905ba22ec88781920272a625ba1b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1361,7 +1361,7 @@
           "status": "http_error",
           "request_bytes": 13092,
           "request_sha256": "f2bce3d5406f0a5386c89383bb5ad03af840905ba22ec88781920272a625ba1b",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1464,7 +1464,7 @@
       ],
       "actual_status": "failed",
       "model_label": "higher-ranked-reference",
-      "requested_model": "dots-studio/dots-3-note-preview:free",
+      "requested_model": "reference model D",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1480,7 +1480,7 @@
           "status": "http_error",
           "request_bytes": 13387,
           "request_sha256": "3125954963e448dd9af96921262c730fb69dcb61c826c2b76c9322094fd29884",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,
@@ -1494,7 +1494,7 @@
           "status": "http_error",
           "request_bytes": 13387,
           "request_sha256": "3125954963e448dd9af96921262c730fb69dcb61c826c2b76c9322094fd29884",
-          "requested_model": "dots-studio/dots-3-note-preview:free",
+          "requested_model": "reference model D",
           "response_format": "json_schema",
           "wire_schema_sha256": "b8a1846bfa8c601d36be929498591b0302815f57a26595a46225347ffd2af2b3",
           "strict_requested": true,

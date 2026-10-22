@@ -1,9 +1,7 @@
-# Both images need only their own package and requirements (`devtools.azure build` also sends a clean context).
+# The image needs only its package and requirements (`devtools.azure build` also sends a clean context).
 *
 !Dockerfile
-!demo.Dockerfile
 !requirements.txt
 !narrative_engine/
-!narrative_demo/
-!fixtures/
 **/__pycache__
+narrative_engine/devtools/

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Inside the Game · Developer config</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/insight.svg" />
+    <link rel="stylesheet" href="/dev/styles.css">
+    <script type="module" src="/dev/main.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Inside the Game match viewer"><span class="brand-mark">ig.</span><span>Inside the Game<small>DEVELOPER CONFIG</small></span></a>
+      <nav class="links" aria-label="Developer pages"><a href="/lab/">Event lab</a><a href="/">Viewer</a></nav>
+    </header>
+    <main>
+      <h1>Developer config<span> / matches, audiences, prompts, profiles and pipeline</span></h1>
+      <nav class="jump" aria-label="Sections"><a href="#matches">Matches</a><a href="#audiences">Audiences</a><a href="#prompts">Prompts</a><a href="#config">Config tables</a><a href="#profiles">Profiles</a><a href="#pipeline">Pipeline</a></nav>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div class="grid">
+        <div class="column">
+          <section id="matches" class="panel" aria-labelledby="matches-title">
+            <div class="panel-heading"><h2 id="matches-title">Matches</h2><button id="purge-all" class="button ghost danger" type="button">Purge all</button></div>
+            <p class="muted">Recordings and runs from the feed. A run starts at the next whole minute from 00:00. Purge removes match data from the feed, ETL, narrative engine and backend, in that order; configuration stays.</p>
+            <p id="feed-state" class="issue" aria-live="polite"></p>
+            <h3>Recordings</h3>
+            <ul id="recordings" class="rows"></ul>
+            <h3>Runs</h3>
+            <ul id="runs" class="rows"></ul>
+            <h3>Demo</h3>
+            <p class="muted">What the viewer's Start demo runs: fixtures (staggered), the cap on scheduled or live runs (manual starts too), and start points (a point after kick-off needs a recorded seed).</p>
+            <label class="sr-only" for="demo-settings">Demo settings (JSON)</label>
+            <textarea id="demo-settings" rows="10" spellcheck="false"></textarea>
+            <div class="actions"><button id="demo-save" class="button primary" type="button">Save demo settings</button></div>
+          </section>
+          <section id="audiences" class="panel" aria-labelledby="audiences-title">
+            <div class="panel-heading"><h2 id="audiences-title">Audiences</h2><label class="inline" for="catalogue">Fixture <select id="catalogue"></select></label></div>
+            <p id="audience-mode" class="muted"></p>
+            <form id="layers-form">
+              <h3>Layers and options</h3>
+              <p class="muted">Descriptions go to the narrative author; an option's label is what viewers see ({home} and {away} name the teams).</p>
+              <div id="layers"></div>
+              <button id="layer-add" class="button ghost" type="button">Add layer</button>
+              <h3>Buckets <span id="bucket-count" class="muted"></span></h3>
+              <div class="table-wrap"><table class="buckets"><thead><tr><th scope="col">Bucket</th><th scope="col">Generate and offer</th></tr></thead><tbody id="buckets"></tbody></table></div>
+              <p id="layers-issue" class="issue" aria-live="polite"></p>
+              <div class="actions"><span id="layers-state" class="muted"></span><button id="layers-reset" class="button ghost" type="button" disabled>Discard</button><button id="layers-save" class="button primary" disabled>Save template</button></div>
+            </form>
+          </section>
+          <section id="prompts" class="panel" aria-labelledby="prompts-title">
+            <div class="panel-heading"><h2 id="prompts-title">Narrative prompts</h2><span id="prompt-revision" class="muted"></span></div>
+            <div id="prompt-tabs" class="tabs" role="tablist" aria-label="Prompt role"></div>
+            <div id="prompt-panel" role="tabpanel">
+              <form id="prompt-form">
+                <label for="prompt-template">Template <span id="prompt-meta" class="muted"></span></label>
+                <textarea id="prompt-template" rows="18" maxlength="20000" spellcheck="false"></textarea>
+                <div id="chips" class="chips" aria-label="Required placeholders"></div>
+                <p id="prompt-issue" class="issue" aria-live="polite"></p>
+                <div class="actions"><button id="prompt-reset" class="button ghost" type="button" disabled>Discard</button><button id="prompt-save" class="button primary" disabled>Save new version</button></div>
+              </form>
+              <h3>Versions</h3>
+              <ol id="versions" class="versions"></ol>
+            </div>
+          </section>
+          <section id="config" class="panel" aria-labelledby="config-title">
+            <div class="panel-heading"><h2 id="config-title">Config tables</h2><button id="config-reload" class="button ghost" type="button">Reload</button></div>
+            <div id="config-tabs" class="tabs" role="tablist" aria-label="Config table"></div>
+            <p id="config-hint" class="muted"></p>
+            <form id="config-form" role="tabpanel">
+              <label for="config-value">JSON <span id="config-meta" class="muted"></span></label>
+              <textarea id="config-value" rows="14" spellcheck="false"></textarea>
+              <p id="config-issue" class="issue" aria-live="polite"></p>
+              <div class="actions"><span id="config-state" class="muted"></span><button id="config-reset" class="button ghost" type="button" disabled>Discard</button><button id="config-save" class="button primary" disabled>Save</button></div>
+            </form>
+          </section>
+          <section id="profiles" class="panel" aria-labelledby="profiles-title">
+            <div class="panel-heading"><h2 id="profiles-title">Demo profiles</h2><span id="profiles-meta" class="muted"></span></div>
+            <p class="muted">Accounts viewers start as. Team and style are default audience option ids for each match.</p>
+            <form id="profiles-form">
+              <div class="table-wrap"><table class="profiles"><thead><tr><th scope="col">Id</th><th scope="col">Name</th><th scope="col">Default audience (layer=option)</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead><tbody id="profile-rows"></tbody></table></div>
+              <button id="profile-add" class="button ghost" type="button">Add profile</button>
+              <p id="profiles-issue" class="issue" aria-live="polite"></p>
+              <div class="actions"><span id="profiles-state" class="muted"></span><button id="profiles-reset" class="button ghost" type="button" disabled>Discard</button><button id="profiles-save" class="button primary" disabled>Save profiles</button></div>
+            </form>
+          </section>
+        </div>
+        <div class="column side">
+          <section id="pipeline" class="panel" aria-labelledby="pipeline-title">
+            <div class="panel-heading"><h2 id="pipeline-title">Pipeline</h2><span id="pipeline-updated" class="muted"></span></div>
+            <dl id="replay" class="facts"></dl>
+            <ul id="services" class="services"></ul>
+            <h3>Stream gaps</h3>
+            <ul id="gaps" class="services"><li>None</li></ul>
+          </section>
+        </div>
+      </div>
+      <footer><span>Inside the Game / Developer config</span><span>Local development only · Edits affect the shared demo</span></footer>
+    </main>
+  </body>
+</html>

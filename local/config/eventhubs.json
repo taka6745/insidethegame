@@ -3,7 +3,7 @@
     "NamespaceConfig": [{
       "Type": "EventHub", "Name": "itg-local",
       "Entities": [{"Name": "match-events", "PartitionCount": 2,
-        "ConsumerGroups": [{"Name": "etl"}, {"Name": "user-backend"}, {"Name": "integration"}]}]
+        "ConsumerGroups": [{"Name": "user-backend"}, {"Name": "integration"}, {"Name": "stream-analytics"}]}]
     }],
     "LoggingConfig": {"Type": "Console"}
   }

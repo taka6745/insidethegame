@@ -4,12 +4,12 @@
   "models": [
     {
       "label": "mid-20b",
-      "model": "gpt-oss-20b",
+      "model": "open model A (20B)",
       "expected_models": [
-        "openai/gpt-oss-20b",
-        "@cf/openai/gpt-oss-20b",
-        "gpt-oss:20b",
-        "gpt-oss-20b"
+        "open model A (20B) route 2",
+        "open model A (20B) route 3",
+        "open model A (20B) route 1",
+        "open model A (20B)"
       ]
     }
   ],
@@ -248,7 +248,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -256,13 +256,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 1807,
@@ -272,7 +272,7 @@
           "status": "ok",
           "request_bytes": 7447,
           "request_sha256": "c3e82cbd09552e431c062a4955d8cee5900e59c0287928fd343cfadaeb76bce3",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 2.657
         }
@@ -419,7 +419,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -427,13 +427,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1803,
@@ -443,7 +443,7 @@
           "status": "ok",
           "request_bytes": 7434,
           "request_sha256": "a383b7c92303aae99c2f076ca2dc935e88b910b0f6b8bfe11d33e7f9a5a4b43e",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.917
         }
@@ -578,7 +578,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -586,13 +586,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 1804,
@@ -602,7 +602,7 @@
           "status": "ok",
           "request_bytes": 7434,
           "request_sha256": "1655cad793a7e9c6f66adb33dabdee9fe5fabe0f45fd11519b76e0d656ab69d2",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 3.913
         }
@@ -755,7 +755,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -763,13 +763,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1796,
@@ -779,7 +779,7 @@
           "status": "ok",
           "request_bytes": 7409,
           "request_sha256": "e531a93a6126889ed6ad10de8c07cc15e852c5076c0592f9b4fd8c959ac24f56",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.851
         }
@@ -896,7 +896,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -904,13 +904,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1798,
@@ -920,7 +920,7 @@
           "status": "ok",
           "request_bytes": 7436,
           "request_sha256": "6157564baf9f1f054ff851fc2db265fa9b4082ad80f24b761c95347ae6a150e2",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.825
         }
@@ -1045,7 +1045,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1053,13 +1053,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1796,
@@ -1069,7 +1069,7 @@
           "status": "ok",
           "request_bytes": 7421,
           "request_sha256": "7b6e5300b3a810edb6525af629c9c433881a5b57ed5417f7819d828743a01741",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.58
         }
@@ -1212,7 +1212,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1220,13 +1220,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1800,
@@ -1236,7 +1236,7 @@
           "status": "ok",
           "request_bytes": 7422,
           "request_sha256": "32f532b69a52a542e2f47020d50f1da9ae530cce9c190db77f646523558cc2a1",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.748
         }
@@ -1369,7 +1369,7 @@
       "final_value": 47.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1377,13 +1377,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1795,
@@ -1393,7 +1393,7 @@
           "status": "ok",
           "request_bytes": 7433,
           "request_sha256": "6fedb1831b12f138379e964fdbd615924237101f7532a57ad8ad72a0dc322bb4",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.665
         }
@@ -1455,7 +1455,7 @@
       ],
       "actual_status": "unsupported",
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1463,13 +1463,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1801,
@@ -1479,7 +1479,7 @@
           "status": "ok",
           "request_bytes": 7442,
           "request_sha256": "48583f861d692df8118508cb3839071d179cb3af9c1e20e78a5fa3bb902d96b3",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 1.208
         }
@@ -1614,7 +1614,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1622,13 +1622,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b"
+        "open model A (20B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 1800,
@@ -1638,7 +1638,7 @@
           "status": "ok",
           "request_bytes": 7417,
           "request_sha256": "a04f02b2d15f6345ba799e3f6f652d4bbfc465598bc286c6d1b468548a80f7e3",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 2.802
         }
@@ -1757,7 +1757,7 @@
       "final_value": 3.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1765,13 +1765,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1795,
@@ -1781,7 +1781,7 @@
           "status": "ok",
           "request_bytes": 7423,
           "request_sha256": "c5a9577352eebcd9f381e6268d42b6279875eb9b3e284b21571f4d72080a8993",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 0.401
         }
@@ -1935,7 +1935,7 @@
       "final_value": 1.0,
       "deliveries_checked": 35,
       "model_label": "mid-20b",
-      "requested_model": "gpt-oss-20b",
+      "requested_model": "open model A (20B)",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "cf6bd735eb87cf5631ebe63bfccac3d80984cada5873c8a46924481ddb1b5daa",
@@ -1943,14 +1943,14 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "gpt-oss:20b",
-        "openai/gpt-oss-20b"
+        "open model A (20B) route 1",
+        "open model A (20B) route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1799,
@@ -1960,14 +1960,14 @@
           "status": "ok",
           "request_bytes": 7426,
           "request_sha256": "78f77f7f41397290c7ce979c34046314ae15d16e7184b6c342720b0d76774400",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 3.498
         },
         {
           "http_status": 200,
           "actual_models": [
-            "openai/gpt-oss-20b"
+            "open model A (20B) route 2"
           ],
           "tokens": {
             "prompt_tokens": 1799,
@@ -1977,14 +1977,14 @@
           "status": "ok",
           "request_bytes": 7426,
           "request_sha256": "78f77f7f41397290c7ce979c34046314ae15d16e7184b6c342720b0d76774400",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 1.674
         },
         {
           "http_status": 200,
           "actual_models": [
-            "gpt-oss:20b"
+            "open model A (20B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 1845,
@@ -1994,7 +1994,7 @@
           "status": "ok",
           "request_bytes": 7610,
           "request_sha256": "c73aef875fce918c69bba5303c0bedf23d5b74d32cf6207fdeb0cfbf9755e7c8",
-          "requested_model": "gpt-oss-20b",
+          "requested_model": "open model A (20B)",
           "system_prompt_sha256": "e46bd7acb3166fa571d74181f08fc2513d46e8752f59f482fdb12b92f8319784",
           "seconds": 5.647
         }

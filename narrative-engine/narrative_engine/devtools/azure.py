@@ -4,7 +4,6 @@
     python -m narrative_engine.devtools.azure build --tag v1 [--local]     # build in ACR, or with local Docker and push
     python -m narrative_engine.devtools.azure check-narratives --match-id demo   # read the narrative-check subscription
     python -m narrative_engine.devtools.azure report --match-id demo       # summaries, compressions, narratives -> HTML
-    python -m narrative_engine.devtools.azure send-presence --match-id demo --counts '{"home:casual": 2}' --minutes 20
 """
 import argparse
 import asyncio
@@ -31,8 +30,6 @@ def write_env():
         "SERVICEBUS_NOTIFICATIONS": output(ETL_INFRA, "servicebus_listen_connection_string"),
         "SERVICEBUS_NARRATIVES": output(INFRA, "narratives_send_connection_string"),
         "SERVICEBUS_NARRATIVES_LISTEN": output(INFRA, "narratives_listen_connection_string"),
-        "SERVICEBUS_PRESENCE": output(INFRA, "presence_listen_connection_string"),
-        "SERVICEBUS_PRESENCE_SEND": output(INFRA, "presence_send_connection_string"),
         "COSMOS_ENDPOINT": output(INFRA, "cosmos_endpoint"),
     }
     lines = [l for l in (ENV_FILE.read_text(encoding="utf-8").splitlines() if ENV_FILE.exists() else [])
@@ -53,7 +50,7 @@ def build(tag, local=False):
         for name in ("Dockerfile", ".dockerignore", "requirements.txt"):
             shutil.copy(HERE / name, context / name)
         shutil.copytree(HERE / "narrative_engine", context / "narrative_engine",
-                        ignore=shutil.ignore_patterns("__pycache__"))
+                        ignore=shutil.ignore_patterns("__pycache__", "devtools"))
         print("context:", sorted(str(p.relative_to(context)) for p in context.rglob("*") if p.is_file()))
         az = shutil.which("az") or shutil.which("az.cmd")
         image = f"{registry}.azurecr.io/narrative-engine:{tag}"
@@ -117,26 +114,6 @@ async def report(match_id, open_browser):
         webbrowser.open(path.as_uri())
 
 
-async def send_presence(match_id, counts, minutes, every=60):
-    """Act as the user backend: full-state presence now and every `every` seconds."""
-    from datetime import datetime, timezone
-
-    from azure.servicebus import ServiceBusMessage
-    from azure.servicebus.aio import ServiceBusClient
-
-    load_env()
-    loop = asyncio.get_running_loop()
-    end = loop.time() + minutes * 60
-    async with ServiceBusClient.from_connection_string(os.environ["SERVICEBUS_PRESENCE_SEND"]) as client:
-        async with client.get_topic_sender("presence") as sender:
-            while loop.time() < end:
-                body = {"matchId": match_id, "activeUserTypes": counts,
-                        "sentAt": datetime.now(timezone.utc).isoformat()}
-                await sender.send_messages(ServiceBusMessage(json.dumps(body), content_type="application/json"))
-                print(f"presence sent {body['sentAt']}", flush=True)
-                await asyncio.sleep(every)
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -150,10 +127,6 @@ def main():
     report_cmd = sub.add_parser("report")
     report_cmd.add_argument("--match-id", required=True)
     report_cmd.add_argument("--no-open", action="store_true", help="don't open it in the browser")
-    presence = sub.add_parser("send-presence")
-    presence.add_argument("--match-id", required=True)
-    presence.add_argument("--counts", required=True, help='JSON, e.g. {"home:casual": 2}')
-    presence.add_argument("--minutes", type=float, default=20)
     args = parser.parse_args()
     if args.command == "env":
         write_env()
@@ -161,8 +134,6 @@ def main():
         build(args.tag, args.local)
     elif args.command == "report":
         asyncio.run(report(args.match_id, not args.no_open))
-    elif args.command == "send-presence":
-        asyncio.run(send_presence(args.match_id, json.loads(args.counts), args.minutes))
     else:
         asyncio.run(check_narratives(args.match_id, args.wait))
 

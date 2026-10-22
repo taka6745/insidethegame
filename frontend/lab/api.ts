@@ -1,12 +1,14 @@
-import type { Calculation, EventPayload, LabState, PlanResult, Rule, Scenario, ServiceError } from './types.ts';
+import type { Calculation, EventPayload, LabMatch, LabState, PlanResult, Rule, ServiceError } from './types.ts';
 
 interface ErrorBody { detail?: unknown; message?: unknown; error?: unknown; code?: unknown }
-export interface RecordingResult { scenario: Scenario; state?: LabState }
-
-/** The only network boundary. Replace this adapter when the product API is ready. */
+/** The only network boundary. Every lab route is scoped by the selected match. */
 export class LabApi {
   base: string;
-  constructor(base = '/api') { this.base = base; }
+  match: string;
+  constructor(base = '/api', match = '') { this.base = base; this.match = match; }
+
+  /** `/matches/{matchId}{path}` under the lab base. */
+  scoped(path: string) { return `/matches/${encodeURIComponent(this.match)}${path}`; }
 
   async request<T = unknown>(path: string, body?: unknown): Promise<T> {
     const response = await fetch(`${this.base}${path}`, {
@@ -35,21 +37,10 @@ export class LabApi {
     return data as T;
   }
 
-  async loadRecording(file: File): Promise<RecordingResult> {
-    if (file.size > 16 * 1024 * 1024) throw new Error('Recording must be 16 MiB or smaller.');
-    const response = await fetch(`${this.base}/recording`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Recording-Filename': encodeURIComponent(file.name) },
-      body: file,
-    });
-    return this.parse(response);
-  }
-  defaultRecording() { return this.request<RecordingResult>('/recording/default', {}); }
-  scenario() { return this.request<Scenario>('/scenario'); }
-  event(deliveryIndex: number) { return this.request<EventPayload>(`/events/${encodeURIComponent(deliveryIndex)}`); }
-  state() { return this.request<LabState>('/state'); }
-  add(rule: Rule, label?: string) { return this.request<Calculation>('/calculations', { rule, ...(label ? { label } : {}) }); }
-  plan(prompt: string, conversationId: string | null = null) { return this.request<PlanResult>('/plan', { prompt, ...(conversationId ? { conversation_id: conversationId } : {}) }); }
-  start() { return this.request('/replay/start', { interval_ms: 1000 }); }
-  reset() { return this.request('/reset', {}); }
+  /** Matches with live events come from the backend's match listing (never the feed). */
+  async matches(): Promise<LabMatch[]> { return this.parse(await fetch('/viewer-api/matches')); }
+  event(seq: number) { return this.request<EventPayload>(this.scoped(`/events/${encodeURIComponent(seq)}`)); }
+  state() { return this.request<LabState>(this.scoped('/state')); }
+  add(rule: Rule, label?: string) { return this.request<Calculation>(this.scoped('/calculations'), { rule, ...(label ? { label } : {}) }); }
+  plan(prompt: string, conversationId: string | null = null) { return this.request<PlanResult>(this.scoped('/plan'), { prompt, ...(conversationId ? { conversation_id: conversationId } : {}) }); }
 }

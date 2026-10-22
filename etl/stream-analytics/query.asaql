@@ -1,5 +1,7 @@
--- ETL Stream Analytics job. Rules mirror reference/opta.py; codes in contracts/opta-codes.json.
--- Terraform renders this file: ${window_seconds} is the tumbling window (60 / replay speed).
+-- ETL Stream Analytics job. Rules mirror reference/opta.py and reference/pipeline.py; codes in
+-- contracts/opta-codes.json. Terraform renders this file: ${window_seconds} is the tumbling window
+-- (60 / replay speed); ${idle_seconds} is the quiet spell that completes a match's latest event.
+-- [match-events] uses event time; [match-progress] is the same hub read in arrival (send) order.
 
 WITH Stream AS (
     SELECT * FROM [match-events] TIMESTAMP BY timeStamp
@@ -10,7 +12,7 @@ Events AS (
         s.matchId, s.id, s.seq, s.eventId, s.typeId, s.periodId, s.timeMin, s.timeSec,
         s.contestantId, s.playerId, s.outcome, s.x, s.y,
         CAST(s.timeStamp AS datetime) AS eventTime,
-        udf.toJson(s) AS payload,
+        udf.toJson(s) AS payload, s.eventSeq,
         udf.hasQ(s.qualifier, 9) AS qPenalty,
         udf.hasQ(s.qualifier, 28) AS qOwnGoal,
         udf.hasQ(s.qualifier, 31) AS qYellow,
@@ -55,6 +57,72 @@ MatchInfo AS (
     SELECT udf.matchInfo(s) AS info FROM Stream s WHERE s.feed = 'MA1'
 ),
 
+Rosters AS (
+    SELECT udf.matchTeams(s) AS teams, udf.matchPlayers(s) AS players FROM Stream s WHERE s.feed = 'MA1'
+),
+
+-- MatchEvent v2 carries no `feed`; the envelope must agree with its event.
+Canonical AS (
+    SELECT udf.canonicalEvent(s) AS e
+    FROM Stream s
+    WHERE s.feed IS NULL AND s.type = 'MatchEvent' AND s.version = 2
+      AND s.event.match_id = s.matchId AND s.event.sequence = s.seq
+),
+
+-- Watermark marks (reference/pipeline.py progress_marks), in send order: the highest event, MA3 seq and
+-- POS sampleId sent so far per match. Azure SQL turns a mark into matchProgress once all it covers is
+-- committed (sql/azure/asa-progress.sql), so the outputs' independent write order does not matter.
+Sent AS (
+    SELECT
+        p.matchId, p.seq, p.feed, System.Timestamp() AS arrivedAt,
+        CASE WHEN p.feed IS NULL AND p.type = 'MatchEvent' AND p.version = 2 THEN 1 ELSE 0 END AS isEvent,
+        CASE WHEN p.feed = 'POS' THEN p.sampleId ELSE 0 END AS posSample,
+        CASE WHEN p.feed = 'MA3' THEN p.seq ELSE 0 END AS ma3Row,
+        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1)
+                                  WHEN p.feed IS NULL AND p.type = 'MatchEvent' AND p.version = 2), 0) AS eventSeen,
+        COALESCE(MAX(p.seq) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1) WHEN p.feed = 'MA3'), 0) AS ma3Seen,
+        COALESCE(MAX(p.sampleId) OVER (PARTITION BY p.matchId LIMIT DURATION(day, 1) WHEN p.feed = 'POS'), 0) AS sampleSeen
+    FROM [match-progress] p
+    WHERE p.matchId IS NOT NULL
+),
+
+-- Each row's totals including itself (whether OVER counts the current row does not matter here).
+SentSoFar AS (
+    SELECT
+        matchId, seq, feed, arrivedAt, isEvent,
+        CASE WHEN isEvent = 1 AND seq > eventSeen THEN seq ELSE eventSeen END AS eventSeq,
+        CASE WHEN ma3Row > ma3Seen THEN ma3Row ELSE ma3Seen END AS ma3Seq,
+        CASE WHEN posSample > sampleSeen THEN posSample ELSE sampleSeen END AS sampleId
+    FROM Sent
+),
+
+-- Quiet spell: no message of this match for ${idle_seconds} s. Sessions are per match (OVER), so other
+-- matches' traffic does not hold one open; one closed by its maximum length (a day) is skipped.
+-- (System.Timestamp() is allowed only in SELECT, so the window end is a column filtered in ProgressMarks.)
+QuietSpells AS (
+    SELECT matchId, MAX(eventSeq) AS seq, MAX(ma3Seq) AS ma3Seq, MAX(sampleId) AS sampleId,
+           MAX(arrivedAt) AS lastArrived, System.Timestamp() AS windowEnd
+    FROM SentSoFar
+    GROUP BY matchId, SessionWindow(second, ${idle_seconds}, 86400) OVER (PARTITION BY matchId)
+    HAVING MAX(eventSeq) > 0
+),
+
+ProgressMarks AS (
+    -- MatchEvent s: event s - 1 and its MA3 rows were sent before it.
+    SELECT matchId, CAST(seq - 1 AS bigint) AS seq, ma3Seq, sampleId
+    FROM SentSoFar
+    WHERE isEvent = 1 AND seq > 1
+    UNION
+    -- POS: the latest event is complete.
+    SELECT matchId, eventSeq AS seq, ma3Seq, sampleId
+    FROM SentSoFar
+    WHERE feed = 'POS' AND eventSeq > 0
+    UNION
+    SELECT matchId, seq, ma3Seq, sampleId
+    FROM QuietSpells
+    WHERE DATEDIFF(millisecond, lastArrived, windowEnd) >= ${idle_seconds * 1000}
+),
+
 -- One output, three message kinds: a shared column set; fields a kind does not use are null.
 -- messageId feeds Service Bus duplicate detection; see contracts/README.md.
 NotificationRows AS (
@@ -90,14 +158,14 @@ NotificationRows AS (
 SELECT
     m.info.matchId, m.info.description, m.info.homeContestantId, m.info.homeName,
     m.info.awayContestantId, m.info.awayName, CAST(m.info.scheduledKickoff AS datetime) AS scheduledKickoff,
-    m.info.synthetic, m.info.payload
+    m.info.synthetic, m.info.payload, m.info.fixture, m.info.sourceMatchId, m.info.runId, m.info.capabilities
 INTO [matches]
 FROM MatchInfo m
 
 -- 2. Raw events
 SELECT
     matchId, id, seq, eventId, typeId, periodId, timeMin, timeSec, contestantId, playerId,
-    outcome, x, y, eventTime, payload
+    outcome, x, y, eventTime, payload, eventSeq
 INTO [rawEvents]
 FROM Events
 
@@ -132,3 +200,41 @@ GROUP BY matchId, contestantId, periodId, timeMin, TumblingWindow(second, ${wind
 SELECT *, messageType AS notificationType, messageId AS sbMessageId
 INTO [notifications]
 FROM NotificationRows
+
+-- 6. Possession samples (POS).
+SELECT
+    matchId, sampleId, periodId, videoSeconds, durationSeconds, contestantId, eventSeq,
+    CAST(timeStamp AS datetime) AS eventTime
+INTO [possessionSamples]
+FROM Stream
+WHERE feed = 'POS'
+
+-- 7. Teams and lineups (MA1).
+SELECT
+    t.ArrayValue.matchId, t.ArrayValue.contestantId, t.ArrayValue.position, t.ArrayValue.name,
+    t.ArrayValue.shortName, t.ArrayValue.code, t.ArrayValue.knownNames, t.ArrayValue.primaryColour,
+    t.ArrayValue.secondaryColour, t.ArrayValue.crestAssetId
+INTO [matchTeams]
+FROM Rosters r
+CROSS APPLY GetArrayElements(r.teams) AS t
+
+SELECT
+    p.ArrayValue.matchId, p.ArrayValue.playerId, p.ArrayValue.contestantId, p.ArrayValue.name,
+    p.ArrayValue.shirtNumber, p.ArrayValue.position, p.ArrayValue.starter
+INTO [matchPlayers]
+FROM Rosters r
+CROSS APPLY GetArrayElements(r.players) AS p
+
+-- 8. Canonical events (MatchEvent v2), the stat catalogue's input.
+SELECT
+    c.e.matchId, c.e.seq, c.e.eventId, c.e.revision, c.e.eventType, c.e.teamId, c.e.playerId, c.e.bodyPart,
+    c.e.periodId, c.e.matchTimeSeconds, c.e.outcome, c.e.distanceMetres, c.e.deleted, c.e.videoSeconds,
+    c.e.x, c.e.y, c.e.possessionId, c.e.qualifiers, CAST(c.e.eventTime AS datetime) AS eventTime
+INTO [canonicalEvents]
+FROM Canonical c
+
+-- 9. Watermark marks.
+-- Every column cast: JSON numbers can arrive as float, which the SQL output will not convert to int.
+SELECT matchId, CAST(seq AS bigint) AS seq, CAST(ma3Seq AS bigint) AS ma3Seq, CAST(sampleId AS bigint) AS sampleId
+INTO [matchProgressMarks]
+FROM ProgressMarks

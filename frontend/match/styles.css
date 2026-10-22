@@ -54,6 +54,11 @@ button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visi
   outline: 3px solid var(--mint);
   outline-offset: 3px;
 }
+/* Rings for keyboard users only; a composer marks its own focus subtly (companion.css). */
+:focus:not(:focus-visible),
+.composer input:focus, .composer textarea:focus {
+  outline: none;
+}
 [hidden] {
   display: none !important;
 }
@@ -145,11 +150,9 @@ main {
 .team.away {
   justify-content: flex-start;
 }
-.team[data-club="chelsea"] {
-  background: linear-gradient(105deg, #001c68, #0743b7);
-}
-.team[data-club="manutd"] {
-  background: linear-gradient(105deg, #c7142b, #7b0015);
+/* Club colours come from the match data (MA1 branding) as custom properties. */
+.team[data-club="branded"] {
+  background: linear-gradient(105deg, var(--club-primary), var(--club-secondary));
 }
 .crest-watermark {
   position: absolute;
@@ -237,7 +240,8 @@ main {
   border-radius: 50%;
   margin-right: 6px;
 }
-body[data-connection="live"][data-match-status="running"] .live-dot {
+body[data-connection="live"][data-match-status="running"] .live-dot,
+body[data-connection="live"][data-match-status="live"] .live-dot {
   background: var(--mint);
 }
 .match-toolbar {
@@ -305,7 +309,9 @@ option {
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 44px 120px;
+  /* The stats row ends where the companion panel ends: bottoms line up. */
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 16px;
 }
 /* A source-less player stays honest: no invented footage or event animation. */
 .match-stage {
@@ -347,13 +353,6 @@ option {
   font-size: 11px;
 }
 
-.demo-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  font-size: 10px;
-  color: var(--muted);
-}
 .primary {
   background: var(--purple);
   color: white;
@@ -393,11 +392,12 @@ option {
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(105px, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   border: 1px solid var(--line);
   background: var(--surface);
   border-radius: 8px;
-  overflow-x: auto;
+  overflow: hidden;
 }
 .stat-card {
   padding: 12px 13px;
@@ -446,7 +446,7 @@ option {
   position: absolute;
   bottom: 13px;
   right: 9px;
-  font-size: 7px;
+  font-size: 9px;
   color: var(--mint);
 }
 .empty {
@@ -524,9 +524,6 @@ footer a {
     width: 100%;
     height: clamp(510px, 80dvh, 680px);
   }
-  .demo-controls {
-    min-height: 43px;
-  }
   select, .text-button, .offer button {
     min-height: 36px;
   }
@@ -554,11 +551,8 @@ footer a {
     justify-content: flex-end;
     gap: 5px;
   }
-  #audience-team {
-    max-width: 155px;
-  }
-  #audience-style {
-    max-width: 112px;
+  #audience-bucket {
+    max-width: 210px;
   }
   .league-nav a {
     padding: 18px 0;
@@ -614,7 +608,7 @@ footer a {
     font-size: 21px;
   }
   .match-clock {
-    font-size: 8px;
+    font-size: 10px;
   }
   .match-toolbar {
     min-height: 51px;
@@ -628,6 +622,7 @@ footer a {
   select {
     max-width: 180px;
     font-size: 10px;
+    padding-right: 22px;
   }
   .video-empty p {
     font-size: 15px;
@@ -638,17 +633,17 @@ footer a {
     margin-bottom: 8px;
   }
 
+  /* Cards wrap into rows: no sideways scrolling. */
   .stats-grid {
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scroll-snap-type: x proximity;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .stat-card {
-    flex: 0 0 29%;
-    min-width: 105px;
-    scroll-snap-align: start;
     padding: 12px;
+    box-shadow: inset -1px -1px 0 var(--line);
+  }
+  .stat-card + .stat-card {
+    border-left: 0;
   }
   .stat-label {
     font-size: 10px;
@@ -658,7 +653,7 @@ footer a {
   }
   footer {
     padding: 14px 4%;
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -724,6 +719,25 @@ footer a {
 .pip-return:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
+}
+/* Between replay clips: the sting fades in over the held frame and out over the next clip. */
+.replay-sting {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #f4f4f6;
+  opacity: 0;
+  transition: opacity var(--sting-fade, .3s) ease;
+  pointer-events: none;
+}
+.replay-sting[data-state="in"] {
+  opacity: 1;
+}
+.replay-sting video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .replay-overlay {
   position: absolute;
@@ -941,3 +955,251 @@ footer a {
     font-size: 12px;
   }
 }
+
+/* Match picker: one row per match the backend lists (live, then scheduled, then finished). */
+.all-matches {
+  display: inline-block;
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.all-matches:hover {
+  color: var(--text);
+}
+.match-picker {
+  max-width: 880px;
+  margin: 12px auto 40px;
+}
+.picker-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.picker-heading h1 {
+  margin: 0 0 14px;
+  font-size: 28px;
+}
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 14px;
+}
+.demo-live-from {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted, #8ea3b8);
+}
+/* Demo start: the pipeline, each stage lit by a real readiness check. */
+.demo-progress {
+  margin: 0 0 18px;
+  padding: 18px 12px 12px;
+  border: 1px solid #24364a;
+  border-radius: 10px;
+  background: #0d141c;
+  transition: opacity 0.6s ease;
+}
+.demo-progress[data-done="yes"] {
+  opacity: 0;
+}
+.pipeline {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.stage + .stage::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  right: calc(50% + 24px);
+  width: calc(100% - 48px);
+  border-top: 3px solid #2a3a4c;
+  transition: border-color 0.4s ease;
+}
+.stage[data-ready="yes"] + .stage::before {
+  border-color: #3ecf8e;
+}
+.stage-ring {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #2a3a4c;
+  background: #16222f;
+}
+.stage-ring svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #6f8599;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.stage[data-ready="no"] .stage-ring {
+  animation: stage-pulse 1.4s ease-in-out infinite;
+}
+.stage[data-ready="yes"] .stage-ring {
+  border-color: #3ecf8e;
+}
+.stage[data-ready="yes"] .stage-ring svg {
+  stroke: #e8eef5;
+}
+.stage-label {
+  font-size: 11px;
+  color: #a9bacb;
+  text-align: center;
+}
+.pipeline-video {
+  margin: 12px 4% 0;
+  padding-top: 4px;
+  border-top: 2px dashed #4aa3ff;
+  font-size: 11px;
+  color: #4aa3ff;
+  text-align: center;
+}
+.pipeline-caption {
+  margin: 10px 0 0;
+  font-size: 13px;
+  text-align: center;
+}
+@keyframes stage-pulse {
+  50% { border-color: #f5b84a; box-shadow: 0 0 0 6px rgba(245, 184, 74, 0.15); }
+}
+@media (max-width: 560px) {
+  .stage-label { font-size: 9px; }
+  .stage-ring { width: 34px; height: 34px; }
+  .stage + .stage::before { top: 17px; right: calc(50% + 19px); width: calc(100% - 38px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage[data-ready="no"] .stage-ring { animation: none; border-color: #f5b84a; }
+  .demo-progress, .stage + .stage::before { transition: none; }
+}
+.picker-updated {
+  font-size: 11px;
+  color: var(--muted);
+}
+.match-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.match-empty {
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+.match-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.match-link:hover {
+  border-color: var(--purple);
+}
+.picker-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-weight: 700;
+}
+.picker-team.home {
+  justify-content: flex-end;
+  text-align: right;
+}
+.picker-team span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.picker-team img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.picker-centre {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+.picker-score {
+  font-size: 20px;
+  font-weight: 700;
+}
+.picker-status {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.match-link[data-status="live"] .picker-status {
+  color: var(--mint);
+}
+@media (max-width: 520px) {
+  .match-link {
+    padding: 12px;
+    gap: 8px;
+  }
+  .picker-team {
+    gap: 6px;
+    font-size: 13px;
+  }
+  .picker-team img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Captured clips (PLAN.md §10.2 D6–D7): a preview card per clip in the feed; Play opens the playlist from it. */
+.capture { margin: 0 0 12px; }
+.capture-play { display: block; width: 100%; padding: 0; border: 0; border-radius: 10px; background: none;
+  color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.capture-play:disabled { cursor: default; opacity: 0.6; }
+.capture-play:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+.clip-preview { --clip-club: var(--purple); position: relative; display: grid; align-content: end; gap: 2px;
+  aspect-ratio: 16 / 7; min-height: min-content; padding: 12px 56px 12px 14px; overflow: hidden; border-radius: 10px; color: #fff;
+  background: linear-gradient(120deg, var(--clip-club) 0%, #37003c 58%, #1d0024 100%); }
+.clip-preview::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(-28deg, transparent 0 22px, rgb(5 240 199 / 9%) 22px 24px); }
+.clip-preview::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, var(--mint), var(--purple)); }
+.clip-preview > * { position: relative; }
+.clip-preview-crest { position: absolute; top: 10px; right: 12px; width: 44px; height: 44px; object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 40%)); }
+.clip-preview-minute { font-size: 1.6rem; font-weight: 800; line-height: 1; color: var(--mint); }
+.clip-preview-event { font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.clip-preview-player { font-weight: 700; }
+.clip-preview-team, .clip-preview-score { font-size: 0.8rem; color: rgb(255 255 255 / 80%); }
+.clip-preview-play { position: absolute; right: 12px; bottom: 12px; display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 50%; background: var(--mint); color: var(--bg); font-size: 14px; }
+.capture-play:hover .clip-preview-play { transform: scale(1.08); }
+.replay-frame-caption { position: absolute; left: 8px; top: 8px; max-width: calc(100% - 16px); padding: 2px 7px;
+  overflow: hidden; border-radius: 4px; background: linear-gradient(90deg, #37003c, rgb(55 0 60 / 70%));
+  color: #fff; font-size: 11px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
+@media (prefers-reduced-motion: reduce) { .capture-play:hover .clip-preview-play { transform: none; } }

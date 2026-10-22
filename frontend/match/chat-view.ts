@@ -1,10 +1,16 @@
 import { node, keyedList } from "./dom.ts";
 import { clock, statValue } from "./format.ts";
 import { ClarificationView } from "./clarification-view.ts";
+import { markOtherMatch } from "./other-match.ts";
 import { replayCard } from "./replay-card.ts";
-import { answerFacts, loadPrices, receipt } from "./receipt.ts";
+import { answerFacts, cachedPrices, receipt } from "./receipt.ts";
 import type { Prices } from "./receipt.ts";
-import type { ChatSession, ChatTurn, Offer, Replay, Usage } from "./types.ts";
+import type { ChatSession, ChatTurn, FollowOffer, Offer, Replay, Usage } from "./types.ts";
+
+/** Enter sends the question; Shift+Enter adds a line and an IME composition keeps typing. */
+export function sendsOnEnter(event: Pick<KeyboardEvent, "key" | "shiftKey" | "isComposing">): boolean {
+  return event.key === "Enter" && !event.shiftKey && !event.isComposing;
+}
 
 type RenderedTurn = ChatTurn & { key: string | number; offers: Offer[]; clarificationActive: boolean };
 
@@ -17,9 +23,15 @@ export class QuestionView {
   onReplayPage: (turnId: string | number, page: number) => Promise<Replay>;
   onReplayPlay: (replay: Replay, opener: HTMLElement) => unknown;
   onReplayFrame: (replay: Replay, canvas: HTMLCanvasElement) => unknown;
+  /** "Follow this story?" accepted: open the follow view set up from the question (never follows by itself). */
+  onFollowOffer: (offer: FollowOffer) => unknown = () => {};
+  /** Turns whose follow offer the viewer turned down. */
+  private declined = new Set<string>();
   /** Page currently shown in each turn's replay card; restored turns start at their saved page. */
   replayPages: Map<string, Replay>;
-  prices: Prices = loadPrices();
+  /** Match clock the viewer was watching when each request was asked. */
+  askedAt = new Map<string, number>();
+  prices: Prices | null = cachedPrices();
   private receipts = new Set<{ element: HTMLElement; facts: number; usage: Usage }>();
   constructor(document: Document) {
     this.document = document;
@@ -85,9 +97,7 @@ export class QuestionView {
     if (atBottom) container.scrollTop = container.scrollHeight;
     this.get("question-suggestions").hidden = turns.length > 0;
     this.get("agent-mode").textContent =
-      session.mode === "fixture"
-        ? "Demo answers"
-        : "";
+      session.mode === "unavailable" ? "No model configured" : "";
   }
   turn(turn: RenderedTurn, reveal = false): HTMLElement {
     const article = node(this.document, "article", "", "chat-turn");
@@ -123,6 +133,10 @@ export class QuestionView {
       const timestamp = node(this.document, "span",
         beforeKickoff ? "Pre-match" : `${Math.floor(Math.max(0, seconds) / 60)}′`,
         "answer-time");
+      // Data can trail the picture: name the exact clock when it is well behind what was watched.
+      const watched = this.askedAt.get(String(turn.request_id));
+      const behind = !beforeKickoff && watched !== undefined && watched - seconds > 10;
+      if (behind) timestamp.textContent = `as of ${clock(seconds)}`;
       const description = `Answer as of ${beforeKickoff ? "before kickoff" : clock(seconds)}`;
       timestamp.title = description;
       timestamp.setAttribute("aria-label", description);
@@ -168,7 +182,25 @@ export class QuestionView {
       article.append(card);
     }
     if (turn.reply.replay) article.append(this.replay(turn, turn.reply.replay));
-    return article;
+    const offer = turn.reply.follow_offer;
+    if (offer && !this.declined.has(String(turn.key))) article.append(this.followOffer(String(turn.key), offer));
+    return markOtherMatch(this.document, article, turn.reply.other_match);
+  }
+  /** One offer per answer: Follow opens the follow view prefilled; No thanks removes it. */
+  private followOffer(key: string, offer: FollowOffer): HTMLElement {
+    const card = node(this.document, "div", "", "follow-offer");
+    card.append(node(this.document, "span", "Follow this story?", "follow-offer-text"));
+    const follow = node(this.document, "button", "Follow", "follow-offer-yes");
+    follow.type = "button";
+    follow.addEventListener("click", () => this.onFollowOffer(offer));
+    const decline = node(this.document, "button", "No thanks", "follow-offer-no");
+    decline.type = "button";
+    decline.addEventListener("click", () => {
+      this.declined.add(key);
+      card.remove();
+    });
+    card.append(follow, decline);
+    return card;
   }
   private updateClarifications() {
     for (const { view, active } of this.clarifications.values()) view.setEnabled(active && !this.busy);

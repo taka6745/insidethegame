@@ -1,5 +1,7 @@
 # Measured filter results
 
+SPADL golden sets and the local-model A/B (2026-10-21): [spadl-golden.md](spadl-golden.md). The filter timings below predate SPADL (canonical events, 14,018 deliveries); `./dev benchmark filters` now replays the 2,963 SPADL actions of Chelsea–United.
+
 Recorded 2026-10-18. Native arm64, Python 3.12.12, 10 logical CPUs. Single-process algorithm; no DB, model, network or viewer delivery in timings.
 
 ![Event-processing latency](latency.svg)

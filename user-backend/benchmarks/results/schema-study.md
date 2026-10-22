@@ -21,10 +21,10 @@ Nineteen diagnostic cases: the original 12-case model screen plus seven cases co
 
 | Model | Format | Correct | Median conversation | Model calls |
 | --- | --- | ---: | ---: | ---: |
-| Llama 3.2 3B | Prompt + compact schema | 2/19 | 1.52 s | 51 |
-| Llama 3.2 3B | Structured schema | 3/19 | 0.98 s | 22 |
-| GPT OSS 20B | Prompt + compact schema | 17/19 | 5.94 s | 23 |
-| GPT OSS 20B | Structured schema | 17/19 | 3.38 s | 21 |
+| Small model B (3B) | Prompt + compact schema | 2/19 | 1.52 s | 51 |
+| Small model B (3B) | Structured schema | 3/19 | 0.98 s | 22 |
+| Open model A (20B) | Prompt + compact schema | 17/19 | 5.94 s | 23 |
+| Open model A (20B) | Structured schema | 17/19 | 3.38 s | 21 |
 
 The 20B prompt path recorded two invalid-JSON attempts; its schema path recorded no goal-output failures. Lower latency is an observation under this gateway's routing/load, not an intrinsic model speed guarantee. Protocol mode can select a different route. [All paired results](schema-study/comparison.json).
 
@@ -56,7 +56,7 @@ A tiny enum-only [canary](schema-study/canary.json) worked for 3B, 20B and the r
 
 - Protocol-only full-schema smoke: the 20B route emitted invented fields and omitted required fields. Adding the same schema to model context changed its three-case smoke from 0/3 to 3/3. These small runs motivated the implementation, not a general accuracy claim. [Protocol-only](schema-study/protocol-only-smoke.json) · [Schema plus context](schema-study/schema-context-smoke.json).
 - In a later paired availability probe, 8B and the reference route answered ordinary requests but returned 429 for schema requests. These are **schema-route availability failures**, not measured reasoning failures or proof those models inherently cannot support schemas. [Availability probe](schema-study/availability.json).
-- Structured-output support is route/model dependent; for example, [Workers AI documents JSON mode and its limitations](https://developers.cloudflare.com/workers-ai/features/json-mode/). No fallback silently removes constraints in this application.
+- Structured-output support is route/model dependent; some routes document JSON-mode limitations. No fallback silently removes constraints in this application.
 
 Keep the stronger working route for stat interpretation; the current evidence does not justify replacing it with 3B. Before enabling schema mode by default, rerun the full 100-case cohort and provider compatibility checks on the deployment route. A future semantic verifier or smaller intent-selection contract is a separate experiment, not a proven fix here.
 

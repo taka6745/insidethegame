@@ -1,30 +1,34 @@
 import type { Reply, Usage } from "./types.ts";
 
-/** Estimated cost uses a fixed price the viewer sets, never any provider's real pricing. */
+/** Answer prices from the backend's `prices` config table (`GET /prices`), never a provider's pricing. */
 export interface Prices {
   /** US dollars per million input tokens. */
   input: number;
   /** US dollars per million output tokens. */
   output: number;
 }
-export const DEFAULT_PRICES: Prices = { input: 0.4, output: 1.6 };
 const KEY = "itg-answer-prices";
 
-export function loadPrices(storage?: Pick<Storage, "getItem">): Prices {
-  try {
-    const saved = JSON.parse((storage ?? globalThis.localStorage)?.getItem(KEY) || "null");
-    if (saved && [saved.input, saved.output].every((n) => Number.isFinite(n) && n >= 0))
-      return { input: saved.input, output: saved.output };
-  } catch {
-    // Private windows and blocked storage fall back to the defaults.
-  }
-  return { ...DEFAULT_PRICES };
+export function validPrices(value: unknown): value is Prices {
+  const prices = value as Prices | null;
+  return Boolean(prices) && [prices!.input, prices!.output].every((n) => typeof n === "number" && Number.isFinite(n) && n >= 0);
 }
-export function savePrices(prices: Prices, storage?: Pick<Storage, "setItem">) {
+
+/** The last server prices this browser saw (an offline cache only), else null: no cost is shown. */
+export function cachedPrices(storage?: Pick<Storage, "getItem">): Prices | null {
   try {
-    (storage ?? globalThis.localStorage)?.setItem(KEY, JSON.stringify(prices));
+    const saved: unknown = JSON.parse((storage ?? globalThis.localStorage)?.getItem(KEY) || "null");
+    if (validPrices(saved)) return { input: saved.input, output: saved.output };
   } catch {
-    // The settings still apply for this page.
+    // Private windows and blocked storage wait for the server prices.
+  }
+  return null;
+}
+export function cachePrices(prices: Prices, storage?: Pick<Storage, "setItem">) {
+  try {
+    (storage ?? globalThis.localStorage)?.setItem(KEY, JSON.stringify({ input: prices.input, output: prices.output }));
+  } catch {
+    // The prices still apply for this page.
   }
 }
 
@@ -43,19 +47,20 @@ export function answerFacts(reply: Reply): string[] {
   return clips.length ? clips : (reply.offers || []).map((offer) => offer.label || "Match statistic");
 }
 
-/** "✓ 3 facts · 1.8k tok · 4.2s · $0.001", with the token split and calls for a tooltip. */
-export function receipt(facts: number, usage: Usage, prices: Prices): { line: string; detail: string } {
+/** "✓ 3 facts · 1.8k tok · 4.2s · $0.001", with the token split and calls for a tooltip. Without
+ * server prices yet, no cost is shown. */
+export function receipt(facts: number, usage: Usage, prices: Prices | null): { line: string; detail: string } {
   const tokens = usage.input_tokens + usage.output_tokens;
-  const cost = (usage.input_tokens * prices.input + usage.output_tokens * prices.output) / 1_000_000;
+  const cost = prices && (usage.input_tokens * prices.input + usage.output_tokens * prices.output) / 1_000_000;
   const line = [
     facts ? `✓ ${facts} ${facts === 1 ? "fact" : "facts"}` : "",
     usage.calls ? `${compactCount(tokens)} tok` : "",
     `${usage.seconds.toFixed(1)}s`,
-    usage.calls ? dollars(cost) : "",
+    usage.calls && cost !== null ? dollars(cost) : "",
   ].filter(Boolean).join(" · ");
   const detail = usage.calls
     ? `${usage.input_tokens.toLocaleString("en")} input + ${usage.output_tokens.toLocaleString("en")} output tokens · `
-      + `${usage.calls} model ${usage.calls === 1 ? "call" : "calls"} · cost estimated at your price settings`
+      + `${usage.calls} model ${usage.calls === 1 ? "call" : "calls"} · ${cost === null ? "prices not loaded yet" : "cost estimated at the configured prices"}`
     : "Answered without a model call";
   return { line, detail };
 }

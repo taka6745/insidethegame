@@ -1,4 +1,4 @@
-"""Reference values, revision semantics and bounded candidate-work tests."""
+"""Reference values, final-action semantics and bounded candidate-work tests over SPADL actions."""
 import json
 import random
 from pathlib import Path
@@ -6,16 +6,21 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from backend.adapters.events import OptaInspiredAdapter
-from backend.models.events import Event
+from benchmarks.doubles.events import OptaInspiredAdapter
+from backend.models.actions import SpadlAction
 from backend.models.rules import Predicate, Rule
 from backend.services.filter_engine import FilterEngine
+from benchmarks.doubles.spadl import actions_from_events
 
 SCENARIO = json.loads((Path(__file__).parents[1] / "fixtures/filter-lab.json").read_text())
+DEFAULT = {"match_id": "match", "action_id": 1, "action_type": "corner_crossed", "result": "success",
+           "bodypart": "foot", "team_id": "chelsea", "match_time_seconds": 4025, "period": 2, "start_x": 50.0,
+           "start_y": 34.0, "end_x": 50.0, "end_y": 34.0, "start_zone": "middle_third", "end_zone": "middle_third",
+           "seq": 1, "final_seq": 1}
 
 
-def event(**changes):
-    return Event(**({"event_id": "e1", "match_id": "match", "event_type": "corner", "team_id": "chelsea", "match_time_seconds": 4025, "period": 2} | changes))
+def action(**changes):
+    return SpadlAction(**(DEFAULT | changes))
 
 
 def rule(*predicates, **changes):
@@ -26,27 +31,32 @@ def predicate(field, value, op="eq"):
     return Predicate(field=field, op=op, value=value)
 
 
+def scenario_actions():
+    events = [OptaInspiredAdapter().adapt(raw) for raw in SCENARIO["events"]]
+    home = SCENARIO["teams"][0]["id"]
+    return [SpadlAction.from_row(row, SCENARIO["match_id"], home) for row in actions_from_events(events, home)]
+
+
 @pytest.mark.parametrize("preset", SCENARIO["presets"], ids=lambda p: p["id"])
 def test_examples_from_natural_requests(preset):
-    engine, adapter = FilterEngine(), OptaInspiredAdapter()
+    engine, actions = FilterEngine(), scenario_actions()
     definition = Rule.model_validate(preset["rule"])
     identifier = engine.register(definition).calculation_id
-    for raw in SCENARIO["events"]:
-        engine.ingest(adapter.adapt(raw))
+    for item in actions:
+        engine.ingest(item)
     assert engine.get(identifier).value == preset["expected_final"]
-    # Same stream as historical backfill yields the same count, including VAR.
-    backfilled = FilterEngine().register(definition, [adapter.adapt(raw) for raw in SCENARIO["events"]])
-    assert backfilled.value == preset["expected_final"]
+    # Late registration over the same actions yields the same value.
+    assert FilterEngine().register(definition, actions).value == preset["expected_final"]
 
 
 def test_boundary_60_minutes_is_strict_and_teamless_rule_still_matches():
     engine = FilterEngine()
-    strict = engine.register(rule(predicate("event_type", "corner"), predicate("match_time_seconds", 3600, "gt")))
-    inclusive = engine.register(rule(predicate("event_type", "corner"), predicate("match_time_seconds", 3600, "gte")))
-    engine.ingest(event(match_time_seconds=3600))
+    strict = engine.register(rule(predicate("action_type", "corner_crossed"), predicate("match_time_seconds", 3600, "gt")))
+    inclusive = engine.register(rule(predicate("action_type", "corner_crossed"), predicate("match_time_seconds", 3600, "gte")))
+    engine.ingest(action(match_time_seconds=3600))
     assert engine.get(strict.calculation_id).value == 0
     assert engine.get(inclusive.calculation_id).value == 1
-    engine.ingest(event(event_id="e2", match_time_seconds=3601, team_id="madrid"))
+    engine.ingest(action(action_id=2, match_time_seconds=3601, team_id="madrid"))
     assert engine.get(strict.calculation_id).value == 1
     assert engine.get(inclusive.calculation_id).value == 2
 
@@ -54,51 +64,32 @@ def test_boundary_60_minutes_is_strict_and_teamless_rule_still_matches():
 def test_100k_unique_filters_do_not_mean_100k_lookups():
     engine = FilterEngine()
     for index in range(100_000):
-        engine.register(rule(predicate("event_type", "shot"), predicate("player_id", f"player-{index}")))
+        engine.register(rule(predicate("action_type", "shot"), predicate("player_id", f"player-{index}")))
     broad = engine.register(rule(predicate("match_time_seconds", 3600, "gt")))
-    corner = engine.register(rule(predicate("event_type", "corner")))
-    changes = engine.ingest(event())
+    corner = engine.register(rule(predicate("action_type", "corner_crossed")))
+    changes = engine.ingest(action())
     assert {r.calculation_id for r in changes} == {broad.calculation_id, corner.calculation_id}
     assert engine.last_candidate_count == 2
     assert engine.last_index_probe_count == 64
-    engine.ingest(event(event_id="shot", event_type="shot", player_id="player-4321"))
+    engine.ingest(action(action_id=2, action_type="shot", player_id="player-4321"))
     assert engine.last_candidate_count == 2  # one player rule and the broad rule
 
 
-def test_correction_visits_old_and_new_index_buckets():
-    engine = FilterEngine()
-    chelsea = engine.register(rule(predicate("team_id", "chelsea")))
-    madrid = engine.register(rule(predicate("team_id", "madrid")))
-    engine.ingest(event())
-    changes = engine.ingest(event(revision=2, team_id="madrid"))
-    assert {r.calculation_id: r.value for r in changes} == {chelsea.calculation_id: 0, madrid.calculation_id: 1}
-    assert engine.last_candidate_count == 2
-    assert engine.last_index_probe_count == 128
-
-
-def test_retraction_before_original_prevents_resurrection_by_old_revision():
+def test_duplicate_and_conflicting_final_action():
     engine = FilterEngine()
     calc = engine.register(rule())
-    assert engine.ingest(event(revision=2, deleted=True)) == []
-    assert engine.ingest(event()) == []
-    assert engine.get(calc.calculation_id).value == 0
-    assert engine.ingest(event(revision=3))[0].value == 1
-
-
-def test_duplicate_and_conflicting_revision():
-    engine = FilterEngine()
-    calc = engine.register(rule())
-    first = engine.ingest(event())[0]
-    assert engine.ingest(event()) == []
+    first = engine.ingest(action())[0]
+    assert engine.ingest(action()) == []
     assert engine.last_candidate_count == 0
     with pytest.raises(ValueError, match="Conflicting"):
-        engine.ingest(event(team_id="madrid"))
+        engine.ingest(action(team_id="madrid"))
     assert engine.get(calc.calculation_id) == first
 
 
 def test_equivalent_rules_reuse_id_despite_order_membership_and_duplicates():
-    a = rule(predicate("team_id", "chelsea"), predicate("event_type", ["shot", "goal"], "in"))
-    b = rule(predicate("event_type", ["goal", "shot", "goal"], "in"), predicate("team_id", ["chelsea"], "in"), predicate("team_id", "chelsea"))
+    a = rule(predicate("team_id", "chelsea"), predicate("action_type", ["shot", "shot_penalty"], "in"))
+    b = rule(predicate("action_type", ["shot_penalty", "shot", "shot_penalty"], "in"),
+             predicate("team_id", ["chelsea"], "in"), predicate("team_id", "chelsea"))
     engine = FilterEngine()
     assert engine.register(a).calculation_id == engine.register(b).calculation_id
     assert engine.count == 1
@@ -107,16 +98,17 @@ def test_equivalent_rules_reuse_id_despite_order_membership_and_duplicates():
 def test_matches_are_namespaced_and_missing_optional_fields_are_not_matches():
     engine = FilterEngine()
     calc = engine.register(rule(predicate("player_id", "mbappe")))
-    assert engine.ingest(event(match_id="other", player_id="mbappe")) == []
-    assert engine.ingest(event(player_id=None)) == []
+    assert engine.ingest(action(match_id="other", player_id="mbappe")) == []
+    assert engine.ingest(action(player_id=None)) == []
     assert engine.get(calc.calculation_id).value == 0
 
 
 def test_membership_intersection_and_contradictory_rules():
     engine = FilterEngine()
-    calc = engine.register(rule(predicate("event_type", ["corner", "shot"], "in"), predicate("event_type", "corner")))
+    calc = engine.register(rule(predicate("action_type", ["corner_crossed", "shot"], "in"),
+                                predicate("action_type", "corner_crossed")))
     impossible = engine.register(rule(predicate("team_id", "chelsea"), predicate("team_id", "madrid")))
-    engine.ingest(event())
+    engine.ingest(action())
     assert engine.get(calc.calculation_id).value == 1
     assert engine.get(impossible.calculation_id).value == 0
     assert engine.last_candidate_count == 1
@@ -125,32 +117,46 @@ def test_membership_intersection_and_contradictory_rules():
 def test_membership_compound_index_and_bounded_expansion():
     engine = FilterEngine()
     # 32 x 32 combinations would explode registration. The engine indexes only
-    # a bounded subset and applies remaining predicates to candidate events.
-    calc = engine.register(rule(predicate("team_id", [f"team-{i}" for i in range(32)], "in"), predicate("player_id", [f"player-{i}" for i in range(32)], "in")))
-    engine.ingest(event(team_id="team-31", player_id="player-31"))
+    # a bounded subset and applies remaining predicates to candidate actions.
+    calc = engine.register(rule(predicate("team_id", [f"team-{i}" for i in range(32)], "in"),
+                                predicate("player_id", [f"player-{i}" for i in range(32)], "in")))
+    engine.ingest(action(team_id="team-31", player_id="player-31"))
     assert engine.get(calc.calculation_id).value == 1
-    engine.ingest(event(event_id="no-player-match", team_id="team-31", player_id="outside"))
+    engine.ingest(action(action_id=2, team_id="team-31", player_id="outside"))
     assert engine.last_candidate_count == 1
     assert engine.get(calc.calculation_id).value == 1
-    engine.ingest(event(event_id="no-team-match", team_id="outside", player_id="player-31"))
+    engine.ingest(action(action_id=3, team_id="outside", player_id="player-31"))
     assert engine.last_candidate_count == 0
 
 
-def test_time_correction_can_remove_old_contribution_without_category_change():
+def test_zone_location_and_shot_outcome_predicates():
     engine = FilterEngine()
-    calc = engine.register(rule(predicate("event_type", "corner"), predicate("match_time_seconds", 3600, "gt")))
-    engine.ingest(event(match_time_seconds=3601))
-    assert engine.ingest(event(revision=2, match_time_seconds=3600))[0].value == 0
-    assert engine.get(calc.calculation_id).version == 3
+    box = engine.register(rule(predicate("end_zone", "opp_box")))
+    deep = engine.register(rule(predicate("end_x", 90, "gte"), predicate("end_y", 20, "gte"), predicate("end_y", 48, "lte")))
+    saved = engine.register(rule(predicate("action_type", "shot"), predicate("shot_outcome", "saved")))
+    engine.ingest(action(action_type="shot", result="fail", source_type_id=15, end_x=105.0, end_zone="opp_box"))
+    engine.ingest(action(action_id=2, action_type="shot", result="fail", source_type_id=15, end_x=95.0, end_zone="opp_box"))
+    engine.ingest(action(action_id=3, end_x=100.0, end_y=10.0, end_zone="final_third"))
+    assert [engine.get(c.calculation_id).value for c in (box, deep, saved)] == [2, 2, 1]
+
+
+def test_recorded_coverage_counts_only_observed_body_parts():
+    engine = FilterEngine()
+    complete = engine.register(rule(predicate("bodypart", "head")))
+    recorded = engine.register(rule(predicate("bodypart", "head"), coverage="recorded"))
+    engine.ingest(action(bodypart="head", bodypart_observed=True))
+    engine.ingest(action(action_id=2, bodypart="head", bodypart_observed=False))
+    assert engine.get(complete.calculation_id).value == 2
+    assert engine.get(recorded.calculation_id).value == 1
 
 
 def test_late_registration_reuses_observed_history_and_live_continues_once():
     engine = FilterEngine()
-    engine.ingest(event())
-    calc = engine.register(rule(predicate("event_type", "corner")), history=[event()])
+    engine.ingest(action())
+    calc = engine.register(rule(predicate("action_type", "corner_crossed")), history=[action()])
     assert calc.value == 1
-    assert engine.ingest(event()) == []
-    assert engine.ingest(event(event_id="next"))[0].value == 2
+    assert engine.ingest(action()) == []
+    assert engine.ingest(action(action_id=2))[0].value == 2
 
 
 def test_membership_numeric_identity_is_canonical():
@@ -159,54 +165,51 @@ def test_membership_numeric_identity_is_canonical():
     assert integer.calculation_id == floating.calculation_id
 
 
-def test_sum_correction_retraction_and_missing_measurement():
+def test_sum_of_ball_distance():
     engine = FilterEngine()
     calc = engine.register(rule(operation="sum", sum_field="distance_metres"))
-    engine.ingest(event(distance_metres=12.5))
-    engine.ingest(event(revision=2, distance_metres=8.2))
-    assert engine.get(calc.calculation_id).value == 8.2
-    assert engine.ingest(event(event_id="missing")) == []
-    engine.ingest(event(revision=3, distance_metres=8.2, deleted=True))
-    assert engine.get(calc.calculation_id).value == 0
+    engine.ingest(action(start_x=10.0, start_y=10.0, end_x=13.0, end_y=14.0))
+    assert engine.get(calc.calculation_id).value == 5.0
+    engine.ingest(action(action_id=2))  # Zero length still counts as zero metres.
+    assert engine.get(calc.calculation_id).value == 5.0
 
 
-def test_decimal_sum_is_identical_for_live_history_correction_and_retraction():
+def test_decimal_sum_is_identical_for_live_and_history():
     definition = rule(operation="sum", sum_field="distance_metres")
-    deliveries = [event(event_id="first", distance_metres=0.1),
-                  event(event_id="second", distance_metres=0.2),
-                  event(event_id="second", revision=2, distance_metres=0.3),
-                  event(event_id="third", distance_metres=0.00000000001)]
+    deliveries = [action(action_id=1, start_x=0.0, end_x=0.1), action(action_id=2, start_x=0.0, end_x=0.2),
+                  action(action_id=3, start_x=0.0, end_x=0.00000000001)]
     live = FilterEngine()
     calc = live.register(definition)
     for delivery in deliveries:
         live.ingest(delivery)
     backfill = FilterEngine().register(definition, deliveries)
-    assert live.get(calc.calculation_id).value == backfill.value == 0.40000000001
-    live.ingest(event(event_id="first", revision=2, distance_metres=0.1, deleted=True))
-    assert live.get(calc.calculation_id).value == 0.30000000001
+    assert live.get(calc.calculation_id).value == backfill.value == 0.30000000001
 
 
 def test_index_result_matches_independent_full_scan_with_many_combinations():
     rng = random.Random(42)
     engine = FilterEngine()
     definitions = []
+    choices = [("action_type", ["corner_crossed", "shot", "pass"]), ("team_id", ["chelsea", "madrid"]),
+               ("player_id", ["a", "b"]), ("bodypart", ["head", "foot"]), ("period", [1, 2]),
+               ("result", ["success", "fail"]), ("end_zone", ["opp_box", "middle_third"])]
     for _ in range(150):
-        terms = []
-        for field, values in [("event_type", ["corner", "shot", "pass"]), ("team_id", ["chelsea", "madrid"]), ("player_id", ["a", "b"]), ("body_part", ["head", "foot"]), ("period", [1, 2]), ("outcome", ["success", "failure"])]:
-            if rng.choice([True, False]):
-                terms.append(predicate(field, rng.choice(values)))
+        terms = [predicate(field, rng.choice(values)) for field, values in choices if rng.choice([True, False])]
         terms.append(predicate("match_time_seconds", rng.choice([0, 2700, 3600]), "gt"))
         definition = rule(*terms)
         engine.register(definition)
         definitions.append(definition)
-    latest = {}
+    actions = []
     for index in range(100):
-        item = event(event_id=str(index), event_type=rng.choice(["corner", "shot", "pass"]), team_id=rng.choice(["chelsea", "madrid"]), player_id=rng.choice(["a", "b", None]), body_part=rng.choice(["head", "foot", None]), period=rng.choice([1, 2]), outcome=rng.choice(["success", "failure"]), match_time_seconds=rng.choice([100, 3000, 4000]))
-        latest[item.event_id] = item
+        item = action(action_id=index, action_type=rng.choice(["corner_crossed", "shot", "pass"]),
+                      team_id=rng.choice(["chelsea", "madrid"]), player_id=rng.choice(["a", "b", None]),
+                      bodypart=rng.choice(["head", "foot"]), period=rng.choice([1, 2]),
+                      result=rng.choice(["success", "fail"]), end_zone=rng.choice(["opp_box", "middle_third"]),
+                      match_time_seconds=rng.choice([100, 3000, 4000]))
+        actions.append(item)
         engine.ingest(item)
     for definition in definitions:
-        expected = sum(definition.matches(e) for e in latest.values())
-        assert engine.get(definition.calculation_id).value == expected
+        assert engine.get(definition.calculation_id).value == sum(definition.matches(a) for a in actions)
 
 
 @pytest.mark.parametrize("kwargs", [
@@ -218,8 +221,12 @@ def test_index_result_matches_independent_full_scan_with_many_combinations():
     {"field": "period", "op": "eq", "value": 1.5},
     {"field": "unknown", "op": "eq", "value": "x"},
     {"field": "team_id", "op": "regex", "value": "x"},
-    {"field": "event_type", "op": "eq", "value": "header"},
-    {"field": "body_part", "op": "eq", "value": "ear"},
+    {"field": "action_type", "op": "eq", "value": "header"},
+    {"field": "event_type", "op": "eq", "value": "pass"},
+    {"field": "bodypart", "op": "eq", "value": "ear"},
+    {"field": "end_zone", "op": "eq", "value": "wing"},
+    {"field": "end_x", "op": "gt", "value": 106},
+    {"field": "start_y", "op": "lt", "value": 69},
 ])
 def test_reject_unsupported_or_mistyped_predicates(kwargs):
     with pytest.raises(ValidationError):
@@ -233,22 +240,21 @@ def test_sum_requires_explicit_field_and_count_rejects_one():
         rule(sum_field="distance_metres")
 
 
-def test_rule_event_and_results_are_immutable():
+def test_rule_action_and_results_are_immutable():
     with pytest.raises(ValidationError):
-        event().team_id = "other"
-    definition = rule(predicate("event_type", "corner"))
+        action().team_id = "other"
+    definition = rule(predicate("action_type", "corner_crossed"))
     with pytest.raises(ValidationError):
         definition.match_id = "other"
-    engine = FilterEngine()
-    result = engine.register(definition)
+    result = FilterEngine().register(definition)
     with pytest.raises(ValidationError):
         result.value = 12
 
 
 def test_restore_delivery_version_without_replaying_old_versions():
     engine = FilterEngine()
-    calc = engine.register(rule(), [event()])
+    calc = engine.register(rule(), [action()])
     assert engine.restore_version(calc.calculation_id, 15).version == 15
-    assert engine.ingest(event(event_id="next"))[0].version == 16
+    assert engine.ingest(action(action_id=2))[0].version == 16
     with pytest.raises(ValueError):
         engine.restore_version(calc.calculation_id, 2)

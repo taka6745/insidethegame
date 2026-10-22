@@ -12,20 +12,20 @@ const view = (): ViewDouble => ({ renders:[], statuses:[], render(s) { this.rend
 const controller = (api: object, v: ViewDouble) => new ChatController(stub<ChatApi>(api), stub<ChatView>(v), storage());
 
 test('refresh of pending question polls saved completion', async () => {
-  const v=view(), api={history:async () => ({turns:[{status:'complete',reply:{text:'4 shots'}}],mode:'fixture'})};
+  const v=view(), api={history:async () => ({turns:[{status:'complete',reply:{text:'4 shots'}}],mode:'local'})};
   const chat=controller(api,v);
-  chat.runId='run';chat.token='token';chat.session={turns:[{status:'pending'}]};
-  await chat.updateRun({run_id:'run'});
+  chat.matchId='m1';chat.token='token';chat.session={turns:[{status:'pending'}]};
+  await chat.updateMatch({match_id:'m1'});
   assert.equal(v.renders.at(-1)!.turns[0]!.reply!.text,'4 shots');
   assert.equal(v.statuses.at(-1)![1],false);
 });
 
 test('late response cannot replace a new match conversation', async () => {
   const pending=deferred(),v=view();
-  const chat=controller({ask:() => pending.promise,history:async () => ({turns:[],mode:'fixture'})},v);
+  const chat=controller({ask:() => pending.promise,history:async () => ({turns:[],mode:'local'})},v);
   chat.token='old';chat.session={turns:[]};
   const sending=chat.send('How is it going?');
-  chat.generation++;chat.runId='new';
+  chat.generation++;chat.matchId='new';
   pending.resolve({});await sending;
   assert.equal(v.renders.length,1); // only the optimistic old message, no late reply
 });
@@ -47,16 +47,16 @@ test('failed send retries same prompt using same idempotency ID', async () => {
 
 test('track button sends only the offer ID then refreshes state', async () => {
   const calls: unknown[][]=[],v=view();
-  const chat=controller({track:async (...args: unknown[]) => calls.push(args),history:async () => ({turns:[],mode:'fixture'})},v);
+  const chat=controller({track:async (...args: unknown[]) => calls.push(args),history:async () => ({turns:[],mode:'local'})},v);
   chat.token='t';await chat.track('offer');
   assert.deepEqual(calls,[['t','offer']]);
 });
 
 test('chat API carries request UUID and no client-generated rule on Track', async () => {
-  const api=new ChatApi();const calls: unknown[][]=[];
+  const api=new ChatApi('/api','m1');const calls: unknown[][]=[];
   api.request=stub<ChatApi['request']>(async (...args: unknown[]) => calls.push(args));
   await api.ask('token','headers','uuid');await api.track('token','offer');
-  assert.deepEqual(calls,[['/chat/token/messages',{prompt:'headers',request_id:'uuid'}],['/chat/token/offers/offer/track',{}]]);
+  assert.deepEqual(calls,[['/matches/m1/chat/token/messages',{prompt:'headers',request_id:'uuid'}],['/matches/m1/chat/token/offers/offer/track',{}]]);
 });
 
 test('question view treats model text and offer labels as text, not markup', () => {
@@ -75,4 +75,26 @@ test('question view treats model text and offer labels as text, not markup', () 
   assert.equal(messages.children[0]!.textContent,unsafe);
   assert.equal(messages.children[1]!.children[0]!.textContent,unsafe);
   assert.equal(messages.children[1]!.children[1]!.children[0]!.textContent,unsafe);
+});
+
+test('lab chat opens a session only when a question is asked, not on load', async () => {
+  const calls: string[]=[],v=view();
+  const api={session:async (p: string) => { calls.push('session:'+p); return {session_token:'t',turns:[],offers:[],mode:'local'}; },
+    ask:async () => { calls.push('ask'); }, history:async () => ({turns:[],offers:[],mode:'local'})};
+  const chat=controller(api,v);chat.profile='chelsea-analytical';
+  await chat.updateMatch({match_id:'m1'});
+  assert.deepEqual(calls,[]);
+  assert.equal(chat.token,null);
+  await chat.send('How many corners?');
+  assert.deepEqual(calls,['session:chelsea-analytical','ask']);
+});
+
+test('without a model the lab chat says answers are unavailable and never opens a session', async () => {
+  const calls: string[]=[],v=view();
+  const chat=controller({session:async () => { calls.push('session'); return {}; }},v);
+  chat.unavailable=true;
+  await chat.updateMatch({match_id:'m1'});
+  await chat.send('How many corners?');
+  assert.deepEqual(calls,[]);
+  assert.deepEqual(v.statuses.at(-1),['Answers unavailable · no model is configured',true]);
 });

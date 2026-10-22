@@ -5,22 +5,28 @@ it (generated data, not a real match). Like local mode, the fixture data already
 whole match, so these tests also show the engine never reads ahead of the notifications.
 """
 import asyncio
+import json
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from dataclasses import replace
+from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import ANY
 
-from narrative_engine.agents.fake import FakeAgents
+from narrative_engine.devtools.fake_agents import FakeAgents
 from narrative_engine.context.compression import EARLIER, Span, tiles
 from narrative_engine.core.config import Settings
-from narrative_engine.match_data.fixture import FixtureMatchData
-from narrative_engine.core.models import (USER_TYPES, KeyEventDetected, MatchClock, MinuteClosed, PresenceChanged)
-from narrative_engine.core.orchestrator import EMPTY_MINUTE, MatchOrchestrator
+from narrative_engine.devtools.fixture_data import FixtureMatchData
+from narrative_engine.audience.targets import Targets
+from narrative_engine.devtools.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
+from narrative_engine.core.models import KeyEventDetected, MatchClock, MinuteClosed, PeriodChanged
+from narrative_engine.core.orchestrator import EMPTY_MINUTE, EMPTY_SPAN, MatchOrchestrator, stoppage
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink, read_notifications
 
 FIXTURES = Path(__file__).parent / "fixtures"
 MATCH = "itg-syn-0001-local"
 NOTIFICATIONS = FIXTURES / "itg-syn-0001-notifications.jsonl"
+ACTIONS = FIXTURES / "itg-syn-0001-spadl.json"
 MESSAGES = [m for _, m in read_notifications(NOTIFICATIONS) if m]
 MINUTES = [m.clock for m in MESSAGES if isinstance(m, MinuteClosed)]
 KEYS = [m for m in MESSAGES if isinstance(m, KeyEventDetected)]
@@ -30,15 +36,16 @@ T0 = datetime(2026, 10, 18, 7, 0, tzinfo=timezone.utc)
 
 
 class Harness:
-    def __init__(self, data=None, store=None, settings=Settings(), author_delay=0.0):
+    def __init__(self, data=None, store=None, settings=Settings(), author_delay=0.0, targets=None, prompts=None):
         self.now = T0
         self.loop = asyncio.new_event_loop()  # one loop per engine, as in production
-        self.data = data or FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS)
+        self.data = data or FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS, actions_path=ACTIONS)
         self.agents = FakeAgents(author_delay)
         self.store = store or MemoryStore()
         self.sink = MemorySink(self.store)
         self.engine = MatchOrchestrator(MATCH, self.data, self.agents, self.store, self.sink, settings,
-                                        now=lambda: self.now)
+                                        now=lambda: self.now, targets=targets or StaticTargets(default_targets()),
+                                        prompts=prompts)
 
     def run(self, messages):
         async def go():
@@ -66,8 +73,19 @@ class Harness:
         return [n.stepId.split(":", 1)[1] for n in self.narratives(user_type)]
 
 
-def presence(counts, seconds):
-    return PresenceChanged(MATCH, counts, T0 + timedelta(seconds=seconds))
+class MutableTargets:
+    """The user backend's audience-config, changed by the test between messages."""
+    def __init__(self, *bucket_ids):
+        self.revision, self.asked = 0, []
+        self.set(*bucket_ids)
+
+    def set(self, *bucket_ids):
+        self.revision += 1
+        self.items = tuple(t for t in default_targets() if t["bucket_id"] in bucket_ids)
+
+    async def current(self, match_id):
+        self.asked.append(match_id)
+        return Targets(self.revision, self.items)
 
 
 def test_full_match_with_all_buckets():
@@ -101,7 +119,7 @@ def test_goal_then_var_overturn_gives_two_steps_and_the_second_knows():
     h = Harness().run(MESSAGES)
     goal, var = [k for k in KEYS if k.keyType in ("Goal", "VarOverturn") and k.clock.periodId == 2][:2]
     assert var.keyType == "VarOverturn"
-    by_reason = {v["trigger_reason"]: v for v in h.calls("author") if v["user_type"] == "away:experienced"}
+    by_reason = {v["trigger_reason"]: v for v in h.calls("author") if v["bucket_id"] == "away:experienced"}
     goal_call = next(v for r, v in by_reason.items() if "Goal for Harbour Athletic" in r and "53'" in r)
     var_call = next(v for r, v in by_reason.items() if "VAR overturns" in r)
     assert "overturned" not in goal_call["key_event_ledger"]
@@ -110,18 +128,21 @@ def test_goal_then_var_overturn_gives_two_steps_and_the_second_knows():
 
 
 def test_author_never_reads_past_the_announced_horizon():
-    stats = {MatchClock(1, 22): [{"position": p, "periodId": 1, "minuteLabel": "23'", "goals": 0, "possessionPct": 50,
-                                  "shots": 1, "shotsOnTarget": 0, "passes": 10, "passesCompleted": 9, "corners": 0,
-                                  "fouls": 0, "yellowCards": 0, "redCards": 0} for p in ("home", "away")]}
-    stats[MatchClock(1, 23)] = [{**r, "minuteLabel": "24'", "goals": 1} for r in stats[MatchClock(1, 22)]]
-    data = FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS, stats=stats)
+    def rows(goals):
+        return [{"statId": f"{t}:{k}", "kind": k, "contestantId": t, "value": v, "available": True, "unit": u}
+                for t in ("c-riv", "c-har") for k, v, u in (("possession", 50.0, "%"), ("shots", goals, ""))]
+    data = FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS, stats=None, actions_path=ACTIONS)
     first_goal = KEYS[0]
+    goal_seq = next(e["seq"] for e in data.raw if e["typeId"] == 16)
+    data.stats = {1: rows(0), goal_seq: rows(1)}  # catalogue rows by seq; the goal's minute is not summarised yet
     h = Harness(data).run(MESSAGES[:MESSAGES.index(first_goal) + 1])
     call = next(v for v in h.calls("author") if v["trigger_reason"].startswith("Key event"))
     assert call["key_event_ledger"].count("\n- ") == 0 and "Goal for Riverside FC, Mensah" in call["key_event_ledger"]
-    assert "As of 23'" in call["game_state_statistics"]  # minute 24' is not closed yet
+    assert "As of 23'" in call["game_state_statistics"] and "| Shots (on target) | 0 (n/a) | 0 (n/a) |" in \
+        call["game_state_statistics"] and "0 - 0" in call["game_state_statistics"]  # minute 24' is not closed yet
     times = [line.split()[0] for line in call["match_events"].splitlines() if line.startswith("  ") and line.strip()[:1].isdigit()]
-    assert times and max(times) == "23:09" and "GOAL" in call["match_events"]
+    assert times and max(times) == "23:09" and "shot, success" in call["match_events"]
+    assert "key event: Goal for Riverside FC, Mensah" in call["match_events"]
 
 
 def test_duplicate_messages_change_nothing():
@@ -153,6 +174,32 @@ def test_quiet_minute_gets_a_fixed_block_without_a_model_call():
     assert tiles(h.spans(), PLAYED)
 
 
+def test_a_merge_of_only_quiet_minutes_needs_no_model_call():
+    data = FixtureMatchData(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS)
+    data.raw = [e for e in data.raw if (e["periodId"], e["timeMin"]) >= (1, 11)]
+    h = Harness(data, targets=StaticTargets([])).run([MinuteClosed(MATCH, MatchClock(1, 10), T0)])
+    assert h.agents.calls == []
+    first = h.active_blocks()[0]
+    assert (first.level, first.coversFrom, first.coversTo) == (1, MatchClock(1, 0), MatchClock(1, 4))
+    assert first.summary == EMPTY_SPAN and first.promptVersion == "fixed-empty"
+
+
+def test_a_periods_last_minute_is_merged_once_and_stoppage_time_has_no_scheduled_step():
+    h = Harness()
+    at, compress = [], h.engine._compress
+
+    async def watched():
+        at.append(h.engine.cp["lastSummarised"])
+        await compress()
+    h.engine._compress = watched
+    h.run(MESSAGES)
+    ends = set(h.engine.cp["periodEnds"].values())
+    assert at and not ends & set(at)  # `_close_periods` merges the period's last minute
+    scheduled = [MatchClock.parse(s.split(":")[1]) for s in h.steps() if s.startswith("scheduled:")]
+    assert scheduled and not [c for c in scheduled if stoppage(c)]
+    assert h.engine.cp["status"] == "complete"
+
+
 def test_author_runs_are_serialised_per_bucket_and_capped():
     h = Harness(settings=Settings(author_concurrency=3), author_delay=0.01)
     before = MESSAGES[:MESSAGES.index(KEYS[1])]
@@ -166,30 +213,36 @@ def test_author_runs_are_serialised_per_bucket_and_capped():
         first, second = [n for n in h.narratives(user_type) if n.trigger.type == "keyEvent"]
         assert first.stepId.endswith(f"key:{KEYS[0].id}") and second.seq == first.seq + 1
         assert first.text in next(v["narrative_excerpts"] for v in h.calls("author")
-                                  if v["user_type"] == user_type and "Penalty to" in v["trigger_reason"])
+                                  if v["bucket_id"] == user_type and "Penalty to" in v["trigger_reason"])
 
 
-def test_presence_limits_buckets_and_falls_back_when_stale():
-    h = Harness()
-    h.run([presence({"home:casual": 1, "away:analyst": 2, "neutral:simple": 0}, 0)])
-    h.run(MESSAGES[:MESSAGES.index(KEYS[0]) + 1])
+def test_targets_limit_buckets_and_none_writes_nothing():
+    targets = MutableTargets("home:casual", "away:analyst")
+    h = Harness(targets=targets).run(MESSAGES[:MESSAGES.index(KEYS[0]) + 1])
     assert {n.userType for n in h.narratives()} == {"away:analyst", "home:casual"}
-    assert sorted(n.userType for n in h.narratives() if n.trigger.type == "keyEvent") == ["away:analyst", "home:casual"]
+    assert set(targets.asked) == {MATCH}  # the run-scoped matchId; the backend resolves its fixture
+    assert {n.audienceRevision for n in h.narratives()} == {1}
 
-    h.now = T0 + timedelta(seconds=Settings().presence_stale_seconds + 1)
+    targets.set()
     h.run(MESSAGES[MESSAGES.index(KEYS[0]) + 1:MESSAGES.index(KEYS[1]) + 1])
-    assert {n.userType for n in h.narratives() if n.stepId.endswith(f"key:{KEYS[1].id}")} == set(USER_TYPES)
+    assert not [n for n in h.narratives() if n.stepId.endswith(f"key:{KEYS[1].id}")]
+    assert h.engine.cp["status"] == "live" and h.engine.cp["pending"] == []
 
 
-def test_presence_ignores_older_messages_and_catches_up_new_buckets():
-    h = Harness()
-    h.run([presence({"home:casual": 1}, 10), presence({"home:casual": 1, "away:simple": 1}, 5)])
-    assert h.engine.active_buckets() == ["home:casual"]
-    h.run(MESSAGES[:30])
-    h.run([presence({"home:casual": 1, "away:simple": 1}, 20)])
+def test_a_newly_active_bucket_gets_a_catch_up_from_the_poll():
+    targets = MutableTargets("home:casual")
+    h = Harness(targets=targets).run(MESSAGES[:30])
+    targets.set("home:casual", "away:simple")
+    h.wait(h.engine.sync_targets())
+    h.wait(h.engine.worker)
     catch_up = [n for n in h.narratives() if n.trigger.type == "catchUp"]
-    assert [n.userType for n in catch_up] == ["away:simple"]
-    assert "just joined" in h.calls("author")[-1]["trigger_reason"]
+    assert [(n.userType, n.audienceRevision) for n in catch_up] == [("away:simple", 2)]
+    author = h.calls("author")[-1]
+    assert "just been enabled" in author["trigger_reason"] and author["bucket_id"] == "away:simple"
+    assert "Team support. Supports the away team." in author["user_type"]  # layer + option descriptions
+    assert "This audience supports Harbour Athletic." in author["user_type"]
+    h.wait(h.engine.sync_targets())  # unchanged revision: nothing new
+    assert len([n for n in h.narratives() if n.trigger.type == "catchUp"]) == 1
 
 
 def test_restart_resumes_from_the_checkpoint():
@@ -209,11 +262,11 @@ def test_a_failed_author_call_spares_other_buckets_and_redelivery_retries_it():
     h.run(MESSAGES[:first_goal])
     failing, real_author, failures = USER_TYPES[0], h.agents.author, []  # first in, others still queued
 
-    async def flaky(variables):
-        if variables["user_type"] == failing and not failures:
+    async def flaky(variables, prompt=None):
+        if variables["bucket_id"] == failing and not failures:
             failures.append(1)
             raise RuntimeError("model unavailable")
-        return await real_author(variables)
+        return await real_author(variables, prompt)
     h.agents.author = flaky
     try:
         h.run([KEYS[0]])
@@ -270,15 +323,14 @@ def test_restart_mid_backlog_resumes_from_the_checkpoint_without_gaps_or_repeats
 
 
 def test_the_worker_retries_failed_work():
-    h = Harness()
-    h.engine.retry_backoff = 0.001
+    h = Harness(settings=Settings(retry_seconds=0.001))
     real, failures = h.agents.summarise, []
 
-    async def flaky(variables):
+    async def flaky(variables, prompt=None):
         if len(failures) < 2:
             failures.append(1)
             raise RuntimeError("LLM unavailable")
-        return await real(variables)
+        return await real(variables, prompt)
     h.agents.summarise = flaky
 
     async def go():
@@ -293,8 +345,7 @@ def test_the_worker_retries_failed_work():
 
 def test_a_failed_publish_is_sent_on_retry_not_lost():
     """Stored before publishing, so a retry finds the narrative stored and must still send it."""
-    h = Harness()
-    h.engine.retry_backoff = 0.001
+    h = Harness(settings=Settings(retry_seconds=0.001))
     real, failures = h.sink.publish, []
 
     async def flaky(narrative):
@@ -324,3 +375,183 @@ def test_report_shows_every_block_and_step():
     assert page.count('class="card compress') == len(blocks) - len(MINUTES) - 1
     assert page.count('class="card narrative') == len({n.stepId for n in narratives})
     assert page.count('class="bucket"') == len(narratives) and "<script>" in page
+
+
+def test_period_end_steps_run_on_period_ended_at_the_end_events_clock():
+    """No waiting for the end minute's MinuteClosed (or the ETL's idle flush): the step's data reaches the
+    End event's second, not :59."""
+    ends = {m.periodId: i for i, m in enumerate(MESSAGES) if isinstance(m, PeriodChanged) and not m.started}
+    early = [m for i, m in enumerate(MESSAGES)
+             if not (isinstance(m, MinuteClosed) and any(i > at and m.clock.periodId == p for p, at in ends.items()))]
+    h = Harness().run(early)
+    data = h.data
+    for period, ref in ((1, "halfTime:1"), (2, "fullTime:2")):
+        clock, second = h.wait(data.period_end_at(MATCH, period))
+        step = [n for n in h.narratives("home:casual") if n.stepId.endswith(ref)]
+        assert step and (step[0].matchTime, step[0].timeSec) == (clock, second) and second < 59
+    assert h.engine.cp["status"] == "complete"
+
+
+def _settle(h):
+    if h.engine.worker:
+        h.wait(h.engine.worker)
+
+
+def test_a_disabled_bucket_stops_and_is_caught_up_when_re_enabled():
+    """Buckets are toggled in config: a disabled one gets nothing; re-enabled, it is caught up at once."""
+    targets = MutableTargets("home:casual", "away:simple")
+    h = Harness(targets=targets).run(MESSAGES[:30])
+    targets.set("home:casual")
+    h.wait(h.engine.sync_targets())
+    written = len(h.narratives("away:simple"))
+    later = MESSAGES.index(KEYS[1]) + 1
+    h.run(MESSAGES[30:later])
+    assert len(h.narratives("away:simple")) == written and h.narratives("home:casual")[-1].stepId.endswith(
+        f"key:{KEYS[1].id}")
+    targets.set("home:casual", "away:simple")
+    h.wait(h.engine.sync_targets())
+    _settle(h)
+    assert [n.userType for n in h.narratives() if n.trigger.type == "catchUp"] == ["away:simple"]
+
+
+def test_period_ended_uses_its_own_clock_and_waits_for_the_etl_end_row():
+    """The SQL rows can trail the notification (Azure): the half-time step still runs at the End
+    event's clock, but the end minute is summarised only once its End row is readable."""
+    class Trailing(FixtureMatchData):
+        lagging = True
+
+        async def period_end_at(self, match_id, period_id):
+            return None if self.lagging else await super().period_end_at(match_id, period_id)
+
+        async def events(self, match_id, start, end, until_sec=59):
+            rows = await super().events(match_id, start, end, until_sec)
+            return [e for e in rows if not (self.lagging and e.get("typeId") == 30)]
+
+    data = Trailing(FIXTURES / "itg-syn-0001.jsonl", NOTIFICATIONS)
+    h = Harness(data=data, settings=Settings(retry_seconds=0.005, retry_max_seconds=0.01))
+    data.lagging = False
+    clock, second = h.wait(data.period_end_at(MATCH, 1))
+    data.lagging = True
+    at = next(i for i, m in enumerate(MESSAGES) if isinstance(m, PeriodChanged) and not m.started)
+    ended = MESSAGES[at]
+    messages = [m for m in MESSAGES[:at] if not (isinstance(m, MinuteClosed) and m.clock >= clock)]
+    messages.append(PeriodChanged(ended.matchId, 1, False, ended.eventTime, clock, second))
+
+    async def go():
+        for m in messages:
+            await h.engine.accept(m)
+        await asyncio.sleep(0.2)  # the worker keeps retrying the end minute
+    h.wait(go())
+    assert h.engine.cp["periodEnds"]["1"] == clock.key and h.engine.cp["closedThrough"] == clock.key
+    assert not [n for n in h.narratives() if n.trigger.type == "halfTime"]
+    data.lagging = False
+    _settle(h)
+    half = [n for n in h.narratives("home:casual") if n.trigger.type == "halfTime"]
+    assert [(n.matchTime, n.timeSec) for n in half] == [(clock, second)]
+
+
+def test_an_excerpt_keeps_its_supported_sentences_when_one_claim_still_fails():
+    """repair.author_trim: a sentence whose cause claim fails after the rewrite is removed, the rest is written;
+    with author_trim off the whole excerpt is dropped as before."""
+    from narrative_engine.analysis.policy import ShippedPolicy
+    from narrative_engine.devtools.fake_decisions import FakeDecisions
+
+    def run(trim):
+        h = Harness(targets=StaticTargets(default_targets()[:1]))
+        policy = json.loads((Path(__file__).parents[1] / "narrative_engine" / "analysis" / "storyline-policy.json").read_text())
+        policy["repair"]["author_trim"] = trim
+        h.engine.policy = ShippedPolicy(policy)
+        h.engine.decisions = FakeDecisions(rule=lambda key, question, state: (
+            (0.0 if key.endswith("_support") else 0.9) if "pressing won it" in question.instructions.split("\n")[0]
+            and "_causal" in key else 0.0))
+        first_goal = MESSAGES.index(KEYS[0])
+        h.run(MESSAGES[:first_goal])
+        real = h.agents.author
+
+        async def author(variables, prompt=None, feedback=None):
+            result = await real(variables, prompt)
+            return replace(result, text=f"{result.text.rstrip('.')}. Riverside's pressing won it.")
+        h.agents.author = author
+        h.run([KEYS[0]])
+        step = f"{MATCH}:key:{KEYS[0].id}"
+        return [n.text for n in h.narratives(default_targets()[0]["bucket_id"]) if n.stepId == step]
+    kept = run(True)
+    assert len(kept) == 1 and kept[0] and "pressing won it" not in kept[0]
+    assert run(False) == []
+
+
+def test_a_trimmed_excerpt_is_checked_again_as_a_whole():
+    """After a trim a kept sentence follows a different one ("they" may now mean someone else); it is asked again
+    with its new neighbour, and the excerpt is dropped when it no longer passes."""
+    from narrative_engine.analysis.policy import ShippedPolicy
+    from narrative_engine.devtools.fake_decisions import FakeDecisions
+
+    def fails(question):
+        first = question.instructions.split("\n")[0]
+        sentence = first.split('"')[1]
+        return sentence == "Riverside's pressing won it." or (
+            sentence == "They dominated it." and "Riverside's pressing" not in first)
+    h = Harness(targets=StaticTargets(default_targets()[:1]))
+    policy = json.loads((Path(__file__).parents[1] / "narrative_engine" / "analysis" / "storyline-policy.json").read_text())
+    policy["repair"]["author_trim"] = True
+    h.engine.policy = ShippedPolicy(policy)
+    h.engine.decisions = FakeDecisions(rule=lambda key, question, state: (
+        (0.0 if key.endswith("_support") else 0.9) if "_causal" in key and fails(question) else 0.0))
+    h.run(MESSAGES[:MESSAGES.index(KEYS[0])])
+    real = h.agents.author
+
+    async def author(variables, prompt=None, feedback=None):
+        result = await real(variables, prompt)
+        return replace(result, text=f"{result.text.rstrip('.')}. Riverside's pressing won it. They dominated it.")
+    h.agents.author = author
+    h.run([KEYS[0]])
+    step = f"{MATCH}:key:{KEYS[0].id}"
+    assert [n for n in h.narratives(default_targets()[0]["bucket_id"]) if n.stepId == step] == []
+
+
+def test_rejected_observations_get_one_repair_turn():
+    from test_graphql_data import FIXTURE as WITH_TRENDS  # the same match with the ETL's reference trends
+    h = Harness(data=WITH_TRENDS, targets=StaticTargets(default_targets()[:1]))
+    real, asked = h.agents.analyse, []
+
+    async def analyse(variables, prompt=None, feedback=None):
+        result = await real(variables, prompt)
+        if not (observations := json.loads(result.text)["observations"]):
+            return result
+        good = observations[0]
+        bad = {**good, "label": "Made-up number", "storyline": "open", "headline": f"{good['headline']} 99"}
+        if feedback:
+            asked.append(feedback)
+            fixed = {**bad, "headline": good["headline"]} if len(asked) == 1 else bad  # fixed only the first time
+            return replace(result, text=json.dumps({"observations": [fixed]}))
+        return replace(result, text=json.dumps({"observations": [good, bad]}))
+    h.agents.analyse = analyse
+    h.run(MESSAGES[:len(MESSAGES) // 2])
+    analyses = [a for a in h.wait(h.store.analyses(MATCH)) if a["retried"]]
+    assert len(analyses) >= 2 and ' 99", ' in asked[0][0] and "uses numbers not in its evidence: 99" in asked[0][1]
+    first, second = analyses[:2]
+    assert [o["label"] for o in first["observations"]][-1] == "Made-up number" and first["rejected"] == []
+    assert len(second["rejected"]) == 1 and len(second["retried"]) == 1
+
+
+def test_an_ungrounded_excerpt_is_rewritten_once_then_dropped():
+    targets = default_targets()[:2]
+    h = Harness(targets=StaticTargets(targets))
+    first_goal = MESSAGES.index(KEYS[0])
+    h.run(MESSAGES[:first_goal])
+    real, asked = h.agents.author, []
+    fixed, dropped = (t["bucket_id"] for t in targets)
+
+    async def author(variables, prompt=None, feedback=None):
+        result = await real(variables, prompt)
+        if feedback:
+            asked.append((variables["bucket_id"], feedback[1]))
+        if variables["bucket_id"] == dropped or not feedback:
+            return replace(result, text=f"{result.text} They have had 99 shots.")
+        return result
+    h.agents.author = author
+    h.run([KEYS[0]])
+    step = f"{MATCH}:key:{KEYS[0].id}"
+    assert sorted(asked) == [(dropped, ANY), (fixed, ANY)] and "99" in asked[0][1]
+    assert h.narratives(fixed)[-1].stepId == step and "99" not in h.narratives(fixed)[-1].text
+    assert all(n.stepId != step for n in h.narratives(dropped))

@@ -21,7 +21,7 @@ resource "azurerm_cognitive_deployment" "model" {
 
   model {
     format  = each.value.format
-    name    = each.key
+    name    = coalesce(each.value.model, each.key)
     version = each.value.version
   }
 
@@ -29,9 +29,4 @@ resource "azurerm_cognitive_deployment" "model" {
     name     = each.value.sku
     capacity = each.value.capacity
   }
-}
-
-moved {
-  from = azurerm_cognitive_deployment.model
-  to   = azurerm_cognitive_deployment.model["gpt-5-mini"]
 }

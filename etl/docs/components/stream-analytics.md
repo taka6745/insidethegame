@@ -1,18 +1,19 @@
 # Stream Analytics
 
-> **In short:** the whole ETL transformation in one Stream Analytics query. It reads Event Hubs by event time, detects key events with Opta rules, aggregates per-minute team statistics in tumbling windows, and writes four SQL tables plus one Service Bus output. Four small JavaScript UDFs read Opta qualifiers and copy messages.
+> **In short:** the whole ETL transformation in one Stream Analytics query. It reads Event Hubs by event time, detects key events with Opta rules, aggregates per-minute team statistics in tumbling windows, and writes nine SQL tables plus one Service Bus output. A second read of the same hub, in send order, writes watermark marks that Azure SQL turns into `matchProgress`. Seven small JavaScript UDFs read Opta qualifiers and shape rows.
 
 | | |
 | --- | --- |
-| **Status** | Deployed (dev); output matches the reference on a 10x replay |
+| **Status** | **Applied 22 Oct (`./dev azure up`, Azure test; match run part of the pending acceptance).** Outputs 1–5 (MA1/MA3) matched the reference on a 10x replay in the earlier dev deployment (deleted 2026-10-21). Outputs 6–9 (`possessionSamples`, `matchTeams`, `matchPlayers`, `canonicalEvents`, `matchProgressMarks`), the `match-progress` input, MA1 `fixture sourceMatchId runId capabilities` columns, and the Azure SQL triggers ([sql](sql.md#azure-only-stream-analytics-rows)). `MAX … OVER … WHEN`, `SessionWindow` and the array UDFs are checked by tests and the docs; their output on a live Azure match is not yet compared |
+| **Runs** | Only while matches play: the [stream schedule](#6-run-only-while-matches-play) starts and stops it |
 | **Code** | [`stream-analytics/query.asaql`](../../stream-analytics/query.asaql), [`stream-analytics/udfs/`](../../stream-analytics/udfs/) |
 | **Job** | StandardV2, ⅓ streaming unit, compatibility 1.2, created stopped |
 | **Mirrors** | [reference](reference.md) (`opta.py`, `pipeline.py`) |
-| **Tests** | `test_udfs.py` (UDFs run under Node against generated events) |
+| **Tests** | `test_udfs.py`, `test_azure_parity.py` (UDFs under Node equal the reference; the reference equals [local stream](local-stream.md) on all three recordings), `test_sql_azure.py` (the triggers on SQL Server) |
 
 ## 1. Query structure
 
-*In short: a chain of named steps, then five outputs.*
+*In short: a chain of named steps, then nine SQL outputs and one Service Bus output.*
 
 | Step | Does |
 | --- | --- |
@@ -20,6 +21,10 @@
 | `Events` | MA3 events with typed columns, the full message as `payload`, qualifier flags (penalty, own goal, cards, blocked, related event, VAR outcome) |
 | `KeyCandidates` → `Detected` | `keyType` and `detail` from type and qualifiers; only rows with a key type |
 | `MatchInfo` | MA1 message → teams and home/away via `udf.matchInfo` |
+| `Rosters` | MA1 → `udf.matchTeams` and `udf.matchPlayers` arrays, expanded with `GetArrayElements` |
+| `Canonical` | `MatchEvent` v2 (no `feed`; envelope `matchId`/`seq` must equal the event's) → `udf.canonicalEvent` |
+| `Sent` → `SentSoFar` | Input `match-progress` (no `TIMESTAMP BY`, so arrival = send order): per match, the highest event seq, MA3 seq and POS sampleId sent so far (`MAX … OVER (PARTITION BY matchId … WHEN …)`) |
+| `ProgressMarks` | MatchEvent *s* marks *s − 1*; a POS sample marks the latest event; a per-match `SessionWindow` closed by `idle_seconds` of quiet marks the last one ([why](#5-watermarks)) |
 | `NotificationRows` | `KeyEventDetected`, `MinuteClosed` (one per window per period) and `PeriodStarted`/`PeriodEnded`, unioned with one shared column set |
 
 | Output | Target |
@@ -29,6 +34,10 @@
 | `keyEvents` | SQL table, from `Detected` |
 | `minuteStats` | SQL table, grouped by match, team, period, minute and window |
 | `notifications` | Service Bus `match-notifications`; property `notificationType`, `MessageId` from `messageId` |
+| `possessionSamples` | SQL table, POS messages |
+| `matchTeams`, `matchPlayers` | SQL tables, from `Rosters` |
+| `canonicalEvents` | SQL table, from `Canonical` |
+| `matchProgressMarks` | SQL table, from `ProgressMarks`; Azure SQL advances `matchProgress` from it |
 
 ## 2. Key-event rules
 
@@ -50,6 +59,7 @@
 | Setting | Value | Why |
 | --- | --- | --- |
 | Tumbling window | `window_seconds` = 6 (Terraform variable, rendered into the query) | One match minute at 10x |
+| Quiet spell | `watermark_idle_seconds` = 3 (rendered as `idle_seconds`) | Completes a match's last event, like the local worker's `ETL_WATERMARK_IDLE_SECONDS` |
 | Out of order | Adjust, 2 s | Small reorderings within a minute |
 | Late arrival | 5 s | Less than one replay minute |
 | Output errors | Drop | One bad row must not stall every output; verification catches gaps |
@@ -66,3 +76,28 @@ For a real-time match set `window_seconds = 60` (and consider larger late-arriva
 | `qValue(qualifiers, id)` | The qualifier's value, or null |
 | `matchInfo(message)` | A `matches` row from MA1 (home/away by position, full payload) |
 | `toJson(message)` | The original message without fields Stream Analytics adds |
+| `matchTeams(message)`, `matchPlayers(message)` | `matchTeams` / `matchPlayers` rows from MA1 (colours from `branding`) |
+| `canonicalEvent(message)` | A `canonicalEvents` row from `MatchEvent` v2 |
+
+## 5. Watermarks
+
+*In short: the job only says what was sent; Azure SQL decides what is committed.*
+
+The [local worker](local-stream.md) commits rows and the watermark in one transaction. Stream Analytics writes each output separately, so the job cannot know when another output's rows are in SQL. It writes marks instead: (`seq`, highest MA3 `seq`, highest POS `sampleId` sent so far). Event Hubs keeps send order per partition (`matchId`), and the feed sends an event's MA3 rows before the next event, so these numbers cover everything the watermark promises. The marks read the hub a second time without `TIMESTAMP BY` (consumer group `stream-analytics-progress`) because MA3 timestamps follow the match clock, not send order.
+
+Azure SQL's `INSTEAD OF INSERT` triggers advance `matchProgress` to the highest mark whose events `1..seq`, MA3 rows `1..ma3Seq` and POS samples `1..sampleId` are all stored, whichever output lands last. This relies on the feed numbering canonical events, MA3 rows and POS samples 1, 2, 3… per match ([contracts](../../../local/contracts.md#1-identity-and-snapshots)). `reference/pipeline.py` (`progress_marks`, `watermark`, `match_status`) is the expected result.
+
+Not equal to local: Service Bus notifications for a match purged while live keep flowing until its feed run stops (the narrative engine drops them by its own tombstones), and rows stamped after a purge-all cut-off for a match whose MA1 was never stored are kept until the next purge.
+
+## 6. Run only while matches play
+
+*In short: Event Hubs traffic starts the job; 30 quiet minutes stop it (spend guard).*
+
+[`infra/stream_schedule.tf`](../../infra/stream_schedule.tf): two metric alerts on `match-events` call webhooks of the `terraform/guard` runbook.
+
+| Alert | Fires | Action |
+| --- | --- | --- |
+| `stream-start` | Incoming messages > 0 in the last minute | `stream-start`: start, resuming after the last output, so events buffered while it starts are processed (kick-off a minute or two late, then caught up) |
+| `stream-stop` | None for `stream_idle_window` (default `PT30M`, longer than half time) | `stream-stop` |
+
+The guard's last resort (90 % of the credit) also stops the job; `./dev azure up` restores it ([runbook §4](../../../terraform/runbook.md#4-spend-guard-and-idle-saver)). Implemented and applied 22 Oct; seeing it fire on a real match is part of the pending acceptance.

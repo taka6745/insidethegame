@@ -1,24 +1,36 @@
 # Develop the frontend
 
+> **In short:** run the whole stack with `./dev up backend`, press Start demo at `localhost:18020`, and check changes with `npm test` plus the headless check against the contract mock.
+
+| | |
+| --- | --- |
+| **Status** | Implemented · unit-tested · headless-checked (follow, sting, capture flows) · D1–D7 run on the local stack 22 Oct |
+| **Viewer** | `http://localhost:18020/` (picker, Start demo), `/lab/`, `/dev/` |
+| **Source** | TypeScript in `match/`, `lab/`, `dev/`, `tools/`; compiled to ignored `dist/` |
+
 ```sh
 ACCEPT_EULA=Y ./dev up backend
 ```
 
-Open **http://localhost:18020/** for the match viewer, or **http://localhost:18020/lab/** for the removable filter lab. Docker provides nginx, the backend, Postgres, standalone recorded-match ETL and the narrative stub. No Azure account is needed. The default fixture agent works without a model account; [optional local LLM](../../user-backend/docs/local-llm.md) enables flexible questions.
+Then `./dev demo start [fixture…]`, or start runs from **http://localhost:18020/dev/** (Matches panel). Open **http://localhost:18020/** for the match picker and viewer, or **/lab/** for the filter lab. Docker provides nginx, the feed (simulated external provider: recordings, runs, HLS origin), the ETL pipeline stand-in with its GraphQL, the narrative engine, the backend and Postgres. No Azure account is needed. Questions and custom stats need the [local model](../../user-backend/docs/components/agents.md); without one they show “answers unavailable” while insights and stats continue.
+
+## Start demo
+
+Press **Start demo** on the picker (start point: kickoff, or a recorded seed at 20′, HT, 60′, 85′; unrecorded points are disabled) or `./dev demo start`. The picker calls `/demo-api/start`, shows the seven-stage start progress (Feed → Event Hubs → ETL → Service Bus → Narrative engine → Backend → Viewer, each lit by `/demo-api/status`; reduced motion respected), then opens the main game. **Cancel demo** purges everything and returns to the picker. Recording seeds is a demo-control job (PLAN.md §10.6), not a viewer action.
 
 ## Match viewer
 
-A fresh database starts with the committed synthetic Chelsea–Manchester United GRF recording. Existing runs are preserved; `./dev reset backend` explicitly loads a fresh run from ETL. Choose a team and viewer style in the header, start the synthetic replay, and watch the match state, insights and five compact statistics. All 12 combinations are selectable. Changes preserve chat and pins, and persist for the current demo identity and match run. Raw events are shown only in the developer lab. Insights displays [offline AI-authored narratives](../../narrative-engine/fixtures/README.md) from the narrative service without rewriting them: one version per bucket for each of the 92 broadcast minutes, released only after the matching events. Neutral recap tiers remain available separately for questions. In Questions, ask for a stat and select Track on the offered card. A tracked standard or custom stat replaces a default slot; removing it restores that default. Standard values stay owned by ETL, and a pinned default is not shown twice. The original answer retains its as-of timestamp.
+**Multi-match.** `/` lists matches from `GET /viewer-api/matches` (live, then scheduled, then finished) with status, score and clock, refreshed every 5 s. Opening one loads `/?match={matchId}`; each tab holds one match, so two tabs can watch two matches. Sessions are stored per (match, profile). A 404 for the match or socket close `4404` sends the tab back to the picker with a notice. A link opened before the match's MA1 (`404 match_not_started`) waits and retries every 5 s; a `scheduled` match shows teams and branding with a kick-off countdown and goes live with the first event. Team names, colours and crests come from the listing or snapshot (MA1 branding); a missing crest file falls back to the three-letter code. The header dropdown lists the match's enabled audience buckets; insights, Track/Untrack and the as-of rules are unchanged.
 
-Replay controls are development controls for one shared match. Starting a new product demo loads Chelsea–Manchester United and affects all viewers. The optional GRF footage is aligned to the Chelsea–United events and plays in real time with a broadcast clock (stoppage time shown as `45+n′`). Without the local media mount, the player shows an unavailable state. Replay clips are described below; individual playback delay remains planned. Profile sessions are demo identities, not production authentication. The viewer retains its existing demo identity internally; the audience controls edit its match preference. Connected audiences enable their combinations in the backend catalogue; unused combinations stay stored but disabled. The narrative stub reads those targets to select existing authored versions; the future generator will use them before authoring.
+Matches start from `/dev/` (or `./dev demo start`), never from the viewer: the viewer has no replay controls. Profile sessions are demo identities, not production authentication. Audience buckets are configuration: the narrative engine writes only for buckets enabled in the fixture's template (`/dev/`), the viewer's dropdown offers exactly those, and each narrative is shown once the video reaches its clock.
 
 The browser talks only to the user backend. Static modules are independently cacheable; the viewer uses one WebSocket for match updates and HTTP for deliberate actions/questions. Connection recovery uses a fresh authoritative snapshot. It does not run an LLM loop, calculate statistics, or read an upstream database.
 
 ## Filter lab
 
-Use `/lab/` to prepare a structured rule, inspect its JSON and replay a recording. Load JSON accepts a synthetic match file up to 16 MiB; an invalid file preserves the run. Use demo restores the original Chelsea/Madrid `filter-lab.json` recording. Download exports the selected recording. Event inspection only exposes received deliveries.
+Use `/lab/` to select a match with live events, prepare a structured rule, inspect its JSON and the received events. Lab routes are `/api/matches/{matchId}/…` (state with `seq`, `events/{seq}`, calculations, plan, chat; `/api/chat/profiles` is global); the match list comes from the backend listing, never the feed. With no model configured the backend refuses questions and plans (503): the viewer and lab show “answers unavailable” and disable asking, while insights and stats continue. There is no recording upload, download or replay control.
 
-The lab retains its existing 700 ms development polling. It is separate from the push-based match viewer. New run and recording replacement affect the shared replay; don't run smoke tests during a demonstration because they reset it.
+The lab polls the selected match every 700 ms and the match list every 5 s. It is separate from the push-based match viewer.
 
 ## Checks
 
@@ -27,11 +39,20 @@ cd frontend
 npm ci
 npm test        # tsc type check, then node --test on tests/*.test.ts
 npm run build   # tsc → dist/ (compiled JS + copied HTML/CSS)
+npm run check:bundle   # dist/ must not name any deny-listed provider or model
+node tools/mock-server.ts 18099 &   # contract mock: matches, sessions, WS, lab, /dev/, feed console
+node tools/headless-check.ts http://127.0.0.1:18099   # 1440/390/360 px: overflow, console and CSP errors
+node tools/headless-check.ts http://127.0.0.1:18099 --flow follow   # also drives follow, clarify and stop following
+node tools/headless-check.ts http://127.0.0.1:18099 --flow sting    # reel: hold → sting → cut → play
+node tools/headless-check.ts http://127.0.0.1:18099 --flow capture  # captured-clip preview cards in Insights and the follow view
+MOCK_NO_MODEL=1 node tools/mock-server.ts 18098 &   # then --flow unavailable on that port: chat refused, chips still follow
 ```
 
-Source is TypeScript (`match/`, `lab/`, `tests/`, `tools/`, `benchmarks/`); plain `.js` exists only in ignored `dist/`. Node 22.18+ runs `.ts` tests and tools directly (type stripping). The only runtime dependency is exact-pinned `hls.js`; there is no bundler or framework. Run the [icon harness](../assets/README.md) separately. Backend regression/integration checks use `./dev test backend`: isolated tests use fixture doubles, and the live checkpoint check leaves the active replay position unchanged. Separate lab smoke tests can still reset shared state.
+The bundle deny-list is never in the repository: set `BUNDLE_DENYLIST` (comma or newline separated) or keep one term per line in the ignored `.local/bundle-denylist.txt`. The check prints file names and counts only. `npm test` runs it when both the list and `dist/` exist.
 
-Browser acceptance: team/style changes, replay, current bucket cards/backlog, a question while updates continue, explicit Track/Untrack, refresh, takeover, disconnection, keyboard controls and narrow mobile layout. Model/event content must stay text, never executable HTML. [Question contract](../../user-backend/docs/question-agent.md) · [Design and research](design-references.md).
+Source is TypeScript (`match/`, `lab/`, `dev/`, `tests/`, `tools/`, `benchmarks/`); plain `.js` exists only in ignored `dist/`. Node 22.18+ runs `.ts` tests and tools directly (type stripping). The only runtime dependency is exact-pinned `hls.js`; there is no bundler or framework. Run the [icon harness](../assets/README.md) separately. Backend regression/integration checks use `./dev test backend`; isolated tests use fixture doubles.
+
+Browser acceptance: two tabs on two matches, purge returning a tab to the picker, audience bucket changes, current bucket cards/backlog, a question while updates continue, explicit Track/Untrack, refresh, takeover, disconnection, keyboard controls and narrow mobile layout. Model/event content must stay text, never executable HTML. [Question contract](../../user-backend/docs/components/agents.md#2-question-agent) · [Design and research](design-references.md).
 
 ## Deployment boundary
 
@@ -44,47 +65,48 @@ Production can place static assets behind Azure Front Door/CDN and replace the s
 | Area | Responsibility |
 |---|---|
 | `match/api.ts`, `live.ts` | Same-origin requests and one reconnecting live connection |
-| `match/controller.ts` | Session and user-action coordination |
+| `match/controller.ts` | Session and user-action coordination; match gone → picker |
+| `match/picker.ts`, `branding.ts` | Match picker; club colours/crests from match data |
+| `match/demo.ts`, `demo-progress.ts` | Start/Cancel demo, start points, main game, "live from N′" note; seven-stage start progress |
+| `match/capture.ts` | Captured clips (D6–D7): one feed card per clip with a browser-built preview (gradient, crest, minute, event, player, score after) |
+| `match/other-match.ts` | Cross-game marking (D5): `otherMatchHeader`, `markOtherMatch` (yellow outline, teams and crests, no score) |
+| `dev/matches.ts`, `config.ts` | Feed runs (start, purge) and config-table editors |
+| `dev/audiences.ts`, `profiles.ts` | Audience template editor (layers, options, enabled buckets) and demo-profile editor; revision-checked |
+| `match/receipt.ts` | Answer receipts costed at the backend's configured prices (offline cache only) |
 | `match/view.ts`, `audience-view.ts`, `chat-view.ts`, `dom.ts` | Bounded, safe DOM rendering; preserve unchanged controls |
 | `match/format.ts`, `types.ts` | Display formatting, bounded snapshot handling and payload types |
 | `match/styles.css`, `companion.css` | Responsive Premier League integration presentation |
-| `match/media.ts`, `video.ts`, `hold.ts` | Live HLS/MP4 source selection and data held to the live picture |
-| `match/replay.ts`, `replay-card.ts`, `replay-view.ts` | Replay clip navigation, chat card and stage/PiP view |
+| `match/media.ts`, `video.ts`, `hold.ts` | Live HLS source selection and data held to the live picture |
+| `match/replay.ts`, `replay-card.ts`, `replay-view.ts` | Replay clip navigation, chat card and stage/PiP view; reel transitions (sting) and slow motion from each replay's `playback` |
+| `match/follow.ts`, `follow-view.ts` | Story follows: follow chat, suggestions, follow and stop following; feed rendering is in `view.ts` |
 | `tools/build.sh` | Content-hashed static module directory from `dist/`, without a bundler |
 | `tools/vendor.sh` | Copies the pinned hls.js light ES module and licence into `dist/match/vendor/` |
-| `nginx.conf` | Same-origin API/socket proxy, compression, headers and cache policy |
+| `nginx.conf` | Same-origin API/socket proxy, per-match HLS proxy, gated dev consoles, headers and cache policy |
+| `tools/check-bundle.ts`, `mock-server.ts`, `headless-check.ts` | Bundle deny-list check, contract mock, headless layout/console/CSP check |
 
 The image compiles TypeScript in a Node build stage; nginx serves only the compiled output. HTML revalidates; a build places related JS/CSS under one content hash and caches them immutably. Relative module imports stay in that version. The unversioned developer lab and brand assets revalidate. No application secrets or LLM keys are shipped.
 
 Run `npm run build` in `frontend`, then `node frontend/benchmarks/client.ts` from the repository root, for opt-in static transfer and bounded state-update checks. This does not measure DOM rendering, network fan-out or viewer capacity.
 
-## Optional aligned footage
+## Live footage
 
-`ACCEPT_EULA=Y ./dev up backend` automatically mounts `.local/grf-demo-chelsea-united-90/` if `hls/match.m3u8` exists there. Media is ignored, not downloaded on setup, and not included in the image or Git. To use the matching packaged output stored elsewhere:
+The feed stands in for an external match provider. It writes each run's played segments and nginx proxies `/media/hls/{matchId}/{playlist or segment}.m3u8|.ts` to its HLS origin (`MEDIA_ORIGIN`, default `feed:8000`, path `/hls/{matchId}/…`), as a CDN would. Nothing is mounted into the frontend; any other `/media/` path is `404`, and there is no MP4. Playlists are `no-cache`, segments immutable. Without a published stream the viewer shows its unavailable state. Live footage follows the published edge, opens paused at the final picture after full time and does not allow independent seeking.
 
-```sh
-DEMO_MEDIA_DIR=/absolute/path/to/grf-demo-chelsea-united-90 ACCEPT_EULA=Y ./dev up backend
-```
-
-Run from the repository root. The backend `HlsPublisher` copies segments into a shared volume on the replay clock and nginx serves only what has been published, so footage past the live edge is unreachable ([compose.media.yaml](../../local/compose.media.yaml)). Use media packaged with the same [GRF recording](../../data-generation/docs/grf-demo.md); arbitrary footage will not align with its events. The `/media/simulator.mp4` fallback is not mounted by `./dev`.
-
-The backend's shared replay clock drives `match/video.ts`. Aligned footage starts/resumes with replay, corrects drift on new clock anchors, pauses on disconnect and stops at full-time. It does not loop or allow independent seeking. Browser autoplay restrictions may require a click or Enter/Space. Removing the mount preserves the data-only demo and shows the unavailable-player state. Per-viewer delayed playback remains planned.
-
-The recording is simulated football with illustrative named lineups and generic abilities, not an actual Premier League fixture. Production footage should use a media delivery service/CDN, not user-backend fan-out.
+The recordings are synthetic: real club and player names on simulated (Google Research Football) play, never an actual match. Production footage should use a media delivery service/CDN, not user-backend fan-out.
 
 ## Live HLS and replay
 
 **Implemented, unit-tested and browser-verified against live HLS on 20 October 2026** (card, main-stage playback with live picture-in-picture, clip jump, back to live, paging, refine offer, saved-in-chat restore).
 
-- When `match.media.live` is true the viewer plays `media.url` (`/media/hls/live.m3u8`) with hls.js (`enableWorker: false`, live sync three segments), falling back to native HLS only where hls.js is unsupported. Otherwise the MP4 behaviour above is unchanged.
+- When `match.media.url` names an `.m3u8` the viewer plays it (the match's own `/media/hls/{matchId}/live.m3u8`; no fallback playlist) with hls.js (`enableWorker: false`, live sync three segments, fixed target after stalls). `liveCatchUp` returns a playing picture to that target: 1.1× speed when more than 1.5 s behind, or one seek to the sync position after 3 s more than 6 s behind, then a 10 s cooldown, falling back to native HLS only where hls.js is unsupported. Otherwise no footage is requested.
 - hls.js 1.7.3 (light ES build, Apache-2.0) is copied by `npm run build` into the hashed app directory and loaded on demand from the same origin. No CDN or worker is used.
-- Live states with `media.seconds` wait in a bounded queue until the live playhead reaches that time. They are released immediately when no live picture is playing or the stream failed, and after at most 15 s.
-- Replay replies render a chat card: clip count, length, captions, derived definition, refine offer, Play, and Previous/Show more paging (`GET /{token}/turns/{id}/replay/{page}`). Without a playlist, Play is disabled and footage is marked unavailable. Restored turns render the same card.
-- Play loads the VOD playlist from a Blob URL (revoked on close) into a second stage player and steps through `playlist_start`/`playlist_end`. Live continues as a muted corner picture; the picture, **Back to live** or Esc returns. Cards and Insights stay live.
-- CSP allows `blob:` in `connect-src` and `media-src` so hls.js can read the in-memory playlist.
+- Live states with `media.seconds` wait in a bounded queue until the live playhead reaches that time. A stall or catch-up seek keeps holding at the current position. They are released immediately when no live picture is playing or the stream failed, and after at most 15 s.
+- Replay replies render a chat card: clip count, length, captions, derived definition, refine offer, Play, and Previous/Show more paging (`GET M/sessions/{token}/turns/{id}/replay/{page}`). Without a playlist, Play is disabled and footage is marked unavailable. Restored turns render the same card.
+- Play loads the match's published playlist into a second stage player and steps through `playlist_start`/`playlist_end`. Live continues as a muted corner picture; the picture, **Back to live** or Esc returns. Cards and Insights stay live.
+- CSP allows `blob:` only in `media-src`, for hls.js's Media Source; every request is same-origin.
 
 ## Proxy deployment settings
 
-The image renders nginx configuration at startup. `BACKEND_UPSTREAM` defaults to `backend:8000`; `NGINX_RESOLVER` defaults to Docker's `127.0.0.11`. Set both to the real reachable HTTP backend host/port and DNS resolver outside Compose. Never carry the Docker resolver into Azure. The configured upstream uses HTTP; terminate ingress TLS at the trusted gateway and provide a private route to the backend. A TLS-only upstream needs a separate HTTPS proxy configuration with certificate verification.
+The image renders nginx configuration at startup. `BACKEND_UPSTREAM` defaults to `backend:8000`; `NGINX_RESOLVER` defaults to Docker's `127.0.0.11`; `MEDIA_ORIGIN` (the provider's HLS origin) to `feed:8000`. Developer consoles are off unless `ENABLE_DEV_ADMIN=1` (local Compose sets it): `/feed-api/` → `FEED_ADMIN_UPSTREAM` (`feed:8000`), `/purge-api/etl|engine|backend` → `ETL_ADMIN_UPSTREAM` (`etl-stream:8000`), `ENGINE_ADMIN_UPSTREAM` (`narrative-live:8000`) and the backend's `/admin/matches/purge` (POST only); `/dev-api/`, the `/lab/` page and its `/api/` are gated the same way. On a public deployment enable them only with `DEV_ADMIN_PASSWORD` set ([deployment](deployment.md)); the basic-auth header is never forwarded upstream. Set both to the real reachable HTTP backend host/port and DNS resolver outside Compose. Never carry the Docker resolver into Azure. The configured upstream uses HTTP; terminate ingress TLS at the trusted gateway and provide a private route to the backend. A TLS-only upstream needs a separate HTTPS proxy configuration with certificate verification.
 
 Check the actual image template with `docker build -t itg-frontend-proxy-test frontend` then `node frontend/tools/test-proxy.ts` from the root. The opt-in Docker check renders both defaults and custom settings, runs `nginx -T`, and verifies native nginx variables survive substitution. See [cloud prerequisites](../../terraform/deployment-readiness.md).

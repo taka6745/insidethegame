@@ -1,0 +1,4 @@
+{
+  "full_quality": ["arsenal-liverpool"],
+  "secondary": {"video_bitrate": "1.75M", "maxrate": "2.5M", "bufsize": "4M"}
+}

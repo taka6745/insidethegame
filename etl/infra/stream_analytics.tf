@@ -12,7 +12,7 @@ resource "azurerm_stream_analytics_job" "etl" {
   events_out_of_order_max_delay_in_seconds = 2
   events_late_arrival_max_delay_in_seconds = 5
   output_error_policy                      = "Drop" # one bad row must not stall every output; verify catches gaps
-  transformation_query                     = templatefile("${path.module}/../stream-analytics/query.asaql", { window_seconds = var.window_seconds })
+  transformation_query                     = templatefile("${path.module}/../stream-analytics/query.asaql", local.query_vars)
   tags                                     = local.tags
 
   identity {
@@ -38,6 +38,26 @@ resource "azurerm_stream_analytics_stream_input_eventhub_v2" "match_events" {
   }
 }
 
+# The same hub without TIMESTAMP BY: arrival (send) order, for the watermark marks (query.asaql step 9).
+resource "azurerm_stream_analytics_stream_input_eventhub_v2" "match_progress" {
+  name                         = "match-progress"
+  stream_analytics_job_id      = azurerm_stream_analytics_job.etl.id
+  eventhub_name                = azurerm_eventhub.match_events.name
+  servicebus_namespace         = azurerm_eventhub_namespace.etl.name
+  eventhub_consumer_group_name = azurerm_eventhub_consumer_group.consumers["stream-analytics-progress"].name
+  partition_key                = "matchId"
+  authentication_mode          = "ConnectionString"
+  shared_access_policy_name    = azurerm_eventhub_authorization_rule.asa_listen.name
+  shared_access_policy_key     = azurerm_eventhub_authorization_rule.asa_listen.primary_key
+
+  serialization {
+    type     = "Json"
+    encoding = "UTF8"
+  }
+}
+
+# Azure SQL's INSTEAD OF INSERT triggers (sql/azure/asa-progress.sql) gate these rows on tombstones and
+# turn matchProgressMarks into matchProgress.
 resource "azurerm_stream_analytics_output_mssql" "tables" {
   for_each                  = local.tables
   name                      = each.key
@@ -70,11 +90,15 @@ resource "azurerm_stream_analytics_output_servicebus_topic" "notifications" {
 }
 
 locals {
+  query_vars = { window_seconds = var.window_seconds, idle_seconds = var.watermark_idle_seconds }
   udfs = {
-    hasQ      = { inputs = ["array", "bigint"], output = "bigint" }
-    qValue    = { inputs = ["array", "bigint"], output = "nvarchar(max)" }
-    toJson    = { inputs = ["any"], output = "nvarchar(max)" }
-    matchInfo = { inputs = ["any"], output = "record" }
+    hasQ           = { inputs = ["array", "bigint"], output = "bigint" }
+    qValue         = { inputs = ["array", "bigint"], output = "nvarchar(max)" }
+    toJson         = { inputs = ["any"], output = "nvarchar(max)" }
+    matchInfo      = { inputs = ["any"], output = "record" }
+    matchTeams     = { inputs = ["any"], output = "array" }
+    matchPlayers   = { inputs = ["any"], output = "array" }
+    canonicalEvent = { inputs = ["any"], output = "record" }
   }
 }
 

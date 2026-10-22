@@ -20,18 +20,27 @@ def narrative_from_doc(doc):
 
 
 def read_narratives(path):
+    """The narratives in a JSONL sink file (moment clips, which carry `type`, are skipped)."""
     with open(path, encoding="utf-8") as f:
-        return [narrative_from_doc(json.loads(line)) for line in f if line.strip()]
+        docs = [json.loads(line) for line in f if line.strip()]
+    return [narrative_from_doc(d) for d in docs if "type" not in d]
 
 
 class MemorySink:
     def __init__(self, store=None):
-        self.published, self.store = [], store
+        self.published, self.clips, self.store = [], [], store
 
     async def publish(self, narrative):
         if self.store is not None:  # tests: narratives must be persisted before they are published
-            assert await self.store.narrative_for_step(narrative.matchId, narrative.userType, narrative.stepId)
+            if narrative.kind == "subscription":
+                assert await self.store.subscription_narrative_for_step(narrative.matchId, narrative.topicId,
+                                                                        narrative.userType, narrative.stepId)
+            else:
+                assert await self.store.narrative_for_step(narrative.matchId, narrative.userType, narrative.stepId)
         self.published.append(narrative)
+
+    async def publish_clip(self, clip):
+        self.clips.append(clip)
 
 
 class JsonlSink:
@@ -41,6 +50,10 @@ class JsonlSink:
     async def publish(self, narrative):
         with open(self.path, "a", encoding="utf-8") as f:
             f.write(json.dumps(narrative_doc(narrative)) + "\n")
+
+    async def publish_clip(self, clip):
+        with open(self.path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(clip) + "\n")
 
 
 def read_notifications(path, match_id=None):

@@ -1,0 +1,7 @@
+name = "itg-edge-proxy"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+routes = [{ pattern = "msft-hackathon.koda-software.com", custom_domain = true }]
+
+[vars]
+UPSTREAM = "https://itgdemo-web.blackstone-6b9affa7.australiaeast.azurecontainerapps.io"

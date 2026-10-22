@@ -1,26 +1,30 @@
 # From the local demo to Azure
 
-**Not deployed.** The working viewer uses Event Hubs and Service Bus emulators for live delivery, plus separate GraphQL demo services for reads. Terraform validates a foundation with mocks; it does not currently deploy the app.
+> **In short:** Terraform for every service; **applied 22 Oct** for the Azure test, demo acceptance (PLAN.md §10.4) pending. `./dev azure up` deploys the spend guard, feed, ETL, narrative engine, user backend, demo control and frontend ([runbook](runbook.md)); the edge proxy serves the judge URL. Below: what a production release still needs.
+
+| | |
+| --- | --- |
+| **Judge build** | `demo_seeds` on (seed export/restore routes, Azure Files seeds); public `/demo-api/` without login, rate-limited |
+| **Release build** | `./dev azure up --release`: no seed routes; demo control still starts kickoff demos |
+| **Models** | `gpt-6.1-sol` (`writer`, `questions`) in Terraform, rollout pending; Microsoft-Decision-1 applied |
 
 ```text
-Today:   recording → ETL demo → GraphQL → one backend → viewer
-Cloud:   Event Hubs → ETL / calculation owner → shared delivery → viewers
-                         narrative service → Service Bus ─────┘
+Local:  feed → Event Hubs (emulator) → etl-stream → SQL Server + DAB ─┬→ narrative-live → Service Bus → backend → viewer
+Azure:  feed → Event Hubs → Stream Analytics → Azure SQL + DAB ───────┴→ engine (Foundry, Cosmos) → Service Bus → backend → frontend ← edge proxy
+        demo control (/demo-api/) → feed, ETL, engine, backend (purge; seed restore in the judge build)
 ```
 
-| Before an Azure release | Required change / evidence |
+| Before a production release | Required change / evidence |
 | --- | --- |
-| Runtime placement | Add actual Container Apps images, registry access, probes, internal service addresses and budgets. Keep the current backend at one replica and one worker; it has process-local replay, calculations and socket ownership. |
-| Data access | Complete private endpoints/VNet routes and private DNS for SQL, both Cosmos accounts and PostgreSQL. Add managed identities/RBAC, credential rotation and protected Terraform state. Public access remains disabled. |
-| Live ingestion | SDK consumers and durable-before-ack handling are implemented for the demo. Add persistent Event Hubs partition checkpoints/ownership, replace recorded-prefix ETL recovery, and validate Azure retention, lock expiry and dead-letter operations. |
-| Upstream services | Replace demo PostgreSQL ETL stores with Azure SQL history and Cosmos stats adapters; complete Stream Analytics. Replace authored SQLite narrative storage with the narrative service's intended implementation. |
-| Demo assets | Package or securely mount the immutable GRF event recording; the local host bind mount does not travel with the ETL image. Mount durable storage if retaining the SQLite stub for an Azure demo. Serve video through media storage/CDN; do not stream it through backend replicas. |
-| Frontend proxy | Configure `BACKEND_UPSTREAM` and `NGINX_RESOLVER` for the actual network. Docker DNS is not an Azure resolver. Use authenticated ingress/TLS and an explicitly secured upstream route. |
-| Agents and access | Configure Foundry deployments and model credentials/identity. Replace selectable demo identities with authentication/authorization; disable demo reset/upload controls. Bound question queues, model concurrency and per-account quotas. |
-| Multiple replicas | Add fenced match ownership, shared session takeover, durable subscription/outbox delivery and reconnect cursors before raising the replica count. Validate kill/restart and duplicate-delivery recovery. |
+| First Azure run | Applied 22 Oct; still to prove (PLAN.md §10.4): Start demo at every point from a fresh browser, seeds recorded on Azure with `gpt-6.1-sol`, the Stream Analytics query and schedule on live matches, D1–D7 targets, 12 h idle cost |
+| Demo-only surface | The judge build mounts seed export/restore (`DEMO_SEEDS`) and a public, unauthenticated `/demo-api/` whose Cancel stops the demo for every viewer; a release uses `--release` and should put start/cancel behind auth |
+| Spend | Budgets email only; the guard's last resort (90 % of the credit) stops ingestion but keeps the viewer up. A paid subscription needs its own budgets |
+| Network | Public endpoints limited to Azure services (PostgreSQL, SQL) because the shared environment has no VNet; add a VNet environment, private endpoints and DNS |
+| Identity | Keys in Key Vault and Container App secrets because the account cannot create role assignments; move to managed identities with RBAC, disable local auth |
+| Database logins | ETL apps use least-privilege Azure SQL users (`devtools azure-setup`). The backend (`itgadmin`) and the feed (`feedadmin`) still connect as their PostgreSQL server admins: those servers accept only Azure-service traffic, so `up` cannot reach them to create roles. Add a per-database owner role (no CREATEROLE/CREATEDB; the apps run their own migrations) from a one-off job inside the environment, or after the VNet change |
+| Exposure | Only the frontend is public. Engine, DAB, purge API, feed and backend have internal ingress; the ETL and engine purges also need bearer tokens, which nginx adds behind the `/dev/` basic auth. A VNet would also close the environment's internal plain HTTP |
+| State | Local state under `.local/terraform/`; move to a protected remote backend for a team |
+| Agents | Authentication, per-account quotas and bounded model concurrency for questions |
+| Multiple replicas | Fenced match ownership, shared session takeover and durable delivery before more than one backend or feed replica |
 
-Container Apps supports autoscaling, but it does not make application state distributed. Algorithm benchmarks are separate from viewer capacity: load-test fan-out, reconnect bursts, database connections and question/model throughput. See [scaling boundaries](../user-backend/docs/scaling.md).
-
-**Local tools:** Microsoft's emulators need no Azure account, but have service-specific limitations and accepted licence terms. LocalStack for Azure is optional and not configured here; it requires an auth token and Azure access on a LocalStack account. Its Terraform endpoint is separate from real Azure. Do not substitute emulator success for cloud identity, networking, durability or capacity tests.
-
-Sources checked 2026-10-19: [Container Apps scaling](https://learn.microsoft.com/en-us/azure/container-apps/scale-app), [Event Hubs emulator](https://learn.microsoft.com/en-us/azure/event-hubs/overview-emulator), [Service Bus emulator](https://learn.microsoft.com/en-us/azure/service-bus-messaging/overview-emulator), [LocalStack Azure authentication](https://docs.localstack.cloud/azure/getting-started/auth-token/), [LocalStack Terraform](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/).
+Emulators and mock plans don't prove cloud identity, networking, durability or capacity. Load-test fan-out, reconnect bursts and model throughput separately ([scaling](../user-backend/docs/architecture.md#6-scaling-boundary)).

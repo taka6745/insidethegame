@@ -39,7 +39,7 @@
   height: auto;
 }
 .microsoft-credit span {
-  font-size: 8px;
+  font-size: 10px;
   color: #c1a7cb;
   max-width: 160px;
 }
@@ -92,7 +92,7 @@
   margin-bottom: 16px;
   border-bottom: 1px solid var(--line);
 }
-.narrative:first-child {
+.narrative.latest {
   border-left: 3px solid var(--purple);
   padding-left: 15px;
 }
@@ -271,7 +271,7 @@
   font-size: 10px;
 }
 #agent-mode {
-  font-size: 8px;
+  font-size: 10px;
   color: #b298bf;
 }
 
@@ -406,70 +406,288 @@ button.answer-receipt-line:focus-visible {
   font-size: 11px;
   color: #d9c7e1;
 }
-.price-settings {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #5a3a66;
-  border-radius: 50%;
-  background: transparent;
-  color: #c8b1d2;
-  font-size: 16px;
+
+/* Story follows: a banner above the feed while following; the follow chat sits at the bottom like the Ask composer. */
+.follow-banner {
+  flex-shrink: 0;
+  margin-bottom: 14px;
 }
-.price-settings:hover, .price-settings:focus-visible {
-  color: #fff;
-  border-color: var(--mint);
+.follow-chat {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 12px;
 }
-.price-dialog {
-  width: min(360px, calc(100vw - 32px));
-  padding: 18px;
-  border: 1px solid #785482;
-  border-radius: 10px;
-  background: #230530;
-  color: #fff;
-}
-.price-dialog::backdrop {
-  background: rgb(10 0 14 / 60%);
-}
-.price-dialog h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-.price-dialog p {
-  margin: 0 0 12px;
-  font-size: 12px;
-  color: #c8b1d2;
-}
-.price-dialog label {
+.follow-banner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin: 8px 0;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #6a3f7a;
+  border-radius: 10px;
+  background: #2c0836;
+  font-size: 12px;
+  color: var(--muted);
+}
+.follow-banner-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.follow-banner strong {
+  color: var(--text);
+}
+.follow-banner button, .follow-action {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid #9a6aac;
+  border-radius: 18px;
+  background: transparent;
+  font-size: 12px;
+}
+.follow-messages {
+  max-height: min(22vh, 170px);
+  overflow: auto;
+  scrollbar-width: thin;
+  margin-bottom: 10px;
+}
+.follow-turn {
+  margin-bottom: 12px;
+}
+.follow-turn .chat-prompt {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+}
+.follow-turn .chat-answer {
+  font-size: 13px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+}
+.follow-proposal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #557e71;
+  border-radius: 8px;
+  background: #163c36;
   font-size: 13px;
 }
-.price-dialog input {
-  width: 110px;
-  height: 34px;
-  padding: 0 8px;
-  border: 1px solid #785482;
-  border-radius: 5px;
-  background: #18001f;
-  color: #fff;
-  font: inherit;
+.follow-proposal-label {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
-.price-actions {
+.follow-proposal .follow-action {
+  border-color: #6dffdc;
+  color: #9bffe9;
+}
+/* Chips wrap onto lines: never a sideways scroll. */
+.follow-chips {
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 14px;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
 }
-.price-save {
-  padding: 7px 16px;
+.follow-chip {
+  min-height: 32px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 11px;
+  border: 1px solid #79508b;
+  border-radius: 16px;
+  background: transparent;
+  color: #e5d5ec;
+  font-size: 11px;
+  text-align: left;
+}
+.follow-chip::before {
+  content: "+ ";
+  color: var(--mint);
+}
+.follow-chat .composer {
+  padding: 4px 6px 4px 12px;
+}
+.follow-chat input {
+  flex: 1;
+  min-width: 0;
   border: 0;
-  border-radius: 5px;
-  background: var(--mint);
-  color: var(--bg);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 4px;
+}
+.follow-chat input::placeholder {
+  color: #c5afd2;
+}
+.follow-chat .composer button {
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+}
+.follow-status {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  color: #bfa5cb;
+}
+.narrative-tag {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid #6a3f7a;
+  border-radius: 9px;
+  font-size: 10px;
+  color: #e5d5ec;
+}
+/* Key moments: short, centred, greyed facts for everyone. */
+.key-moment {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 11px;
+  color: #a58faf;
+  overflow-wrap: anywhere;
+}
+/* Where this viewer began following: catch-up above, live below. */
+.follow-since {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 11px;
+  color: var(--mint);
+}
+.follow-since::before, .follow-since::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid #3f5f58;
+}
+.key-moment.overturned .key-moment-label {
+  text-decoration: line-through;
+}
+.follow-turn .clarification {
+  padding: 0 0 4px;
+}
+.follow-turn .clarification-option {
+  min-height: 36px;
+  padding: 6px 12px;
+}
+.follow-status:empty {
+  display: none;
+}
+
+/* The follow view (PLAN.md §10.2 D5): Customise opens it; its chat replaces Insights until Cancel or a follow. */
+.follow-open {
+  flex-shrink: 0;
+  align-self: flex-start;
+  min-height: 36px;
+  margin-top: 12px;
+  padding: 7px 14px;
+  border: 1px solid #9a6aac;
+  border-radius: 18px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.follow-setup-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.follow-help {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+.follow-setup-head button, .follow-offer button {
+  flex-shrink: 0;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid #9a6aac;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.follow-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.follow-offer .follow-offer-yes {
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
+/* Content from another live match of the demo: a yellow outline and that match's teams (never its score). */
+:root {
+  --cross-match: #ffd23f;
+}
+.cross-match {
+  outline: 2px solid var(--cross-match);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+.follow-origin {
+  margin-bottom: 10px;
+}
+.other-match {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cross-match);
+}
+.other-match-crest {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.other-match-mark {
+  min-width: 16px;
+  font-size: 9px;
+  text-align: center;
+}
+.other-match-v {
+  opacity: 0.7;
+  font-weight: 400;
+}
+/* A pinned stat from another match keeps the card's fixed height: a tighter header, one-line label, outline inside the grid. */
+.stat-card.cross-match {
+  outline-offset: -2px;
+}
+.stat-card.cross-match .other-match {
+  margin-bottom: 2px;
+  font-size: 10px;
+}
+.stat-card.cross-match .stat-label {
+  min-height: 0;
+  -webkit-line-clamp: 1;
+}
+.stat-card.cross-match .stat-value {
+  margin-top: 4px;
+}
+/* A proposal from another match: its teams on their own row above the label and Follow. */
+.follow-proposal.cross-match {
+  flex-wrap: wrap;
+}
+.follow-proposal.cross-match .other-match {
+  flex-basis: 100%;
+  margin-bottom: 0;
 }

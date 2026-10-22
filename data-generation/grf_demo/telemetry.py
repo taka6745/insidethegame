@@ -6,7 +6,7 @@ native 100 Hz tracking. Pitch locations use Opta's 0-100 frame for the acting te
 """
 
 import math
-from .roster import TEAMS, player_id
+from .roster import FIXTURE, TEAMS, player_id
 from .contact import RESTARTS, action_function, contact_qualifiers
 from .capabilities import capabilities
 
@@ -43,6 +43,7 @@ class TelemetryAdapter:
         self.possession_samples = []
         self.version = 1
         self.restarts = set()
+        self.whistled = []  # The last foul's events: the restart taken next decides whether it was a penalty.
         self.decisions = set()
         self.pending_kickoff = None
         self.period_start = {}
@@ -94,8 +95,8 @@ class TelemetryAdapter:
         seconds = self.seconds(row, video)
         x, y = self.xy(team, row, at)
         event = {
-            "eventId": f"grf-che-utd-{len(self.events) + 1}",
-            "matchId": "product-demo-match",
+            "eventId": f"{FIXTURE['event_prefix']}-{len(self.events) + 1}",
+            "matchId": FIXTURE["match_id"],
             "revision": 1,
             "sequence": len(self.events) + 1,
             "typeName": kind,
@@ -680,10 +681,19 @@ class TelemetryAdapter:
 
     def score(self, row, video, team):
         actor = row["last_touch"]
-        if not actor or actor[0] != team:
-            actor = None
         qualifiers = [{"type": "score", "value": "-".join(map(str, row["score"]))}]
         shot = self.pending_shot
+        if actor and actor[0] in (0, 1) and actor[0] != team and not (shot and shot["actor"][0] == team):
+            # No attempt of the scoring team, and the opponent's last touch put it in: an own goal, the event of
+            # the player who scored it (Opta). A deflected attempt keeps an unknown scorer below.
+            if self.last_body_contact and self.last_body_contact[0] == tuple(actor):
+                qualifiers += self.last_body_contact[1]
+            goal = self.emit("goal", row, video, actor, qualifiers=qualifiers + [{"type": "ownGoal", "value": True}])
+            self.last_goal_ms, self.pending_shot, self.pending_out = row["physics_ms"], None, None
+            self.error_before({**goal, "teamId": TEAMS[team]["id"]}, row, video, "goal")  # Scored for `team`.
+            return
+        if not actor or actor[0] != team:
+            actor = None
         if shot and shot["actor"][0] == team:
             qualifiers += [q for q in shot["qualifiers"] if q["type"] in ("restart", "situation", "assistEventId", "bigChance")]
             qualifiers += self.goal_mouth(row["ball_position_m"][1:3])
@@ -739,6 +749,7 @@ class TelemetryAdapter:
         if not kind or key in self.restarts:
             return None
         self.restarts.add(key)
+        self.settle_penalty(kind == "penalty")
         self.gain_possession(row, video, actor, kind)  # Every taken restart starts a possession.
         self.emit(kind, row, video, actor, qualifiers=qualifiers)
         return kind
@@ -765,13 +776,23 @@ class TelemetryAdapter:
             extra = [{"type": "penaltyAwarded", "value": True}] if penalty else []
             foul = self.emit("foul", row, video, actor, qualifiers=extra, at=at, outcome="failure")
             related = [{"type": "relatedEventId", "value": foul["eventId"]}]
+            self.whistled = [foul]
             if row.get("related_player"):
-                self.emit("foul_won", row, video, row["related_player"], qualifiers=related + extra, at=at,
-                          outcome="success")
+                self.whistled.append(self.emit("foul_won", row, video, row["related_player"],
+                                               qualifiers=related + extra, at=at, outcome="success"))
             card = {1: "yellow", 2: "second_yellow", 3: "red"}.get(row.get("card"))
             if card:
                 self.emit("card", row, video, actor, qualifiers=related + [{"type": "cardReason", "value": "foul"}],
                           outcome=card, at=at)
+
+    def settle_penalty(self, penalty):
+        """The restart after a foul is the referee's decision: a penalty kick confirms penaltyAwarded on the
+        foul's events, any other restart removes it (the foul's location alone does not award one)."""
+        for event in filter(None, self.whistled):
+            event["qualifiers"] = [q for q in event["qualifiers"] if q["type"] != "penaltyAwarded"]
+            if penalty:
+                event["qualifiers"].append({"type": "penaltyAwarded", "value": True})
+        self.whistled = []
 
     def in_box(self, row, at, actor):
         if not at or not actor:
@@ -797,6 +818,7 @@ class TelemetryAdapter:
             self.finish_shot(row, video, "off_target")
         self.finish_pass(row, video)
         self.flush(row, video)
+        self.settle_penalty(False)  # No penalty kick was taken after the last foul.
         if self.version >= 2 and row["match_ms"] >= 2 * self.half_seconds * 1000:
             self.emit("period_end", row, video)
 

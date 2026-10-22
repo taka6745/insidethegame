@@ -176,7 +176,7 @@ def line(points,label=None,at=None,color=MUTED,dash=False,both=False,badge=None)
 
 text('INSIDE THE GAME',80,35,23,BLUE)
 text('Master architecture',80,78,48)
-text('TARGET DESIGN  ·  19 OCTOBER 2026',790,94,22,MUTED)
+text('TARGET DESIGN 19 OCT  ·  DEMO BUILD 22 OCT 2026',790,94,22,MUTED)
 text('Shared match intelligence. Personal questions. One live experience.',80,146,25,MUTED)
 
 zone('grf',80,250,800,530,'GRF / data generation','Synthetic Chelsea–United match · one aligned timeline',ROSE,'#fdf0f3')
@@ -205,9 +205,9 @@ node('key',650,1170,180,155,'Key events','Goals · reds · penalties · VAR','fl
 node('raw',130,1430,200,155,'Raw passthrough','IDs · revisions','file',ORANGE)
 node('window',390,1430,200,155,'Stat projections','Minute + match','chart',ORANGE)
 node('sql',130,1690,200,170,'Azure SQL','Raw + key events','sql',ORANGE)
-node('cosmos',390,1690,200,170,'Cosmos DB','Standard stats','cosmos',ORANGE)
+node('stats',390,1690,200,170,'Azure SQL','Standard stats','sql',ORANGE)
 node('etl-api',650,1690,180,170,'GraphQL API','History + stats','graphql',ORANGE)
-node('commit',130,2040,460,150,'Commit + notify','Both stores readable before triggers publish','check',ORANGE)
+node('commit',130,2040,460,150,'Commit + notify','History + stats readable before triggers publish','check',ORANGE)
 line([(430,1247),(650,1247)])
 line([(230,1325),(230,1430)])
 line([(350,1325),(350,1370),(490,1370),(490,1430)])
@@ -260,7 +260,6 @@ line([(2155,1020),(2180,1020)])  # bucket branch to gateway routing
 line([(1770,845),(1890,845)],'Tests',(1830,832),both=True)
 line([(1470,1125),(1800,1125),(1800,890),(1890,890)],'Code path',(1800,1000),both=True)
 line([(2290,510),(2290,770)],'Catalogue · enabled flags',(2290,665),both=True)
-line([(2360,1000),(2360,920)],'Presence',(2360,946))
 line([(2110,1110),(2180,1110)],both=True)
 line([(2130,625),(2730,625)],'Questions',(2550,612),GREEN,both=True)
 line([(2730,470),(2640,470),(2640,585),(2130,585)],'Audience choice',(2540,572),GREEN)
@@ -268,13 +267,13 @@ line([(2400,1075),(2610,1075),(2610,1380),(2730,1380)],'Live UI',(2610,1180),BLU
 line([(2610,1380),(2610,1710),(2730,1710)],color=BLUE)
 line([(2610,1280),(2900,1280),(2900,1235)],'Clock',(2780,1280),BLUE)
 text('PHASE 2',1190,1170,18,GREY)
-for i,title in enumerate(['Semantic follows','Question web search']):
+for i,title in enumerate(['Question web search']):
     x = 1190 + i * 615
     box(x,1200,595,50,'#f7f8fa',GREY,True)
     text(title,x+10,1214,20,GREY,575,'center')
 
 node('listener',1190,1490,220,160,'Trigger listener','Service Bus · minute · key event','bolt',PURPLE)
-node('orchestrator',1530,1490,240,160,'Match orchestrator','Clock · debounce · half-time','clock',PURPLE)
+node('orchestrator',1530,1490,240,160,'Match orchestrator','Per match · clock · periods','clock',PURPLE)
 node('n-model',1890,1720,240,150,'Foundry models','Strong: author\nSmall: memory agents','foundry',PURPLE)
 node('match-client',1190,1720,220,150,'Match data client','Facts · key-event ledger','client',PURPLE)
 node('context',1530,1720,240,150,'Context builder','Active blocks · new facts\nLedger · prior narratives','layers',PURPLE)
@@ -349,25 +348,44 @@ for x,title,detail in [(2755,'Clip playlist','In chat · show more'),(3020,'Expa
 line([(3430,1005),(3430,2165),(3290,2165)],color=ROSE)  # VOD replays reuse live segments
 text('No per-viewer narrative generation',2730,2360,21,GREEN)
 
+# Demo build (22 Oct): what the judge URL adds around the target design. Built and unit-tested; applied on Azure
+# 22 Oct for the Azure test (acceptance pending). Seed routes exist only with DEMO_SEEDS=1.
+DEMO = '#9a6500'
+zone('demo',80,2500,3280,300,'Demo build  ·  22 Oct','Judge URL · Start demo always runs three live matches · built and unit-tested, Azure acceptance pending',DEMO,'#fffaf0')
+DW, DG, DY = 370, 36, 2610
+for i,(key,title,detail,ic,col) in enumerate([
+        ('edge','Edge proxy','Cloudflare Worker · msft-hackathon.koda-software.com','send',INK),
+        ('demo-control','Demo control','/demo-api/ start · cancel · status · main game first','sliders',INK),
+        ('seeds','Seeds','20′ · HT · 60′ · 85′ · nothing past the point','record',DEMO),
+        ('seed-adapter','Demo seed adapter','DEMO_SEEDS=1 only · export / restore per owner','layers',DEMO),
+        ('decision','Microsoft-Decision-1','Claim checks · follow triggers · clip Score · follow offers','check',PURPLE),
+        ('clips','Clips','Follow + key-event playlists · preview cards · sting · slow motion','screen',GREEN),
+        ('cross','Cross-game','Ask, pin and follow another live match','chat',BLUE),
+        ('guard','Spend guard','Budgets email · Stream Analytics only while events flow','bolt',ORANGE)]):
+    node(key,110+i*(DW+DG),DY,DW,160,title,detail,ic,col)
+for i in (1,2):
+    x = 110+i*(DW+DG)
+    line([(x+DW,DY+80),(x+DW+DG,DY+80)],color=DEMO)
+
 # Legend with drawn samples.
-line([(80,2541),(170,2541)])
-text('Data direction',185,2528,21,MUTED)
-line([(560,2541),(650,2541)],dash=True)
-text('Event Hubs / Service Bus message',665,2528,21,MUTED)
-line([(1080,2541),(1170,2541)],both=True)
-text('Two-way exchange',1185,2528,21,MUTED)
-box(1500,2524,90,34,'#f7f8fa',GREY,True)
-text('Phase 2',1605,2528,21,MUTED)
-element('ellipse',1774,2535,12,12,backgroundColor=MUTED,strokeColor=MUTED)
-text('Branch · a gap marks a crossing, not a join',1800,2528,21,MUTED)
+line([(80,2881),(170,2881)])
+text('Data direction',185,2868,21,MUTED)
+line([(560,2881),(650,2881)],dash=True)
+text('Event Hubs / Service Bus message',665,2868,21,MUTED)
+line([(1080,2881),(1170,2881)],both=True)
+text('Two-way exchange',1185,2868,21,MUTED)
+box(1500,2864,90,34,'#f7f8fa',GREY,True)
+text('Phase 2',1605,2868,21,MUTED)
+element('ellipse',1774,2875,12,12,backgroundColor=MUTED,strokeColor=MUTED)
+text('Branch · a gap marks a crossing, not a join',1800,2868,21,MUTED)
 # Colour swatches: arrows take the sending service's colour.
-text('Colour = sender:',80,2580,21,MUTED)
+text('Colour = sender:',80,2920,21,MUTED)
 sx = 80 + measure('Colour = sender:', 21) + 30
 for color,name in [(ROSE,'GRF'),(ORANGE,'ETL'),(BLUE,'Backend'),(PURPLE,'Narrative'),(GREEN,'Frontend'),(INK,'Shared stream'),(MUTED,'Within a service')]:
-    element('line',sx,2593,50,0,points=[[0,0],[50,0]],strokeColor=color,strokeWidth=4)
-    text(name,sx+62,2580,21,color)
+    element('line',sx,2933,50,0,points=[[0,0],[50,0]],strokeColor=color,strokeWidth=4)
+    text(name,sx+62,2920,21,color)
     sx += 62 + measure(name, 21) + 40
-text('Azure target architecture · service ownership preserved · no viewer prompts into shared narrative generation',80,2635,21,MUTED)
+text('Azure target architecture · service ownership preserved · no viewer prompts into shared narrative generation',80,2975,21,MUTED)
 
 def hop_crossings():
     """Gap one connector at each crossing; the other is drawn over the gap.

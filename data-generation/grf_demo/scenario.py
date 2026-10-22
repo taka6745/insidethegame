@@ -11,7 +11,7 @@ REALISM = {
     "GRF_KEEPER_SKILL": 1.0,
     "GRF_KEEPER_REACH": 2.5,  # Save animations reach 2.5 times as far.
     "GRF_KEEPER_RUSH": 0.25,  # Keepers hold their line instead of rushing the shooter.
-    "GRF_SHOT_THRESHOLD": 1.31,  # Shoot only from good chances.
+    "GRF_SHOT_THRESHOLD": 1.33,  # Shoot only from good chances (1.31 before scripted tactics).
     "GRF_PANIC_SHOT": 0,  # Clearances under pressure are not attempts.
     "GRF_SHOT_SCATTER": 8,  # Aim error in metres at 20 m, scaled by shooting skill.
     "GRF_SHOT_POWER": 0.4,  # Upstream strikes are too fast for any save animation.

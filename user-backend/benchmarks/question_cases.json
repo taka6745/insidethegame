@@ -1,63 +1,239 @@
 {
   "recording": "data-generation/recordings/chelsea-united-grf.json",
-  "recording_hash": "099cff6bdb9cae0190bc8becd4b2dd73f355738c2fb2d7f25b0e25b4ed2d4bcf",
+  "recording_hash": "1cee97820117f3eb2a6645c793fa16303f05b4462d11ce13e59b360354e046ee",
   "match_id": "product-demo-match",
+  "fixture": "chelsea-united",
   "cases": [
     {
       "id": "standard",
       "prompt": "How many shots has Chelsea had this game?",
-      "review": "16 (14 shots + 2 goals); ETL stat, no custom rule",
+      "review": "9 SPADL shot-family actions (goal included); ETL stat, no custom rule",
       "standard_stat_id": "chelsea:shots",
-      "offers": [["chelsea:shots", 16]]
+      "offers": [
+        [
+          "chelsea:shots",
+          9
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "chelsea:shots"
+          ]
+        }
+      }
     },
     {
       "id": "standard-restarts",
       "prompt": "How many corners has Manchester United taken?",
       "review": "3 corners taken",
       "standard_stat_id": "manutd:corners",
-      "offers": [["manutd:corners", 3]]
+      "offers": [
+        [
+          "manutd:corners",
+          3
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "manutd:corners"
+          ]
+        }
+      }
     },
     {
       "id": "possession",
       "prompt": "What is the possession split?",
-      "review": "ETL possession per team, never an event count: Chelsea 53.2%, United 46.8%",
+      "review": "ETL possession per team, never an event count: Chelsea 63.6%, United 36.4%",
       "standard_stat_id": "all:possession",
-      "offers": [["chelsea:possession", 53.2], ["manutd:possession", 46.8]]
+      "offers": [
+        [
+          "chelsea:possession",
+          63.6
+        ],
+        [
+          "manutd:possession",
+          36.4
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Possession split",
+            "team_ids": [
+              "chelsea",
+              "manutd"
+            ]
+          }
+        }
+      },
+      "fixture_note": "A model once compiled this as a count of every action; code routes it to the ETL row"
     },
     {
       "id": "custom",
       "prompt": "How many passes did Chelsea make in the second half?",
-      "review": "479; custom period-2 count, offer Track, no live registration",
-      "offer_value": 479
+      "review": "473 pass-family actions (catalogue definition); custom period-2 count, offer Track, no live registration",
+      "offer_value": 473,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Chelsea passes in the second half",
+            "action_types": [
+              "pass",
+              "cross",
+              "throw_in",
+              "freekick_crossed",
+              "freekick_short",
+              "corner_crossed",
+              "corner_short",
+              "goalkick"
+            ],
+            "team_ids": [
+              "chelsea"
+            ],
+            "period": 2
+          }
+        }
+      }
     },
     {
       "id": "followup",
       "prompt": "What about Manchester United?",
-      "review": "291 United second-half passes; period kept",
-      "offer_value": 291
+      "review": "209 United second-half pass-family actions; period kept",
+      "offer_value": 209,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Manchester United passes in the second half",
+            "action_types": [
+              "pass",
+              "cross",
+              "throw_in",
+              "freekick_crossed",
+              "freekick_short",
+              "corner_crossed",
+              "corner_short",
+              "goalkick"
+            ],
+            "team_ids": [
+              "manutd"
+            ],
+            "period": 2
+          }
+        }
+      }
     },
     {
       "id": "composite",
       "prompt": "What percentage of Chelsea's passes were completed in the second half?",
-      "review": "358 / 479 = 74.74%; composite percentage, unknown outcomes excluded (none here)",
-      "offer_value": 74.739
+      "review": "386 / 473 = 81.61%; SPADL pass family, success over all (offside and failed passes are incomplete)",
+      "offer_value": 81.607,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Chelsea second-half pass completion",
+            "operation": "percentage",
+            "inputs": [
+              {
+                "description": "Completed Chelsea passes",
+                "action_types": [
+                  "pass",
+                  "cross",
+                  "throw_in",
+                  "freekick_crossed",
+                  "freekick_short",
+                  "corner_crossed",
+                  "corner_short",
+                  "goalkick"
+                ],
+                "team_ids": [
+                  "chelsea"
+                ],
+                "period": 2,
+                "results": [
+                  "success"
+                ]
+              },
+              {
+                "description": "All Chelsea passes",
+                "action_types": [
+                  "pass",
+                  "cross",
+                  "throw_in",
+                  "freekick_crossed",
+                  "freekick_short",
+                  "corner_crossed",
+                  "corner_short",
+                  "goalkick"
+                ],
+                "team_ids": [
+                  "chelsea"
+                ],
+                "period": 2
+              }
+            ]
+          }
+        }
+      }
     },
     {
       "id": "clarification",
       "prompt": "How many shots has he had?",
       "review": "Ask which player; no guess",
-      "status": "clarification"
+      "status": "clarification",
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "clarification",
+          "clarification": {
+            "question": "Which player do you mean?",
+            "missing_fields": [
+              "player"
+            ]
+          }
+        }
+      }
     },
     {
       "id": "clarification-answer",
-      "prompt": "Reece James",
-      "review": "4 (2 shots + 2 goals); shots metric kept",
-      "offer_value": 4
+      "prompt": "Andrey Santos",
+      "review": "3 SPADL shot-family actions (1 goal included); shots metric kept",
+      "offer_value": 3,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Andrey Santos shots",
+            "action_types": [
+              "shot",
+              "shot_penalty",
+              "shot_freekick"
+            ],
+            "player_ids": [
+              "chelsea-9"
+            ]
+          }
+        }
+      }
     },
     {
       "id": "match",
       "prompt": "How is Chelsea looking this game?",
-      "review": "Chelsea won 2-1: Reece James 27' and 66', Šeško 60'; Mainoo sent off (second yellow 51'). No invented tactics or xG.",
+      "review": "1-1: Mainoo 10′ (9:35) and Andrey Santos 72′ (71:16), both penalties; no cards. No invented tactics or xG.",
       "answer_kind": "match"
     },
     {
@@ -71,14 +247,462 @@
       "prompt": "What is Cole Palmer's top speed?",
       "review": "Names the missing tracking/speed data; no substitute stat",
       "status": "unsupported",
-      "text_includes": ["speed"]
+      "text_includes": [
+        "speed"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "unsupported",
+          "message": "This recording has no tracking speed data."
+        }
+      }
     },
     {
       "id": "unsupported-xg",
       "prompt": "What is Chelsea's xG?",
       "review": "Names missing xG; no substitute stat",
       "status": "unsupported",
-      "text_includes": ["xg"]
+      "text_includes": [
+        "xg"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "unsupported",
+          "message": "This recording has no xG data."
+        }
+      }
+    },
+    {
+      "id": "score-shots-per-team",
+      "at": {
+        "period": 1,
+        "clock": "4:43"
+      },
+      "prompt": "Score and shots per team?",
+      "review": "4:43: score 0-0; shots Chelsea 0, United 1; per team, never one combined count",
+      "offers": [
+        [
+          "chelsea:goals",
+          0
+        ],
+        [
+          "manutd:goals",
+          0
+        ],
+        [
+          "chelsea:shots",
+          0
+        ],
+        [
+          "manutd:shots",
+          1
+        ]
+      ],
+      "text_includes": [
+        "score"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "all:goals",
+            "all:shots"
+          ]
+        }
+      }
+    },
+    {
+      "id": "corners-each-team",
+      "at": "halftime",
+      "prompt": "Corners each team",
+      "review": "Half-time: Chelsea 0, United 2 corners taken; per team",
+      "offers": [
+        [
+          "chelsea:corners",
+          0
+        ],
+        [
+          "manutd:corners",
+          2
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "all:corners"
+          ]
+        }
+      }
+    },
+    {
+      "id": "halftime-score-possession",
+      "at": "halftime",
+      "prompt": "HT score + possession split",
+      "review": "Half-time 0-1; possession 58.6/41.4 at the period-end delivery (58.7/41.3 a moment later)",
+      "offers": [
+        [
+          "chelsea:goals",
+          0
+        ],
+        [
+          "manutd:goals",
+          1
+        ],
+        [
+          "chelsea:possession",
+          58.6
+        ],
+        [
+          "manutd:possession",
+          41.4
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "all:goals",
+            "all:possession"
+          ]
+        }
+      }
+    },
+    {
+      "id": "united-cards-nobody-sent-off",
+      "at": {
+        "period": 2,
+        "clock": "60:00"
+      },
+      "prompt": "United cards, who was sent off",
+      "review": "No United cards by 60:00 (none in the match); nobody sent off, read from MA3 cards",
+      "offers": [
+        [
+          "manutd:cards",
+          0
+        ]
+      ],
+      "text_includes": [
+        "nobody has been sent off"
+      ],
+      "fixture": {
+        "route": "match",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "manutd:cards"
+          ]
+        }
+      },
+      "fixture_note": "Routed as match, as models do; code reroutes who-was-sent-off to the cards stat"
+    },
+    {
+      "id": "chelsea-on-target-percentage",
+      "at": {
+        "period": 1,
+        "clock": "40:00"
+      },
+      "prompt": "% of Chelsea shots on target",
+      "review": "1 on target of 3 shots = 33.3%, from ETL shots_on_target / shots",
+      "offers": [
+        [
+          "chelsea:shots_on_target",
+          1
+        ],
+        [
+          "chelsea:shots",
+          3
+        ]
+      ],
+      "text_includes": [
+        "33.3%"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "chelsea:shots_on_target",
+            "chelsea:shots"
+          ],
+          "formula": "percentage"
+        }
+      }
+    },
+    {
+      "id": "final-score-shots-each",
+      "at": "end",
+      "prompt": "Final score + shots each",
+      "review": "1-1; shots Chelsea 9, United 5",
+      "offers": [
+        [
+          "chelsea:goals",
+          1
+        ],
+        [
+          "manutd:goals",
+          1
+        ],
+        [
+          "chelsea:shots",
+          9
+        ],
+        [
+          "manutd:shots",
+          5
+        ]
+      ],
+      "text_includes": [
+        "1–1"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "all:goals",
+            "all:shots"
+          ]
+        }
+      }
+    },
+    {
+      "id": "keeper-saves",
+      "at": "end",
+      "prompt": "Lammens saves",
+      "review": "2: Lammens's real saves (keeper_save with save_kind save, as ETL's shots_saved); his touch of an off-target shot is wide_touch. Would be 3 if every SPADL keeper_save counted.",
+      "offer_value": 2,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Senne Lammens saves",
+            "action_types": [
+              "keeper_save"
+            ],
+            "save_kinds": [
+              "save"
+            ],
+            "player_ids": [
+              "manutd-0"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "shots-split-per-team",
+      "at": "end",
+      "prompt": "Shots split per team",
+      "review": "A split of a count is each team's count: Chelsea 9, United 5; never declined as a share",
+      "offers": [
+        [
+          "chelsea:shots",
+          9
+        ],
+        [
+          "manutd:shots",
+          5
+        ]
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "reuse",
+          "standard_stat_ids": [
+            "all:shots"
+          ]
+        }
+      }
+    },
+    {
+      "id": "player-touches",
+      "at": "end",
+      "prompt": "Cole Palmer's touches",
+      "review": "71 SPADL actions by Palmer of every type except dribble (carries are inferred, not touches); SPADL has no separate touch record; never unsupported",
+      "offer_value": 71,
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Cole Palmer's on-ball actions",
+            "action_types": [
+              "pass",
+              "cross",
+              "throw_in",
+              "freekick_crossed",
+              "freekick_short",
+              "corner_crossed",
+              "corner_short",
+              "take_on",
+              "foul",
+              "tackle",
+              "interception",
+              "shot",
+              "shot_penalty",
+              "shot_freekick",
+              "keeper_save",
+              "keeper_claim",
+              "keeper_punch",
+              "keeper_pick_up",
+              "clearance",
+              "bad_touch",
+              "goalkick"
+            ],
+            "player_ids": [
+              "chelsea-1"
+            ]
+          }
+        }
+      },
+      "fixture_note": "The decision for an all-actions count by one player"
+    },
+    {
+      "id": "leader-completed-passes",
+      "at": "end",
+      "prompt": "Which player has completed the most passes?",
+      "review": "Andrey Santos 110 completed pass-family actions; next Enzo Fernández and Pedro Neto 104, Reece James 101 (rule engine per player over SPADL actions)",
+      "leaders": [
+        [
+          "chelsea-9",
+          110
+        ]
+      ],
+      "text_includes": [
+        "andrey santos",
+        "110",
+        "enzo fernández (chelsea) 104"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Completed passes",
+            "action_types": [
+              "pass",
+              "cross",
+              "throw_in",
+              "freekick_crossed",
+              "freekick_short",
+              "corner_crossed",
+              "corner_short",
+              "goalkick"
+            ],
+            "results": [
+              "success"
+            ],
+            "rank_by": "player"
+          }
+        }
+      },
+      "fixture_note": "Used to end in 'could not answer': a single count cannot rank players"
+    },
+    {
+      "id": "leader-shots-tie",
+      "at": "end",
+      "prompt": "Who has had the most shots?",
+      "review": "Two-way tie on 3 shots (goals included): Tosin Adarabioyo, Andrey Santos; both offered",
+      "leaders": [
+        [
+          "chelsea-5",
+          3
+        ],
+        [
+          "chelsea-9",
+          3
+        ]
+      ],
+      "text_includes": [
+        "joint leaders",
+        "tosin adarabioyo",
+        "andrey santos",
+        "3 each"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Shots",
+            "action_types": [
+              "shot",
+              "shot_penalty",
+              "shot_freekick"
+            ],
+            "rank_by": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "leader-tackles-team",
+      "at": "end",
+      "prompt": "Which United player has made the most tackles?",
+      "review": "Lisandro Martínez 4; next de Ligt 3, Casemiro 2 (United only)",
+      "leaders": [
+        [
+          "manutd-4",
+          4
+        ]
+      ],
+      "text_includes": [
+        "lisandro martínez, 4",
+        "next:"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Tackles",
+            "action_types": [
+              "tackle"
+            ],
+            "team_ids": [
+              "manutd"
+            ],
+            "rank_by": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "leader-tackles-halftime-tie",
+      "at": "halftime",
+      "prompt": "Most tackles by a player so far",
+      "review": "At half-time Casemiro leads on 2; the players on 1 are runners-up (first three listed), not leaders",
+      "leaders": [
+        [
+          "manutd-8",
+          2
+        ]
+      ],
+      "text_includes": [
+        "casemiro (manchester united), 2",
+        "tosin adarabioyo (chelsea) 1"
+      ],
+      "fixture": {
+        "route": "statistic",
+        "decision": {
+          "status": "custom",
+          "goal": {
+            "description": "Tackles",
+            "action_types": [
+              "tackle"
+            ],
+            "rank_by": "player"
+          }
+        }
+      }
     }
-  ]
+  ],
+  "definitions": "SPADL (2026-10-21): custom goals use SPADL action types; values counted over ETL's SPADL actions. keeper-saves counts save_kinds [save] only (ETL's shots_saved); player-touches counts on-ball actions (every type except dribble). Values recomputed for the re-rendered recording (2026-10-22); before/after for the previous recording in benchmarks/results/spadl-golden.md."
 }

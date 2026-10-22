@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": { "noEmit": true, "types": ["node"] },
-  "include": ["match/**/*.ts", "lab/**/*.ts", "tests/**/*.ts", "tools/**/*.ts", "benchmarks/**/*.ts"]
+  "include": ["match/**/*.ts", "lab/**/*.ts", "dev/**/*.ts", "tests/**/*.ts", "tools/**/*.ts", "benchmarks/**/*.ts"]
 }

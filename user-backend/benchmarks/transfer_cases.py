@@ -40,5 +40,5 @@ def transfer_cases():
              "intent_id": f"transfer-intent-{number:03}",
              "gold_case_id": original[number - 1]["id"],
              "prompt": prompt, "quality": "transfer", "must_clarify": False,
-             "replies": [reply], "expected_status": ["ready"]}
+             "replies": [reply], "expected_status": original[number - 1]["expected_status"]}
             for index, (number, prompt, reply) in enumerate(REQUESTS, 1)]

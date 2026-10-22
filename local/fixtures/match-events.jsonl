@@ -1,3 +1,0 @@
-{"id":"fixture-001","matchId":"synthetic-demo","sequence":1,"eventTime":"2026-10-18T00:00:05Z","matchMinute":0,"type":"pass","teamId":"chelsea","synthetic":true,"qualifiers":{"bodyPart":"foot","outcome":"complete"}}
-{"id":"fixture-002","matchId":"synthetic-demo","sequence":2,"eventTime":"2026-10-18T00:00:15Z","matchMinute":0,"type":"pass","teamId":"man-utd","synthetic":true,"qualifiers":{"bodyPart":"head","outcome":"complete"}}
-{"id":"fixture-003","matchId":"synthetic-demo","sequence":3,"eventTime":"2026-10-18T00:01:05Z","matchMinute":1,"type":"shot","teamId":"chelsea","synthetic":true,"qualifiers":{"bodyPart":"head","outcome":"saved"}}

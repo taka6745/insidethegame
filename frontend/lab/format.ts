@@ -6,8 +6,7 @@ export function clock(seconds: number | null | undefined): string {
 }
 
 export function eventSeconds(event: LabEvent): number {
-  return event.match_time_seconds ?? event.elapsed_seconds ??
-    ((event.minute ?? event.timeMin ?? 0) * 60 + (event.second ?? event.timeSec ?? 0));
+  return event.match_time_seconds ?? (event.minute ?? 0) * 60;
 }
 
 export function replaySeconds(events: readonly LabEvent[]): number {

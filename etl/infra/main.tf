@@ -15,7 +15,7 @@ locals {
   name   = "${var.name_prefix}-${random_string.suffix.result}"
   me     = data.azurerm_client_config.current.object_id
   my_ip  = chomp(data.http.my_ip.response_body)
-  tables = toset(["matches", "rawEvents", "keyEvents", "minuteStats"])
+  tables = toset(["matches", "matchTeams", "matchPlayers", "canonicalEvents", "rawEvents", "keyEvents", "minuteStats", "possessionSamples", "matchProgressMarks"])
   tags   = { project = "insidethegame", service = "etl", environment = "dev" }
 }
 
@@ -33,6 +33,10 @@ resource "azurerm_consumption_budget_resource_group" "etl" {
 
   time_period {
     start_date = var.budget_start
+  }
+
+  lifecycle {
+    ignore_changes = [time_period] # azure.py passes the current month; an existing budget keeps its start.
   }
 
   dynamic "notification" {

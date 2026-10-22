@@ -6,7 +6,8 @@ terraform {
     random  = { source = "hashicorp/random", version = "~> 3.6" }
     http    = { source = "hashicorp/http", version = "~> 3.4" }
   }
-  # Local state for now (personal dev environment). Move to an azurerm backend when the team combines configs.
+  # Local state; `./dev azure` keeps it in .local/terraform/<stack> (-backend-config=path=...).
+  backend "local" {}
 }
 
 provider "azurerm" {

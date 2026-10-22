@@ -7,8 +7,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from narrative_engine.core.models import (USER_TYPES, KeyEventDetected, MatchClock, MinuteClosed, PeriodChanged,
-                                     PresenceChanged, parse_notification)
+from narrative_engine.core.models import (KeyEventDetected, MatchClock, MinuteClosed, PeriodChanged,
+                                     parse_notification)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -49,11 +49,10 @@ def test_labels_follow_the_etl_minute_label():
     assert MatchClock.parse(MatchClock(2, 7).key) == MatchClock(2, 7)
 
 
-def test_presence_keeps_only_known_active_buckets():
-    msg = parse_notification({"messageType": "PresenceChanged", "matchId": "m", "sentAt": "2026-10-18T07:00:00Z",
-                              "activeUserTypes": {"home:casual": 2, "away:analyst": 0, "martian:simple": 4}})
-    assert isinstance(msg, PresenceChanged) and msg.active == {"home:casual"}
-    assert len(USER_TYPES) == 12 and len(set(USER_TYPES)) == 12
+def test_other_types_are_ignored_before_any_field_is_read():
+    # Other publishers share the topic (e.g. snapshot watermarks without a matchId).
+    assert parse_notification({"type": "MatchSnapshotReady", "snapshot": {}}) is None
+    assert parse_notification({}, "PresenceChanged") is None
 
 
 def test_minutes_between_crosses_half_time_once_the_period_end_is_known():

@@ -23,18 +23,6 @@ output "narratives_listen_connection_string" {
   sensitive   = true
 }
 
-output "presence_send_connection_string" {
-  description = "User backend -> presence topic"
-  value       = azurerm_servicebus_topic_authorization_rule.presence_send.primary_connection_string
-  sensitive   = true
-}
-
-output "presence_listen_connection_string" {
-  description = "Engine <- presence topic"
-  value       = azurerm_servicebus_topic_authorization_rule.presence_listen.primary_connection_string
-  sensitive   = true
-}
-
 output "registry_name" {
   value = azurerm_container_registry.engine.name
 }
@@ -56,4 +44,27 @@ output "foundry_key" {
 
 output "engine_graphql_url" {
   value = length(azurerm_container_app.engine) > 0 ? "https://${azurerm_container_app.engine[0].ingress[0].fqdn}/graphql" : null
+}
+
+output "foundry_account_id" {
+  description = "Other stacks add their own deployments to this account (terraform/: question agents)"
+  value       = azurerm_cognitive_account.foundry.id
+}
+
+output "engine_app_name" {
+  value = "${var.name_prefix}-engine"
+}
+
+output "admin_token" {
+  description = "Bearer token for the engine's purge (frontend /purge-api/engine)"
+  value       = random_password.admin_token.result
+  sensitive   = true
+}
+
+output "decision" {
+  description = "Microsoft-Decision-1 on this Foundry account (SystemOne API), for the backend's follow check; key = foundry_key"
+  value = {
+    base_url = "https://${azurerm_cognitive_account.foundry.custom_subdomain_name}.cognitiveservices.azure.com"
+    model    = azurerm_cognitive_deployment.model[var.decision.deployment].name
+  }
 }

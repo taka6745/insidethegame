@@ -1,4 +1,6 @@
-"""Shared in-memory indexed calculations. No database, network or generated exec.
+"""Shared in-memory indexed calculations over SPADL actions. No database, network or generated exec.
+
+Actions are final once ETL stores them (finalSeq), so each is ingested once and never revised.
 
 Rules with the same non-clock predicates share one predicate evaluation. A
 compound index selects those families, then a clock index selects their windows.
@@ -11,7 +13,7 @@ from itertools import product
 
 from pydantic import BaseModel, ConfigDict
 
-from backend.models.events import Event
+from backend.models.actions import SpadlAction
 from backend.models.rules import INDEX_FIELDS, Rule
 from backend.services.time_index import TimeIndex
 
@@ -32,7 +34,7 @@ class FilterEngine:
         self.last_formula_evaluation_count = 0
         self._results: dict[str, CalculationResult] = {}
         self._totals: dict[str, Decimal] = {}
-        self._events: dict[tuple[str, str], Event] = {}
+        self._events: dict[tuple[str, int], SpadlAction] = {}
         self._index = defaultdict(lambda: defaultdict(set))
         self._families: dict[str, tuple[Rule, TimeIndex]] = {}
         self.last_candidate_count = 0
@@ -107,7 +109,7 @@ class FilterEngine:
                 value=self._formula_value(identifier), version=1)
             return self.get(identifier)
         # Decimal avoids ordinary binary-float accumulation drift, but its
-        # precision is bounded; see docs/filter-engine-design.md for the contract.
+        # precision is bounded; see docs/components/services.md §3 for the contract.
         value = sum((Decimal(str(rule.contribution(e))) for e in self._events.values()), Decimal(0))
         self._rules[identifier] = rule
         self._totals[identifier] = value
@@ -187,32 +189,21 @@ class FilterEngine:
             self._results[identifier] = result
             changed.append(result)
 
-    def ingest(self, event: Event) -> list[CalculationResult]:
+    def ingest(self, event: SpadlAction) -> list[CalculationResult]:
         self.last_formula_evaluation_count = 0
         self.last_candidate_count = self.last_index_probe_count = 0
         self.last_family_evaluation_count = self.last_time_probe_count = 0
-        key = (event.match_id, event.event_id)
+        key = (event.match_id, event.action_id)
         previous = self._events.get(key)
-        if previous and event.revision <= previous.revision:
-            if event.revision == previous.revision and not event.same_content(previous):
-                raise ValueError("Conflicting contents for the same event revision")
+        if previous is not None:
+            if previous != event:
+                raise ValueError("Conflicting contents for the same final action")
             return []
         groups = self._groups(event)
         self._events[key] = event
         changed = []
-        if previous is None:
-            for identifiers, delta in groups:
-                self._apply(identifiers, delta, changed)
-        else:
-            # Corrections can move across category families and time windows.
-            # Net deltas first: an unchanged total must not bump its version.
-            deltas = {identifier: delta for identifiers, delta in groups for identifier in identifiers}
-            for identifiers, contribution in self._groups(previous):
-                for identifier in identifiers:
-                    deltas[identifier] = deltas.get(identifier, Decimal(0)) - contribution
-            self.last_candidate_count = len(deltas)
-            for identifier, delta in deltas.items():
-                self._apply((identifier,), delta, changed)
+        for identifiers, delta in groups:
+            self._apply(identifiers, delta, changed)
         self._refresh_formulas(changed)
         changed = [result for result in changed if result.calculation_id in self._visible]
         changed.sort(key=lambda result: result.calculation_id)

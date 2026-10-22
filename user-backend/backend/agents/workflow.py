@@ -4,9 +4,8 @@ import os
 
 from agent_framework import WorkflowBuilder
 
-from backend.adapters.llm import LocalJsonModel
+from backend.adapters.llm import LocalJsonModel, model_configured
 from .compiler import StructuredRuleCompiler, RuleHarness
-from .fixtures import FixtureCodingAgent, FixtureGoalAgent
 from .models import ConversationMessage, PlanOutcome
 from .settings import AgentSettings
 from .orchestrator import GoalAgent
@@ -55,20 +54,20 @@ class RuleWorkflow:
             return PlanOutcome(status="failed", source=self.source, message="The calculation request timed out. Please try again.")
 
 
-def workflow_from_env(*, data_reference: dict | None = None) -> RuleWorkflow:
-    mode = os.getenv("LOCAL_LLM_MODE", "fixture")
+def workflow_from_env(*, data_reference: dict | None = None) -> RuleWorkflow | None:
+    """The local-model workflow, or None when no model is configured (callers refuse visibly).
+    Test and benchmark doubles are wired explicitly, never selected by environment."""
+    if os.getenv("LOCAL_LLM_MODE", "local") != "local":
+        raise ValueError("LOCAL_LLM_MODE fixture is removed; configure the local model or leave it unset")
+    if not model_configured():
+        return None
     settings = AgentSettings.from_env()
-    max_repairs = settings.max_repairs
     timeout = float(os.getenv("AGENT_PLAN_TIMEOUT_SECONDS", "60"))
     if not 1 <= timeout <= 300:
         raise ValueError("AGENT_PLAN_TIMEOUT_SECONDS must be between 1 and 300")
-    if mode == "fixture":
-        return RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture", max_repairs=max_repairs, timeout_seconds=timeout)
-    if mode == "local":
-        if settings.data_skill == "feed" and data_reference is None:
-            raise ValueError("The active event adapter must supply the agent data reference")
-        skill = EventDataSkill(data_reference) if settings.data_skill == "feed" else None
-        return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal"), response_mode=settings.goal_output_mode,
-                                      data_skill=skill),
-                            StructuredRuleCompiler(), source="local", max_repairs=max_repairs, timeout_seconds=timeout)
-    raise ValueError("LOCAL_LLM_MODE must be fixture or local")
+    if settings.data_skill == "feed" and data_reference is None:
+        raise ValueError("The active event adapter must supply the agent data reference")
+    skill = EventDataSkill(data_reference) if settings.data_skill == "feed" else None
+    return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal"), response_mode=settings.goal_output_mode,
+                                  data_skill=skill),
+                        StructuredRuleCompiler(), source="local", max_repairs=settings.max_repairs, timeout_seconds=timeout)

@@ -4,12 +4,15 @@ import argparse
 import gzip
 import json
 from pathlib import Path
+from .roster import FIXTURE, FIXTURE_NAME, fixture_for
 from .telemetry import TelemetryAdapter
 
 
 def translate(source):
     path = source / "recording.native.json"
     recording = json.loads(path.read_text())
+    if fixture_for(recording) is not FIXTURE:
+        raise ValueError(f"Recording is not GRF_FIXTURE={FIXTURE_NAME}; set GRF_FIXTURE to its fixture")
     adapter = TelemetryAdapter(recording["provenance"].get("active_play_seconds", 5400) // 2)
     frames = 0
     last = None
@@ -50,6 +53,10 @@ def translate(source):
     recording["provenance"]["scoring_attempts"] = (
         "A linked scored shot is represented once as goal; raw native shot remains in capture."
     )
+    # The adapter attributes own goals since 22 Oct; older captures' limitation text says it does not.
+    recording["provenance"]["limitations"] = [
+        "No xG, substitutions, injuries or VAR." if line == "No xG, substitutions, injuries, VAR or own-goal attribution."
+        else line for line in recording["provenance"].get("limitations", [])]
     path.write_text(json.dumps(recording, separators=(",", ":")))
     return recording
 

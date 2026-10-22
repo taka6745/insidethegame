@@ -9,7 +9,9 @@
             "Name": "match-notifications",
             "Subscriptions": [
               {
-                "Name": "narrative-engine"
+                "Name": "narrative-live",
+                "Rules": [{"Name": "etl-notifications", "Properties": {"FilterType": "Sql",
+                  "SqlFilter": {"SqlExpression": "notificationType IN ('MinuteClosed', 'KeyEventDetected', 'PeriodStarted', 'PeriodEnded')"}}}]
               },
               {
                 "Name": "integration",

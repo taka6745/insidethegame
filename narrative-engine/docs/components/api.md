@@ -4,10 +4,10 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · deployed |
+| **Status** | Implemented · tested · applied to Azure 22 Oct (Azure test; demo acceptance pending) |
 | **Code** | [`narrative_engine/api.py`](../../narrative_engine/api.py) |
 | **Library** | Strawberry GraphQL (ASGI) on uvicorn; no web framework |
-| **URL (dev)** | `https://itg-narrative-dev-engine.mangosmoke-bbf503ab.australiaeast.azurecontainerapps.io/graphql` (anonymous read) |
+| **URL (Azure)** | `https://itg-narrative-dev-engine.internal.<environment domain>/graphql`: internal ingress, anonymous read inside the environment |
 | **Contract** | [contracts/README.md](../../contracts/README.md#output-1-graphql-narrative-history-read-only) |
 | **Tests** | `test_api.py` |
 
@@ -18,9 +18,14 @@
 | Query | Returns |
 | --- | --- |
 | `narratives(matchId, userType, afterSeq = 0, first = 50)` | The bucket's narratives with `seq > afterSeq`, oldest first, with `hasNextPage` and `endCursor` |
+| `subscriptionNarratives(matchId, topicId, userType, afterSeq = 0, first = 50)` | One followed topic's narratives for one bucket, paged like `narratives`, with `topicId` and `decision` |
 | `matchState(matchId)` | `status`, `lastSummarised`, `activeUserTypes` |
+| `storylines(matchId)` | The match's storylines (label, team, status, salience, beats, linked `keyEventIds`), in the order they opened |
+| `contextBlocks(matchId, includeSuperseded = true)` | Neutral context summaries (`level` 0 minute, 1 five-minute, 2 earlier/period; `tier` `minute`, `five-minute`, `twenty-minute`, `half`), oldest first; `false` returns only the active context |
 
-Invalid buckets and `first` outside 1–200 are GraphQL errors.
+Narratives carry `eventSeq`, the canonical seq of the data they were written from, and `analysisId`/`storylineIds` (the storyline they advance). The service also answers `GET /health` and `POST /admin/matches/purge` (`{"match_id"}` or `{"all": true}`, [contract](../../../local/contracts.md#5-purge)) beside `/graphql` (`service.service_app`). On Azure the ingress is internal and the purge also needs `Authorization: Bearer $ADMIN_TOKEN`; the frontend's `/purge-api/engine` adds it.
+
+Invalid buckets or topic ids and `first` outside 1–200 are GraphQL errors.
 
 ## 2. Why GraphQL inside the engine
 
@@ -28,7 +33,7 @@ Invalid buckets and `first` outside 1–200 are GraphQL errors.
 
 - Consumers already use GraphQL for the ETL, so the user backend has one query style.
 - It runs in-process over either store, so tests and local runs need no Cosmos emulator.
-- `activeUserTypes` is computed from presence and staleness rules, which Data API builder over Cosmos could not express.
+- `activeUserTypes` is the last audience targets read from the user backend.
 
 ## 3. Running it locally
 

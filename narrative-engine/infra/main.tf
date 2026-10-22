@@ -33,6 +33,10 @@ resource "azurerm_consumption_budget_resource_group" "narrative" {
     start_date = var.budget_start
   }
 
+  lifecycle {
+    ignore_changes = [time_period] # azure.py passes the current month; an existing budget keeps its start.
+  }
+
   dynamic "notification" {
     for_each = [25, 50, 90]
     content {

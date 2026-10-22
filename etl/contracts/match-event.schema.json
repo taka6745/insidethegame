@@ -2,14 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://insidethegame.local/contracts/match-event.schema.json",
   "title": "Match stream message",
-  "description": "One Event Hubs message. MA1 = match info (sent once, first). MA3 = one Opta-style match event. Partition key = matchId.",
-  "oneOf": [{ "$ref": "#/$defs/ma1" }, { "$ref": "#/$defs/ma3" }],
+  "description": "One Event Hubs message. MA1 = match info (sent once, first). MA3 = one Opta-style match event. POS = one possession sample. Partition key = matchId. Canonical MatchEvent v2 messages share the hub (local/contracts.md) and have no feed.",
+  "oneOf": [{ "$ref": "#/$defs/ma1" }, { "$ref": "#/$defs/ma3" }, { "$ref": "#/$defs/pos" }],
   "$defs": {
     "envelope": {
       "type": "object",
       "required": ["feed", "schemaVersion", "matchId", "synthetic"],
       "properties": {
-        "feed": { "enum": ["MA1", "MA3"] },
+        "feed": { "enum": ["MA1", "MA3", "POS"] },
         "schemaVersion": { "const": 1 },
         "matchId": { "type": "string", "maxLength": 64 },
         "synthetic": { "type": "boolean", "description": "True for generated data. Never drop this label." }
@@ -22,6 +22,8 @@
         "id": { "type": "string", "maxLength": 64 },
         "name": { "type": "string" },
         "shortName": { "type": "string" },
+        "knownNames": { "type": "array", "items": { "type": "string", "maxLength": 40 }, "maxItems": 8,
+                        "description": "Other names fans and commentators use (e.g. \"the Blues\"). Optional." },
         "code": { "type": "string" },
         "position": { "enum": ["home", "away"] },
         "lineup": {
@@ -49,6 +51,42 @@
         "scheduledKickoff": { "type": "string", "format": "date-time" },
         "timeStamp": { "type": "string", "format": "date-time", "description": "Wall-clock send time; Stream Analytics needs one on every message." },
         "provenance": { "type": "string" },
+        "fixture": { "type": "string", "pattern": "^[a-z0-9-]{1,55}$", "description": "Feed catalogue id; matchId = {fixture}-{first 8 hex of runId}." },
+        "sourceMatchId": { "type": "string", "maxLength": 64, "description": "The recording's own match id (provenance only)." },
+        "runId": { "type": "string", "format": "uuid", "description": "Feed run that minted matchId." },
+        "capabilities": {
+          "type": "object",
+          "description": "What this feed provides; stats it cannot support are unavailable, never zero.",
+          "properties": {
+            "canonicalEvents": { "type": "boolean" },
+            "possessionSamples": { "type": "boolean" },
+            "video": { "type": "boolean", "description": "HLS at /media/hls/{matchId}/live.m3u8." },
+            "periods": { "type": "integer", "minimum": 1, "maximum": 5, "description": "Final period; its period_end finishes the match." },
+            "eventTypes": { "type": "array", "items": { "type": "string" } },
+            "shotOutcomes": { "type": "boolean" },
+            "shotsIncludeScoringAttempts": { "type": "boolean" },
+            "restartEvents": { "enum": ["taken", "awarded"] },
+            "bodyParts": { "type": "boolean" },
+            "bodyPartEventTypes": { "type": "array", "items": { "type": "string" }, "description": "Provider event types whose body parts are complete." },
+            "bodyPartActionTypes": { "type": "array", "items": { "type": "string" }, "description": "The same coverage as SPADL action types (spadl-action.schema.json typeName)." },
+            "distanceEventTypes": { "type": "array", "items": { "type": "string" } },
+            "coordinates": { "type": "string" },
+            "clock": { "type": "string" },
+            "possessionBasis": { "type": "string" }
+          }
+        },
+        "branding": {
+          "type": "object",
+          "description": "Presentation keyed by contestant id.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "primaryColour": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+              "secondaryColour": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+              "crestAssetId": { "type": ["string", "null"], "pattern": "^[a-z0-9-]{1,64}$" }
+            }
+          }
+        },
         "contestant": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/contestant" } }
       }
     },
@@ -58,6 +96,10 @@
       "properties": {
         "feed": { "const": "MA3" },
         "seq": { "type": "integer", "description": "Order within the match stream." },
+        "eventSeq": { "type": "integer", "minimum": 1, "description": "Canonical MatchEvent seq this row derives from; several rows may share one." },
+        "videoSeconds": { "type": "number", "minimum": 0 },
+        "sourceEventId": { "type": "string", "description": "Canonical event_id." },
+        "possessionId": { "type": ["integer", "null"] },
         "id": { "type": "integer", "description": "Unique event ID (Opta id)." },
         "eventId": { "type": "integer", "description": "Per-contestant sequence (Opta eventId); qualifier 55 refers to it." },
         "typeId": { "type": "integer", "description": "See opta-codes.json eventTypes." },
@@ -82,6 +124,20 @@
             }
           }
         }
+      }
+    },
+    "pos": {
+      "allOf": [{ "$ref": "#/$defs/envelope" }],
+      "required": ["feed", "sampleId", "periodId", "videoSeconds", "durationSeconds", "contestantId", "timeStamp"],
+      "properties": {
+        "feed": { "const": "POS" },
+        "sampleId": { "type": "integer", "minimum": 1, "description": "1, 2, 3... per match; idempotency key with matchId." },
+        "periodId": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "videoSeconds": { "type": "number", "minimum": 0, "description": "End of the sample on the match video clock." },
+        "durationSeconds": { "type": "number", "minimum": 0, "description": "Seconds the contestant owned the ball in this sample." },
+        "contestantId": { "type": "string", "maxLength": 64 },
+        "eventSeq": { "type": "integer", "minimum": 0, "description": "Latest canonical seq sent before this sample (informational)." },
+        "timeStamp": { "type": "string", "format": "date-time" }
       }
     }
   }

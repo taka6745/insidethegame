@@ -1,0 +1,679 @@
+{
+  "summary": {
+    "passed": 25,
+    "cases": 25,
+    "median_seconds": 10.5,
+    "max_seconds": 22.98,
+    "average_tokens": 28765,
+    "average_calls": 1.96
+  },
+  "cases": [
+    {
+      "id": "standard",
+      "prompt": "How many shots has Chelsea had this game?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_source": true
+      },
+      "usage": {
+        "input_tokens": 27927,
+        "output_tokens": 424,
+        "calls": 2,
+        "seconds": 11.47
+      },
+      "text": "Chelsea shots: 16.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:shots",
+          16
+        ]
+      ]
+    },
+    {
+      "id": "standard-restarts",
+      "prompt": "How many corners has Manchester United taken?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_source": true
+      },
+      "usage": {
+        "input_tokens": 28051,
+        "output_tokens": 401,
+        "calls": 2,
+        "seconds": 5.78
+      },
+      "text": "Manchester United corners: 3.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "manutd:corners",
+          3
+        ]
+      ]
+    },
+    {
+      "id": "possession",
+      "prompt": "What is the possession split?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_source": true
+      },
+      "usage": {
+        "input_tokens": 28159,
+        "output_tokens": 257,
+        "calls": 2,
+        "seconds": 5.17
+      },
+      "text": "Chelsea possession: 53.2%. Manchester United possession: 46.8%.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:possession",
+          53.2
+        ],
+        [
+          "manutd:possession",
+          46.8
+        ]
+      ]
+    },
+    {
+      "id": "custom",
+      "prompt": "How many passes did Chelsea make in the second half?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 28300,
+        "output_tokens": 595,
+        "calls": 2,
+        "seconds": 9.0
+      },
+      "text": "Passes by Chelsea in second half: 479.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Passes by Chelsea in second half",
+          479.0
+        ]
+      ]
+    },
+    {
+      "id": "followup",
+      "prompt": "What about Manchester United?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 28563,
+        "output_tokens": 671,
+        "calls": 2,
+        "seconds": 11.82
+      },
+      "text": "Passes by Manchester United in second half: 291.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Passes by Manchester United in second half",
+          291.0
+        ]
+      ]
+    },
+    {
+      "id": "composite",
+      "prompt": "What percentage of Chelsea's passes were completed in the second half?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 28860,
+        "output_tokens": 1232,
+        "calls": 2,
+        "seconds": 15.58
+      },
+      "text": "Chelsea pass completion percentage in second half: 74.7%.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Chelsea pass completion percentage in second half",
+          74.73903966597078
+        ]
+      ]
+    },
+    {
+      "id": "clarification",
+      "prompt": "How many shots has he had?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true
+      },
+      "usage": {
+        "input_tokens": 8025,
+        "output_tokens": 389,
+        "calls": 1,
+        "seconds": 6.52
+      },
+      "text": "Which player are you referring to?",
+      "status": "clarification",
+      "error": null,
+      "offers": []
+    },
+    {
+      "id": "clarification-answer",
+      "prompt": "Reece James",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 29477,
+        "output_tokens": 590,
+        "calls": 2,
+        "seconds": 10.5
+      },
+      "text": "Shots by Reece James: 4.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Shots by Reece James",
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "match",
+      "prompt": "How is Chelsea looking this game?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "answer_kind": true
+      },
+      "usage": {
+        "input_tokens": 38443,
+        "output_tokens": 570,
+        "calls": 2,
+        "seconds": 10.76
+      },
+      "text": "Chelsea lead 2-1 in stoppage time. They've controlled possession (53%) and created more chances (16 shots, 9 on target vs United's 8/3). Their 76% pass accuracy and 112 box entries show sustained pressure, though they've needed 39 clearances to absorb United's late push. Reece James scored both Chelsea goals (28', 67'). Cucurella just made a crucial tackle and clearance in the 90+1' minute.",
+      "status": "answer",
+      "error": null,
+      "offers": []
+    },
+    {
+      "id": "football",
+      "prompt": "What does offside mean?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "answer_kind": true
+      },
+      "usage": {
+        "input_tokens": 39428,
+        "output_tokens": 394,
+        "calls": 2,
+        "seconds": 6.81
+      },
+      "text": "A player is in an offside position if, when a teammate plays or touches the ball, they are in the opponents' half and ahead of both the ball and the second-last defender (hands/arms don't count; level is onside). Position alone isn't an offence — they must then interfere with play, interfere with an opponent, or gain an advantage from a rebound, deflection or save. Direct receipt from a throw-in, corner or goal kick is exempt. A deliberate opponent play usually resets the situation; a deliberate save does not. An offside offence results in an indirect free kick.",
+      "status": "answer",
+      "error": null,
+      "offers": []
+    },
+    {
+      "id": "unsupported-speed",
+      "prompt": "What is Cole Palmer's top speed?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 28617,
+        "output_tokens": 428,
+        "calls": 2,
+        "seconds": 6.41
+      },
+      "text": "Sorry, I cannot answer that. This recording has no tracking speed or distance data.",
+      "status": "unsupported",
+      "error": null,
+      "offers": []
+    },
+    {
+      "id": "unsupported-xg",
+      "prompt": "What is Chelsea's xG?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 28361,
+        "output_tokens": 375,
+        "calls": 2,
+        "seconds": 12.17
+      },
+      "text": "Sorry, I cannot answer that. This recording has no xG or expected threat data.",
+      "status": "unsupported",
+      "error": null,
+      "offers": []
+    },
+    {
+      "id": "score-shots-per-team",
+      "prompt": "Score and shots per team?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27866,
+        "output_tokens": 534,
+        "calls": 2,
+        "seconds": 9.67
+      },
+      "text": "Score: Chelsea 0–0 Manchester United. Chelsea shots: 0. Manchester United shots: 1.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:goals",
+          0
+        ],
+        [
+          "manutd:goals",
+          0
+        ],
+        [
+          "chelsea:shots",
+          0
+        ],
+        [
+          "manutd:shots",
+          1
+        ]
+      ]
+    },
+    {
+      "id": "corners-each-team",
+      "prompt": "Corners each team",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true
+      },
+      "usage": {
+        "input_tokens": 27896,
+        "output_tokens": 319,
+        "calls": 2,
+        "seconds": 14.64
+      },
+      "text": "Chelsea corners: 0. Manchester United corners: 3.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:corners",
+          0
+        ],
+        [
+          "manutd:corners",
+          3
+        ]
+      ]
+    },
+    {
+      "id": "halftime-score-possession",
+      "prompt": "HT score + possession split",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true
+      },
+      "usage": {
+        "input_tokens": 27898,
+        "output_tokens": 1284,
+        "calls": 2,
+        "seconds": 22.98
+      },
+      "text": "Score: Chelsea 1–0 Manchester United. Chelsea possession: 51.4%. Manchester United possession: 48.6%.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:goals",
+          1
+        ],
+        [
+          "manutd:goals",
+          0
+        ],
+        [
+          "chelsea:possession",
+          51.4
+        ],
+        [
+          "manutd:possession",
+          48.6
+        ]
+      ]
+    },
+    {
+      "id": "united-cards-sent-off",
+      "prompt": "United cards, who was sent off",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27906,
+        "output_tokens": 399,
+        "calls": 2,
+        "seconds": 6.27
+      },
+      "text": "Manchester United cards: 3. Sent off: Kobbie Mainoo (second yellow, 52′).",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "manutd:cards",
+          3
+        ]
+      ]
+    },
+    {
+      "id": "chelsea-on-target-percentage",
+      "prompt": "% of Chelsea shots on target",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27896,
+        "output_tokens": 386,
+        "calls": 2,
+        "seconds": 7.68
+      },
+      "text": "Chelsea shots on target as a share of Chelsea shots: 50% (2 of 4).",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:shots_on_target",
+          2
+        ],
+        [
+          "chelsea:shots",
+          4
+        ]
+      ]
+    },
+    {
+      "id": "final-score-shots-each",
+      "prompt": "Final score + shots each",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27921,
+        "output_tokens": 712,
+        "calls": 2,
+        "seconds": 20.74
+      },
+      "text": "Score: Chelsea 2–1 Manchester United. Chelsea shots: 16. Manchester United shots: 8.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:goals",
+          2
+        ],
+        [
+          "manutd:goals",
+          1
+        ],
+        [
+          "chelsea:shots",
+          16
+        ],
+        [
+          "manutd:shots",
+          8
+        ]
+      ]
+    },
+    {
+      "id": "keeper-saves",
+      "prompt": "Lammens saves",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 27919,
+        "output_tokens": 670,
+        "calls": 2,
+        "seconds": 12.15
+      },
+      "text": "Lammens saves: 9.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Lammens saves",
+          9.0
+        ]
+      ]
+    },
+    {
+      "id": "shots-split-per-team",
+      "prompt": "Shots split per team",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "standard_offers": true
+      },
+      "usage": {
+        "input_tokens": 27921,
+        "output_tokens": 621,
+        "calls": 2,
+        "seconds": 8.38
+      },
+      "text": "Chelsea shots: 16. Manchester United shots: 8.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "chelsea:shots",
+          16
+        ],
+        [
+          "manutd:shots",
+          8
+        ]
+      ]
+    },
+    {
+      "id": "player-touches",
+      "prompt": "Cole Palmer's touches",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "offer": true
+      },
+      "usage": {
+        "input_tokens": 27919,
+        "output_tokens": 656,
+        "calls": 2,
+        "seconds": 19.81
+      },
+      "text": "Cole Palmer's touches (on-ball actions): 73.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Cole Palmer's touches (on-ball actions)",
+          73.0
+        ]
+      ]
+    },
+    {
+      "id": "leader-completed-passes",
+      "prompt": "Which player has completed the most passes?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "leaders": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27925,
+        "output_tokens": 470,
+        "calls": 2,
+        "seconds": 9.26
+      },
+      "text": "Completed passes — leader: Andrey Santos (Chelsea), 109. Next: Enzo Fernández (Chelsea) 90, Reece James (Chelsea) 81, Bruno Fernandes (Manchester United) 77.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Andrey Santos: Completed passes",
+          109.0
+        ]
+      ]
+    },
+    {
+      "id": "leader-shots-tie",
+      "prompt": "Who has had the most shots?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "leaders": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27923,
+        "output_tokens": 684,
+        "calls": 2,
+        "seconds": 13.56
+      },
+      "text": "Shots — joint leaders: Reece James (Chelsea), Enzo Fernández (Chelsea) and Andrey Santos (Chelsea), 4 each. Next: Tosin Adarabioyo (Chelsea) 3, Liam Delap (Chelsea) 1, Benjamin Šeško (Manchester United) 1.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Reece James: Shots",
+          4.0
+        ],
+        [
+          "Enzo Fernández: Shots",
+          4.0
+        ],
+        [
+          "Andrey Santos: Shots",
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "leader-tackles-team",
+      "prompt": "Which United player has made the most tackles?",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "leaders": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27927,
+        "output_tokens": 459,
+        "calls": 2,
+        "seconds": 13.88
+      },
+      "text": "Tackles by Manchester United players — leader: Luke Shaw, 6. Next: Lisandro Martínez 3, Matthijs de Ligt 3, Diogo Dalot 3.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Luke Shaw: Tackles by Manchester United players",
+          6.0
+        ]
+      ]
+    },
+    {
+      "id": "leader-tackles-halftime-tie",
+      "prompt": "Most tackles by a player so far",
+      "ok": true,
+      "checks": {
+        "snapshot": true,
+        "status": true,
+        "leaders": true,
+        "named_reason": true
+      },
+      "usage": {
+        "input_tokens": 27902,
+        "output_tokens": 565,
+        "calls": 2,
+        "seconds": 8.38
+      },
+      "text": "Tackles — leader: Enzo Fernández (Chelsea), 4. Next: Marc Cucurella (Chelsea) 3, Andrey Santos (Chelsea) 3, Luke Shaw (Manchester United) 3.",
+      "status": "answer",
+      "error": null,
+      "offers": [
+        [
+          "Enzo Fernández: Tackles",
+          4.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,5 +1,4 @@
-"""Conversation/session/offer persistence. Never hold a transaction over model work."""
-from pathlib import Path
+"""Conversation/session/offer persistence per (profile, match). Never hold a transaction over model work."""
 from uuid import uuid4
 from psycopg.types.json import Jsonb
 from backend.domain import RuleError
@@ -9,26 +8,26 @@ class QuestionRepository:
         self.store = store
 
     def initialize(self):
+        """A restarted process cannot finish another process's in-flight answers."""
         with self.store.connect() as conn:
-            conn.execute((Path(__file__).parents[2] / 'migrations/006_questions.sql').read_text())
-            conn.execute((Path(__file__).parents[2] / 'migrations/007_viewer_audience.sql').read_text())
             conn.execute("UPDATE question_turns SET status='failed',reply=%s WHERE status='pending'", (Jsonb({'status':'unsupported','text':'Sorry, that question was interrupted. Please ask again.','offers':[]}),))
 
     def profiles(self):
         return self.store.profiles()
 
-    def start(self, profile_id, snapshot):
+    def start(self, profile_id, match_id):
+        """A new token for (profile, match); the previous token of that pair stops working."""
         profile = next((p for p in self.profiles() if p['id'] == profile_id), None)
         if profile is None:
             raise RuleError('profile_not_found', 'Choose a demo profile.', 404)
         token = uuid4()
         with self.store.connect() as conn:
-            row = conn.execute('INSERT INTO question_conversations(id,profile_id,run_id,match_id) VALUES(%s,%s,%s,%s) '
-                'ON CONFLICT(profile_id,run_id) DO UPDATE SET match_id=EXCLUDED.match_id RETURNING *',
-                (uuid4(), profile_id, snapshot.run_id, snapshot.match_id)).fetchone()
-            conn.execute('INSERT INTO question_sessions(profile_id,token,conversation_id) VALUES(%s,%s,%s) '
-                         'ON CONFLICT(profile_id) DO UPDATE SET token=EXCLUDED.token,conversation_id=EXCLUDED.conversation_id',
-                         (profile_id,token,row['id']))
+            row = conn.execute('INSERT INTO question_conversations(id,profile_id,match_id) VALUES(%s,%s,%s) '
+                'ON CONFLICT(profile_id,match_id) DO UPDATE SET profile_id=EXCLUDED.profile_id RETURNING *',
+                (uuid4(), profile_id, match_id)).fetchone()
+            conn.execute('INSERT INTO question_sessions(profile_id,match_id,token,conversation_id) VALUES(%s,%s,%s,%s) '
+                         'ON CONFLICT(profile_id,match_id) DO UPDATE SET token=EXCLUDED.token,conversation_id=EXCLUDED.conversation_id',
+                         (profile_id,match_id,token,row['id']))
             # A takeover invalidates the in-flight response and makes the new session usable.
             conn.execute("UPDATE question_turns SET status='failed',reply=%s WHERE conversation_id=%s AND status='pending'",
                          (Jsonb({'status':'unsupported','text':'Sorry, that question was interrupted by a new session.','offers':[]}),row['id']))
@@ -44,30 +43,38 @@ class QuestionRepository:
     def read(self, token):
         with self.store.connect() as conn:
             row = self._session(conn, token)
-            turns = conn.execute('SELECT id,request_id,prompt,status,reply FROM question_turns WHERE conversation_id=%s ORDER BY id', (row['id'],)).fetchall()
+            turns = conn.execute('SELECT id,request_id,prompt,status,reply,channel FROM question_turns WHERE conversation_id=%s ORDER BY id', (row['id'],)).fetchall()
             offers = conn.execute('SELECT id,document,calculation_id FROM question_offers WHERE conversation_id=%s', (row['id'],)).fetchall()
-        return {'session_token': str(token), 'profile_id':row['profile_id'], 'run_id':row['run_id'],
-                'match_id':row['match_id'], 'audience': row['audience'], 'turns':turns,
+        # Question and follow-chat turns share the table; each channel is its own conversation.
+        channel = lambda name: [{k: t[k] for k in t if k != 'channel'} for t in turns if t['channel'] == name]
+        return {'session_token': str(token), 'profile_id':row['profile_id'],
+                'match_id':row['match_id'], 'audience': row['audience'], 'turns':channel('questions'),
+                'follow_turns': channel('follow'),
                 'offers':[{**r['document'],'id':str(r['id']),'calculation_id':r['calculation_id']} for r in offers]}
 
     def set_audience(self, token, audience):
         with self.store.connect() as conn:
             row = self._session(conn, token, lock=True)
             conn.execute('UPDATE question_conversations SET audience=%s WHERE id=%s',
-                         (Jsonb(audience.model_dump()), row['id']))
+                         (Jsonb(audience), row['id']))
 
-    def begin(self, token, request_id, prompt):
+    def begin(self, token, request_id, prompt, channel='questions', per_minute=None):
+        """A pending turn; `per_minute` caps the channel's turns in the last 60 s (429)."""
         with self.store.connect() as conn:
             row = self._session(conn, token, lock=True)
             existing = conn.execute('SELECT * FROM question_turns WHERE conversation_id=%s AND request_id=%s', (row['id'],request_id)).fetchone()
             if existing:
-                if existing['prompt'] != prompt:
+                if existing['prompt'] != prompt or existing['channel'] != channel:
                     raise RuleError('request_conflict','This request ID was already used for another question.',409)
                 return {**existing, 'created':False}
-            if conn.execute("SELECT 1 FROM question_turns WHERE conversation_id=%s AND status='pending'", (row['id'],)).fetchone():
+            if conn.execute("SELECT 1 FROM question_turns WHERE conversation_id=%s AND channel=%s AND status='pending'", (row['id'],channel)).fetchone():
                 raise RuleError('question_busy','Please wait for the current answer.',409)
-            created = conn.execute("INSERT INTO question_turns(conversation_id,request_id,prompt,status) VALUES(%s,%s,%s,'pending') RETURNING *",
-                (row['id'],request_id,prompt)).fetchone()
+            if per_minute is not None and conn.execute(
+                    "SELECT count(*) AS n FROM question_turns WHERE conversation_id=%s AND channel=%s "
+                    "AND created_at > now() - interval '60 seconds'", (row['id'], channel)).fetchone()['n'] >= per_minute:
+                raise RuleError('rate_limited', 'Too many messages. Please wait a moment.', 429)
+            created = conn.execute("INSERT INTO question_turns(conversation_id,request_id,prompt,status,channel) VALUES(%s,%s,%s,'pending',%s) RETURNING *",
+                (row['id'],request_id,prompt,channel)).fetchone()
             return {**created, 'created':True}
 
     def finish(self, token, turn_id, reply):
@@ -81,11 +88,11 @@ class QuestionRepository:
                 conn.execute('INSERT INTO question_offers(id,conversation_id,turn_id,document) VALUES(%s,%s,%s,%s)',
                              (offer['id'],row['id'],turn_id,Jsonb(offer)))
 
-    def fail(self, token, turn_id):
+    def fail(self, token, turn_id, reply=None):
         with self.store.connect() as conn:
             row = self._session(conn,token,lock=True)
             conn.execute("UPDATE question_turns SET status='failed',reply=%s WHERE id=%s AND conversation_id=%s AND status='pending'",
-                         (Jsonb({'status':'unsupported','text':'Sorry, I could not answer that. Please try again.','offers':[]}),turn_id,row['id']))
+                         (Jsonb(reply or {'status':'unsupported','text':'Sorry, I could not answer that. Please try again.','offers':[]}),turn_id,row['id']))
 
     def offer(self, token, offer_id):
         with self.store.connect() as conn:

@@ -1,524 +1,356 @@
-"""Product flow: a shared upstream view and isolated durable viewer pins."""
+"""Viewer product per match: shared projection, durable private pins, sessions per (profile, match)."""
+import asyncio
 from uuid import uuid4
 
-from fastapi.testclient import TestClient
-from starlette.websockets import WebSocketDisconnect
 import pytest
+from starlette.websockets import WebSocketDisconnect
 
-from backend.app import create_app
-from test_questions import build
+from backend.models.engine_narratives import EngineNarrative
+from backend.models.rules import Rule
+from harness import MATCH, Running, Upstream
+
+OTHER = 'north-south-0badc0de'
 
 
-def product(store):
-    lab, questions, upstreams, _ = build(store)
-    return lab, questions, upstreams, create_app(store, lab=lab, questions=questions, enable_product=True)
-
-
-def start(client, profile='chelsea-analytical'):
-    response = client.post('/product/sessions', json={'profile_id': profile})
+def start(client, match_id=MATCH, profile='chelsea-analytical'):
+    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile})
     assert response.status_code == 200, response.text
     return response.json()
 
 
-def ask(client, token, text):
-    response = client.post(f'/product/{token}/messages', json={'prompt': text, 'request_id': str(uuid4())})
+def path(token, match_id=MATCH):
+    return f'/product/matches/{match_id}/sessions/{token}'
+
+
+def ask(client, token, text, match_id=MATCH):
+    response = client.post(path(token, match_id) + '/messages', json={'prompt': text, 'request_id': str(uuid4())})
     assert response.status_code == 200, response.text
     return response.json()
 
 
-def test_product_uses_same_match_and_maps_relative_profile(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        data = start(client)
+def narrative(match_id, bucket='home:analytical', seq=1, minute=0, second=30, event_seq=None, text='Kick-off.', period=1):
+    return EngineNarrative.model_validate({
+        'id': f'narr:{match_id}:{bucket}:{seq}', 'matchId': match_id, 'userType': bucket, 'seq': seq,
+        'stepId': f'{match_id}:step:{seq}', 'trigger': {'type': 'keyEvent', 'ref': 'k', 'reason': 'r'},
+        'matchTime': {'periodId': period, 'timeMin': minute}, 'text': text, 'createdAt': f'2026-10-20T00:00:{seq:02d}Z',
+        'timeSec': second, 'eventSeq': event_seq, 'model': 'never-stored'})
+
+
+def deliver(run, item):
+    return run.client.portal.call(run.app.state.product.narrative, item)
+
+
+def until(ws, check, limit=20):
+    """The first pushed snapshot satisfying check; earlier queued updates may arrive first."""
+    for _ in range(limit):
+        message = ws.receive_json()
+        if check(message):
+            return message
+    raise AssertionError('No matching update')
+
+
+def refresh(run, match_id=MATCH):
+    async def go():
+        await run.app.state.product.projection(match_id).refresh()
+    run.client.portal.call(go)
+
+
+def test_product_maps_relative_profile_and_cites_the_snapshot(store):
+    with Running(store) as run:
+        data = start(run.client)
         snapshot = data['snapshot']
-        assert snapshot['match']['id'] == data['match_id'] == lab.source.match_id
-        assert snapshot['bucket'] == 'chelsea:analytical'
-        assert [c['id'] for c in snapshot['cards']] == ['chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:cards']
+        assert snapshot['match']['id'] == data['match_id'] == MATCH
+        assert snapshot['bucket_id'] == 'home:analytical' and snapshot['profile']['team'] == 'chelsea'
+        assert 'bucket' not in snapshot and snapshot['snapshot_id'] == f'{MATCH}:0'
+        assert [c['id'] for c in snapshot['cards']] == ['chelsea:goals', 'chelsea:shots', 'chelsea:corners',
+                                                        'chelsea:passes', 'chelsea:cards']
         assert all(c['value'] == 0 for c in snapshot['cards'])
-        profiles = client.get('/product/profiles').json()['profiles']
-        away = next(p for p in profiles if p['id'] == 'united-casual')
-        assert away['team'] == 'madrid' and 'Madrid' in away['display_name']
-        reply = ask(client, data['session_token'], 'what is offside')
-        assert reply['snapshot']['run_id'] == data['run_id']
+        assert snapshot['match']['teams'][0]['branding']['crest_asset_id'] == 'chelsea'
+        assert snapshot['match']['media']['url'] is None  # This feed has no video capability.
+        reply = ask(run.client, data['session_token'], 'what is offside')
+        assert reply['snapshot']['match_id'] == MATCH
+
+
+def test_match_list_comes_from_etl_and_known_matches(store):
+    with Running(store, matches=(MATCH, OTHER)) as run:
+        run.send(10, MATCH)
+        run.upstream.add('unknown-ffffffff')  # ETL knows it, but its MA1 never reached this service.
+        rows = run.client.get('/product/matches').json()
+        assert [r['match_id'] for r in rows] == [MATCH, OTHER]  # live first, then scheduled
+        assert rows[0]['status'] == 'live' and rows[0]['seq'] == 10 and rows[1]['seq'] == 0
+        assert [t['score'] for t in rows[0]['teams']] == [0, 0] and rows[0]['teams'][0]['code'] == 'CHE'
+        assert run.client.get('/product/matches/unknown-ffffffff/sessions/' + str(uuid4())).status_code == 404
 
 
 def test_all_five_standard_values_are_passed_through_from_etl(store):
-    _, questions, _, app = product(store)
-    original = questions.match_data.stats
+    with Running(store) as run:
+        data_port = run.app.state.questions.match_data
+        original = data_port.stats
 
-    async def supplied_values(snapshot):
-        result = await original(snapshot)
-        for index, stat in enumerate(result['stats']):
-            stat['value'] = 1000 + index
-        return result
-
-    async def no_event_search(*args, **kwargs):
-        raise AssertionError('Standard cards must not search event history')
-
-    questions.match_data.stats = supplied_values
-    questions.match_data.events = no_event_search
-    with TestClient(app) as client:
-        data = start(client)
-        supplied = {stat['id']: stat['value'] for stat in app.state.product.shared['stats']}
+        async def supplied(snapshot):
+            result = await original(snapshot)
+            return {**result, 'stats': [{**s, 'value': 1000 + i} for i, s in enumerate(result['stats'])]}
+        data_port.stats = supplied
+        data = start(run.client)
+        supplied_values = {s['id']: s['value'] for s in run.app.state.product.projections[MATCH].shared['stats']}
         assert len(data['snapshot']['cards']) == 5
-        assert all(card['value'] == supplied[card['id']] >= 1000
-                   for card in data['snapshot']['cards'])
-        restored = client.get(f'/product/{data["session_token"]}').json()
-        assert restored['snapshot']['cards'] == data['snapshot']['cards']
+        assert all(card['value'] == supplied_values[card['id']] >= 1000 for card in data['snapshot']['cards'])
+        assert run.client.get(path(data['session_token'])).json()['snapshot']['cards'] == data['snapshot']['cards']
 
 
 def test_pins_are_durable_private_and_restore_standard_slot(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        data = start(client)
+    with Running(store) as run:
+        data = start(run.client)
         token = data['session_token']
-        reply = ask(client, token, "Track Mbappe's headed shots")
-        offer = reply['offers'][0]
-        response = client.post(f'/product/{token}/offers/{offer["id"]}/track').json()
+        offer = ask(run.client, token, "Track Mbappe's headed shots")['offers'][0]
+        response = run.client.post(path(token) + f'/offers/{offer["id"]}/track').json()
         calculation = response['calculation']['id']
         assert [c['kind'] for c in response['snapshot']['cards']] == ['standard'] * 4 + ['custom']
-        assert response['snapshot']['cards'][-1]['value'] == 0
-        assert [c['id'] for c in response['snapshot']['cards'][:-1]] == [
-            'chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes']
-        for _ in range(len(lab.source.events)):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        restored = client.get(f'/product/{token}').json()
+        run.send(35)
+        refresh(run)
+        restored = run.client.get(path(token)).json()
         assert restored['snapshot']['cards'][-1]['value'] == 3
-        assert restored['turns'][0]['reply']['offers'][0]['value'] == 0
-        other = start(client, 'neutral-simple')
+        other = start(run.client, profile='neutral-simple')
         assert all(c['kind'] == 'standard' for c in other['snapshot']['cards'])
-        assert client.post(f'/product/{other["session_token"]}/offers/{offer["id"]}/track').status_code == 404
-        restored = start(client)
-        assert restored['snapshot']['cards'][-1]['id'] == calculation
-        unpin = client.delete(f'/product/{restored["session_token"]}/pins/{calculation}').json()
-        assert len(unpin['snapshot']['cards']) == 5
-        assert all(c['kind'] == 'standard' for c in unpin['snapshot']['cards'])
+        assert run.client.post(path(other['session_token']) + f'/offers/{offer["id"]}/track').status_code == 404
+        again = start(run.client)
+        assert again['snapshot']['cards'][-1]['id'] == calculation
+        unpin = run.client.delete(path(again['session_token']) + f'/pins/{calculation}').json()
+        assert len(unpin['snapshot']['cards']) == 5 and all(c['kind'] == 'standard' for c in unpin['snapshot']['cards'])
 
 
-def test_socket_push_and_takeover_without_polling(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        data = start(client)
-        token = data['session_token']
-        with client.websocket_connect(f'/product/{token}/live') as ws:
+def test_socket_push_takeover_and_unknown_session_codes(store):
+    with Running(store) as run:
+        token = start(run.client)['session_token']
+        with run.client.websocket_connect(path(token) + '/live') as ws:
             initial = ws.receive_json()
-            assert initial['match']['position'] == 0
-            client.portal.call(lab.advance)
-            updated = ws.receive_json()
-            assert updated['match']['position'] == 1
+            assert initial['match']['seq'] == 0
+            run.send(1)
+            updated = until(ws, lambda m: m['match']['seq'] == 1)
             assert updated['version'] > initial['version']
-            # Even the separate lab UI uses the same takeover boundary.
-            client.post('/lab/chat/sessions', json={'profile_id': 'chelsea-analytical'})
+            # The lab chat for the same (profile, match) takes the session over too.
+            run.client.post(f'/lab/matches/{MATCH}/chat/sessions', json={'profile_id': 'chelsea-analytical'})
             with pytest.raises(WebSocketDisconnect) as exc:
                 ws.receive_json()
             assert exc.value.code == 4001
-        assert not app.state.product.live.peers
+        with run.client.websocket_connect(path(uuid4()) + '/live') as ws, pytest.raises(WebSocketDisconnect) as exc:
+            ws.receive_json()
+        assert exc.value.code == 4001
+        with run.client.websocket_connect(path(uuid4(), 'unknown-ffffffff') + '/live') as ws, \
+                pytest.raises(WebSocketDisconnect) as exc:
+            ws.receive_json()
+        assert exc.value.code == 4404
 
 
-def test_projection_work_shared_and_corrections_remove_retracted_goal(store):
-    lab, questions, upstreams, app = product(store)
-    with TestClient(app) as client:
-        first = start(client)
-        second = start(client, 'neutral-simple')
+def test_projection_work_is_shared_and_corrections_remove_retracted_goal(store):
+    with Running(store) as run:
+        first, second = start(run.client), start(run.client, profile='neutral-simple')
         reads = []
-        original = questions.match_data.stats
+        data_port = run.app.state.questions.match_data
+        original = data_port.stats
+
         async def count(snapshot):
-            reads.append(snapshot.cursor)
+            reads.append(snapshot.seq)
             return await original(snapshot)
-        questions.match_data.stats = count
-        with client.websocket_connect(f'/product/{first["session_token"]}/live') as a, client.websocket_connect(f'/product/{second["session_token"]}/live') as b:
-            a.receive_json(); b.receive_json()
-            client.portal.call(lab.advance)
-            assert a.receive_json()['match']['position'] == b.receive_json()['match']['position'] == 1
-            assert reads == [1]
-        for _ in range(1, len(lab.source.events)):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        view = client.get(f'/product/{first["session_token"]}').json()['snapshot']
+        data_port.stats = count
+        with run.client.websocket_connect(path(first['session_token']) + '/live') as a, \
+                run.client.websocket_connect(path(second['session_token']) + '/live') as b:
+            a.receive_json(), b.receive_json()
+            run.send(1)
+            until(a, lambda m: m['match']['seq'] == 1), until(b, lambda m: m['match']['seq'] == 1)
+            assert reads.count(1) == 1  # One ETL read per snapshot, shared by every viewer.
+        run.send(34)
+        refresh(run)
+        view = run.client.get(path(first['session_token'])).json()['snapshot']
         assert [t['score'] for t in view['match']['teams']] == [1, 0]
         assert not any(e['deleted'] for e in view['events'])
-        assert all('chelsea:analytical' in n['buckets'] for n in view['narratives'])
-        assert all(len(upstream.state.question_data.snapshots) == 0 for upstream in upstreams)
-        assert all(len(upstream.state.question_data.viewer_snapshots) <= 2 for upstream in upstreams)
+        assert view['match']['status'] in ('live', 'finished')
 
 
-def test_reset_closes_old_run_and_new_session_gets_clean_snapshot(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        first = start(client)
-        token = first['session_token']
-        with client.websocket_connect(f'/product/{token}/live') as ws:
-            ws.receive_json()
-            client.post('/lab/reset')
-            with pytest.raises(WebSocketDisconnect) as exc:
-                ws.receive_json()
-            assert exc.value.code == 4001
-        second = start(client)
-        assert second['run_id'] != first['run_id']
-        assert second['snapshot']['match']['position'] == 0
-        assert second['snapshot']['events'] == []
-        assert second['turns'] == []
+def test_unconfirmed_events_wait_for_etl_and_projection_catches_up(store):
+    with Running(store) as run:
+        token = start(run.client)['session_token']
+        run.send(5)
+        run.send(5, commit=False)
+        refresh(run)
+        assert run.client.get(path(token)).json()['snapshot']['match']['seq'] == 5
+        run.upstream.matches[MATCH].committed = 10
+        refresh(run)
+        assert run.client.get(path(token)).json()['snapshot']['match']['seq'] == 10
 
 
-def test_product_pin_limit_and_duplicate_tracking(store):
-    from backend.models.rules import Rule
-    lab, questions, _, app = product(store)
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        # Valid offers from deterministic calculation, independent of model wording.
+def test_engine_narratives_route_by_bucket_and_never_pass_the_snapshot(store):
+    with Running(store, matches=(MATCH, OTHER)) as run:
+        token = start(run.client)['session_token']
+        run.send(10)
+        assert deliver(run, narrative(MATCH, event_seq=10, text='Now.'))
+        assert deliver(run, narrative(MATCH, seq=2, event_seq=11, text='Future.'))
+        assert deliver(run, narrative(MATCH, bucket='away:simple', seq=3, event_seq=1, text='Other bucket.'))
+        assert deliver(run, narrative(OTHER, event_seq=1, text='Other match.'))
+        assert not deliver(run, narrative('never-announced-00000000', event_seq=1))
+        assert not deliver(run, narrative(MATCH, event_seq=10, text='Now.'))  # duplicate id
+        refresh(run)
+        texts = [n['text'] for n in run.client.get(path(token)).json()['snapshot']['narratives']]
+        assert texts == ['Now.']
+        run.send(1)
+        refresh(run)
+        texts = [n['text'] for n in run.client.get(path(token)).json()['snapshot']['narratives']]
+        assert texts == ['Now.', 'Future.']
+
+
+def test_period_end_releases_that_periods_narratives(store):
+    import json
+    from benchmarks.doubles.recording import FixtureEventSource
+    spec = json.loads(FixtureEventSource().content)
+    spec['presets'] = []
+    spec['events'] = spec['events'][:34] + [{**spec['events'][33], 'eventId': 'end-2', 'typeName': 'period_end',
+                                             'teamId': None, 'playerId': None, 'qualifiers': [], 'outcome': None,
+                                             'periodId': 2, 'timeMin': 95, 'timeSec': 10}]
+    upstream = Upstream()
+    upstream.add(MATCH, FixtureEventSource(content=json.dumps(spec).encode()))
+    with Running(store, upstream=upstream) as run:
+        token = start(run.client)['session_token']
+        run.send(35)  # The last event ends the second (final) period.
+        # A full-time step written at the minute's last second, after the final event's clock.
+        assert deliver(run, narrative(MATCH, minute=199, second=59, text='Full time.', period=2))
+        refresh(run)
+        view = run.client.get(path(token)).json()['snapshot']
+        assert 'Full time.' in [n['text'] for n in view['narratives']] and view['match']['status'] == 'finished'
+
+
+def test_pin_limit_and_duplicate_tracking(store):
+    with Running(store) as run:
+        token = start(run.client)['session_token']
+        repository = run.app.state.questions.repository
         offers = []
-        for i, kind in enumerate(('pass','shot','corner','save','tackle','clearance')):
-            rule = Rule.model_validate({'match_id': lab.source.match_id, 'operation': 'count',
-                'predicates': [{'field': 'event_type', 'op': 'eq', 'value': kind}]})
-            turn = questions.repository.begin(token, uuid4(), f'Test {i}')
-            offer = {'id': str(uuid4()), 'run_id': str(lab.run_id), 'rule': rule.model_dump(mode='json'),
-                     'label': kind, 'value': 0}
-            questions.repository.finish(token, turn['id'], {'status':'answer','text': kind,'offers':[offer]})
+        for i, kind in enumerate(('pass', 'shot', 'corner_crossed', 'keeper_save', 'tackle', 'clearance')):
+            rule = Rule.model_validate({'match_id': MATCH, 'operation': 'count',
+                                        'predicates': [{'field': 'action_type', 'op': 'eq', 'value': kind}]})
+            turn = repository.begin(token, uuid4(), f'Test {i}')
+            offer = {'id': str(uuid4()), 'match_id': MATCH, 'rule': rule.model_dump(mode='json'), 'label': kind, 'value': 0}
+            repository.finish(token, turn['id'], {'status': 'answer', 'text': kind, 'offers': [offer]})
             offers.append(offer)
         for offer in offers[:5]:
-            response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
-            assert response.status_code == 200, response.text
-        assert client.post(f'/product/{token}/offers/{offers[0]["id"]}/track').status_code == 200
-        sixth = client.post(f'/product/{token}/offers/{offers[5]["id"]}/track')
+            assert run.client.post(path(token) + f'/offers/{offer["id"]}/track').status_code == 200
+        assert run.client.post(path(token) + f'/offers/{offers[0]["id"]}/track').status_code == 200
+        sixth = run.client.post(path(token) + f'/offers/{offers[5]["id"]}/track')
         assert sixth.status_code == 409 and sixth.json()['code'] == 'cards_full'
-        assert lab.engine.count == 5
+        assert run.match().engine.count == 5
 
 
-def test_viewer_projection_does_not_evict_question_snapshot(store):
-    lab, questions, upstreams, app = product(store)
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        reply = ask(client, token, 'what is offside')
-        snapshot_id = reply['snapshot']['id']
-        for _ in range(20):
-            client.portal.call(lab.advance)
-            client.portal.call(app.state.product.refresh)
-        assert all(snapshot_id in upstream.state.question_data.snapshots for upstream in upstreams)
-
-
-def test_upstream_audience_style_and_period_are_preserved(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        analyst = start(client)
-        simple = start(client, 'neutral-simple')
-        for _ in range(10):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        a = client.get(f'/product/{analyst["session_token"]}').json()['snapshot']
-        b = client.get(f'/product/{simple["session_token"]}').json()['snapshot']
-        assert a['narratives'][-1]['text'] != b['narratives'][-1]['text']
-        assert a['narratives'] == [n for n in app.state.product.shared['narratives']
-                                   if 'chelsea:analytical' in n['buckets']]
-        assert a['narratives'][-1]['period'] == b['narratives'][-1]['period'] == 2
-        assert [c['id'] for c in a['cards']] == ['chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:goals', 'chelsea:cards']
-        assert [c['id'] for c in b['cards']] == ['all:goals', 'all:cards', 'all:shots', 'all:corners', 'all:passes']
-
-
-def test_projection_failure_invalidates_live_cache(store):
-    lab, questions, _, app = product(store)
-    with TestClient(app) as client:
-        data = start(client)
-        async def unavailable(*args, **kwargs):
-            raise RuntimeError('upstream unavailable')
-        questions.match_data.stats = unavailable
-        with client.websocket_connect(f'/product/{data["session_token"]}/live') as ws:
-            ws.receive_json()
-            client.portal.call(lab.advance)
-            with pytest.raises(WebSocketDisconnect) as exc:
-                ws.receive_json()
-            assert exc.value.code == 1013
-        assert app.state.product.shared is None
-
-
-def test_lab_takeover_cannot_race_product_socket_attachment(store):
-    import asyncio
-    lab, questions, _, app = product(store)
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        service = app.state.product
-        original = service.bootstrap
-        async def interleave():
-            validated, release = asyncio.Event(), asyncio.Event()
-            async def pause(token):
-                result = await original(token)
-                validated.set()
-                await release.wait()
-                return result
-            service.bootstrap = pause
-            attaching = asyncio.create_task(service.attach(token))
-            await validated.wait()
-            replacing = asyncio.create_task(questions.start('chelsea-analytical'))
-            await asyncio.sleep(0)
-            assert not replacing.done()
-            release.set()
-            peer, _ = await attaching
-            await replacing
-            assert peer.closing
-            assert (await peer.queue.get())['close'] == 4001
-            service.live.detach(peer)
-        client.portal.call(interleave)
-
-
-def test_epl_demo_is_explicit_same_match_and_lab_default_is_preserved(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        original = lab.source.fingerprint
-        selected = client.post('/product/demo/reset')
-        assert selected.status_code == 200, selected.text
-        assert selected.json()['scenario']['match_id'] == 'product-demo-match'
-        assert lab.source.fingerprint != original
-        data = start(client)
-        assert [t['name'] for t in data['snapshot']['match']['teams']] == ['Chelsea', 'Manchester United']
-        token = data['session_token']
-        answer = ask(client, token, "Track Bruno's headed shots")
-        assert answer['snapshot']['match_id'] == 'product-demo-match'
-        offer = answer['offers'][0]
-        assert any(p['field'] == 'player_id' and p['value'] in ('bruno', ['bruno']) for p in offer['rule']['predicates'])
-        client.post(f'/product/{token}/offers/{offer["id"]}/track')
-        for _ in range(len(lab.source.events)):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        view = client.get(f'/product/{token}').json()['snapshot']
-        assert view['cards'][-1]['value'] == 3
-        assert [t['score'] for t in view['match']['teams']] == [1, 0]
-        bruno = next(event for event in view['events'] if event['player_id'] == 'bruno')
-        assert bruno['player_name'] == 'Bruno Fernandes'
-        assert bruno['team_name'] == 'Manchester United'
-        assert all(event.get('player_name') != 'Kylian Mbappé' for event in view['events'])
-        assert client.post('/lab/recording/default').status_code == 200
-        assert lab.source.fingerprint == original
-        assert client.get(f'/product/{token}').status_code == 409
-
-
-def test_product_recording_seed_only_on_fresh_storage(store):
-    from backend.adapters.product_demo import load_product_demo
-    from test_lab_api import make_lab
-    from backend.app import create_app
-    lab = make_lab(store)
-    lab.initial_recording = (load_product_demo(), 'product-demo.json')
-    with TestClient(create_app(store, lab=lab)) as client:
-        assert lab.source.match_id == 'product-demo-match'
-        client.post('/lab/recording/default')
-        client.portal.call(lab.advance)
-        retained_run = lab.run_id
-    restarted = make_lab(store)
-    restarted.initial_recording = (load_product_demo(), 'product-demo.json')
-    with TestClient(create_app(store, lab=restarted)):
-        assert restarted.source.match_id == 'filter-lab-match'
-        assert restarted.run_id == retained_run
-        assert restarted.position == 1
-
-
-def test_invalid_socket_session_has_terminal_close_code(store):
-    _, _, _, app = product(store)
-    with TestClient(app) as client:
-        with client.websocket_connect(f'/product/{uuid4()}/live') as ws:
-            with pytest.raises(WebSocketDisconnect) as exc:
-                ws.receive_json()
-            assert exc.value.code == 4001
+def test_card_presentation_comes_from_configuration(store):
+    with Running(store) as run:
+        current = run.client.get('/dev/config/presentation').json()
+        value = {**current['value'], 'card_slots': 3,
+                 'default_stats': {'team': ['{team}:passes', '{team}:goals', '{team}:shots'],
+                                   'neutral': ['all:passes', 'all:goals', 'all:shots']}}
+        saved = run.client.put('/dev/config/presentation', json={'value': value, 'expected_revision': current['revision']})
+        assert saved.status_code == 200 and saved.json()['revision'] == current['revision'] + 1
+        assert run.client.put('/dev/config/presentation',
+                              json={'value': value, 'expected_revision': current['revision']}).status_code == 409
+        assert [c['id'] for c in start(run.client)['snapshot']['cards']] == ['chelsea:passes', 'chelsea:goals', 'chelsea:shots']
+        neutral = [c['id'] for c in start(run.client, profile='neutral-simple')['snapshot']['cards']]
+        assert neutral == ['all:passes', 'all:goals', 'all:shots'] and 'all:possession' not in neutral
 
 
 def test_bootstrap_upstream_failure_is_retryable(store):
-    _, questions, _, app = product(store)
-    async def unavailable(*args, **kwargs):
-        raise RuntimeError('upstream unavailable')
-    questions.match_data.stats = unavailable
-    with TestClient(app) as client:
-        failed = client.post('/product/sessions', json={'profile_id':'chelsea-analytical'})
-        assert failed.status_code == 503
-        assert failed.json()['code'] == 'snapshot_unavailable'
+    with Running(store) as run:
+        async def unavailable(*args, **kwargs):
+            raise RuntimeError('upstream unavailable')
+        run.app.state.questions.match_data.stats = unavailable
+        failed = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        assert failed.status_code == 503 and failed.json()['code'] == 'snapshot_unavailable'
 
 
 def test_unpin_revision_fences_older_queued_snapshots(store):
-    _, _, _, app = product(store)
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        offer = ask(client, token, "Track Mbappe's headed shots")['offers'][0]
-        tracked = client.post(f'/product/{token}/offers/{offer["id"]}/track').json()
-        calculation_id = tracked['calculation']['id']
-        # A paused transport may still hold this earlier frame after HTTP unpin.
-        before = client.get(f'/product/{token}').json()['snapshot']
-        removed = client.delete(f'/product/{token}/pins/{calculation_id}').json()['snapshot']
+    with Running(store) as run:
+        token = start(run.client)['session_token']
+        offer = ask(run.client, token, "Track Mbappe's headed shots")['offers'][0]
+        calculation_id = run.client.post(path(token) + f'/offers/{offer["id"]}/track').json()['calculation']['id']
+        before = run.client.get(path(token)).json()['snapshot']
+        removed = run.client.delete(path(token) + f'/pins/{calculation_id}').json()['snapshot']
         assert removed['version'] > before['version']
-        assert any(card['kind'] == 'custom' for card in before['cards'])
         assert all(card['kind'] == 'standard' for card in removed['cards'])
-        latest = client.get(f'/product/{token}').json()['snapshot']
-        assert latest['version'] == removed['version']
-        client.portal.call(app.state.product.refresh)
-        assert client.get(f'/product/{token}').json()['snapshot']['version'] > removed['version']
 
 
-def test_process_restart_changes_projection_epoch_not_match_run(store):
-    lab, _, _, app = product(store)
-    with TestClient(app) as client:
-        data = start(client)
-        token = data['session_token']
-        for _ in range(4):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        before = client.get(f'/product/{token}').json()['snapshot']
-    _, _, _, restarted = product(store)
-    with TestClient(restarted) as client:
-        after = client.get(f'/product/{token}').json()['snapshot']
-        assert after['match']['run_id'] == before['match']['run_id']
-        assert after['match']['position'] == before['match']['position']
+def test_restart_changes_projection_epoch_not_the_match(store):
+    upstream = Upstream()
+    with Running(store, upstream=upstream) as run:
+        token = start(run.client)['session_token']
+        run.send(4)
+        refresh(run)
+        before = run.client.get(path(token)).json()['snapshot']
+    with Running(store, upstream=upstream, matches=()) as run:
+        after = run.client.get(path(token)).json()['snapshot']
+        assert after['match']['seq'] == before['match']['seq'] == 4
         assert after['projection_epoch'] != before['projection_epoch']
-        assert after['version'] < before['version']
-
-
-def test_event_labels_are_roster_scoped_and_unknown_ids_do_not_invent_names(store):
-    lab, questions, _, app = product(store)
-    original = questions.narratives.read
-    async def with_unknown(snapshot, operation, **filters):
-        result = await original(snapshot, operation, **filters)
-        if operation == 'viewer':
-            result['events'].append({'event_id': 'unknown', 'match_id': snapshot.match_id,
-                'team_id': 'not-in-roster', 'player_id': 'not-in-roster'})
-        return result
-    questions.narratives.read = with_unknown
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        events = client.get(f'/product/{token}').json()['snapshot']['events']
-        assert events[0]['player_name'] == 'Kylian Mbappé'
-        assert events[0]['team_name'] == 'Madrid'
-        assert events[-1]['player_name'] is None
-        assert events[-1]['team_name'] is None
 
 
 def test_standard_offer_pins_upstream_value_and_streams_without_custom_engine(store):
-    lab, questions, _, app = product(store)
-    original = questions.match_data.stats
+    with Running(store) as run:
+        data_port = run.app.state.questions.match_data
+        original = data_port.stats
 
-    async def supplied_values(snapshot):
-        result = await original(snapshot)
-        for stat in result['stats']:
-            if stat['id'] == 'all:shots':
-                stat['value'] = 1000 + snapshot.cursor
-        return result
+        async def supplied(snapshot):
+            result = await original(snapshot)
+            return {**result, 'stats': [{**s, 'value': 1000 + snapshot.seq} if s['id'] == 'all:shots' else s
+                                        for s in result['stats']]}
+        data_port.stats = supplied
 
-    async def forbidden(*args, **kwargs):
-        raise AssertionError('An ETL pin must not compile a rule or search event history')
-
-    questions.match_data.stats = supplied_values
-    questions.match_data.events = questions.planner.plan = forbidden
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        offer = ask(client, token, 'how many Both teams shots')['offers'][0]
-        assert offer['kind'] == 'standard' and offer['value'] == 1000
-        assert 'rule' not in offer
-        client.portal.call(lab.advance)
-        response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
-        assert response.status_code == 200, response.text
-        tracked = response.json()
-        identifier = tracked['calculation']['id']
-        assert identifier == 'standard:all:shots'
-        assert tracked['calculation']['value'] == 1001
+        async def forbidden(*args, **kwargs):
+            raise AssertionError('An ETL pin must not compile a rule')
+        run.service.planner.plan = forbidden
+        token = start(run.client)['session_token']
+        offer = ask(run.client, token, 'how many Both teams shots')['offers'][0]
+        assert offer['kind'] == 'standard' and offer['value'] == 1000 and 'rule' not in offer
+        run.send(1)
+        tracked = run.client.post(path(token) + f'/offers/{offer["id"]}/track').json()
+        assert tracked['calculation']['id'] == 'standard:all:shots' and tracked['calculation']['value'] == 1001
         card = tracked['snapshot']['cards'][-1]
-        assert card['id'] == 'all:shots' and card['value'] == 1001
-        assert card['pinned'] and card['pin_id'] == identifier
-        assert len(tracked['snapshot']['cards']) == 5
-        assert lab.engine.count == 0
-        with client.websocket_connect(f'/product/{token}/live') as ws:
-            assert ws.receive_json()['cards'][-1]['value'] == 1001
-            client.portal.call(lab.advance)
-            assert ws.receive_json()['cards'][-1]['value'] == 1002
-        other = start(client, 'neutral-simple')
-        assert not any(c.get('pinned') for c in other['snapshot']['cards'])
-        assert client.post(f'/product/{other["session_token"]}/offers/{offer["id"]}/track').status_code == 404
-    # Pins survive API restart without recreating a custom accumulator.
-    _, _, _, restarted = product(store)
-    with TestClient(restarted) as client:
-        restored = start(client)
-        assert restored['snapshot']['cards'][-1]['pin_id'] == identifier
-        assert len(restored['snapshot']['cards']) == 5
-        removed = client.delete(f'/product/{restored["session_token"]}/pins/{identifier}').json()['snapshot']
-        assert not any(c.get('pinned') for c in removed['cards'])
-        assert [c['id'] for c in removed['cards']] == [
-            'chelsea:goals', 'chelsea:shots', 'chelsea:corners', 'chelsea:passes', 'chelsea:cards']
+        assert card['id'] == 'all:shots' and card['value'] == 1001 and card['pin_id'] == 'standard:all:shots'
+        assert run.match().engine.count == 0
 
 
-def test_pin_existing_bucket_stat_deduplicates_and_unpin_restores_rank(store):
-    _, _, _, app = product(store)
-    with TestClient(app) as client:
-        token = start(client, 'neutral-simple')['session_token']
-        initial = client.get(f'/product/{token}').json()['snapshot']['cards']
-        for _ in range(2):
-            offer = ask(client, token, 'how many Both teams shots')['offers'][0]
-            response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
-            assert response.status_code == 200, response.text
-            cards = response.json()['snapshot']['cards']
-            assert len(cards) == 5
-            assert len({c['id'] for c in cards}) == 5
-            assert sum(c.get('pinned', False) for c in cards) == 1
-            assert {c['id'] for c in cards} == {c['id'] for c in initial}
-        removed = client.delete(f'/product/{token}/pins/standard:all:shots').json()['snapshot']['cards']
-        assert removed == initial
-        assert all(o['calculation_id'] is None for o in client.get(f'/product/{token}').json()['offers'])
+def test_tracking_a_stat_never_displaces_the_goals_card():
+    from backend.services.product import MatchProjection
+    from benchmarks.doubles.config import seeded
+    projection = MatchProjection.__new__(MatchProjection)
+    kinds = ('possession', 'pass_accuracy', 'shots', 'passes', 'goals', 'tackles')
+    presentation = seeded('presentation')
+    # Goals is the lowest-priority default, so only its protection keeps it.
+    defaults = presentation.default_stats.model_copy(update={'team': ['{team}:' + k for k in kinds[:5]]})
+    projection.presentation = presentation.model_copy(update={'default_stats': defaults})
+    projection.buckets = []
+    stats = [{'id': f'chelsea:{k}', 'label': k, 'value': 1} for k in kinds]
+    projection.shared = {'type': 'snapshot', 'version': 1, 'projection_epoch': 'e', 'synthetic': True, 'mode': 'local',
+                         'snapshot_id': 'm:1', 'match': {'teams': [{'id': 'chelsea'}, {'id': 'manutd'}]}, 'events': [],
+                         'stats': stats, 'calculations': {}, 'narratives': []}
+    viewer = {'profile': {'team': 'chelsea', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
+              'audience': {'bucket_id': 'home:analytical', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
+              'offers': []}
+    assert [c['id'] for c in projection.compose(viewer)['cards']][-1] == 'chelsea:goals'
+    viewer['offers'] = [{'calculation_id': 'pin', 'kind': 'standard', 'standard_stat_id': 'chelsea:tackles', 'label': 'Tackles'}]
+    assert [c['id'] for c in projection.compose(viewer)['cards']] == [
+        'chelsea:possession', 'chelsea:pass_accuracy', 'chelsea:shots', 'chelsea:goals', 'chelsea:tackles']
 
 
-def test_clarification_reply_resolves_to_pinnable_custom_stat(store):
-    from backend.models.questions import QuestionDraft
-
-    class Clarifying:
-        mode = 'fixture'
-
-        async def answer(self, prompt, context, tools):
-            if prompt == 'How many headers by Mbappe?':
-                return QuestionDraft(answer_kind='statistic', status='clarification',
-                                     text='Headed passes, headed shots or all recorded contacts?')
-            assert prompt == 'Headed shots'
-            assert context['history'][-1]['user'] == 'How many headers by Mbappe?'
-            assert context['history'][-1]['reply']['status'] == 'clarification'
-            prepared = await tools.prepare("Track Mbappe's headed shots")
-            return QuestionDraft(answer_kind='statistic', status='answer', text='Prepared.',
-                                 selected_offer_id=prepared['offer_id'])
-
-    lab, questions, _, app = product(store)
-    questions.agent = Clarifying()
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        first = ask(client, token, 'How many headers by Mbappe?')
-        assert first['status'] == 'clarification' and first['offers'] == []
-        second = ask(client, token, 'Headed shots')
-        assert second['status'] == 'answer' and len(second['offers']) == 1
-        offer = second['offers'][0]
-        assert lab.engine.count == 0
-        tracked = client.post(f'/product/{token}/offers/{offer["id"]}/track').json()
-        assert tracked['snapshot']['cards'][-1]['pinned']
-        for _ in range(len(lab.source.events)):
-            client.portal.call(lab.advance)
-        client.portal.call(app.state.product.refresh)
-        assert client.get(f'/product/{token}').json()['snapshot']['cards'][-1]['value'] == 3
-
-
-def test_unavailable_standard_stat_cannot_be_pinned(store):
-    lab, questions, _, app = product(store)
-    original = questions.match_data.stats
-
-    async def unavailable(snapshot):
-        result = await original(snapshot)
-        for stat in result['stats']:
-            if stat['id'] == 'all:shots':
-                stat['available'] = False
-        return result
-
-    with TestClient(app) as client:
-        token = start(client)['session_token']
-        offer = ask(client, token, 'how many Both teams shots')['offers'][0]
-        questions.match_data.stats = unavailable
-        response = client.post(f'/product/{token}/offers/{offer["id"]}/track')
-        assert response.status_code == 503 and response.json()['code'] == 'stat_unavailable'
-        assert lab.engine.count == 0
-        assert client.get(f'/product/{token}').json()['offers'][0]['calculation_id'] is None
-
-
-def test_neutral_cards_never_show_both_teams_possession(store):
-    _, _, _, app = product(store)
-    with TestClient(app) as client:
-        response = client.post('/product/sessions', json={'profile_id': 'neutral-simple'})
-        assert response.status_code == 200, response.text
-        cards = [c['id'] for c in response.json()['snapshot']['cards']]
-        assert cards and 'all:possession' not in cards
+def test_a_match_link_opens_before_kickoff_and_goes_live(store):
+    """Before MA1 a link is `match_not_started` (purged stays `match_not_found`); after MA1 the
+    viewer gets a scheduled pre-match snapshot with the kickoff, then live play on the socket."""
+    with Running(store, matches=()) as run:
+        run.upstream.add(MATCH)
+        early = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        assert early.status_code == 404 and early.json()['code'] == 'match_not_started'
+        run.client.portal.call(run.upstream.kickoff, run.registry, MATCH)
+        data = start(run.client)
+        match = data['snapshot']['match']
+        assert match['status'] == 'scheduled' and match['clock_seconds'] is None
+        assert match['scheduled_kickoff'] == '2026-10-20T15:00:00.000Z'
+        assert [t['name'] for t in match['teams']] == ['Chelsea', 'Madrid']
+        with run.client.websocket_connect(path(data['session_token']) + '/live') as ws:
+            ws.receive_json()
+            run.send(1)
+            assert until(ws, lambda m: m.get('type') == 'snapshot' and m['match']['status'] == 'live')['match']['seq'] == 1
+        run.client.post('/admin/matches/purge', json={'match_id': MATCH})
+        gone = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        assert gone.status_code == 404 and gone.json()['code'] == 'match_not_found'

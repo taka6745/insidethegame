@@ -1,0 +1,2 @@
+# Copy to local.auto.tfvars (git-ignored) for manual runs; ./dev azure passes these itself.
+subscription_id = "<az account show --query id -o tsv>"

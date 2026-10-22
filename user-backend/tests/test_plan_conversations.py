@@ -1,7 +1,7 @@
 import pytest
 
 from backend.domain import RuleError
-from backend.models.lab import PlanRequest
+from backend.routes.lab import PlanRequest
 from backend.services.plan_conversations import PlanConversations
 
 

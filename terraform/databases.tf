@@ -1,64 +1,37 @@
-resource "azurerm_mssql_server" "match" {
-  name                          = "${var.prefix}-match"
-  resource_group_name           = azurerm_resource_group.app.name
-  location                      = azurerm_resource_group.app.location
-  version                       = "12.0"
-  administrator_login           = "itgadmin"
-  administrator_login_password  = var.database_admin_password
-  minimum_tls_version           = "1.2"
-  public_network_access_enabled = false
-}
-
-resource "azurerm_mssql_database" "match" {
-  name                        = "matchdata"
-  server_id                   = azurerm_mssql_server.match.id
-  sku_name                    = "GP_S_Gen5_1"
-  min_capacity                = 0.5
-  auto_pause_delay_in_minutes = 60
-  max_size_gb                 = 5
-}
-
-resource "azurerm_cosmosdb_account" "narrative" {
-  name                          = "${var.prefix}-narrative"
-  location                      = azurerm_resource_group.app.location
-  resource_group_name           = azurerm_resource_group.app.name
-  offer_type                    = "Standard"
-  kind                          = "GlobalDocumentDB"
-  public_network_access_enabled = false
-  consistency_policy { consistency_level = "Session" }
-  geo_location {
-    location          = azurerm_resource_group.app.location
-    failover_priority = 0
-  }
-  capabilities { name = "EnableServerless" }
-}
-
-resource "azurerm_cosmosdb_sql_database" "narrative" {
-  name                = "narrative"
-  resource_group_name = azurerm_resource_group.app.name
-  account_name        = azurerm_cosmosdb_account.narrative.name
-}
-
-resource "azurerm_cosmosdb_sql_container" "memory" {
-  for_each            = toset(["contextBlocks", "narratives", "checkpoints"])
-  name                = each.value
-  resource_group_name = azurerm_resource_group.app.name
-  account_name        = azurerm_cosmosdb_account.narrative.name
-  database_name       = azurerm_cosmosdb_sql_database.narrative.name
-  partition_key_paths = ["/matchId"]
+# User backend only. ETL SQL lives in etl/infra; narrative Cosmos DB in narrative-engine/infra.
+# Public endpoint limited to Azure services, TLS required: the shared Container Apps environment has
+# no VNet, so a private endpoint would be unreachable. LATER: VNet environment + private access.
+# The backend logs in as this server admin (deployment-readiness.md: Database logins).
+resource "random_password" "database" {
+  length      = 32
+  special     = false
+  min_upper   = 2
+  min_lower   = 2
+  min_numeric = 2
 }
 
 resource "azurerm_postgresql_flexible_server" "user" {
-  name                          = "${var.prefix}-user"
+  name                          = "${local.name}-user"
   resource_group_name           = azurerm_resource_group.app.name
   location                      = azurerm_resource_group.app.location
   version                       = "16"
   administrator_login           = "itgadmin"
-  administrator_password        = var.database_admin_password
+  administrator_password        = random_password.database.result
   sku_name                      = "B_Standard_B1ms"
   storage_mb                    = 32768
   backup_retention_days         = 7
-  public_network_access_enabled = false
+  public_network_access_enabled = true
+
+  lifecycle {
+    ignore_changes = [zone]
+  }
+}
+
+resource "azurerm_postgresql_flexible_server_firewall_rule" "azure_services" {
+  name             = "AllowAzureServices"
+  server_id        = azurerm_postgresql_flexible_server.user.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }
 
 resource "azurerm_postgresql_flexible_server_database" "user" {

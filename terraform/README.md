@@ -1,36 +1,26 @@
 # Azure infrastructure
 
-**Foundation scaffold; not deployed and not a complete cloud release.** Daily local development uses [Docker Compose](../local/README.md).
+> **In short:** the whole stack in Terraform, **applied 22 Oct** for the Azure test (acceptance pending). Five stacks; `./dev azure up` applies them in order and `./dev azure down` removes them, keeping the spend guard ([runbook](runbook.md)). Daily development uses [Docker Compose](../local/README.md).
+
+| Terraform | Owns | Status |
+| --- | --- | --- |
+| [`guard/`](guard/) | Budgets (email only), Stream Analytics start/stop runbook, the last resort at 90 % of the credit | Applied 22 Oct |
+| [`etl/infra/`](../etl/infra/) | Event Hubs, Stream Analytics (+ its event-driven schedule), Azure SQL, Data API builder, purge API, Service Bus `match-notifications`, the shared Container Apps environment and registry | Applied 22 Oct |
+| [`narrative-engine/infra/`](../narrative-engine/infra/) | Azure AI Foundry (`gpt-6.1-sol` `writer`, `Microsoft-Decision-1`), Cosmos DB, engine app, Service Bus `narratives`, monitoring | Applied 22 Oct (Decision-1; `writer` rollout pending) |
+| [`data-generation/infra/`](../data-generation/infra/) | The simulated provider (feed): its own resource group, PostgreSQL, Blob Storage, app | Applied 22 Oct |
+| `terraform/` (this folder) | User backend, demo control, frontend, seeds share (judge build), backend PostgreSQL (`accounts`, `matchapp`), Key Vault, the backend's Foundry deployment (`gpt-6.1-sol` `questions`) | Applied 22 Oct (`questions` rollout pending) |
 
 ```sh
-./dev terraform check
+./dev terraform check   # fmt, validate, mock tests for all five; no Azure calls
+./dev azure plan        # real plan against your subscription (az login); applies nothing
 ```
 
-Run from the repo root. Docker runs pinned Terraform, downloads the pinned Azure provider, checks formatting, validates resource schemas and tests a plan with a mock provider. No Azure login, LocalStack token or host Terraform installation is needed. Commit `.terraform.lock.hcl`; keep state, plans and credentials ignored.
-
-The check container uses your user/group ID so generated files remain editable on Linux and WSL.
-
-```mermaid
-flowchart LR
-  HCL[Terraform] --> Check[Validate + mock test]
-  Check --> Review[Review cloud setup]
-  Review -. authorised deployment .-> Azure
-  Compose[Docker Compose] --> Local[Local integration]
+```text
+browser ─▶ edge proxy (Cloudflare) ─▶ frontend (nginx, public) ─┬▶ /viewer-api → backend (internal) ─▶ Postgres, Key Vault, Foundry
+                                                                ├▶ /demo-api   → demo control (internal) ─▶ feed, ETL, engine, backend; seeds share
+                                                                └▶ /media/hls  → feed (internal, its own RG) ─▶ Blob Storage
+feed ─▶ Event Hubs ─▶ Stream Analytics ─▶ Azure SQL ─▶ DAB (internal) ─▶ backend, engine (internal)
+                       └▶ Service Bus ─▶ engine (Foundry, Cosmos) ─▶ narratives ─▶ backend
 ```
 
-| File | Resources |
-| --- | --- |
-| `messaging.tf` | Event Hubs stream + independent consumers; Service Bus topics/subscriptions. |
-| `databases.tf`, `etl-stats.tf` | Azure SQL history, separate ETL/narrative Cosmos stores, Postgres with two user databases. |
-| `main.tf` | Resource group, logs and Container Apps environment. |
-| `tests/design.tftest.hcl` | Account-free checks of service boundaries. |
-
-**Before cloud deployment:** finish networking/private access, identities and permissions, secrets/state storage, real service images and probes, and regional SKU checks. Database public access is disabled; connectivity is intentionally unfinished. Add the Stream Analytics job/query/input/output configuration with the ETL service. Select Foundry model deployments and frontend hosting separately. Never treat a mock plan as proof Azure will accept or run the stack.
-
-Real deployment will require an Azure account, subscription, provider registrations and billing. `./dev` has no cloud `apply` command and forwards no Azure credentials to the test container. Required cloud values are `subscription_id`, a unique `prefix` and a strong `database_admin_password`; don't commit them. Terraform state can contain passwords even when outputs are sensitive.
-
-LocalStack's [Azure Terraform integration](https://docs.localstack.cloud/azure/connecting/infrastructure-as-code/terraform/) is a separate optional route. It requires [LocalStack authentication](https://docs.localstack.cloud/azure/getting-started/auth-token/), emulator endpoints and compatible provider configuration. It has not been wired or tested here. Microsoft's individual emulators do not implement Terraform's Azure control plane.
-
-ETL Cosmos ownership is included in the foundation: `standardStats`, partitioned by `/matchId`, in a separate ETL account. SQL retains event history. The ETL Azure writers and GraphQL routing remain to build. No infrastructure has been deployed. Match partitioning serves shared match data, not a database read per viewer; validate hot-partition throughput before choosing production capacity.
-
-See [deployment readiness](deployment-readiness.md) for the concrete gaps between the runnable demo and an Azure release.
+This folder reads the other stacks' outputs from their local state (`*_state_path`). The backend's secrets live in Key Vault, read by its user-assigned identity; the developer consoles sit behind basic auth (`dev_admin`, on by default). See [deployment readiness](deployment-readiness.md) for what remains before a production release. Confirm with the developer before any apply; never commit state or tfvars.

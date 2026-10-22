@@ -48,6 +48,6 @@ class GoalAgent:
                         options=[item.get("name", item["id"]) for item in context.get(collection, [])][:5],
                         missing_fields=["player" if field == "player_ids" else "team"]))
         if decision.status == "reuse":
-            if decision.standard_stat_id not in {item["id"] for item in context.get("standard_stats", [])}:
+            if not set(decision.standard_stat_ids) <= {item["id"] for item in context.get("standard_stats", [])}:
                 raise ValueError("Model selected a stat outside the supplied catalogue")
         return decision

@@ -1,5 +1,5 @@
 import { clock, eventSeconds, replaySeconds, title, teamNames } from './format.ts';
-import type { Calculation, EventPayload, LabEvent, LabState, PlanResult, Scenario } from './types.ts';
+import type { Calculation, EventPayload, LabEvent, LabMatch, LabState, PlanResult } from './types.ts';
 
 const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const text = (id: string, value: string | number | undefined) => { el(id).textContent = value === undefined ? null : String(value); };
@@ -12,31 +12,44 @@ const node = <K extends keyof HTMLElementTagNameMap>(tag: K, className?: string,
 
 /** DOM-only rendering; calculations and persistence belong to backend services. */
 export class LabView {
-  presetCount: number;
   lastCards: string;
   lastEvents: string;
-  recordingEditable: boolean;
-  constructor() { this.presetCount = 0; this.lastCards = ''; this.lastEvents = ''; this.recordingEditable = true; }
+  constructor() { this.lastCards = ''; this.lastEvents = ''; }
 
-  scenario(data: Scenario) {
-    this.recordingEditable = data.recording_editable !== false;
-    const [home, away] = teamNames(data.teams);
-    text('home-team', home); text('away-team', away);
-    const recording = data.recording || {};
-    text('recording-name', recording.filename || 'Recording unavailable');
-    text('recording-meta', [recording.synthetic ? 'Synthetic fixture' : recording.title, recording.format, recording.delivery_count !== undefined ? `${recording.delivery_count} deliveries` : null, recording.event_count !== undefined ? `${recording.event_count} events` : null, !this.recordingEditable ? 'Source managed by ETL' : null].filter(Boolean).join(' · '));
-    const select = el<HTMLSelectElement>('presets');
-    this.presetCount = data.presets?.length || 0;
-    select.replaceChildren(...(data.presets?.length ? data.presets.map(preset => {
-      const option = node('option', '', preset.label);
-      option.value = preset.id;
-      return option;
-    }) : [node('option', '', 'No ready-made requests for this recording')]));
-    select.disabled = !data.presets?.length;
-    this.describePreset(data.presets?.[0]?.label || '');
+  /** The match selector; options change only when the listed matches do. */
+  matches(matches: LabMatch[], chosen: string) {
+    const select = el<HTMLSelectElement>('match-select');
+    const label = (match: LabMatch) => `${match.teams?.length ? teamNames(match.teams).join(' v ') : match.fixture || match.match_id} · ${title(match.status)}`;
+    const signature = JSON.stringify(matches.map(match => [match.match_id, label(match)]));
+    if (select.dataset.signature !== signature) {
+      select.dataset.signature = signature;
+      select.replaceChildren(...(matches.length ? matches.map(match => {
+        const option = node('option', '', label(match));
+        option.value = match.match_id;
+        return option;
+      }) : [node('option', '', 'No matches yet')]));
+    }
+    select.disabled = !matches.length;
+    select.value = chosen;
+    if (!matches.length) this.match(undefined);
   }
 
-  describePreset(label: string) { text('preset-description', label); }
+  match(match: LabMatch | undefined) {
+    const [home, away] = match?.teams?.length ? teamNames(match.teams) : ['Home', 'Away'];
+    text('home-team', home); text('away-team', away);
+    text('recording-meta', match ? `${match.match_id} · live events as received` : 'Start a match from the developer config screen.');
+    text('status', match ? title(match.status) : 'No match');
+    el('status').dataset.status = match?.status ?? '';
+    if (!match) { this.lastEvents = ''; this.lastCards = ''; }
+  }
+
+  /** Shown as published by the backend; hidden until both teams have a value. */
+  score(teams: LabState['score']) {
+    const [home, away] = teams || [];
+    const ready = !!home && !!away && home.score != null && away.score != null;
+    text('score', ready ? `${home.name} ${home.score} – ${away.score} ${away.name}` : '');
+    el('score').hidden = !ready;
+  }
 
   error(message = '') {
     text('notice', message);
@@ -58,39 +71,27 @@ export class LabView {
   }
 
   controls(state: LabState | null, busy: string | false) {
-    const running = state?.status === 'running';
-    const finished = state?.status === 'finished';
-    const failed = state?.status === 'error';
     const ready = !!state;
     const disable = (id: string, disabled: boolean) => { el<HTMLButtonElement>(id).disabled = disabled; };
-    disable('load-recording', !ready || !!busy || running || !this.recordingEditable);
-    disable('default-recording', !ready || !!busy || running);
-    disable('start', !ready || !!busy || running || finished || failed);
-    disable('reset', !ready || !!busy || running);
-    // Configure before replay; no mid-stream planning ambiguity in this test client.
-    disable('add-preset', !ready || !!busy || running || finished || failed || !this.presetCount);
-    disable('prepare', !ready || !!busy || running || finished || failed || !state?.llm?.configured);
-    disable('add-plan', !ready || !!busy || running || finished || failed);
-    disable('prompt', !!busy || running || finished);
-    disable('reply', !!busy || running || finished);
-    disable('send-reply', !ready || !!busy || running || finished || failed);
-    disable('presets', !this.presetCount || !!busy || running || finished);
+    // Rules evaluate over the events this match has received; they can be added at any time.
+    disable('prepare', !ready || !!busy || !state?.llm?.configured);
+    disable('add-plan', !ready || !!busy);
+    disable('prompt', !!busy);
+    disable('reply', !!busy);
+    disable('send-reply', !ready || !!busy);
     text('prepare', busy === 'plan' ? 'Preparing your rule…' : 'Prepare request ↗');
-    text('start', running ? 'Replay running…' : finished ? 'Replay finished' : '▶ Start replay');
   }
 
-  state(state: LabState, inspectRule: (calculation: Calculation) => void, inspectEvent: (deliveryIndex: number) => unknown) {
-    text('status', title(state.status));
-    el('status').dataset.status = state.status;
+  state(state: LabState, inspectRule: (calculation: Calculation) => void, inspectEvent: (seq: number) => unknown) {
     const events = state.events || [];
     text('clock', clock(state.match_time_seconds ?? replaySeconds(events)));
-    text('progress', `${state.position ?? events.length} of ${state.total ?? 0} deliveries · forward only`);
-    text('event-count', `${state.position ?? events.length} deliveries received`);
-    el('progress-bar').style.width = `${Math.min(100, (state.position || 0) / (state.total || 1) * 100)}%`;
+    text('progress', `${state.seq ?? events.length} events received · forward only`);
+    text('event-count', `${state.seq ?? events.length} events received`);
     text('total-rules', state.metrics?.total_rules ?? state.calculations?.length ?? 0);
     text('candidates', state.metrics?.candidate_count ?? 0);
     text('changes', state.metrics?.changed_count ?? 0);
-    text('model-status', state.llm?.configured ? 'Local model configured · runs only when requested' : 'Local model not configured · sample filters still work');
+    text('model-status', state.llm?.configured ? 'Local model configured · runs only when requested' : 'No model configured · custom stats unavailable');
+    this.score(state.score);
     this.cards(state.calculations || [], inspectRule);
     this.events(events, inspectEvent);
   }
@@ -116,43 +117,40 @@ export class LabView {
     }));
   }
 
-  events(events: LabEvent[], inspectEvent: (deliveryIndex: number) => unknown) {
+  events(events: LabEvent[], inspectEvent: (seq: number) => unknown) {
     const signature = JSON.stringify(events);
     if (signature === this.lastEvents) return;
     this.lastEvents = signature;
     if (!events.length) {
-      el('events').replaceChildren(node('div', 'empty-events', 'The feed starts when you press Start replay. Events move forward only.'));
+      el('events').replaceChildren(node('div', 'empty-events', 'Events appear here as the live match sends them.'));
       return;
     }
     el('events').replaceChildren(...events.slice(-60).reverse().map(event => {
       const row = node('button', 'event-row');
       row.type = 'button';
-      row.disabled = event.delivery_index === undefined;
-      row.addEventListener('click', () => inspectEvent(event.delivery_index as number));
-      const type = event.event_type || event.type || event.typeName || 'event';
+      row.disabled = event.seq === undefined;
+      row.addEventListener('click', () => inspectEvent(event.seq as number));
+      const type = event.type || 'event';
       row.dataset.type = type;
       const info = node('div', 'event-info');
       const revision = event.deleted ? ' · Retracted' : Number(event.revision) > 1 ? ` · Correction v${event.revision}` : '';
       info.append(node('strong', '', title(type) + revision));
-      const player = event.player_name || event.player || event.player_id || event.playerId;
-      const team = event.team_name || event.team_id || event.team || event.teamId;
-      info.append(node('span', '', [team, player, event.body_part === 'head' ? 'Headed touch' : null].filter(Boolean).join(' · ')));
-      row.append(node('time', '', clock(eventSeconds(event))), info, node('span', 'event-id', event.id || event.event_id || event.eventId || ''));
-      if (event.key_moment) row.classList.add('key-moment');
+      info.append(node('span', '', [event.team, event.player, event.body_part === 'head' ? 'Headed touch' : null].filter(Boolean).join(' · ')));
+      row.append(node('time', '', clock(eventSeconds(event))), info, node('span', 'event-id', event.id || ''));
       row.setAttribute('aria-label', `Inspect ${title(type)} at ${clock(eventSeconds(event))}`);
       return row;
     }));
   }
 
-  inspectEventLoading(deliveryIndex: number) {
-    text('rule-title', `Delivery ${deliveryIndex + 1}`);
-    text('detail-description', 'Received event payload and canonical event.');
+  inspectEventLoading(seq: number) {
+    text('rule-title', `Event ${seq}`);
+    text('detail-description', 'The canonical event as this match received it.');
     text('rule-detail', 'Loading received payload…');
     el<HTMLDialogElement>('rule-dialog').showModal();
   }
 
   inspectEvent(payload: EventPayload) {
-    text('rule-detail', JSON.stringify({ raw: payload.raw, canonical: payload.canonical }, null, 2));
+    text('rule-detail', JSON.stringify(payload.canonical, null, 2));
   }
 
   inspectEventError(message: string) { text('rule-detail', message); }

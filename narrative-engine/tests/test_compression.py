@@ -93,3 +93,29 @@ def test_tiles_detects_gaps_and_overlaps():
     assert not tiles([Span(MINUTE, played[0], played[1]), Span(MINUTE, played[3], played[3])], played)
     assert not tiles([Span(MINUTE, played[0], played[2]), Span(MINUTE, played[2], played[3])], played)
     assert not tiles([Span(MINUTE, played[0], played[2])], played)
+
+
+def test_a_step_reads_only_blocks_complete_by_its_horizon():
+    """A key event recorded after later minutes were summarised (messages out of order) reads the superseded
+    blocks up to its horizon, never the merge that covers later minutes."""
+    import asyncio
+    from narrative_engine.context.builder import ContextBuilder
+    from narrative_engine.core.models import ContextBlock
+    from narrative_engine.store.memory import MemoryStore
+
+    def block(start, end, level):
+        return ContextBlock(f"b{start}-{end}", "m", level, MatchClock(1, start), MatchClock(1, end), "s",
+                            MatchClock(1, end), None, None, None, "t")
+
+    async def go():
+        store = MemoryStore()
+        for m in range(5):
+            await store.put_block(block(m, m, MINUTE))
+        await store.supersede(block(0, 4, FIVE_MINUTE), [f"b{m}-{m}" for m in range(5)])
+        await store.put_block(block(5, 5, MINUTE))
+        builder = ContextBuilder(None, store)
+        spans = lambda blocks: [(b.coversFrom.timeMin, b.coversTo.timeMin) for b in blocks]
+        assert spans(await builder.blocks("m", MatchClock(1, 5), 59)) == [(0, 4), (5, 5)]  # the active blocks
+        assert spans(await builder.blocks("m", MatchClock(1, 5), 20)) == [(0, 4)]  # minute 5 is not over at 5:20
+        assert spans(await builder.blocks("m", MatchClock(1, 3), 20)) == [(0, 0), (1, 1), (2, 2)]
+    asyncio.run(go())

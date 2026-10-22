@@ -1,3 +1,11 @@
+# The shared DAB config with GraphQL introspection off: the deployed clients send only fixed queries.
+locals {
+  dab_config = jsondecode(file("${path.module}/../dab/dab-config.json"))
+  dab_config_deployed = jsonencode(merge(local.dab_config, { runtime = merge(local.dab_config.runtime, {
+    graphql = merge(local.dab_config.runtime.graphql, { "allow-introspection" = false })
+  }) }))
+}
+
 resource "azurerm_log_analytics_workspace" "etl" {
   name                = "${local.name}-logs"
   location            = azurerm_resource_group.etl.location
@@ -18,6 +26,7 @@ resource "azurerm_container_app_environment" "etl" {
 }
 
 # Data API builder from Microsoft's public image; the config is mounted from a secret, so no registry is needed.
+# The GraphQL is anonymous read, so it is never on the internet.
 resource "azurerm_container_app" "dab" {
   name                         = "${var.name_prefix}-dab"
   container_app_environment_id = azurerm_container_app_environment.etl.id
@@ -31,11 +40,12 @@ resource "azurerm_container_app" "dab" {
 
   secret {
     name  = "dab-config"
-    value = file("${path.module}/../dab/dab-config.json")
+    value = local.dab_config_deployed
   }
 
+  # Internal only: the user backend and the narrative engine share this environment.
   ingress {
-    external_enabled = true
+    external_enabled = false
     target_port      = 5000
     traffic_weight {
       latest_revision = true

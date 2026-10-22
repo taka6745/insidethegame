@@ -4,18 +4,18 @@ WORKDIR /app
 COPY requirements.txt requirements-test.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend ./backend
+# Migrations include the prompt seeds; the runtime reads no recording or test fixture.
 COPY migrations ./migrations
-COPY fixtures ./fixtures
-# Optional live-HLS origin; a fresh named volume inherits this ownership.
-RUN mkdir -p /media-live && chown 65532:65532 /media-live
 USER 65532:65532
 CMD ["uvicorn", "backend.app:from_env", "--factory", "--host", "0.0.0.0", "--port", "8000"]
 
 FROM runtime AS test
 USER root
 RUN pip install --no-cache-dir -r requirements-test.txt
+COPY fixtures ./fixtures
 COPY tests ./tests
 COPY benchmarks ./benchmarks
+COPY devtools ./devtools
 COPY pytest.ini ./
 USER 65532:65532
 CMD ["pytest", "-q", "-p", "no:cacheprovider"]

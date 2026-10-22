@@ -9,10 +9,11 @@ INK, MUTED, BLUE, PURPLE, GREEN = '#17324d', '#5d7185', '#147ac1', '#7952b3', '#
 PALE, LINE, GREY = '#f4f7fb', '#d8e3ed', '#82909e'
 
 class Diagram:
-    def __init__(self, path, title, subtitle, width=1320, height=750):
-        self.path, self.w, self.h = path, width, height
+    def __init__(self, path, title, subtitle, width=1320, height=750, legend='PLANNED · Solid: data / calls · Dashed: messages / Phase 2'):
+        self.path, self.w, self.h, self.legend = path, width, height, legend
+        kind = 'Planned design, not deployed infrastructure' if legend.startswith('PLANNED') else 'What exists now, with its status'
         self.parts = [f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
-            f'<title id="title">{escape(title)}</title><desc id="desc">{escape(subtitle)}. Planned architecture, not deployed infrastructure.</desc>',
+            f'<title id="title">{escape(title)}</title><desc id="desc">{escape(subtitle)}. {kind}.</desc>',
             '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="#5d7185"/></marker></defs>',
             '<style>text{font-family:Arial,Helvetica,sans-serif} .title{font-size:32px;font-weight:700} .body{font-size:16px} .small{font-size:14px}</style>',
             f'<rect width="{width}" height="{height}" fill="white"/>']
@@ -42,12 +43,14 @@ class Diagram:
                 self.rect(x+5,y,40,50,'white',BLUE)
                 for yy in (14,25,36):
                     self.parts.append(f'<path d="M{x+13},{y+yy} h24" stroke="{BLUE}" stroke-width="2"/>')
-    def card(self,x,y,w,h,title,notes=(),icon=None,color=BLUE,dash=False):
+    def card(self,x,y,w,h,title,notes=(),icon=None,color=BLUE,dash=False,status=None):
         self.rect(x,y,w,h,'#f7f9fc' if dash else 'white',GREY if dash else LINE,dash)
         if icon:self.icon(icon,x+(w-48)/2,y+18,48)
         ty=y+(92 if icon else 34)
         self.text(title,x+w/2,ty,19,GREY if dash else color,True,'middle')
         for i,s in enumerate(notes):self.text(s,x+w/2,ty+27+i*23,15,MUTED,anchor='middle')
+        # Status badge: green = deployed to Azure dev, blue = tested locally only.
+        if status:self.text(status,x+w/2,y+h-14,12,GREEN if status.startswith('Deployed') else BLUE,True,'middle')
     def arrow(self,points,label=None,lx=None,ly=None,dash=False,both=False):
         pts=' '.join(f'{x},{y}' for x,y in points)
         self.parts.append(f'<polyline points="{pts}" fill="none" stroke="{MUTED}" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)"'+(' marker-start="url(#arrow)"' if both else '')+(' stroke-dasharray="7 5"' if dash else '')+'/>')
@@ -57,90 +60,143 @@ class Diagram:
             tw=len(label)*7.5+18
             self.parts.append(f'<rect x="{x-tw/2}" y="{y-16}" width="{tw}" height="23" fill="white"/>')
             self.text(label,x,y,14,MUTED,anchor='middle')
+    def tag(self,s,cx,cy):
+        # Small amber chip: the demo-only seed adapter on this service (DEMO_SEEDS=1).
+        tw=len(s)*6.6+20
+        self.parts.append(f'<rect x="{cx-tw/2}" y="{cy-11}" width="{tw}" height="22" rx="11" fill="#fff1d6" stroke="#e7b65c"/>')
+        self.text(s,cx,cy+4,12,'#9a6500',True,'middle')
     def note(self,s,y,color=MUTED):self.text(s,36,y,16,color)
     def save(self):
         self.parts.append(f'<path d="M36,{self.h-50} H{self.w-36}" stroke="{LINE}"/>')
-        self.text('PLANNED · Solid: data / calls · Dashed: messages / Phase 2',36,self.h-25,12,MUTED)
+        self.text(self.legend,36,self.h-25,12,MUTED)
         self.parts.append('</svg>')
         p=ROOT/self.path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('\n'.join(self.parts)+'\n')
 
-# Root overview: five owners, with live and historical data paths separated.
-d=Diagram('architecture.svg','Five services. One live match.','Shared match intelligence; personal questions and stat cards. No narrative workflow per viewer.',1440,760)
-xs=[36,320,604,888,1172];w=232
-items=[('Data generation',['Match replay'],'python',BLUE),('ETL',['Stats + history · GraphQL'],'stream',BLUE),('Narrative engine',['DB-defined audience buckets'],'agent',PURPLE),('User backend',['Questions · stats'],'containers',BLUE),('Frontend',['Match experience'],'screen',GREEN)]
-for x,(title,notes,ic,col) in zip(xs,items):d.card(x,315,w,180,title,notes,ic,col)
-d.card(320,125,w,135,'Event Hubs',[],'events')
-d.arrow([(268,405),(292,405),(292,192),(320,192)])
-d.arrow([(436,260),(436,315)])
-d.arrow([(552,192),(1004,192),(1004,315)],'Direct live events',778,180,True)
-for i,label in enumerate(['Facts + triggers','Narratives','Live UI'],start=1):
- d.arrow([(xs[i]+w,405),(xs[i+1],405)],label,(xs[i]+w+xs[i+1])/2,390,dash=i==2)
-d.arrow([(436,495),(436,550),(1004,550),(1004,495)],'Stats + history · GraphQL',720,543)
-d.text('Independent consumers · live events bypass ETL storage',36,600,16,BLUE)
-d.text('Narratives: Service Bus live · GraphQL history',36,630,16,PURPLE)
-
-d.note('PHASE 2 · Jev · clips · rewind',663,GREY)
+# Root overview: what runs now. Green: applied on Azure 22 Oct for the Azure test (acceptance pending);
+# blue: tested in the local Docker stack only. The amber tag marks the demo-only seed adapter (DEMO_SEEDS).
+NOW='NOW · Solid: data / calls · Dashed: messages · Green: applied on Azure 22 Oct (acceptance pending) · Blue: tested locally · Amber tag: DEMO_SEEDS adapter (judge build only)'
+AZ='Deployed 22 Oct · tested locally'
+d=Diagram('architecture.svg','Five services. Three live matches.','A simulated provider streams events and HLS; one ETL pipeline computes the facts; one shared narrative pass per audience; a personal companion per viewer; a demo operator starts, seeds and cancels the three-match demo',1680,1190,NOW)
+d.card(36,150,230,180,'Match feed',['Simulated provider','Events + played HLS'],'python',status=AZ)
+d.tag('held / resumed runs',151,138)
+d.card(316,150,210,180,'Event Hubs',['match-events','key = matchId'],'events',status=AZ)
+d.rect(566,112,558,240,'#fff8ee','#f4a34f')
+d.text('ETL · one pipeline (etl/)',1110,138,15,'#b86500',True,'end')
+d.card(580,152,170,180,'Stream Analytics',['Stats rules'],'stream',status='Deployed · local stand-in')
+d.card(760,152,170,180,'Azure SQL',['History · stats'],'sql',status=AZ.split(' ·')[0])
+d.card(940,152,170,180,'Data API builder',['GraphQL'],'graphql',status=AZ.split(' ·')[0])
+d.tag('seed export / restore',845,352)
+d.card(1170,150,210,180,'Service Bus',['notifications','narratives · clips'],'bus',status=AZ)
+d.card(1420,150,224,180,'Narrative engine',['gpt-6.1-sol · Decision-1','Agent Framework · Cosmos'],'foundry',PURPLE,status=AZ)
+d.tag('seed export / restore',1532,138)
+d.card(36,560,200,190,'Edge proxy',['Cloudflare Worker','msft-hackathon.','koda-software.com','→ Azure frontend'],None,INK,status='Deployed 22 Oct')
+d.card(296,560,284,190,'Frontend',['Start demo · viewer · follow view','Clips: sting · slow motion'],'screen',GREEN,status=AZ)
+d.card(640,560,440,190,'User backend',['Questions · replays · follows · cross-game','gpt-6.1-sol questions · follow offers'],'containers',status=AZ)
+d.tag('seed export / restore',860,548)
+d.arrow([(266,240),(316,240)])
+d.arrow([(526,240),(580,240)])
+d.arrow([(750,240),(760,240)])
+d.arrow([(930,240),(940,240)])
+d.arrow([(665,152),(665,92),(1275,92),(1275,150)],'match-notifications',970,86,dash=True)
+d.arrow([(1380,240),(1420,240)],dash=True)
+d.arrow([(151,330),(151,450),(400,450),(400,560)],'Played HLS',276,438)
+d.arrow([(421,330),(421,500),(740,500),(740,560)],'Live events, direct',580,488)
+d.arrow([(990,352),(990,560)],'Stats · GraphQL',990,455)
+d.arrow([(1060,352),(1060,410),(1470,410),(1470,330)],'Facts · GraphQL',1265,398)
+d.arrow([(1080,610),(1530,610),(1530,330)],'Audience + follow targets',1300,598)
+d.arrow([(1600,330),(1600,700),(1080,700)],'Narratives · clips · Service Bus',1330,688,dash=True)
+d.arrow([(236,655),(296,655)])
+d.arrow([(580,655),(640,655)],both=True)
+d.text('REST + WS',610,640,13,MUTED,anchor='middle')
+# Demo operator: start, cancel, readiness; restores seeds through each owner's demo-only adapter.
+d.rect(36,820,1608,230,'#fffaf0','#e7b65c')
+d.text('DEMO BUILD (judge URL) · Start demo always runs three matches; main game Arsenal–Liverpool opens first',1622,850,15,'#9a6500',True,'end')
+d.card(296,875,284,160,'Demo control',['/demo-api/ start · cancel · status','one replica · scales to zero'],None,INK,status='Deployed 22 Oct')
+d.arrow([(438,750),(438,875)],'/demo-api/',438,792)
+d.card(36,875,200,160,'Seeds',['20′ · HT · 60′ · 85′','Azure Files · .local'],None,INK,status='Recorded locally')
+d.arrow([(296,955),(236,955)],both=True)
+d.card(640,875,440,160,'Restore, then continue live',['Feed holds runs · ETL, engine, backend restore','the snapshot · runs released, main game first'],None,INK,status='Built 22 Oct · unit + local stack')
+d.arrow([(580,955),(640,955)])
+d.card(1140,875,504,160,'Clips and cross-game',['Decision-1 picks clip moments · preview cards','Follow or ask about another live match'],None,PURPLE,status='Built 22 Oct · unit + local stack')
+d.text('Every run is its own matchId and is purged per match. Nothing reaches a viewer before the feed has streamed it; a seed holds nothing past its start point.',36,1090,16,INK,True)
+d.text('Locally: Microsoft emulators, SQL Server + DAB, a Python stand-in for Stream Analytics and a local model. Azure: ./dev azure up (Foundry gpt-6.1-sol + Microsoft-Decision-1, spend guard).',36,1118,15,MUTED)
 d.save()
 
-# Data input is a replay tool, not a resurrected match simulator.
-d=Diagram('data-generation/architecture.svg','Data generation','Prepare a saved synthetic match and replay its events into the demo.')
-d.card(60,200,300,200,'Existing match',['Events + footage'],'file')
-d.card(510,200,300,200,'Replay adapter',['Timed replay'],'python')
-d.card(960,200,300,200,'Azure Event Hubs',['ETL + user backend'],'events')
-d.arrow([(360,300),(510,300)],'read')
-d.arrow([(810,300),(960,300)],'publish')
-d.rect(60,475,1200,130)
-d.icon('screen',85,510,45);d.text('Footage → frontend',155,520,21,INK,True)
-
-
+# The feed simulates an external data and broadcast provider, and owns the demo runs (start points, held runs).
+d=Diagram('data-generation/architecture.svg','Data generation and feed','Tactically scripted GRF recordings; the feed replays three runs at once as an external provider would, and holds or resumes runs for demo seeds.',1320,900,NOW)
+d.card(60,150,300,180,'Recordings + HLS',['Rendered GRF matches','Synthetic, labelled'],'file',status='Checked in · media ignored')
+d.card(510,150,300,180,'Feed',['One run per matchId','Rebased to wall time'],'python',status=AZ)
+d.tag('held / resumed runs',660,138)
+d.card(960,150,300,180,'Azure Event Hubs',['MA1 · MA3 · POS · v2'],'events',status=AZ)
+d.arrow([(360,240),(510,240)],'read')
+d.arrow([(810,240),(960,240)],'publish')
+d.card(60,420,300,170,'Tactical scripts',['Press · block · flank','Directness · fatigue'],None,INK,status='Per fixture · re-rendered 22 Oct')
+d.arrow([(210,420),(210,330)],'render',245,380)
+d.card(510,420,300,170,'Demo settings',['Fixtures · stagger · cap 3','Start points · main game'],None,INK,status='Feed Postgres · 002, 005')
+d.arrow([(660,330),(660,420)],both=True)
+d.card(960,420,300,170,'Demo control',['/demo/start · release','Cancel → purge'],None,INK,status='Deployed 22 Oct')
+d.arrow([(960,505),(810,505)],'start · release',885,493)
+d.rect(60,650,1200,120)
+d.icon('screen',85,680,45);d.text('Played HLS segments → nginx /media/hls/{matchId}/ → viewer',155,690,21,INK,True)
+d.text('Our services see only Event Hubs and HLS over HTTP. A held run sends nothing at or past its point, HLS included.',155,725,16,MUTED)
 d.save()
 
-# ETL owns standard statistics and history; consumers see only its API.
-d=Diagram('etl/architecture.svg','ETL owns match facts','Standard stats in Cosmos DB; historical events in Azure SQL; consumers query ETL GraphQL.',1440,850)
-d.card(30,320,220,180,'Event Hubs',['Match events'],'events')
-d.card(310,320,240,180,'Stream Analytics',['Compute + store'],'stream')
-d.card(620,180,240,180,'Cosmos DB',['Standard stats'],'cosmos')
-d.card(620,520,240,180,'Azure SQL',['Event history'],'sql')
-d.card(940,320,220,180,'ETL GraphQL',['Stats + event queries'],'graphql')
-d.card(1210,320,200,180,'Consumers',['Agents + cards'],'containers')
-d.arrow([(250,410),(310,410)])
-d.arrow([(550,375),(585,375),(585,270),(620,270)])
-d.arrow([(550,445),(585,445),(585,610),(620,610)])
-d.arrow([(860,270),(900,270),(900,375),(940,375)])
-d.arrow([(860,610),(900,610),(900,445),(940,445)])
-d.arrow([(1160,410),(1210,410)])
-d.icon('bus',330,610,45)
-d.text('Service Bus',400,635,20,BLUE,True)
-d.arrow([(430,500),(430,590)],'Triggers',475,555,dash=True)
-d.note('Backend selects and delivers standard stats. ETL calculates them.',755)
-d.note('Local demo: PostgreSQL for both stores. Azure SQL + Cosmos DB are planned.',783)
+# One ETL pipeline: Stream Analytics into Azure SQL, served by Data API builder.
+d=Diagram('etl/architecture.svg','ETL owns match facts','Stream Analytics writes events, key events and stats to Azure SQL; Data API builder serves GraphQL; Service Bus carries notifications.',1440,850,NOW)
+d.card(30,200,220,180,'Event Hubs',['Match events'],'events',status=AZ)
+d.card(310,200,240,180,'Stream Analytics',['Rules per match'],'stream',status='Deployed · local etl-stream')
+d.card(620,200,260,180,'Azure SQL',['History · stats · trends'],'sql',status=AZ)
+d.tag('seed export / restore',750,188)
+d.card(950,200,220,180,'Data API builder',['GraphQL'],'graphql',status=AZ)
+d.card(1220,200,190,180,'Consumers',['Engine · backend'],'containers')
+d.arrow([(250,290),(310,290)])
+d.arrow([(550,290),(620,290)])
+d.arrow([(880,290),(950,290)])
+d.arrow([(1170,290),(1220,290)])
+d.card(30,480,220,180,'Stream schedule',['Starts on events','Stops 30 min idle'],None,INK,status='Spend guard · deployed')
+d.arrow([(250,570),(280,570),(280,350),(310,350)],'start / stop',280,450)
+d.card(310,480,240,180,'Service Bus',['match-notifications'],'bus',status=AZ)
+d.arrow([(470,380),(470,480)],'Triggers',510,435,dash=True)
+d.card(620,480,260,180,'SPADL post-processor',['MA3 → SPADL actions','Container App · Python'],'python',status=AZ)
+d.arrow([(705,380),(705,480)],'MA3 rows',705,435)
+d.arrow([(795,480),(795,380)],'Final actions',800,452)
+d.card(950,480,220,180,'Demo seeds',['export · restore','DEMO_SEEDS only'],None,'#9a6500',status='Unit + local stack')
+d.arrow([(950,600),(915,600),(915,350),(880,350)],both=True)
+d.card(1220,480,190,180,'Demo control',['Restores seeds','ETL first'],None,INK,status='Deployed 22 Oct')
+d.arrow([(1220,570),(1170,570)])
+d.note('The backend selects and delivers standard stats; ETL calculates them, on SPADL actions.',720)
+d.note('Tested locally (SQL Server + DAB containers, etl-stream with the same rules); applied on Azure 22 Oct for the Azure test.',748)
+d.note('A restored seed fed only what follows writes the same rows as one uninterrupted run.',772)
 d.save()
 
-# Narrative shared memory and per-bucket authors.
-d=Diagram('narrative-engine/architecture.svg','Narrative engine','Python on Azure Container Apps · Microsoft Agent Framework · Foundry model calls',1440,850)
-d.card(36,180,250,180,'Match inputs',['Facts + triggers'],'graphql')
-d.card(366,180,290,180,'Shared context',['Summarise → compress'],'agent',PURPLE)
-d.card(736,180,290,180,'Narrative author',['All configured buckets'],'foundry',PURPLE)
-d.card(1106,180,298,180,'Publish',['Narratives + stat choices'],'bus')
+# Narrative shared memory, per-bucket authors, Decision-1 checks and clip messages.
+d=Diagram('narrative-engine/architecture.svg','Narrative engine','Python on Azure Container Apps · Microsoft Agent Framework · Foundry gpt-6.1-sol and Microsoft-Decision-1',1440,1000,NOW)
+d.card(36,180,250,192,'Match inputs',['Facts + triggers'],'graphql',status=AZ)
+d.card(366,180,290,192,'Shared context',['Summarise → compress'],'agent',PURPLE,status='gpt-6.1-sol (writer)')
+d.card(736,180,290,192,'Analyst + author',['Storylines · enabled buckets'],'foundry',PURPLE,status='gpt-6.1-sol (writer)')
+d.card(1106,180,298,192,'Publish',['Narratives · stat picks','MomentClip · FollowClip'],'bus',status=AZ)
 d.arrow([(286,270),(366,270)])
 d.arrow([(656,270),(736,270)])
 d.arrow([(1026,270),(1106,270)])
 d.rect(366,430,660,166)
 d.icon('cosmos',393,470,66)
 d.text('Azure Cosmos DB',490,475,23,BLUE,True)
-d.text('Context · narratives · checkpoints',490,512,17,MUTED)
+d.text('Context · narratives · storylines · follows',490,512,17,MUTED)
 d.text('History → GraphQL',490,550,15,MUTED)
-d.arrow([(511,360),(511,430)],both=True)
-d.arrow([(881,430),(881,360)],both=True)
-d.arrow([(1255,360),(1255,512),(1026,512)],'save',1145,500)
-d.rect(36,635,1368,98,'#f5f1fb','#dfd4ed')
-d.text('TRIGGERS · Audience definitions read from backend API',58,665,13,PURPLE,True)
-d.text('1 min → summary     ·     Key event / 10 min → narrative',58,696,17,INK)
-
+d.arrow([(511,372),(511,430)],both=True)
+d.arrow([(881,430),(881,372)],both=True)
+d.arrow([(1255,372),(1255,512),(1026,512)],'save',1145,500)
+d.card(36,640,290,160,'Demo seeds',['ASGI layer · export · restore','DEMO_SEEDS only'],None,'#9a6500',status='Unit + local stack')
+d.arrow([(326,720),(346,720),(346,513),(366,513)])
+d.card(1106,640,298,160,'Microsoft-Decision-1',['Claim checks · follow triggers','Clip Score'],None,PURPLE,status=AZ)
+d.arrow([(1340,640),(1340,372)],'verdicts',1340,500,both=True)
+d.rect(36,840,1368,98,'#f5f1fb','#dfd4ed')
+d.text('TRIGGERS · Audience and follow targets read from the backend API',58,870,13,PURPLE,True)
+d.text('1 min → summary   ·   Key event / 10 min → narrative (+ MomentClip)   ·   Each update → Decision-1 → follow narratives + FollowClip',58,901,17,INK)
 d.save()
 
 # Detailed backend boundary follows the reference board. Standard and custom stats stay separate.
-d=Diagram('user-backend/architecture.svg','Main user backend','ETL owns standard stats in Cosmos DB and historical events in SQL. GraphQL is the only database access path for the backend.',1680,1420)
+d=Diagram('user-backend/architecture.svg','Main user backend','ETL owns standard stats and historical events in Azure SQL. GraphQL (Data API builder) is the backend’s only path to them.',1680,1420,'DESIGN + BUILT · Solid: data / calls · Isolated executor for arbitrary code still planned')
 # Service boundaries.
 d.rect(24,145,270,655,'#fff4e5','#f4a34f')
 d.text('ETL service',44,179,22,'#b86500',True)
@@ -150,7 +206,7 @@ d.text('User backend · Container Apps',395,188,22,BLUE,True)
 d.rect(1420,335,236,690,'#effaf1','#69ad7d')
 d.text('Frontend',1440,370,22,GREEN,True)
 # Upstream stores are accessed only through ETL GraphQL.
-d.card(44,210,230,145,'Cosmos DB',['Standard stats'],'cosmos')
+d.card(44,210,230,145,'Azure SQL',['Standard stats'],'sql')
 d.card(44,410,230,145,'ETL GraphQL',[],'graphql')
 d.card(44,620,230,145,'Azure SQL',['Event history'],'sql')
 d.text('Shared event stream',44,830,18,BLUE,True)
@@ -163,7 +219,7 @@ d.text('Microsoft Agent Framework',737,402,12,PURPLE,True,'middle')
 d.card(355,410,205,145,'GraphQL helper',['Read-only queries'],'graphql')
 d.card(615,410,245,145,'Question agent',['Existing stats first'],'agent',PURPLE)
 d.card(925,410,230,145,'Chat + actions',[],'containers')
-d.card(640,230,195,145,'Foundry models',[],'foundry',PURPLE)
+d.card(630,230,215,145,'Foundry models',['gpt-6.1-sol · Decision-1'],'foundry',PURPLE)
 d.card(925,230,200,145,'Profiles + sessions',[],'users')
 d.card(1150,230,210,145,'PostgreSQL',['Accounts · Match App'],'postgres')
 d.card(1430,410,216,145,'Agent chat',[],'screen',GREEN)
@@ -197,15 +253,16 @@ d.arrow([(1360,925),(1430,925)])
 d.rect(615,1170,745,140,'#f5f0ff','#b6a0df')
 d.icon('agent',640,1210,55)
 d.text('Narrative engine',720,1213,23,PURPLE,True)
-d.text('Bucket narratives · ranked stat IDs',720,1250,17,MUTED)
+d.text('Bucket narratives · ranked stat IDs · moment and follow clips',720,1250,17,MUTED)
 d.text('Service Bus live · GraphQL history',720,1280,15,MUTED)
 d.arrow([(1040,1170),(1040,995)],'Stat IDs',1075,1150)
 d.arrow([(1270,1170),(1270,995)],'Narratives',1310,1150)
 # Future features, visually secondary.
-for x,title in [(355,'Playback state'),(555,'Clip resolver'),(755,'Jev follows')]:
- d.card(x,1040,175,70,title,(),color=GREY,dash=True)
-d.text('PHASE 2',1185,1080,14,GREY,True)
-d.note('Standard stats: fetch → select → deliver. Custom requests: query history → test → run.',1350)
+# Built 22 Oct (unit-tested, local stack): follows with clips, cross-match reach, the demo-only seed adapter.
+for x,title in [(355,'Follows + clips'),(555,'Cross-match'),(755,'Demo seeds')]:
+ d.card(x,1040,175,70,title,(),color='#9a6500' if title=='Demo seeds' else BLUE)
+d.text('BUILT 22 OCT',1075,1080,14,BLUE,True)
+d.note('Standard stats: fetch → select → deliver. Custom requests: query history → test → run. Demo seeds exist only with DEMO_SEEDS=1.',1350)
 d.save()
 
 # Proposed custom-rule ownership and execution lifecycle, separate from standard ETL stats.
@@ -243,7 +300,7 @@ d.note('History scan: first activation / rebuild. Live update: each relevant eve
 d.save()
 
 # Product interface, not a frontend framework decision.
-d=Diagram('frontend/architecture.svg','Frontend','Application data comes from the user backend. Video comes from the footage source.',1320,870)
+d=Diagram('frontend/architecture.svg','Frontend','Application data comes from the user backend; demo start, cancel and progress from demo control. Video is the feed’s played HLS.',1320,870,'NOW · Solid: calls · Green: built and tested (unit, headless) · Demo control applied on Azure 22 Oct')
 d.card(36,190,245,180,'Demo profile',['Team + fan style'],'users')
 d.arrow([(281,280),(361,280)],'select')
 d.rect(361,180,680,430,'white',LINE)
@@ -261,9 +318,11 @@ for x,title in [(385,'Default stat'),(601,'Default stat'),(817,'Custom pin')]:
 d.card(1110,190,174,180,'Backend',['API + live'],'containers')
 d.arrow([(1041,280),(1110,280)],both=True)
 d.text('Pin → replace a default',385,642,15,MUTED)
-d.rect(36,693,1248,84,'#f7f9fc',GREY,True)
-d.text('PHASE 2',58,725,13,GREY,True)
-d.text('Clips · pause · rewind',58,752,17,GREY)
+d.card(1110,430,174,180,'Demo control',['/demo-api/','start · cancel','status'],None,INK,status='Deployed 22 Oct')
+d.arrow([(1041,520),(1110,520)],both=True)
+d.rect(36,693,1248,84,'#eef9f0','#69ad7d')
+d.text('BUILT 22 OCT · unit + headless tests',58,725,13,GREEN,True)
+d.text('Start demo + start progress · main game · follow view · clip preview cards · sting + slow motion · other-match marking',58,752,17,INK)
 d.save()
 print('Rendered overview, five service SVGs and custom-calculation detail.')
 

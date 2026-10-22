@@ -15,8 +15,9 @@ resource "azurerm_eventhub" "match_events" {
   message_retention = 1
 }
 
+# stream-analytics-progress: the job's second input, read in arrival order for watermark marks.
 resource "azurerm_eventhub_consumer_group" "consumers" {
-  for_each            = toset(["stream-analytics", "user-backend"])
+  for_each            = toset(["stream-analytics", "stream-analytics-progress", "user-backend"])
   name                = each.key
   namespace_name      = azurerm_eventhub_namespace.etl.name
   eventhub_name       = azurerm_eventhub.match_events.name
@@ -64,6 +65,24 @@ resource "azurerm_eventhub_authorization_rule" "seeder_send" {
   eventhub_name       = azurerm_eventhub.match_events.name
   resource_group_name = azurerm_resource_group.etl.name
   send                = true
+}
+
+# The SPADL post-processor reads only partition properties with this, to wake from idle (spadl.tf).
+resource "azurerm_eventhub_authorization_rule" "spadl_listen" {
+  name                = "spadl-listen"
+  namespace_name      = azurerm_eventhub_namespace.etl.name
+  eventhub_name       = azurerm_eventhub.match_events.name
+  resource_group_name = azurerm_resource_group.etl.name
+  listen              = true
+}
+
+# The user backend's consumer group (`user-backend`) reads with this; the feed sends with seeder-send.
+resource "azurerm_eventhub_authorization_rule" "user_backend_listen" {
+  name                = "user-backend-listen"
+  namespace_name      = azurerm_eventhub_namespace.etl.name
+  eventhub_name       = azurerm_eventhub.match_events.name
+  resource_group_name = azurerm_resource_group.etl.name
+  listen              = true
 }
 
 resource "azurerm_servicebus_topic_authorization_rule" "asa_send" {

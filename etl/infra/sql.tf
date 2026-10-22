@@ -32,7 +32,8 @@ resource "azurerm_mssql_firewall_rule" "me" {
 }
 
 # azurerm does not expose the free offer, so the database is created through azapi.
-# Free offer: 100,000 vCore-seconds and 32 GB per month; pauses rather than bills when used up.
+# Free offer: 100,000 vCore-seconds and 32 GB per month. Past it the database bills (sql_after_free_limit), so a
+# busy judging month never pauses it; idle, it auto-pauses after an hour and resumes on the next login (~1 min).
 resource "azapi_resource" "database" {
   type      = "Microsoft.Sql/servers/databases@2023-08-01"
   name      = "insidethegame"
@@ -44,7 +45,7 @@ resource "azapi_resource" "database" {
     sku = { name = "GP_S_Gen5", tier = "GeneralPurpose", family = "Gen5", capacity = 2 }
     properties = {
       useFreeLimit                     = true
-      freeLimitExhaustionBehavior      = "AutoPause"
+      freeLimitExhaustionBehavior      = var.sql_after_free_limit
       autoPauseDelay                   = 60
       minCapacity                      = 0.5
       maxSizeBytes                     = 34359738368

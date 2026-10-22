@@ -1,6 +1,6 @@
 # Devtools
 
-> **In short:** one command-line tool, `python -m devtools`, for everything around the pipeline: start the local SQL and DAB stack, apply migrations, load a replay the way the cloud job would, verify Azure output against the reference, set up database users, and start or stop the billed Stream Analytics job.
+> **In short:** one command-line tool, `python -m devtools`, for everything around the pipeline: start the local SQL and DAB stack, apply migrations, load a replay the way the cloud job would, verify Azure output against the reference, set up database users, and start or stop the billed Stream Analytics job (on Azure the stream schedule normally does this: [stream-analytics §6](stream-analytics.md#6-run-only-while-matches-play)).
 
 | | |
 | --- | --- |
@@ -21,7 +21,7 @@
 | `load-local REPLAY.jsonl --window N` | Insert the rows the job would write and write notifications to `.local/notifications.jsonl` |
 | `verify REPLAY.jsonl [--graphql URL]` | Compare every GraphQL table and the view with the reference |
 | `check-notifications REPLAY.jsonl` | Peek the `narrative-engine` subscription and compare with the reference notifications |
-| `azure-setup` | After `terraform apply`: migrations, then database users and roles for the job and DAB identities |
+| `azure-setup` | After `terraform apply`: migrations, `sql/azure` triggers, then database users and roles for the job, DAB (also `EXECUTE` on `statsAtSeq` and the trend procedures) and, once deployed, the purge API |
 | `asa start\|stop\|status` | Control the Stream Analytics job; it bills only while running |
 
 ## 2. Typical loops

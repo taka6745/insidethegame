@@ -92,6 +92,27 @@ def test_pair_alternation_sequential_models_and_substitution():
     assert sum(row['ok'] for row in rows) == 4
 
 
+def test_results_use_neutral_model_names_by_default():
+    configs = [{'label': 'small', 'model': 'example-model', 'expected_models': ['example-model-route']}]
+    def build(config, variant, timeout, observer, candidate_instructions=None):
+        observer.calls.append({'status': 'ok', 'requested_model': 'example-model',
+                               'actual_models': ['example-model-route', 'other-model']})
+        return None, {}
+    async def evaluate(workflow, case, context, callback):
+        return {'id': case['id'], 'ok': True}
+    output = io.StringIO()
+    args = SimpleNamespace(concurrency=1, suite_timeout=2, case_timeout=1, variants=['current'])
+    with patch.object(strength, 'build_workflow', build), patch.object(strength, 'evaluate_conversation', evaluate):
+        rows = asyncio.run(strength.compare(args, configs, [{'id': '1', 'quality': 'clear'}],
+                                            {'match_id': 'm', 'players': [], 'teams': []}, [], output))
+    assert 'example-model' not in output.getvalue() + json.dumps(rows)
+    assert rows[0]['requested_model'] == 'small' and rows[0]['calls'][0]['requested_model'] == 'small'
+    assert rows[0]['actual_models'] == ['small-route-1', 'unexpected-model']
+    assert rows[0]['pin_reason'] == 'unexpected_model_substitution'
+    assert strength.scrub(configs, strength.neutral_names(configs)) == [
+        {'label': 'small', 'model': 'small', 'expected_models': ['small-route-1']}]
+
+
 def test_suite_timeout_cancels_workers_and_records_unmeasured():
     cancelled = []
     def build(config, variant, timeout, observer, candidate_instructions=None):

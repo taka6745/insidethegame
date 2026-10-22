@@ -10,7 +10,8 @@ import re
 import statistics
 import subprocess
 
-from backend.adapters.events import OptaInspiredAdapter
+from benchmarks.doubles.events import OptaInspiredAdapter
+from backend.adapters.match_reference import data_reference
 from backend.adapters.llm import LocalJsonModel
 from backend.agents.compiler import StructuredRuleCompiler
 from backend.agents.data_skill import EventDataSkill
@@ -59,6 +60,33 @@ def load_models(path):
     return raw['models']
 
 
+def neutral_names(models):
+    """Map requested and reported model IDs to their configured label, so results never name a model."""
+    names = {}
+    for model in models:
+        names[model['model']] = model['label']
+        for index, expected in enumerate(model['expected_models'], 1):
+            names.setdefault(expected, f"{model['label']}-route-{index}")
+    return names
+
+
+def scrub(value, names):
+    """Replace model IDs with neutral names; an unconfigured substitute becomes 'unexpected-model'."""
+    if isinstance(value, list):
+        return [scrub(item, names) for item in value]
+    if not isinstance(value, dict):
+        return value
+    out = {}
+    for key, item in value.items():
+        if key in ('model', 'requested_model') and isinstance(item, str):
+            out[key] = names.get(item, 'unexpected-model')
+        elif key in ('actual_models', 'expected_models') and isinstance(item, list):
+            out[key] = [names.get(name, 'unexpected-model') for name in item]
+        else:
+            out[key] = scrub(item, names)
+    return out
+
+
 def variant_order(case_index, variants=('baseline', 'current')):
     ordered = ('baseline', 'current', 'schema', 'skill', 'schema_skill', 'skill_added', 'schema_skill_added')
     if case_index % 2:
@@ -84,7 +112,7 @@ def build_workflow(model_config, variant, case_timeout, observer, candidate_inst
         instructions = (MEASUREMENT_POLICY + (STRUCTURED_GOAL_INSTRUCTIONS if structured else GOAL_INSTRUCTIONS)
                         if variant.endswith('_added') else None)
         agent = GoalAgent(model, response_mode='schema' if structured else 'prompt', instructions=instructions,
-                          data_skill=EventDataSkill(OptaInspiredAdapter().data_reference()))
+                          data_skill=EventDataSkill(data_reference(None)))
     elif candidate_instructions is not None:
         agent = GoalAgent(model, instructions=candidate_instructions, compact_contract=True)
     else:
@@ -104,6 +132,8 @@ async def compare(args, models, selected, scenario, events, output):
     context = {key: scenario[key] for key in ('match_id', 'players', 'teams')}
     context['standard_stats'] = []
     semaphore = asyncio.Semaphore(args.concurrency)
+    names = None if getattr(args, 'record_model_ids', False) else neutral_names(models)
+    public = (lambda row: row) if names is None else (lambda row: scrub(row, names))
 
     async def paired_case(model_config, case, index):
         async with semaphore:
@@ -121,10 +151,10 @@ async def compare(args, models, selected, scenario, events, output):
                               'reason': type(exc).__name__}
                 pin = pin_verification(observer.calls, model_config['expected_models'])
                 interpretation_ok = result['ok']
-                row = {**result, 'model_label': model_config['label'], 'requested_model': model_config['model'],
-                       'variant': variant, 'interpretation_ok': interpretation_ok,
-                       'ok': interpretation_ok and pin['pin_verified'], **metadata, **pin,
-                       'calls': observer.calls}
+                row = public({**result, 'model_label': model_config['label'], 'requested_model': model_config['model'],
+                              'variant': variant, 'interpretation_ok': interpretation_ok,
+                              'ok': interpretation_ok and pin['pin_verified'], **metadata, **pin,
+                              'calls': observer.calls})
                 rows.append(row)
                 output.write(json.dumps(row) + '\n')
                 output.flush()
@@ -156,10 +186,10 @@ async def compare(args, models, selected, scenario, events, output):
                 if key not in complete:
                     observer = active_observers.get(key)
                     calls = observer.calls if observer else []
-                    row = {'model_label': config['label'], 'requested_model': config['model'],
-                           'variant': variant, 'id': case['id'], 'quality': case['quality'],
-                           'ok': False, 'interpretation_ok': False, 'reason': 'suite_timeout_unmeasured',
-                           **pin_verification(calls, config['expected_models']), 'calls': calls}
+                    row = public({'model_label': config['label'], 'requested_model': config['model'],
+                                  'variant': variant, 'id': case['id'], 'quality': case['quality'],
+                                  'ok': False, 'interpretation_ok': False, 'reason': 'suite_timeout_unmeasured',
+                                  **pin_verification(calls, config['expected_models']), 'calls': calls})
                     rows.append(row)
                     output.write(json.dumps(row) + '\n')
     return rows
@@ -200,6 +230,8 @@ def main():
     parser.add_argument('--case-timeout', type=float, default=60)
     parser.add_argument('--suite-timeout', type=float, default=1200)
     parser.add_argument('--output', type=Path, default=Path('.local/benchmarks/model-strength'))
+    parser.add_argument('--record-model-ids', action='store_true',
+                        help='Keep raw model IDs in results (default: neutral labels only)')
     args = parser.parse_args()
     if args.case_timeout <= 0 or args.suite_timeout <= 0 or (args.limit is not None and args.limit <= 0):
         parser.error('Timeouts and limits must be positive')
@@ -226,7 +258,7 @@ def main():
         raise ValueError('Independent gold checks failed; do not run a model comparison')
     args.output.mkdir(parents=True, exist_ok=True)
     report = {'started_at': datetime.now(timezone.utc).isoformat(), 'cohort': args.cohort,
-              'models': models, 'variants': args.variants, 'case_ids': [case['id'] for case in selected],
+              'models': models if args.record_model_ids else scrub(models, neutral_names(models)), 'variants': args.variants, 'case_ids': [case['id'] for case in selected],
               'cases_sha256': digest(selected), 'fixture_sha256': digest(scenario),
               'concurrency': args.concurrency, 'case_timeout_seconds': args.case_timeout,
               'suite_timeout_seconds': args.suite_timeout, 'max_repairs': AgentSettings.from_env().max_repairs,

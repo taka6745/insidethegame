@@ -7,9 +7,8 @@ test('match clock preserves football minutes past an hour', () => {
   assert.equal(clock(5701), '95:01');
 });
 
-test('clock supports canonical events and fixture minute fields', () => {
+test('clock reads the displayed match time, else the minute', () => {
   assert.equal(eventSeconds({ match_time_seconds: 4025 }), 4025);
-  assert.equal(eventSeconds({ timeMin: 67, timeSec: 5 }), 4025);
   assert.equal(eventSeconds({ minute: 67 }), 4020);
 });
 

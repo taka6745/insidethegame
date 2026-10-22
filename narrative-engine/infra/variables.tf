@@ -41,11 +41,31 @@ variable "models" {
     capacity = number # thousands of tokens per minute
     format   = optional(string, "OpenAI")
     sku      = optional(string, "GlobalStandard")
+    model    = optional(string) # the model's name when it differs from the deployment name (the key)
   }))
   default = {
-    "gpt-5-mini" = { version = "2025-08-07", capacity = 100 } # GlobalStandard quota in Australia East: 500
+    # Every writing role (summary, compression, analyst, author, follow authoring). The deployment name stays
+    # generic, so a different model is a change here only. GlobalStandard quota in Australia East: 250.
+    "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 200 }
+    # Story-follow triggers and the authors' claim checks (narrative_engine/decisions, SystemOne API). Capacity is
+    # requests per minute (DataZoneStandard quota in Australia East: 60).
+    "decision-1" = { model = "Microsoft-Decision-1", version = "1", capacity = 50, format = "Microsoft", sku = "DataZoneStandard" }
   }
-  description = "Foundry deployments, by model name."
+  description = "Foundry deployments, by deployment name."
+}
+
+variable "decision" {
+  type = object({
+    deployment    = string # a key of var.models
+    max_questions = number # questions per SystemOne request; larger batches are split
+  })
+  default     = { deployment = "decision-1", max_questions = 128 }
+  description = "The engine's decision model (Microsoft-Decision-1): story-follow triggers and claim checks."
+
+  validation {
+    condition     = var.decision.max_questions >= 1
+    error_message = "decision.max_questions must be at least 1."
+  }
 }
 
 variable "agents" {
@@ -54,15 +74,16 @@ variable "agents" {
     effort = optional(string) # reasoning_effort; omit for models without reasoning
   }))
   default = {
-    summary     = { model = "gpt-5-mini", effort = "minimal" }
-    compression = { model = "gpt-5-mini", effort = "minimal" }
-    author      = { model = "gpt-5-mini", effort = "low" }
+    summary     = { model = "writer", effort = "low" } # gpt-6.1-sol: low is its lowest effort
+    compression = { model = "writer", effort = "low" }
+    analyst     = { model = "writer", effort = "low" }
+    author      = { model = "writer", effort = "low" }
   }
   description = "Model (a key of var.models) and reasoning effort for each agent."
 
   validation {
-    condition     = toset(keys(var.agents)) == toset(["summary", "compression", "author"])
-    error_message = "Set exactly the agents summary, compression and author."
+    condition     = toset(keys(var.agents)) == toset(["summary", "compression", "analyst", "author"])
+    error_message = "Set exactly the agents summary, compression, analyst and author."
   }
 }
 
@@ -72,8 +93,14 @@ variable "engine_image_tag" {
   description = "Image tag in the registry; the Container App is created once this is set."
 }
 
-variable "match_ids" {
+variable "user_backend_url" {
   type        = string
-  default     = ""
-  description = "Optional comma-separated matchIds the deployed engine handles (empty = all)."
+  default     = null
+  description = "User backend base URL: audience targets per matchId and prompts. Required once engine_image_tag is set (the engine has no fallback)."
+}
+
+variable "demo_seeds" {
+  type        = bool
+  default     = false
+  description = "Demo seed export/restore routes (DEMO_SEEDS=1; PLAN.md §10.6). On for the judge build (`./dev azure up`), off for a production release."
 }

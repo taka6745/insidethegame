@@ -1,83 +1,79 @@
-"""Real broker → isolated backend index/inbox → durable DB, without moving the viewer."""
+"""Real Event Hubs → isolated backend registry → PostgreSQL, without touching live matches.
+
+Sends a probe match (MA1, then 12 MatchEvent v2 and one redelivery) under a fresh matchId,
+consumes it in the `integration` consumer group into a throwaway schema, checks the received
+events, duplicate handling and restart recovery, then purges the probe from every owner."""
 import asyncio
+import json
 import os
+from datetime import datetime, timezone
 from uuid import uuid4
+
 import httpx
+from azure.eventhub import EventData
+from azure.eventhub.aio import EventHubProducerClient
 from psycopg import sql
-from backend.adapters.match_brokers import MatchBrokers
-from backend.adapters.replay_source import FixtureEventSource
-from backend.models.rules import Rule
-from backend.repositories.broker_inbox import NarrativeInbox
-from backend.repositories.lab import PostgresLabRepository
-from backend.services.broker_runtime import BrokerRuntime
-from backend.services.lab import FilterLabService
-from backend.services.question_snapshot import build_snapshot
+
+from backend.adapters.match_stream import MatchStream
+from backend.models.events import Event
+from backend.repositories.matches import MatchRepository
+from backend.services.match_registry import MatchRegistry
 from backend.store import Store
-from broker_probe import require_idle_replay
+
+OWNERS = ('http://backend:8000', 'http://etl-stream:8000', 'http://narrative-live:8000')
+
+
+def messages(match_id, count):
+    now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+    yield {'feed': 'MA1', 'schemaVersion': 1, 'matchId': match_id, 'synthetic': True, 'fixture': 'broker-check',
+           'runId': str(uuid4()), 'timeStamp': now, 'scheduledKickoff': now, 'description': 'SYNTHETIC broker probe',
+           'contestant': [{'id': side, 'name': f'Probe {side}', 'position': side} for side in ('home', 'away')]}
+    for seq in range(1, count + 1):
+        event = Event(event_id=f'probe-{seq}', match_id=match_id, event_type='pass', team_id='home',
+                      match_time_seconds=seq, sequence=seq)
+        yield {'type': 'MatchEvent', 'version': 2, 'matchId': match_id, 'seq': seq, 'timeStamp': now,
+               'synthetic': True, 'event': event.model_dump(mode='json')}
 
 
 async def main():
-    store = Store(os.environ['ACCOUNTS_DATABASE_URL'], os.environ['MATCH_APP_DATABASE_URL'],
-                  'broker_check_' + uuid4().hex)
-    backend_url = os.getenv('BACKEND_URL', 'http://backend:8000')
-    async with httpx.AsyncClient(timeout=20) as client:
-        await require_idle_replay(client, backend_url)
-        store.initialize()
-        response = await client.get(os.environ['DEMO_RECORDING_URL'])
-        response.raise_for_status()
-        source = FixtureEventSource(content=response.content)
-        lab = FilterLabService(source, PostgresLabRepository(store), None)
-        await lab.initialize()
-        transport = MatchBrokers(os.environ['MATCH_EVENTHUB_CONNECTION_STRING'],
-            os.environ['NARRATIVE_SERVICEBUS_CONNECTION_STRING'], group='integration', subscription='integration')
-        inbox = NarrativeInbox(store)
-        runtime = BrokerRuntime(lab, transport, inbox, timeout=60)
-        duplicate_received = asyncio.Event()
-        receipts = 0
-        accept_event = runtime.accept_event
-        async def observed_receipt(delivery):
-            nonlocal receipts
-            await accept_event(delivery)
-            if delivery.snapshot.snapshot.run_id == str(lab.run_id) and delivery.snapshot.snapshot.cursor == 12 and delivery.event:
-                receipts += 1
-                if receipts >= 2:
-                    duplicate_received.set()
-        runtime.accept_event = observed_receipt
-        await runtime.start()
-        try:
-            calculation = await lab.register(Rule(match_id=source.match_id), 'Captured actions')
-            for _ in range(12):
-                await require_idle_replay(client, backend_url)
-                await lab.advance(finish=False)
-            payload = build_snapshot(source, lab.run_id, lab.position)
-            assert lab.engine.get(calculation['id']).value == 12
-            # The same final event must not increment the index on redelivery.
-            await transport.publish(payload, source.events[11])
-            async with asyncio.timeout(60):
-                while not duplicate_received.is_set() or not await asyncio.to_thread(inbox.read, payload.snapshot.id):
-                    await require_idle_replay(client, backend_url)
-                    await asyncio.sleep(.1)
-            assert lab.position == 12 and lab.engine.get(calculation['id']).value == 12
-            restored = FilterLabService(source, PostgresLabRepository(store), None)
-            await restored.initialize()
-            assert restored.position == 12 and restored.engine.get(calculation['id']).value == 12
-            print('PASS real Event Hubs → custom index: 12 events, duplicate ignored, PostgreSQL restore agrees', flush=True)
-            print('PASS real Service Bus → durable backend narrative inbox', flush=True)
-            metadata = payload.model_dump(mode='json', exclude={'events'}) | {'events': []}
-            for url in (os.environ['ETL_GRAPHQL_URL'], os.environ['NARRATIVE_GRAPHQL_URL']):
-                rejected = await client.post(url.rsplit('/', 1)[0] + '/demo/viewer-snapshots', json=metadata)
-                assert rejected.status_code == 409, 'HTTP checkpoint unexpectedly accepted in broker mode'
-            print('PASS both upstream HTTP checkpoint write paths disabled', flush=True)
-        finally:
-            # Resume the existing viewer's audience polling target, preserving state.
-            state = (await client.get(backend_url + '/lab/state')).json()
-            if state['status'] != 'error':
-                await transport.publish(build_snapshot(source, state['run_id'], state['position'],
-                                                       finished=state['status'] == 'finished'))
-            await runtime.close()
-            await lab.close()
-            with store.connect() as conn:
-                conn.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(store.schema)))
+    match_id = 'broker-check-' + uuid4().hex[:8]
+    store = Store(os.environ['ACCOUNTS_DATABASE_URL'], os.environ['MATCH_APP_DATABASE_URL'], 'broker_check_' + uuid4().hex)
+    connection = os.environ['MATCH_EVENTHUB_CONNECTION_STRING']
+    hub = os.getenv('MATCH_EVENTHUB_NAME', 'match-events')
+    store.initialize()
+    registry = MatchRegistry(MatchRepository(store))
+    consumer = asyncio.create_task(MatchStream(connection, hub=hub, group='integration').run(registry))
+    try:
+        await asyncio.sleep(3)  # The consumer starts at "now" for partitions without a stored position.
+        sent = list(messages(match_id, 12))
+        async with EventHubProducerClient.from_connection_string(connection, eventhub_name=hub) as producer:
+            batch = await producer.create_batch(partition_key=match_id)
+            for message in [*sent, sent[-1]]:  # The final event is delivered twice.
+                batch.add(EventData(json.dumps(message)))
+            await producer.send_batch(batch)
+        async with asyncio.timeout(60):
+            while match_id not in registry.matches or registry.matches[match_id].seq < 12:
+                await asyncio.sleep(.1)
+        match = registry.get(match_id)
+        await asyncio.sleep(1)  # Room for the redelivery to arrive and be ignored.
+        # Custom calculations count ETL's SPADL actions (tested with the backend suite), not these events.
+        assert match.seq == 12
+        restored = MatchRegistry(MatchRepository(store))
+        await restored.initialize()
+        assert restored.get(match_id).seq == 12
+        print('PASS real Event Hubs → backend registry: MA1 + 12 events, duplicate ignored, PostgreSQL restore agrees',
+              flush=True)
+    finally:
+        consumer.cancel()
+        async with httpx.AsyncClient(timeout=20) as client:
+            for owner in OWNERS:  # The probe's MA1 reached every consumer of the hub.
+                try:
+                    await client.post(owner + '/admin/matches/purge', json={'match_id': match_id})
+                except httpx.HTTPError:
+                    print(f'WARN could not purge the probe at {owner}', flush=True)
+        with store.connect() as conn:
+            conn.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(store.schema)))
+        store.close()
 
 
 if __name__ == '__main__':

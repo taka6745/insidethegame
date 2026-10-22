@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 
 from .opta import export
+from .roster import fixture_for
 
 
 def broadcast_clock(video_seconds, period_starts, half_seconds=2700):
@@ -44,7 +45,7 @@ def package(source, output, render=True):
         "dead play, so each half ends in stoppage time."
     )
     if render:
-        render_strip(source, period_starts(source), half)
+        render_strip(source, period_starts(source), half, fixture_for(recording)["teams"])
         segment(source)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(recording, separators=(",", ":")))
@@ -64,7 +65,7 @@ def segment(source):
     )
 
 
-def render_strip(source, starts, half):
+def render_strip(source, starts, half, teams):
     import cv2
     import numpy as np
 
@@ -93,13 +94,13 @@ def render_strip(source, starts, half):
                 # Original scorebug occupies x210..605 at720p.
                 cv2.rectangle(image, (205, 13), (610, 49), (35, 0, 46), -1)
                 cv2.rectangle(image, (304, 13), (421, 49), (0, 255, 135), -1)
-                cv2.rectangle(image, (205, 13), (211, 49), (15, 80, 235), -1)
-                cv2.rectangle(image, (604, 13), (610, 49), (220, 20, 45), -1)
+                cv2.rectangle(image, (205, 13), (211, 49), teams[0]["strip"], -1)
+                cv2.rectangle(image, (604, 13), (610, 49), teams[1]["strip"], -1)
                 score = f"{state['score'][0]}  -  {state['score'][1]}"
                 clock = broadcast_clock(state["video_seconds"], starts, half)
-                cv2.putText(image, "CHE", (226, 38), font, 0.65, (255, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(image, teams[0]["code"], (226, 38), font, 0.65, (255, 255, 255), 1, cv2.LINE_AA)
                 cv2.putText(image, score, (322, 38), font, 0.65, (35, 0, 46), 1, cv2.LINE_AA)
-                cv2.putText(image, "MUN", (438, 38), font, 0.65, (255, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(image, teams[1]["code"], (438, 38), font, 0.65, (255, 255, 255), 1, cv2.LINE_AA)
                 cv2.putText(image, f"{clock // 60:02}:{clock % 60:02}", (523, 38), font, 0.53,
                             (255, 255, 255), 1, cv2.LINE_AA)
                 scored.stdin.write(image.tobytes())

@@ -32,8 +32,9 @@ def record(content: bytes):
         counts = json.loads(content).get("usage") or {}
     except (ValueError, AttributeError):
         return
-    usage.input_tokens += int(counts.get("prompt_tokens") or 0)
-    usage.output_tokens += int(counts.get("completion_tokens") or 0)
+    # Chat Completions name them prompt/completion tokens; the Responses API input/output tokens.
+    usage.input_tokens += int(counts.get("prompt_tokens") or counts.get("input_tokens") or 0)
+    usage.output_tokens += int(counts.get("completion_tokens") or counts.get("output_tokens") or 0)
 
 
 class UsageTransport(httpx.AsyncBaseTransport):

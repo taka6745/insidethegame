@@ -76,7 +76,7 @@ CONTROLS = [
     "Count sequences of five uninterrupted Real Madrid passes.",
     "Count Chelsea corners only while Chelsea are losing.",
     "Track Mbappé's expected-goals total, using xG values.",
-    "Count Mbappé's touches inside the penalty area using their pitch coordinates.",
+    "Count Mbappé's aerial duels won, using contested headers.",
     "Track how tired Palmer looks from watching the video.",
     "Calculate Palmer's average running speed in kilometres per hour.",
     "Track the distance Palmer has run, not the distance of his passes.",
@@ -95,7 +95,7 @@ def balanced_cases():
                 "prompt": prompt, "quality": quality,
                 "must_clarify": must_clarify if quality == "poor" else False,
                 "replies": [f"I mean: {clear}", f"Please use this exact meaning: {clear}"],
-                "expected_status": ["ready"]})
+                "expected_status": original[number - 1]["expected_status"]})
     result.extend({"id": f"balanced-control-{index:02}", "intent_id": f"control-{index:02}",
         "prompt": prompt, "quality": "control", "must_clarify": False,
         "replies": [f"Yes, specifically this request: {prompt}", f"I still mean: {prompt}"],

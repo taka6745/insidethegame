@@ -12,11 +12,10 @@ resource "azurerm_container_registry" "engine" {
   tags                = local.tags
 }
 
-# The subscription allows one Container Apps environment per region (trial limit), so the engine
-# runs in the ETL's environment, found by the ETL's naming (itg-etl-dev-xxxxx-sbns -> -cae).
-data "azurerm_container_app_environment" "etl" {
-  name                = "${trimsuffix(split(".", local.etl.servicebus_namespace)[0], "-sbns")}-cae"
-  resource_group_name = local.etl.resource_group
+# Bearer token for POST /admin/matches/purge.
+resource "random_password" "admin_token" {
+  length  = 40
+  special = false
 }
 
 locals {
@@ -24,10 +23,11 @@ locals {
   # Secrets (Container Apps secret names) -> environment variables.
   engine_secrets = {
     "sb-notifications" = { env = "SERVICEBUS_NOTIFICATIONS", value = local.etl.servicebus_listen_connection_string }
-    "sb-presence"      = { env = "SERVICEBUS_PRESENCE", value = azurerm_servicebus_topic_authorization_rule.presence_listen.primary_connection_string }
     "sb-narratives"    = { env = "SERVICEBUS_NARRATIVES", value = azurerm_servicebus_topic_authorization_rule.narratives_send.primary_connection_string }
     "foundry-key"      = { env = "OPENAI_API_KEY", value = azurerm_cognitive_account.foundry.primary_access_key }
+    "decision-key"     = { env = "DECISION_API_KEY", value = azurerm_cognitive_account.foundry.primary_access_key }
     "appinsights"      = { env = "APPLICATIONINSIGHTS_CONNECTION_STRING", value = azurerm_application_insights.engine.connection_string }
+    "admin-token"      = { env = "ADMIN_TOKEN", value = random_password.admin_token.result }
   }
   # OPENAI_MODEL_<ROLE> and OPENAI_EFFORT_<ROLE> per agent (see narrative_engine/agents/llm.py).
   agent_env = merge([for role, agent in var.agents : merge(
@@ -39,14 +39,24 @@ locals {
     OPENAI_BASE_URL   = "https://${azurerm_cognitive_account.foundry.custom_subdomain_name}.openai.azure.com/openai/v1"
     OTEL_SERVICE_NAME = "narrative-engine"
     PORT              = "8000"
-  }, local.agent_env, var.match_ids == "" ? {} : { MATCH_IDS = var.match_ids })
+    USER_BACKEND_URL  = var.user_backend_url
+    # Microsoft-Decision-1 on the same Foundry account, over the SystemOne API.
+    DECISION_PROVIDER      = "systemone"
+    DECISION_BASE_URL      = "https://${azurerm_cognitive_account.foundry.custom_subdomain_name}.cognitiveservices.azure.com"
+    DECISION_MODEL         = azurerm_cognitive_deployment.model[var.decision.deployment].name
+    DECISION_MAX_QUESTIONS = tostring(var.decision.max_questions)
+    # Paced to the deployment's capacity (requests per minute), shared by every match.
+    DECISION_REQUESTS_PER_MINUTE = tostring(var.models[var.decision.deployment].capacity)
+    DECISION_RETRIES             = "4"
+    DEMO_SEEDS                   = var.demo_seeds ? "1" : "0"
+  }, local.agent_env)
 }
 
 # One replica: each match's worker lives in memory, so a second replica would race it.
 resource "azurerm_container_app" "engine" {
   count                        = var.engine_image_tag == null ? 0 : 1
   name                         = "${var.name_prefix}-engine"
-  container_app_environment_id = data.azurerm_container_app_environment.etl.id
+  container_app_environment_id = local.etl.container_app_environment_id # trial: one environment per region, the ETL's
   resource_group_name          = azurerm_resource_group.narrative.name
   revision_mode                = "Single"
   workload_profile_name        = "Consumption" # the ETL environment's default profile
@@ -75,11 +85,12 @@ resource "azurerm_container_app" "engine" {
     }
   }
 
-  # Narrative history GraphQL. Anonymous read like the ETL's DAB (synthetic dev data).
-  # LATER: restrict to the user backend.
+  # Internal only: the user backend reads GraphQL and the frontend's /purge-api/engine (dev consoles)
+  # calls the purge, which also needs the bearer token. Plain HTTP stays inside the environment.
   ingress {
-    external_enabled = true
-    target_port      = 8000
+    external_enabled           = false
+    allow_insecure_connections = true
+    target_port                = 8000
     traffic_weight {
       latest_revision = true
       percentage      = 100
@@ -111,6 +122,13 @@ resource "azurerm_container_app" "engine" {
           value = env.value
         }
       }
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = var.user_backend_url != null
+      error_message = "Set user_backend_url: the engine reads audience targets and prompts from the user backend."
     }
   }
 }

@@ -1,9 +1,8 @@
 import { LabApi } from './api.ts';
-import type { RecordingResult } from './api.ts';
 import { LabView } from './view.ts';
-import type { Calculation, LabState, Rule, Scenario, ServiceError } from './types.ts';
+import type { Calculation, LabMatch, LabState, Rule, ServiceError } from './types.ts';
 
-type ActionName = 'recording' | 'add' | 'plan' | 'start' | 'reset';
+type ActionName = 'add' | 'plan';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 
 /** Coordinates user actions and one non-overlapping polling loop. */
@@ -13,19 +12,19 @@ export class FilterLab {
   state: LabState | null;
   busy: ActionName | false;
   prepared: Rule | null;
-  scenario: Scenario | null;
   refreshSequence: number;
   inspectionSequence: number;
   connectionFailed: boolean;
   conversationId: string | null;
   planLabel: string;
+  matches: LabMatch[] = [];
+  matchesAt = 0;
   constructor(api: LabApi, view: LabView) {
     this.api = api;
     this.view = view;
     this.state = null;
     this.busy = false;
     this.prepared = null;
-    this.scenario = null;
     this.refreshSequence = 0;
     this.inspectionSequence = 0;
     this.connectionFailed = false;
@@ -34,23 +33,7 @@ export class FilterLab {
   }
 
   async start() {
-    const fileInput = byId<HTMLInputElement>('recording-file');
-    byId('load-recording').addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files?.[0];
-      if (file) this.action('recording', async () => this.recording(await this.api.loadRecording(file)));
-      fileInput.value = '';
-    });
-    byId('default-recording').addEventListener('click', () => this.action('recording', async () => this.recording(await this.api.defaultRecording())));
-    byId('presets').addEventListener('change', event => {
-      const value = (event.target as HTMLSelectElement).value;
-      this.view.describePreset(this.scenario?.presets!.find(item => item.id === value)?.label || '');
-    });
-    byId('add-preset').addEventListener('click', () => this.action('add', async () => {
-      const id = byId<HTMLSelectElement>('presets').value;
-      const preset = this.scenario!.presets!.find(item => item.id === id);
-      if (preset) await this.api.add(preset.rule, preset.label);
-    }));
+    byId('match-select').addEventListener('change', event => this.select((event.target as HTMLSelectElement).value));
     byId('prompt-form').addEventListener('submit', event => {
       event.preventDefault();
       const prompt = byId<HTMLInputElement>('prompt').value.trim();
@@ -75,28 +58,50 @@ export class FilterLab {
       this.conversationId = null;
       this.view.plan({ message: 'Added. Your filter will update as events arrive.' });
     }));
-    byId('start').addEventListener('click', () => this.action('start', () => this.api.start()));
-    byId('reset').addEventListener('click', () => this.action('reset', async () => {
-      await this.api.reset();
-      this.prepared = null;
-      this.conversationId = null;
-      byId('plan-result').hidden = true;
-    }));
     byId('rule-dialog').addEventListener('close', () => { this.inspectionSequence++; });
     byId('close-dialog').addEventListener('click', () => byId<HTMLDialogElement>('rule-dialog').close());
     await this.poll();
   }
 
+  /** Switching match drops everything scoped to the previous one. */
+  select(matchId: string) {
+    if (matchId === this.api.match) return;
+    this.api.match = matchId;
+    try { sessionStorage.setItem('lab-match', matchId); } catch { /* Storage is optional. */ }
+    this.refreshSequence++;
+    this.inspectionSequence++;
+    this.state = null;
+    this.prepared = null;
+    this.conversationId = null;
+    byId('plan-result').hidden = true;
+    this.view.match(this.matches.find(match => match.match_id === matchId));
+    this.view.controls(null, this.busy);
+  }
+
+  /** The selector lists matches with live events first, as the backend orders them. */
+  async loadMatches() {
+    this.matchesAt = Date.now();
+    this.matches = await this.api.matches();
+    let saved: string | null = null;
+    try { saved = sessionStorage.getItem('lab-match'); } catch { /* Storage is optional. */ }
+    const ids = this.matches.map(match => match.match_id);
+    const chosen = ids.includes(this.api.match) ? this.api.match : saved && ids.includes(saved) ? saved : ids[0] ?? '';
+    this.view.matches(this.matches, chosen);
+    if (chosen !== this.api.match) this.select(chosen);
+    else this.view.match(this.matches.find(match => match.match_id === chosen));
+  }
+
   async refresh() {
     const request = ++this.refreshSequence;
-    const next = await this.api.state();
+    const match = this.api.match;
+    const next = { ...await this.api.state(), match_id: match };
     if (request !== this.refreshSequence) return;
     this.state = next;
     window.labState = next;
     window.dispatchEvent(new CustomEvent('lab-state', { detail: next }));
     if (this.connectionFailed) { this.view.error(); this.connectionFailed = false; }
     if (this.state.error) this.view.error(this.state.error);
-    this.view.state(this.state, calculation => this.inspectRule(calculation), deliveryIndex => this.inspectEvent(deliveryIndex));
+    this.view.state(this.state, calculation => this.inspectRule(calculation), seq => this.inspectEvent(seq));
     this.view.controls(this.state, this.busy);
   }
 
@@ -113,24 +118,16 @@ export class FilterLab {
     this.view.plan({ ...plan, conversation_id: this.conversationId });
   }
 
-  recording(result: RecordingResult) {
-    this.scenario = result.scenario;
-    this.view.scenario(this.scenario);
-    this.prepared = null;
-    this.conversationId = null;
-    byId('plan-result').hidden = true;
-  }
-
   inspectRule(calculation: Calculation) {
     this.inspectionSequence++;
     this.view.inspect(calculation);
   }
 
-  async inspectEvent(deliveryIndex: number) {
+  async inspectEvent(seq: number) {
     const request = ++this.inspectionSequence;
-    this.view.inspectEventLoading(deliveryIndex);
+    this.view.inspectEventLoading(seq);
     try {
-      const payload = await this.api.event(deliveryIndex);
+      const payload = await this.api.event(seq);
       if (request === this.inspectionSequence) this.view.inspectEvent(payload);
     } catch (error) {
       if (request === this.inspectionSequence) this.view.inspectEventError((error as ServiceError).message);
@@ -156,10 +153,8 @@ export class FilterLab {
 
   async poll() {
     try {
-      if (!this.scenario) {
-        this.scenario = await this.api.scenario();
-        this.view.scenario(this.scenario);
-      }
+      if (Date.now() - this.matchesAt > 5000) await this.loadMatches();
+      if (!this.api.match) { this.view.controls(null, this.busy); return; }
       await this.refresh();
     } catch (error) { this.connectionFailed = true; this.view.error((error as ServiceError).message); }
     finally { window.setTimeout(() => this.poll(), 700); }

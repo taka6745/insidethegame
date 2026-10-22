@@ -14,6 +14,8 @@ function main(message) {
         awayContestantId: side("away").id, awayName: side("away").name || null,
         scheduledKickoff: message.scheduledKickoff,
         synthetic: message.synthetic ? 1 : 0,
-        payload: JSON.stringify(copy)
+        payload: JSON.stringify(copy),
+        fixture: message.fixture || null, sourceMatchId: message.sourceMatchId || null, runId: message.runId || null,
+        capabilities: message.capabilities ? JSON.stringify(message.capabilities) : null
     };
 }

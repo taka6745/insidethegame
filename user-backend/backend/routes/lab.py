@@ -1,61 +1,50 @@
-"""Lab HTTP boundary: validate inputs, call services, return results."""
-from urllib.parse import quote, unquote
+"""Lab HTTP boundary per match: custom calculations over received events. No recordings."""
+from fastapi import APIRouter
+from pydantic import BaseModel, ConfigDict, Field
 
-from fastapi import APIRouter, Request, Response
 from backend.domain import RuleError
-from backend.models.recording import MAX_RECORDING_BYTES
-from backend.models.lab import AddCalculation, PlanRequest, StartReplay
+from backend.models.rules import Rule
 
 
-def lab_router(service):
-    router = APIRouter(prefix="/lab", tags=["Development filter lab"])
+class AddCalculation(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    rule: Rule
+    label: str = Field(default='Custom statistic', min_length=1, max_length=160)
 
-    @router.get("/scenario")
-    async def scenario():
-        return service.scenario()
 
-    @router.get("/state")
-    async def state():
-        return await service.state()
+class PlanRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    prompt: str = Field(min_length=1, max_length=2000)
+    conversation_id: str | None = Field(default=None, min_length=1, max_length=64)
 
-    @router.get("/recording")
-    async def recording():
-        filename, content = await service.recording()
-        return Response(content, media_type="application/json",
-                        headers={"Content-Disposition": "attachment; filename*=UTF-8''" + quote(filename, safe="")})
 
-    @router.get("/events/{delivery_index}")
-    async def event_record(delivery_index: int):
-        return await service.event_record(delivery_index)
+def lab_router(registry, planner, product, match_data):
+    router = APIRouter(prefix='/lab/matches/{match_id}', tags=['Development filter lab'])
 
-    @router.post("/recording")
-    async def load_recording(request: Request):
-        content = bytearray()
-        async for chunk in request.stream():
-            content.extend(chunk)
-            if len(content) > MAX_RECORDING_BYTES:
-                raise RuleError("recording_too_large", "Recording must be no larger than 16 MiB", 413)
-        filename = unquote(request.headers.get("X-Recording-Filename", "recording.json"))
-        return await service.load_recording(bytes(content), filename)
+    @router.get('/state')
+    async def state(match_id: str):
+        match = registry.get(match_id)
+        await match_data.info(match)
+        # Published ETL goals for the header; never recalculated here or in the browser.
+        return {**await match.state(), 'score': product.score(match_id),
+                'llm': {'configured': planner is not None}}
 
-    @router.post("/recording/default")
-    async def default_recording():
-        return await service.load_recording()
+    @router.get('/events/{seq}')
+    async def event_record(match_id: str, seq: int):
+        return registry.get(match_id).event_record(seq)
 
-    @router.post("/calculations", status_code=201)
-    async def register(body: AddCalculation):
-        return await service.register(body.rule, body.label)
+    @router.post('/calculations', status_code=201)
+    async def register(match_id: str, body: AddCalculation):
+        match = registry.get(match_id)
+        await match_data.info(match)  # The home team first: actions are read team-relative.
+        return await match.register(body.rule, body.label)
 
-    @router.post("/plan")
-    async def plan(body: PlanRequest):
-        return await service.plan(body.prompt, body.conversation_id)
-
-    @router.post("/replay/start")
-    async def start(body: StartReplay):
-        return await service.start(body.interval_ms, body.from_seconds)
-
-    @router.post("/reset")
-    async def reset():
-        return await service.reset()
+    @router.post('/plan')
+    async def plan(match_id: str, body: PlanRequest):
+        if planner is None:
+            raise RuleError('model_unavailable', 'Custom stats are unavailable: no model is configured.', 503)
+        match = registry.get(match_id)
+        await match_data.info(match)
+        return await match.plan(planner, body.prompt, body.conversation_id)
 
     return router

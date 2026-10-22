@@ -1,10 +1,18 @@
-import type { Replay, ReplayClip } from "./types.ts";
+import type { Playback, Replay, ReplayClip } from "./types.ts";
 
 export type PlayableClip = ReplayClip & { playlist_start: number; playlist_end: number };
+/** What the stage does next: seek, pause or play the reel, show or hide the sting, and after `wait`
+ * seconds call `advance()`. */
 export interface ReplayAction {
   seek?: number;
   ended?: boolean;
+  pause?: boolean;
+  play?: boolean;
+  sting?: "in" | "out";  // otherwise the stage hides any sting at once
+  wait?: number;
 }
+/** playing → (clip end) holding → sting, cut under it → playing; the last clip ends without a sting. */
+export type ReelPhase = "playing" | "holding" | "sting" | "ended";
 
 /** Clips the replay playlist can actually show. */
 export function playableClips(replay: Replay): PlayableClip[] {
@@ -62,16 +70,48 @@ export function reelProgress(player: ReplayPlayer, time: number, timeline = reel
   return percent((timeline.offsets[player.index]! + within) / timeline.total);
 }
 
-/** Clip navigation on the replay playlist timeline: auto-advance, prev/next, end of reel. */
+/** Playback rate at a playlist time: eased down to `rate` before each marked event, held through it, and
+ * eased back up after; 1 away from events, when disabled or under reduced motion. */
+export function slowRate(clip: PlayableClip | undefined, time: number, slow: Playback["slow_motion"] | null | undefined): number {
+  if (!clip || !slow?.enabled || slow.rate >= 1) return 1;
+  let rate = 1;
+  for (const mark of clip.marks || []) {
+    const at = clip.playlist_start + (mark - clip.start);
+    const from = at - slow.before_seconds, until = at + slow.after_seconds;
+    const edge = time < from ? from - time : time > until ? time - until : 0;
+    const eased = edge === 0 ? 0 : slow.ramp_seconds > 0 ? Math.min(1, edge / slow.ramp_seconds) : 1;
+    rate = Math.min(rate, slow.rate + (1 - slow.rate) * eased);
+  }
+  return Math.round(rate * 100) / 100;
+}
+
+/** Clip navigation on the replay playlist timeline: auto-advance with an optional hold and sting between
+ * clips, prev/next, end of reel. Timers belong to the stage: a `wait` action means call `advance()` later. */
 export class ReplayPlayer {
   clips: PlayableClip[];
   index = 0;
-  ended = false;
-  constructor(clips: PlayableClip[]) {
+  phase: ReelPhase = "playing";
+  playback: Playback | null;
+  reducedMotion: boolean;
+  cued = false;  // in the sting: the next clip is already cued
+  constructor(clips: PlayableClip[], playback: Playback | null = null, { reducedMotion = false } = {}) {
     this.clips = clips;
+    this.playback = playback;
+    this.reducedMotion = reducedMotion;
+  }
+  get ended(): boolean {
+    return this.phase === "ended";
   }
   get clip(): PlayableClip | undefined {
     return this.clips[this.index];
+  }
+  get transitions() {
+    const transitions = this.playback?.transitions;
+    return transitions?.enabled ? transitions : null;
+  }
+  /** Rate for the stage's video at a playlist time. */
+  rate(seconds: number): number {
+    return this.reducedMotion || this.phase !== "playing" ? 1 : slowRate(this.clip, seconds, this.playback?.slow_motion);
   }
   caption(): string {
     const clip = this.clip;
@@ -79,9 +119,11 @@ export class ReplayPlayer {
   }
   go(index: number): ReplayAction {
     if (!this.clips.length) return { ended: true };
+    const covered = this.phase === "sting";
+    this.cued = false;
     this.index = Math.min(this.clips.length - 1, Math.max(0, index));
-    this.ended = false;
-    return { seek: this.clip!.playlist_start };
+    this.phase = "playing";
+    return covered ? { seek: this.clip!.playlist_start, play: true, sting: "out" } : { seek: this.clip!.playlist_start };
   }
   next(): ReplayAction {
     return this.index < this.clips.length - 1 ? this.go(this.index + 1) : this.finish();
@@ -89,14 +131,44 @@ export class ReplayPlayer {
   previous(): ReplayAction {
     return this.go(this.index - 1);
   }
-  /** Called with the playlist time; returns a jump at a clip's out point. */
+  /** Called with the playlist time; at a clip's out point it holds (then stings) or jumps. */
   time(seconds: number): ReplayAction {
     const clip = this.clip;
-    if (this.ended || !clip || seconds < clip.playlist_end - 0.05) return {};
-    return this.next();
+    if (this.phase !== "playing" || !clip || seconds < clip.playlist_end - 0.05) return {};
+    const transitions = this.transitions;
+    if (!transitions || this.index === this.clips.length - 1) return this.next();
+    this.phase = "holding";
+    return { pause: true, wait: transitions.hold_seconds };
+  }
+  /** The stage's timer for the last `wait` ran out. */
+  advance(): ReplayAction {
+    const transitions = this.transitions;
+    if (this.phase === "holding") {
+      if (!transitions || this.reducedMotion || transitions.sting_seconds <= 0) return this.next();
+      this.phase = "sting";
+      this.cued = false;
+      return { sting: "in", wait: transitions.cut_seconds };
+    }
+    if (this.phase === "sting" && transitions && !this.cued) {
+      // Cut under the sting: the next clip waits, paused and covered, until the sting fades out.
+      this.cued = true;
+      this.index += 1;
+      return { seek: this.clip!.playlist_start, pause: true,
+        wait: Math.max(0, transitions.sting_seconds - transitions.fade_seconds - transitions.cut_seconds) };
+    }
+    if (this.phase === "sting") {
+      this.phase = "playing";
+      return { play: true, sting: "out" };
+    }
+    return {};
+  }
+  /** Play/pause from the viewer while holding or stinging skips straight to the next clip. */
+  skip(): ReplayAction {
+    if (this.phase === "sting" && this.cued) return this.go(this.index);
+    return this.phase === "holding" || this.phase === "sting" ? this.next() : {};
   }
   finish(): ReplayAction {
-    this.ended = true;
+    this.phase = "ended";
     return { ended: true };
   }
 }

@@ -1,4 +1,5 @@
-import { attachStream, liveSource, MP4_SOURCE } from "./media.ts";
+import { attachStream, liveSource } from "./media.ts";
+import { isLive } from "./format.ts";
 import type { HlsLoader, Stream } from "./media.ts";
 import type { MatchState } from "./types.ts";
 
@@ -19,7 +20,6 @@ export function attachDemoVideo(document: Pick<Document, "getElementById">, {
   const empty = document.getElementById("video-empty") as HTMLElement;
   let aligned = false;
   let currentMatch: MatchState | null = null;
-  let lastAnchor: string | null = null;
   let stream: Stream | null = null;
   let streamUrl = "";
   let errored = false;
@@ -35,7 +35,7 @@ export function attachDemoVideo(document: Pick<Document, "getElementById">, {
     describe();
   };
   const toggle = () => aligned
-    ? (currentMatch?.status === "running" ? start() : undefined)
+    ? (isLive(currentMatch?.status) ? start() : undefined)
     : video.paused ? start() : video.pause();
   const fail = () => {
     errored = true;
@@ -78,54 +78,39 @@ export function attachDemoVideo(document: Pick<Document, "getElementById">, {
   video.loop = true;
   video.autoplay = !reducedMotion;
   video.preload = "auto";
-  // The MP4 is a fallback: request it only once the server says there is no live stream.
-  let mp4 = false;
-  const useMp4 = (play: boolean) => {
-    if (mp4) return;
-    mp4 = true;
-    video.src = MP4_SOURCE;
-    if (play && !reducedMotion) start();
+  // No live stream: show the unavailable state. Footage exists only as published live segments.
+  const noLive = () => {
+    stream?.destroy();
+    stream = null;
+    streamUrl = "";
+    video.pause();
+    video.removeAttribute("src");
+    fail();
   };
   return {
     sync(match) {
       const media = match.media;
-      if (!media?.aligned && !media?.live) return useMp4(true);
+      const source = liveSource(media);
+      if (!source) return noLive();
       aligned = true;
       currentMatch = match;
       video.loop = false;
       video.setAttribute("aria-label", "Live match footage");
-      const source = liveSource(media);
-      if (source.kind === "hls") {
-        // The producer owns the live edge; hls.js keeps about three segments behind it.
-        // Running: the live edge. Ready or finished: the server's playback position, held still,
-        // so a viewer arriving after full time sees the final picture and every released insight.
-        const running = match.status === "running";
-        // Half a second inside the footage: positioned exactly at its end, the picture is black.
-        playLive(source.url, running ? undefined : Math.max(0, (Number(media.seconds) || 0) - 0.5));
-        if (running) start();
-        else video.pause();
-        return;
-      }
-      useMp4(false);
-      const anchor = `${match.run_id}:${match.status}:${media.sampled_at ?? media.seconds}`;
-      const elapsed = match.status === "running" && Number.isFinite(media.sampled_at)
-        ? Math.max(0, (Date.now() - Number(media.sampled_at)) / 1000) : 0;
-      const target = Math.max(0, Number(media.seconds) || 0) + elapsed;
-      if (anchor !== lastAnchor && (Math.abs((video.currentTime || 0) - target) > 1.5 || match.status !== "running"))
-        video.currentTime = target;
-      lastAnchor = anchor;
-      if (match.status === "running") start();
+      // The producer owns the live edge; hls.js keeps about three segments behind it.
+      // Live: the live edge. Scheduled or finished: the server's playback position, held still,
+      // so a viewer arriving after full time sees the final picture and every released insight.
+      const running = isLive(match.status);
+      // Half a second inside the footage: positioned exactly at its end, the picture is black.
+      playLive(source.url, running ? undefined : Math.max(0, (Number(media?.seconds) || 0) - 0.5));
+      if (running) start();
       else video.pause();
     },
     disconnect() {
-      // Live HLS keeps its own edge; only server-clocked MP4 footage waits for the socket.
-      if (aligned && !streamUrl) {
-        video.pause();
-        lastAnchor = null;
-      }
+      // Live HLS keeps its own edge; there is no server-clocked footage to pause.
     },
     playhead() {
-      return streamUrl && !errored && !video.paused && video.readyState >= 2
+      // A stall or catch-up seek keeps holding at the current position rather than releasing.
+      return streamUrl && !errored && !video.paused && (video.readyState >= 2 || video.currentTime > 0)
         ? video.currentTime : null;
     },
   };

@@ -1,8 +1,7 @@
 *
-!requirements*.txt
-!demo_etl/**
-!tests/test_etl.py
-!tests/test_brokers.py
-!tests/test_native_events.py
+!local_stream/**
+!contracts/opta-codes.json
+!reference/**
+!spadl/**
 **/__pycache__
 **/*.pyc

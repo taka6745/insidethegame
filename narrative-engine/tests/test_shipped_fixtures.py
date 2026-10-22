@@ -1,14 +1,17 @@
-"""The committed narrative fixtures bind to the committed recording, byte for byte."""
+"""The committed narrative fixtures bind to their archived recording (fixtures/archive), byte for byte."""
 import hashlib
 import json
 from pathlib import Path
 
+import sys
+
 import pytest
 
-from narrative_demo.models.fixtures import NarrativeFixture
-
 ROOT = Path(__file__).resolve().parents[2]
-RECORDING = ROOT / 'data-generation/recordings/chelsea-united-grf.json'
+sys.path.insert(0, str(ROOT / 'narrative-engine/tools'))
+from commentary_schema import NarrativeFixture  # noqa: E402
+# Test-only archive of the 2026-10-20 render; data-generation/recordings ships a newer match.
+RECORDING = ROOT / 'narrative-engine/fixtures/archive/chelsea-united-grf.json'
 
 
 @pytest.mark.skipif(not RECORDING.exists(), reason='Run from the repository checkout')

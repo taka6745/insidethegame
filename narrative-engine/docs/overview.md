@@ -1,14 +1,14 @@
 # Overview
 
-> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one to three sentence narratives for each active audience bucket when something happens. It is implemented, tested and deployed to the Azure dev environment.
+> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one to three sentence narratives for each active audience bucket when something happens. It is implemented and tested; applied to Azure on 22 Oct for the Azure test (demo acceptance pending).
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (66 tests) · deployed to dev as Container App `itg-narrative-dev-engine` |
+| **Status** | Implemented · tested (186 tests on 22 Oct, 2 need a local DAB) · Container App `itg-narrative-dev-engine` applied 22 Oct (Azure test; demo acceptance pending) |
 | **Language** | Python 3.11, asyncio |
-| **Runs on** | Azure Container Apps (one replica), Microsoft Foundry models via Microsoft Agent Framework |
-| **Reads** | ETL GraphQL (events, key events, statistics); Service Bus `match-notifications` and `presence` |
-| **Writes** | Cosmos DB (`checkpoints`, `contextBlocks`, `narratives`); Service Bus `narratives` |
+| **Runs on** | Azure Container Apps (one replica); Microsoft Agent Framework on Azure AI Foundry: `gpt-6.1-sol` (`writer`, effort low; in Terraform) and Microsoft-Decision-1 (`decision-1`, applied) |
+| **Reads** | ETL GraphQL (SPADL actions, key events, the SPADL stat catalogue, MA3 facts outside SPADL); Service Bus `match-notifications`; user-backend audience targets and prompts |
+| **Writes** | Cosmos DB (`checkpoints`, `contextBlocks`, `narratives`, `analyses`, `storylines`, follow decisions and narratives, `tombstones`); Service Bus `narratives` (also `FollowClip`, `MomentClip`) |
 | **Serves** | Narrative history GraphQL at `/graphql` |
 | **Consumers** | User backend (BFF) |
 
@@ -20,20 +20,18 @@ During a live match the engine:
 
 1. **Summarises every closed minute** in neutral language (minute summariser agent).
 2. **Compresses older summaries** so the match memory stays small however long the match runs (context compressor agent).
-3. **Writes narratives** for each active audience bucket when a narrative step is triggered (narrative author agent): a key event, ten quiet minutes, half time, full time, or a bucket gaining viewers.
-4. **Stores, publishes and serves** each narrative: Cosmos DB first, then Service Bus, and the history over GraphQL.
+3. **Finds storylines** every five match minutes and at half and full time (match analyst agent): observations in its own words that must cite the ETL's trend numbers; ungrounded ones are dropped, and the rest open, develop and resolve storylines.
+4. **Writes narratives** for each active audience bucket when a narrative step is triggered (narrative author agent): a key event, ten quiet minutes, a storyline turn, half time, full time, or a bucket being enabled. Each step advances one focus storyline, the same for every bucket.
+5. **Answers story follows and flags clips**: one Decision-1 call per update decides which followed stories moved and which key events deserve a clip ([follows](components/follows.md)).
+6. **Stores, publishes and serves** each narrative: Cosmos DB first, then Service Bus, and the history over GraphQL.
 
 Summaries and compression are done once per match and shared by every bucket; only the author runs per bucket. Viewer questions never trigger this workflow; they belong to the user backend.
 
 ## 2. Audience buckets
 
-*In short: 12 buckets, `{support}:{level}`, and only buckets with viewers get narratives.*
+*In short: the user backend's audience catalogue defines the buckets; only active ones get narratives.*
 
-| Support | Levels |
-| --- | --- |
-| `home`, `away`, `neutral` | `simple`, `casual`, `experienced`, `analyst` |
-
-A bucket such as `away:analyst` is written for a fan of the away team with an analyst's vocabulary. The user backend reports how many viewers each bucket has (the presence message); when presence is missing or older than 3 minutes the engine writes for all 12.
+The engine reads the backend's `generation_targets` (for example `home:analytical`: team × fan style, each with a description) and writes only for those enabled in the backend's configuration (toggled in `/dev/`; there is no viewer presence). The descriptions and MA1 team names become the author's audience text. The service has no fallback: while the backend cannot answer, authoring waits and `/health` is 503. Only tests and devtools use the original 12 buckets (`home`/`away`/`neutral` × `simple`/`casual`/`experienced`/`analyst`).
 
 ## 3. Inputs and outputs
 
@@ -42,26 +40,31 @@ A bucket such as `away:analyst` is written for a fan of the away team with an an
 | Direction | What | Contract |
 | --- | --- | --- |
 | In | `MinuteClosed`, `KeyEventDetected`, `PeriodStarted`, `PeriodEnded` on Service Bus topic `match-notifications` | [ETL contracts](../../etl/contracts/README.md) |
-| In | Match events, key-event ledger, statistics as of a minute, match info (ETL GraphQL) | [ETL contracts](../../etl/contracts/README.md) |
-| In | Presence (viewer counts per bucket) on topic `presence` | [Engine contracts](../contracts/README.md#input-presence-proposed) |
-| Out | One message per narrative on topic `narratives` | [Engine contracts](../contracts/README.md#output-2-service-bus-live-narratives) |
+| In | SPADL actions, key-event ledger, catalogue statistics at a canonical seq, match info (ETL GraphQL) | [ETL contracts](../../etl/contracts/README.md) |
+| In | Active buckets and prompt templates from the user backend (`audience-config`, `narrative-prompts`) | [Engine contracts](../contracts/README.md#inputs-from-the-user-backend) |
+| Out | One message per narrative on topic `narratives`; `FollowClip` and `MomentClip` for moment clips | [Engine contracts](../contracts/README.md#output-2-service-bus-live-narratives) |
 | Out | Narrative history and match state over GraphQL | [Engine contracts](../contracts/README.md#output-1-graphql-narrative-history-read-only) |
 | Out | Traces and logs in Application Insights | [deployment.md](deployment.md#4-monitoring) |
 
 ## 4. Status by area
 
-*In short: everything is built and running in dev; a 1x full-match run waits for the other services.*
+*In short: everything is built and tested locally; it was verified in Azure dev before 21 Oct, re-applied 22 Oct for the Azure test; the demo acceptance (PLAN.md §10.4) is pending.*
 
 | Area | Status |
 | --- | --- |
 | Core rules (clock, compression, triggers, orchestrator) | Implemented, tested |
 | ETL GraphQL client | Implemented, tested against a fake DAB and the Azure dev DAB |
-| Agents (Agent Framework on Foundry `gpt-5-mini`) | Implemented, tested (mocked API), run on full matches |
-| Narrative history GraphQL | Implemented, tested, deployed |
-| Service Bus and Cosmos DB | Implemented, deployed, verified on 10x replays (204/204 narratives delivered) |
-| Monitoring (Application Insights, workbook) | Deployed |
-| Presence from the user backend | Implemented in the engine; contract awaits the user backend |
-| Real-time (1x) full match | Not yet run; planned once the other services are ready |
+| Agents (Agent Framework on Azure AI Foundry) | Implemented, tested (mocked API), run on full matches |
+| Narrative history GraphQL | Implemented, tested; internal ingress on Azure |
+| Service Bus and Cosmos DB | Implemented, verified in Azure on 10x replays (204/204 narratives delivered) |
+| Monitoring (Application Insights, workbook) | Deployable |
+| Targets and prompts from the user backend | Implemented, tested (mocked HTTP); runs in the local stack as `narrative-live` |
+| Concurrent matches: one orchestrator per matchId, a global model gate (summaries first, per-match fairness), purge with Cosmos tombstones (`POST /admin/matches/purge`), `tier` on context blocks, `eventSeq` on narratives | Implemented, tested (router, gate, memory store) |
+| Local stack (`./dev up backend`): ETL `etl-stream` stand-in → SQL + DAB → `narrative-live` → backend → viewer | Implemented, run on live replays; not deployed |
+| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Chelsea–United recording); live smoke with the dev Decision-1 deployment, then on the shared stack (22 Oct) |
+| Moment clips: `FollowClip` (D3), clip-on topics (D6), `MomentClip` for shared key-event narratives (D7) | Implemented, unit-tested, checked on the local stack (22 Oct); not yet on Azure |
+| Demo seeds: export/restore under `DEMO_SEEDS=1` (D2) | Implemented, unit-tested (export → purge-all → restore → continue), used for every local seed (22 Oct); not yet on Azure |
+| Real-time (1x) three-match run | Local stack to half time and beyond (R16–R17, 22 Oct); Azure run is part of the demo acceptance (planned) |
 
 ## 5. Glossary
 
@@ -75,4 +78,4 @@ A bucket such as `away:analyst` is written for a fan of the away team with an an
 | **Narrative step** | One trigger's worth of narratives, one per active bucket, sharing a `stepId`. |
 | **Trigger** | Why a step runs: `keyEvent`, `scheduled`, `halfTime`, `fullTime`, `catchUp`. |
 | **seq** | Per match and bucket narrative counter (1, 2, 3…) with no gaps, used for reconnects. |
-| **Checkpoint** | The per-match Cosmos document holding progress, presence and the queue of pending steps. |
+| **Checkpoint** | The per-match Cosmos document holding progress, the last targets and the queue of pending steps. |

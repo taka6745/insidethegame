@@ -4,9 +4,9 @@
   "models": [
     {
       "label": "small-3b",
-      "model": "llama-3.2-3b",
+      "model": "small model B (3B)",
       "expected_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ]
     }
   ],
@@ -287,7 +287,7 @@
       "expected": 2.0,
       "actual": 3.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -295,13 +295,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2416,
@@ -311,7 +311,7 @@
           "status": "ok",
           "request_bytes": 15034,
           "request_sha256": "2185e04e374503ca7f04d77e8689a24c07089ea763868c935943534f8664f166",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -490,7 +490,7 @@
       "expected": 1.0,
       "actual": 2.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -499,13 +499,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4013,
@@ -515,7 +515,7 @@
           "status": "ok",
           "request_bytes": 22558,
           "request_sha256": "5d0ac57a6dcc0371644d299cc97bebb226b43b4b90aa54f8bc8d53a452fa3e82",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -662,7 +662,7 @@
       "final_value": 2.0,
       "deliveries_checked": 35,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": true,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -671,13 +671,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4008,
@@ -687,7 +687,7 @@
           "status": "ok",
           "request_bytes": 22552,
           "request_sha256": "801afc1eaa0b591474eb1616b6bef32fbb077e6654148174e343c7e64e972cdd",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -846,7 +846,7 @@
       "expected": 1.0,
       "actual": 2.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -854,13 +854,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2421,
@@ -870,7 +870,7 @@
           "status": "ok",
           "request_bytes": 15040,
           "request_sha256": "2b56c1ba94407cb46446dcdfc9a675bf4f603516093d680b4798fe8971f1e69a",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1041,7 +1041,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1049,13 +1049,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2416,
@@ -1065,7 +1065,7 @@
           "status": "ok",
           "request_bytes": 15041,
           "request_sha256": "31b51bccd3a92b574da20170574f4bd60f8ca4a7f60c042a3a43cfc251a7e6f8",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1216,7 +1216,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1225,13 +1225,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4008,
@@ -1241,7 +1241,7 @@
           "status": "ok",
           "request_bytes": 22538,
           "request_sha256": "ccc801c5ac058bc414e90802c3564180d1c6ec98828bfb7f544cfea5d341458e",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1392,7 +1392,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1400,13 +1400,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2416,
@@ -1416,7 +1416,7 @@
           "status": "ok",
           "request_bytes": 15020,
           "request_sha256": "66166c7557daed9754143706908c8eeb42312362dc47c7fca73f514f10df4e6b",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1587,7 +1587,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1596,13 +1596,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4008,
@@ -1612,7 +1612,7 @@
           "status": "ok",
           "request_bytes": 22559,
           "request_sha256": "71605fa1116770e0464c3e59791f440f36feb0961f2dd45230353001c915742e",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1811,7 +1811,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1820,13 +1820,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4006,
@@ -1836,7 +1836,7 @@
           "status": "ok",
           "request_bytes": 22537,
           "request_sha256": "feb9d1d59bd2b1bbf83451548f75e477fe475cc20168b27c53767e8df08fdcfb",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -1979,7 +1979,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -1987,13 +1987,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2418,
@@ -2003,7 +2003,7 @@
           "status": "ok",
           "request_bytes": 15042,
           "request_sha256": "55850eca0e95fb8f261586415a00b9fd159660bb36fcc0aed6cd681ac188cd8f",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -2164,7 +2164,7 @@
       "ok": false,
       "reason": "different_constraints",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -2173,13 +2173,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4010,
@@ -2189,7 +2189,7 @@
           "status": "ok",
           "request_bytes": 22560,
           "request_sha256": "58f869e2fdba5901c6d6575bec5a81ae2d9ce54c04626ded9b3ab5aa4e1baf99",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -2332,7 +2332,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -2340,13 +2340,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2414,
@@ -2356,7 +2356,7 @@
           "status": "ok",
           "request_bytes": 15019,
           "request_sha256": "79678c4e3876c1f2d1ba598a42e39751e43a6c01c9b234fbc3440cf8079bfa6b",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -2499,7 +2499,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -2507,13 +2507,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2414,
@@ -2523,7 +2523,7 @@
           "status": "ok",
           "request_bytes": 15011,
           "request_sha256": "1a6bd3df1414a326d2d3cd2597628c60498266b89ea99aec6b1a2350ea341c84",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -2674,7 +2674,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -2683,13 +2683,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4006,
@@ -2699,7 +2699,7 @@
           "status": "ok",
           "request_bytes": 22530,
           "request_sha256": "9fe203708c86cf5104bc3cf844f2df1ba475d10f8a790f5e48d511975beec355",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -2842,7 +2842,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -2851,13 +2851,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4006,
@@ -2867,7 +2867,7 @@
           "status": "ok",
           "request_bytes": 22529,
           "request_sha256": "f233abac96a416649c31ed1b7eab3ddde4af015035a65b88ce84ac40077284ef",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3018,7 +3018,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3026,13 +3026,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2414,
@@ -3042,7 +3042,7 @@
           "status": "ok",
           "request_bytes": 15012,
           "request_sha256": "71e470570d944247a5d39b393b069b7d1a224cbb3813bc981cbc57d33f04af77",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3203,7 +3203,7 @@
       "expected": 20.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3211,13 +3211,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2422,
@@ -3227,7 +3227,7 @@
           "status": "ok",
           "request_bytes": 15056,
           "request_sha256": "baf8e83a78e9bb0ca965b5cd9a649b001ab3f56b90d5fc5cb2be50b306da30e7",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3380,7 +3380,7 @@
       "expected": 5.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3389,13 +3389,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4006,
@@ -3405,7 +3405,7 @@
           "status": "ok",
           "request_bytes": 22546,
           "request_sha256": "13a7d8368a33752cf5242c0d6a0c5d9bd6bbdcaa33b138d2831783af1b074c60",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3566,7 +3566,7 @@
       "expected": 20.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3575,13 +3575,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4014,
@@ -3591,7 +3591,7 @@
           "status": "ok",
           "request_bytes": 22574,
           "request_sha256": "34d6c9182f6def33f5136508043ba58f83aedc6df71cdc38a2c1afef08ae9919",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3734,7 +3734,7 @@
       "expected": 5.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3742,13 +3742,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2414,
@@ -3758,7 +3758,7 @@
           "status": "ok",
           "request_bytes": 15028,
           "request_sha256": "384c3ebd48bf7ff9e18a20b3697fc082fe4d13ea9a00448b8ea7f7419f75d21b",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -3923,7 +3923,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -3931,13 +3931,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2416,
@@ -3947,7 +3947,7 @@
           "status": "ok",
           "request_bytes": 15033,
           "request_sha256": "fd5e7c947c73f9c4853b6930236f92da260efcd2a5713b34c24d9c5f34181311",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4094,7 +4094,7 @@
       "expected": 2.0,
       "actual": 1.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4103,13 +4103,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4009,
@@ -4119,7 +4119,7 @@
           "status": "ok",
           "request_bytes": 22558,
           "request_sha256": "c75ed4de17426ec5b572eae27ca8cc236b8ebd0dff114881eccbeb973113f28e",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4284,7 +4284,7 @@
       "expected": 1.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4293,13 +4293,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4008,
@@ -4309,7 +4309,7 @@
           "status": "ok",
           "request_bytes": 22551,
           "request_sha256": "2d7a85ed3b82b37ecf4643186b1ae6a226198b85c305a6cd107d62dd3d49a974",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4446,7 +4446,7 @@
       "expected": 2.0,
       "actual": 1.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4454,13 +4454,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2417,
@@ -4470,7 +4470,7 @@
           "status": "ok",
           "request_bytes": 15040,
           "request_sha256": "5c04f50dff227f7bdb14e678efa89982c3200fd3b9f04771330c22efb3e0b6d7",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4657,7 +4657,7 @@
       "expected": 15.0,
       "actual": 0.0,
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4666,13 +4666,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4076,
@@ -4682,7 +4682,7 @@
           "status": "ok",
           "request_bytes": 22779,
           "request_sha256": "608fe6b7f52c89c58968a25716567b325730e8bac48a668cde2396f0352e241c",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4819,7 +4819,7 @@
         "actual": 0.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4827,13 +4827,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2410,
@@ -4843,7 +4843,7 @@
           "status": "ok",
           "request_bytes": 15007,
           "request_sha256": "57493f207615e2d1b8d51d40414b53791e654a8089b5784520631f7feb7702cc",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -4980,7 +4980,7 @@
         "actual": 0.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -4989,13 +4989,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4002,
@@ -5005,7 +5005,7 @@
           "status": "ok",
           "request_bytes": 22525,
           "request_sha256": "bf01cd83e02d8ddf078f9fcbab6555f82f79df72987d672921c781c11230d506",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5211,7 +5211,7 @@
       ],
       "actual_status": "failed",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -5219,13 +5219,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2484,
@@ -5235,7 +5235,7 @@
           "status": "ok",
           "request_bytes": 15261,
           "request_sha256": "2f3e1c856dd0826d5728f39aaf645d04681fb43a1d5c0dde0e4158a76b471f0f",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5245,7 +5245,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2669,
@@ -5255,7 +5255,7 @@
           "status": "ok",
           "request_bytes": 16108,
           "request_sha256": "15d6c7e381ae427a17510bb98e72cd004ce121095f54bf0194fa460eb5cc2dd0",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5382,7 +5382,7 @@
         "actual": 1.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -5390,13 +5390,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2411,
@@ -5406,7 +5406,7 @@
           "status": "ok",
           "request_bytes": 15011,
           "request_sha256": "4dcde0be38e7d1723b5d03bf2a8a372306c4a82ec7c3aa5b0d0c6b8ab5a70d8c",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5569,7 +5569,7 @@
         "actual": 1.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -5578,13 +5578,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4002,
@@ -5594,7 +5594,7 @@
           "status": "ok",
           "request_bytes": 22521,
           "request_sha256": "bb4ae2f6776019930189418779f37235a601f150f865294f50c24715784a7dc2",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5721,7 +5721,7 @@
         "actual": 1.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -5730,13 +5730,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4003,
@@ -5746,7 +5746,7 @@
           "status": "ok",
           "request_bytes": 22529,
           "request_sha256": "52f71eeee3d4471d96ee83c32ff5921ed680e5c1d326c06675de2af4b7bb8eb2",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -5909,7 +5909,7 @@
         "actual": 1.0
       },
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -5917,13 +5917,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2410,
@@ -5933,7 +5933,7 @@
           "status": "ok",
           "request_bytes": 15003,
           "request_sha256": "0bd8dfe5e8d2d20263ab93206550c8ce25266ab62d44d4c52b82d8f6f9ba2ad3",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -6086,7 +6086,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -6094,13 +6094,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2414,
@@ -6110,7 +6110,7 @@
           "status": "ok",
           "request_bytes": 15021,
           "request_sha256": "8fcc2834702f9bb1fb7165f2d42e6a4859b5c672bacf2266934d264910539ff1",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -6263,7 +6263,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -6272,13 +6272,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4006,
@@ -6288,7 +6288,7 @@
           "status": "ok",
           "request_bytes": 22539,
           "request_sha256": "7b7cba7dced4901d7c4f3673c06a919239f008a9e74cc43f5bdb729090fad59b",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -6463,7 +6463,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -6472,13 +6472,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4004,
@@ -6488,7 +6488,7 @@
           "status": "ok",
           "request_bytes": 22536,
           "request_sha256": "357972b33a41cb3883e60cc5f78ab44b77d701bb11a61daa6d87d650f6066621",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -6641,7 +6641,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -6649,13 +6649,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2415,
@@ -6665,7 +6665,7 @@
           "status": "ok",
           "request_bytes": 15031,
           "request_sha256": "bf41078b27391b02561eefeac40ca92419b4cbef13f30303ab5b7cc4f24e1125",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -6818,7 +6818,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -6827,13 +6827,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4007,
@@ -6843,7 +6843,7 @@
           "status": "ok",
           "request_bytes": 22549,
           "request_sha256": "114149c6e218344acc1c0b511372cf36b8afac74e4dc258ebaa0559a635b6fef",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -7031,7 +7031,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -7039,13 +7039,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2412,
@@ -7055,7 +7055,7 @@
           "status": "ok",
           "request_bytes": 15018,
           "request_sha256": "156dc651c6b96ac9f99ac785178346d62876efca962aab31337a541d584f0448",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -7065,7 +7065,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2596,
@@ -7075,7 +7075,7 @@
           "status": "ok",
           "request_bytes": 15865,
           "request_sha256": "5ceb5c4d7aa340fe948715a46d3c8ffe5519d0b735a98cc69b4f649f69e49370",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -7228,7 +7228,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema_skill_added",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -7237,13 +7237,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 4005,
@@ -7253,7 +7253,7 @@
           "status": "ok",
           "request_bytes": 22529,
           "request_sha256": "a35e234dd0e73eb61c602f74eb2a225205c67576366443777e2902c8e30ebf77",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,
@@ -7406,7 +7406,7 @@
       ],
       "actual_status": "ready",
       "model_label": "small-3b",
-      "requested_model": "llama-3.2-3b",
+      "requested_model": "small model B (3B)",
       "variant": "schema",
       "interpretation_ok": false,
       "prompt_sha256": "87c735176976f709451c192e3592cd4c27823a3320ffe12bfc744718e07c48d3",
@@ -7414,13 +7414,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "@cf/meta/llama-3.2-3b-instruct"
+        "small model B (3B) route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "@cf/meta/llama-3.2-3b-instruct"
+            "small model B (3B) route 1"
           ],
           "tokens": {
             "prompt_tokens": 2413,
@@ -7430,7 +7430,7 @@
           "status": "ok",
           "request_bytes": 15011,
           "request_sha256": "1da6f09583aa67504115e6ff1fc974a2b22ee10ed3dea05fa4e76f0afb78297d",
-          "requested_model": "llama-3.2-3b",
+          "requested_model": "small model B (3B)",
           "response_format": "json_schema",
           "wire_schema_sha256": "b1349baa6a950545cf7472101d881058941962b731fab4948b35dfbb98daa6f9",
           "strict_requested": true,

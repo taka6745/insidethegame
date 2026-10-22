@@ -1,4 +1,6 @@
-name: itg-local
+# Project name and host ports are overridable, so a throwaway project can run beside itg-local:
+#   docker compose -p itg-verify-x --env-file local/verify.env.example ... (see local/README.md).
+name: ${ITG_PROJECT_NAME:-itg-local}
 
 services:
   postgres:
@@ -7,7 +9,7 @@ services:
       POSTGRES_USER: itg
       POSTGRES_PASSWORD: local-development-only
       POSTGRES_DB: accounts
-    ports: ["127.0.0.1:15432:5432"]
+    ports: ["127.0.0.1:${ITG_POSTGRES_PORT:-15432}:5432"]
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./sql/postgres.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
@@ -22,7 +24,7 @@ services:
     environment:
       PROTOCOL: http
       ENABLE_EXPLORER: "true"
-    ports: ["127.0.0.1:18081:8081", "127.0.0.1:11234:1234"]
+    ports: ["127.0.0.1:${ITG_COSMOS_PORT:-18081}:8081", "127.0.0.1:${ITG_COSMOS_EXPLORER_PORT:-11234}:1234"]
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.35.0@sha256:647c63a91102a9d8e8000aab803436e1fc85fbb285e7ce830a82ee5d6661cf37
@@ -38,7 +40,8 @@ services:
       METADATA_SERVER: azurite
     volumes:
       - ./config/eventhubs.json:/Eventhubs_Emulator/ConfigFiles/Config.json:ro
-    ports: ["127.0.0.1:15672:5672", "127.0.0.1:15300:5300"]
+    labels: {itg.config-sha: "${ITG_EVENTHUBS_CONFIG_SHA:-}"}  # ./dev: recreate when the file changes
+    ports: ["127.0.0.1:${ITG_EVENTHUBS_PORT:-15672}:5672", "127.0.0.1:${ITG_EVENTHUBS_HTTP_PORT:-15300}:5300"]
     depends_on: [azurite]
 
   sql:
@@ -50,7 +53,7 @@ services:
       MSSQL_PID: Developer
       MSSQL_SA_PASSWORD: Local-Only-Password-42!
       MSSQL_MEMORY_LIMIT_MB: "2048"
-    ports: ["127.0.0.1:11433:1433"]
+    ports: ["127.0.0.1:${ITG_SQL_PORT:-11433}:1433"]
     volumes: ["sql-data:/var/opt/mssql"]
     healthcheck:
       test: [CMD-SHELL, '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -C -Q "SELECT 1" -b -o /dev/null']
@@ -70,32 +73,10 @@ services:
       EMULATOR_HTTP_PORT: "5300"
     volumes:
       - ./config/servicebus.json:/ServiceBus_Emulator/ConfigFiles/Config.json:ro
-    ports: ["127.0.0.1:15673:5672", "127.0.0.1:15301:5300"]
+    labels: {itg.config-sha: "${ITG_SERVICEBUS_CONFIG_SHA:-}"}
+    ports: ["127.0.0.1:${ITG_SERVICEBUS_PORT:-15673}:5672", "127.0.0.1:${ITG_SERVICEBUS_HTTP_PORT:-15301}:5300"]
     depends_on:
       sql: {condition: service_healthy}
-
-  sql-init:
-    image: mcr.microsoft.com/mssql/server:2022-latest@sha256:cf8f0ab2ebe61feec2eed2629061a07d247f791c2a8ddda74a4ac9f06a291718
-    platform: linux/amd64
-    profiles: [azure]
-    environment:
-      SQLCMDPASSWORD: Local-Only-Password-42!
-    volumes: ["./sql/match.sql:/init.sql:ro"]
-    entrypoint: [/opt/mssql-tools18/bin/sqlcmd]
-    command: [-S, sql, -U, sa, -C, -b, -i, /init.sql]
-    depends_on:
-      sql: {condition: service_healthy}
-
-  graphql:
-    image: mcr.microsoft.com/azure-databases/data-api-builder:1.6.87@sha256:13bbc00893dc1aa120af067a895a88d76f8a3b440f3efa5a56c07d727f75454a
-    platform: linux/amd64
-    profiles: [azure]
-    environment:
-      SQL_CONNECTION_STRING: "Server=sql;Database=matchdata;User ID=sa;Password=Local-Only-Password-42!;TrustServerCertificate=true"
-    volumes: ["./config/dab.json:/App/dab-config.json:ro"]
-    ports: ["127.0.0.1:15000:5000"]
-    depends_on:
-      sql-init: {condition: service_completed_successfully}
 
   tools:
     build: .
@@ -119,25 +100,31 @@ services:
   backend:
     build: {context: ../user-backend, target: runtime}
     profiles: [backend]
-    ports: ["127.0.0.1:18000:8000"]
+    ports: ["127.0.0.1:${ITG_BACKEND_PORT:-18000}:8000"]
     env_file:
       - path: ../.local/backend-llm.env
+        required: false
+      # DECISION_*: Microsoft-Decision-1 for "Follow this story?" offers (PLAN.md §10.2 D5b); without it the
+      # local model answers the yes/no. Never printed.
+      - path: ../.local/decision.env
         required: false
     environment: &backend-env
       AGENT_MAX_REPAIRS: ${AGENT_MAX_REPAIRS:-3}
       AGENT_GOAL_OUTPUT_MODE: ${AGENT_GOAL_OUTPUT_MODE:-prompt}
       AGENT_DATA_SKILL: ${AGENT_DATA_SKILL:-off}
       AGENT_PLAN_TIMEOUT_SECONDS: ${AGENT_PLAN_TIMEOUT_SECONDS:-60}
-      QUESTION_TIMEOUT_SECONDS: ${QUESTION_TIMEOUT_SECONDS:-90}
+      QUESTION_TIMEOUT_SECONDS: ${QUESTION_TIMEOUT_SECONDS:-240}
       QUESTION_MAX_ACTIVE: ${QUESTION_MAX_ACTIVE:-4}
-      BACKEND_MODE: fixture
       ENABLE_DEV_FEED: "1"
       ENABLE_FILTER_LAB: "1"
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed adapter (PLAN.md §10.6); a production release leaves it off
       ACCOUNTS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/accounts
       MATCH_APP_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/matchapp
-      ETL_GRAPHQL_URL: http://etl:8000/graphql
-      NARRATIVE_GRAPHQL_URL: http://narrative:8000/graphql
-      DEMO_RECORDING_URL: http://etl:8000/demo/recording
+      # Everything the backend knows about a match: the stream, ETL GraphQL (DAB) and its own stores.
+      ETL_GRAPHQL_URL: http://etl-dab:5000/graphql
+      NARRATIVE_GRAPHQL_URL: http://narrative-live:8000/graphql
+      # The feed is an external broadcast origin: played HLS over HTTP, nothing mounted.
+      FEED_HLS_BASE: http://feed:8000/hls
       MATCH_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
       MATCH_EVENTHUB_NAME: match-events
       NARRATIVE_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
@@ -145,76 +132,133 @@ services:
       NARRATIVE_SERVICEBUS_SUBSCRIPTION: user-backend
     depends_on:
       postgres: {condition: service_healthy}
-      etl: {condition: service_healthy}
-      narrative: {condition: service_healthy}
+      etl-dab: {condition: service_started}
+    # Not ready without a configured model (LOCAL_LLM_* in .local/backend-llm.env).
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=5)"]
       interval: 3s
       timeout: 6s
       retries: 20
 
-  etl-db-init:
-    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
-    profiles: [backend]
+  # ETL pipeline stand-in (etl/local_stream): MA1/MA3/POS/MatchEvent v2 on Event Hubs → reference rules → SQL Server
+  # `insidethegame` → Data API builder GraphQL + Service Bus notifications (narrative-live).
+  etl-sql-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest@sha256:cf8f0ab2ebe61feec2eed2629061a07d247f791c2a8ddda74a4ac9f06a291718
+    platform: linux/amd64
+    profiles: [azure, backend]
     environment:
-      PGPASSWORD: local-development-only
-    volumes: ["./sql/etl-databases.sql:/init.sql:ro"]
-    entrypoint: [psql, -h, postgres, -U, itg, -d, accounts, -v, ON_ERROR_STOP=1, -f, /init.sql]
+      SQLCMDPASSWORD: Local-Only-Password-42!
+    volumes:
+      - ../etl/sql/migrations:/migrations:ro
+      - ../etl/local_stream/state.sql:/local/state.sql:ro
+      - ../etl/local_stream/init-sql.sh:/init-sql.sh:ro
+    entrypoint: [bash, /init-sql.sh]
     depends_on:
-      postgres: {condition: service_healthy}
+      sql: {condition: service_healthy}
 
-  etl:
-    build: {context: ../etl, target: runtime}
-    profiles: [backend]
+  etl-dab:
+    image: mcr.microsoft.com/azure-databases/data-api-builder:2.1.5@sha256:d07e3e1ce53bdf84d3a4a0a4ce12e44f0b902e7316c782a3d682fbe074509c0b
+    platform: linux/amd64
+    profiles: [azure, backend]
     environment:
-      ETL_HISTORY_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_history
-      ETL_STATS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/etl_stats
-      DEMO_RECORDING_PATH: /recordings/chelsea-united-grf.json
-      MATCH_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
-      MATCH_EVENTHUB_NAME: match-events
-      SNAPSHOT_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
-    volumes: ["../data-generation/recordings:/recordings:ro"]
-    ports: ["127.0.0.1:18010:8000"]
+      DATABASE_CONNECTION_STRING: "Server=sql;Database=insidethegame;User Id=sa;Password=Local-Only-Password-42!;TrustServerCertificate=true"
+    volumes: ["../etl/dab/dab-config.json:/App/dab-config.json:ro"]
+    labels: {itg.config-sha: "${ITG_DAB_CONFIG_SHA:-}"}  # DAB reads its config only at start
+    ports: ["127.0.0.1:${ITG_ETL_DAB_PORT:-15001}:5000"]
     depends_on:
-      etl-db-init: {condition: service_completed_successfully}
+      etl-sql-init: {condition: service_completed_successfully}
+    # The image has no HTTP client; DAB's anonymous /health checks the database and every entity.
+    healthcheck:
+      test: [CMD, bash, -c, 'exec 3<>/dev/tcp/127.0.0.1/5000 && printf "GET /health HTTP/1.0\r\n\r\n" >&3 && grep -q "\"status\": *\"Healthy\"" <&3']
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 10s
+
+  etl-stream:
+    build: {context: ../etl, target: stream}
+    profiles: [backend]
+    restart: on-failure
+    environment:
+      ETL_SQL_HOST: sql
+      ETL_SQL_PASSWORD: Local-Only-Password-42!
+      ETL_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      ETL_EVENTHUB_CONSUMER_GROUP: stream-analytics
+      ETL_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      ETL_NOTIFICATIONS_TOPIC: match-notifications
+      ETL_ADMIN_PORT: "8000"  # Health and POST /admin/matches/purge; not published to the host.
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore (PLAN.md §10.6)
+    depends_on:
+      etl-sql-init: {condition: service_completed_successfully}
       broker-ready: {condition: service_completed_successfully}
-    healthcheck: &upstream-health
-      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+
+  # Luke's narrative engine: ETL notifications (narrative-live) → the local model → one message per
+  # narrative on `narratives`, for the backend's active audience buckets. History GraphQL on :18012.
+  narrative-live:
+    build: {context: ../narrative-engine}
+    profiles: [backend]
+    restart: on-failure  # e.g. the Cosmos emulator still starting
+    env_file:
+      - path: ../.local/backend-llm.env
+        required: false
+      # DECISION_*: Microsoft-Decision-1 (dev Foundry deployment); without it the engine uses the constrained-LLM
+      # fallback on the local model. Never printed.
+      - path: ../.local/decision.env
+        required: false
+    environment:
+      OPENAI_MODEL: ${NARRATIVE_LLM_MODEL:-}  # optional override of LOCAL_LLM_MODEL for the engine
+      # Decision-1 limits requests, not questions (a request holds well over a hundred): batch big and pace to the
+      # dev deployment's 10 requests per minute, shared by every match.
+      DECISION_MAX_QUESTIONS: ${DECISION_MAX_QUESTIONS:-128}
+      DECISION_REQUESTS_PER_MINUTE: ${DECISION_REQUESTS_PER_MINUTE:-10}
+      DECISION_RETRIES: ${DECISION_RETRIES:-4}
+      ETL_GRAPHQL_URL: http://etl-dab:5000/graphql
+      SERVICEBUS_NOTIFICATIONS: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      NOTIFICATIONS_SUBSCRIPTION: narrative-live
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore (PLAN.md §10.6)
+      # Model calls in flight across all matches. Kept below the shared local model's capacity so
+      # viewer questions (same model) get a slot quickly; see local/README.md.
+      MODEL_CONCURRENCY: ${NARRATIVE_MODEL_CONCURRENCY:-2}
+      SERVICEBUS_NARRATIVES: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      USER_BACKEND_URL: http://backend:8000
+      # The emulator's published development key, not a secret.
+      COSMOS_ENDPOINT: http://cosmos:8081
+      COSMOS_KEY: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
+    ports: ["127.0.0.1:${ITG_NARRATIVE_LIVE_PORT:-18012}:8000"]
+    depends_on:
+      cosmos: {condition: service_started}
+      etl-dab: {condition: service_started}
+      backend: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8000/graphql', b'{\"query\": \"{__typename}\"}', {'Content-Type': 'application/json'}), timeout=5)"]
       interval: 3s
       timeout: 6s
-      retries: 20
-
-  narrative:
-    build: {context: ../narrative-engine, dockerfile: demo.Dockerfile}
-    profiles: [backend]
-    environment:
-      ETL_BASE_URL: http://etl:8000
-      AUDIENCE_BASE_URL: http://backend:8000
-      SNAPSHOT_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
-      NARRATIVE_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
-    volumes: ["narrative-data:/data"]
-    ports: ["127.0.0.1:18011:8000"]
-    depends_on:
-      etl: {condition: service_healthy}
-    healthcheck: *upstream-health
+      retries: 40
 
   backend-tests:
     build: {context: ../user-backend, target: test}
     profiles: [tools]
     environment:
       <<: *backend-env
-      DEMO_RECORDING_URL: ""
       MATCH_EVENTHUB_CONNECTION_STRING: ""
       NARRATIVE_SERVICEBUS_CONNECTION_STRING: ""
-    # The shipped recording and narrative fixtures, for tests that check against real match data.
+    # The shipped recording and narrative fixtures, for tests that check against real match data,
+    # ETL's reference SPADL converter and stat catalogue (with its seed) for the golden sets, and its
+    # contracts, from which backend/contracts/spadl-reference.json is generated.
     volumes:
       - ../data-generation/recordings:/data-generation/recordings:ro
       - ../narrative-engine/fixtures:/narrative-engine/fixtures:ro
+      - ../etl/reference:/etl/reference:ro
+      - ../etl/sql:/etl/sql:ro
+      - ../etl/contracts:/etl/contracts:ro
 
   frontend:
     build: ../frontend
     profiles: [backend]
-    ports: ["127.0.0.1:18020:80"]
+    ports: ["127.0.0.1:${ITG_FRONTEND_PORT:-18020}:80"]
+    environment:
+      # Local only: /feed-api/ and /purge-api/ for the /dev/ Matches panel. Media proxies the feed's HLS origin.
+      ENABLE_DEV_ADMIN: "1"
     depends_on:
       backend: {condition: service_healthy}
     healthcheck:
@@ -223,7 +267,79 @@ services:
       timeout: 3s
       retries: 20
 
+  # Demo operator (local/demo_control.py serve): the public "Start demo" / cancel controls. It purges each
+  # owner and starts feed runs; not a product service.
+  demo-control:
+    build: {context: ../user-backend, target: runtime}
+    profiles: [backend]
+    command: [python, /checks/demo_control.py, serve]
+    # Seeds (PLAN.md §10.6) are recorded here locally; ignored like the rest of .local/.
+    volumes: ["./demo_control.py:/checks/demo_control.py:ro", "../.local/seeds:/seeds"]
+    depends_on:
+      feed: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Simulated external data + broadcast provider (data-generation/feed). The only service that
+  # mounts recordings/media; it shares nothing else, not even a database server. Out: Event Hubs
+  # `match-events` and HLS over HTTP (/hls/{matchId}/live.m3u8). Admin API (recordings, runs,
+  # purge) is dev-only.
+  feed:
+    build: {context: ../data-generation, dockerfile: feed/Dockerfile, target: runtime}
+    profiles: [backend]
+    ports: ["127.0.0.1:${ITG_FEED_PORT:-18030}:8000"]
+    networks: [default, provider]
+    environment:
+      FEED_DATABASE_URL: postgresql://feed:local-development-only@feed-postgres:5432/feed
+      FEED_RECORDINGS_DIR: /recordings
+      FEED_MEDIA_ROOT: /media-source
+      FEED_LIVE_DIR: /live-media
+      FEED_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+      FEED_EVENTHUB_NAME: match-events
+      FEED_ALLOW_SEEK: ${FEED_ALLOW_SEEK:-0}  # dev only
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # seed recording and seeded starts (PLAN.md §10.6)
+    volumes:
+      - ../data-generation/recordings:/recordings:ro
+      # Optional packaged media, one root: {fixture}/hls/match.m3u8, found per recording; a fixture
+      # without it plays with video: false. ./dev sets ITG_MEDIA_ROOT (see local/README.md).
+      - {type: bind, source: "${ITG_MEDIA_ROOT:-./no-media}", target: /media-source, read_only: true,
+         bind: {create_host_path: false}}
+      - feed-media:/live-media
+    depends_on:
+      feed-postgres: {condition: service_healthy}
+      broker-ready: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 3s
+      timeout: 6s
+      retries: 20
+
+  # The provider's own database server, reachable only by the feed.
+  feed-postgres:
+    image: postgres:16-alpine@sha256:57c72fd2a128e416c7fcc499958864df5301e940bca0a56f58fddf30ffc07777
+    profiles: [backend]
+    networks: [provider]
+    environment:
+      POSTGRES_USER: feed
+      POSTGRES_PASSWORD: local-development-only
+      POSTGRES_DB: feed
+    volumes:
+      - feed-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U feed -d feed"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+networks:
+  provider:
+    internal: true
+
 volumes:
   postgres-data:
   sql-data:
-  narrative-data:
+  feed-postgres-data:
+  feed-media:  # feed-internal: played HLS segments only

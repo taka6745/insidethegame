@@ -4,7 +4,9 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed to dev (image `v3`) |
+| **Status** | Applied 22 Oct by `./dev azure up` for the Azure test ([runbook](../../terraform/runbook.md)); `decision-1` applied, the `writer` switch to `gpt-6.1-sol` is in Terraform but not yet in the applied state; demo acceptance (PLAN.md §10.4) pending |
+| **Models** | `writer` = Azure OpenAI `gpt-6.1-sol` (GlobalStandard, 200K TPM; every agent at effort `low`, its lowest) · `decision-1` = Microsoft-Decision-1 (DataZoneStandard, 50 requests/minute) |
+| **Demo build** | `demo_seeds` sets `DEMO_SEEDS=1`; `./dev azure up` turns it on for the judge build, `./dev azure up --release` turns it off ([service §5](components/service.md#5-demo-seeds-demo_seeds)) |
 | **Terraform** | [`infra/`](../infra/), local state, reads the ETL's state for its Service Bus namespace and Container Apps environment |
 | **Region** | Australia East |
 | **Cost when idle** | About US$10–20/month (Container App always on, registry); models and Cosmos are pay per use |
@@ -16,10 +18,10 @@
 | File | Creates |
 | --- | --- |
 | `main.tf` | Resource group, budget alert, naming |
-| `cosmos.tf` | Serverless Cosmos DB, database `narrative`, three containers, your data role |
-| `messaging.tf` | Topics `narratives` (subscriptions `user-backend`, `narrative-check`) and `presence` (subscription `narrative-engine`), scoped keys |
-| `foundry.tf` | Foundry account and one deployment per entry in `models` |
-| `app.tf` | Container registry, Container App (secrets, settings, identity), Cosmos role for the app |
+| `cosmos.tf` | Serverless Cosmos DB, database `narrative`, eight containers (checkpoints, contextBlocks, narratives, analyses, storylines, subscriptionDecisions, subscriptionNarratives, tombstones), your data role |
+| `messaging.tf` | Topic `narratives` (subscriptions `user-backend`, `narrative-check`), scoped keys |
+| `foundry.tf` | Azure AI Foundry account and one deployment per entry in `models`: `writer` (Azure OpenAI `gpt-6.1-sol`) for the agents and `decision-1` (Microsoft-Decision-1, DataZoneStandard, 50 requests/minute) for story follows and claim checks (`var.decision`; the app gets `DECISION_*` on the same account) |
+| `app.tf` | Container registry, Container App (secrets, settings including `DEMO_SEEDS` from `demo_seeds`, identity), Cosmos role for the app |
 | `monitoring.tf` | Log Analytics workspace, Application Insights, the "Narrative engine" workbook |
 | `variables.tf`, `outputs.tf`, `versions.tf` | Inputs, outputs (secrets marked sensitive), providers |
 
@@ -33,10 +35,10 @@ cp infra/local.auto.tfvars.example infra/local.auto.tfvars      # subscription a
 terraform -chdir=infra init
 terraform -chdir=infra apply                                    # everything except the app
 .venv/Scripts/python -m narrative_engine.devtools.azure build --tag v4 --local
-terraform -chdir=infra apply -var engine_image_tag=v4 -var match_ids=<matchId>
+terraform -chdir=infra apply -var engine_image_tag=v4 -var user_backend_url=<backend url>
 ```
 
-- `match_ids` limits which matches the deployed engine narrates. Keep it set: the ETL subscription keeps old replays, and an empty value narrates all of them.
+- `user_backend_url` is required: the engine reads audience targets and prompts there and has no fallback. The ETL subscription keeps old replays; purge them (`POST /admin/matches/purge`, internal) rather than narrating them.
 - Trial subscription limits shape this: one Container Apps environment per region (so the engine uses the ETL's), no ACR Tasks (so `--local`), and a Contributor role that cannot create role assignments (so keys instead of managed identity, except for Cosmos).
 - Providers that had to be registered once: `Microsoft.CognitiveServices`, `Microsoft.ContainerRegistry`, `Microsoft.Insights`.
 
@@ -47,12 +49,13 @@ terraform -chdir=infra apply -var engine_image_tag=v4 -var match_ids=<matchId>
 ```hcl
 # infra/local.auto.tfvars (or -var)
 models = {
-  "gpt-5-mini" = { version = "2025-08-07", capacity = 100 }
+  "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 200 }
   "gpt-5"      = { version = "<version>", capacity = 50 }
 }
 agents = {
-  summary     = { model = "gpt-5-mini", effort = "minimal" }
-  compression = { model = "gpt-5-mini", effort = "minimal" }
+  summary     = { model = "writer", effort = "low" }
+  compression = { model = "writer", effort = "low" }
+  analyst     = { model = "writer", effort = "low" }
   author      = { model = "gpt-5", effort = "medium" }
 }
 ```
@@ -61,7 +64,7 @@ Terraform creates the deployment and sets `OPENAI_MODEL_AUTHOR` and `OPENAI_EFFO
 
 ## 4. Monitoring
 
-*In short: Application Insights `itg-narrative-dev-dhcyo-appi`, with a ready-made workbook.*
+*In short: Application Insights `{name_prefix}-{suffix}-appi` (e.g. `itg-narrative-dev-xxxxx-appi`), with a ready-made workbook.*
 
 | Where (portal) | Shows |
 | --- | --- |
@@ -81,7 +84,7 @@ Data arrives 2–5 minutes late and is kept 30 days. Traces are sampled, so coun
 | --- | --- |
 | See a match's output | `devtools.azure report --match-id X` |
 | Check delivery | `devtools.azure check-narratives --match-id X` |
-| Simulate viewers | `devtools.azure send-presence --match-id X --counts '{"home:casual": 2}' --minutes 20` |
+| Choose buckets | Enable buckets in the user backend at `user_backend_url` (`/dev/`); the engine reads its `audience-config` |
 | Container logs | `az containerapp logs show -n itg-narrative-dev-engine -g rg-itg-narrative-dev --tail 50` |
 | Restart safely | Any time; live matches resume from their checkpoints |
 | Live test | Start the ETL's Stream Analytics job, replay a match, then **stop the job** (it bills while running) |

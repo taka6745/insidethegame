@@ -5,7 +5,9 @@
 !fixtures/**
 !tests/**
 !pytest.ini
+!devtools/*.py
 !benchmarks/*.py
+!benchmarks/doubles/*.py
 !benchmarks/prompts/*.txt
 !benchmarks/prompts/*.json
 !benchmarks/replay_cases.json

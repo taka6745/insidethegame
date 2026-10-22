@@ -1,23 +1,37 @@
 # Filter checks, outside pytest
 
-The separate [question conversation check](question_cases.json) has twelve fixed prompts on the shipped Chelsea–United recording: standard stats, possession split, custom/follow-up/percentage stats, clarification and its answer, match description, general football and two unavailable-data refusals that must name what is missing. `tests/test_question_cases.py` recomputes every expected value from the recording. Finish a **fresh full replay** in the lab, then run:
+The [question golden set](question_cases.json) has twelve full-match prompts plus thirteen timed ones on the shipped Chelsea–United recording: standard stats, possession and shots split per team, custom/follow-up/percentage stats, a player's on-ball actions, clarification and its answer, who was sent off (read from MA3 cards; nobody in this match), match description, general football and two refusals that must name what is missing. `tests/test_question_cases.py` recomputes every expected value from the recording.
+
+In process (no API, database or shared stack): snapshots `(matchId, seq)` are cut from the recording; SPADL actions come from its MA3 stream through ETL's converter (`etl/reference/spadl.py`, `finalSeq ≤ seq`) and standard stats from ETL's reference catalogue (`etl/reference/catalogue.py`). Since 21 October 2026 both golden sets use SPADL definitions; changed expectations and before/after scores: [results/spadl-golden.md](results/spadl-golden.md).
 
 ```sh
-PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --output .local/benchmarks/questions-unique-run-name.json
+cd user-backend
+python -m benchmarks.question_inprocess --agent fixture --output ../.local/benchmarks/questions-fixture.json   # scripted decisions
+python -m benchmarks.question_inprocess --env-file ../.local/backend-llm.env --output ../.local/benchmarks/questions-live.json
 ```
 
-This explicitly calls the configured local model through the running API and takes over the Chelsea demo profile's chat session. Use a different profile in the browser. It never starts replay or clicks Track. Automatic checks cover status/source/known values; manually review every explanation and generated rule. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
+`--agent fixture` replays each case's `fixture` decision (a correct one, or one the local model actually returned) through the real question agent, planner, compiler, rule engine and ETL-row answers; `tests/test_question_golden.py` requires every scripted case to pass. Prose cases (match, football) need the model.
 
-20 October 2026, in-process against the local model (no API session): 12/12 on one run; 10/12 later on the local model, which asked a clarification for the follow-up and the clarification answer (the same with or without that day's router wording change). Under concurrent load, the 60 s plan timeout dominated failures.
+Against a running stack, a **finished** run of the Chelsea–United fixture:
+
+```sh
+PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --match-id chelsea-united-XXXXXXXX --output .local/benchmarks/questions-api.json
+```
+
+This calls the configured local model through the API and takes over the Chelsea demo profile's chat session; it skips the timed cases and never clicks Track. Automatic checks cover status, source and values; review every explanation and generated rule by hand. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
+
+The replay golden set (`replay_cases.json`, `python -m benchmarks.replay_eval --agent fixture|local`) also fails any caption that calls an unsaved shot saved, and `text_excludes` words in a reply. Its key-moment cases (`"recording": "archive"`) run against the archived earlier recording with the narrative fixtures bound to it; the others run against the shipped recording with no narratives.
+
+Before SPADL, 21 October 2026, in-process against the local model: **21/21** (median 19 s, max 66 s, about 27k tokens and 2 model calls per question); the scripted set 19/19. 20 October 2026: 12/12 on one run; 10/12 later on the local model, which asked a clarification for the follow-up and the clarification answer (the same with or without that day's router wording change). Under concurrent load, the 60 s plan timeout dominated failures.
 
 Run it from the repository root with the backend Python environment activated (dependencies from `user-backend/requirements.txt`), and keep replay/Track unchanged during the check. Failed HTTP/model attempts remain in the output file. It also verifies that answering did not add live calculations.
 
 ```text
-100 hand-authored cases ──→ independent event/revision answers
+100 hand-authored cases ──→ independent event/revision weights → SPADL actions (spadl_corpus.py)
          │                           ↑ compare every delivery
          └─ prompt → framework agents → generated rule → filter engine
 
-14,018 GRF deliveries → generated unique rules → timed engine.ingest
+2,710 SPADL actions (Chelsea–United) → generated unique rules → timed engine.ingest
                                             → 1 / 5 / 100 events/s queue model
 ```
 
@@ -27,13 +41,13 @@ Run it from the repository root with the backend Python environment activated (d
 ./dev benchmark agents  # explicitly calls your configured local development model
 ```
 
-The `./dev benchmark` commands use Docker and write ignored results to `.local/benchmarks/`. They do not change the lab, its recording or saved rules. Agent checks need the [local model configuration](../docs/local-llm.md). No automatic model fallback to fixture answers. Run before merging a model/prompt change, not in normal pytest or CI.
+The `./dev benchmark` commands use Docker and write ignored results to `.local/benchmarks/`. They do not touch running matches or saved rules. Agent checks need the [local model configuration](../docs/components/agents.md). No automatic model fallback to fixture answers. Run before merging a model/prompt change, not in normal pytest or CI.
 
 ## Correctness
 
-[cases.py](cases.py) contains **100 distinct hand-authored rules**, prompts and explicit per-event/revision contributions. Clear, casual and typo-heavy prompts target known answers. Another 12 deliberately ambiguous/unsupported prompts should be clarified or declined. Gold answers never come from the model or production predicate evaluator.
+[cases.py](cases.py) contains **100 distinct hand-authored rules**, prompts and explicit per-event/revision contributions. The rules are written in the canonical vocabulary they were authored in and translated to SPADL with the saved-rule migration's map ([spadl_corpus.py](spadl_corpus.py)); an action carries its source event's latest-revision weight, so the oracle checks every finalSeq prefix. Card intents have no SPADL rule and expect a refusal or catalogue reuse; the five pass-count intents gained the corners SPADL counts as passes. Clear, casual and typo-heavy prompts target known answers. Another 12 deliberately ambiguous/unsupported prompts should be clarified or declined. Gold answers never come from the model or production predicate evaluator.
 
-Every generated rule is checked against all **35 delivery prefixes**, late-registration backfill and normalized rule constraints. This catches deleted goals, player/body-part corrections, reassigned corners, duplicates, half boundaries and inclusive/exclusive minutes. A `different_constraints` failure means the fixture values matched but the rule differs from the expected contract; inspect it, since redundant team filters can be harmless on this match but change reuse identity. A status failure includes timeouts, not just semantic errors. The harness does not silently loosen expectations to pass the model.
+Every generated rule is checked at all **35 delivery prefixes** (the SPADL actions final by each), late-registration backfill and normalized rule constraints. This catches deleted goals, player/body-part corrections, reassigned corners, duplicates, half boundaries and inclusive/exclusive minutes. A `different_constraints` failure means the fixture values matched but the rule differs from the expected contract; inspect it, since redundant team filters can be harmless on this match but change reuse identity. A status failure includes timeouts, not just semantic errors. The harness does not silently loosen expectations to pass the model.
 
 Default agent limits: **4 concurrent cases, 60 seconds per case, 15 minutes overall**. Each case has an initial coding attempt plus `AGENT_MAX_REPAIRS` repairs (default 3). Results flush after each case; unfinished cases are marked unmeasured. Those limits protect the runner, not a claim that a match takes 15 minutes to process.
 
@@ -51,14 +65,14 @@ PYTHONPATH=user-backend python -m benchmarks.full_match  # 100 generated rules v
 
 ## Performance
 
-The generated rules use actual player/event/period combinations from the saved GRF match plus distinct integer time windows. No agent creates the bulk rules. These are distinct canonical rule IDs, not necessarily distinct results on this recording; many windows overlap and some upper bounds extend beyond the observed game. Two workloads expose different costs:
+The generated rules use actual player/action-type/period combinations from the SPADL actions of Chelsea–United plus distinct integer time windows. No agent creates the bulk rules. These are distinct canonical rule IDs, not necessarily distinct results on this recording; many windows overlap and some upper bounds extend beyond the observed game. Two workloads expose different costs:
 
 | Workload | What it measures |
 | --- | --- |
 | Selective | Player + event + half indexes select predicate families, then the clock index selects matching windows. |
 | Overlapping | Time-only rules share a predicate family; the clock index skips inactive windows. Every actually changed result still needs an update and output record. |
 
-See [index invariants and actual complexity](../docs/filter-engine-design.md): 64 categorical probes are only lookup overhead, not the cost of processing all candidates or emitting and sorting changed results.
+See [index invariants and actual complexity](../docs/components/services.md#3-filter-engine): 64 categorical probes are only lookup overhead, not the cost of processing all candidates or emitting and sorting changed results.
 
 Sizes: **100, 1k, 10k, 100k, 1m, 10m, 100m**. Each size runs in a fresh subprocess. Defaults: 30-second build limit, 20-second replay limit, 1 GiB RSS ceiling and a 5-minute suite deadline. A parent watchdog kills hung/oversized workers. If a smaller tier reaches a limit, larger tiers are explicitly **unmeasured**, not extrapolated as successful. A replay limit produces timings for the measured prefix, with its event count and `full_match=false`; short prefixes may not represent the whole game. `--event-order spread` uses a fixed-seed permutation spanning the recording; it requires unique event IDs and is only for performance sampling, not chronological or correction-feed validation.
 
@@ -157,6 +171,7 @@ context and validates JSON types locally. It requires a compatible route and
 never silently falls back to prompt mode. The observer records `response_format`,
 `strict_requested` and the wire-schema hash; these prove what was requested, not
 that the provider constrained decoding.
+Results name models only by their configured label (`<label>-route-N` for returned IDs, `unexpected-model` for substitutes); `--record-model-ids` keeps raw IDs for local debugging.
 `--candidate-prompt path/to/frozen.txt` overrides only current instructions and
 keeps the compact schema; it is read once at suite start, with its hash recorded.
 This allows a saved candidate to be rerun after runtime instructions change. Models run sequentially;
@@ -193,7 +208,7 @@ unseen wording across additional **known** intents, not unseen football semantic
 or an untouched test domain. Keep runtime prompts frozen during this check.
 
 `--variants current skill` compares fixed feed mappings with the adapter's
-[event-data skill](../docs/data-skill.md), with the same prompt-mode output schema.
+[event-data skill](../docs/components/agents.md#4-event-data-skill-optional), with the same prompt-mode output schema.
 Use `--variants schema schema_skill` for the equivalent structured-output pair.
 Skill mode replaces the fixed metric-mapping instructions with the data reference;
 it does not append benchmark examples or make another model call. Reports record

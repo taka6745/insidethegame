@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from grf_demo.opta import export
+from grf_demo.opta import credit_offsides, export, type_id
 from grf_demo.telemetry import TelemetryAdapter, opta_xy
 
 # Chelsea (team 0, engine ids 11-21) attack +x in the first half; United (team 1, ids 0-10) attack -x.
@@ -154,6 +154,24 @@ class OptaEventTests(unittest.TestCase):
         provoked = self.events("offside_provoked")[0]
         self.assertEqual(provoked["teamId"], "manutd")
         self.assertEqual(provoked["playerId"], "manutd-1")  # Deepest outfield United player.
+
+    def test_offside_pass_is_credited_to_the_offside_team(self):
+        def event(n, kind, team, qualifiers=(), **extra):
+            return {"eventId": f"e{n}", "typeName": kind, "teamId": team, "playerId": f"{team}-{n}", "x": 50.0 + n,
+                    "y": 40.0, "qualifiers": list(qualifiers), "outcome": None, **extra}
+        flag = {"type": "offsidePass", "value": True}
+        events = [event(1, "pass", "a", [flag], outcome="failure"), event(2, "offside", "a"),     # kept
+                  event(3, "touch", "b", [{"type": "bodyPart", "value": "head"}]),
+                  event(4, "pass", "a", [flag], outcome="failure"), event(5, "offside", "b"),     # wrong team
+                  event(6, "touch", "a"), event(7, "offside", "a")]                                # no pass
+        out = credit_offsides(events)
+        offside = [(e["eventId"], e["teamId"], e["playerId"]) for e in out if type_id(e) == 2]
+        self.assertEqual(offside, [("e1", "a", "a-1"), ("e5", "b", "b-3"), ("e7", "a", "a-6")])
+        self.assertEqual(sum(e["typeName"] == "offside" for e in out), 3)
+        synthetic = out[4]  # Sent with the call: e5's id and time, the touch's player and place.
+        self.assertEqual((synthetic["eventId"], synthetic["x"], synthetic["outcome"]), ("e5", 53.0, "failure"))
+        self.assertEqual([q["type"] for q in synthetic["qualifiers"]], ["bodyPart", "endX", "endY", "offsidePass"])
+        self.assertEqual((out[3]["eventId"], type_id(out[3])), ("e4", 1))  # The other team's pass stays a pass.
 
     def test_keeper_parry_that_stays_out_is_save_and_parry_that_goes_in_is_goal(self):
         self.feed(touch(100, [0, 20], 8, ball_position_m=[40, 0, 0]))
@@ -329,12 +347,21 @@ class OptaEventTests(unittest.TestCase):
 
     def test_every_emitted_qualifier_is_accepted_downstream(self):
         root = Path(__file__).resolve().parents[2]
-        accepted = (root / "etl/demo_etl/models/snapshot.py").read_text() + \
-            (root / "user-backend/backend/models/events.py").read_text()
-        source = (Path(__file__).resolve().parents[1] / "grf_demo/telemetry.py").read_text()
+        # MatchEvent v2's consumer model (strict: unknown qualifiers are rejected).
+        import ast
         import re
-        for name in set(re.findall(r'"type": "([A-Za-z]+)"', source)):
-            self.assertEqual(accepted.count(f"'{name}'") + accepted.count(f'"{name}"') >= 2, True, name)
+        from feed.adapters.recordings import QUALIFIERS
+        from grf_demo.capabilities import capabilities
+        literals = {}
+        for node in ast.parse((root / "user-backend/backend/models/events.py").read_text()).body:
+            if isinstance(node, ast.Assign) and isinstance(node.value, ast.Subscript):
+                values = node.value.slice.elts if isinstance(node.value.slice, ast.Tuple) else []
+                literals[node.targets[0].id] = {v.value for v in values if isinstance(v, ast.Constant)}
+        source = (Path(__file__).resolve().parents[1] / "grf_demo/telemetry.py").read_text()
+        emitted = set(re.findall(r'"type": "([A-Za-z]+)"', source))
+        self.assertLessEqual(emitted, set(QUALIFIERS))
+        self.assertEqual(set(QUALIFIERS), literals["QualifierType"])  # the feed sends exactly the contract's
+        self.assertEqual(set(capabilities(3)["supported_event_types"]), literals["EventType"])
 
     def test_throw_in_taken_with_a_control_touch_marks_the_delivery(self):
         restart = dict(set_piece=True, restart_active=True, restart_mode=5, restart_team=0, restart_id=4)
@@ -353,6 +380,23 @@ class OptaEventTests(unittest.TestCase):
         self.feed(foul(40, (40, 10)))
         flags = [{"type": "penaltyAwarded", "value": True} in e["qualifiers"] for e in self.events("foul")]
         self.assertEqual(flags, [False, True])
+
+    def test_penalty_flag_is_settled_by_the_restart_taken_next(self):
+        def awarded(mode):
+            self.setUp()
+            self.feed(frame(10, players=players(**{"0-10": (40, 10)})))
+            self.feed({**frame(20, players=players(**{"0-10": (40, 10)})), "kind": "decision", "decision": "foul",
+                       "player": [1, 4], "related_player": [0, 10], "card": 0})
+            if mode:
+                self.feed(touch(500, [0, 10], 6, set_piece=True, restart_active=True, restart_mode=mode,
+                                restart_team=0, restart_id=9))
+            else:  # The recording ends before any restart.
+                self.adapter.finish(frame(500), 0.5)
+            return [{"type": "penaltyAwarded", "value": True} in e["qualifiers"]
+                    for e in self.events("foul") + self.events("foul_won")]
+        self.assertEqual(awarded(6), [True, True])
+        self.assertEqual(awarded(3), [False, False])  # A free kick: the referee gave no penalty.
+        self.assertEqual(awarded(None), [False, False])
 
     def test_blocked_passer_is_not_credited_with_a_recovery(self):
         self.feed(touch(100, [0, 12], ball_position_m=[0, 0, 0]))

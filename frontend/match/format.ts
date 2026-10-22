@@ -1,4 +1,4 @@
-import type { MatchEvent, MatchState, Snapshot, StatNumber } from "./types.ts";
+import type { MatchEvent, MatchSummary, Snapshot, StatNumber } from "./types.ts";
 import { isRecord } from "./types.ts";
 
 const metricFormat = new Intl.NumberFormat("en", { maximumFractionDigits: 1 });
@@ -7,6 +7,13 @@ export function clock(seconds: number | null | undefined): string {
   if (seconds === null || seconds === undefined) return "PRE-MATCH";
   const value = Math.max(0, Math.floor(Number(seconds) || 0));
   return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, "0")}`;
+}
+/** Pre-match clock: time to kickoff, `KICK-OFF` once it is due, `PRE-MATCH` when unknown. */
+export function countdown(kickoff: string | null | undefined, now = Date.now()): string {
+  const at = kickoff ? new Date(kickoff).getTime() : NaN;
+  if (!Number.isFinite(at)) return "PRE-MATCH";
+  const left = Math.ceil((at - now) / 1000);
+  return left > 0 ? `KO in ${clock(left)}` : "KICK-OFF";
 }
 export function title(value: string | null | undefined): string {
   return String(value || "")
@@ -22,25 +29,6 @@ export function statValue(card: { value?: StatNumber; unit?: string }): string {
   if (card.value == null || (typeof card.value === "number" && !Number.isFinite(card.value))) return "—";
   const unit = card.unit;
   return number(card.value) + (!unit || unit === "count" ? "" : unit === "%" ? "%" : ` ${unit}`);
-}
-const eventNames: Partial<Record<string, string>> = {
-  shot: "Shot",
-  goal: "Goal",
-  pass: "Pass",
-  corner: "Corner",
-  card: "Card",
-  save: "Save",
-  tackle: "Tackle",
-  clearance: "Clearance",
-  interception: "Interception",
-  foul: "Foul",
-  touch: "Touch",
-};
-export function eventLabel(event: Pick<MatchEvent, "body_part" | "event_type">): string {
-  return `${event.body_part === "head" ? "Headed " : ""}${(eventNames[String(event.event_type)] || title(event.event_type)).toLowerCase()}`.replace(
-    /^./,
-    (c) => c.toUpperCase(),
-  );
 }
 export function latestEvents<T extends MatchEvent>(events: readonly T[], limit = 30): T[] {
   return [...events]
@@ -73,7 +61,7 @@ export function currentSnapshot(
 ): Snapshot | null | undefined {
   if (!isSnapshot(incoming)) return previous;
   if (
-    previous?.match.run_id === incoming.match.run_id &&
+    previous?.match.id === incoming.match.id &&
     previous!.projection_epoch === incoming.projection_epoch &&
     Number(incoming.version) <= Number(previous!.version)
   )
@@ -81,27 +69,27 @@ export function currentSnapshot(
   return {
     ...incoming,
     events: incoming.events.slice(-60),
-    narratives: incoming.narratives.slice(-40),
+    // The viewer's bucket history: minute insights plus recaps and key moments.
+    narratives: incoming.narratives.slice(-300),
     cards: incoming.cards.slice(0, 5),
+    key_moments: (incoming.key_moments || []).slice(-100),
   };
 }
 
-export function replayControls(match: MatchState) {
-  const ready = match.status === "ready";
-  const running = match.status === "running";
-  const finished = ["finished", "completed"].includes(String(match.status));
-  return {
-    showStart: ready,
-    startLabel: match.position ? "Resume match" : "Start match",
-    showReset: !running && Boolean(match.position),
-    progress: running
-      ? `Replaying · ${match.position}/${match.total}`
-      : finished
-        ? "Demo complete"
-        : ready
-          ? match.position
-            ? "Ready to resume"
-            : "Forward-only replay"
-          : "Replay interrupted",
-  };
+/** Match status from the backend: `scheduled`, `live` or `finished`. */
+export function isLive(status: unknown): boolean {
+  return status === "live";
+}
+export function isFinished(status: unknown): boolean {
+  return status === "finished";
+}
+/** Picker status line: live clock, kickoff time, or full time. */
+export function matchStatus(match: Pick<MatchSummary, "status" | "clock_seconds" | "scheduled_kickoff">,
+  locale?: string): string {
+  if (isLive(match.status)) return `Live · ${clock(match.clock_seconds)}`;
+  if (isFinished(match.status)) return "Full time";
+  const kickoff = match.scheduled_kickoff ? new Date(match.scheduled_kickoff) : null;
+  return kickoff && Number.isFinite(kickoff.getTime())
+    ? `Kick-off ${kickoff.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}`
+    : "Scheduled";
 }

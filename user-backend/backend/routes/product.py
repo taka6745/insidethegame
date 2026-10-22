@@ -3,20 +3,21 @@ import asyncio
 from uuid import UUID
 
 import anyio
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Header, WebSocket, WebSocketDisconnect
 from backend.domain import RuleError
 from backend.models.viewer_audience import ViewerAudience
+from .audiences import cached_json
 from .questions import SessionRequest, MessageRequest
 
 
-async def stream_product(ws, service, token):
+async def stream_product(ws, service, match_id, token):
     try:
-        peer, snapshot = await service.attach(token)
+        peer, snapshot = await service.attach(match_id, token)
     except RuleError as exc:
         # Accept before closing so browsers receive the application close code
         # rather than an opaque HTTP handshake failure.
         await ws.accept()
-        await ws.close(code=4001 if exc.status < 500 else 1013)
+        await ws.close(code=4404 if exc.code == 'match_not_found' else 4001 if exc.status < 500 else 1013)
         return
     try:
         await ws.accept()
@@ -53,50 +54,57 @@ async def stream_product(ws, service, token):
         pass
     finally:
         with anyio.CancelScope(shield=True):
-            await service.detach(peer)
+            await service.detach(match_id, peer)
 
 
 def product_router(service):
+    """Everything per match under /product/matches/{match_id}; a session belongs to one match."""
     router = APIRouter(prefix='/product', tags=['Match viewer'])
+    session = '/matches/{match_id}/sessions/{token}'
 
-    @router.post('/demo/reset')
-    async def reset_demo():
-        return await service.reset_demo()
+    @router.get('/matches')
+    async def matches():
+        return await service.matches()
 
     @router.get('/profiles')
     async def profiles():
         return await service.profiles()
 
-    @router.post('/sessions')
-    async def start(body: SessionRequest):
-        return await service.start(body.profile_id)
+    @router.get('/prices', responses={304: {'description': 'Prices unchanged'}})
+    async def prices(if_none_match: str | None = Header(default=None)):
+        """Configured answer prices (US dollars per million tokens) for viewer receipts."""
+        return cached_json(*await service.prices(), if_none_match)
 
-    @router.get('/{token}')
-    async def bootstrap(token: UUID):
-        return await service.bootstrap(token)
+    @router.post('/matches/{match_id}/sessions')
+    async def start(match_id: str, body: SessionRequest):
+        return await service.start(match_id, body.profile_id)
 
-    @router.put('/{token}/audience')
-    async def select_audience(token: UUID, body: ViewerAudience):
-        return await service.select_audience(token, body)
+    @router.get(session)
+    async def bootstrap(match_id: str, token: UUID):
+        return await service.bootstrap(match_id, token)
 
-    @router.post('/{token}/messages')
-    async def ask(token: UUID, body: MessageRequest):
-        return await service.questions.ask(token, body.request_id, body.prompt)
+    @router.put(session + '/audience')
+    async def select_audience(match_id: str, token: UUID, body: ViewerAudience):
+        return await service.select_audience(match_id, token, body)
 
-    @router.get('/{token}/turns/{turn_id}/replay/{page}')
-    async def replay_page(token: UUID, turn_id: int, page: int):
-        return await service.questions.replay_page(token, turn_id, page)
+    @router.post(session + '/messages')
+    async def ask(match_id: str, token: UUID, body: MessageRequest):
+        return await service.questions.ask(match_id, token, body.request_id, body.prompt, body.seq)
 
-    @router.post('/{token}/offers/{offer_id}/track')
-    async def track(token: UUID, offer_id: UUID):
-        return await service.track(token, offer_id)
+    @router.get(session + '/turns/{turn_id}/replay/{page}')
+    async def replay_page(match_id: str, token: UUID, turn_id: int, page: int):
+        return await service.questions.replay_page(match_id, token, turn_id, page)
 
-    @router.delete('/{token}/pins/{calculation_id}')
-    async def untrack(token: UUID, calculation_id: str):
-        return await service.untrack(token, calculation_id)
+    @router.post(session + '/offers/{offer_id}/track')
+    async def track(match_id: str, token: UUID, offer_id: UUID):
+        return await service.track(match_id, token, offer_id)
 
-    @router.websocket('/{token}/live')
-    async def live(ws: WebSocket, token: UUID):
-        await stream_product(ws, service, token)
+    @router.delete(session + '/pins/{calculation_id}')
+    async def untrack(match_id: str, token: UUID, calculation_id: str):
+        return await service.untrack(match_id, token, calculation_id)
+
+    @router.websocket(session + '/live')
+    async def live(ws: WebSocket, match_id: str, token: UUID):
+        await stream_product(ws, service, match_id, token)
 
     return router

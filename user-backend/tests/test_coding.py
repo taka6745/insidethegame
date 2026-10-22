@@ -1,6 +1,6 @@
 import pytest
 
-from backend.coding import Case, Goal, build_calculation
+from benchmarks.coding import Case, Goal, build_calculation
 
 GOAL = Goal("Count headed shots since minute 20", frozenset({"type", "bodyPart", "minute"}), (
     Case("exclude foot shots and earlier headers", ({"type": "shot", "bodyPart": "head", "minute": 19},
