@@ -312,6 +312,23 @@ test("sessions are stored per match; a stale token falls back to a new session",
   assert.equal(f.controller.storage.getItem("match-session:m2:one"), "other");
 });
 
+test("opening the page resumes this tab's session; only Reconnect starts a new one", async () => {
+  const calls: string[] = [];
+  const f = fixture({
+    match: "m1",
+    profiles: async () => ({ profiles: [{ id: "one" }] }),
+    restore: async (token: string) => { calls.push(`restore:${token}`); return { session_token: token, turns: [], snapshot: snapshot() }; },
+    session: async () => { calls.push("session"); return { session_token: "fresh", turns: [], snapshot: snapshot() }; },
+    socketUrl: () => "ws://local",
+  });
+  f.controller.storage.setItem("match-session:m1:one", "mine");
+  await f.controller.start();
+  assert.deepEqual(calls, ["restore:mine"]);
+  assert.equal(f.controller.token, "mine");
+  await f.controller.connect();
+  assert.deepEqual(calls, ["restore:mine", "session"]);
+});
+
 test("a purged or unknown match (404) stops the viewer and returns to the picker", async () => {
   let gone = 0, stopped = 0;
   const f = fixture({

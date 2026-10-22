@@ -218,11 +218,9 @@ window.addEventListener("pagehide", () => controller.stop());
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) controller.connect({ restore: true });
 });
-const navigation = performance.getEntriesByType("navigation")[0] as
-  | PerformanceNavigationTiming
-  | undefined;
-const restore = navigation?.type === "reload";
-controller.start({ restore }).catch((error: Error) => {
+// The token lives in this tab's sessionStorage, so any load in this tab (reload, picker, Start demo) resumes its own
+// session; only Reconnect takes over from another tab. Starting fresh here failed this tab's own pending question.
+controller.start().catch((error: Error) => {
   view.error(error.message);
   view.connection("offline");
 });

@@ -145,7 +145,8 @@ export class MatchController {
       return this.api.replayPage(this.token, turnId, page);
     };
   }
-  async start({ restore = false } = {}) {
+  /** Opening the page resumes this tab's saved session; `connect()` alone (Reconnect) takes over from another tab. */
+  async start({ restore = true } = {}) {
     const result = await this.api.profiles();
     const saved = this.storage.getItem("match-profile");
     this.profile = result.profiles.find(profile => profile.id === saved)?.id
