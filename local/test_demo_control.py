@@ -354,6 +354,22 @@ class DemoControlTests(unittest.TestCase):
             demo_control.capture(http, "20", log=lambda _: None, timeout=0)
         self.assertIn("ht, not 20", str(raised.exception))
 
+    def test_a_seed_copied_from_another_stack_is_offered_at_its_own_point(self):
+        manifest = self.seed()
+        self.settings["start_points"][1]["seed"] = None
+        manifest.write_text(json.dumps({**json.loads(manifest.read_text()), "point": "20"}))
+        put = []
+        http = httpx.Client(transport=httpx.MockTransport(lambda r: (
+            put.append(json.loads(r.content)) if r.method == "PUT" else None) or httpx.Response(
+                200, json={**self.settings, "revision": 3})))
+        demo_control.adopt(http, "seed-1", log=lambda _: None)
+        self.assertEqual([p["seed"] for p in put[0]["start_points"]], [None, "seed-1"])
+        self.assertEqual(put[0]["expected_revision"], 3)
+        manifest.write_text(json.dumps({**json.loads(manifest.read_text()), "format": 1}))
+        with self.assertRaises(SystemExit):
+            demo_control.adopt(http, "seed-1", log=lambda _: None)
+        self.assertEqual(len(put), 1)
+
     def test_state_marks_points_without_a_seed_not_ready(self):
         self.assertEqual([p["ready"] for p in self.client.get("/state").json()["points"]], [True, False])
 

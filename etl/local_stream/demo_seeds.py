@@ -16,6 +16,9 @@ from reference import pipeline
 log = logging.getLogger(__name__)
 # State tables are replaced after the data rows (Azure insert triggers).
 SEED_STATE = ("matchProgress", "matchProgressMarks", "spadlProgress", "localStreamWindows")
+# The local stand-in's own state: no Azure table, so outside the schema fingerprint; a seed recorded on Azure
+# lacks it and its closed windows are derived from the seed's minute stats.
+STAND_IN = ("localStreamWindows",)
 MAX_SEED_BYTES = 512 * 1024 * 1024
 JSON_CHUNK_ROWS = 5000  # rows per OPENJSON insert
 # Canonical seq columns: no row may come from past the seed's seq (rawEvents.seq counts MA3 rows instead).
@@ -69,7 +72,7 @@ class SqlSeeds:
         with self.lock:
             conn = self.repository.conn
             cur = conn.cursor()
-            present = self._present(cur)
+            present = [t for t in self._present(cur) if t not in STAND_IN]
             cur.execute(f"SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE "
                         f"TABLE_SCHEMA = 'dbo' AND TABLE_NAME IN ({', '.join(['%s'] * len(present))})",
                         tuple(present))
@@ -120,6 +123,10 @@ class SqlSeeds:
             conn.commit()
             raise RestoreRefused(f"{match_id} is already known or purged")
         counts, types = {}, self._types(cur, present)
+        if "localStreamWindows" in present and "localStreamWindows" not in tables and tables.get("minuteStats"):
+            # Recorded on Azure: every minute it stored is closed (else the worker would reopen them all).
+            closed = _json_time("windowEnd", max(row["windowEnd"] for row in tables["minuteStats"]))
+            tables = {**tables, "localStreamWindows": [{"matchId": match_id, "closedUntil": closed}]}
         order = [t for t in present if t not in SEED_STATE] + [t for t in present if t in SEED_STATE]
         for table in order:
             # Restored rows count as ingested now (the column's default): the worker reloads open-window MA3 rows

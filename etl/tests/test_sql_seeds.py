@@ -42,7 +42,8 @@ def rows(connect, match_id, run_id):
     return found
 
 
-def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect):
+@pytest.mark.parametrize("recorded_on", ["local", "azure"])
+def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect, recorded_on):
     source, new, reference = (v2_stream.build(run) for run in ("0000aaaa", "0000cccc", "0000dddd"))
     ids = [(s[0]["matchId"], s[0]["runId"]) for s in (source, new, reference)]
     (source_id, source_run), (new_id, new_run), (ref_id, ref_run) = ids
@@ -61,6 +62,8 @@ def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect):
     assert max(r["seq"] for r in tables["canonicalEvents"]) == SEQ and tables["spadlActions"]
     recorded = rows(connect, source_id, source_run)
     seed = json.loads(json.dumps(tables).replace(source_id, new_id).replace(source_run, new_run))  # over HTTP
+    if recorded_on == "azure":  # Azure has no stand-in table: same fingerprint, closed windows from minute stats
+        del seed["localStreamWindows"]
     for row in seed["rawEvents"]:  # a seed recorded days ago: its open-window rows must still reload
         row["ingestedAt"] = "2026-01-01T00:00:00.000000"
     worker.purge(source_id, repository)  # the recording leaves every owner once captured

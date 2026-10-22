@@ -136,15 +136,34 @@ def capture(http, point, log=print, timeout=CAPTURE_TIMEOUT):
     (root / 'manifest.json').write_text(json.dumps({'format': SEED_FORMAT, 'seed_id': seed_id, 'point': point,
                                                     'schemas': schemas, 'fixtures': fixtures,
                                                     'created_at': datetime.now(timezone.utc).isoformat()}, indent=2))
+    name_seed(http, point, seed_id)
+    for run in runs:  # the recording is done: its runs leave every owner
+        purge(http, {'match_id': run['match_id']}, log=lambda _: None)
+    log(f'Seed {seed_id}: {fixtures}')
+    return seed_id
+
+
+def name_seed(http, point, seed_id):
+    """Offer `seed_id` at the feed's start point `point`."""
     settings = http.get(FEED + '/demo').raise_for_status().json()
     points = [{**p, 'seed': seed_id} if p['id'] == point else p for p in settings['start_points']]
     body = {k: v for k, v in settings.items() if k not in ('start_points', 'revision')}
     http.put(FEED + '/demo', json={**body, 'start_points': points, 'expected_revision': settings['revision']}
              ).raise_for_status()
-    for run in runs:  # the recording is done: its runs leave every owner
-        purge(http, {'match_id': run['match_id']}, log=lambda _: None)
-    log(f'Seed {seed_id}: {fixtures}')
-    return seed_id
+
+
+def adopt(http, seed_id, log=print):
+    """Offer a seed recorded on another stack (copied into SEED_ROOT) at its own start point. Each owner still
+    checks its schema fingerprint and the feed its seq at Start."""
+    settings = http.get(FEED + '/demo').raise_for_status().json()
+    try:
+        manifest = seed_manifest(seed_id, settings['fixtures'])
+    except SeedStale as exc:
+        raise SystemExit(str(exc)) from exc
+    if manifest.get('seed_id') != seed_id or manifest['point'] not in {p['id'] for p in settings['start_points']}:
+        raise SystemExit(f"seed {seed_id} is for point {manifest.get('point')}, which this feed does not offer")
+    name_seed(http, manifest['point'], seed_id)
+    log(f"Seed {seed_id} offered at {manifest['point']}")
 
 
 def seed_manifest(seed_id, fixtures):
@@ -662,6 +681,8 @@ if __name__ == '__main__':
     recorder.add_argument('--from', dest='from_point', help='start from this point\'s seed instead of kick-off')
     capturer = sub.add_parser('capture', help='Seed recording: wait for the held runs to settle, then save the seed')
     capturer.add_argument('point')
+    adopter = sub.add_parser('adopt', help='Offer a seed copied from another stack at its start point')
+    adopter.add_argument('seed_id')
     starter = sub.add_parser('start', help='Purge, then start one run per fixture at the next whole minute')
     starter.add_argument('fixtures', nargs='*', default=['riverton-forgeham'])
     server = sub.add_parser('serve', help='Serve the public demo API')
@@ -681,5 +702,7 @@ if __name__ == '__main__':
                 record(client, args.point, args.from_point)
             elif args.action == 'capture':
                 capture(client, args.point)
+            elif args.action == 'adopt':
+                adopt(client, args.seed_id)
             else:
                 start(client, args.fixtures)
