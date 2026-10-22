@@ -27,7 +27,7 @@ class SubscriptionPlanner:
             'storylines': '\n'.join(f"- {s['label']} ({team_names.get(s['team_id'], 'both teams')}, {s['status']})"
                                     for s in storylines) or '(none yet)',
             'current_follow': follow['label'] if follow else '(none)',
-            'live_matches': '\n'.join(f"- {' v '.join(m['teams'])}" + (f" ({m['minute']}')" if m.get('minute') else '')
+            'live_matches': '\n'.join(f"- {' v '.join(m['teams'])}" + (f" ({m['minute']})" if m.get('minute') else '')
                                        + (' (this match)' if m.get('this_match') else '') for m in live_matches)
                             or '(this match only)',
             'conversation': '\n'.join(f"Viewer: {t['prompt']}\nYou: {(t['reply'] or {}).get('text', '')}"

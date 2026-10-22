@@ -99,6 +99,38 @@ async def _load(store, match_id, containers):
     return {name: len(docs) for name, docs in containers.items()}
 
 
+def _clock(text):
+    """'1-019' -> (1, 19); None for anything else."""
+    try:
+        period, minute = str(text).split("-")
+        return int(period), int(minute)
+    except ValueError:
+        return None
+
+
+def past_seq(containers, max_seq):
+    """Which restored documents reach past the seed's seq, or None. Narratives, analyses and queued steps carry
+    the seq they were written from; storylines may only cite seeded analyses; summaries may only cover minutes
+    the checkpoint has closed."""
+    for name in ("narratives", "analyses"):
+        if any((doc.get("eventSeq") or 0) > max_seq for doc in containers.get(name, [])):
+            return name
+    checkpoints = containers.get("checkpoints", [])
+    if any((p.get("seq") or 0) > max_seq for doc in checkpoints for p in doc.get("pending", [])):
+        return "queued steps"
+    analyses = {doc["id"] for doc in containers.get("analyses", [])}
+    for line in containers.get("storylines", []):
+        cited = {line.get("openedBy"), line.get("lastAnalysisId"), *(b.get("analysisId") for b in line.get("beats", []))}
+        if cited - {None} - analyses:
+            return "storylines"
+    closed = max((c for c in (_clock(doc.get("closedThrough")) for doc in checkpoints) if c), default=None)
+    for block in containers.get("contextBlocks", []):
+        end = block.get("coversTo") or {}
+        if closed is None or (end.get("periodId", 0), end.get("timeMin", 0)) > closed:
+            return "summaries"
+    return None
+
+
 async def restore(router, match_id, containers, max_seq, seed_schema):
     """Load a seed under a new matchId. The checkpoint's follow state is cleared, so follows made on this run
     start fresh. Refused for another schema, a known or purged match, documents of another match or
@@ -111,8 +143,9 @@ async def restore(router, match_id, containers, max_seq, seed_schema):
         raise SeedRefused(f"Unknown containers {sorted(set(containers) - set(SEED_STORES))}")
     if any(doc.get("matchId") != match_id for docs in containers.values() for doc in docs):
         raise SeedRefused("The seed holds documents of another match")
-    if any((doc.get("eventSeq") or 0) > max_seq for doc in containers.get("narratives", [])):
-        raise SeedRefused("narratives past the seed's seq")
+    past = past_seq(containers, max_seq)
+    if past:
+        raise SeedRefused(f"{past} past the seed's seq")
     for doc in containers.get("checkpoints", []):
         doc.update(follows=None, followPairs=[], followFired={}, followRetries=[],
                    pending=[p for p in doc.get("pending", []) if not str(p.get("type", "")).startswith("subscription")])

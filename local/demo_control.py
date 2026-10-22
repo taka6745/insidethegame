@@ -21,14 +21,21 @@ OWNERS = (('feed', FEED + '/admin/matches/purge', None),
           ('engine', os.environ.get('ENGINE_ADMIN_URL', 'http://narrative-live:8000') + '/admin/matches/purge',
            os.environ.get('ENGINE_ADMIN_TOKEN')),
           ('backend', os.environ.get('BACKEND_URL', 'http://backend:8000') + '/admin/matches/purge', None))
-PURGE_TIMEOUT = 300  # Seconds; a purge waits for the stream's current batch, slow under load.
-PURGE_RETRIES, PURGE_RETRY_SECONDS = 10, 2  # 503 means retry; purge is idempotent.
+
+def _number(name, default):
+    return type(default)(os.environ.get(name, default))
+
+
+PURGE_TIMEOUT = _number('DEMO_PURGE_TIMEOUT', 300)  # Seconds; a purge waits for the stream's current batch.
+PURGE_RETRIES = _number('DEMO_PURGE_RETRIES', 10)  # 503 means retry; purge is idempotent.
+PURGE_RETRY_SECONDS = _number('DEMO_PURGE_RETRY_SECONDS', 2)
 CHECK_TIMEOUT = 3  # Seconds per readiness probe.
 WAKE_TIMEOUT = 60  # Seconds a wake-up call waits for an app scaled to zero.
 SEED_ROOT = Path(os.environ.get('DEMO_SEED_ROOT', '/seeds'))  # seeds/{seed_id}/: manifest + one file per owner
 SEED_OWNERS = ('etl', 'engine', 'backend')  # restore_runs: the ETL alongside the backend, then the engine
-RELEASE_LEAD = 5  # Seconds from the last restore to the first run's clock reading the start point.
-CAPTURE_POLL, CAPTURE_TIMEOUT = 5, 1800  # Seconds: a held run's owners must settle before a capture.
+RELEASE_LEAD = _number('DEMO_RELEASE_LEAD', 5)  # Seconds from the last restore to the first run reading the point.
+CAPTURE_POLL = _number('DEMO_CAPTURE_POLL', 5)  # Seconds: a held run's owners must settle before a capture.
+CAPTURE_TIMEOUT = _number('DEMO_CAPTURE_TIMEOUT', 1800)
 SEED_FORMAT = 2  # manifest layout; 2 adds each owner's schema fingerprint and the source run id
 
 
@@ -87,6 +94,9 @@ def capture(http, point, log=print, timeout=CAPTURE_TIMEOUT):
     while True:
         runs = [r for r in http.get(FEED + '/runs').raise_for_status().json()
                 if r['status'] != 'finished' and r.get('hold_seconds') is not None]
+        other = sorted({str(r.get('held_at')) for r in runs if r.get('held_at') != point})
+        if other:  # a seed named for one point but holding another would read ready, then fail every Start
+            raise SystemExit(f"The held runs stop at {', '.join(other)}, not {point}; record {point} first")
         held = [r for r in runs if r['video_seconds'] >= r['hold_seconds'] - 0.01]
         parts = {r['match_id']: export_parts(http, r['match_id']) for r in held} if held and len(held) == len(runs) else {}
         waiting = [r['match_id'] for r in runs if r['match_id'] not in parts or not settled(parts[r['match_id']], r)]
@@ -263,8 +273,32 @@ def app(http=None):
         model_config = ConfigDict(extra='forbid')
         point: str = Field(default='kickoff', max_length=20)
 
+    from fastapi.responses import JSONResponse
+
     api, http = FastAPI(title='Demo control'), http or httpx.Client(timeout=PURGE_TIMEOUT)
     serial = threading.Lock()  # Start and cancel never interleave (one demo-control replica).
+    # Start and cancel answer at once (202) and run here one after another; /state reports what is pending and
+    # how the last one ended, so no request waits on a purge or a seed restore (minutes under load).
+    jobs, book = ThreadPoolExecutor(max_workers=1), threading.Lock()
+    work = {'pending': [], 'last': None}
+
+    def submit(action, run):
+        def job():
+            try:
+                work['last'] = {'action': action, 'ok': True, **run()}
+            except HTTPException as exc:
+                work['last'] = {'action': action, 'ok': False, 'status': exc.status_code, 'detail': exc.detail}
+            except Exception as exc:  # noqa: BLE001 - reported on /state; the viewer retries
+                print(f'{action} failed: {type(exc).__name__}: {exc}', flush=True)
+                work['last'] = {'action': action, 'ok': False, 'status': 503,
+                                'detail': f'Could not {action} the demo; try again.'}
+            finally:
+                with book:
+                    work['pending'].remove(action)
+        with book:
+            work['pending'].append(action)
+            jobs.submit(job)
+        return JSONResponse({'accepted': True, 'pending': list(work['pending'])}, status_code=202)
 
     def feed(method, path, **kwargs):
         response = http.request(method, FEED + path, **kwargs)
@@ -300,26 +334,41 @@ def app(http=None):
         main = settings.get('main_fixture') or next(iter(settings.get('fixtures') or []), None)
         main_run = next((r for r in active if r['fixture'] == main), None)
         return {'points': points, 'live': bool(active), 'runs': active, 'live_from': live_from,
-                'main_fixture': main, 'main_match_id': main_run and main_run['match_id']}
+                'main_fixture': main, 'main_match_id': main_run and main_run['match_id'],
+                'pending': list(work['pending']), 'last': work['last']}
+
+    def refuse_start(point):
+        """A start that cannot happen, refused at once: a recording holds the feed, or the seed no longer fits."""
+        if split()[2]:  # the recording's held runs hold the feed; a demo would mix with them
+            raise HTTPException(409, 'A start point is being recorded; start the demo once it is saved.')
+        settings = feed('GET', '/demo')
+        chosen = next((p for p in settings['start_points'] if p['id'] == point), None)
+        if chosen and chosen.get('seed'):  # refuse a seed that cannot fit before any run exists
+            try:
+                seed_manifest(chosen['seed'], settings['fixtures'])
+            except SeedStale as exc:
+                raise HTTPException(409, f"The {chosen['label']} start needs recording again ({exc}).") from exc
 
     @api.post('/start')
     def start_demo(body: Start | None = None):
-        point, began = (body or Start()).point, time.monotonic()
+        point = (body or Start()).point
         for name, (url, token) in checks.items():  # wake every owner now, in parallel, before the purge needs them
             pool.submit(ok, url, token, WAKE_TIMEOUT)
+        if not work['pending']:
+            active = split()[0]
+            if active:
+                return {'started': False, 'runs': active}
+        refuse_start(point)
+        return submit('start', lambda: run_start(point))
+
+    def run_start(point):
+        began = time.monotonic()
         with serial:
             active, finished, recording = split()
             if active:
                 return {'started': False, 'runs': active}
-            if recording:  # the recording's held runs hold the feed; a demo would mix with them
-                raise HTTPException(409, 'A start point is being recorded; start the demo once it is saved.')
+            refuse_start(point)
             settings = feed('GET', '/demo')
-            chosen = next((p for p in settings['start_points'] if p['id'] == point), None)
-            if chosen and chosen.get('seed'):  # refuse a seed that cannot fit before any run exists
-                try:
-                    seed_manifest(chosen['seed'], settings['fixtures'])
-                except SeedStale as exc:
-                    raise HTTPException(409, f"The {chosen['label']} start needs recording again ({exc}).") from exc
             for run in finished:  # The feed purges its own finished runs when it starts the demo.
                 purge(http, {'match_id': run['match_id']}, OWNERS[1:], log=lambda _: None)
             result = feed('POST', '/demo/start', json={'point': point})
@@ -382,6 +431,11 @@ def app(http=None):
     @api.post('/cancel')
     def cancel():
         """Everything the feed lists (finished staggered runs too) goes from every owner, feed first."""
+        if not work['pending'] and not feed('GET', '/runs'):
+            return {'cancelled': []}
+        return submit('cancel', run_cancel)
+
+    def run_cancel():
         with serial:
             runs = feed('GET', '/runs')
             if runs:

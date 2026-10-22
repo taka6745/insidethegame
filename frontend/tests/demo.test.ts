@@ -43,6 +43,21 @@ test("the demo API posts the chosen start point and surfaces the operator's refu
   assert.equal((await api.state()).live, false);
 });
 
+test("an accepted start waits on the operator's state, then returns how it ended or its refusal", async () => {
+  const states = [{ points: [], live: false, pending: ["start"] },
+    { points: [], live: true, pending: [], last: { action: "start", ok: true, started: true, live_from: "20′" } }];
+  const api = new DemoApi(async (url) => url.endsWith("start")
+    ? { ok: true, status: 202, json: async () => ({ accepted: true, pending: ["start"] }) }
+    : { ok: true, status: 200, json: async () => states.shift() ?? {} });
+  const result = await api.settled("start", api.call("start", { point: "20" }), 0);
+  assert.deepEqual([result.started, result.live_from], [true, "20′"]);
+  const failing = new DemoApi(async (url) => url.endsWith("cancel")
+    ? { ok: true, status: 202, json: async () => ({ accepted: true }) }
+    : { ok: true, status: 200, json: async () => ({ points: [], live: true, pending: [],
+      last: { action: "cancel", ok: false, detail: "Could not cancel the demo; try again." } }) });
+  await assert.rejects(failing.settled("cancel", failing.call("cancel", {}), 0), /Could not cancel/);
+});
+
 test("start points without a seed are offered but disabled; a live demo shows only Cancel", () => {
   const { nodes, document } = doc();
   const controls = new DemoControls(document, stub<DemoApi>({}));

@@ -9,7 +9,7 @@ from psycopg.types.json import Jsonb
 
 MIGRATIONS = Path(__file__).resolve().parents[1] / "migrations"
 RUN_COLUMNS = ("run_id::text AS run_id, match_id, fixture, kickoff, created_at, status, position, seq, hold_seconds, "
-               "resume_seconds, start_point")
+               "resume_seconds, start_point, hold_point")
 DEMO_COLUMNS = "fixtures, main_fixture, stagger_seconds, max_active_runs, start_points, revision"
 
 
@@ -56,14 +56,16 @@ class FeedRepository:
             return db.execute("SELECT fixture, source_match_id, description, teams, duration_seconds, "
                               "capabilities, synthetic FROM recordings ORDER BY fixture").fetchall()
 
-    def create_run(self, run_id, match_id, fixture, kickoff, hold_seconds=None, resume_seconds=None, start_point=None):
+    def create_run(self, run_id, match_id, fixture, kickoff, hold_seconds=None, resume_seconds=None, start_point=None,
+                   hold_point=None):
         with self._connect() as db:
             if db.execute("SELECT 1 FROM purged_matches WHERE match_id = %s", (match_id,)).fetchone():
                 return None
             return db.execute(f"INSERT INTO runs (run_id, match_id, fixture, kickoff, status, hold_seconds, "
-                              f"resume_seconds, start_point) VALUES (%s, %s, %s, %s, 'scheduled', %s, %s, %s) "
+                              f"resume_seconds, start_point, hold_point) VALUES (%s, %s, %s, %s, 'scheduled', %s, %s, %s, %s) "
                               f"RETURNING {RUN_COLUMNS}",
-                              (run_id, match_id, fixture, kickoff, hold_seconds, resume_seconds, start_point)).fetchone()
+                              (run_id, match_id, fixture, kickoff, hold_seconds, resume_seconds, start_point,
+                               hold_point)).fetchone()
 
     def release(self, match_id, kickoff):
         """Start a run that waited for its seed to be restored; None if it was not waiting."""

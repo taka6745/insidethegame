@@ -438,6 +438,7 @@ class DemoTests(FeedTestCase):
 
     async def test_a_held_run_stops_at_its_point(self):
         run = await self.service.create_run("chelsea-united", hold_point="20")
+        self.assertEqual(run["held_at"], "20")  # demo control's capture checks it
         hold = self.stream.video_at(1, 20)
         await self.run_to(hold + 30, step=10)
         sent = [b for b in self.sink.bodies(run["match_id"]) if b.get("type") == "MatchEvent"]

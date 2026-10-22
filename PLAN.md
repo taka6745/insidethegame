@@ -264,7 +264,7 @@ record it again), as is one whose seq differs from where the feed resumes:
 matchId and runId (and its MA1 time to now, so later purge-all cut-offs do not drop it), restores ETL alongside the
 backend, then the engine (which asks the backend for the match's targets; each refuses another schema, a known or tombstoned match, rows of another match, and rows
 past the seed's seq), then releases the runs (`POST /runs/{id}/release`), main game first, staggered: each clock
-starts at the point 5 s later, plus the stagger. Any failure purges the runs everywhere (`503`; a stale seed `409`).
+starts at the point 5 s later, plus the stagger. Any failure purges the runs everywhere (`503`; a stale seed `409`). Start and cancel answer `202` at once and run in demo control; `/state` reports `pending` and the `last` outcome, which the viewer polls. Every restored document is bounded by the seed's seq: ETL canonical, MA3, SPADL (`seq`, `finalSeq`), possession and progress rows by seq, key events by their MA3 row, minute stats by the last event; the engine's narratives, analyses and queued steps by seq, storylines by their analyses, summaries by the checkpoint's closed minute. Restored ETL rows count as ingested now, so a seed older than a day still reloads its open minute window.
 While a seed is being recorded its held runs are no demo: `state` leaves them out and `start` answers `409`. Each run carries `started_from`; `/demo-api/state` returns
 `live_from` and the viewer says "The story so far was generated earlier on this pipeline; live from N′." A viewer
 who follows a story at a seeded start gets the usual catch-up ("story so far") step.

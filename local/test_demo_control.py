@@ -60,21 +60,32 @@ class DemoControlTests(unittest.TestCase):
 
         self.client = TestClient(demo_control.app(httpx.Client(transport=httpx.MockTransport(handler))))
 
+    def settle(self):
+        """Wait for the queued start or cancel to finish; how it ended (start and cancel answer 202 at once)."""
+        for _ in range(500):
+            state = self.client.get("/state").json()
+            if not state["pending"]:
+                return state["last"]
+            time.sleep(0.01)
+        self.fail("the demo job did not finish")
+
     def purged(self):
         return [(host, body.get("match_id", "all")) for host, path, body in self.calls if path == "/admin/matches/purge"]
 
     def test_start_purges_finished_runs_from_the_other_owners_then_starts_once(self):
         self.runs = [{"match_id": "old", "status": "finished"}]
-        first = self.client.post("/start").json()
-        self.assertTrue(first["started"])
+        self.assertEqual(self.client.post("/start").status_code, 202)
+        self.assertTrue(self.settle()["started"])
         self.assertEqual(self.purged(), [("etl-stream", "old"), ("narrative-live", "old"), ("backend", "old")])
         self.assertFalse(self.client.post("/start").json()["started"])
         self.assertTrue(self.client.get("/state").json()["live"])
 
     def test_cancel_purges_every_run_from_every_owner_feed_first(self):
         self.client.post("/start")
+        self.settle()
         self.runs[0]["status"] = "finished"  # Staggered: the first can end before the others.
-        self.assertEqual(self.client.post("/cancel").json()["cancelled"], ["m0", "m1", "m2"])
+        self.assertEqual(self.client.post("/cancel").status_code, 202)
+        self.assertEqual(self.settle()["cancelled"], ["m0", "m1", "m2"])
         self.assertEqual(self.purged(), [("feed", "all"), ("etl-stream", "all"), ("narrative-live", "all"),
                                          ("backend", "all")])
 
@@ -84,16 +95,13 @@ class DemoControlTests(unittest.TestCase):
 
     def test_a_start_during_a_cancel_waits_and_starts_a_full_demo(self):
         self.client.post("/start")
-        self.gate.clear()  # The feed's purge is slow.
-        with ThreadPoolExecutor(2) as pool:
-            cancelling = pool.submit(self.client.post, "/cancel")
-            time.sleep(0.1)
-            starting = pool.submit(self.client.post, "/start")
-            time.sleep(0.1)
-            self.assertFalse(starting.done())
-            self.gate.set()
-            cancelling.result()
-            result = starting.result().json()
+        self.settle()
+        self.gate.clear()  # The feed's purge is slow: both requests still answer at once.
+        self.assertEqual(self.client.post("/cancel").status_code, 202)
+        self.assertEqual(self.client.post("/start").status_code, 202)
+        self.assertEqual(self.client.get("/state").json()["pending"], ["cancel", "start"])
+        self.gate.set()
+        result = self.settle()
         self.assertTrue(result["started"])
         self.assertEqual(len(result["runs"]), 3)
 
@@ -121,8 +129,8 @@ class DemoControlTests(unittest.TestCase):
     def test_a_seeded_start_restores_every_owner_under_the_new_ids_then_releases_staggered(self):
         self.seed()
         self.settings["stagger_seconds"] = 120
-        result = self.client.post("/start", json={"point": "20"}).json()
-        self.assertEqual(result["live_from"], "20′")
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["live_from"], "20′")
         restores = [(host, body) for host, path, body in self.calls if path == "/admin/matches/restore"]
         # The runs restore in parallel; per run the ETL alongside the backend, then the engine.
         main = {h: b for h, b in restores if b["match_id"] == "m1"}  # the main game ("b", m1)
@@ -151,10 +159,12 @@ class DemoControlTests(unittest.TestCase):
     def test_an_owner_refusing_the_seed_schema_or_a_seq_mismatch_is_a_409_and_purges_the_runs(self):
         self.seed()
         self.refuse_restore = {"narrative-live"}
-        self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 409)
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["status"], 409)
         self.assertEqual({m for _, m in self.purged()}, {"m0", "m1", "m2"})
         self.runs, self.refuse_restore, self.resume_seq = [], set(), 8  # the feed resumes after another seq
-        self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 409)
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["status"], 409)
         self.assertFalse([c for c in self.calls if c[1].endswith("/release")])
 
     def test_a_recording_in_progress_is_no_demo_and_blocks_a_start(self):
@@ -167,20 +177,23 @@ class DemoControlTests(unittest.TestCase):
         self.seed()
         self.refuse_restore = {"backend"}
         self.refuse_status = 500
-        self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 503)
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["status"], 503)
         self.assertEqual({m for _, m in self.purged()}, {"m0", "m1", "m2"})
         self.assertFalse([c for c in self.calls if c[1].endswith("/release")])
 
     def test_an_owner_failing_its_purge_after_a_failed_restore_still_frees_every_run(self):
         self.seed()
         self.refuse_restore, self.refuse_status, self.refuse_purge = {"backend"}, 500, {"etl-stream"}
-        self.assertEqual(self.client.post("/start", json={"point": "20"}).status_code, 503)
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["status"], 503)
         self.assertEqual({m for host, m in self.purged() if host == "feed"}, {"m0", "m1", "m2"})
         self.assertEqual(self.runs, [])  # no run left waiting on a seed that will not come
 
     def test_status_reports_each_stage_from_real_checks(self):
         self.down = {"narrative-live"}
         self.client.post("/start")
+        self.settle()
         stages = {s["id"]: s["ready"] for s in self.client.get("/status").json()["stages"]}
         self.assertEqual(stages, {"feed": True, "event-hubs": False, "etl": True, "service-bus": False,
                                   "engine": False, "backend": True, "viewer": False})
@@ -208,9 +221,18 @@ class DemoControlTests(unittest.TestCase):
     def test_state_names_the_main_game_to_open_by_default(self):
         self.assertEqual([self.client.get("/state").json()[k] for k in ("main_fixture", "main_match_id")], ["b", None])
         self.client.post("/start")
+        self.settle()
         self.assertEqual(self.client.get("/state").json()["main_match_id"], "m1")  # fixture "b"
         del self.settings["main_fixture"]  # a feed without the setting: its first fixture
         self.assertEqual(self.client.get("/state").json()["main_fixture"], "b")
+
+    def test_capture_refuses_held_runs_of_another_point(self):
+        self.runs = [{"match_id": "rec-a", "fixture": "a", "status": "live", "hold_seconds": 1200.0,
+                      "held_at": "ht", "video_seconds": 1200.0, "seq": 7}]
+        http = httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, json=self.runs)))
+        with self.assertRaises(SystemExit) as raised:
+            demo_control.capture(http, "20", log=lambda _: None, timeout=0)
+        self.assertIn("ht, not 20", str(raised.exception))
 
     def test_state_marks_points_without_a_seed_not_ready(self):
         self.assertEqual([p["ready"] for p in self.client.get("/state").json()["points"]], [True, False])

@@ -113,8 +113,8 @@ CONFIG = {
         # Moment clips in a follow's playlist (038): asked with `decision` on these key events only.
         'clips': {'enabled': True,
                   'key_types': ['Goal', 'OwnGoal', 'RedCard', 'PenaltyAwarded', 'PenaltyMissed', 'VarOverturn'],
-                  'instructions': "How much would this story's followers want to watch this moment as a clip?",
-                  'levels': ['Not at all', 'A little', 'Quite a lot', 'They would want to see it'],
+                  'instructions': "How relevant is this moment to the story these viewers follow?",
+                  'levels': ['Not relevant', 'Slightly relevant', 'Relevant', 'Central to the story'],
                   'min_level': 3, 'min_confidence': 0.5,
                   'timing': {'goal': 'goal', 'own_goal': 'goal', 'penalty': 'foul', 'penalty_missed': 'shot_penalty',
                              'red_card': 'card', 'second_yellow': 'card', 'var_overturn': 'goal'},

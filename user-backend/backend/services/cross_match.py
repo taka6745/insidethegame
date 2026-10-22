@@ -5,6 +5,7 @@ import asyncio
 import logging
 
 from backend.domain import RuleError
+from backend.models.events import minute_label
 from .names import coverage, rarity
 
 log = logging.getLogger(__name__)
@@ -70,12 +71,12 @@ class CrossMatch:
                 continue
             if m is match:  # never past the viewer's picture
                 period, seconds = (snapshot.period, snapshot.clock_seconds) if snapshot else (None, None)
-            else:
-                last = m.events[-1] if m.events else None
+            else:  # the other match where ETL has it (its watermarks), not its newest delivery
+                last = await self.match_data.played(m)
                 period, seconds = (last.period, last.match_time_seconds) if last else (None, None)
             rows.append({'match_id': m.match_id, 'this_match': m is match,
                          'teams': [t['name'] for t in info['teams']],
-                         'minute': None if seconds is None else seconds // 60 + 1, 'period': period})
+                         'minute': None if seconds is None else minute_label(period, seconds), 'period': period})
         return rows
 
     async def info_of(self, match):

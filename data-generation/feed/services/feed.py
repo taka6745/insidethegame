@@ -129,7 +129,8 @@ class FeedService:
             offset = self._point_seconds(settings, fixture, resume_point) if resume_point else 0.0
             if hold is not None and hold <= offset:
                 raise FeedError(422, "The hold point must come after the resume point.")
-            run = await self._create(fixture, when, offset, hold=hold, wait=bool(offset), point=resume_point)
+            run = await self._create(fixture, when, offset, hold=hold, wait=bool(offset), point=resume_point,
+                                     held_at=hold_point)
         return self._public(run)
 
     async def release(self, match_id, after_seconds=0.0):
@@ -145,7 +146,7 @@ class FeedService:
             self._launch(run)
         return self._public(run)
 
-    async def _create(self, fixture, when, offset=0.0, hold=None, wait=False, point=None):
+    async def _create(self, fixture, when, offset=0.0, hold=None, wait=False, point=None, held_at=None):
         """Caller holds the lock. offset > 0: the run's clock reads `offset` at `when`; what came before
         is taken as already delivered (a restored seed), so sending resumes at that point without MA1.
         wait: do not start until `release` (after every owner restored the seed)."""
@@ -155,7 +156,7 @@ class FeedService:
             match_id = f"{fixture}-{run_id.hex[:8]}"
             run = await asyncio.to_thread(self.repository.create_run, str(run_id), match_id, fixture,
                                           when - timedelta(seconds=offset), hold, offset if wait else None,
-                                          point if offset else None)
+                                          point if offset else None, held_at)
             if run:
                 break
         else:
@@ -246,7 +247,8 @@ class FeedService:
                 "status": task.status if task else run["status"], "seq": task.seq if task else run["seq"],
                 "position": task.position if task else run["position"],
                 "awaiting_restore": run.get("resume_seconds") is not None and task is None,
-                "hold_seconds": run.get("hold_seconds"), "started_from": run.get("start_point"),
+                "hold_seconds": run.get("hold_seconds"), "held_at": run.get("hold_point"),
+                "started_from": run.get("start_point"),
                 "video_seconds": round(video, 3)}
 
     async def runs(self):

@@ -148,6 +148,12 @@ test("developer consoles are gated in nginx; media proxies only per-match playli
     ['location ~ "^/demo-api/(start|cancel)$" {', 'location ~ "^/demo-api/(state|status)$" {']);
   assert.match(nginx, /\(start\|cancel\)\$" \{\s+limit_except POST \{ deny all; \}\s+limit_req zone=demo_write /);
   assert.match(nginx, /\(state\|status\)\$" \{\s+limit_except GET \{ deny all; \}\s+limit_req zone=demo_read /);
+  // The per-client key is the last X-Forwarded-For hop (appended by the ingress), never a client-sent value.
+  const key = /"(~[^"]+)" \$last_hop;/.exec(nginx)?.[1]?.slice(1).replace("(?<last_hop>", "(");
+  assert.ok(key);
+  const lastHop = (xff: string) => new RegExp(key!).exec(xff)?.[1];
+  assert.equal(lastHop("6.6.6.6, 203.0.113.9"), "203.0.113.9");
+  assert.equal(lastHop("203.0.113.9"), "203.0.113.9");
   for (const page of ["../match/main.ts", "../lab/api.ts", "../lab/controller.ts", "../match/api.ts"])
     assert.doesNotMatch(await readFile(new URL(page, import.meta.url), "utf8"), /feed-api|purge-api/);
 });

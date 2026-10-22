@@ -76,13 +76,14 @@ class MemoryRepository:
     def recordings(self):
         return self.catalogue
 
-    def create_run(self, run_id, match_id, fixture, kickoff, hold_seconds=None, resume_seconds=None, start_point=None):
+    def create_run(self, run_id, match_id, fixture, kickoff, hold_seconds=None, resume_seconds=None, start_point=None,
+                   hold_point=None):
         if match_id in self.tombstones:
             return None
         self.rows[run_id] = {"run_id": run_id, "match_id": match_id, "fixture": fixture, "kickoff": kickoff,
                              "created_at": self.clock.now(), "status": "scheduled", "position": 0, "seq": 0,
                              "hold_seconds": hold_seconds, "resume_seconds": resume_seconds,
-                             "start_point": start_point}
+                             "start_point": start_point, "hold_point": hold_point}
         return dict(self.rows[run_id])
 
     def release(self, match_id, kickoff):

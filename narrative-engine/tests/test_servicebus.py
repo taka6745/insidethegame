@@ -512,7 +512,7 @@ def test_a_seed_restores_under_a_new_match_id_and_the_match_carries_on_from_it()
             await router.purge(everything=True)  # a purge-all after the recording: its cut-off is later than its MA1
             moved = json.loads(json.dumps(seed).replace("rec-aaaa1111", "new-bbbb2222"))
             other = json.loads(json.dumps(seed).replace("rec-aaaa1111", "other-cccc3333"))
-            seq = max(n["eventSeq"] or 0 for n in seed["narratives"])
+            seq = max(d["eventSeq"] or 0 for d in seed["narratives"] + seed["analyses"])
 
             async def restore(containers, max_seq=seq, schema=schema):
                 return await client.post("/admin/matches/restore", json={
@@ -534,6 +534,19 @@ def test_a_seed_restores_under_a_new_match_id_and_the_match_carries_on_from_it()
         from narrative_engine.demo.seeds import export
         assert not any((await export(store, "new-bbbb2222")).values())
     asyncio.run(go())
+
+
+def test_every_restored_document_is_bounded_by_the_seeds_seq():
+    from narrative_engine.demo.seeds import past_seq
+    seed = {"checkpoints": [{"closedThrough": "1-019", "pending": [{"seq": 40}]}],
+            "contextBlocks": [{"coversTo": {"periodId": 1, "timeMin": 19}}],
+            "narratives": [{"eventSeq": 50}], "analyses": [{"id": "a1", "eventSeq": 50}],
+            "storylines": [{"openedBy": "a1", "lastAnalysisId": "a1", "beats": [{"analysisId": "a1"}]}]}
+    assert past_seq(seed, 50) is None
+    assert past_seq({**seed, "analyses": [{"id": "a1", "eventSeq": 51}]}, 50) == "analyses"
+    assert past_seq({**seed, "checkpoints": [{"closedThrough": "1-019", "pending": [{"seq": 51}]}]}, 50) == "queued steps"
+    assert past_seq({**seed, "storylines": [{"openedBy": "a2"}]}, 50) == "storylines"
+    assert past_seq({**seed, "contextBlocks": [{"coversTo": {"periodId": 1, "timeMin": 20}}]}, 50) == "summaries"
 
 
 def test_seed_batches_stay_within_cosmos_operation_and_size_limits():

@@ -347,3 +347,23 @@ def test_the_follow_chat_picks_the_match_whose_name_fits_best_not_the_first_that
     draft = SimpleNamespace(kind='team', subject='Manchester City')
     found = asyncio.run(service._elsewhere('here', draft, SimpleNamespace(min_name_match=0.3)))
     assert found['team_id'] == 'mancity' and found['match_id'] == 'city'
+
+
+def test_another_match_stands_where_etl_has_it_with_stoppage_minutes():
+    """The listing reads another match at ETL's watermarks, not its newest delivery, and labels stoppage 45+N′."""
+    here, other = SimpleNamespace(match_id='here', purged=False), SimpleNamespace(match_id='other', purged=False)
+    played = SimpleNamespace(period=1, match_time_seconds=46 * 60 + 10)  # 47th minute of the first half
+
+    async def info(match):
+        return {'teams': [{'name': f'{match.match_id} A'}, {'name': f'{match.match_id} B'}]}
+
+    async def at_etl(match):
+        return played
+
+    async def settings():
+        return SimpleNamespace(enabled=True)
+    cross = CrossMatch(SimpleNamespace(matches={'here': here, 'other': other}),
+                       SimpleNamespace(info=info, played=at_etl), None)
+    cross.settings = settings
+    rows = asyncio.run(cross.listing(here, SimpleNamespace(period=1, clock_seconds=600)))
+    assert [(r['match_id'], r['minute']) for r in rows] == [('here', '11′'), ('other', '45+2′')]

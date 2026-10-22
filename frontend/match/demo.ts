@@ -8,10 +8,14 @@ export interface DemoPoint { id: string; label: string; ready: boolean }
 export interface DemoState {
   points: DemoPoint[]; live: boolean; live_from?: string | null; main_match_id?: string | null;
   runs?: { match_id: string }[];
+  /** Start and cancel answer at once and run in turn: what is still queued, and how the last one ended. */
+  pending?: string[]; last?: DemoOutcome | null;
 }
 interface DemoResult {
   started?: boolean; runs?: { match_id: string; kickoff: string }[]; cancelled?: string[]; live_from?: string | null;
+  accepted?: boolean;
 }
+interface DemoOutcome extends DemoResult { action: string; ok: boolean; detail?: string }
 
 type Fetcher = (input: string, init: RequestInit) => Promise<Pick<Response, "ok" | "status" | "json">>;
 
@@ -21,7 +25,7 @@ export class DemoApi {
   constructor(fetcher: Fetcher = (...args) => globalThis.fetch(...args)) {
     this.fetcher = fetcher;
   }
-  private async call<T>(path: string, body?: unknown): Promise<T> {
+  async call<T>(path: string, body?: unknown): Promise<T> {
     const response = await this.fetcher(`/demo-api/${path}`, {
       method: body === undefined ? "GET" : "POST",
       headers: { "Content-Type": "application/json" },
@@ -34,8 +38,23 @@ export class DemoApi {
   }
   state() { return this.call<DemoState>("state"); }
   status() { return this.call<DemoStatus>("status"); }
-  start(point: string) { return this.call<DemoResult>("start", { point }); }
-  cancel() { return this.call<DemoResult>("cancel", {}); }
+  start(point: string) { return this.settled("start", this.call<DemoResult>("start", { point })); }
+  cancel() { return this.settled("cancel", this.call<DemoResult>("cancel", {})); }
+  /** An accepted (queued) start or cancel: wait on /state until it has run, then return how it ended. */
+  async settled(action: string, request: Promise<DemoResult>, pollMs = 1000, limit = 600): Promise<DemoResult> {
+    const result = await request;
+    if (!result.accepted) return result;
+    for (let i = 0; i < limit; i += 1) {
+      await new Promise((resolve) => setTimeout(resolve, pollMs));
+      const state = await this.state().catch(() => null);  // a cold or busy operator: keep waiting
+      if (!state || state.pending?.length) continue;
+      const last = state.last;
+      if (last?.action !== action) return {};
+      if (!last.ok) throw new Error(last.detail ?? "The demo could not be changed. Try again shortly.");
+      return last;
+    }
+    throw new Error("The demo is taking longer than expected; check back shortly.");
+  }
 }
 
 /** Start demo (with a start point) when nothing is on; Cancel demo while one is scheduled or live. */
@@ -124,9 +143,9 @@ export class DemoControls {
   start() {
     const point = this.get<HTMLSelectElement>("demo-point").value || "kickoff";
     return this.act(async () => {
-      const result = await this.api.start(point);
       this.started = true;
-      void this.watch();
+      void this.watch();  // the stages wake while the start runs
+      const result = await this.api.start(point);
       if (!result.started) return "A demo is already on: pick one of its matches below.";
       // A seeded start's kickoff lies in the past (its clock starts at the point): say where it resumes instead.
       if (result.live_from) return `Demo resumes from ${result.live_from} in a few seconds.`;

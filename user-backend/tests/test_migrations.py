@@ -30,14 +30,14 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
     with store.connect() as conn:
         applied = [row['version'] for row in conn.execute('SELECT version FROM schema_migrations ORDER BY version')]
         config = conn.execute('SELECT name, revision FROM backend_config ORDER BY name').fetchall()
-    assert applied[-20:] == ['024_subscriptions.py', '025_grounded_prompts.py',
+    assert applied[-21:] == ['024_subscriptions.py', '025_grounded_prompts.py',
                              '026_storyline_policy.py', '027_follow_triggers.py', '028_key_moment_labels.py',
                              '029_policy_prompts.py', '030_grounded_patterns.py', '031_policy_limits.py',
                              '032_follow_retries.py', '033_comparison_claim.py', '034_result_claim.py',
                              '035_author_trim.py', '036_score_claim_reopen.py', '037_replay_playback.py',
                              '038_follow_clips.py', '039_follow_clip_step.py',
                              '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
-                             '043_narrative_clips_match.sql']
+                             '043_narrative_clips_match.sql', '044_clip_relevance.py']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:
@@ -308,6 +308,32 @@ def test_capture_clip_settings_reach_existing_stores_and_keep_edits(store):
         clips = conn.execute("SELECT document FROM backend_config WHERE name = 'subscriptions'"
                              ).fetchone()['document']['clips']
     assert clips['shared'] is False
+
+
+def test_the_clip_question_asks_about_relevance_where_unedited(store):
+    import importlib.util
+    from psycopg.types.json import Jsonb
+    from backend.store import MIGRATIONS
+    spec = importlib.util.spec_from_file_location('m044', MIGRATIONS / '044_clip_relevance.py')
+    m044 = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m044)
+    store.initialize()
+
+    def clips():
+        with store.connect() as conn:
+            return conn.execute("SELECT document FROM backend_config WHERE name = 'subscriptions'"
+                                ).fetchone()['document']['clips']
+    assert {k: clips()[k] for k in m044.NEW} == m044.NEW  # a fresh store already asks about relevance
+    for edited, expected in ((False, m044.NEW['instructions']), (True, 'My own question')):
+        old = {**m044.OLD, 'instructions': 'My own question'} if edited else m044.OLD
+        with store.connect() as conn:
+            document = conn.execute("SELECT document FROM backend_config WHERE name = 'subscriptions'"
+                                    ).fetchone()['document']
+            conn.execute("UPDATE backend_config SET document = %s WHERE name = 'subscriptions'",
+                         (Jsonb({**document, 'clips': {**document['clips'], **old}}),))
+            conn.execute("DELETE FROM schema_migrations WHERE version = '044_clip_relevance.py'")
+        store.initialize()
+        assert clips()['instructions'] == expected  # a /dev/ edit is kept
 
 
 def test_comparison_claim_reaches_unedited_stores(store):

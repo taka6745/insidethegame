@@ -20,7 +20,23 @@ MAX_SEED_BYTES = 512 * 1024 * 1024
 JSON_CHUNK_ROWS = 5000  # rows per OPENJSON insert
 # Canonical seq columns: no row may come from past the seed's seq (rawEvents.seq counts MA3 rows instead).
 SEQ_COLUMNS = (("canonicalEvents", "seq"), ("rawEvents", "eventSeq"), ("spadlActions", "seq"),
+               ("spadlActions", "finalSeq"), ("possessionSamples", "eventSeq"),
                ("matchProgress", "seq"), ("matchProgressMarks", "seq"), ("spadlProgress", "seq"))
+
+
+def past_seq(tables, max_seq):
+    """Which table holds rows from past the seed's seq, or None. Key events and minute stats carry no seq: a key
+    event must be one of the seeded MA3 rows, and a minute's stats may not run past the last seeded event."""
+    for table, column in SEQ_COLUMNS:
+        if any((row.get(column) or 0) > max_seq for row in tables.get(table, [])):
+            return table
+    if {row.get("id") for row in tables.get("keyEvents", [])} - {row.get("id") for row in tables.get("rawEvents", [])}:
+        return "keyEvents"
+    last = max(((row.get("periodId") or 0, int(row.get("matchTimeSeconds") or 0) // 60)
+                for row in tables.get("canonicalEvents", [])), default=(0, 0))
+    if any((row.get("periodId") or 0, row.get("timeMin") or 0) > last for row in tables.get("minuteStats", [])):
+        return "minuteStats"
+    return None
 
 
 class RestoreRefused(ValueError):
@@ -95,9 +111,9 @@ class SqlSeeds:
         for table, rows in tables.items():
             if any(row.get("matchId") != match_id for row in rows):
                 raise RestoreRefused(f"{table} holds rows of another match")
-        for table, column in SEQ_COLUMNS:
-            if any((row.get(column) or 0) > max_seq for row in tables.get(table, [])):
-                raise RestoreRefused(f"{table} past the seed's seq")
+        past = past_seq(tables, max_seq)
+        if past:
+            raise RestoreRefused(f"{past} past the seed's seq")
         cur.execute("SELECT 1 FROM dbo.purgedMatches WHERE matchId = %s UNION ALL "
                     "SELECT 1 FROM dbo.matches WHERE matchId = %s", (match_id, match_id))
         if cur.fetchone():
@@ -106,7 +122,9 @@ class SqlSeeds:
         counts, types = {}, self._types(cur, present)
         order = [t for t in present if t not in SEED_STATE] + [t for t in present if t in SEED_STATE]
         for table in order:
-            rows = tables.get(table, [])
+            # Restored rows count as ingested now (the column's default): the worker reloads open-window MA3 rows
+            # by ingestion age (a day), so a seed's original times would drop them once the seed is a day old.
+            rows = [{c: v for c, v in row.items() if c != "ingestedAt"} for row in tables.get(table, [])]
             if table in SEED_STATE:
                 cur.execute(f"DELETE FROM dbo.{table} WHERE matchId = %s", (match_id,))
             for columns in {tuple(row) for row in rows}:

@@ -61,6 +61,8 @@ def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect):
     assert max(r["seq"] for r in tables["canonicalEvents"]) == SEQ and tables["spadlActions"]
     recorded = rows(connect, source_id, source_run)
     seed = json.loads(json.dumps(tables).replace(source_id, new_id).replace(source_run, new_run))  # over HTTP
+    for row in seed["rawEvents"]:  # a seed recorded days ago: its open-window rows must still reload
+        row["ingestedAt"] = "2026-01-01T00:00:00.000000"
     worker.purge(source_id, repository)  # the recording leaves every owner once captured
 
     refused = (("past seq", seed, SEQ - 1, schema, new_id), ("another schema", seed, SEQ, "other", new_id),
@@ -73,6 +75,8 @@ def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect):
     counts = demo_seeds.restore(worker, seeds, new_id, seed, SEQ, schema)
     assert counts["canonicalEvents"] == SEQ and new_id in worker.matches
     assert rows(connect, new_id, new_run) == recorded  # the restored state is the recorded state
+    assert query(connect, "SELECT COUNT(*) AS n FROM dbo.rawEvents WHERE matchId = %s AND "
+                          "ingestedAt < DATEADD(day, -1, sysutcdatetime())", new_id)[0]["n"] == 0
     with pytest.raises(demo_seeds.RestoreRefused):
         demo_seeds.restore(worker, seeds, new_id, seed, SEQ, schema)  # known now
 

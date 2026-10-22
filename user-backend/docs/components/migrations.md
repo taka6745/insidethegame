@@ -44,6 +44,8 @@
 | `040_cross_match.py` | Config rows `cross-match` and `follow-offer` (edits kept); `subscriptions.bucket_id`, the bucket a follow of another match is written for (PLAN.md §10.2 D5, D5b) |
 | `041_capture_clips.py` | `narrative_clips` (key-event clips on the shared narratives, per bucket and moment; purged and seeded with the match); adds `subscriptions.clips.always_for` (clip-on topic kinds) and `.shared` where missing, keeping edits (PLAN.md §10.2 D6–D7) |
 | `042_shorter_author_planner_options.py` | `narrative-author` one or two short sentences (active over the unedited seed only); `subscription-planner` v2 with `{live_matches}` and up to four clarification `options` resolved by code |
+| `043_narrative_clips_match.sql` | `narrative_clips` rows belong to a received match (cascade on purge); orphans removed |
+| `044_clip_relevance.py` | the clip decision asks how relevant a moment is to the followed story (`clips.instructions` and `levels`), only where both are still 038's wording |
 | `accounts/001_demo_profiles.sql` | `demo_profiles` with three demo accounts |
 | `accounts/002_profile_editor.sql` | Profile revision row for the `/dev/` editor; drops the hard-coded team/style CHECK constraints |
 | `accounts/003_profile_selections.sql` | `team`/`fan_style` columns become a `selections` map (layer id → option id) |
