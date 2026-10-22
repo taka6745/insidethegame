@@ -60,6 +60,7 @@ class BlobTests(unittest.IsolatedAsyncioTestCase):
 
         class Service:
             ready = True
+            seeds = False
         stream = dataclasses.replace(riverton(), fixture=self.fixture)  # riverton() is shared
         self.storage.attach_media({self.fixture: stream})
         live = self.storage.live()
