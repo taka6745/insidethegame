@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Status** | Implemented · tested against SQL Server 2022 and 2025-CU9 (parity with the reference on all three recordings) · not yet run on the shared stack or Azure |
-| **Code** | [`011_trend_definitions.sql`](../../sql/migrations/011_trend_definitions.sql) (table, seed), [`014_trend_patterns.sql`](../../sql/migrations/014_trend_patterns.sql) (procedures, columns, the current seed; replaces `012`), [`015_trend_parameters.sql`](../../sql/migrations/015_trend_parameters.sql) (`trendParameters`: the formulas' constants; `trendMinuteRows` reads them), [`devtools/calibrate_trends.py`](../../devtools/calibrate_trends.py) (thresholds from the recordings), [`reference/trends.py`](../../reference/trends.py) |
+| **Code** | [`011_trend_definitions.sql`](../../sql/migrations/011_trend_definitions.sql) (table, seed), [`014_trend_patterns.sql`](../../sql/migrations/014_trend_patterns.sql) (procedures, columns, the current seed; replaces `012`), [`015_trend_parameters.sql`](../../sql/migrations/015_trend_parameters.sql) (`trendParameters`: the formulas' constants; `trendMinuteRows` reads them), [`018_trend_labels.sql`](../../sql/migrations/018_trend_labels.sql) (plain labels for writers), [`devtools/calibrate_trends.py`](../../devtools/calibrate_trends.py) (thresholds from the recordings), [`reference/trends.py`](../../reference/trends.py) |
 | **Served as** | DAB `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` ([contract](../../contracts/README.md#output-4-trend-indicators)) |
 | **Definitions** | [local contracts §4b](../../../local/contracts.md#4b-trend-definitions) |
 | **Tests** | `test_trends.py` (rules, golden), `test_sql_trends.py` (SQL = reference, bounds, VAR game state, re-seed, speed) |
@@ -66,6 +66,8 @@ The S1 v2 experiment (permutation tests over shuffled minutes, team distinctness
 1. Copy the newest block (`014`); recalibrate with `python -m devtools.calibrate_trends` after the recordings change.
 2. Add `NNN_trend_seed_<what>.sql` that declares the edited array as `@trendDefinitions` and passes it to `dbo.seedTrendDefinitions`.
 3. `reference/trends.py` reads the newest `@trendDefinitions` and `@trendParameters` blocks, so `python -m pytest tests/test_trends.py tests/test_sql_trends.py` checks the new seed; regenerate the golden file with `python tests/test_trends.py --regenerate` if values or flags changed.
+
+Labels change without re-seeding: a migration declaring `@trendLabels` (trendId, label) updates them, and `reference/trends.py` applies those blocks after the newest seed (`018`: writers see labels and meanings, never ids, so labels are plain football words).
 
 Formula constants re-seed the same way: a migration declaring the whole `@trendParameters` block and passing it to `dbo.seedTrendParameters` (newest block: `015`); since `016` the procedure refuses a block that misses, misspells or nulls any of the 13 names `trendMinuteRows` reads, and leaves the table unchanged; recalibrate the thresholds after changing one, since it changes what the trends measure.
 

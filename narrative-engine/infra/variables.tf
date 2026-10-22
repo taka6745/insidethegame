@@ -45,8 +45,9 @@ variable "models" {
   }))
   default = {
     # Every writing role (summary, compression, analyst, author, follow authoring). The deployment name stays
-    # generic, so a different model is a change here only. GlobalStandard quota in Australia East: 250.
-    "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 200 }
+    # generic, so a different model is a change here only. GlobalStandard quota in Australia East: 250K TPM, shared
+    # with the backend's `questions` (130K: cross-match questions carry every live match; 50K hit 429).
+    "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 120 }
     # Story-follow triggers and the authors' claim checks (narrative_engine/decisions, SystemOne API). Capacity is
     # requests per minute (DataZoneStandard quota in Australia East: 60).
     "decision-1" = { model = "Microsoft-Decision-1", version = "1", capacity = 50, format = "Microsoft", sku = "DataZoneStandard" }

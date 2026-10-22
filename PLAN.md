@@ -159,7 +159,7 @@ feed (simulated provider: recordings, MA1/MA3/POS/MatchEvent v2, HLS over HTTP)
 - Confirm hackathon registration.
 - Demo video under 2 minutes.
 - Make the repo public; choose a licence.
-- Foundry quota in Australia East (`gpt-6.1-sol` GlobalStandard 250K TPM: `writer` 200K + `questions` 50K; `Microsoft-Decision-1` DataZoneStandard 50 RPM).
+- Foundry quota in Australia East (`gpt-6.1-sol` GlobalStandard 250K TPM: `writer` 120K + `questions` 130K; `Microsoft-Decision-1` DataZoneStandard 50 RPM).
 - Premier League branding and real names carry rights risk; keep them out of the video at least.
 - Whether to clean old provider names from git history.
 - Create the `BUNDLE_DENYLIST` CI secret.
@@ -291,6 +291,11 @@ continue), backend (export, refusals, restore, the match tracked again).
 - **UX:** newest insight at the bottom, Customise at the bottom, no horizontal scroll, `:focus-visible` rings, stats and panel aligned, "Following since 62′"; "what other games are on" answers with both other matches as choices. Drill-in chips did not appear for "Arsenal's goals" (it proposed the follow directly).
 - **Targets:** engine lag about 2 match minutes on three matches; no shared narrative named another match's teams (scan of all stored narratives); no errors in any service log after the rebuild.
 - **Open:** seeded start time at 60′/85′; replay questions on the local model sometimes cite moments without searching ("Replay plan cited no returned evidence"), and one answer failed schema validation; indicator jargon ("field tilt", "PPDA") still appears in some insights.
+- **Fixed after the check (code only, 22 Oct; stack not re-run):**
+  - **Seeded start:** the engine's restore wrote each Cosmos document in its own round trip; it now uses transactional batches per container (the match's partition), checkpoint last: three 60′ matches 9.0 s → 2.2 s on the emulator. The backend parses and validates a seed off the event loop: three 60′ restores 5.4 s → 3.2 s. ETL (OPENJSON, one transaction per match, emulated SQL Server on this Mac) stays the long pole: 20′ 7.7 s, HT 6.5 s, 60′ 9–11 s, 85′ 16 s for three matches; bulk copy and per-table connections were tried and dropped (pymssql bulk copy mangles nvarchar; no gain). Demo control runs ETL alongside backend then engine, so a seeded start is about the ETL time: within 10 s up to HT, about 10 s at 60′, about 16 s at 85′ locally. Native Azure SQL should be faster; re-measure there.
+  - **Replay on a restored match:** the replay agent is shown recent and key events (with their ids) in its input, but only ids returned by its tools counted as evidence, so a plan citing a goal it was shown (common once a seeded match already has key events) was dropped. Shown events, and the events a key moment lists, now count; `action:{id}` is read as the bare id. Tests: `test_replay.py` and `test_multi_match.py::test_a_restored_match_answers_replay_questions`.
+  - **Jargon:** the analyst's trend table showed ids (`ppda`, `field_tilt`), which leaked into labels and insights. It now shows each trend's plain label; the validator maps labels back to ids, so evidence is still checked against the served rows. ETL migration 018 relabels `field_tilt` ("share of final-third play") and `def_height` ("defending height"). Test: `test_writers_see_trend_labels_never_ids_and_the_analyst_cites_by_label`.
+  - **Suites:** backend 607 (Postgres), engine 185 + 2 skipped, ETL 97 (SQL Server); the backend's prompt-copy test now points at author v7.
 
 ## 11. Azure judge build (22 Oct)
 
@@ -320,3 +325,10 @@ continue), backend (export, refusals, restore, the match tracked again).
 - **Idle estimate:** about A$6–7 a day, with Stream Analytics stopped and SQL paused. Most of it is container apps at the idle rate (A$2.1), the two PostgreSQL B1ms servers (A$1.9), Event Hubs (A$1.1), Service Bus (A$0.5) and the registries (A$0.5).
   - Through 11 Nov that is about A$130, plus about A$3 per judge session, against about A$281 of credit. 40 sessions would leave about A$30.
 - **Stopped at (pause, 22 Oct ~11:35 UTC):** the 20′ seed is captured. The HT, 60′ and 85′ chain is not recorded. Seeds are not downloaded to `.local/seeds/`. The guard stream schedule's start/stop isn't yet verified across an idle period.
+- **Question fix (22 Oct ~12:00 UTC, backend only):**
+  - gpt-6.1-sol takes function tools only over the Responses API. Chat Completions rejects tools with any `reasoning_effort` and doesn't accept `none`. So reasoning models now use the Responses client (`chat_client`, with a `reasoning.effort` option), and chat models keep Chat Completions with temperature 0.
+  - Failures now log the exception chain's text.
+  - Cross-match questions then hit 429 at 50K TPM, so capacity moved to `writer` 120K and `questions` 130K (az CLI live; Terraform defaults match).
+  - Verified on Azure: the Zubimendi replay, Arsenal shots and "How is the Chelsea game going?" all answer.
+  - The backend was rolled by hand (image `v20261022120136`, outside `image-tag.txt`); the next `up` rebuilds everything anyway.
+  - The restart replayed Event Hubs into the seed-restored matches (`received_events` duplicate key, `gap` float − None). The matches kept advancing; the code-only agent's restored-match fix covers it.

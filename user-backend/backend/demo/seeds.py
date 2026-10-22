@@ -7,10 +7,11 @@ import hashlib
 import json
 from datetime import datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
+from fastapi.exceptions import RequestValidationError
 from psycopg import sql
 from psycopg.types.json import Jsonb
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from backend.domain import RuleError
 
@@ -105,7 +106,13 @@ def demo_seed_router(registry, repository):
         return {'match_id': body.match_id, 'schema': schema, 'tables': tables}
 
     @router.post('/matches/restore')
-    async def restore(body: SeedRestore):
+    async def restore(request: Request):
+        # A seed is megabytes of rows: parse and validate it off the event loop, so restores of several matches
+        # (and live traffic) do not queue behind each other's JSON.
+        try:
+            body = await asyncio.to_thread(SeedRestore.model_validate_json, await request.body())
+        except ValidationError as exc:
+            raise RequestValidationError(exc.errors()) from exc
         try:
             counts = await asyncio.to_thread(repository.restore, body.match_id, body.tables, body.max_seq,
                                              body.schema_)

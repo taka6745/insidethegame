@@ -54,7 +54,7 @@ variable "question_model" {
     capacity = number           # thousands of tokens per minute
     effort   = optional(string) # reasoning_effort for a reasoning model; omit for a plain chat model
   })
-  default     = { name = "questions", model = "gpt-6.1-sol", version = "2026-09-29", capacity = 50, effort = "low" }
+  default     = { name = "questions", model = "gpt-6.1-sol", version = "2026-09-29", capacity = 130, effort = "low" }
   description = "Azure OpenAI deployment (GlobalStandard) for the backend's question, replay and follow-planner agents."
 }
 

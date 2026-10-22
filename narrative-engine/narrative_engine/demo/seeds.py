@@ -9,7 +9,6 @@ import hashlib
 import hmac
 import json
 import logging
-import os
 from dataclasses import asdict, fields
 
 log = logging.getLogger("narrative_engine.demo")
@@ -19,7 +18,7 @@ PATHS = ("/admin/matches/export", "/admin/matches/restore")
 # documents are fingerprinted from their fields.
 DOCUMENT_VERSION = 1
 COSMOS_SYSTEM = ("_rid", "_self", "_etag", "_attachments", "_ts")
-WRITE_CONCURRENCY = int(os.environ.get("DEMO_SEED_WRITE_CONCURRENCY", "16"))  # Cosmos upserts in flight per restore
+BATCH_DOCUMENTS = 100  # Cosmos's limit on operations in one transactional batch
 
 
 class SeedRefused(ValueError):
@@ -57,16 +56,17 @@ async def export(store, match_id):
 async def _load(store, match_id, containers):
     from narrative_engine.store.memory import MemoryStore
     if not isinstance(store, MemoryStore):
-        # Cosmos takes one round trip per document: write them concurrently (bounded), the checkpoint last, so
-        # the match only looks known once everything it refers to is in place.
-        by_name, gate = _cosmos(store), asyncio.Semaphore(WRITE_CONCURRENCY)
+        # Every document of a match shares its partition (matchId), so each container takes transactional batches
+        # instead of one round trip per document; the checkpoint goes last, so the match only looks known once
+        # everything it refers to is in place.
+        by_name = _cosmos(store)
 
-        async def write(name, doc):
-            async with gate:
-                await by_name[name].upsert_item(doc)
-        await asyncio.gather(*(write(name, doc) for name, docs in containers.items() if name != "checkpoints"
-                               for doc in docs))
-        await asyncio.gather(*(write("checkpoints", doc) for doc in containers.get("checkpoints", [])))
+        async def write(name, docs):
+            for i in range(0, len(docs), BATCH_DOCUMENTS):
+                await by_name[name].execute_item_batch([("upsert", (doc,)) for doc in docs[i:i + BATCH_DOCUMENTS]],
+                                                       partition_key=match_id)
+        await asyncio.gather(*(write(name, docs) for name, docs in containers.items() if name != "checkpoints"))
+        await write("checkpoints", containers.get("checkpoints", []))
         return {name: len(docs) for name, docs in containers.items()}
     from narrative_engine.core.models import ContextBlock, MatchClock
     from narrative_engine.transport.files import narrative_from_doc

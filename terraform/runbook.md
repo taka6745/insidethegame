@@ -111,7 +111,7 @@ Usage on top: model tokens (cents per match), internet egress beyond 100 GB/mont
 
 *In short: check quota, then go.*
 
-- Foundry quota in Australia East: GlobalStandard `gpt-6.1-sol` (250K TPM: `writer` 200K, `questions` 50K), DataZoneStandard `Microsoft-Decision-1` (50 requests/minute).
+- Foundry quota in Australia East: GlobalStandard `gpt-6.1-sol` (250K TPM: `writer` 120K, `questions` 130K), DataZoneStandard `Microsoft-Decision-1` (50 requests/minute).
 - Resource providers registered once: `Microsoft.App`, `Microsoft.ContainerRegistry`, `Microsoft.CognitiveServices`, `Microsoft.DBforPostgreSQL`, `Microsoft.DocumentDB`, `Microsoft.EventHub`, `Microsoft.ServiceBus`, `Microsoft.Sql`, `Microsoft.StreamAnalytics`, `Microsoft.KeyVault`, `Microsoft.Storage`, `Microsoft.Insights`, `Microsoft.OperationalInsights`, `Microsoft.ManagedIdentity`.
 - Trial limits shape the design: one Container Apps environment per region (all apps share the ETL's), no ACR Tasks (images build locally), no role assignments (keys in Key Vault and Container App secrets; Key Vault uses access policies).
 - Budget alerts (ETL, engine) go to the signed-in account's email.

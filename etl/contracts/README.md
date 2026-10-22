@@ -205,7 +205,7 @@ query ($m: String!, $s: Int!) {
 ```
 ```json
 {"data": {"executeTrendsAtSeq": [
-  {"trendId": "field_tilt", "family": "indicator", "label": "field tilt", "unit": "share", "contestantId": "chelsea",
+  {"trendId": "field_tilt", "family": "indicator", "label": "share of final-third play", "unit": "share", "contestantId": "chelsea",
    "window": "last15", "minutes": 15, "fromLabel": "78'", "toLabel": "90+2'", "value": 0.8977, "baseline": 0.7177,
    "delta": 0.1799, "level": "high", "change": null, "flagged": true, "enabled": true}, …],
  "executeTrendSpellsAtSeq": [
