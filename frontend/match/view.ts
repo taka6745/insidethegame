@@ -80,7 +80,8 @@ export class MatchView {
       gone: "This match is no longer available",
     };
     this.text("connection", labels[state] ?? state);
-    this.get("inside-the-game").hidden = state === "live";
+    // Only the connection line hides once live; the demo's "live from" note and Skip ahead share the toolbar.
+    this.get("connection-bar").hidden = state === "live";
     this.get("connection").dataset.state = state;
     this.get("reconnect").hidden = !["offline", "replaced", "stale"].includes(
       state,

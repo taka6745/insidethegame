@@ -319,6 +319,15 @@ test("club colours and crests come from the match data, never a club table", () 
   assert.equal(document.getElementById("home-mark").textContent, "RCT");
 });
 
+test("once live only the connection line hides; the demo's Skip ahead and live-from note stay reachable", () => {
+  const document = documentStub(), view = new MatchView(asDocument(document));
+  view.connection("connecting");
+  assert.equal(document.getElementById("connection-bar").hidden, false);
+  view.connection("live");
+  assert.equal(document.getElementById("connection-bar").hidden, true);
+  assert.notEqual(document.getElementById("inside-the-game").hidden, true);
+});
+
 test("a scheduled match counts down to kickoff, then shows the live clock", () => {
   const document = documentStub(), view = new MatchView(asDocument(document));
   const kickoff = "2026-10-20T15:00:00.000Z", at = Date.parse(kickoff);

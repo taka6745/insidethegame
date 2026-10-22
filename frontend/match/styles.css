@@ -236,6 +236,10 @@ body[data-connection="live"][data-match-status="running"] .live-dot,
 body[data-connection="live"][data-match-status="live"] .live-dot {
   background: var(--mint);
 }
+/* No height of its own once everything in it is hidden (live, no demo controls). */
+.match-toolbar:not(:has(> :not([hidden]))) {
+  display: none;
+}
 .match-toolbar {
   min-height: 55px;
   display: flex;
