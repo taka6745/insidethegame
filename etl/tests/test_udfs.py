@@ -1,5 +1,6 @@
 """Run the Stream Analytics JavaScript UDFs in Node and compare with the Python rules."""
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -11,6 +12,8 @@ from reference import opta, pipeline
 from seeder.generate import MatchBuilder
 
 UDFS = Path(__file__).resolve().parents[1] / "stream-analytics" / "udfs"
+TSC = os.environ.get("TSC") or shutil.which("tsc") or next(
+    (str(p) for p in [UDFS.parents[2] / "frontend" / "node_modules" / ".bin" / "tsc"] if p.exists()), None)
 MATCH = MatchBuilder("udf-test", seed=7).build()
 
 HARNESS = """
@@ -50,3 +53,11 @@ def test_match_info_carries_multi_match_columns():
     expected = pipeline.match_rows(ma1)[0]
     assert {k: info[k] for k in ("fixture", "sourceMatchId", "runId")} == {k: expected[k] for k in ("fixture", "sourceMatchId", "runId")}
     assert json.loads(info["capabilities"]) == json.loads(expected["capabilities"])
+
+
+@pytest.mark.skipif(not (shutil.which("node") and TSC), reason="node or tsc not installed")
+def test_generated_udfs_match_typescript_sources():
+    """Every udfs/*.js is exactly what build.ts compiles from src/*.ts."""
+    result = subprocess.run(["node", str(UDFS / "build.ts"), "--check"], env={**os.environ, "TSC": TSC},
+                            capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr

@@ -68,6 +68,8 @@ usage() {
 ./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
 ./dev benchmark values   Opt-in cached value read benchmark
 ./dev benchmark replay   Opt-in replay golden set against local model (fixture: --agent fixture)
+./dev udfs [--check]     Compile the Stream Analytics UDFs (etl/stream-analytics/udfs/src/*.ts) to the .js
+                         Terraform uploads, or check they are current (needs Node and frontend npm ci)
 ./dev status             Show this project's containers
 ./dev logs [service]     Show recent logs
 ./dev down               Stop this stack; keep SQL/Postgres volumes
@@ -137,6 +139,7 @@ case "${1:-help}" in
       -v "$PWD/narrative-engine:/narrative-engine:ro" \
       -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
     ;;
+  udfs) node etl/stream-analytics/udfs/build.ts "${@:2}" ;;
   status) compose --profile azure --profile backend ps ;;
   logs) shift; compose --profile azure --profile backend logs --tail 60 "$@" ;;
   down) compose --profile azure --profile backend down ;;

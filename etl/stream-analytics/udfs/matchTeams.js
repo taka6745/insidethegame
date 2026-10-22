@@ -1,3 +1,4 @@
+// GENERATED from src/matchTeams.ts by build.ts. Do not edit; edit the .ts and run `node build.ts`.
 // matchTeams rows from an MA1 message: one per contestant, colours from its branding.
 function main(message) {
     var value = function (v) { return v === undefined ? null : v; };

@@ -6,7 +6,7 @@
 | --- | --- |
 | **Status** | **Applied 22 Oct (`./dev azure up`, Azure test; match run part of the pending acceptance).** Outputs 1–5 (MA1/MA3) matched the reference on a 10x replay in the earlier dev deployment (deleted 2026-10-21). Outputs 6–9 (`possessionSamples`, `matchTeams`, `matchPlayers`, `canonicalEvents`, `matchProgressMarks`), the `match-progress` input, MA1 `fixture sourceMatchId runId capabilities` columns, and the Azure SQL triggers ([sql](sql.md#azure-only-stream-analytics-rows)). `MAX … OVER … WHEN`, `SessionWindow` and the array UDFs are checked by tests and the docs; their output on a live Azure match is not yet compared |
 | **Runs** | Only while matches play: the [stream schedule](#6-run-only-while-matches-play) starts and stops it |
-| **Code** | [`stream-analytics/query.asaql`](../../stream-analytics/query.asaql), [`stream-analytics/udfs/`](../../stream-analytics/udfs/) |
+| **Code** | [`stream-analytics/query.asaql`](../../stream-analytics/query.asaql), [`stream-analytics/udfs/src/`](../../stream-analytics/udfs/src/) (TypeScript; `./dev udfs` compiles each to the plain `function main` `.js` Terraform uploads) |
 | **Job** | StandardV2, ⅓ streaming unit, compatibility 1.2, created stopped |
 | **Mirrors** | [reference](reference.md) (`opta.py`, `pipeline.py`) |
 | **Tests** | `test_udfs.py`, `test_azure_parity.py` (UDFs under Node equal the reference; the reference equals [local stream](local-stream.md) on all three recordings), `test_sql_azure.py` (the triggers on SQL Server) |
@@ -68,7 +68,9 @@ For a real-time match set `window_seconds = 60` (and consider larger late-arriva
 
 ## 4. UDFs
 
-*In short: small helpers the query language lacks.*
+*In short: small helpers the query language lacks, written in TypeScript and compiled to plain scripts.*
+
+Edit `udfs/src/*.ts`, then run `./dev udfs`: `tsc` (`udfs/tsconfig.json`, ES2015, no module code) emits one `function main` per file and `build.ts` adds a "generated, do not edit" header. `test_udfs.py` and CI fail if a `.js` is out of date.
 
 | UDF | Returns |
 | --- | --- |

@@ -55,7 +55,7 @@ The SQL Server 2022 image failed on this machine; 2025-CU9 works. Docker Desktop
 | File | Covers |
 | --- | --- |
 | `test_seeder_and_pipeline.py` | Generated match content, replay scheduling and windows, reference outputs (key events, deltas, notifications, running totals) |
-| `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules (skips without Node) |
+| `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules; each generated `udfs/*.js` equals its compiled `udfs/src/*.ts` (skips without Node / `tsc`) |
 | `test_azure_parity.py` | On all three recordings: the reference (Stream Analytics rows, marks → watermark and status) equals the local stream worker row for row and along the match; the row UDFs equal the reference |
 | `test_local_stream.py` | The [local stream](components/local-stream.md): matches the reference on the GRF stream, window closing, redelivery, restart, failed commits; MatchEvent v2 + POS rows, watermark and status, MA1 gate and cut-off, purge (API, restart, redelivery), two interleaved matches; a restored seed carries on as if never stopped; seed routes mounted only with `DEMO_SEEDS=1` |
 | `test_spadl.py` | `reference/spadl.py` equals socceraction 1.5.3 (MA3JSONParser → convert_to_actions → SPADLSchema; test-only, pinned in `requirements-test.txt`) on all three recordings with an empty allow-list (a goal with an unknown scorer passes SPADLSchema with a placeholder player); incremental conversion at every watermark equals whole-match; shots final at once, `period_end` finalises its period; extensions and zones |
@@ -76,5 +76,6 @@ The SQL view and the deployed query are checked end to end by `devtools verify` 
 *In short: change rules in pairs, keep secrets out of Git.*
 
 - A rule change touches the query (`stream-analytics/`) and the reference (`reference/`) together; the view (`sql/`) and `reference/pipeline.py stats_as_of` likewise.
+- UDFs are TypeScript in `stream-analytics/udfs/src/`; `./dev udfs` (or `node stream-analytics/udfs/build.ts`) regenerates the `.js` Terraform uploads. Never edit the `.js`.
 - Generated data is labelled `synthetic: true` with provenance.
 - `.env`, `.local/`, Terraform state and `local.auto.tfvars` are ignored.

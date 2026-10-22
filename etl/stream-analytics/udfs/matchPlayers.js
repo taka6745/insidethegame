@@ -1,3 +1,4 @@
+// GENERATED from src/matchPlayers.ts by build.ts. Do not edit; edit the .ts and run `node build.ts`.
 // matchPlayers rows from an MA1 message: every contestant's lineup.
 function main(message) {
     var value = function (v) { return v === undefined ? null : v; };

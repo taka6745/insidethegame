@@ -96,6 +96,8 @@ jobs:
         with: {node-version: "22", cache: npm, cache-dependency-path: frontend/package-lock.json}
       - run: npm ci --ignore-scripts
       - run: npx tsc --noEmit -p .
+      - name: Stream Analytics UDFs match their TypeScript sources
+        run: node ../etl/stream-analytics/udfs/build.ts --check
       - run: npm test
       - run: npm run build
       # The deny-list itself is private: set the BUNDLE_DENYLIST repository secret to enable the scan.

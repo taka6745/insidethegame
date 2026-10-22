@@ -1,3 +1,4 @@
+// GENERATED from src/canonicalEvent.ts by build.ts. Do not edit; edit the .ts and run `node build.ts`.
 // canonicalEvents row from a MatchEvent v2 message (reference/pipeline.py canonical_row).
 function main(message) {
     var e = message.event || {};

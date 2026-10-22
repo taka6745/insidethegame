@@ -1,0 +1,15 @@
+{
+  // Stream Analytics JavaScript UDFs: each src/*.ts compiles to one plain `function main` script.
+  // Built and checked by build.ts; every file is its own scope (no module code is emitted).
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["es2015"],
+    "module": "preserve",
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "types": [],
+    "rootDir": "src"
+  },
+  "include": ["src/*.ts"]
+}
