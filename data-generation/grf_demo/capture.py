@@ -185,7 +185,7 @@ def main():
         "schema_version": 1,
         "synthetic": True,
         "match_id": FIXTURE["match_id"],
-        "description": f"GRF simulated {TEAMS[0]['name']}–{TEAMS[1]['name']}. Illustrative real-name lineups; not an actual match.",
+        "description": f"GRF simulated {TEAMS[0]['name']}–{TEAMS[1]['name']}. Fictional Elephant League clubs and players; not an actual match.",
         "teams": [{"id": team["id"], "name": team["name"]} for team in TEAMS],
         "players": players(),
         "events": adapter.canonical_events(),

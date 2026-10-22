@@ -27,9 +27,9 @@ test('clarification shows question and reply form without an executable rule', (
   const original = globalThis.document;
   useDocument(id => nodes.get(id));
   try {
-    new LabView().plan({ status: 'clarification', conversation_id: 'opaque', clarification: { question: 'Which player?', options: ['Mbappe', 'Palmer'] } });
+    new LabView().plan({ status: 'clarification', conversation_id: 'opaque', clarification: { question: 'Which player?', options: ['Mbappe', 'Ashworth'] } });
     assert.equal(nodes.get('plan-message')!.textContent, 'Which player?');
-    assert.equal(nodes.get('plan-options')!.textContent, 'Mbappe · Palmer');
+    assert.equal(nodes.get('plan-options')!.textContent, 'Mbappe · Ashworth');
     assert.equal(nodes.get('reply-form')!.hidden, false);
     assert.equal(nodes.get('add-plan')!.hidden, true);
   } finally { globalThis.document = original; }
@@ -55,14 +55,14 @@ test('match selector lists matches once and names teams from the listing', () =>
   });
   try {
     const view = new LabView();
-    const matches = [{ match_id: 'm1', status: 'live', teams: [{ name: 'Chelsea' }, { name: 'Manchester United' }] }, { match_id: 'm2', fixture: 'arsenal-spurs', status: 'scheduled' }];
+    const matches = [{ match_id: 'm1', status: 'live', teams: [{ name: 'Riverton Rovers' }, { name: 'Forgeham United' }] }, { match_id: 'm2', fixture: 'redcastle-whitmore', status: 'scheduled' }];
     view.matches(matches, 'm1');
     view.matches(matches, 'm1');
     assert.equal(options.length, 1);
-    assert.deepEqual(options[0]!.map(option => option.textContent), ['Chelsea v Manchester United · Live', 'arsenal-spurs · Scheduled']);
+    assert.deepEqual(options[0]!.map(option => option.textContent), ['Riverton Rovers v Forgeham United · Live', 'redcastle-whitmore · Scheduled']);
     assert.equal(nodes.get('match-select')!.value, 'm1');
     view.match(matches[0]);
-    assert.equal(nodes.get('home-team')!.textContent, 'Chelsea');
+    assert.equal(nodes.get('home-team')!.textContent, 'Riverton Rovers');
     assert.match(nodes.get('recording-meta')!.textContent, /^m1 · /);
   } finally { globalThis.document = original; }
 });
@@ -90,10 +90,10 @@ test('header score shows the published values and hides without them', () => {
   useDocument(id => (id === 'score' ? score : undefined));
   try {
     const view = new LabView();
-    view.score([{ id: 'h', name: 'Chelsea', score: 1 }, { id: 'a', name: 'Manchester United', score: 0 }]);
-    assert.equal(score.textContent, 'Chelsea 1 – 0 Manchester United');
+    view.score([{ id: 'h', name: 'Riverton Rovers', score: 1 }, { id: 'a', name: 'Forgeham United', score: 0 }]);
+    assert.equal(score.textContent, 'Riverton Rovers 1 – 0 Forgeham United');
     assert.equal(score.hidden, false);
-    view.score([{ id: 'h', name: 'Chelsea', score: null }, { id: 'a', name: 'Manchester United', score: 0 }]);
+    view.score([{ id: 'h', name: 'Riverton Rovers', score: null }, { id: 'a', name: 'Forgeham United', score: 0 }]);
     assert.equal(score.hidden, true);
     view.score(null);
     assert.equal(score.hidden, true);

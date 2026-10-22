@@ -20,12 +20,12 @@ const team = (id: string, position: string, name: string, code: string, primary:
   ({ id, position, name, short_name: name, code, branding: { primary_colour: primary, secondary_colour: secondary, crest_asset_id: crest } });
 const started = Date.now();
 const matches = new Map([
-  ["chelsea-united-1a2b3c4d", { fixture: "chelsea-united", status: "live", offset: 431,
-    teams: [team("chelsea", "home", "Chelsea", "CHE", "#001c68", "#0743b7", "chelsea"), team("manutd", "away", "Manchester United", "MUN", "#c7142b", "#7b0015", "manutd")] }],
-  ["arsenal-spurs-0f0f0f0f", { fixture: "arsenal-spurs", status: "live", offset: 1290,
-    teams: [team("arsenal", "home", "Arsenal", "ARS", "#db0007", "#9c0006"), team("spurs", "away", "Tottenham Hotspur", "TOT", "#132257", "#0b1438")] }],
-  ["liverpool-city-9e8d7c6b", { fixture: "liverpool-city", status: "scheduled", offset: 0,
-    teams: [team("liverpool", "home", "Liverpool", "LIV", "#c8102e", "#8a0b20"), team("mancity", "away", "Manchester City", "MCI", "#6cabdd", "#1c2c5b")] }],
+  ["riverton-forgeham-1a2b3c4d", { fixture: "riverton-forgeham", status: "live", offset: 431,
+    teams: [team("riverton", "home", "Riverton Rovers", "RVR", "#001c68", "#0743b7", "riverton"), team("forgeham", "away", "Forgeham United", "FGU", "#c7142b", "#7b0015", "forgeham")] }],
+  ["redcastle-whitmore-0f0f0f0f", { fixture: "redcastle-whitmore", status: "live", offset: 1290,
+    teams: [team("redcastle", "home", "Redcastle Town", "RCT", "#db0007", "#9c0006"), team("whitmore", "away", "Whitmore Wanderers", "WHW", "#132257", "#0b1438")] }],
+  ["portalbion-city-9e8d7c6b", { fixture: "portalbion-city", status: "scheduled", offset: 0,
+    teams: [team("portalbion", "home", "Port Albion", "PAL", "#c8102e", "#8a0b20"), team("skybridge", "away", "Skybridge City", "SKC", "#6cabdd", "#1c2c5b")] }],
 ]);
 const clockOf = (id: string) => {
   const match = matches.get(id)!;
@@ -71,7 +71,7 @@ type Turn = { id: number; request_id: string; prompt: string; status: string; re
 type Follow = { subscription_id: string; topic_id: string; spec: Spec; label: string; since_seq: number; created_at: string; ended_at: string | null; since_clock: number };
 const playersOf = (id: string) => {
   const [home, away] = matches.get(id)!.teams;
-  const names: Record<string, string[]> = { chelsea: ["Reece James", "Cole Palmer"], manutd: ["Kobbie Mainoo", "Bruno Fernandes"] };
+  const names: Record<string, string[]> = { riverton: ["Sami Lindqvist", "Kai Ashworth"], forgeham: ["Callum Brightwell", "Theo Marchetti"] };
   return [home!, away!].flatMap((t) => (names[t.id] ?? [`${t.code} Number 9`, `${t.code} Number 10`])
     .map((name, i) => ({ id: `${t.id}-${i + 1}`, team_id: t.id, name })));
 };
@@ -171,9 +171,10 @@ const config: Record<string, { revision: number; value: unknown }> = {
   "storyline-policy": { revision: 1, value: { storylines: { max_active: 4 } } },
   "cross-match": { revision: 1, value: { enabled: true, min_name_coverage: 0.5, suggest_teams: true } },
   "follow-offer": { revision: 1, value: { enabled: true, min_probability: 0.6, max_per_minute: 3, timeout_seconds: 6 } },
+  "models": { revision: 1, value: { deployments: ["writer", "questions", "gpt-6-luna", "gpt-5-mini"], engine: { summary: { deployment: "", effort: "" }, compression: { deployment: "", effort: "" }, analyst: { deployment: "", effort: "" }, author: { deployment: "", effort: "" } }, backend: { questions: { deployment: "", effort: "" }, follow_planner: { deployment: "", effort: "" }, replay: { deployment: "", effort: "" } } } },
 };
 const profiles = { revision: 1, profiles: [
-  { id: "chelsea-analytical", display_name: "Chelsea analyst", selections: { team: "home", fan_style: "analytical" } },
+  { id: "riverton-analytical", display_name: "Riverton Rovers analyst", selections: { team: "home", fan_style: "analytical" } },
   { id: "neutral-simple", display_name: "New viewer", selections: { team: "neutral", fan_style: "simple" } }] };
 const sockets = new Map<Duplex, string>();
 const socketTokens = new Map<Duplex, string>();
@@ -313,7 +314,7 @@ async function api(req: IncomingMessage, res: ServerResponse, path: string) {
   }
   if (path === "/dev-api/pipeline") return send(res, 200, {
     services: [{ name: "user-backend", status: "degraded", detail: "1 open stream gap" }, { name: "etl", status: "ok" }, { name: "narrative", status: "ok" }],
-    gaps: [{ match_id: "chelsea-united-1a2b3c4d", seq: 412, age_seconds: 12.4, pending: 18, state: "open" }] });
+    gaps: [{ match_id: "riverton-forgeham-1a2b3c4d", seq: 412, age_seconds: 12.4, pending: 18, state: "open" }] });
   if ((m = path.match(/^\/dev-api\/config\/([a-z-]+)$/)) && config[m[1]!]) {
     const table = config[m[1]!]!, etag = `"${m[1]}-${table.revision}"`;
     if (method === "PUT") {
@@ -326,8 +327,8 @@ async function api(req: IncomingMessage, res: ServerResponse, path: string) {
     if (req.headers["if-none-match"] === etag) return send(res, 304, undefined, { ETag: etag });
     return send(res, 200, { table: m[1], ...table }, { ETag: etag });
   }
-  if (path === "/feed-api/recordings") return send(res, 200, [{ fixture: "chelsea-united", description: "Chelsea v Manchester United", duration_seconds: 5515.48, synthetic: true, teams: [] },
-    { fixture: "arsenal-spurs", description: "Arsenal v Tottenham Hotspur", duration_seconds: 5600, synthetic: true }]);
+  if (path === "/feed-api/recordings") return send(res, 200, [{ fixture: "riverton-forgeham", description: "Riverton Rovers v Forgeham United", duration_seconds: 5515.48, synthetic: true, teams: [] },
+    { fixture: "redcastle-whitmore", description: "Redcastle Town v Whitmore Wanderers", duration_seconds: 5600, synthetic: true }]);
   if (path === "/feed-api/runs" && method === "GET") return send(res, 200, runs.map((run) => ({ ...run, video_seconds: clockOf(run.match_id) ?? 0 })));
   if (path === "/feed-api/runs" && method === "POST") {
     const { fixture } = await body(req);

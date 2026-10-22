@@ -179,7 +179,7 @@ text('Master architecture',80,78,48)
 text('TARGET DESIGN 19 OCT  ·  DEMO BUILD 22 OCT 2026',790,94,22,MUTED)
 text('Shared match intelligence. Personal questions. One live experience.',80,146,25,MUTED)
 
-zone('grf',80,250,800,530,'GRF / data generation','Synthetic Chelsea–United match · one aligned timeline',ROSE,'#fdf0f3')
+zone('grf',80,250,800,530,'GRF / data generation','Synthetic Riverton Rovers–United match · one aligned timeline',ROSE,'#fdf0f3')
 zone('etl',80,1050,800,1390,'ETL / match facts','Service-owned storage',ORANGE,'#fff7e9')
 zone('backend',1120,250,1320,1020,'Main user backend','Python · Azure Container Apps · Microsoft Agent Framework',BLUE,'#eaf5ff')
 zone('narrative',1120,1370,1320,1070,'Narrative engine','Python · Azure Container Apps · Microsoft Agent Framework',PURPLE,'#f5efff')
@@ -307,15 +307,15 @@ line([(1190,2300),(1075,2300),(1075,640),(1190,640)],'Recaps · backlog',(1088,1
 
 # Graphical frontend: controls, chat, full-frame pitch, five cards, narrative feed.
 box(2730,370,560,135,'white','#cbd9e7');text('Audience selection',2750,385,25,GREEN)
-for row,(label,chips) in enumerate([('Team',['Chelsea','Man Utd','Neither']),('Style',['Analytical','Simple','Casual','Experienced'])]):
+for row,(label,chips) in enumerate([('Team',['Riverton Rovers','Forgeham','Neither']),('Style',['Analytical','Simple','Casual','Experienced'])]):
     y = 428 + row * 36
     text(label,2750,y+5,16,MUTED)
     for i,chip in enumerate(chips):
-        on = chip in ('Chelsea','Casual')
+        on = chip in ('Riverton Rovers','Casual')
         box(2820+i*116,y,108,28,'#dcefe0' if on else '#f0f7f2','#bdd9c5');text(chip,2820+i*116,y+4,16,GREEN,108,'center')
 box(2730,590,560,210,'white','#cbd9e7');text('Ask about the match',2750,610,25,GREEN)
 text('Short answer · as-of minute · clarification if needed',2750,652,19,MUTED)
-box(2930,688,340,34,'#e8f4ff','#c5d9ef');text('Chelsea headed passes since 20′?',2945,695,16,BLUE)
+box(2930,688,340,34,'#e8f4ff','#c5d9ef');text('Riverton Rovers headed passes since 20′?',2945,695,16,BLUE)
 box(2750,740,190,35,'#e8f4ff','#c5d9ef');text('Track this stat',2765,746,18,BLUE)
 box(2730,885,560,350,'#dcefe0','#75a686')
 text('Match video',2750,905,25,GREEN)

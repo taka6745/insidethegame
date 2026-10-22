@@ -140,7 +140,7 @@ def test_analyst_asks_once_more_for_json_then_returns_the_reply_for_the_validato
     variables = {k: "" for k in ("analysis_reason", "game_state_statistics", "key_event_ledger",
                                  "combined_match_context", "match_trends", "storylines", "max_observations",
                                  "max_evidence", "confidence_levels", "short_windows", "short_window_levels")}
-    api = FakeApi(reply("Chelsea look strong."), reply('```json\n{"observations": []}\n```'))
+    api = FakeApi(reply("Riverton Rovers look strong."), reply('```json\n{"observations": []}\n```'))
     result = asyncio.run(agents(api).analyse(variables))
     assert result.text.endswith("```") and '{"observations": []}' in result.text
     assert result.promptVersion == "match-analyst.v4" and api.requests[0][1]["model"] == "m-analyst"

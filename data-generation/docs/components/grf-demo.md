@@ -15,16 +15,16 @@ GRF native contacts + frames → vendor adapter → timed recording → feed
                       └────→ video + score strip → HLS ─────────┘
 ```
 
-Real-name illustrative lineups map the simulator's slots; abilities remain generic. This is a synthetic game, not actual Premier League footage or official Opta data.
+Fictional Elephant League lineups (`grf_demo/league.json`) map the simulator's slots; abilities remain generic. This is a synthetic game, not real football footage or official Opta data.
 
 ## 1. Run
 
 *In short: one disposable engine copy per fixture, then capture, translate, package.*
 
 ```sh
-data-generation/prepare-grf-source.sh arsenal-liverpool   # → .local/grf-demo-source-arsenal-liverpool
-GRF_FIXTURE=arsenal-liverpool GRF_SEED=31 GRF_SOURCE="$PWD/.local/grf-demo-source-arsenal-liverpool" \
-  data-generation/generate-grf.sh .local/grf-demo-arsenal-liverpool-90
+data-generation/prepare-grf-source.sh redcastle-portalbion   # → .local/grf-demo-source-redcastle-portalbion
+GRF_FIXTURE=redcastle-portalbion GRF_SEED=31 GRF_SOURCE="$PWD/.local/grf-demo-source-redcastle-portalbion" \
+  data-generation/generate-grf.sh .local/grf-demo-redcastle-portalbion-90
 ```
 
 Then ship it: copy `recording.json` to `recordings/<fixture>-grf.json` and `recording.opta-f24.json` to `recordings/<fixture>-grf.opta-f24.json`, and run `python -m grf_demo.opta_stream recordings/<fixture>-grf.json` from `data-generation/`. The feed picks up the recording on its next start and the HLS from `.local/media/<fixture>/hls/` (`./dev` links a packaged `.local/grf-demo-<fixture>-90/hls/` there).
@@ -35,7 +35,7 @@ Then ship it: copy `recording.json` to `recordings/<fixture>-grf.json` and `reco
 
 *In short: `FIXTURES` in `roster.py` is the generator's fixture list.*
 
-`FIXTURES` holds each match's real-name lineups, shirt numbers, kit colours, score-strip colours and codes: `chelsea-united` (default), `arsenal-liverpool` and `mancity-tottenham`. Names are compiled into the engine, so each fixture needs its own disposable source. Exports (and the feed's MA1 branding) read the fixture from the recording's team ids.
+`FIXTURES` builds each match from `league.json`'s fictional lineups, shirt numbers, kit colours, score-strip colours and codes: `riverton-forgeham` (default), `redcastle-portalbion` and `skybridge-whitmore`. Names are compiled into the engine, so each fixture needs its own disposable source. Exports (and the feed's MA1 branding) read the fixture from the recording's team ids.
 
 ## 3. Source patches
 

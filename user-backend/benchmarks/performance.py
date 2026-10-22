@@ -20,7 +20,7 @@ from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 
 # SPADL actions of a shipped recording, converted from its MA3 stream by ETL's reference converter.
-DEFAULT_RECORDING = Path(__file__).resolve().parents[2] / "data-generation/recordings/chelsea-united-grf.json"
+DEFAULT_RECORDING = Path(__file__).resolve().parents[2] / "data-generation/recordings/riverton-forgeham-grf.json"
 
 
 def peak_mb():

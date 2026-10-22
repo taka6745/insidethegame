@@ -1,64 +1,64 @@
 {
-  "chelsea-united": {
-    "summary": "Chelsea press and attack down the right; United play more directly and down the left. Spells of pressure alternate; United tire late; the team ahead after an hour sits deep and the team behind pushes.",
+  "riverton-forgeham": {
+    "summary": "Riverton Rovers press and attack down the right; United play more directly and down the left. Spells of pressure alternate; United tire late; the team ahead after an hour sits deep and the team behind pushes.",
     "styles": {
-      "chelsea": {"press": 0.85, "line": 0.05, "flank": 0.6},
-      "manutd": {"press": 0.3, "line": -0.1, "flank": -0.4, "direct": 0.35}
+      "riverton": {"press": 0.85, "line": 0.05, "flank": 0.6},
+      "forgeham": {"press": 0.3, "line": -0.1, "flank": -0.4, "direct": 0.35}
     },
     "phases": [
-      {"label": "Chelsea high press from kick-off", "team": "chelsea", "from": 3, "to": 13, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "United pressure spell", "team": "manutd", "from": 18, "to": 28, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Chelsea pressure before half time", "team": "chelsea", "from": 33, "to": 45, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "United start the second half strongly", "team": "manutd", "from": 46, "to": 56, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Chelsea sustained pressure", "team": "chelsea", "from": 61, "to": 72, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "United tire", "team": "manutd", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "United tired", "team": "manutd", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "Chelsea protect the lead", "team": "chelsea", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.15}},
-      {"label": "United protect the lead", "team": "manutd", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.15}},
-      {"label": "Chelsea late push", "team": "chelsea", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.2, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
-      {"label": "United late push", "team": "manutd", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.2, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
+      {"label": "Riverton Rovers high press from kick-off", "team": "riverton", "from": 3, "to": 13, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "United pressure spell", "team": "forgeham", "from": 18, "to": 28, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Riverton Rovers pressure before half time", "team": "riverton", "from": 33, "to": 45, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "United start the second half strongly", "team": "forgeham", "from": 46, "to": 56, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Riverton Rovers sustained pressure", "team": "riverton", "from": 61, "to": 72, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "United tire", "team": "forgeham", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "United tired", "team": "forgeham", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "Riverton Rovers protect the lead", "team": "riverton", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.15}},
+      {"label": "United protect the lead", "team": "forgeham", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.15}},
+      {"label": "Riverton Rovers late push", "team": "riverton", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.2, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
+      {"label": "United late push", "team": "forgeham", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.2, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
     ]
   },
-  "arsenal-liverpool": {
-    "summary": "Liverpool press high and attack down the right; Arsenal play more directly. Spells of pressure alternate; Liverpool tire in the last quarter while Arsenal push; the team ahead after an hour sits deep and the team behind pushes.",
+  "redcastle-portalbion": {
+    "summary": "Port Albion press high and attack down the right; Redcastle Town play more directly. Spells of pressure alternate; Port Albion tire in the last quarter while Redcastle Town push; the team ahead after an hour sits deep and the team behind pushes.",
     "styles": {
-      "arsenal": {"press": 0.4, "line": -0.05, "flank": 0.5, "direct": 0.4},
-      "liverpool": {"press": 0.85, "line": 0.05, "flank": 0.6, "direct": 0.1}
+      "redcastle": {"press": 0.4, "line": -0.05, "flank": 0.5, "direct": 0.4},
+      "portalbion": {"press": 0.85, "line": 0.05, "flank": 0.6, "direct": 0.1}
     },
     "phases": [
-      {"label": "Liverpool press high", "team": "liverpool", "from": 2, "to": 12, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Arsenal pressure spell", "team": "arsenal", "from": 17, "to": 27, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Liverpool pressure before half time", "team": "liverpool", "from": 32, "to": 43, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Arsenal start the second half strongly", "team": "arsenal", "from": 47, "to": 57, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Liverpool surge", "team": "liverpool", "from": 60, "to": 68, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Arsenal late pressure", "team": "arsenal", "from": 79, "to": 90, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Liverpool tire", "team": "liverpool", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "Liverpool tired", "team": "liverpool", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "Arsenal protect the lead", "team": "arsenal", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
-      {"label": "Liverpool protect the lead", "team": "liverpool", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
-      {"label": "Arsenal late push", "team": "arsenal", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
-      {"label": "Liverpool late push", "team": "liverpool", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
+      {"label": "Port Albion press high", "team": "portalbion", "from": 2, "to": 12, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Redcastle Town pressure spell", "team": "redcastle", "from": 17, "to": 27, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Port Albion pressure before half time", "team": "portalbion", "from": 32, "to": 43, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Redcastle Town start the second half strongly", "team": "redcastle", "from": 47, "to": 57, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Port Albion surge", "team": "portalbion", "from": 60, "to": 68, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Redcastle Town late pressure", "team": "redcastle", "from": 79, "to": 90, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Port Albion tire", "team": "portalbion", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "Port Albion tired", "team": "portalbion", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "Redcastle Town protect the lead", "team": "redcastle", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
+      {"label": "Port Albion protect the lead", "team": "portalbion", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
+      {"label": "Redcastle Town late push", "team": "redcastle", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
+      {"label": "Port Albion late push", "team": "portalbion", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
     ]
   },
-  "mancity-tottenham": {
-    "summary": "City keep the ball, press and attack down the left; Spurs sit deeper and counter. City have the longer spells, Spurs come out after half time, Spurs tire late; the team ahead after an hour sits deep and the team behind pushes.",
+  "skybridge-whitmore": {
+    "summary": "City keep the ball, press and attack down the left; Whitmore sit deeper and counter. City have the longer spells, Whitmore come out after half time, Whitmore tire late; the team ahead after an hour sits deep and the team behind pushes.",
     "styles": {
-      "mancity": {"press": 0.85, "line": 0.05, "flank": -0.6},
-      "tottenham": {"press": 0.25, "line": -0.15, "flank": 0.3, "direct": 0.4}
+      "skybridge": {"press": 0.85, "line": 0.05, "flank": -0.6},
+      "whitmore": {"press": 0.25, "line": -0.15, "flank": 0.3, "direct": 0.4}
     },
     "phases": [
-      {"label": "City press from kick-off", "team": "mancity", "from": 4, "to": 15, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Spurs spell of pressure", "team": "tottenham", "from": 19, "to": 27, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "City siege before half time", "team": "mancity", "from": 31, "to": 45, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Spurs come out after the break", "team": "tottenham", "from": 46, "to": 56, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "City take control again", "team": "mancity", "from": 60, "to": 70, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "City late pressure", "team": "mancity", "from": 80, "to": 90, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
-      {"label": "Spurs tire", "team": "tottenham", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "Spurs tired", "team": "tottenham", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
-      {"label": "City protect the lead", "team": "mancity", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
-      {"label": "Spurs protect the lead", "team": "tottenham", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
-      {"label": "City late push", "team": "mancity", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
-      {"label": "Spurs late push", "team": "tottenham", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
+      {"label": "City press from kick-off", "team": "skybridge", "from": 4, "to": 15, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Whitmore spell of pressure", "team": "whitmore", "from": 19, "to": 27, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "City siege before half time", "team": "skybridge", "from": 31, "to": 45, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Whitmore come out after the break", "team": "whitmore", "from": 46, "to": 56, "set": {"press": 1.0, "line": 0.3}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "City take control again", "team": "skybridge", "from": 60, "to": 70, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "City late pressure", "team": "skybridge", "from": 80, "to": 90, "set": {"press": 1.0, "line": 0.15}, "opponent": {"press": 0.2, "line": -0.45, "form": 0.8}},
+      {"label": "Whitmore tire", "team": "whitmore", "from": 70, "to": 82, "ramp": true, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "Whitmore tired", "team": "whitmore", "from": 82, "set": {"energy": 0.75, "form": 0.85}},
+      {"label": "City protect the lead", "team": "skybridge", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
+      {"label": "Whitmore protect the lead", "team": "whitmore", "from": 58, "when": "leading", "set": {"press": 0.3, "line": -0.3, "direct": 0.4}, "opponent": {"press": 0.95, "line": 0.25}},
+      {"label": "City late push", "team": "skybridge", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}},
+      {"label": "Whitmore late push", "team": "whitmore", "from": 75, "when": "trailing", "set": {"press": 1.0, "line": 0.3, "direct": 0.3}, "opponent": {"press": 0.3, "line": -0.35}}
     ]
   }
 }

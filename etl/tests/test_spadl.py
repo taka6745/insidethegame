@@ -109,7 +109,7 @@ def test_finalisation(fixture):
 
 
 def test_live_prefix_holds_back_unfinished_actions():
-    _, home, ma3 = run("chelsea-united")
+    _, home, ma3 = run("riverton-forgeham")
     pass_row = next(i for i, m in enumerate(ma3) if m["typeId"] == spadl.PASS and m["periodId"] == 1 and i > 100)
     prefix = [m for m in ma3 if m["eventSeq"] <= ma3[pass_row]["eventSeq"]]
     live = spadl.convert(prefix, home, closed=False)
@@ -119,7 +119,7 @@ def test_live_prefix_holds_back_unfinished_actions():
 
 
 def test_extensions():
-    _, home, ma3 = run("chelsea-united")
+    _, home, ma3 = run("riverton-forgeham")
     whole = spadl.actions(ma3, home)
     by_id = {m["id"]: m for m in ma3}
     for a in whole:

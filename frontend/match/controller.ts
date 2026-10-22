@@ -2,6 +2,7 @@ import { currentSnapshot } from "./format.ts";
 import { HeldUpdates } from "./hold.ts";
 import { liveSource } from "./media.ts";
 import type { MatchApi } from "./api.ts";
+import { friendly } from "./api.ts";
 import type { AudienceView } from "./audience-view.ts";
 import type { QuestionView } from "./chat-view.ts";
 import type { LiveConnection } from "./live.ts";
@@ -49,6 +50,8 @@ export interface ControllerOptions {
   questions: ControllerQuestions;
   live: Pick<LiveConnection, "connect" | "stop">;
   storage: Pick<Storage, "getItem" | "setItem">;
+  /** This browser's viewer id (viewer-id.ts): another browser never takes over this one's session. */
+  viewer?: string;
   uuid?: () => string;
   schedule?: (callback: () => void) => unknown;
   timers?: Timers;
@@ -73,6 +76,7 @@ export class MatchController {
   questions: ControllerQuestions;
   live: Pick<LiveConnection, "connect" | "stop">;
   storage: Pick<Storage, "getItem" | "setItem">;
+  viewer: string;
   uuid: () => string;
   schedule: (callback: () => void) => unknown;
   timers: Timers;
@@ -105,6 +109,7 @@ export class MatchController {
     questions,
     live,
     storage,
+    viewer = "",
     uuid = () => crypto.randomUUID(),
     schedule = (callback) => requestAnimationFrame(callback),
     timers = globalThis,
@@ -118,6 +123,7 @@ export class MatchController {
     this.questions = questions;
     this.live = live;
     this.storage = storage;
+    this.viewer = viewer;
     this.uuid = uuid;
     this.schedule = schedule;
     this.timers = timers;
@@ -160,7 +166,7 @@ export class MatchController {
       try {
         return await this.start({ restore });
       } catch (error) {
-        this.view.error((error as ServiceError).message);
+        this.view.error(friendly(error));
         this.view.connection("offline");
         return;
       }
@@ -191,7 +197,7 @@ export class MatchController {
           if (error.status !== 404) throw error;
           return null;
         })
-        : null) ?? await this.api.session(this.profile);
+        : null) ?? await this.api.session(this.profile, this.viewer);
       if (generation !== this.generation) return;
       this.token = session.session_token;
       this.session = session;
@@ -213,7 +219,7 @@ export class MatchController {
           ? "replaced"
           : "offline",
       );
-      this.view.error(error.message);
+      this.view.error(friendly(error));
       this.questions.status("Reconnect to ask about the match.", true);
     }
   }
@@ -240,7 +246,7 @@ export class MatchController {
     } catch (error) {
       if (generation !== this.generation) return;
       if (this.snapshot) this.view.audience.render(this.snapshot);
-      this.view.error((error as ServiceError).message);
+      this.view.error(friendly(error));
     } finally {
       if (generation === this.generation) {
         this.audienceBusy = false;
@@ -357,7 +363,7 @@ export class MatchController {
       if (generation === this.generation) this.showChat(session);
     } catch (error) {
       if (generation === this.generation) {
-        this.view.error((error as ServiceError).message);
+        this.view.error(friendly(error));
         this.questions.status("Reconnect to restore the answer.", true);
       }
     }
@@ -403,7 +409,7 @@ export class MatchController {
       this.questions.status(
         "Could not complete that answer. Your question is ready to retry.",
       );
-      this.view.error((error as ServiceError).message);
+      this.view.error(friendly(error));
       this.onRetryPrompt?.(prompt);
     } finally {
       if (generation === this.generation) this.busy = false;
@@ -421,7 +427,7 @@ export class MatchController {
       this.receive(result.snapshot);
       this.view.error("");
     } catch (error) {
-      if (generation === this.generation) this.view.error((error as ServiceError).message);
+      if (generation === this.generation) this.view.error(friendly(error));
     }
   }
   async unpin(id: string | number) {
@@ -436,7 +442,7 @@ export class MatchController {
       this.receive(session.snapshot);
       this.view.error("");
     } catch (error) {
-      if (generation === this.generation) this.view.error((error as ServiceError).message);
+      if (generation === this.generation) this.view.error(friendly(error));
     }
   }
   stop() {

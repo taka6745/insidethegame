@@ -119,7 +119,8 @@ class MatchProjection:
                 stats = (await service.match_data.stats(snapshot))['stats']
                 score = await service.match_data.score(snapshot, [t['id'] for t in payload.teams])
                 closed = match.closed_through(snapshot.seq)
-                items = await asyncio.to_thread(service.engine_narratives.items, snapshot, closed)
+                items = await asyncio.to_thread(service.engine_narratives.items, snapshot, closed,
+                                                self.presentation.narratives_per_bucket)
                 follow_items = await asyncio.to_thread(service.subscriptions.narratives, snapshot, closed)
                 final = ((match.info or {}).get('capabilities') or {}).get('periods', 2)
                 facts = await service.match_data.key_moments(snapshot)
@@ -367,9 +368,9 @@ class ProductService:
         except RuleError:
             return {}
 
-    async def _replace_profile(self, match_id, profile_id):
+    async def _replace_profile(self, match_id, profile_id, viewer_id=''):
         if projection := self.projections.get(match_id):
-            projection.live.replace_profile(profile_id)
+            projection.live.replace_profile(profile_id, viewer_id)
 
     async def detach(self, match_id, peer):
         if projection := self.projections.get(match_id):
@@ -415,9 +416,9 @@ class ProductService:
         document, etag = await self.config.document('prices')
         return {**document['value'], 'revision': document['revision']}, etag
 
-    async def start(self, match_id, profile_id):
+    async def start(self, match_id, profile_id, viewer_id=''):
         async with self._locks(match_id):
-            row = await self.questions.start(match_id, profile_id)
+            row = await self.questions.start(match_id, profile_id, viewer_id)
             return await self.bootstrap(match_id, row['session_token'])
 
     async def bootstrap(self, match_id, token):
@@ -435,7 +436,7 @@ class ProductService:
     @staticmethod
     def _subscription(viewer):
         # Live delivery retains routing/pin IDs, never the viewer's chat transcript.
-        return {key: viewer[key] for key in ('match_id', 'profile_id', 'profile', 'audience', 'follow')} | {
+        return {key: viewer[key] for key in ('match_id', 'profile_id', 'viewer_id', 'profile', 'audience', 'follow') if key in viewer} | {
             'offers': [{key: offer[key] for key in ('calculation_id', 'kind', 'standard_stat_id', 'label', 'unsupported')
                         if key in offer} for offer in viewer['offers'] if offer.get('calculation_id')]}
 

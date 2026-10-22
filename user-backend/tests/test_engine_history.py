@@ -31,12 +31,12 @@ class Actions:
 
 def action(action_id, kind, seconds, period=1, result='success'):
     return {'id': action_id, 'action_type': kind, 'result': result, 'period': period, 'match_time_seconds': seconds,
-            'video_seconds': float(seconds), 'team_id': 'chelsea', 'player_id': 'p', 'bodypart': 'foot',
+            'video_seconds': float(seconds), 'team_id': 'riverton', 'player_id': 'p', 'bodypart': 'foot',
             'start_zone': 'opp_box', 'end_zone': 'opp_box'}
 
 
 def card(card_id, colour, seconds, period=1):
-    return {'id': card_id, 'seq': 1, 'colour': colour, 'team_id': 'chelsea', 'player_id': 'p', 'period': period,
+    return {'id': card_id, 'seq': 1, 'colour': colour, 'team_id': 'riverton', 'player_id': 'p', 'period': period,
             'match_time_seconds': seconds, 'video_seconds': float(seconds)}
 
 
@@ -92,7 +92,7 @@ def test_key_moments_are_received_facts_ranked_by_configured_importance():
     assert {m['id']: m['rank'] for m in moments} == {'moment:a4': 1, 'moment:a1': 2, 'moment:card:9': 3, 'moment:card:7': 4}
     titles = {m['id']: m['title'] for m in moments}
     assert titles['moment:a4'].endswith('own goal') and titles['moment:card:9'].endswith('second yellow card')
-    assert all(m['end_video_seconds'] <= 504 for m in moments)
+    assert all(m['end_video_seconds'] <= 505 for m in moments)  # a goal keeps 5 s after (046)
     compact = asyncio.run(data.compact(SNAPSHOT))
     assert [e['id'] for e in compact['key_events']] == ['card:7', 'card:9', 'a4', 'a1']
     assert asyncio.run(data.read(SNAPSHOT, 'key_moments', period=2))['items'] == []
@@ -100,7 +100,7 @@ def test_key_moments_are_received_facts_ranked_by_configured_importance():
 
 def test_storylines_are_as_the_snapshot_knew_them():
     at = lambda minute: {'periodId': 1, 'timeMin': minute}
-    line = {'id': 'sl:m:1', 'label': 'Press', 'team': 'chelsea', 'status': 'resolved', 'outcome': 'faded',
+    line = {'id': 'sl:m:1', 'label': 'Press', 'team': 'riverton', 'status': 'resolved', 'outcome': 'faded',
             'openedAt': at(3), 'resolvedAt': at(30), 'salienceHistory': [{'at': at(3), 'salience': 0.4},
                                                                         {'at': at(20), 'salience': 1.5}],
             'beats': [{'at': at(3), 'headline': 'early'}, {'at': at(20), 'headline': 'late'}]}
@@ -114,7 +114,7 @@ def test_storylines_are_as_the_snapshot_knew_them():
 
 def test_a_reopened_storyline_is_resolved_only_between_its_resolution_and_the_next_beat():
     at = lambda minute: {'periodId': 1, 'timeMin': minute}
-    base = {'label': 'Press', 'team': 'chelsea', 'status': 'active', 'outcome': None, 'openedAt': at(3),
+    base = {'label': 'Press', 'team': 'riverton', 'status': 'active', 'outcome': None, 'openedAt': at(3),
             'resolvedAt': None, 'salienceHistory': [{'at': at(3), 'salience': 0.4}]}
     lines = [{**base, 'id': 'sl:m:1', 'resolutions': [{'at': at(5), 'outcome': 'first'}],
               'beats': [{'at': at(3), 'headline': 'early'}, {'at': at(8), 'headline': 'back'}]},

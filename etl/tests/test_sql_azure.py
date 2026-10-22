@@ -93,7 +93,7 @@ def test_marks_become_the_reference_watermark_in_any_output_order(connect):
 
 
 def test_purge_and_tombstones_hold_against_later_inserts(connect):
-    a, b = v2_stream.build("0000aaaa"), v2_stream.build("0000bbbb", fixture="arsenal-liverpool")
+    a, b = v2_stream.build("0000aaaa"), v2_stream.build("0000bbbb", fixture="redcastle-portalbion")
     out = {s[0]["matchId"]: (pipeline.stream_outputs(s, 60), pipeline.progress_marks(s)) for s in (a, b)}
 
     def deliver(match_id, upto=None):

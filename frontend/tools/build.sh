@@ -17,4 +17,7 @@ mkdir -p "$asset_dir"
 cp -R "$source_dir/match/." "$asset_dir/"
 sed "s|/match/|/app/$fingerprint/|g" "$source_dir/match/index.html" > "$output_dir/index.html"
 rm "$asset_dir/index.html"
+# A tab opened before a deploy still asks for its old fingerprint; nginx falls back to this build (app/current)
+# instead of a 404, so nobody needs a hard refresh after a deploy.
+ln -sfn "$fingerprint" "$output_dir/app/current"
 printf 'Built /app/%s/\n' "$fingerprint"

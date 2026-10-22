@@ -110,7 +110,7 @@ d.arrow([(580,655),(640,655)],both=True)
 d.text('REST + WS',610,640,13,MUTED,anchor='middle')
 # Demo operator: start, cancel, readiness; restores seeds through each owner's demo-only adapter.
 d.rect(36,820,1608,230,'#fffaf0','#e7b65c')
-d.text('DEMO BUILD (judge URL) · Start demo always runs three matches; main game Arsenal–Liverpool opens first',1622,850,15,'#9a6500',True,'end')
+d.text('DEMO BUILD (judge URL) · Start demo always runs three matches; main game Redcastle Town–Port Albion opens first',1622,850,15,'#9a6500',True,'end')
 d.card(296,875,284,160,'Demo control',['/demo-api/ start · cancel · status','one replica · scales to zero'],None,INK,status='Deployed 22 Oct')
 d.arrow([(438,750),(438,875)],'/demo-api/',438,792)
 d.card(36,875,200,160,'Seeds',['20′ · HT · 60′ · 85′','Azure Files · .local'],None,INK,status='Recorded locally')

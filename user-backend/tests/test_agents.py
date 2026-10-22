@@ -14,9 +14,9 @@ from backend.agents.workflow import RuleWorkflow, workflow_from_env
 
 
 CONTEXT = {"match_id": "match-1", "players": [{"id": "mbappe", "name": "Mbappé"}],
-           "teams": [{"id": "chelsea", "name": "Chelsea"}], "standard_stats": []}
-GOAL = Goal(description="Chelsea corners after minute 60", action_types=("corner_crossed", "corner_short"),
-            team_ids=("chelsea",), after_seconds=3600)
+           "teams": [{"id": "riverton", "name": "Riverton Rovers"}], "standard_stats": []}
+GOAL = Goal(description="Riverton Rovers corners after minute 60", action_types=("corner_crossed", "corner_short"),
+            team_ids=("riverton",), after_seconds=3600)
 
 
 class ScriptedModel:
@@ -118,7 +118,7 @@ def test_whole_workflow_deadline_cancels_slow_model():
 def test_fixture_requests_are_explicit_and_boundaries_preserved():
     workflow = RuleWorkflow(FixtureGoalAgent(), FixtureCodingAgent(), source="fixture")
     for prompt, field, op, value in [
-        ("Track Chelsea's corners after the 60th minute", "match_time_seconds", "gt", 3600),
+        ("Track Riverton's corners after the 60th minute", "match_time_seconds", "gt", 3600),
         ("Track headers since minute 20", "match_time_seconds", "gte", 1200),
         ("Track second-half corners", "period", "eq", 2),
         ("Track total headers in this game by Mbappé", "bodypart", "in", ("head",)),
@@ -126,7 +126,7 @@ def test_fixture_requests_are_explicit_and_boundaries_preserved():
         result = asyncio.run(workflow.plan(prompt, CONTEXT))
         assert result.status == "ready" and result.source == "fixture"
         assert any(p.field == field and p.op == op and p.value == value for p in result.rule.predicates)
-    result = asyncio.run(workflow.plan("Track Chelsea corners only if they are losing", CONTEXT))
+    result = asyncio.run(workflow.plan("Track Riverton corners only if they are losing", CONTEXT))
     assert result.status == "unsupported"  # Never silently drop the extra condition.
 
 
@@ -228,7 +228,7 @@ def test_framework_agents_and_workflow_repair_end_to_end(monkeypatch):
         GoalAgent(LocalJsonModel("http://local.invalid/v1", "development-model", transport=transport, name="question_goal")),
         RuleCodingAgent(LocalJsonModel("http://local.invalid/v1", "development-model", transport=transport, name="rule_coder")))
     assert isinstance(workflow.build(), Workflow)
-    result = asyncio.run(workflow.plan("Track Chelsea corners after 60 minutes", CONTEXT))
+    result = asyncio.run(workflow.plan("Track Riverton Rovers corners after 60 minutes", CONTEXT))
     assert result.status == "ready" and result.attempts == 2
     assert result.rule.calculation_id == GOAL.target_rule("match-1").calculation_id
     assert runs == ["question_goal", "rule_coder", "rule_coder"]
@@ -342,7 +342,7 @@ def test_clarification_then_reply_preserves_conversation_without_gold():
     question = "Which team do you mean?"
     model = ScriptedModel([
         {"status": "clarification", "clarification": {"question": question,
-         "options": ["Chelsea", "Real Madrid"], "missing_fields": ["team"]}},
+         "options": ["Riverton Rovers", "Real Madrid"], "missing_fields": ["team"]}},
         goal_decision(),
     ])
     workflow = RuleWorkflow(GoalAgent(model), StructuredRuleCompiler())
@@ -352,11 +352,11 @@ def test_clarification_then_reply_preserves_conversation_without_gold():
     assert first.model_calls == 1
     history = [{"role": "user", "content": "Our corners after minute 60"},
                {"role": "assistant", "content": question}]
-    second = asyncio.run(workflow.plan("Chelsea", CONTEXT, history=history))
+    second = asyncio.run(workflow.plan("Riverton Rovers", CONTEXT, history=history))
     assert second.status == "ready" and second.model_calls == 1
     assert second.rule.calculation_id == GOAL.target_rule("match-1").calculation_id
     assert model.calls[-1]["context"]["conversation"] == history
-    assert model.calls[-1]["request"] == "Chelsea"
+    assert model.calls[-1]["request"] == "Riverton Rovers"
     assert "goal" in second.stage_seconds and "compile_validate" in second.stage_seconds
     assert len(model.calls) == 2  # One model call per turn; compilation is deterministic.
 
@@ -370,7 +370,7 @@ def test_clarification_then_reply_preserves_conversation_without_gold():
 def test_invalid_conversation_does_not_call_model(history):
     model = ScriptedModel([])
     workflow = RuleWorkflow(GoalAgent(model), FixtureCodingAgent())
-    result = asyncio.run(workflow.plan("Chelsea", CONTEXT, history=history))
+    result = asyncio.run(workflow.plan("Riverton Rovers", CONTEXT, history=history))
     assert result.status == "failed" and not model.calls
 
 
@@ -380,7 +380,7 @@ def test_goal_schema_repair_includes_safe_field_feedback():
         goal_decision(),
     ])
     workflow = RuleWorkflow(GoalAgent(model), FixtureCodingAgent())
-    result = asyncio.run(workflow.plan("Chelsea corners after minute 60", CONTEXT))
+    result = asyncio.run(workflow.plan("Riverton Rovers corners after minute 60", CONTEXT))
     assert result.status == "ready" and result.model_calls == 2
     feedback = model.calls[1]["context"]["goal_validation_errors"]
     assert any(item["path"].startswith("goal.results") and item["type"] == "literal_error" for item in feedback)
@@ -395,9 +395,9 @@ def test_invalid_plan_timeout_fails_startup(monkeypatch, timeout):
         workflow_from_env()
 
 
-@pytest.mark.parametrize("prompt", ["Track his saves", "Track her headed shots", "Track that player's cards", "Track his or Palmer's saves"])
+@pytest.mark.parametrize("prompt", ["Track his saves", "Track her headed shots", "Track that player's cards", "Track his or Ashworth's saves"])
 def test_unresolved_player_is_not_guessed_from_catalogue(prompt):
-    context = {**CONTEXT, "players": [{"id": "courtois", "name": "Courtois"}, {"id": "palmer", "name": "Palmer"}]}
+    context = {**CONTEXT, "players": [{"id": "courtois", "name": "Courtois"}, {"id": "ashworth", "name": "Ashworth"}]}
     model = ScriptedModel([])
     outcome = asyncio.run(RuleWorkflow(GoalAgent(model), FixtureCodingAgent()).plan(prompt, context))
     assert outcome.status == "clarification" and outcome.model_calls == 0
@@ -410,5 +410,5 @@ def test_reference_guard_respects_word_boundaries_and_unicode_antecedent():
     assert unresolved_player("Count corners this half", CONTEXT) is None
     assert unresolved_player("MBAPPÉ: count his headed shots", CONTEXT) is None
     assert unresolved_player("Count his headers", {**CONTEXT, "conversation": [{"role": "user", "content": "Mbappé"}]}) is None
-    context = {**CONTEXT, "players": CONTEXT['players'] + [{"id": "palmer", "name": "Palmer"}]}
-    assert unresolved_player("Mbappé and Palmer: count his headers", context).status == "clarification"
+    context = {**CONTEXT, "players": CONTEXT['players'] + [{"id": "ashworth", "name": "Ashworth"}]}
+    assert unresolved_player("Mbappé and Ashworth: count his headers", context).status == "clarification"

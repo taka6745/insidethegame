@@ -11,23 +11,23 @@ from backend.models.rules import Rule
 from backend.services.question_answers import resolve_answer
 from backend.services.question_tools import per_team
 
-TEAMS = [{'id': 'chelsea', 'name': 'Chelsea'}, {'id': 'manutd', 'name': 'Manchester United'}]
+TEAMS = [{'id': 'riverton', 'name': 'Riverton Rovers'}, {'id': 'forgeham', 'name': 'Forgeham United'}]
 
 
 def stats(**values):
     rows = []
     for key, value in values.items():
         team, kind = key.split('__')
-        label = {'all': 'Both teams', 'chelsea': 'Chelsea', 'manutd': 'Manchester United'}[team]
+        label = {'all': 'Both teams', 'riverton': 'Riverton Rovers', 'forgeham': 'Forgeham United'}[team]
         rows.append({'id': f'{team}:{kind}', 'label': f"{label} {kind.replace('_', ' ')}", 'value': value,
                      'team_id': None if team == 'all' else team, 'available': True, 'complete': True,
                      'unit': '%' if kind == 'possession' else ''})
     return rows
 
 
-CARDS = [{'id': 'card:c1', 'seq': 10, 'colour': 'second_yellow', 'team_id': 'manutd', 'player_id': 'manutd-9',
+CARDS = [{'id': 'card:c1', 'seq': 10, 'colour': 'second_yellow', 'team_id': 'forgeham', 'player_id': 'forgeham-9',
           'match_time_seconds': 3078, 'period': 2, 'video_seconds': None},
-         {'id': 'card:c2', 'seq': 9, 'colour': 'yellow', 'team_id': 'manutd', 'player_id': 'manutd-7',
+         {'id': 'card:c2', 'seq': 9, 'colour': 'yellow', 'team_id': 'forgeham', 'player_id': 'forgeham-7',
           'match_time_seconds': 2700, 'period': 1, 'video_seconds': None}]
 
 
@@ -42,7 +42,7 @@ def tools(prompt, rows, result=None):
         original_prompt=prompt, stats=rows, offers=[], goal=None, answer_text=None, evidence=evidence,
         prepared_results={}, prepare_original=prepare_original,
         payload=SimpleNamespace(snapshot=SimpleNamespace(id='s', match_id='m'),
-                                players=[{'id': 'manutd-9', 'name': 'Kobbie Mainoo'}]),
+                                players=[{'id': 'forgeham-9', 'name': 'Callum Brightwell'}]),
         match_data=SimpleNamespace(cards=cards),
         _event_reference=lambda row: evidence.setdefault(row['id'], {**row, 'evidence_id': row['id']}))
 
@@ -54,9 +54,9 @@ def answer(prompt, rows, result):
     return reply, toolkit
 
 
-ALL = dict(all__goals=1, chelsea__goals=1, manutd__goals=0, all__shots=10, chelsea__shots=5, manutd__shots=5,
-           all__corners=3, chelsea__corners=0, manutd__corners=3, all__possession=100.0,
-           chelsea__possession=51.4, manutd__possession=48.6, chelsea__shots_on_target=2, all__cards=2, manutd__cards=2)
+ALL = dict(all__goals=1, riverton__goals=1, forgeham__goals=0, all__shots=10, riverton__shots=5, forgeham__shots=5,
+           all__corners=3, riverton__corners=0, forgeham__corners=3, all__possession=100.0,
+           riverton__possession=51.4, forgeham__possession=48.6, riverton__shots_on_target=2, all__cards=2, forgeham__cards=2)
 
 
 def reuse(rows, *ids, formula=None):
@@ -67,14 +67,14 @@ def reuse(rows, *ids, formula=None):
 def test_score_and_shots_per_team_are_split_and_scored():
     rows = stats(**ALL)
     reply, toolkit = answer('Score and shots per team?', rows, reuse(rows, 'all:goals', 'all:shots'))
-    assert [o['standard_stat_id'] for o in toolkit.offers] == ['chelsea:goals', 'manutd:goals', 'chelsea:shots', 'manutd:shots']
-    assert reply.text == 'Score: Chelsea 1–0 Manchester United. Chelsea shots: 5. Manchester United shots: 5.'
+    assert [o['standard_stat_id'] for o in toolkit.offers] == ['riverton:goals', 'forgeham:goals', 'riverton:shots', 'forgeham:shots']
+    assert reply.text == 'Score: Riverton Rovers 1–0 Forgeham United. Riverton Rovers shots: 5. Forgeham United shots: 5.'
 
 
 def test_each_team_splits_a_both_teams_row_but_a_plain_total_does_not():
     rows = stats(**ALL)
     _, toolkit = answer('Corners each team', rows, reuse(rows, 'all:corners'))
-    assert [(o['standard_stat_id'], o['value']) for o in toolkit.offers] == [('chelsea:corners', 0), ('manutd:corners', 3)]
+    assert [(o['standard_stat_id'], o['value']) for o in toolkit.offers] == [('riverton:corners', 0), ('forgeham:corners', 3)]
     _, toolkit = answer('How many corners in the match?', rows, reuse(rows, 'all:corners'))
     assert [o['standard_stat_id'] for o in toolkit.offers] == ['all:corners']
 
@@ -83,19 +83,19 @@ def test_score_and_possession_split_from_two_parts():
     rows = stats(**ALL)
     reply, toolkit = answer('HT score + possession split', rows, reuse(rows, 'all:goals', 'all:possession'))
     assert len(toolkit.offers) == 4
-    assert reply.text == 'Score: Chelsea 1–0 Manchester United. Chelsea possession: 51.4%. Manchester United possession: 48.6%.'
+    assert reply.text == 'Score: Riverton Rovers 1–0 Forgeham United. Riverton Rovers possession: 51.4%. Forgeham United possession: 48.6%.'
 
 
 def test_percentage_of_two_etl_rows_is_computed_not_refused():
-    rows = stats(**{**ALL, 'chelsea__shots': 4})
-    reply, toolkit = answer('% of Chelsea shots on target', rows,
-                            reuse(rows, 'chelsea:shots_on_target', 'chelsea:shots', formula='percentage'))
+    rows = stats(**{**ALL, 'riverton__shots': 4})
+    reply, toolkit = answer('% of Riverton Rovers shots on target', rows,
+                            reuse(rows, 'riverton:shots_on_target', 'riverton:shots', formula='percentage'))
     assert reply.status == 'answer'
-    assert reply.text == 'Chelsea shots on target as a share of Chelsea shots: 50% (2 of 4).'
+    assert reply.text == 'Riverton Rovers shots on target as a share of Riverton Rovers shots: 50% (2 of 4).'
     assert [o['kind'] for o in toolkit.offers] == ['standard', 'standard']  # Each input stays trackable.
 
 
-@pytest.mark.parametrize('ids', [('chelsea:shots', 'chelsea:shots_on_target'), ('chelsea:shots_on_target', 'manutd:shots')])
+@pytest.mark.parametrize('ids', [('riverton:shots', 'riverton:shots_on_target'), ('riverton:shots_on_target', 'forgeham:shots')])
 def test_percentage_needs_a_same_team_subset(ids):
     rows = stats(**ALL)
     reply, toolkit = answer('% on target', rows, reuse(rows, *ids, formula='percentage'))
@@ -104,11 +104,11 @@ def test_percentage_needs_a_same_team_subset(ids):
 
 def test_who_was_sent_off_is_read_from_ma3_cards():
     rows = stats(**ALL)
-    reply, _ = answer('United cards, who was sent off', rows, reuse(rows, 'manutd:cards'))
-    assert reply.text == 'Manchester United cards: 2. Sent off: Kobbie Mainoo (second yellow, 52′).'
+    reply, _ = answer('United cards, who was sent off', rows, reuse(rows, 'forgeham:cards'))
+    assert reply.text == 'Forgeham United cards: 2. Sent off: Callum Brightwell (second yellow, 52′).'
     assert 'card:c1' in reply.evidence_ids
     reply, _ = answer('Who was sent off?', rows, {'status': 'unsupported', 'message': 'No.'})
-    assert reply.status == 'answer' and reply.text == 'Sent off: Kobbie Mainoo (second yellow, 52′).'
+    assert reply.status == 'answer' and reply.text == 'Sent off: Callum Brightwell (second yellow, 52′).'
 
 
 def test_reuse_decision_accepts_several_ids_and_formula_needs_two():
@@ -125,11 +125,11 @@ def test_custom_each_team_count_is_one_goal_per_team():
     goal = Goal(description='Corners for each team', action_types=('corner_crossed', 'corner_short'), period=1)
     split = per_team(goal, 'Corners each team in the first half', TEAMS)
     assert [(g.team_ids, g.description, g.period) for g in split] == [
-        (('chelsea',), 'Chelsea: Corners', 1), (('manutd',), 'Manchester United: Corners', 1)]
-    both = Goal(description='Shots for Chelsea and Manchester United', action_types=('shot', 'shot_penalty', 'shot_freekick'), team_ids=('chelsea', 'manutd'))
+        (('riverton',), 'Riverton Rovers: Corners', 1), (('forgeham',), 'Forgeham United: Corners', 1)]
+    both = Goal(description='Shots for Riverton Rovers and Forgeham United', action_types=('shot', 'shot_penalty', 'shot_freekick'), team_ids=('riverton', 'forgeham'))
     assert len(per_team(both, 'Shots?', TEAMS)) == 2
     split = per_team(Goal(description='Shots split per team', action_types=('shot', 'shot_penalty', 'shot_freekick')), 'Shots split per team', TEAMS)
-    assert [g.description for g in split] == ['Chelsea: Shots', 'Manchester United: Shots']
+    assert [g.description for g in split] == ['Riverton Rovers: Shots', 'Forgeham United: Shots']
     assert per_team(Goal(description='All corners', action_types=('corner_crossed', 'corner_short')), 'How many corners?', TEAMS) is None
 
 
@@ -155,7 +155,7 @@ def test_who_was_sent_off_skips_model_prose():
     agent = QuestionAgent(settings=object(), router=Router(), replay=object())
     draft = asyncio.run(agent.answer('United cards, who was sent off', {}, SimpleNamespace()))
     assert draft.answer_kind == 'statistic'
-    assert EXPLAIN.search('Why was Mainoo sent off?')  # Explanations stay with the match answer.
+    assert EXPLAIN.search('Why was Brightwell sent off?')  # Explanations stay with the match answer.
 
 
 def test_evidence_labels_and_prose_share_one_minute_rule():
@@ -170,5 +170,5 @@ def test_evidence_labels_and_prose_share_one_minute_rule():
     assert toolkit.evidence['card:c1']['label'] == '52′ second yellow card'
     assert toolkit._event_reference(CARDS[0])['minute'] == '52′'  # What the model copies into prose.
     assert [toolkit.evidence[i]['label'] for i in ('recap:a', 'recap:b')] == ['74′ recap', '74′ recap']
-    reply, _ = answer('United cards, who was sent off', stats(**ALL), reuse(stats(**ALL), 'manutd:cards'))
-    assert 'Kobbie Mainoo (second yellow, 52′)' in reply.text
+    reply, _ = answer('United cards, who was sent off', stats(**ALL), reuse(stats(**ALL), 'forgeham:cards'))
+    assert 'Callum Brightwell (second yellow, 52′)' in reply.text

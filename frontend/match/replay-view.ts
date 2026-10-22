@@ -121,7 +121,7 @@ export class ReplayStage {
   apply(action?: ReplayAction): void {
     if (!action || !this.player) return;
     // A sting that failed to load would only cover the picture: cut straight to the next clip.
-    if (action.sting === "in" && this.stingVideo.error) return this.apply(this.player.skip());
+    if (action.sting === "in" && !this.builtin && this.stingVideo.error) return this.apply(this.player.skip());
     const video = this.video;
     if (action.seek !== undefined && Math.abs(video.currentTime - action.seek) > 0.25) video.currentTime = action.seek;
     if (action.ended || action.pause) video.pause();
@@ -152,10 +152,18 @@ export class ReplayStage {
   get stingVideo(): HTMLVideoElement {
     return this.get("replay-sting-video") as HTMLVideoElement;
   }
+  /** `builtin:league` draws the league's own CSS sting instead of playing a video asset. */
+  get builtin(): boolean {
+    return this.player?.transitions?.asset.startsWith("builtin:") ?? false;
+  }
   /** Loads the sting asset when the reel opens, so it is ready at the first cut. */
   cueSting() {
     const transitions = this.player?.transitions;
     if (!transitions || this.player?.reducedMotion || this.player!.clips.length < 2) return;
+    this.stingLayer.style.setProperty("--sting-fade", `${transitions.fade_seconds}s`);
+    this.stingLayer.style.setProperty("--sting-length", `${transitions.sting_seconds}s`);
+    this.stingLayer.dataset.kind = this.builtin ? "builtin" : "video";
+    if (this.builtin) return;
     const video = this.stingVideo;
     if (video.getAttribute("src") !== transitions.asset) {
       video.setAttribute("src", transitions.asset);
@@ -163,7 +171,6 @@ export class ReplayStage {
       // Parked at its start point, so the first frame shown is already the right one.
       video.addEventListener("loadedmetadata", () => this.park(), { once: true });
     }
-    this.stingLayer.style.setProperty("--sting-fade", `${transitions.fade_seconds}s`);
   }
   /** "in": fade the sting in from its start point; "out": fade it out, then hide it; nothing: hide now. */
   sting(state: "in" | "out" | undefined) {
@@ -173,8 +180,10 @@ export class ReplayStage {
     this.stingTimer = null;
     if (state === "in" && transitions) {
       layer.hidden = false;
-      if (Math.abs(video.currentTime - transitions.asset_start_seconds) > 0.05) this.park();
-      video.play().catch(() => {});
+      if (!this.builtin) {
+        if (Math.abs(video.currentTime - transitions.asset_start_seconds) > 0.05) this.park();
+        video.play().catch(() => {});
+      }
       void layer.offsetWidth;  // Start the fade from transparent.
       layer.dataset.state = "in";
     } else if (state === "out" && !layer.hidden) {
@@ -190,7 +199,7 @@ export class ReplayStage {
   /** The sting video waits at its start point between uses. */
   park() {
     const start = this.player?.transitions?.asset_start_seconds;
-    if (start === undefined) return;
+    if (start === undefined || this.builtin) return;
     try { this.stingVideo.currentTime = start; } catch { /* not loaded yet: loadedmetadata parks it */ }
   }
   toggle() {

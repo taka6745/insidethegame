@@ -26,7 +26,7 @@ TEAMS = {
 }
 SURNAMES = {
     "home": ["Okafor", "Lindqvist", "Moreau", "Tanaka", "Byrne", "Costa", "Novak", "Haddad",
-             "Mensah", "Reyes", "Kowalski", "Doyle", "Iwu", "Santos"],
+             "Mensah", "Reyes", "Kowalski", "Doyle", "Iwu", "Calloway"],
     "away": ["Park", "Ferreira", "Walsh", "Nkemelu", "Bauer", "Quinn", "Ortega", "Sato",
              "Adeyemi", "Larsen", "Petit", "Murphy", "Rossi", "Kaur"],
 }

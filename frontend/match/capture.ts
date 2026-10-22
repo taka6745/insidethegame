@@ -29,7 +29,7 @@ export function fromClip(replay: Replay, index: number): Replay {
     seconds: clips.reduce((sum, clip) => sum + clip.end - clip.start, 0) };
 }
 
-/** The event's name: the first part of the feed's configured label ("Goal · Chelsea · Palmer" → "Goal"). */
+/** The event's name: the first part of the feed's configured label ("Goal · Riverton Rovers · Ashworth" → "Goal"). */
 export function eventName(moment: ClipMoment | undefined, caption?: string): string {
   return (moment?.label || caption || "").split(" · ")[0]!.trim();
 }

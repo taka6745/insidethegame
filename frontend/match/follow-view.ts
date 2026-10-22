@@ -3,7 +3,7 @@ import { ClarificationView } from "./clarification-view.ts";
 import { CROSS_MATCH, markOtherMatch } from "./other-match.ts";
 import type { FollowOption, FollowTurn } from "./types.ts";
 
-/** "Arsenal v Liverpool": the other match a cross-match option is in. */
+/** "Redcastle Town v Port Albion": the other match a cross-match option is in. */
 function matchName(option: FollowOption): string {
   return (option.other_match?.teams || []).map((team) => team.short_name || team.name).join(" v ");
 }

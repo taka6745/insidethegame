@@ -31,7 +31,7 @@ CAPABILITIES = {'supported_event_types': [*get_args(EventType)], 'shot_outcomes'
 
 def raw(sequence, kind='pass', period=1, minute=0, second=0, **changes):
     return {'eventId': f'v{sequence}', 'matchId': SPEC['match_id'], 'revision': 1, 'sequence': sequence,
-            'typeName': kind, 'teamId': 'chelsea', 'playerId': 'palmer', 'periodId': period,
+            'typeName': kind, 'teamId': 'riverton', 'playerId': 'ashworth', 'periodId': period,
             'timeMin': minute, 'timeSec': second, 'x': 41.5, 'y': 63.0, 'possessionId': sequence,
             'qualifiers': [], 'outcome': None, 'videoSeconds': float(sequence), 'synthetic': True} | changes
 
@@ -69,8 +69,8 @@ def test_v3_categories_are_accepted_and_defined(kind):
 
 
 def action(**changes):
-    base = {'match_id': SPEC['match_id'], 'action_id': 0, 'period': 1, 'match_time_seconds': 600, 'team_id': 'chelsea',
-            'player_id': 'palmer', 'action_type': 'shot', 'result': 'fail', 'bodypart': 'foot', 'start_x': 90.0,
+    base = {'match_id': SPEC['match_id'], 'action_id': 0, 'period': 1, 'match_time_seconds': 600, 'team_id': 'riverton',
+            'player_id': 'ashworth', 'action_type': 'shot', 'result': 'fail', 'bodypart': 'foot', 'start_x': 90.0,
             'start_y': 34.0, 'end_x': 105.0, 'end_y': 34.0, 'start_zone': 'opp_box', 'end_zone': 'opp_box', 'seq': 1,
             'final_seq': 1, 'source_type_id': 15}
     return SpadlAction(**base | changes)

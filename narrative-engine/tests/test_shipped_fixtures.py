@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'narrative-engine/tools'))
 from commentary_schema import NarrativeFixture  # noqa: E402
 # Test-only archive of the 2026-10-20 render; data-generation/recordings ships a newer match.
-RECORDING = ROOT / 'narrative-engine/fixtures/archive/chelsea-united-grf.json'
+RECORDING = ROOT / 'narrative-engine/fixtures/archive/riverton-forgeham-grf.json'
 
 
 @pytest.mark.skipif(not RECORDING.exists(), reason='Run from the repository checkout')

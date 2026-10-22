@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.opta import credit_offsides, export, type_id
 from grf_demo.telemetry import TelemetryAdapter, opta_xy
 
-# Chelsea (team 0, engine ids 11-21) attack +x in the first half; United (team 1, ids 0-10) attack -x.
+# Riverton Rovers (team 0, engine ids 11-21) attack +x in the first half; United (team 1, ids 0-10) attack -x.
 # As in the native runtime, contacts/last_touch/ball_retainer use [team, id]; owner uses [team, slot].
 HOME_KEEPER, AWAY_KEEPER = [0, 11], [1, 0]
 
@@ -70,7 +70,7 @@ class OptaEventTests(unittest.TestCase):
         # Contact rows carry the post-contact ball: a trapped pass is still an interception.
         self.feed(touch(900, [1, 4], 2, ball_position_m=[12, 0, 0], ball_velocity_mps=[0.5, 0, 0]))
         self.assertEqual(self.events("pass")[0]["outcome"], "failure")
-        self.assertEqual(self.events("interception")[0]["playerId"], "manutd-4")
+        self.assertEqual(self.events("interception")[0]["playerId"], "forgeham-4")
         self.assertEqual(self.events("ball_recovery"), [])
 
     def test_contact_next_to_passer_is_blocked_pass(self):
@@ -88,7 +88,7 @@ class OptaEventTests(unittest.TestCase):
         self.assertEqual(self.events("interception"), [])
         self.assertEqual(self.events("ball_recovery"), [])  # Pending until United keep it.
         self.feed(touch(2000, [1, 4], 2))
-        self.assertEqual(self.events("ball_recovery")[0]["playerId"], "manutd-4")
+        self.assertEqual(self.events("ball_recovery")[0]["playerId"], "forgeham-4")
 
     def test_tackle_needs_established_possession_and_records_dispossessed(self):
         self.owned(100, 600, [0, 1])
@@ -96,8 +96,8 @@ class OptaEventTests(unittest.TestCase):
         self.owned(610, 800, [1, 4])
         self.feed(touch(800, [1, 4], 2))  # The tackler's team plays on: won, not a recovery.
         tackle = self.events("tackle")[0]
-        self.assertEqual((tackle["playerId"], tackle["outcome"]), ("manutd-4", "success"))
-        self.assertEqual(self.events("dispossessed")[0]["playerId"], "chelsea-1")
+        self.assertEqual((tackle["playerId"], tackle["outcome"]), ("forgeham-4", "success"))
+        self.assertEqual(self.events("dispossessed")[0]["playerId"], "riverton-1")
         self.assertEqual(self.events("ball_recovery"), [])
 
     def test_loose_ball_contest_is_not_a_tackle(self):
@@ -112,16 +112,16 @@ class OptaEventTests(unittest.TestCase):
         self.feed(touch(200, [0, 13], 7, requested_function=7, touch_type=1, touch_body_part="head",
                         ball_position_m=[10, 0, 2.0], players=close))
         won, lost = self.events("aerial")
-        self.assertEqual((won["playerId"], won["outcome"]), ("chelsea-2", "success"))
-        self.assertEqual((lost["playerId"], lost["outcome"]), ("manutd-4", "failure"))
+        self.assertEqual((won["playerId"], won["outcome"]), ("riverton-2", "success"))
+        self.assertEqual((lost["playerId"], lost["outcome"]), ("forgeham-4", "failure"))
 
     def test_beating_a_goal_side_defender_is_take_on_and_challenge(self):
         before = players(**{"0-9": (10, 0), "1-4": (11.2, 0.3)})
         after = players(**{"0-9": (13, 0), "1-4": (11.5, 0.5)})
         self.feed(frame(1000, owner=[0, 9], players=before))
         self.feed(frame(1600, owner=[0, 9], players=after))
-        self.assertEqual(self.events("take_on")[0]["playerId"], "chelsea-9")
-        self.assertEqual(self.events("challenge")[0]["playerId"], "manutd-4")
+        self.assertEqual(self.events("take_on")[0]["playerId"], "riverton-9")
+        self.assertEqual(self.events("challenge")[0]["playerId"], "forgeham-4")
 
     def test_targetless_ball_from_own_third_under_pressure_is_clearance(self):
         pressed = players(**{"0-4": (-45, 0), "1-2": (-41, 0)})
@@ -129,7 +129,7 @@ class OptaEventTests(unittest.TestCase):
         self.feed(touch(200, [0, 15], 6, ball_position_m=[-45, 0, 0], players=pressed))
         self.feed(touch(2000, [1, 2], 2, ball_position_m=[5, 0, 0], ball_velocity_mps=[3, 0, 0]))
         clearance = self.events("clearance")[0]
-        self.assertEqual((clearance["playerId"], clearance["outcome"]), ("chelsea-4", "failure"))
+        self.assertEqual((clearance["playerId"], clearance["outcome"]), ("riverton-4", "failure"))
         self.assertEqual(self.events("pass"), [])
         self.assertEqual(self.events("interception"), [])
 
@@ -138,13 +138,13 @@ class OptaEventTests(unittest.TestCase):
         self.feed(frame(110, in_play=False, last_touch=[0, 14], ball_position_m=[10, 36.4, 0]))
         self.feed(frame(700, in_play=False, last_touch=[0, 14]))
         lost, won = self.events("out")
-        self.assertEqual((lost["teamId"], lost["outcome"], won["teamId"]), ("chelsea", "failure", "manutd"))
+        self.assertEqual((lost["teamId"], lost["outcome"], won["teamId"]), ("riverton", "failure", "forgeham"))
         self.assertEqual((lost["x"], won["x"]), (59.1, 40.9))  # Mirrored frames.
         self.feed(frame(200, last_touch=[0, 15]))
         self.feed(frame(210, in_play=False, last_touch=[0, 15], ball_position_m=[-55.5, 10, 0]))
         self.feed(frame(800, in_play=False, last_touch=[0, 15]))
         conceded, awarded = self.events("corner_awarded")
-        self.assertEqual((conceded["playerId"], awarded["teamId"]), ("chelsea-4", "manutd"))
+        self.assertEqual((conceded["playerId"], awarded["teamId"]), ("riverton-4", "forgeham"))
 
     def test_offside_decision_marks_pass_and_last_defender(self):
         self.feed(touch(100, [0, 12]))
@@ -152,8 +152,8 @@ class OptaEventTests(unittest.TestCase):
                    "related_player": None, "card": 0})
         self.assertEqual({"type": "offsidePass", "value": True}, self.events("pass")[0]["qualifiers"][-1])
         provoked = self.events("offside_provoked")[0]
-        self.assertEqual(provoked["teamId"], "manutd")
-        self.assertEqual(provoked["playerId"], "manutd-1")  # Deepest outfield United player.
+        self.assertEqual(provoked["teamId"], "forgeham")
+        self.assertEqual(provoked["playerId"], "forgeham-1")  # Deepest outfield United player.
 
     def test_offside_pass_is_credited_to_the_offside_team(self):
         def event(n, kind, team, qualifiers=(), **extra):
@@ -180,7 +180,7 @@ class OptaEventTests(unittest.TestCase):
                         ball_velocity_mps=[-6, 0, 1]))  # Contact rows carry the rebound.
         self.feed(frame(2100))
         shot, save = self.events("shot")[0], self.events("save")[0]
-        self.assertEqual((shot["outcome"], save["playerId"]), ("saved", "manutd-0"))
+        self.assertEqual((shot["outcome"], save["playerId"]), ("saved", "forgeham-0"))
         self.assertIn({"type": "saveType", "value": "parried"}, save["qualifiers"])
         self.setUp()
         self.feed(touch(100, [0, 20], 8, ball_position_m=[40, 0, 0]))
@@ -231,7 +231,7 @@ class OptaEventTests(unittest.TestCase):
         self.assertEqual(shot["assistEventId"], assist["eventId"])
         self.assertEqual(shot["situation"], "regular_play")
         error = self.events("error")[0]
-        self.assertEqual(error["playerId"], "manutd-2")
+        self.assertEqual(error["playerId"], "forgeham-2")
         self.assertIn({"type": "leadsTo", "value": "shot"}, error["qualifiers"])
 
     def test_goal_is_not_also_an_out(self):
@@ -402,10 +402,10 @@ class OptaEventTests(unittest.TestCase):
         self.feed(touch(100, [0, 12], ball_position_m=[0, 0, 0]))
         self.feed(frame(290, ball_position_m=[1.4, 0, 0], ball_velocity_mps=[12, 0, 0]))
         self.feed(touch(300, [1, 4], 2, ball_position_m=[1.5, 0, 0]))
-        self.feed(touch(500, [0, 13], 2))  # Chelsea win the deflection back...
+        self.feed(touch(500, [0, 13], 2))  # Riverton Rovers win the deflection back...
         self.feed(touch(1100, [0, 13], 4))  # ...and keep it.
         recoveries = self.events("ball_recovery")
-        self.assertEqual([e["playerId"] for e in recoveries], ["chelsea-2"])
+        self.assertEqual([e["playerId"] for e in recoveries], ["riverton-2"])
         self.assertEqual(self.events("touch")[-2]["possessionId"], recoveries[0]["possessionId"])
 
     def test_unplayed_tackle_falls_back_to_native_ownership_after_two_seconds(self):
@@ -446,7 +446,7 @@ class F24ExportTests(unittest.TestCase):
         self.assertTrue({20, 22, 29, 55, 102, 103} <= {q["qualifier_id"] for q in miss["qualifiers"]})
         self.assertEqual(miss["outcome"], 0)
         starts = [r for r in rows if r["type_id"] == 32]
-        self.assertEqual({r["team_id"] for r in starts}, {"chelsea", "manutd"})
+        self.assertEqual({r["team_id"] for r in starts}, {"riverton", "forgeham"})
         self.assertTrue(document["synthetic"])
 
 

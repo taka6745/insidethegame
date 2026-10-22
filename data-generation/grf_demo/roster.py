@@ -1,92 +1,58 @@
-"""Illustrative named lineups, not a claim of current or official selection.
+"""Fictional Elephant League lineups (PLAN.md §12 M6), not real people or clubs.
 
-GRF_FIXTURE selects the fixture for a capture (default chelsea-united); exports derive the
-fixture from a recording's teams. Names and presentation shirt numbers follow each club's
-2025/26 first-team squad as listed on its English Wikipedia 2025–26 season page (checked
-2026-10-20); kit colours are the club's 2025/26 kit as worn in that fixture. Slot order matches
-the scenario: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM. Abilities stay generic.
+GRF_FIXTURE selects the fixture for a capture (default riverton-forgeham); exports derive the
+fixture from a recording's teams. Club names, codes, colours and players come from `league.json`,
+the single source the viewer's crests also follow. Presentation shirt numbers are illustrative.
+Slot order matches the scenario: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM. Abilities stay generic.
 """
 
+import json
 import os
+from pathlib import Path
+
+LEAGUE = json.loads((Path(__file__).with_name("league.json")).read_text())
 
 # kit: OpenCV (hue 0-180, saturation, value) for the recoloured kit; value None keeps shading.
 # strip: RGB accent bar beside the team in the packaged score strip (and MA1 branding).
-# short: MA1 shortName when it differs from name. known: MA1 knownNames, other names fans and commentators use.
-FIXTURES = {
-    "chelsea-united": {
-        "match_id": "product-demo-match",  # Bound to the shipped recording's checksum.
-        "event_prefix": "grf-che-utd",
-        "teams": [
-            {"id": "chelsea", "name": "Chelsea", "known": ["the Blues"],
-             "code": "CHE", "kit": (110, 225, None), "strip": (15, 80, 235)},
-            {"id": "manutd", "name": "Manchester United", "short": "Man Utd", "known": ["United", "the Red Devils"],
-             "code": "MUN", "kit": (0, 225, None),
-             "strip": (220, 20, 45)},
-        ],
-        "names": (
-            ("Robert Sánchez", "Cole Palmer", "Liam Delap", "Marc Cucurella", "Levi Colwill",
-             "Tosin Adarabioyo", "Reece James", "Enzo Fernández", "Moisés Caicedo", "Andrey Santos",
-             "Pedro Neto"),
-            ("Senne Lammens", "Bryan Mbeumo", "Benjamin Šeško", "Luke Shaw", "Lisandro Martínez",
-             "Matthijs de Ligt", "Diogo Dalot", "Bruno Fernandes", "Casemiro", "Kobbie Mainoo",
-             "Matheus Cunha"),
-        ),
-        "numbers": (
-            (1, 10, 9, 3, 6, 4, 24, 8, 25, 17, 7),
-            (31, 19, 30, 23, 6, 4, 2, 8, 18, 37, 10),
-        ),
-    },
-    "arsenal-liverpool": {
-        "match_id": "arsenal-liverpool",
-        "event_prefix": "grf-ars-liv",
-        "teams": [
-            # Arsenal home red; Liverpool in their 2025/26 off-white away kit.
-            {"id": "arsenal", "name": "Arsenal", "known": ["the Gunners"],
-             "code": "ARS", "kit": (178, 230, None), "strip": (219, 0, 7)},
-            {"id": "liverpool", "name": "Liverpool", "known": ["the Reds"], "code": "LIV", "kit": (20, 12, 235),
-             "strip": (240, 236, 226)},
-        ],
-        "names": (
-            ("David Raya", "Bukayo Saka", "Viktor Gyökeres", "Riccardo Calafiori", "William Saliba",
-             "Gabriel Magalhães", "Jurriën Timber", "Martin Ødegaard", "Declan Rice", "Martín Zubimendi",
-             "Eberechi Eze"),
-            ("Alisson Becker", "Mohamed Salah", "Hugo Ekitike", "Milos Kerkez", "Virgil van Dijk",
-             "Ibrahima Konaté", "Jeremie Frimpong", "Dominik Szoboszlai", "Ryan Gravenberch",
-             "Florian Wirtz", "Cody Gakpo"),
-        ),
-        "numbers": (
-            (1, 7, 14, 33, 2, 6, 12, 8, 41, 36, 10),
-            (1, 11, 22, 6, 4, 5, 30, 8, 38, 7, 18),
-        ),
-    },
-    "mancity-tottenham": {
-        "match_id": "mancity-tottenham",
-        "event_prefix": "grf-mci-tot",
-        "teams": [
-            # City home sky blue; Spurs home white.
-            {"id": "mancity", "name": "Manchester City", "short": "Man City", "known": ["City", "the Cityzens"],
-             "code": "MCI", "kit": (103, 140, 235),
-             "strip": (108, 171, 221)},
-            {"id": "tottenham", "name": "Tottenham Hotspur", "short": "Spurs", "known": ["Tottenham", "the Lilywhites"],
-             "code": "TOT", "kit": (110, 8, 240),
-             "strip": (245, 245, 245)},
-        ],
-        "names": (
-            ("Gianluigi Donnarumma", "Rayan Cherki", "Erling Haaland", "Nico O'Reilly", "Rúben Dias",
-             "Joško Gvardiol", "Matheus Nunes", "Rodri", "Tijjani Reijnders", "Bernardo Silva",
-             "Jérémy Doku"),
-            ("Guglielmo Vicario", "Mohammed Kudus", "Richarlison", "Destiny Udogie", "Cristian Romero",
-             "Micky van de Ven", "Pedro Porro", "João Palhinha", "Pape Matar Sarr", "Lucas Bergvall",
-             "Xavi Simons"),
-        ),
-        "numbers": (
-            (25, 10, 9, 33, 3, 24, 27, 16, 4, 20, 11),
-            (1, 20, 9, 13, 17, 37, 23, 6, 29, 15, 7),
-        ),
-    },
+_KIT = {
+    "chelsea": {"kit": (110, 225, None), "strip": (15, 80, 235)},
+    "manutd": {"kit": (0, 225, None), "strip": (220, 20, 45)},
+    "arsenal": {"kit": (178, 230, None), "strip": (219, 0, 7)},
+    # Port Albion play in their off-white change kit in this fixture.
+    "liverpool": {"kit": (20, 12, 235), "strip": (240, 236, 226)},
+    "mancity": {"kit": (103, 140, 235), "strip": (108, 171, 221)},
+    "tottenham": {"kit": (110, 8, 240), "strip": (245, 245, 245)},
 }
 
-FIXTURE_NAME = os.environ.get("GRF_FIXTURE", "chelsea-united")
+
+def _team(key):
+    club = LEAGUE["clubs"][key]
+    team = {"id": club["id"], "name": club["name"], "known": club["known"], "code": club["code"], **_KIT[key]}
+    if club["short"] != club["name"]:
+        team["short"] = club["short"]
+    return team
+
+
+def _fixture(old, home, away, match_id, prefix, numbers):
+    return LEAGUE["fixtures"][old], {
+        "match_id": match_id,
+        "event_prefix": prefix,
+        "teams": [_team(home), _team(away)],
+        "names": (tuple(LEAGUE["clubs"][home]["players"]), tuple(LEAGUE["clubs"][away]["players"])),
+        "numbers": numbers,
+    }
+
+
+FIXTURES = dict((
+    _fixture("chelsea-united", "chelsea", "manutd", "product-demo-match", "grf-rvr-fgu",
+             ((1, 10, 9, 3, 6, 4, 24, 8, 25, 17, 7), (31, 19, 30, 23, 6, 4, 2, 8, 18, 37, 10))),
+    _fixture("arsenal-liverpool", "arsenal", "liverpool", "redcastle-portalbion", "grf-rct-pal",
+             ((1, 7, 14, 33, 2, 6, 12, 8, 41, 36, 10), (1, 11, 22, 6, 4, 5, 30, 8, 38, 7, 18))),
+    _fixture("mancity-tottenham", "mancity", "tottenham", "skybridge-whitmore", "grf-skc-whw",
+             ((25, 10, 9, 33, 3, 24, 27, 16, 4, 20, 11), (1, 20, 9, 13, 17, 37, 23, 6, 29, 15, 7))),
+))
+
+FIXTURE_NAME = os.environ.get("GRF_FIXTURE", "riverton-forgeham")
 FIXTURE = FIXTURES[FIXTURE_NAME]
 TEAMS = FIXTURE["teams"]
 NAMES = FIXTURE["names"]

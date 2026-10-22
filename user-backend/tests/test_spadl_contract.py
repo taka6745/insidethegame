@@ -75,7 +75,7 @@ def test_profile_must_match_the_action_model():
 
 STATS = [{'id': 'all:crosses', 'label': 'Both teams crosses', 'action_types': ['cross', 'corner_crossed', 'freekick_crossed'],
           'definition': 'SPADL cross, corner_crossed and freekick_crossed actions.', 'available': True},
-         {'id': 'chelsea:crosses', 'label': 'Chelsea crosses', 'action_types': ['cross'], 'definition': '', 'available': True},
+         {'id': 'riverton:crosses', 'label': 'Riverton Rovers crosses', 'action_types': ['cross'], 'definition': '', 'available': True},
          {'id': 'all:box_entries', 'label': 'Both teams box entries', 'action_types': ['pass', 'dribble'],
           'definition': 'Successful SPADL passes and dribbles into the opponent penalty area.', 'available': True}]
 
@@ -88,8 +88,8 @@ def test_lookup_answers_types_zones_stats_and_unknown_terms_within_the_cap():
     zone = lookup('opp box', STATS)
     assert zone['kind'] == 'zone' and zone['goal_example']['end_zones'] == ['opp_box']
     assert any(text.startswith('box_entries:') for text in zone['catalogue_stats'])
-    stat = lookup('chelsea:crosses', STATS)
-    assert stat['kind'] == 'catalogue_stat' and stat['ids'] == ['all:crosses', 'chelsea:crosses']
+    stat = lookup('riverton:crosses', STATS)
+    assert stat['kind'] == 'catalogue_stat' and stat['ids'] == ['all:crosses', 'riverton:crosses']
     unknown = lookup('aerial duel', STATS)
     assert unknown['unknown'] and 'cross' in unknown['known']['types']
     for term in ('pass', 'fail', 'head', 'final_third', 'crosses', 'start_x', 'interception'):

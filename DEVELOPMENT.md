@@ -23,8 +23,8 @@ For the **runnable user-backend harness**, use:
 
 ```sh
 ACCEPT_EULA=Y ./dev up backend  # feed + ETL + engine + API + viewer + messaging, then tests
-./dev demo start                # purge every match everywhere, then kick off chelsea-united next minute
-./dev demo start chelsea-united arsenal-liverpool mancity-tottenham   # three matches at once
+./dev demo start                # purge every match everywhere, then kick off riverton-forgeham next minute
+./dev demo start riverton-forgeham redcastle-portalbion skybridge-whitmore   # three matches at once
 ./dev demo purge                # clear match data everywhere; configuration stays
 ```
 
@@ -94,6 +94,6 @@ feed (recordings, N runs at once) → Event Hubs match-events (MA1, MA3, POS, Ma
 
 Each feed run is its own match: `{fixture}-{first 8 hex of run id}`, and several run at once. The engine runs one orchestrator per match, writes only for the **audience buckets enabled** in the backend's per-fixture configuration (`/dev/`) and uses the **active prompt versions** stored in the backend; model calls share one semaphore across matches. The backend pushes each narrative to that match's viewers when it arrives; the viewer shows it once its video reaches the narrative's clock. The engine and backend use the local model from the ignored `.local/backend-llm.env`.
 
-The checked-in recordings are rendered real-club simulations (Chelsea–United, Arsenal–Liverpool, Man City–Tottenham). Large footage remains ignored. `./dev` mounts each `.local/grf-demo-{fixture}-90/hls/` that exists into the feed only; a fixture without media plays without video. See [generation instructions](data-generation/docs/components/grf-demo.md). Playback is real time (90 minutes plus stoppage) as live HLS; viewers can ask in chat for replay clips ([replay](user-backend/docs/design/replay-plan.md)), with live kept as picture-in-picture.
+The checked-in recordings are rendered real-club simulations (Riverton Rovers–United, Redcastle Town–Port Albion, Skybridge–Whitmore). Large footage remains ignored. `./dev` mounts each `.local/grf-demo-{fixture}-90/hls/` that exists into the feed only; a fixture without media plays without video. See [generation instructions](data-generation/docs/components/grf-demo.md). Playback is real time (90 minutes plus stoppage) as live HLS; viewers can ask in chat for replay clips ([replay](user-backend/docs/design/replay-plan.md)), with live kept as picture-in-picture.
 
 **Live only, per match.** Nothing reaches a viewer before it has been streamed: only the feed (a simulated external provider) holds recordings and media; no API serves them, future events or unplayed HLS segments, and there is no MP4. Questions read recaps from the engine's history GraphQL (`contextBlocks`) and facts from ETL GraphQL. `./dev demo start` first purges every match from every owner (`POST /admin/matches/purge`: feed, `etl-stream`, narrative engine, backend), then starts the runs. Account profiles, audience templates (with their enabled buckets), prompt versions, presentation config and prices are configuration and stay. Logs: `./dev logs feed`, `./dev logs etl-stream`, `./dev logs narrative-live`.

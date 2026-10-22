@@ -7,9 +7,20 @@ from pydantic import BaseModel, ConfigDict, Field
 from backend.models.events import MAX_MATCH_EVENTS
 
 
+VIEWER_ID = r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'  # random UUID (122 random bits)
+
+
 class SessionRequest(BaseModel):
+    """The lab's session: one shared conversation per (profile, match)."""
     model_config = ConfigDict(extra='forbid')
     profile_id: str = Field(min_length=1, max_length=100)
+    viewer_id: str = Field(default='', pattern=r'^$')
+
+
+class ViewerSessionRequest(SessionRequest):
+    """One browser's anonymous id: separate browsers are separate viewers. It reopens that browser's conversation,
+    so it must be an unguessable random UUID (`match/viewer-id.ts`)."""
+    viewer_id: str = Field(pattern=VIEWER_ID)
 
 
 class MessageRequest(BaseModel):
@@ -36,7 +47,7 @@ def match_chat_router(service):
 
     @router.post('/sessions')
     async def start(match_id: str, body: SessionRequest):
-        return await service.start(match_id, body.profile_id)
+        return await service.start(match_id, body.profile_id, body.viewer_id)
 
     @router.get('/{token}')
     async def read(match_id: str, token: UUID):

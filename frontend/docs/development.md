@@ -75,7 +75,7 @@ Production can place static assets behind Azure Front Door/CDN and replace the s
 | `match/receipt.ts` | Answer receipts costed at the backend's configured prices (offline cache only) |
 | `match/view.ts`, `audience-view.ts`, `chat-view.ts`, `dom.ts` | Bounded, safe DOM rendering; preserve unchanged controls |
 | `match/format.ts`, `types.ts` | Display formatting, bounded snapshot handling and payload types |
-| `match/styles.css`, `companion.css` | Responsive Premier League integration presentation |
+| `match/styles.css`, `companion.css` | Responsive league match-centre presentation |
 | `match/media.ts`, `video.ts`, `hold.ts` | Live HLS source selection and data held to the live picture |
 | `match/replay.ts`, `replay-card.ts`, `replay-view.ts` | Replay clip navigation, chat card and stage/PiP view; reel transitions (sting) and slow motion from each replay's `playback` |
 | `match/follow.ts`, `follow-view.ts` | Story follows: follow chat, suggestions, follow and stop following; feed rendering is in `view.ts` |

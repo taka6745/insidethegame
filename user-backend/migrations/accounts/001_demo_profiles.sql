@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS demo_profiles (
     fan_style text NOT NULL CHECK (fan_style IN ('simple', 'casual', 'experienced', 'analytical'))
 );
 INSERT INTO demo_profiles VALUES
-  ('chelsea-analytical', 'Chelsea analyst', 'home', 'analytical'),
+  ('riverton-analytical', 'Riverton Rovers analyst', 'home', 'analytical'),
   ('united-casual', 'United fan', 'away', 'casual'),
   ('neutral-simple', 'New viewer', 'neutral', 'simple')
 ON CONFLICT DO NOTHING;

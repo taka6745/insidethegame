@@ -1,9 +1,9 @@
 """Read-only checks of the GraphQL client against the real ETL GraphQL of the shared stack (`./dev up backend`).
 
-Targets a feed run of the Chelsea–United recording (`./dev demo start chelsea-united`, matchId
-chelsea-united-{run}); skipped unless ETL_GRAPHQL_URL (default http://localhost:15001/graphql) answers and
+Targets a feed run of the Riverton Rovers–United recording (`./dev demo start riverton-forgeham`, matchId
+riverton-forgeham-{run}); skipped unless ETL_GRAPHQL_URL (default http://localhost:15001/graphql) answers and
 holds one past seq 500. Up to the run's watermark, the live reads must equal the recording's test data
-(tests/chelsea_united.py): MA3 rows, key events, SPADL actions and the catalogue's golden values. Never writes.
+(tests/riverton_forgeham.py): MA3 rows, key events, SPADL actions and the catalogue's golden values. Never writes.
 """
 import asyncio
 import os
@@ -11,7 +11,7 @@ import os
 import httpx
 import pytest
 
-import chelsea_united
+import riverton_forgeham
 from narrative_engine.devtools.fake_agents import FakeAgents
 from narrative_engine.context.render import ACTION_FIELDS
 from narrative_engine.core.models import MatchClock, parse_notification
@@ -22,13 +22,13 @@ from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink
 
 URL = os.environ.get("ETL_GRAPHQL_URL", "http://localhost:15001/graphql")
-FIXTURE = chelsea_united.data(stats=chelsea_united.golden_stats())
+FIXTURE = riverton_forgeham.data(stats=riverton_forgeham.golden_stats())
 FIELDS = ACTION_FIELDS.split()
 
 
 def feed_run():
-    """(matchId, snapshot seq) of the most advanced Chelsea–United feed run, or skip."""
-    query = ("{ matches(filter: {fixture: {eq: \"chelsea-united\"}}) { items { matchId } } "
+    """(matchId, snapshot seq) of the most advanced Riverton Rovers–United feed run, or skip."""
+    query = ("{ matches(filter: {fixture: {eq: \"riverton-forgeham\"}}) { items { matchId } } "
              "matchWatermarks { items { matchId seq spadlSeq } } }")
     try:
         data = httpx.post(URL, json={"query": query}, timeout=5).json()["data"]
@@ -39,7 +39,7 @@ def feed_run():
              if w["matchId"] in runs]
     seq, match_id = max(marks, default=(0, None))
     if seq < 500:
-        pytest.skip("no Chelsea–United feed run past seq 500 in the ETL")
+        pytest.skip("no Riverton Rovers–United feed run past seq 500 in the ETL")
     return match_id, seq
 
 
@@ -81,7 +81,7 @@ def test_live_reads_equal_the_recording(run):
 
 def test_live_author_context_stops_at_the_trigger(run):
     match_id, seq = run
-    timeline = chelsea_united.timeline()
+    timeline = riverton_forgeham.timeline()
     first_goal = next(i for i, (body, _) in enumerate(timeline)
                       if body["messageType"] == "KeyEventDetected" and body["keyType"] == "Goal")
     if timeline[first_goal][1] > seq:
@@ -98,9 +98,9 @@ def test_live_author_context_stops_at_the_trigger(run):
     asyncio.run(go())
     call = next(v for a, v in agents.calls if a == "author" and v["trigger_reason"].startswith("Key event")
                 and "Goal for" in v["trigger_reason"])
-    # The penalty award (09:31) and Mainoo's penalty (09:35).
-    assert call["key_event_ledger"].count("\n") == 1 and "Mainoo" in call["key_event_ledger"]
-    assert "key event: Goal for Manchester United" in call["match_events"]
+    # The penalty award (09:31) and Brightwell's penalty (09:35).
+    assert call["key_event_ledger"].count("\n") == 1 and "Brightwell" in call["key_event_ledger"]
+    assert "key event: Goal for Forgeham United" in call["match_events"]
     times = [line.split()[0] for line in call["match_events"].splitlines()
              if line.startswith("  ") and line.strip()[0].isdigit()]
     assert max(times, key=lambda t: tuple(map(int, t.split(":")))) == "09:35"  # nothing after the goal

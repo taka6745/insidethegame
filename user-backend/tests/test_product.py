@@ -10,10 +10,11 @@ from backend.models.rules import Rule
 from harness import MATCH, Running, Upstream
 
 OTHER = 'north-south-0badc0de'
+VIEWER = '00000000-0000-4000-8000-000000000001'  # one browser's random viewer id
 
 
-def start(client, match_id=MATCH, profile='chelsea-analytical'):
-    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile})
+def start(client, match_id=MATCH, profile='riverton-analytical'):
+    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile, 'viewer_id': VIEWER})
     assert response.status_code == 200, response.text
     return response.json()
 
@@ -60,12 +61,12 @@ def test_product_maps_relative_profile_and_cites_the_snapshot(store):
         data = start(run.client)
         snapshot = data['snapshot']
         assert snapshot['match']['id'] == data['match_id'] == MATCH
-        assert snapshot['bucket_id'] == 'home:analytical' and snapshot['profile']['team'] == 'chelsea'
+        assert snapshot['bucket_id'] == 'home:analytical' and snapshot['profile']['team'] == 'riverton'
         assert 'bucket' not in snapshot and snapshot['snapshot_id'] == f'{MATCH}:0'
-        assert [c['id'] for c in snapshot['cards']] == ['chelsea:goals', 'chelsea:shots', 'chelsea:corners',
-                                                        'chelsea:passes', 'chelsea:cards']
+        assert [c['id'] for c in snapshot['cards']] == ['riverton:goals', 'riverton:shots', 'riverton:corners',
+                                                        'riverton:passes', 'riverton:cards']
         assert all(c['value'] == 0 for c in snapshot['cards'])
-        assert snapshot['match']['teams'][0]['branding']['crest_asset_id'] == 'chelsea'
+        assert snapshot['match']['teams'][0]['branding']['crest_asset_id'] == 'riverton'
         assert snapshot['match']['media']['url'] is None  # This feed has no video capability.
         reply = ask(run.client, data['session_token'], 'what is offside')
         assert reply['snapshot']['match_id'] == MATCH
@@ -78,7 +79,7 @@ def test_match_list_comes_from_etl_and_known_matches(store):
         rows = run.client.get('/product/matches').json()
         assert [r['match_id'] for r in rows] == [MATCH, OTHER]  # live first, then scheduled
         assert rows[0]['status'] == 'live' and rows[0]['seq'] == 10 and rows[1]['seq'] == 0
-        assert [t['score'] for t in rows[0]['teams']] == [0, 0] and rows[0]['teams'][0]['code'] == 'CHE'
+        assert [t['score'] for t in rows[0]['teams']] == [0, 0] and rows[0]['teams'][0]['code'] == 'RIV'  # the harness codes a team by its name's first letters
         assert run.client.get('/product/matches/unknown-ffffffff/sessions/' + str(uuid4())).status_code == 404
 
 
@@ -128,8 +129,9 @@ def test_socket_push_takeover_and_unknown_session_codes(store):
             run.send(1)
             updated = until(ws, lambda m: m['match']['seq'] == 1)
             assert updated['version'] > initial['version']
-            # The lab chat for the same (profile, match) takes the session over too.
-            run.client.post(f'/lab/matches/{MATCH}/chat/sessions', json={'profile_id': 'chelsea-analytical'})
+            # The lab chat is its own viewer; the same browser opening the match again takes the session over.
+            run.client.post(f'/lab/matches/{MATCH}/chat/sessions', json={'profile_id': 'riverton-analytical'})
+            start(run.client)
             with pytest.raises(WebSocketDisconnect) as exc:
                 ws.receive_json()
             assert exc.value.code == 4001
@@ -140,6 +142,37 @@ def test_socket_push_takeover_and_unknown_session_codes(store):
                 pytest.raises(WebSocketDisconnect) as exc:
             ws.receive_json()
         assert exc.value.code == 4404
+
+
+def test_two_browsers_on_one_profile_are_two_viewers_and_never_take_each_other_over(store):
+    """M1: two people on the same demo profile shared one conversation, so questions crossed and each session
+    replaced the other (sockets closed, answers 'interrupted by a new session'). Each browser is now its own viewer."""
+    ALICE, BOB = str(uuid4()), str(uuid4())
+
+    def begin(viewer):
+        response = run.client.post(f'/product/matches/{MATCH}/sessions',
+                                   json={'profile_id': 'riverton-analytical', 'viewer_id': viewer})
+        assert response.status_code == 200, response.text
+        return response.json()['session_token']
+    with Running(store) as run:
+        alice, bob = begin(ALICE), begin(BOB)
+        with run.client.websocket_connect(path(alice) + '/live') as ws:
+            ws.receive_json()
+            assert begin(BOB) != bob  # Bob reconnecting replaces only Bob's own session
+            run.send(1)
+            assert until(ws, lambda m: m['match']['seq'] == 1)  # Alice's socket stays open
+            ask(run.client, alice, 'How many shots has Riverton Rovers had?')
+            assert run.client.get(path(alice)).status_code == 200
+            bob = begin(BOB)
+            assert [t['prompt'] for t in run.client.get(path(bob)).json()['turns']] == []  # no crossed questions
+            begin(ALICE)  # the same browser opening again takes its own session over
+            with pytest.raises(WebSocketDisconnect) as exc:
+                ws.receive_json()
+            assert exc.value.code == 4001
+        assert run.client.get(path(alice)).status_code == 409
+        for bad in ('bad id!', 'browser-a', '', None):  # only a random UUID: a guessable id could reopen another's chat
+            body = {'profile_id': 'riverton-analytical'} | ({} if bad is None else {'viewer_id': bad})
+            assert run.client.post(f'/product/matches/{MATCH}/sessions', json=body).status_code == 422
 
 
 def test_projection_work_is_shared_and_corrections_remove_retracted_goal(store):
@@ -198,6 +231,19 @@ def test_engine_narratives_route_by_bucket_and_never_pass_the_snapshot(store):
         assert texts == ['Now.', 'Future.']
 
 
+def test_the_narrative_cap_is_per_bucket_so_a_busy_bucket_never_trims_another(store):
+    from types import SimpleNamespace
+    from backend.repositories.engine_narratives import EngineNarratives
+    with Running(store) as run:
+        run.send(10)
+        for seq in range(1, 6):
+            assert deliver(run, narrative(MATCH, seq=seq, minute=seq, event_seq=seq, text=f'Home {seq}.'))
+        assert deliver(run, narrative(MATCH, bucket='away:simple', seq=9, minute=0, event_seq=1, text='Away old.'))
+        snapshot = SimpleNamespace(match_id=MATCH, seq=10, period=1, clock_seconds=600)
+        items = EngineNarratives(store).items(snapshot, per_bucket=2)
+        assert [n['text'] for n in items] == ['Away old.', 'Home 4.', 'Home 5.']  # newest two each, oldest first
+
+
 def test_period_end_releases_that_periods_narratives(store):
     import json
     from benchmarks.doubles.recording import FixtureEventSource
@@ -248,7 +294,7 @@ def test_card_presentation_comes_from_configuration(store):
         assert saved.status_code == 200 and saved.json()['revision'] == current['revision'] + 1
         assert run.client.put('/dev/config/presentation',
                               json={'value': value, 'expected_revision': current['revision']}).status_code == 409
-        assert [c['id'] for c in start(run.client)['snapshot']['cards']] == ['chelsea:passes', 'chelsea:goals', 'chelsea:shots']
+        assert [c['id'] for c in start(run.client)['snapshot']['cards']] == ['riverton:passes', 'riverton:goals', 'riverton:shots']
         neutral = [c['id'] for c in start(run.client, profile='neutral-simple')['snapshot']['cards']]
         assert neutral == ['all:passes', 'all:goals', 'all:shots'] and 'all:possession' not in neutral
 
@@ -258,7 +304,7 @@ def test_bootstrap_upstream_failure_is_retryable(store):
         async def unavailable(*args, **kwargs):
             raise RuntimeError('upstream unavailable')
         run.app.state.questions.match_data.stats = unavailable
-        failed = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        failed = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'riverton-analytical', 'viewer_id': VIEWER})
         assert failed.status_code == 503 and failed.json()['code'] == 'snapshot_unavailable'
 
 
@@ -321,17 +367,17 @@ def test_tracking_a_stat_never_displaces_the_goals_card():
     defaults = presentation.default_stats.model_copy(update={'team': ['{team}:' + k for k in kinds[:5]]})
     projection.presentation = presentation.model_copy(update={'default_stats': defaults})
     projection.buckets = []
-    stats = [{'id': f'chelsea:{k}', 'label': k, 'value': 1} for k in kinds]
+    stats = [{'id': f'riverton:{k}', 'label': k, 'value': 1} for k in kinds]
     projection.shared = {'type': 'snapshot', 'version': 1, 'projection_epoch': 'e', 'synthetic': True, 'mode': 'local',
-                         'snapshot_id': 'm:1', 'match': {'teams': [{'id': 'chelsea'}, {'id': 'manutd'}]}, 'events': [],
+                         'snapshot_id': 'm:1', 'match': {'teams': [{'id': 'riverton'}, {'id': 'forgeham'}]}, 'events': [],
                          'stats': stats, 'calculations': {}, 'narratives': []}
-    viewer = {'profile': {'team': 'chelsea', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
+    viewer = {'profile': {'team': 'riverton', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
               'audience': {'bucket_id': 'home:analytical', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
               'offers': []}
-    assert [c['id'] for c in projection.compose(viewer)['cards']][-1] == 'chelsea:goals'
-    viewer['offers'] = [{'calculation_id': 'pin', 'kind': 'standard', 'standard_stat_id': 'chelsea:tackles', 'label': 'Tackles'}]
+    assert [c['id'] for c in projection.compose(viewer)['cards']][-1] == 'riverton:goals'
+    viewer['offers'] = [{'calculation_id': 'pin', 'kind': 'standard', 'standard_stat_id': 'riverton:tackles', 'label': 'Tackles'}]
     assert [c['id'] for c in projection.compose(viewer)['cards']] == [
-        'chelsea:possession', 'chelsea:pass_accuracy', 'chelsea:shots', 'chelsea:goals', 'chelsea:tackles']
+        'riverton:possession', 'riverton:pass_accuracy', 'riverton:shots', 'riverton:goals', 'riverton:tackles']
 
 
 def test_a_match_link_opens_before_kickoff_and_goes_live(store):
@@ -339,18 +385,18 @@ def test_a_match_link_opens_before_kickoff_and_goes_live(store):
     viewer gets a scheduled pre-match snapshot with the kickoff, then live play on the socket."""
     with Running(store, matches=()) as run:
         run.upstream.add(MATCH)
-        early = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        early = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'riverton-analytical', 'viewer_id': VIEWER})
         assert early.status_code == 404 and early.json()['code'] == 'match_not_started'
         run.client.portal.call(run.upstream.kickoff, run.registry, MATCH)
         data = start(run.client)
         match = data['snapshot']['match']
         assert match['status'] == 'scheduled' and match['clock_seconds'] is None
         assert match['scheduled_kickoff'] == '2026-10-20T15:00:00.000Z'
-        assert [t['name'] for t in match['teams']] == ['Chelsea', 'Madrid']
+        assert [t['name'] for t in match['teams']] == ['Riverton Rovers', 'Madrid']
         with run.client.websocket_connect(path(data['session_token']) + '/live') as ws:
             ws.receive_json()
             run.send(1)
             assert until(ws, lambda m: m.get('type') == 'snapshot' and m['match']['status'] == 'live')['match']['seq'] == 1
         run.client.post('/admin/matches/purge', json={'match_id': MATCH})
-        gone = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'chelsea-analytical'})
+        gone = run.client.post(f'/product/matches/{MATCH}/sessions', json={'profile_id': 'riverton-analytical', 'viewer_id': VIEWER})
         assert gone.status_code == 404 and gone.json()['code'] == 'match_not_found'

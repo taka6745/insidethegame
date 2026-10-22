@@ -58,18 +58,18 @@ def test_targets_revalidate_with_the_etag_and_keep_the_last_copy_when_down():
 
 
 def test_framing_uses_layer_and_option_descriptions_and_team_names():
-    info = MatchInfo("demo-1a2b3c4d", Team("t1", "Chelsea", "CHE", "home"), Team("t2", "Manchester United", "MUN", "away"),
+    info = MatchInfo("demo-1a2b3c4d", Team("t1", "Riverton Rovers", "RVR", "home"), Team("t2", "Forgeham United", "FGU", "away"),
                      True)
     target = {"bucket_id": "away:analytical", "selections": {"team": "away", "fan_style": "analytical"}, "layers": [
         {"id": "team", "description": "Which side the viewer supports.",
          "option": {"id": "away", "description": "Supports the away team.", "label": "{away}"}},
         {"id": "fan_style", "description": "How to explain.", "option": {"id": "analytical", "description": "Evidence."}}]}
     assert framing(target, info) == ("Audience bucket away:analytical:\n- Which side the viewer supports. Supports the "
-                                     "away team.\n- How to explain. Evidence.\nHome team: Chelsea. Away team: "
-                                     "Manchester United.\nThis audience supports Manchester United.")
+                                     "away team.\n- How to explain. Evidence.\nHome team: Riverton Rovers. Away team: "
+                                     "Forgeham United.\nThis audience supports Forgeham United.")
 
 
-INFO = MatchInfo("m-1", Team("t1", "Chelsea", "CHE", "home"), Team("t2", "Manchester United", "MUN", "away"), True)
+INFO = MatchInfo("m-1", Team("t1", "Riverton Rovers", "RVR", "home"), Team("t2", "Forgeham United", "FGU", "away"), True)
 
 
 def one_layer(layer_id, option):
@@ -79,8 +79,8 @@ def one_layer(layer_id, option):
 
 @pytest.mark.parametrize("target, supports", [
     # Any layer id; an explicit team reference wins over the label.
-    (one_layer("side", {"id": "blues", "team": "home", "label": "Blues"}), "Chelsea"),
-    (one_layer("allegiance", {"id": "red", "label": "{away} faithful"}), "Manchester United"),
+    (one_layer("side", {"id": "blues", "team": "home", "label": "Blues"}), "Riverton Rovers"),
+    (one_layer("allegiance", {"id": "red", "label": "{away} faithful"}), "Forgeham United"),
     # Neutral, both teams, or a layer that merely has id `team` with option `home` but no reference: no support line.
     (one_layer("side", {"id": "neutral", "label": "Neutral"}), None),
     (one_layer("side", {"id": "both", "label": "{home} v {away}"}), None),
@@ -93,7 +93,7 @@ def test_framing_support_line_is_data_driven(target, supports):
 
 def test_default_targets_frame_like_the_backend_default_template():
     by_id = {t["bucket_id"]: t for t in default_targets()}
-    assert framing(by_id["home:simple"], INFO).endswith("This audience supports Chelsea.")
+    assert framing(by_id["home:simple"], INFO).endswith("This audience supports Riverton Rovers.")
     assert "This audience supports" not in framing(by_id["neutral:simple"], INFO)
 
 
@@ -126,7 +126,7 @@ def test_prompts_and_targets_are_unavailable_without_the_backend():
         with pytest.raises(PromptUnavailable):
             await prompts.current("minute-summary")
         with pytest.raises(httpx.HTTPError):
-            await HttpTargetSource(BASE, client(backend)).current("chelsea-united-1a2b3c4d")
+            await HttpTargetSource(BASE, client(backend)).current("riverton-forgeham-1a2b3c4d")
         return await prompts.problems()
     assert asyncio.run(go()) == ["prompt minute-summary unavailable from the user backend (HTTPStatusError)"]
 

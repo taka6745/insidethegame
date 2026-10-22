@@ -1,4 +1,4 @@
-"""Conversation/session/offer persistence per (profile, match). Never hold a transaction over model work."""
+"""Conversation/session/offer persistence per (viewer, profile, match). Never hold a transaction over model work."""
 from uuid import uuid4
 from psycopg.types.json import Jsonb
 from backend.domain import RuleError
@@ -15,19 +15,20 @@ class QuestionRepository:
     def profiles(self):
         return self.store.profiles()
 
-    def start(self, profile_id, match_id):
-        """A new token for (profile, match); the previous token of that pair stops working."""
+    def start(self, profile_id, match_id, viewer_id=''):
+        """A new token for (viewer, profile, match); the previous token of that viewer's pair stops working.
+        Another browser (another viewer_id) gets its own conversation and never takes this one over."""
         profile = next((p for p in self.profiles() if p['id'] == profile_id), None)
         if profile is None:
             raise RuleError('profile_not_found', 'Choose a demo profile.', 404)
         token = uuid4()
         with self.store.connect() as conn:
-            row = conn.execute('INSERT INTO question_conversations(id,profile_id,match_id) VALUES(%s,%s,%s) '
-                'ON CONFLICT(profile_id,match_id) DO UPDATE SET profile_id=EXCLUDED.profile_id RETURNING *',
-                (uuid4(), profile_id, match_id)).fetchone()
-            conn.execute('INSERT INTO question_sessions(profile_id,match_id,token,conversation_id) VALUES(%s,%s,%s,%s) '
-                         'ON CONFLICT(profile_id,match_id) DO UPDATE SET token=EXCLUDED.token,conversation_id=EXCLUDED.conversation_id',
-                         (profile_id,match_id,token,row['id']))
+            row = conn.execute('INSERT INTO question_conversations(id,viewer_id,profile_id,match_id) VALUES(%s,%s,%s,%s) '
+                'ON CONFLICT(viewer_id,profile_id,match_id) DO UPDATE SET profile_id=EXCLUDED.profile_id RETURNING *',
+                (uuid4(), viewer_id, profile_id, match_id)).fetchone()
+            conn.execute('INSERT INTO question_sessions(viewer_id,profile_id,match_id,token,conversation_id) VALUES(%s,%s,%s,%s,%s) '
+                         'ON CONFLICT(viewer_id,profile_id,match_id) DO UPDATE SET token=EXCLUDED.token,conversation_id=EXCLUDED.conversation_id',
+                         (viewer_id,profile_id,match_id,token,row['id']))
             # A takeover invalidates the in-flight response and makes the new session usable.
             conn.execute("UPDATE question_turns SET status='failed',reply=%s WHERE conversation_id=%s AND status='pending'",
                          (Jsonb({'status':'unsupported','text':'Sorry, that question was interrupted by a new session.','offers':[]}),row['id']))
@@ -47,7 +48,7 @@ class QuestionRepository:
             offers = conn.execute('SELECT id,document,calculation_id FROM question_offers WHERE conversation_id=%s', (row['id'],)).fetchall()
         # Question and follow-chat turns share the table; each channel is its own conversation.
         channel = lambda name: [{k: t[k] for k in t if k != 'channel'} for t in turns if t['channel'] == name]
-        return {'session_token': str(token), 'profile_id':row['profile_id'],
+        return {'session_token': str(token), 'profile_id':row['profile_id'], 'viewer_id': row['viewer_id'],
                 'match_id':row['match_id'], 'audience': row['audience'], 'turns':channel('questions'),
                 'follow_turns': channel('follow'),
                 'offers':[{**r['document'],'id':str(r['id']),'calculation_id':r['calculation_id']} for r in offers]}
@@ -84,7 +85,7 @@ class QuestionRepository:
                 (Jsonb(reply),turn_id,row['id'])).fetchone()
             if not turn:
                 raise RuleError('question_interrupted','This question is no longer active.',409)
-            for offer in reply.get('offers',[]):
+            for offer in [*reply.get('offers',[]), *(o for part in reply.get('parts') or [] for o in part.get('offers',[]))]:
                 conn.execute('INSERT INTO question_offers(id,conversation_id,turn_id,document) VALUES(%s,%s,%s,%s)',
                              (offer['id'],row['id'],turn_id,Jsonb(offer)))
 

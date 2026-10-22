@@ -32,16 +32,16 @@ def migrate_until(store, before):
 
 
 def test_saved_rules_and_tracked_offers_move_to_spadl(store):
-    rules = {'calc_pass': OLD(P('event_type', 'pass'), P('team_id', 'chelsea')),
+    rules = {'calc_pass': OLD(P('event_type', 'pass'), P('team_id', 'riverton')),
              'calc_shots': OLD(P('event_type', ['shot', 'goal'], 'in'), P('body_part', 'head')),
-             'calc_touch': OLD(P('event_type', 'touch'), P('player_id', 'palmer')),
+             'calc_touch': OLD(P('event_type', 'touch'), P('player_id', 'ashworth')),
              'calc_share': {'match_id': 'm-1', 'operation': 'percentage', 'inputs': [
                  OLD(P('event_type', 'pass'), P('outcome', 'success')),
                  OLD(P('event_type', 'pass'), P('outcome', ['success', 'failure'], 'in'))]}}
     conversation = uuid.uuid4()
     with store.connect() as conn:
         before_spadl(conn, store)
-        conn.execute("INSERT INTO received_matches (match_id, fixture, sent_at) VALUES ('m-1', 'chelsea-united', now())")
+        conn.execute("INSERT INTO received_matches (match_id, fixture, sent_at) VALUES ('m-1', 'riverton-forgeham', now())")
         conn.execute("INSERT INTO question_conversations (id, profile_id, match_id) VALUES (%s, 'p', 'm-1')", (conversation,))
         turn = conn.execute("INSERT INTO question_turns (conversation_id, request_id, prompt, status) "
                             "VALUES (%s, %s, 'q', 'complete') RETURNING id", (conversation, uuid.uuid4())).fetchone()['id']
@@ -61,7 +61,7 @@ def test_saved_rules_and_tracked_offers_move_to_spadl(store):
         vocabulary = {(r['old_field'], r['old_value']): r for r in conn.execute('SELECT * FROM rule_vocabulary_map')}
     expected = {
         'calc_pass': Rule.model_validate(OLD(P('action_type', ['pass', 'cross', 'throw_in', 'freekick_crossed',
-            'freekick_short', 'corner_crossed', 'corner_short', 'goalkick'], 'in'), P('team_id', 'chelsea'))),
+            'freekick_short', 'corner_crossed', 'corner_short', 'goalkick'], 'in'), P('team_id', 'riverton'))),
         'calc_shots': Rule.model_validate(OLD(P('action_type', ['shot', 'shot_freekick', 'shot_penalty'], 'in'),
                                               P('bodypart', ['head'], 'in')))}
     for old, rule in expected.items():
@@ -82,8 +82,8 @@ def test_saved_rules_and_tracked_offers_move_to_spadl(store):
     projection.presentation, projection.buckets = seeded('presentation'), []
     projection.shared = {'type': 'snapshot', 'version': 1, 'projection_epoch': 'e', 'synthetic': True, 'mode': 'fixture',
                          'snapshot_id': 'm-1:1', 'events': [], 'narratives': [], 'stats': [], 'calculations': {},
-                         'match': {'teams': [{'id': 'chelsea'}, {'id': 'manutd'}]}}
-    viewer = {'profile': {'team': 'chelsea'}, 'audience': None,
+                         'match': {'teams': [{'id': 'riverton'}, {'id': 'forgeham'}]}}
+    viewer = {'profile': {'team': 'riverton'}, 'audience': None,
               'offers': [{**offers['calc_touch']['document'], 'calculation_id': 'calc_touch'}]}
     [card] = projection.compose(viewer)['cards']
     assert card['available'] is False and card['unavailable_reason'] == mapped['calc_touch']['reason']

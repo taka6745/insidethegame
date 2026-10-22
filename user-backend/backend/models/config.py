@@ -29,6 +29,8 @@ class Presentation(Strict):
     excluded_stats: list[Annotated[str, Field(pattern=r'^[a-z0-9_-]{1,64}:[a-z_]{1,40}$')]] = Field(max_length=50)
     # Tracked stats displace lower-priority defaults, never these kinds.
     protected_stat_kinds: list[Annotated[str, Field(pattern=r'^[a-z_]{1,40}$')]] = Field(max_length=10)
+    # Newest shared narratives kept per bucket in each snapshot (a 92-minute match writes about 100 per bucket).
+    narratives_per_bucket: int = Field(default=200, ge=1, le=1000)
 
 
 class Transitions(Strict):
@@ -36,7 +38,8 @@ class Transitions(Strict):
     cut happens under it, and it fades out as the next clip plays (viewer, migrations/037)."""
     enabled: bool
     hold_seconds: float = Field(ge=0, le=5)
-    asset: Annotated[str, Field(pattern=r'^/assets/[a-z0-9/_-]{1,120}\.(mp4|webm)$')]
+    # A video under /assets/, or `builtin:<name>` for a sting the viewer draws itself (migrations/049).
+    asset: Annotated[str, Field(pattern=r'^(/assets/[a-z0-9/_-]{1,120}\.(mp4|webm)|builtin:[a-z-]{1,40})$')]
     asset_start_seconds: float = Field(ge=0, le=10)  # where in the asset the sting starts
     sting_seconds: float = Field(gt=0, le=10)        # how long it shows, fades included
     cut_seconds: float = Field(ge=0, le=10)          # into the sting: the next clip is cued while covered
@@ -74,6 +77,8 @@ class Replay(Strict):
     max_clips: int = Field(ge=1, le=50)
     max_seconds: float = Field(gt=0, le=1800)
     max_move_seconds: float = Field(gt=0, le=120)
+    # The shortest clip: a short lead-in on a quick action still shows enough to follow (046).
+    min_clip_seconds: float = Field(default=0.0, ge=0, le=60)
     merge_gap: float = Field(ge=0, le=30)
     max_items: int = Field(ge=1, le=36)  # QuestionDraft.replay_items accepts at most 36.
     playback: Playback  # 037
@@ -334,8 +339,38 @@ class FollowOffer(Strict):
     timeout_seconds: float = Field(gt=0, le=30)
 
 
+class RoleModel(Strict):
+    """One role's model. An empty deployment keeps the service's own setting (Terraform/env); a set one is a
+    deployment on the same model endpoint. An effort sends the call as a reasoning model (Responses API for the
+    backend's tool-using agents); none sends it as a chat model with temperature 0."""
+    deployment: str = Field(default='', max_length=64, pattern=r'^[A-Za-z0-9._-]*$')
+    effort: Literal['', 'minimal', 'low', 'medium', 'high'] = ''
+
+
+class EngineModels(Strict):
+    summary: RoleModel
+    compression: RoleModel
+    analyst: RoleModel
+    author: RoleModel  # shared bucket insights and followed-story narratives
+
+
+class BackendModels(Strict):
+    questions: RoleModel  # the Ask chat: question, goal and intent agents
+    follow_planner: RoleModel
+    replay: RoleModel
+
+
+class ModelRoles(Strict):
+    """Model per role, switched live (PLAN.md §12 M10, 047): the backend applies `backend` within seconds; the
+    engine reads `engine` at GET /model-roles. `deployments` lists what the model endpoint offers, for the editor."""
+    deployments: list[str] = Field(max_length=20)
+    engine: EngineModels
+    backend: BackendModels
+
+
 CONFIGS = {'presentation': Presentation, 'replay-timing': Replay, 'key-moment-ranks': KeyMoments,
            'prices': Prices, 'stream': Stream, 'subscriptions': Subscriptions, 'key-moment-feed': KeyMomentFeed,
-           'storyline-policy': StorylinePolicy, 'cross-match': CrossMatch, 'follow-offer': FollowOffer}
+           'storyline-policy': StorylinePolicy, 'cross-match': CrossMatch, 'follow-offer': FollowOffer,
+           'models': ModelRoles}
 ConfigName = Literal['presentation', 'replay-timing', 'key-moment-ranks', 'prices', 'stream', 'subscriptions',
-                     'key-moment-feed', 'storyline-policy', 'cross-match', 'follow-offer']
+                     'key-moment-feed', 'storyline-policy', 'cross-match', 'follow-offer', 'models']

@@ -1,6 +1,6 @@
 # Filter lab: synthetic event feed
 
-**Hand-authored test data, 18 October 2026.** The fictional Chelsea–Madrid match
+**Hand-authored test data, 18 October 2026.** The fictional Riverton Rovers–Madrid match
 and player actions are invented. This is neither collected match data nor an
 implementation of a licensed Opta wire schema. Names are illustrative.
 

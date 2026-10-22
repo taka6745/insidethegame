@@ -30,6 +30,6 @@ def supported_side(layers, selections):
 
 
 def bucket_label(layers, selections, teams):
-    """`Chelsea · Analytical`: each layer's chosen option label, in layer order."""
-    return ' · '.join(option_label(next(o for o in layer['options'] if o['id'] == selections[layer['id']]), teams)
-                      for layer in layers)
+    """`Riverton Rovers · Analytical`: each layer's chosen option label, in layer order, without options kept out of it."""
+    chosen = (next(o for o in layer['options'] if o['id'] == selections[layer['id']]) for layer in layers)
+    return ' · '.join(option_label(option, teams) for option in chosen if option.get('in_label') is not False)

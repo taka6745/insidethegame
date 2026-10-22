@@ -35,11 +35,11 @@
 
 | Term | Meaning |
 | --- | --- |
-| Fixture | Catalogue id of a recording, e.g. `chelsea-united` |
+| Fixture | Catalogue id of a recording, e.g. `riverton-forgeham` |
 | Run | One live playback of a fixture; its `matchId` is `{fixture}-{run8}` |
 | Canonical event | One recording event; sent as `MatchEvent` v2 with `seq` = its order |
 | `videoSeconds` | Seconds after kickoff on the match video; the feed's clock |
 | Tombstone | Permanent record that a `matchId` was purged |
 | Start point | Match-clock point a demo may start from: kick-off, 20′, second half, 60′, 85′ |
-| Main game | `demo_settings.main_fixture` (default `arsenal-liverpool`): starts first, opens by default |
+| Main game | `demo_settings.main_fixture` (default `redcastle-portalbion`): starts first, opens by default |
 | Seed | Every owner's rows recorded at a start point by a *held* run; restored under a new `matchId` |

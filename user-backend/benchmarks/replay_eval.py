@@ -228,8 +228,8 @@ async def run_case(case, agent, recording, fixtures, builder, converted):
 
 async def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--recording", type=Path, default=ROOT / "data-generation/recordings/chelsea-united-grf.json")
-    parser.add_argument("--archive", type=Path, default=ROOT / "narrative-engine/fixtures/archive/chelsea-united-grf.json")
+    parser.add_argument("--recording", type=Path, default=ROOT / "data-generation/recordings/riverton-forgeham-grf.json")
+    parser.add_argument("--archive", type=Path, default=ROOT / "narrative-engine/fixtures/archive/riverton-forgeham-grf.json")
     parser.add_argument("--narratives", type=Path, default=ROOT / "narrative-engine/fixtures/grf-narratives.json",
                         help="narrative fixtures bound to --archive")
     parser.add_argument("--cases", type=Path, default=Path(__file__).with_name("replay_cases.json"))

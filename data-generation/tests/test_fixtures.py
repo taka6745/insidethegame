@@ -1,4 +1,4 @@
-"""Fixture rosters: real-name lineups, distinct kits and exports derived from the recording."""
+"""Fixture rosters: fictional league lineups, distinct kits and exports derived from the recording."""
 
 import importlib.util
 from pathlib import Path

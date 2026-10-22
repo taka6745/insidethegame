@@ -40,8 +40,8 @@ Your response should be brief (one to three sentences), and should contain the
 narrative excerpt only: plain text, no title, no quotation marks, no markdown.
 The following is an example for a neutral experienced user type:
 
-That goal from the home team (Manchester United) comes entirely against the
-run of play. A dominant away team (Liverpool) will be regretting those 6 missed
+That goal from the home team (Forgeham United) comes entirely against the
+run of play. A dominant away team (Port Albion) will be regretting those 6 missed
 shots they've racked up this half.
 
 This narrative step was triggered by:

@@ -11,7 +11,7 @@ RECORDINGS = Path(__file__).resolve().parents[1] / "recordings"
 class RenderedRecordingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.recording = json.loads((RECORDINGS / "chelsea-united-grf.json").read_text())
+        cls.recording = json.loads((RECORDINGS / "riverton-forgeham-grf.json").read_text())
         cls.events = cls.recording["events"]
 
     def test_real_time_broadcast_clock_and_delivery_order(self):
@@ -32,7 +32,7 @@ class RenderedRecordingTests(unittest.TestCase):
         self.assertEqual(len(self.events), 11133)
         self.assertEqual(self.recording["provenance"]["score"], [1, 1])
         goals = [(e["playerId"], e["timeMin"], e["timeSec"]) for e in self.events if e["typeName"] == "goal"]
-        self.assertEqual(goals, [("manutd-9", 9, 35), ("chelsea-9", 71, 16)])
+        self.assertEqual(goals, [("forgeham-9", 9, 35), ("riverton-9", 71, 16)])
         self.assertEqual({kind: counts[kind] for kind in ("shot", "save", "corner", "card", "offside", "foul")},
                          {"shot": 12, "save": 4, "corner": 5, "card": 0, "offside": 5, "foul": 30})
         self.assertEqual(self.recording["provenance"]["stall_nudge_seconds"], [1700.36, 2251.0, 2716.64, 3225.92, 3792.08])
@@ -53,7 +53,7 @@ class RenderedRecordingTests(unittest.TestCase):
         self.assertLess(sum(s["duration_seconds"] for s in samples), duration)
 
     def test_f24_feed_is_the_same_match(self):
-        feed = json.loads((RECORDINGS / "chelsea-united-grf.opta-f24.json").read_text())
+        feed = json.loads((RECORDINGS / "riverton-forgeham-grf.opta-f24.json").read_text())
         rows = feed["events"]
         self.assertTrue(feed["synthetic"])
         self.assertEqual(sum(r["type_id"] == 16 for r in rows), 2)

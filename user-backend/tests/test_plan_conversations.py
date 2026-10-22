@@ -26,7 +26,7 @@ def test_capacity_evicts_oldest_and_turn_limit_keeps_original_intent():
     with pytest.raises(RuleError):
         store.history(old, "run")
     for _ in range(2):
-        store.save(current, "run", store.history(current, "run"), "Chelsea", "Which half?")
+        store.save(current, "run", store.history(current, "run"), "Riverton Rovers", "Which half?")
     with pytest.raises(RuleError, match="new request"):
         store.history(current, "run")
 

@@ -34,6 +34,13 @@ interface ErrorBody {
 
 export const QUESTION_TIMEOUT_MS = 255_000;
 
+/** Text safe to show a viewer: our own service messages pass through; anything else (a script error, a raw
+ * exception) becomes a plain sentence, so a viewer never sees exception text. */
+export function friendly(error: unknown, fallback = "Something went wrong. Please try again."): string {
+  const known = error as ServiceError | undefined;
+  return known instanceof Error && typeof known.status === "number" && known.message ? known.message : fallback;
+}
+
 /** Same-origin application boundary. No provider or database access in the client. */
 export class MatchApi {
   fetcher: Fetcher;
@@ -54,12 +61,24 @@ export class MatchApi {
     path: string,
     { body, method, signal, timeout = 75000 }: RequestOptions = {},
   ): Promise<T> {
-    const response = await this.fetcher(`${this.base}${path}`, {
-      method: method || (body === undefined ? "GET" : "POST"),
-      headers: { "Content-Type": "application/json" },
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-      signal: signal || AbortSignal.timeout(timeout),
-    });
+    let response: Awaited<ReturnType<Fetcher>>;
+    try {
+      response = await this.fetcher(`${this.base}${path}`, {
+        method: method || (body === undefined ? "GET" : "POST"),
+        headers: { "Content-Type": "application/json" },
+        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+        signal: signal || AbortSignal.timeout(timeout),
+      });
+    } catch (caught) {
+      // Never show the browser's raw network or abort text to a viewer.
+      const aborted = (caught as Error)?.name === "AbortError" && signal?.aborted;
+      const error: ServiceError = new Error((caught as Error)?.name === "TimeoutError"
+        ? "The match service is taking too long. Please try again."
+        : "Can't reach the match service right now. Check your connection and try again.");
+      error.code = aborted ? "aborted" : "network";
+      error.status = 0;
+      throw error;
+    }
     let data: unknown;
     try {
       data = await response.json();
@@ -96,8 +115,8 @@ export class MatchApi {
     const root = `/matches/${encodeURIComponent(this.match)}/sessions`;
     return token === undefined ? root : `${root}/${encodeURIComponent(token)}`;
   }
-  session(profileId: string) {
-    return this.request<ViewerSession>(this.sessions(), { body: { profile_id: profileId } });
+  session(profileId: string, viewerId = "") {
+    return this.request<ViewerSession>(this.sessions(), { body: { profile_id: profileId, viewer_id: viewerId } });
   }
   restore(token: string) {
     return this.request<ViewerSession>(this.sessions(token));

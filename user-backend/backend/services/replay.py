@@ -109,8 +109,9 @@ class ReplayTools:
         who = self.names.get(row.get("player_id")) or self.teams.get(row.get("team_id")) or ""
         if "colour" in row:
             what = row["colour"].replace("_", " ") + " card"
-        elif row.get("result") == "owngoal":
-            what = "own goal"
+        elif row.get("result") == "owngoal":  # credited to the other side: say who it counts for
+            benefits = next((name for team, name in self.teams.items() if team != row.get("team_id")), None)
+            what = f"own goal ({benefits} goal)" if benefits else "own goal"
         elif row.get("shot_outcome"):
             what = ("header " if row.get("bodypart") == "head" else "") + SHOT_WORDS[row["shot_outcome"]]
         elif row.get("save_kind"):
@@ -128,6 +129,8 @@ class ReplayTools:
     def checked_caption(self, source_id, kind, caption):
         """The model's caption unless it contradicts the evidence (an unsaved shot called saved)."""
         row = self.events.get(source_id) if kind == "event" else None
+        if row and row.get("result") == "owngoal":  # who scored and for whom is easy to get wrong: state it from evidence
+            return self.caption(source_id, kind)
         if caption and not (row and false_save(row, caption)):
             return caption
         return self.caption(source_id, kind)
@@ -137,6 +140,11 @@ class ReplayTools:
             return False
         for name, column in COLUMNS.items():
             if f.get(name) and row.get(column) not in f[name]:
+                return False
+        for bound in f.get("locations") or []:  # team-relative metres, as a stat's location bounds
+            value = row.get(bound["field"])
+            if value is None or (bound.get("gte") is not None and value < bound["gte"]) \
+                    or (bound.get("lte") is not None and value > bound["lte"]):
                 return False
         return self._scope(row, f)
 
@@ -290,6 +298,14 @@ class ReplayBuilder:
         for row in history:
             if row.get("possession_id") is not None and row.get("video_seconds") is not None:
                 possession_starts.setdefault(row["possession_id"], row["video_seconds"])
+        # An own goal is the defender's touch, often a possession of its own: its build-up is the attack before it.
+        ordered = sorted((r for r in history if r.get("video_seconds") is not None), key=lambda r: r["video_seconds"])
+        for i, row in enumerate(ordered):
+            if row.get("result") == "owngoal" and row["id"] in events:
+                attack = next((r for r in reversed(ordered[:i]) if r.get("team_id") != row.get("team_id")
+                               and r.get("possession_id") is not None), None)
+                if attack:
+                    events[row["id"]]["possession_id"] = attack["possession_id"]
         periods = tools.periods
         observed = max((r["video_seconds"] for r in rows if r.get("video_seconds") is not None), default=0.0)
         if edge is not None:

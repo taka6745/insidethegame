@@ -186,11 +186,11 @@ def test_two_concurrent_matches_each_get_blocks_and_narratives():
     router = Router(Matches(), FakeAgents(delay=0.001), store, MemorySink(store))
 
     async def go():
-        await asyncio.gather(*(feed(router, m, BODIES[:40]) for m in ("chelsea-united-aaaa1111", "arsenal-spurs-bbbb2222")))
+        await asyncio.gather(*(feed(router, m, BODIES[:40]) for m in ("riverton-forgeham-aaaa1111", "redcastle-whitmore-bbbb2222")))
         await router.idle()
-        await router.handle({"matchId": "chelsea-united-aaaa1111", "messageType": "SomethingNew"})
+        await router.handle({"matchId": "riverton-forgeham-aaaa1111", "messageType": "SomethingNew"})
     asyncio.run(go())
-    assert set(router.engines) == {"chelsea-united-aaaa1111", "arsenal-spurs-bbbb2222"}
+    assert set(router.engines) == {"riverton-forgeham-aaaa1111", "redcastle-whitmore-bbbb2222"}
     a, b = (asyncio.run(store.narratives(m, "neutral:casual")) for m in router.engines)
     assert a and [n.stepId.split(":", 1)[1] for n in a] == [n.stepId.split(":", 1)[1] for n in b]
     for match_id in router.engines:

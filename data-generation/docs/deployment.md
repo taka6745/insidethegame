@@ -30,6 +30,6 @@
 | `media` | `{fixture}/hls/match.m3u8` and segments, uploaded by `./dev azure up` |
 | `live` | `{matchId}/live.m3u8` and segments, copied server-side from `media` only once played |
 
-Media upload: [`terraform/azure/media.json`](../../terraform/azure/media.json) keeps the main game (Arsenal–Liverpool) at full quality; the other fixtures are re-encoded to about 1.75 Mbit/s (same segments and timestamps) before `azcopy` uploads them.
+Media upload: [`terraform/azure/media.json`](../../terraform/azure/media.json) keeps the main game (Redcastle Town–Port Albion) at full quality; the other fixtures are re-encoded to about 1.75 Mbit/s (same segments and timestamps) before `azcopy` uploads them.
 
 `FEED_BLOB_CONNECTION_STRING` switches the feed to Blob Storage ([`adapters/blob.py`](../feed/adapters/blob.py)). `GET /hls/{matchId}/…` streams from `live`, so the frontend (`/media/hls/`) and backend (`FEED_HLS_BASE`) see the same HTTP origin as locally. The admin API stays inside the environment; the frontend's `/feed-api/` reaches it behind basic auth.

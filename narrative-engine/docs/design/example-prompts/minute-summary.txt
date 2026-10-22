@@ -20,11 +20,11 @@ Your response should be brief, and use the following JSON structure:
 }
 
 Some examples of a good summary include:
-- Home team (Manchester United) maintained possession for most of the minute,
+- Home team (Forgeham United) maintained possession for most of the minute,
 completing all 15 of their passes. This is against the run of play, as away team
-(Liverpool) has had 62% possession so far.
-- Away team (Liverpool) won a penalty after sustained pressure in the box, but it
-was saved by home team goalkeeper Lammens.
+(Port Albion) has had 62% possession so far.
+- Away team (Port Albion) won a penalty after sustained pressure in the box, but it
+was saved by home team goalkeeper Halloran.
 
 The current game state match statistics are as follows:
 {$game_state_statistics}

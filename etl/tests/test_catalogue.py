@@ -1,4 +1,4 @@
-"""The SPADL stat catalogue reference on a whole Chelsea–United run, against its recorded golden values.
+"""The SPADL stat catalogue reference on a whole Riverton Rovers–United run, against its recorded golden values.
 
 fixtures/catalogue-golden.json holds the full rows at the final seq and (statId, value, available) at 20
 prefixes (catalogue moved to SPADL 2026-10-21; recording re-rendered 2026-10-22); local/contracts.md §4 lists
@@ -62,7 +62,7 @@ def golden():
 def test_definitions_keep_every_old_id_in_order():
     assert [d["statId"] for d in catalogue.definitions()] == KINDS
     assert [s["statId"] for s in reference(FINAL, ROWS, FINAL)] == [
-        f"{scope}:{k}" for scope in ("all", "chelsea", "manutd") for k in KINDS]
+        f"{scope}:{k}" for scope in ("all", "riverton", "forgeham") for k in KINDS]
 
 
 def test_final_seq_equals_golden():
@@ -70,14 +70,14 @@ def test_final_seq_equals_golden():
     assert g["final_seq"] == FINAL and reference(FINAL, ROWS, FINAL) == g["final"]
     stats = by_id(reference(FINAL, ROWS, FINAL))
     value = lambda i: stats[i]["value"]
-    assert (value("all:goals"), value("chelsea:goals"), value("manutd:goals")) == (2, 1, 1)
-    assert (value("chelsea:shots"), value("chelsea:shots_on_target")) == (9, 3)
-    assert (value("chelsea:saves"), value("manutd:saves")) == (1, 3)
+    assert (value("all:goals"), value("riverton:goals"), value("forgeham:goals")) == (2, 1, 1)
+    assert (value("riverton:shots"), value("riverton:shots_on_target")) == (9, 3)
+    assert (value("riverton:saves"), value("forgeham:saves")) == (1, 3)
     # Real saves: 1 United keeper_save row is a touch of a shot going wide.
-    assert (value("all:shots_saved"), value("chelsea:shots_saved"), value("manutd:shots_saved")) == (3, 1, 2)
-    assert (value("chelsea:passes"), value("manutd:passes")) == (941, 462)
-    assert (value("chelsea:interceptions"), value("all:dribbles"), value("all:crosses")) == (37, 1011, 130)
-    assert (round(value("chelsea:possession")), round(value("manutd:possession"))) == (64, 36)
+    assert (value("all:shots_saved"), value("riverton:shots_saved"), value("forgeham:shots_saved")) == (3, 1, 2)
+    assert (value("riverton:passes"), value("forgeham:passes")) == (941, 462)
+    assert (value("riverton:interceptions"), value("all:dribbles"), value("all:crosses")) == (37, 1011, 130)
+    assert (round(value("riverton:possession")), round(value("forgeham:possession"))) == (64, 36)
     for kind in RETIRED | {"headed_contacts"}:
         assert stats[f"all:{kind}"]["available"] is False and stats[f"all:{kind}"]["value"] is None
 

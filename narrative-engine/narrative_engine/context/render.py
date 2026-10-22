@@ -33,7 +33,7 @@ class Team:
     name: str
     code: str
     position: str
-    other_names: tuple = ()  # MA1 shortName and knownNames ("Man Utd", "the Red Devils"): accepted in authored text
+    other_names: tuple = ()  # MA1 shortName and knownNames ("Forgeham", "the Forgemen"): accepted in authored text
 
     @property
     def names(self):

@@ -46,6 +46,9 @@
 | `042_shorter_author_planner_options.py` | `narrative-author` one or two short sentences (active over the unedited seed only); `subscription-planner` v2 with `{live_matches}` and up to four clarification `options` resolved by code |
 | `043_narrative_clips_match.sql` | `narrative_clips` rows belong to a received match (cascade on purge); orphans removed |
 | `044_clip_relevance.py` | the clip decision asks how relevant a moment is to the followed story (`clips.instructions` and `levels`), only where both are still 038's wording |
+| `045_viewer_sessions.sql` | each browser is its own viewer: conversations and sessions keyed by (`viewer_id`, profile, match); another browser on the same profile never takes a session over (PLAN.md §12 M1) |
+| `046_clip_lengths.py` | `replay-timing.min_clip_seconds` 8 s, and a goal keeps 5 s after (was 2 s), each only where unedited |
+| `047_model_roles_length_layer.py` | `backend_config.models` (model per role, live; empty deployments keep each service's own setting) and an audience `length` layer (Standard, Brief) in every template and catalogue: existing buckets keep their ids and select Standard, Brief twins are added disabled |
 | `accounts/001_demo_profiles.sql` | `demo_profiles` with three demo accounts |
 | `accounts/002_profile_editor.sql` | Profile revision row for the `/dev/` editor; drops the hard-coded team/style CHECK constraints |
 | `accounts/003_profile_selections.sql` | `team`/`fan_style` columns become a `selections` map (layer id → option id) |

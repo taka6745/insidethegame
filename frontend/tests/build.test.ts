@@ -40,7 +40,10 @@ test("build fingerprints modules and CSS together; changed source gets a fresh i
     await writeFile(join(source, "match/api.js"), "export const version = 2;");
     execFileSync("sh", [script, output, source]);
     assert.notEqual(await readFile(join(output, "index.html"), "utf8"), before);
-    assert.equal((await readdir(join(output, "app"))).length, 2);
+    assert.equal((await readdir(join(output, "app"))).length, 3);  // two builds plus `current`
+    const latest = (await readFile(join(output, "index.html"), "utf8")).match(/\/app\/([a-f0-9]{20})\//)![1]!;
+    assert.equal(await readFile(join(output, "app", "current", "api.js"), "utf8"), "export const version = 2;");
+    assert.ok(latest !== fingerprint);
   } finally {
     await rm(temp, { recursive: true, force: true });
   }
@@ -56,6 +59,8 @@ test("HTML and lab assets revalidate, only fingerprinted application assets are 
     /~\^\/app\/\[0-9a-f\]\+\/ "public, max-age=31536000, immutable"/,
   );
   assert.doesNotMatch(nginx, /max-age=300/);
+  // An old fingerprint falls back to the current build instead of a 404 (no hard refresh after a deploy).
+  assert.match(nginx, /try_files \$uri \/app\/current\/\$app_file =404;/);
 });
 test("hls.js ships from this origin with its licence, without a source-map reference", async () => {
   const temp = await mkdtemp(join(tmpdir(), "itg-fe-vendor-"));

@@ -144,8 +144,8 @@ def test_session_locks_are_per_match_and_unused_locks_drop_out(store):
         async def check():
             async with product._locks(MATCH), questions.session_guard(MATCH):
                 # Another match's sessions never wait for this one.
-                other = await asyncio.wait_for(product.start(OTHER, 'chelsea-analytical'), 5)
-                blocked = asyncio.create_task(product.start(MATCH, 'chelsea-analytical'))
+                other = await asyncio.wait_for(product.start(OTHER, 'riverton-analytical'), 5)
+                blocked = asyncio.create_task(product.start(MATCH, 'riverton-analytical'))
                 await asyncio.sleep(0.2)
                 assert other['match_id'] == OTHER and not blocked.done()
             return await asyncio.wait_for(blocked, 5)

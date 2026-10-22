@@ -1,5 +1,5 @@
 """Story follows: the topic source, the trigger rules (prefilter, gap, fire rule) and the pipeline over the whole
-Chelsea–United recording (synthetic) with fake agents and a fake decision model. Live and as a backlog the
+Riverton Rovers–United recording (synthetic) with fake agents and a fake decision model. Live and as a backlog the
 decision model gets the same states and questions and the follow narratives are the same; a restart reuses the
 stored decision instead of asking again; a purge removes the follow documents."""
 import asyncio
@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-import chelsea_united
+import riverton_forgeham
 from test_backend_sources import BASE, Backend, client
 from test_recording_run import EtlAsOf
 from test_storylines_run import spells_at, trends_at
@@ -29,10 +29,10 @@ from narrative_engine.service import Router
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink
 
-MATCH = chelsea_united.MATCH
+MATCH = riverton_forgeham.MATCH
 INFO = MatchInfo.from_ma1({"matchId": "m", "contestant": [
-    {"id": "che", "name": "Chelsea", "code": "CHE", "position": "home", "lineup": [{"playerId": "p9", "name": "Cole"}]},
-    {"id": "mun", "name": "Manchester United", "code": "MUN", "position": "away"}]})
+    {"id": "che", "name": "Riverton Rovers", "code": "RVR", "position": "home", "lineup": [{"playerId": "p9", "name": "Cole"}]},
+    {"id": "mun", "name": "Forgeham United", "code": "FGU", "position": "away"}]})
 
 
 # --- the topic source ---------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ def targets_doc(revision, topics):
 
 
 def test_topics_revalidate_with_the_etag_and_a_document_without_a_tunable_is_refused():
-    one = topic("topic:00000000000000a1", "team", ["home:casual"], team_id="che", label="Chelsea")
+    one = topic("topic:00000000000000a1", "team", ["home:casual"], team_id="che", label="Riverton Rovers")
     backend = Backend({"/matches/demo/subscription-targets": targets_doc(4, [one])})
     source = HttpTopicSource(BASE, client(backend), max_age=0)
     first = asyncio.run(source.current("demo"))
@@ -89,7 +89,7 @@ def candidates(entities, seq=100):
 
 def test_the_prefilter_keeps_the_topics_the_update_involves():
     goal = {"keyType": "Goal", "contestantId": "mun", "playerId": "m2", "id": 1}
-    # A United goal involves Chelsea's follows too, and every open storyline; not a player who is not in it.
+    # A United goal involves Riverton Rovers' follows too, and every open storyline; not a player who is not in it.
     assert candidates(pipeline.update_entities("keyEvent", INFO, goal)) == ["line1", "line2", "team", "theme"]
     penalty = {"keyType": "PenaltyAwarded", "detail": "conceded", "contestantId": "che", "playerId": "p9", "id": 2}
     assert candidates(pipeline.update_entities("keyEvent", INFO, penalty)) == \
@@ -101,7 +101,7 @@ def test_the_prefilter_keeps_the_topics_the_update_involves():
     moved = pipeline.update_entities("storylineTurn", INFO, moved=[LINES["sl:m:3"]])
     assert candidates(moved) == ["line3", "theme"]  # the analysis resolved it
     moved = pipeline.update_entities("storylineTurn", INFO, moved=[LINES["sl:m:1"]])
-    assert candidates(moved) == ["line1", "team", "theme"]  # a Chelsea storyline involves a Chelsea follow
+    assert candidates(moved) == ["line1", "team", "theme"]  # a Riverton Rovers storyline involves a Riverton Rovers follow
     assert "team" in candidates(pipeline.update_entities("storylineTurn", INFO, moved=[LINES["sl:m:2"]]))
     everything = ["line1", "line2", "line3", "player", "team", "theme"]
     assert candidates(pipeline.update_entities("fullTime", INFO)) == everything
@@ -122,9 +122,9 @@ def test_the_gap_is_match_time_in_one_period_and_pivotal_moments_bypass_it():
 
 def test_one_score_per_candidate_novelty_only_with_a_last_narrative_and_the_fire_rule():
     cands = [TOPICS["team"], TOPICS["theme"]]
-    asked, keys = pipeline.questions(cands, CONFIG, {"t-team": "Chelsea pressed high."}, INFO, LINES)
+    asked, keys = pipeline.questions(cands, CONFIG, {"t-team": "Riverton Rovers pressed high."}, INFO, LINES)
     assert list(asked) == ["t1", "t1n", "t2"] and isinstance(asked["t1n"], Noul) and isinstance(asked["t2"], Score)
-    assert "the team Chelsea" in asked["t1"].instructions and '"Chelsea pressed high."' in asked["t1n"].instructions
+    assert "the team Riverton Rovers" in asked["t1"].instructions and '"Riverton Rovers pressed high."' in asked["t1n"].instructions
     assert "\"set pieces\"" in asked["t2"].instructions and asked["t2"].levels == tuple(CONFIG["decision"]["levels"])
     assert "set pieces" not in asked["t1"].instructions + asked["t1n"].instructions  # each focus in its own questions
 
@@ -153,7 +153,7 @@ def test_a_key_event_asks_the_clip_score_in_the_same_call_and_a_clip_fires_its_t
     cands = [TOPICS["team"], TOPICS["theme"]]
     asked, keys = pipeline.questions(cands, CONFIG, {}, INFO, LINES, clip=True)
     assert list(asked) == ["t1", "t1c", "t2", "t2c"] and asked["t1c"].levels == tuple(CONFIG["clips"]["levels"])
-    assert "the team Chelsea" in asked["t1c"].instructions and "set pieces" not in asked["t1c"].instructions
+    assert "the team Riverton Rovers" in asked["t1c"].instructions and "set pieces" not in asked["t1c"].instructions
     assert "t1c" not in pipeline.questions(cands, CONFIG, {}, INFO, LINES)[0]
 
     def verdict(clip_score, confidence=0.9, score=0.0):
@@ -193,36 +193,38 @@ def rule(key, question, state):
     return h % 4 if isinstance(question, Score) else (h % 10) / 10 + 0.05
 
 
-THEME_FROM = next(seq for body, seq in chelsea_united.timeline() if body.get("periodId") == 1
+THEME_FROM = next(seq for body, seq in riverton_forgeham.timeline() if body.get("periodId") == 1
                   and body.get("timeMin") == 30)
 
 
 def follow_topics():
-    return [topic("topic:00000000000000c1", "team", ["home:simple", "home:casual"], team_id="chelsea",
-                  label="Chelsea", focus="their high press"),
-            topic("topic:00000000000000c2", "player", ["home:casual"], player_id="manutd-2", team_id="manutd"),
+    return [topic("topic:00000000000000c1", "team", ["home:simple", "home:casual"], team_id="riverton",
+                  label="Riverton Rovers", focus="their high press"),
+            topic("topic:00000000000000c2", "player", ["home:casual"], player_id="forgeham-2", team_id="forgeham"),
             topic("topic:00000000000000c3", "storyline", ["home:simple"], storyline_id=f"sl:{MATCH}:1"),
             topic("topic:00000000000000c4", "theme", ["home:experienced"], created_seq=THEME_FROM,
-                  focus="Chelsea's set pieces"),
-            topic("topic:00000000000000c5", "team", ["away:casual"], team_id="manutd")]  # a disabled bucket
+                  focus="Riverton Rovers' set pieces"),
+            topic("topic:00000000000000c5", "team", ["away:casual"], team_id="forgeham")]  # a disabled bucket
 
 
 class FlakyPublisher(MemorySink):
-    """Fails the first follow narrative it is given (stored, not sent), then works."""
-    failed = False
+    """Fails the first follow narrative it is given (stored, not sent), then works. `on`: only one of that trigger."""
+    failed, on = False, None
 
     async def publish(self, narrative):
-        if narrative.kind == "subscription" and not self.failed:
+        if narrative.kind == "subscription" and not self.failed and self.on in (None, narrative.trigger.type):
             self.failed = True
             raise ConnectionError("publish failed")
         await super().publish(narrative)
 
 
 def run(backlog=False, crash=False, change=None, decide=rule, config=None):
-    data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(), actions_path=chelsea_united.ACTIONS,
-                   keys=chelsea_united.key_rows(), trends=trends_at, spells=spells_at)
+    data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
+                   keys=riverton_forgeham.key_rows(), trends=trends_at, spells=spells_at)
     store, topics = MemoryStore(), StaticTopics(follow_topics(), config)
     sink = FlakyPublisher(store) if crash else MemorySink(store)
+    if isinstance(crash, str):
+        sink.on = crash
     asked = []
 
     def engine():
@@ -234,7 +236,7 @@ def run(backlog=False, crash=False, change=None, decide=rule, config=None):
 
     async def go():
         nonlocal orchestrator
-        for i, (body, seq) in enumerate(chelsea_united.timeline()):
+        for i, (body, seq) in enumerate(riverton_forgeham.timeline()):
             if change and i == change[0]:
                 topics.set(change[1])
             data.limit = None if backlog else seq
@@ -279,7 +281,7 @@ def test_follow_decisions_cover_every_trigger_and_fire_by_the_rule(runs):
     decisions = live["decisions"]
     kinds = {d["triggerType"] for d in decisions}
     assert kinds == {"keyEvent", "scheduled", "storylineTurn", "halfTime", "fullTime"}
-    assert len([d for d in decisions if d["triggerType"] == "keyEvent"]) == len(chelsea_united.key_rows())
+    assert len([d for d in decisions if d["triggerType"] == "keyEvent"]) == len(riverton_forgeham.key_rows())
     ends = [d for d in decisions if d["triggerType"] in ("halfTime", "fullTime")]
     # Period ends: every candidate gets the wrap-up (limits.period_end_wrap_up), without a question.
     assert ends and all(d["fired"] == d["candidates"] and d["questions"] == 0 and d["model"] is None for d in ends)
@@ -300,8 +302,8 @@ def test_follow_decisions_cover_every_trigger_and_fire_by_the_rule(runs):
     assert all(theme not in d["candidates"] for d in decisions if d["eventSeq"] < THEME_FROM)
     assert any(theme in d["candidates"] for d in decisions)
     # A goal is pivotal for its team's follow: asked even inside the gap.
-    chelsea = {f"key:{k['id']}" for k in chelsea_united.key_rows() if k["contestantId"] == "chelsea"}
-    assert all("topic:00000000000000c1" in d["candidates"] for d in decisions if d["ref"] in chelsea)
+    riverton = {f"key:{k['id']}" for k in riverton_forgeham.key_rows() if k["contestantId"] == "riverton"}
+    assert all("topic:00000000000000c1" in d["candidates"] for d in decisions if d["ref"] in riverton)
 
 
 def test_follow_narratives_go_to_each_fired_topics_enabled_buckets_with_their_decision(runs):
@@ -325,6 +327,24 @@ def test_follow_narratives_go_to_each_fired_topics_enabled_buckets_with_their_de
     assert [n.id for n in published] == [n.id for n in live["follows"]]
     line = [n for n in live["follows"] if n.topicId == "topic:00000000000000c3"]
     assert line and all(n.storylineIds == [f"sl:{MATCH}:1"] for n in line)
+
+
+def test_a_period_wrap_up_posts_once_per_topic_bucket_and_period_across_retries_and_restarts(runs):
+    """The run fails and restarts mid-match (a fresh process from the stored checkpoint); the backlog run also
+    replays everything. Each period end is queued once (closed periods), its decision is pinned by trigger ref and
+    each narrative by step id, so a followed story never gets a second wrap-up for the same period."""
+    crashed = run(crash="halfTime")  # the half-time wrap-up's publish fails; a fresh process resumes
+    assert crashed["sink"].failed and len(crashed["asked"]) == 2
+    assert [key(n) for n in crashed["follows"]] == [key(n) for n in runs[0]["follows"]]
+    for r in (*runs, crashed):
+        wraps = [(n.topicId, n.userType, n.trigger.ref) for n in r["follows"]
+                 if n.trigger.type in ("halfTime", "fullTime")]
+        assert wraps and len(wraps) == len(set(wraps))
+        published = [(n.topicId, n.userType, n.trigger.ref) for n in r["sink"].published
+                     if n.kind == "subscription" and n.trigger.type in ("halfTime", "fullTime")]
+        assert set(published) == set(wraps)  # sent again only as the same narrative (at least once, same id)
+        assert len({d["ref"] for d in r["decisions"] if d["triggerType"] in ("halfTime", "fullTime")}) == \
+            len([d for d in r["decisions"] if d["triggerType"] in ("halfTime", "fullTime")])
 
 
 def follow_clips(sink):
@@ -362,7 +382,7 @@ def test_each_clipped_key_event_sends_one_moment_clip_for_the_shared_narratives(
     """PLAN.md §10.2 D7: a key event of `clips.key_types` sends a `MomentClip` naming its step's buckets, apart from
     the narratives; none with `clips.shared` off."""
     live, backlog = runs
-    clipped = {str(k["id"]) for k in chelsea_united.key_rows() if k["keyType"] in CONFIG["clips"]["key_types"]}
+    clipped = {str(k["id"]) for k in riverton_forgeham.key_rows() if k["keyType"] in CONFIG["clips"]["key_types"]}
     moments = [c for c in live["sink"].clips if c["type"] == "MomentClip"]
     assert clipped and {str(c["eventId"]) for c in moments} == clipped
     for c in moments:
@@ -376,20 +396,20 @@ def test_each_clipped_key_event_sends_one_moment_clip_for_the_shared_narratives(
 
 def test_moment_clips_need_no_follow_nor_decision_model():
     """D7 reads the served clip settings itself: no topics and no decision model still clip each key event."""
-    data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(), actions_path=chelsea_united.ACTIONS,
-                   keys=chelsea_united.key_rows(), trends=trends_at, spells=spells_at)
+    data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
+                   keys=riverton_forgeham.key_rows(), trends=trends_at, spells=spells_at)
     store = MemoryStore()
     sink = MemorySink(store)
     engine = MatchOrchestrator(MATCH, data, FakeAgents(), store, sink, targets=StaticTargets(default_targets()[:3]),
                                follows=StaticTopics(), decisions=None)
 
     async def go():
-        for body, seq in chelsea_united.timeline():
+        for body, seq in riverton_forgeham.timeline():
             data.limit = seq
             await engine.record(parse_notification(body))
             await engine.work()
     asyncio.run(go())
-    clipped = {str(k["id"]) for k in chelsea_united.key_rows() if k["keyType"] in CONFIG["clips"]["key_types"]}
+    clipped = {str(k["id"]) for k in riverton_forgeham.key_rows() if k["keyType"] in CONFIG["clips"]["key_types"]}
     assert {str(c["eventId"]) for c in sink.clips if c["type"] == "MomentClip"} == clipped
     assert not [c for c in sink.clips if c["type"] == "FollowClip"]
 
@@ -405,9 +425,9 @@ def test_a_backend_before_migration_041_serves_follows_with_both_clip_switches_o
 def test_a_clip_moment_is_asked_inside_the_gap_even_when_not_pivotal():
     config = {**CONFIG, "limits": {**CONFIG["limits"], "pivotal_key_types": []}}
     decisions = run(config=config)["decisions"]
-    chelsea = {f"key:{k['id']}" for k in chelsea_united.key_rows() if k["contestantId"] == "chelsea"
+    riverton = {f"key:{k['id']}" for k in riverton_forgeham.key_rows() if k["contestantId"] == "riverton"
                and k["keyType"] in CONFIG["clips"]["key_types"]}
-    assert chelsea and all("topic:00000000000000c1" in d["candidates"] for d in decisions if d["ref"] in chelsea)
+    assert riverton and all("topic:00000000000000c1" in d["candidates"] for d in decisions if d["ref"] in riverton)
 
 
 def test_the_decision_state_and_the_follow_author_get_the_authors_inputs(runs):
@@ -450,8 +470,8 @@ _calls = {}
 def run_with_calls():
     """The live run's agent calls (a separate small run up to half time, recorded once)."""
     if "calls" not in _calls:
-        data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(),
-                       actions_path=chelsea_united.ACTIONS, keys=chelsea_united.key_rows(), trends=trends_at,
+        data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(),
+                       actions_path=riverton_forgeham.ACTIONS, keys=riverton_forgeham.key_rows(), trends=trends_at,
                        spells=spells_at)
         agents, store = FakeAgents(), MemoryStore()
         engine = MatchOrchestrator(MATCH, data, agents, store, MemorySink(store),
@@ -459,7 +479,7 @@ def run_with_calls():
                                    decisions=FakeDecisions(rule=rule))
 
         async def go():
-            for body, seq in chelsea_united.timeline()[:55]:
+            for body, seq in riverton_forgeham.timeline()[:55]:
                 data.limit = seq
                 await engine.handle(parse_notification(body))
         asyncio.run(go())
@@ -491,7 +511,7 @@ def test_a_new_follower_bucket_gets_the_story_so_far_once():
     assert [(n.topicId, n.userType, n.seq) for n in starts] == [("topic:00000000000000c1", "home:experienced", 1)]
     assert starts[0].decision is None and starts[0].stepId.endswith(":catchUp:home:experienced")
     assert starts[0].trigger.reason == CONFIG["catch_up"]["reason"]  # the served tunable, not a code literal
-    body = chelsea_united.timeline()[at - 1][0]
+    body = riverton_forgeham.timeline()[at - 1][0]
     assert (starts[0].matchTime.periodId, starts[0].matchTime.timeMin) <= (body["periodId"], body["timeMin"] + 1)
 
 
@@ -512,7 +532,7 @@ def test_a_story_so_far_dropped_as_ungrounded_is_tried_again_at_a_later_horizon(
     result = run(change=(40, joined), decide=decide)
     starts = [n for n in result["follows"] if n.trigger.type == "catchUp"]
     assert failed and [(n.topicId, n.userType) for n in starts] == [("topic:00000000000000c1", "home:experienced")]
-    body = chelsea_united.timeline()[39][0]
+    body = riverton_forgeham.timeline()[39][0]
     assert (starts[0].matchTime.periodId, starts[0].matchTime.timeMin) > (body["periodId"], body["timeMin"])
 
 
@@ -534,14 +554,14 @@ def test_graphql_pages_one_topics_narratives_for_one_bucket(runs):
 
 
 def test_a_purge_removes_the_follow_documents_and_a_restart_does_not_bring_them_back():
-    data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(), actions_path=chelsea_united.ACTIONS,
-                   keys=chelsea_united.key_rows(), trends=trends_at, spells=spells_at)
+    data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
+                   keys=riverton_forgeham.key_rows(), trends=trends_at, spells=spells_at)
     store = MemoryStore()
 
     def router():
         return Router(data, FakeAgents(), store, MemorySink(store), targets=StaticTargets(default_targets()[:3]),
                       follows=StaticTopics(follow_topics()), decisions=FakeDecisions(rule=rule))
-    timeline = chelsea_united.timeline()
+    timeline = riverton_forgeham.timeline()
 
     async def go():
         first = router()
@@ -576,8 +596,8 @@ class FlakyDecisions(FakeDecisions):
 
 def test_a_decision_outage_retries_the_checks_without_redoing_the_writing():
     def go(model):
-        data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(),
-                       actions_path=chelsea_united.ACTIONS, keys=chelsea_united.key_rows(), trends=trends_at,
+        data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(),
+                       actions_path=riverton_forgeham.ACTIONS, keys=riverton_forgeham.key_rows(), trends=trends_at,
                        spells=spells_at)
         agents, store = FakeAgents(), MemoryStore()
         engine = MatchOrchestrator(MATCH, data, agents, store, MemorySink(store),
@@ -585,7 +605,7 @@ def test_a_decision_outage_retries_the_checks_without_redoing_the_writing():
                                    decisions=model)
 
         async def run_all():
-            for body, seq in chelsea_united.timeline()[:55]:
+            for body, seq in riverton_forgeham.timeline()[:55]:
                 data.limit = seq
                 await engine.record(parse_notification(body))
                 while True:

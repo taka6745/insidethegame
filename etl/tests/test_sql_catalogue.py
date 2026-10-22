@@ -100,20 +100,20 @@ def test_stats_at_seq_equals_project_and_reference(connect):
     final_stats = stats(connect, match_id, final)
     assert len(final_stats) == 126 and final_stats == golden()["final"]
     by_id = {s["statId"]: s["value"] for s in final_stats}
-    assert (by_id["chelsea:shots"], by_id["chelsea:shots_on_target"], by_id["chelsea:saves"], by_id["manutd:saves"],
-            by_id["chelsea:passes"], by_id["manutd:passes"]) == (9, 3, 1, 3, 941, 462)
-    assert (by_id["chelsea:shots_saved"], by_id["manutd:shots_saved"]) == (1, 2)
-    assert (round(by_id["chelsea:possession"]), round(by_id["manutd:possession"])) == (64, 36)
+    assert (by_id["riverton:shots"], by_id["riverton:shots_on_target"], by_id["riverton:saves"], by_id["forgeham:saves"],
+            by_id["riverton:passes"], by_id["forgeham:passes"]) == (9, 3, 1, 3, 941, 462)
+    assert (by_id["riverton:shots_saved"], by_id["forgeham:shots_saved"]) == (1, 2)
+    assert (round(by_id["riverton:possession"]), round(by_id["forgeham:possession"])) == (64, 36)
     for seq in [0, 1, *range(611, final, 1100)]:  # 10 intermediate seqs plus the edges.
         assert stats(connect, match_id, seq) == expected(stream, seq, final), seq
         # Watermark-bounded reads: a snapshot sees exactly the actions final at its seq.
         assert actions(connect, match_id, seq) == [a for a in whole(stream) if a["finalSeq"] <= seq], seq
     assert stats(connect, match_id, final + 1) == []
 
-    # VAR (no recording has one): United's goal (seq 1157) overturned, a United own goal (credited to Chelsea;
-    # after Chelsea's goal at 8710) overturned, another goal confirmed.
-    var = [var_row(match_id, 1, 2000, "manutd"), var_row(match_id, 2, 9000, "manutd", own_goal=True),
-           var_row(match_id, 3, 10000, "chelsea", outcome="goal-confirmed")]
+    # VAR (no recording has one): United's goal (seq 1157) overturned, a United own goal (credited to Riverton Rovers;
+    # after Riverton Rovers' goal at 8710) overturned, another goal confirmed.
+    var = [var_row(match_id, 1, 2000, "forgeham"), var_row(match_id, 2, 9000, "forgeham", own_goal=True),
+           var_row(match_id, 3, 10000, "riverton", outcome="goal-confirmed")]
     for r in var:
         query(connect, f"INSERT dbo.rawEvents ({', '.join(r)}) VALUES ({', '.join(['%s'] * len(r))})", *r.values())
     rows = outputs(stream, live=True)
@@ -121,7 +121,7 @@ def test_stats_at_seq_equals_project_and_reference(connect):
     for seq in (1999, 2000, 8999, 9000, final):
         assert stats(connect, match_id, seq) == reference(seq, rows, final), seq
     goals = lambda seq: tuple({s["statId"]: s["value"] for s in stats(connect, match_id, seq)}[f"{t}:goals"]
-                              for t in ("chelsea", "manutd", "all"))
+                              for t in ("riverton", "forgeham", "all"))
     assert (goals(1999), goals(2000), goals(8999), goals(final)) == ((0, 1, 1), (0, 0, 0), (1, 0, 1), (0, 0, 0))
 
 

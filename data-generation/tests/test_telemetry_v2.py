@@ -65,7 +65,7 @@ class TelemetryV2Tests(unittest.TestCase):
                 self.feed(touch(300, [0, 2], 2, ball_position_m=[3, 4, 0]))
                 passes = self.events("pass")
                 self.assertEqual(len(passes), 1)
-                self.assertEqual(passes[0]["playerId"], "chelsea-1")
+                self.assertEqual(passes[0]["playerId"], "riverton-1")
                 self.assertEqual(passes[0]["outcome"], "success")
                 self.assertEqual(qualifiers(passes[0])["bodyPart"], "head")
                 self.assertEqual(qualifiers(passes[0])["distanceMetres"], 5)
@@ -92,7 +92,7 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(300, [0, 2], 9, touch_type=2, touch_body_part="right_foot"))
         self.feed(frame(500, score=[1, 0], last_touch=[0, 2]))
         goal = self.events("goal")[0]
-        self.assertEqual(goal["playerId"], "chelsea-2")
+        self.assertEqual(goal["playerId"], "riverton-2")
         self.assertNotIn("bodyPart", qualifiers(goal))
         self.assertIn("situation", qualifiers(goal))
         self.assertEqual(self.events("shot"), [])
@@ -103,7 +103,7 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(300, [0, 2], 2, touch_type=1, touch_body_part="head"))
         self.feed(frame(500, score=[1, 0], last_touch=[0, 2]))
         goal = self.events("goal")[0]
-        self.assertEqual(goal["playerId"], "chelsea-2")
+        self.assertEqual(goal["playerId"], "riverton-2")
         self.assertEqual(qualifiers(goal)["bodyPart"], "head")
         self.assertNotIn("situation", qualifiers(goal))
         self.assertEqual([e["outcome"] for e in self.events("shot")], ["off_target"])
@@ -152,7 +152,7 @@ class TelemetryV2Tests(unittest.TestCase):
                 self.feed(touch(110, **common))  # repeated native callback
                 self.feed(touch(500, function=2, **common))  # later touch, same restart
                 self.assertEqual(len(self.events(kind)), 1)
-                self.assertEqual(self.events(kind)[0]["playerId"], "chelsea-1")
+                self.assertEqual(self.events(kind)[0]["playerId"], "riverton-1")
 
     def test_restart_requires_active_buffer_set_piece_and_correct_team(self):
         for change in ({"restart_active": False}, {"set_piece": False}, {"restart_team": 1}):
@@ -188,8 +188,8 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(310, [1, 12], 4))
         kickoffs = self.events("kick_off")
         self.assertEqual(len(kickoffs), 1)
-        self.assertEqual(kickoffs[0]["teamId"], "manutd")
-        self.assertEqual(kickoffs[0]["playerId"], "manutd-1")
+        self.assertEqual(kickoffs[0]["teamId"], "forgeham")
+        self.assertEqual(kickoffs[0]["playerId"], "forgeham-1")
         self.feed(touch(700, [1, 13], 2))
         self.assertEqual(qualifiers(self.events("pass")[0])["restart"], "kick_off")
 
@@ -201,7 +201,7 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(touch(100))
         self.feed(touch(110))
         self.assertEqual(len(self.events("kick_off")), 1)
-        self.assertEqual(self.events("kick_off")[0]["playerId"], "chelsea-1")
+        self.assertEqual(self.events("kick_off")[0]["playerId"], "riverton-1")
         self.feed(frame(500, initial_kickoff_team=0))
         self.feed(touch(600))
         self.assertEqual(len(self.events("kick_off")), 1)
@@ -220,7 +220,7 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(frame(120, ball_retainer=[1, 11]))
         self.feed(frame(130, ball_retainer=[1, 11]))
         self.assertEqual(len(self.events("keeper_pickup")), 1)
-        self.assertEqual(self.events("keeper_pickup")[0]["playerId"], "manutd-0")
+        self.assertEqual(self.events("keeper_pickup")[0]["playerId"], "forgeham-0")
         self.feed(frame(200, ball_retainer=None))
         self.feed(frame(300, ball_retainer=[1, 11]))
         self.assertEqual(len(self.events("keeper_pickup")), 2)
@@ -241,8 +241,8 @@ class TelemetryV2Tests(unittest.TestCase):
         self.feed(row)
         self.feed(row)
         self.assertEqual(len(self.events("foul")), 1)
-        self.assertEqual(self.events("foul")[0]["playerId"], "chelsea-1")
-        self.assertEqual(self.events("foul_won")[0]["playerId"], "manutd-1")
+        self.assertEqual(self.events("foul")[0]["playerId"], "riverton-1")
+        self.assertEqual(self.events("foul_won")[0]["playerId"], "forgeham-1")
         self.assertEqual(qualifiers(self.events("foul_won")[0])["relatedEventId"],
                          self.events("foul")[0]["eventId"])
         self.assertEqual(self.events("offside"), [])

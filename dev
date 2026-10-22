@@ -62,7 +62,7 @@ usage() {
                          (viewer http://localhost:18020, lab /lab/, developer /dev/; ETL GraphQL :15001)
 ./dev test [azure|backend] Test dependencies, or backend tests + non-destructive pipeline probes
 ./dev demo start [fixture…] Purge every match everywhere, then start one feed run per fixture
-                         (default chelsea-united) at the next whole minute, from 00:00
+                         (default riverton-forgeham) at the next whole minute, from 00:00
 ./dev demo purge         Purge every match from feed, ETL, engine and backend; keep configuration
 ./dev benchmark filters  Opt-in filter performance test (no models or network)
 ./dev benchmark agents   Opt-in 100 gold cases + 12 negative prompts against local model
@@ -130,7 +130,7 @@ case "${1:-help}" in
       agents) module=benchmarks.correctness; extra=(--agents --output /results/agents) ;;
       values) module=benchmarks.value_reads; extra=(--output /results/performance/value-reads.json) ;;
       replay) module=benchmarks.replay_eval
-              extra=(--agent local --recording /data-generation/recordings/chelsea-united-grf.json
+              extra=(--agent local --recording /data-generation/recordings/riverton-forgeham-grf.json
                      --narratives /narrative-engine/fixtures/grf-narratives.json --output /results/replay/report.json) ;;
       *) echo "Choose filters, agents, values or replay." >&2; exit 2 ;;
     esac

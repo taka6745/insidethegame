@@ -57,7 +57,7 @@ Add `backend/adapters/question_data.py` protocols (`MatchDataClient`, `Narrative
 
 ### 2. Fake neutral recap archive
 
-Add `backend/fake_question_data.py` / `backend/fake_recaps.py` (or a small `backend/fake_services/` package) for the fake-service implementation, wired into `fakes.py`. Reuse canonical event models, not the legacy hardcoded CHE/MUN normaliser.
+Add `backend/fake_question_data.py` / `backend/fake_recaps.py` (or a small `backend/fake_services/` package) for the fake-service implementation, wired into `fakes.py`. Reuse canonical event models, not the legacy hardcoded RVR/FGU normaliser.
 
 Build deterministic neutral recap fixtures from only the captured prefix. Apply the original board's schedule: at 11 minute blocks compress oldest five; at four five-minute blocks merge oldest two with earlier-match block. Archive children and supersession metadata. The active view is one earlier block, up to three five-minute blocks and six–ten minute blocks after warm-up. It must cover completed time in order without overlap; raw tail covers the remainder. Empty observed minutes can be explicit “no recorded events” summaries, never invented possession or pressure. Use exact ledger events for goals/cards/corrections. Before kickoff, return empty context and unavailable clock where appropriate; never invent a recap. Fake standard-stat semantics must follow the active feed reference, including whether goals count as shots and how revisions replace/delete prior events. Prewritten/deterministic fake recaps are not an implemented narrative LLM.
 

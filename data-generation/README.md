@@ -4,7 +4,7 @@
 
 ![Recordings and media go into the feed, which publishes to Event Hubs and serves played HLS](architecture.svg)
 
-**Implemented and tested; runs in the local stack; Azure applied 22 Oct for the Azure test (acceptance pending).** Renders synthetic real-club matches with Google Research Football and replays them through the [feed](docs/components/feed.md), a simulated external provider, as live matches: several at once, each with its own `matchId`. The feed also runs the judge demo: **Start demo** kicks off exactly three fixtures (main game Arsenal–Liverpool first), from kick-off or from a recorded seed ([feed §2a](docs/components/feed.md#2a-demo-and-seeds)).
+**Implemented and tested; runs in the local stack; Azure applied 22 Oct for the Azure test (acceptance pending).** Renders synthetic real-club matches with Google Research Football and replays them through the [feed](docs/components/feed.md), a simulated external provider, as live matches: several at once, each with its own `matchId`. The feed also runs the judge demo: **Start demo** kicks off exactly three fixtures (main game Redcastle Town–Port Albion first), from kick-off or from a recorded seed ([feed §2a](docs/components/feed.md#2a-demo-and-seeds)).
 
 | Part | Role |
 | --- | --- |

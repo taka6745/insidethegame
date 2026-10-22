@@ -31,7 +31,18 @@ PURGE_TIMEOUT = _number('DEMO_PURGE_TIMEOUT', 300.0)  # Seconds; a purge waits f
 PURGE_RETRIES = _number('DEMO_PURGE_RETRIES', 10)  # 503 means retry; purge is idempotent.
 PURGE_RETRY_SECONDS = _number('DEMO_PURGE_RETRY_SECONDS', 2.0)
 CHECK_TIMEOUT = 3  # Seconds per readiness probe.
+# /status fans out to every owner; callers within this many seconds (or while a check runs) share one answer, so
+# its public per-client limit (nginx) never multiplies into probe load on the owners.
+STATUS_CACHE_SECONDS = _number('DEMO_STATUS_CACHE_SECONDS', 1.0)
 WAKE_TIMEOUT = 60  # Seconds a wake-up call waits for an app scaled to zero.
+# While a demo is live, every app it needs is pinged this often so none scales to zero mid-match (Container Apps
+# scale down after a 300 s quiet cooldown); with no demo the pings stop and the apps idle back to zero.
+KEEP_WARM_SECONDS = _number('DEMO_KEEP_WARM_SECONDS', 60.0)
+# The sweep purges a finished run only once no demo is live and the run has been finished this long, so the engine's
+# late full-time steps land and viewers keep the match at full time; a start purges any leftovers itself.
+SWEEP_GRACE_SECONDS = _number('DEMO_SWEEP_GRACE_SECONDS', 900.0)
+# Extra URLs to keep warm beyond the owners' health checks (comma-separated), e.g. the ETL data API and this app.
+KEEP_WARM_URLS = [u for u in os.environ.get('DEMO_KEEP_WARM_URLS', '').split(',') if u.strip()]
 SEED_ROOT = Path(os.environ.get('DEMO_SEED_ROOT', '/seeds'))  # seeds/{seed_id}/: manifest + one file per owner
 SEED_OWNERS = ('etl', 'engine', 'backend')  # restore_runs: the ETL alongside the backend, then the engine
 RELEASE_LEAD = _number('DEMO_RELEASE_LEAD', 5.0)  # Seconds from the last restore to the first run reading the point.
@@ -177,10 +188,11 @@ def main_first(runs, main):
     return sorted(runs, key=lambda run: run['fixture'] != main)  # stable: the rest keep their order
 
 
-def restore_runs(http, seed_id, runs, stagger, log=print):
+def restore_runs(http, seed_id, runs, stagger, log=print, before_release=lambda: None):
     """Restore every owner for each run waiting on the seed, then release the runs, staggered in the order given
-    (the main game first: it stays furthest along). A failure purges the runs everywhere; SeedStale when the
-    seed no longer fits (record it again)."""
+    (the main game first: it stays furthest along). `before_release` runs between the two (the previous demo's
+    purge, overlapped with the restore). A failure purges the runs everywhere; SeedStale when the seed no longer
+    fits (record it again)."""
     try:
         manifest = seed_manifest(seed_id, [run['fixture'] for run in runs])
         schemas = manifest['schemas']
@@ -211,6 +223,7 @@ def restore_runs(http, seed_id, runs, stagger, log=print):
         with ThreadPoolExecutor(max_workers=len(runs) or 1) as pool:
             for future in [pool.submit(restore_one, run) for run in runs]:
                 future.result()
+        before_release()
         return [http.post(FEED + f"/runs/{run['match_id']}/release",
                           json={'after_seconds': RELEASE_LEAD + i * stagger}).raise_for_status().json()
                 for i, run in enumerate(runs)]
@@ -240,17 +253,34 @@ def record(http, point, from_point=None, log=print):
     log(f"Recording {point}: {', '.join(r['match_id'] for r in runs)}")
 
 
+def purge_owner(http, owner, target, log=print):
+    name, url, token = owner
+    headers = {'Authorization': f'Bearer {token}'} if token else {}
+    for _ in range(PURGE_RETRIES):
+        response = http.post(url, json=target, headers=headers)
+        if response.status_code != 503:
+            break
+        time.sleep(PURGE_RETRY_SECONDS)
+    response.raise_for_status()
+    body = response.json()
+    log(f"Purged {name}: {len(body['match_ids'])} matches {body['purged']}")
+
+
 def purge(http, target, owners=OWNERS, log=print):
-    for name, url, token in owners:
-        headers = {'Authorization': f'Bearer {token}'} if token else {}
-        for _ in range(PURGE_RETRIES):
-            response = http.post(url, json=target, headers=headers)
-            if response.status_code != 503:
-                break
-            time.sleep(PURGE_RETRY_SECONDS)
-        response.raise_for_status()
-        body = response.json()
-        log(f"Purged {name}: {len(body['match_ids'])} matches {body['purged']}")
+    for owner in owners:  # in order: the feed first, so nothing new reaches the others mid-purge
+        purge_owner(http, owner, target, log)
+
+
+def purge_matches(http, match_ids, owners, log=print):
+    """Each match from each owner, all at once (they are independent); every pair is tried, the first error raised."""
+    pairs = [(owner, match_id) for match_id in match_ids for owner in owners]
+    if not pairs:
+        return
+    with ThreadPoolExecutor(max_workers=len(pairs)) as pool:
+        futures = [pool.submit(purge_owner, http, owner, {'match_id': match_id}, log) for owner, match_id in pairs]
+    errors = [f.exception() for f in futures if f.exception()]
+    if errors:
+        raise errors[0]
 
 
 def start(http, fixtures):
@@ -264,7 +294,7 @@ def start(http, fixtures):
         print(f"Started {run['match_id']} (kickoff {run['kickoff']})", flush=True)
 
 
-def app(http=None):
+def app(http=None, clock=time.monotonic):
     """The public demo API. Every action is idempotent, and the feed caps concurrent runs, so repeated
     clicks from several viewers start one demo."""
     from fastapi import FastAPI, HTTPException
@@ -274,6 +304,10 @@ def app(http=None):
         model_config = ConfigDict(extra='forbid')
         point: str = Field(default='kickoff', max_length=20)
 
+    class Skip(BaseModel):
+        model_config = ConfigDict(extra='forbid')
+        target: str = Field(max_length=20)
+
     from fastapi.responses import JSONResponse
 
     api, http = FastAPI(title='Demo control'), http or httpx.Client(timeout=PURGE_TIMEOUT)
@@ -282,6 +316,12 @@ def app(http=None):
     # how the last one ended, so no request waits on a purge or a seed restore (minutes under load).
     jobs, book = ThreadPoolExecutor(max_workers=1), threading.Lock()
     work = {'pending': [], 'last': None}
+    # Finished runs already purged from the other owners (the feed keeps listing them until the next start purges
+    # its own), so a start does not purge them again. Purging is a few slow calls per run; done here between demos.
+    swept, background = set(), ThreadPoolExecutor(max_workers=2)
+    # Start's cleanup has its own worker, so cold keep-warm wakes on `background` cannot delay the release it gates.
+    cleaner = ThreadPoolExecutor(max_workers=1)
+    finished_at = {}  # match_id -> clock() when the sweep first saw it finished (the feed lists no finish time)
 
     def submit(action, run):
         def job():
@@ -324,7 +364,7 @@ def app(http=None):
 
     @api.get('/state')
     def state():
-        settings, (active, _, _) = feed('GET', '/demo'), split()
+        settings, (active, _, recording) = feed('GET', '/demo'), split()
         points = [{'id': p['id'], 'label': p['label'],
                    'ready': p['minute'] == 0 and p['period'] == 1 or seed_ready(p['seed'], settings['fixtures'])}
                   for p in settings['start_points']]
@@ -336,6 +376,11 @@ def app(http=None):
         main_run = next((r for r in active if r['fixture'] == main), None)
         return {'points': points, 'live': bool(active), 'runs': active, 'live_from': live_from,
                 'main_fixture': main, 'main_match_id': main_run and main_run['match_id'],
+                # Seed-recording runs stop at their hold point: viewers must not open them (they would freeze there).
+                'recording': [{'match_id': r['match_id']} for r in recording],
+                # Skip ahead (demo fast-forward): offered while a demo plays.
+                'skips': [{'id': t['id'], 'label': t['label']} for t in settings.get('skip_targets') or []]
+                if active else [],
                 'pending': list(work['pending']), 'last': work['last']}
 
     def refuse_start(point):
@@ -347,14 +392,18 @@ def app(http=None):
         if chosen and chosen.get('seed'):  # refuse a seed that cannot fit before any run exists
             try:
                 seed_manifest(chosen['seed'], settings['fixtures'])
-            except SeedStale as exc:
-                raise HTTPException(409, f"The {chosen['label']} start needs recording again ({exc}).") from exc
+            except SeedStale as exc:  # the reason goes to the log; viewers get a plain sentence
+                print(f"Seed {chosen['id']} refused: {exc}", flush=True)
+                raise HTTPException(409, f"The {chosen['label']} start isn't available right now. "
+                                         'Pick another start point.') from exc
 
     @api.post('/start')
     def start_demo(body: Start | None = None):
         point = (body or Start()).point
         for name, (url, token) in checks.items():  # wake every owner now, in parallel, before the purge needs them
             pool.submit(ok, url, token, WAKE_TIMEOUT)
+        for url in KEEP_WARM_URLS:  # and every other app the demo needs (the ETL data API, ...)
+            background.submit(ok, url.strip(), None, WAKE_TIMEOUT)
         if not work['pending']:
             active = split()[0]
             if active:
@@ -370,20 +419,35 @@ def app(http=None):
                 return {'started': False, 'runs': active}
             refuse_start(point)
             settings = feed('GET', '/demo')
-            for run in finished:  # The feed purges its own finished runs when it starts the demo.
-                purge(http, {'match_id': run['match_id']}, OWNERS[1:], log=lambda _: None)
+            # The previous demo's finished runs: usually swept already (see sweep). The rest go from the other owners
+            # alongside the new runs' creation and restore (their matches are independent); the feed purges its own
+            # finished runs when it starts the demo. Joined before the new runs are released, so viewers only ever
+            # list the new three.
+            stale = [r['match_id'] for r in finished if r['match_id'] not in swept]
+            cleanup = cleaner.submit(purge_matches, http, stale, OWNERS[1:], lambda _: None)
+
+            def cleaned():
+                try:
+                    cleanup.result()
+                    swept.update(stale)
+                except Exception as exc:  # noqa: BLE001 - the sweep retries; the new demo is not held up
+                    print(f'Purging the previous demo failed: {type(exc).__name__}: {exc}', flush=True)
             result = feed('POST', '/demo/start', json={'point': point})
             print(f'Start {point}: runs created in {time.monotonic() - began:.1f}s', flush=True)
             seed = result['started'] and result['point'].get('seed')
+            if not seed:
+                cleaned()
             if seed:  # The runs wait for every owner to restore the seed, then start at the point.
                 main = result.get('main_fixture') or settings.get('main_fixture')
                 try:
                     result['runs'] = restore_runs(http, seed, main_first(result['runs'], main),
-                                                  settings['stagger_seconds'], log=lambda line: print(line, flush=True))
+                                                  settings['stagger_seconds'], log=lambda line: print(line, flush=True),
+                                                  before_release=cleaned)
                 except Exception as exc:  # restore_runs purged the runs: none waits on a seed that will not come
+                    print(f'Seed restore for {point} failed: {type(exc).__name__}: {exc}', flush=True)
                     if isinstance(exc, SeedStale):
-                        raise HTTPException(409, f"The {result['point']['label']} start needs recording again "
-                                                 f'({exc}).') from exc
+                        raise HTTPException(409, f"The {result['point']['label']} start isn't available right now. "
+                                                 'Pick another start point.') from exc
                     raise HTTPException(503, f'Could not restore the {point} seed; try again.') from exc
                 result['live_from'] = result['point']['label']
             print(f'Start {point}: ready in {time.monotonic() - began:.1f}s', flush=True)
@@ -408,9 +472,80 @@ def app(http=None):
         futures = {name: pool.submit(ok, url, token) for name, (url, token) in checks.items()}
         return {name: future.result() for name, future in futures.items()}
 
+    def keep_warm_once():
+        """One round: while a demo is live, touch every app it needs. Returns whether a demo was live."""
+        try:
+            live = bool(split()[0])
+        except (HTTPException, httpx.HTTPError, ValueError):
+            return False
+        if live:
+            health_all()
+            for url in KEEP_WARM_URLS:
+                ok(url.strip(), timeout=WAKE_TIMEOUT)
+        return live
+
+    def sweep_once():
+        """Purge finished runs from the other owners between demos, so the next start need not. Only once no demo
+        is live (its finished staggered runs stay watchable) and each run has been finished SWEEP_GRACE_SECONDS.
+        The targets are chosen under `serial` but purged outside it, so a start, cancel or skip never waits on a
+        sweep's purge (a start purges any match the sweep has not finished itself). Returns the matches purged."""
+        if work['pending'] or not serial.acquire(blocking=False):
+            return []
+        try:
+            runs = feed('GET', '/runs')
+            listed = {r['match_id'] for r in runs}
+            swept.intersection_update(listed)  # forget matches the feed no longer lists
+            now = clock()
+            for match_id in list(finished_at):
+                if match_id not in listed:
+                    del finished_at[match_id]
+            for r in runs:
+                if r['status'] == 'finished':
+                    finished_at.setdefault(r['match_id'], now)
+            if any(r['status'] != 'finished' for r in runs):  # a demo (or a recording) is on: keep its matches
+                return []
+            stale = [r['match_id'] for r in runs if r['status'] == 'finished' and r['match_id'] not in swept
+                     and now - finished_at[r['match_id']] >= SWEEP_GRACE_SECONDS]
+        except (HTTPException, httpx.HTTPError, ValueError) as exc:
+            print(f'Sweep failed: {type(exc).__name__}', flush=True)
+            return []
+        finally:
+            serial.release()
+        if not stale or work['pending']:
+            return []
+        try:
+            purge_matches(http, stale, OWNERS[1:], lambda _: None)
+        except Exception as exc:  # noqa: BLE001 - the next round or the next start retries
+            print(f'Sweep failed: {type(exc).__name__}', flush=True)
+            return []
+        swept.update(stale)
+        return stale
+
+    def keep_warm():
+        while True:
+            keep_warm_once()
+            sweep_once()
+            time.sleep(KEEP_WARM_SECONDS)
+
+    api.state.sweep_once = sweep_once  # one round, for tests
+    api.state.keep_warm_once = keep_warm_once  # one round, for tests
+    api.state.keep_warm = keep_warm  # the loop; `serve` runs it in a thread
+
+    checked, checking = {'at': 0.0, 'body': None}, threading.Lock()
+
     @api.get('/status')
     def status():
         """Each pipeline stage from a real check, in flow order. Calling it also wakes apps scaled to zero."""
+        def current():
+            return checked['body'] is not None and time.monotonic() - checked['at'] < STATUS_CACHE_SECONDS
+        if checked['body'] is not None and (current() or checking.locked()):
+            return checked['body']  # fresh, or a check is already running: share it rather than queue behind it
+        with checking:
+            if not current():
+                checked['body'], checked['at'] = check_status(), time.monotonic()
+            return checked['body']
+
+    def check_status():
         ready = health_all()
         feed_ok, etl, engine, backend = ready['feed'], ready['etl'], ready['engine'], ready['backend']
         active = split()[0] if feed_ok else []
@@ -429,6 +564,17 @@ def app(http=None):
         return {'live': bool(active), 'matches': len(active),
                 'stages': [{'id': name, 'ready': ready} for name, ready in stages]}
 
+    @api.post('/skip')
+    def skip(body: Skip):
+        """Move the live demo on (the feed sends what became due at once; video jumps; no new matchIds, so
+        follows and sessions carry on). Quick, so it answers directly; never while a start or cancel runs."""
+        if work['pending']:
+            raise HTTPException(409, 'The demo is starting or stopping; try again in a moment.')
+        with serial:
+            result = feed('POST', '/demo/skip', json={'target': body.target})
+        print(f"Skip {body.target}: {result['skipped_seconds']} s", flush=True)
+        return result
+
     @api.post('/cancel')
     def cancel():
         """Everything the feed lists (finished staggered runs too) goes from every owner, feed first."""
@@ -439,8 +585,13 @@ def app(http=None):
     def run_cancel():
         with serial:
             runs = feed('GET', '/runs')
-            if runs:
-                purge(http, {'all': True}, log=lambda _: None)
+            if runs:  # the feed first (nothing new reaches the others), then the others at once
+                purge_owner(http, OWNERS[0], {'all': True}, lambda _: None)
+                with ThreadPoolExecutor(max_workers=len(OWNERS) - 1) as others:
+                    for future in [others.submit(purge_owner, http, o, {'all': True}, lambda _: None)
+                                   for o in OWNERS[1:]]:
+                        future.result()
+                swept.clear()  # the feed no longer lists them either
             return {'cancelled': [r['match_id'] for r in runs]}
 
     return api
@@ -456,13 +607,16 @@ if __name__ == '__main__':
     capturer = sub.add_parser('capture', help='Seed recording: wait for the held runs to settle, then save the seed')
     capturer.add_argument('point')
     starter = sub.add_parser('start', help='Purge, then start one run per fixture at the next whole minute')
-    starter.add_argument('fixtures', nargs='*', default=['chelsea-united'])
+    starter.add_argument('fixtures', nargs='*', default=['riverton-forgeham'])
     server = sub.add_parser('serve', help='Serve the public demo API')
     server.add_argument('--port', type=int, default=8000)
     args = parser.parse_args()
     if args.action == 'serve':
         import uvicorn
-        uvicorn.run(app(), host='0.0.0.0', port=args.port)
+        served = app()
+        if KEEP_WARM_SECONDS > 0:
+            threading.Thread(target=served.state.keep_warm, name='keep-warm', daemon=True).start()
+        uvicorn.run(served, host='0.0.0.0', port=args.port)
     else:
         with httpx.Client(timeout=PURGE_TIMEOUT) as client:
             if args.action == 'purge':

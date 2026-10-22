@@ -61,7 +61,7 @@ The engine reads the backend's `generation_targets` (for example `home:analytica
 | Targets and prompts from the user backend | Implemented, tested (mocked HTTP); runs in the local stack as `narrative-live` |
 | Concurrent matches: one orchestrator per matchId, a global model gate (summaries first, per-match fairness), purge with Cosmos tombstones (`POST /admin/matches/purge`), `tier` on context blocks, `eventSeq` on narratives | Implemented, tested (router, gate, memory store) |
 | Local stack (`./dev up backend`): ETL `etl-stream` stand-in → SQL + DAB → `narrative-live` → backend → viewer | Implemented, run on live replays; not deployed |
-| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Chelsea–United recording); live smoke with the dev Decision-1 deployment, then on the shared stack (22 Oct) |
+| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Riverton Rovers–United recording); live smoke with the dev Decision-1 deployment, then on the shared stack (22 Oct) |
 | Moment clips: `FollowClip` (D3), clip-on topics (D6), `MomentClip` for shared key-event narratives (D7) | Implemented, unit-tested, checked on the local stack (22 Oct); not yet on Azure |
 | Demo seeds: export/restore under `DEMO_SEEDS=1` (D2) | Implemented, unit-tested (export → purge-all → restore → continue), used for every local seed (22 Oct); not yet on Azure |
 | Real-time (1x) three-match run | Local stack to half time and beyond (R16–R17, 22 Oct); Azure run is part of the demo acceptance (planned) |

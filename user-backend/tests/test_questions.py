@@ -185,7 +185,7 @@ def test_each_match_is_its_own_identity_with_no_other_match_leak(store):
         async def answer(self, prompt, context, tools):
             assert context['snapshot']['match_id'] == 'north-stars-0000aaaa'
             assert context['teams'][0]['name'] == 'North Stars'
-            assert all('chelsea' not in json.dumps(s).lower() for s in context['standard_stats'])
+            assert all('riverton' not in json.dumps(s).lower() for s in context['standard_stats'])
             return QuestionDraft(answer_kind='match', status='answer', text='North Stars are playing.')
     with Running(store, agent=Inspect(), upstream=upstream, matches=('north-stars-0000aaaa', MATCH)) as run:
         run.send(5, 'north-stars-0000aaaa')

@@ -13,8 +13,8 @@ test('clock reads the displayed match time, else the minute', () => {
 });
 
 test('team labels accept names and normalized objects', () => {
-  assert.deepEqual(teamNames({ home: 'Chelsea', away: 'United' }), ['Chelsea', 'United']);
-  assert.deepEqual(teamNames([{ id: 'CHE', name: 'Chelsea' }, { id: 'MUN', name: 'United' }]), ['Chelsea', 'United']);
+  assert.deepEqual(teamNames({ home: 'Riverton Rovers', away: 'United' }), ['Riverton Rovers', 'United']);
+  assert.deepEqual(teamNames([{ id: 'RVR', name: 'Riverton Rovers' }, { id: 'FGU', name: 'United' }]), ['Riverton Rovers', 'United']);
 });
 
 test('late corrections do not rewind the displayed match clock', () => {

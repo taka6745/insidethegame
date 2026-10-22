@@ -16,12 +16,12 @@ STORYLINE = {'id': f'sl:{MATCH}:1', 'label': 'Madrid control the midfield', 'tea
              'keyEventIds': [], 'openedAt': {'periodId': 1, 'timeMin': 4},
              'updatedAt': {'periodId': 1, 'timeMin': 9}, 'resolvedAt': None,
              'beats': [{'at': {'periodId': 1, 'timeMin': 4}, 'headline': 'Madrid hold the ball'}]}
-TEAM = {'kind': 'team', 'team_id': 'chelsea', 'label': 'Chelsea'}
+TEAM = {'kind': 'team', 'team_id': 'riverton', 'label': 'Riverton Rovers'}
 PLAYER = {'kind': 'player', 'player_id': 'mbappe', 'label': 'Kylian Mbappé'}
 
 
-def start(client, profile='chelsea-analytical', match_id=MATCH):
-    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile})
+def start(client, profile='riverton-analytical', match_id=MATCH):
+    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile, 'viewer_id': '00000000-0000-4000-8000-000000000001'})
     assert response.status_code == 200, response.text
     return response.json()
 
@@ -62,15 +62,15 @@ def test_feed_rules_follow_replaces_insights_and_key_moments_show_for_everyone(s
         topic = follow(run.client, token, TEAM).json()['follow']['topic_id']
         follow(run.client, start(run.client, 'united-casual')['session_token'], TEAM)
         assert deliver(run, narrative(text='Bucket insight.'))
-        assert deliver(run, narrative(topic=topic, text='Chelsea story.'))
+        assert deliver(run, narrative(topic=topic, text='Riverton Rovers story.'))
         assert deliver(run, narrative(topic=topic, bucket='away:casual', text='Other bucket.'))
         assert not deliver(run, narrative(topic='topic:' + '0' * 16, text='Unknown topic.'))
         snapshot = view(run, token)
         assert snapshot['feed_mode'] == 'following' and snapshot['follow']['topic_id'] == topic
-        assert [n['text'] for n in snapshot['narratives']] == ['Chelsea story.']
+        assert [n['text'] for n in snapshot['narratives']] == ['Riverton Rovers story.']
         # Key moments are ETL facts at the snapshot: a yellow card is not pivotal; the retracted goal (seq 7-8) is gone.
         assert [(m['kind'], m['label']) for m in snapshot['key_moments']] == [
-            ('red_card', 'Red card · Levi Colwill'), ('goal', 'Goal · Chelsea · Cole Palmer')]
+            ('red_card', 'Red card · Matteo Rivas'), ('goal', 'Goal · Riverton Rovers · Kai Ashworth')]
         assert [m['event_seq'] for m in snapshot['key_moments']] == [21, 24]
         subscription = snapshot['follow']['subscription_id']
         response = run.client.delete(path(token) + f'/follows/{subscription}')
@@ -97,7 +97,7 @@ def clip_narrative(topic, moment_id, event_seq, bucket='home:analytical', seq=1)
         'id': f'sub:{MATCH}:{topic}:{bucket}:{seq}', 'matchId': MATCH, 'userType': bucket, 'seq': seq,
         'stepId': f'{MATCH}:sub:{topic}:key:{moment_id[3:]}', 'kind': 'subscription', 'topicId': topic,
         'trigger': {'type': 'keyEvent', 'ref': f'key:{moment_id[3:]}', 'reason': 'r', 'eventIds': [moment_id[3:]]},
-        'matchTime': {'periodId': 1, 'timeMin': 0}, 'text': 'Chelsea score.', 'createdAt': f'2026-10-20T00:01:{seq:02d}Z',
+        'matchTime': {'periodId': 1, 'timeMin': 0}, 'text': 'Riverton Rovers score.', 'createdAt': f'2026-10-20T00:01:{seq:02d}Z',
         'timeSec': 30, 'eventSeq': event_seq, 'decision': {'score': 3, 'confidence': 0.9, 'clip': True}})
 
 
@@ -129,7 +129,7 @@ def test_a_moment_judged_worth_a_clip_joins_the_follow_playlist_at_its_seq(store
         assert not deliver(run, follow_clip(topic, goal['id'], 24))  # a redelivery: one clip per topic and moment
         assert not deliver(run, follow_clip('topic:0000000000000bad', goal['id'], 24))  # unknown topic: ignored
         playlist = view(run, token)['follow_playlist']
-        assert [c['captions'] for c in playlist['clips']] == [['Goal · Chelsea · Cole Palmer']]
+        assert [c['captions'] for c in playlist['clips']] == [['Goal · Riverton Rovers · Kai Ashworth']]
         clip = playlist['clips'][0]
         assert clip['start'] < clip['marks'][0] <= clip['end'] and playlist['total_items'] == 1
         assert playlist['playlist'] and clip['playlist_start'] == clip['start']  # the match's own stream
@@ -212,9 +212,9 @@ def test_key_event_clips_reach_every_insights_viewer_of_their_bucket(store):
         assert not deliver(run, moment_clip(goal['id'], 24, (bucket,)))  # a redelivery changes nothing
         assert not deliver(run, moment_clip(goal['id'], 24, (bucket,), match_id='gone-00000000'))  # unknown match
         playlist = view(run, token)['moment_playlist']
-        assert [c['captions'] for c in playlist['clips']] == [['Goal · Chelsea · Cole Palmer']]
+        assert [c['captions'] for c in playlist['clips']] == [['Goal · Riverton Rovers · Kai Ashworth']]
         card = playlist['clips'][0]['moments'][0]  # the preview card's facts
-        assert (card['kind'], card['player_name'], card['team_name']) == ('goal', 'Cole Palmer', 'Chelsea')
+        assert (card['kind'], card['player_name'], card['team_name']) == ('goal', 'Kai Ashworth', 'Riverton Rovers')
         assert card['minute_label'] and card['score']
         assert set(playlist['playback']) == {'transitions', 'slow_motion'}
         if view(run, other)['bucket_id'] != bucket:
@@ -292,7 +292,7 @@ def test_engine_targets_share_topics_carry_buckets_and_revalidate(store):
         topics = body.json()['topics']
         assert len(topics) == 1 and topics[0]['followers'] == 2
         assert topics[0]['buckets'] == ['away:casual', 'home:analytical'] and topics[0]['created_seq'] == 5
-        assert topics[0]['spec']['label'] == 'Chelsea'  # the first follower's label names the topic
+        assert topics[0]['spec']['label'] == 'Riverton Rovers'  # the first follower's label names the topic
         assert run.client.get(url, headers={'If-None-Match': body.headers['etag']}).status_code == 304
         assert run.client.put(path(b) + '/audience', json={'bucket_id': 'neutral:simple'}).status_code == 200
         moved = run.client.get(url).json()
@@ -378,7 +378,7 @@ def test_follow_chat_drills_in_with_resolved_choices_and_keeps_the_focus(store):
     model = Planner({'action': 'clarify', 'reply': 'Which angle?', 'options': [
         {'kind': 'team', 'subject': 'Madrid', 'focus': 'goals and chances', 'label': 'Madrid goals and chances'},
         {'kind': 'player', 'subject': 'Mbappe', 'focus': 'his finishing', 'label': 'Mbappé finishing'},
-        {'kind': 'team', 'subject': 'Atlantis Rovers', 'focus': '', 'label': 'Atlantis'}]})
+        {'kind': 'team', 'subject': 'Atlantis Comets', 'focus': '', 'label': 'Atlantis'}]})
     with Running(store, follow_model=model) as run:
         run.send(10)
         token = start(run.client)['session_token']
@@ -403,9 +403,9 @@ def test_follow_chat_needs_a_model_and_suggestions_do_not(store):
         response = run.client.post(path(token) + '/follow/messages', json={'prompt': 'hi', 'request_id': str(uuid4())})
         assert response.status_code == 503 and response.json()['code'] == 'model_unavailable'
         items = run.client.get(path(token) + '/follow/suggestions').json()['items']
-        assert [i['label'] for i in items] == ['Madrid control the midfield', 'Cole Palmer', 'Levi Colwill', 'Madrid']
+        assert [i['label'] for i in items] == ['Madrid control the midfield', 'Kai Ashworth', 'Matteo Rivas', 'Madrid']
         follow(run.client, token, items[1]['spec'])
-        assert 'Cole Palmer' not in [i['label'] for i in run.client.get(path(token) + '/follow/suggestions').json()['items']]
+        assert 'Kai Ashworth' not in [i['label'] for i in run.client.get(path(token) + '/follow/suggestions').json()['items']]
 
 
 def test_storylines_are_bounded_by_the_snapshot(store):
@@ -424,7 +424,7 @@ def test_key_moment_rules_follow_etl_key_events():
     spec.loader.exec_module(module)
     config = KeyMomentFeed.model_validate(module.CONFIG['key-moment-feed'])
 
-    def row(i, type_id, team='chelsea', player='palmer', period=1, minute=10, quals=(), outcome=1, event_id=None):
+    def row(i, type_id, team='riverton', player='ashworth', period=1, minute=10, quals=(), outcome=1, event_id=None):
         payload = {'eventId': event_id or i, 'eventSeq': i, 'outcome': outcome,
                    'qualifier': [{'qualifierId': q, **({'value': v} if v else {})} for q, v in quals]}
         return {'id': i, 'typeId': type_id, 'periodId': period, 'timeMin': minute, 'timeSec': 0, 'contestantId': team,
@@ -437,30 +437,30 @@ def test_key_moment_rules_follow_etl_key_events():
             row(8, 30, player=None, minute=46), row(9, 32, period=2, player=None, minute=45),
             row(10, 30, period=2, player=None, minute=95)]
     facts = [m for m in map(key_moment, rows) if m]
-    teams = [{'id': 'chelsea', 'name': 'Chelsea'}, {'id': 'madrid', 'name': 'Madrid'}]
-    players = [{'id': 'palmer', 'name': 'Cole Palmer'}, {'id': 'camavinga', 'name': 'Eduardo Camavinga'}]
+    teams = [{'id': 'riverton', 'name': 'Riverton Rovers'}, {'id': 'madrid', 'name': 'Madrid'}]
+    players = [{'id': 'ashworth', 'name': 'Kai Ashworth'}, {'id': 'camavinga', 'name': 'Eduardo Camavinga'}]
     items = feed_moments(facts, config, teams, players)
     assert [(m['kind'], m['label']) for m in items] == [
-        ('kick_off', 'Kick-off'), ('penalty', 'Penalty · Chelsea'), ('goal', 'Goal · Chelsea · Cole Palmer'),
-        ('var_overturn', 'VAR · goal ruled out · Chelsea'), ('second_yellow', 'Second yellow · Eduardo Camavinga'),
-        ('half_time', 'Half time · Chelsea 0–0 Madrid'), ('full_time', 'Full time · Chelsea 0–0 Madrid')]
+        ('kick_off', 'Kick-off'), ('penalty', 'Penalty · Riverton Rovers'), ('goal', 'Goal · Riverton Rovers · Kai Ashworth'),
+        ('var_overturn', 'VAR · goal ruled out · Riverton Rovers'), ('second_yellow', 'Second yellow · Eduardo Camavinga'),
+        ('half_time', 'Half time · Riverton Rovers 0–0 Madrid'), ('full_time', 'Full time · Riverton Rovers 0–0 Madrid')]
     # second_half is not a configured kind; the overturned goal leaves the score at 0–0.
     assert next(m for m in items if m['kind'] == 'goal')['overturned']
     # A penalty's card names the side that won it, never the player who conceded it.
     penalty = next(m for m in items if m['kind'] == 'penalty')
-    assert (penalty['team_name'], penalty['player_name'], penalty['score']) == ('Chelsea', None, 'Chelsea 0–0 Madrid')
+    assert (penalty['team_name'], penalty['player_name'], penalty['score']) == ('Riverton Rovers', None, 'Riverton Rovers 0–0 Madrid')
 
 
 def test_follow_chat_resolves_teams_by_their_etl_known_names():
     from backend.adapters.ma3 import team
     from backend.services.subscriptions import resolve
-    teams = [team({'contestantId': 'che', 'position': 'home', 'name': 'Chelsea', 'shortName': None, 'code': 'CHE',
+    teams = [team({'contestantId': 'che', 'position': 'home', 'name': 'Riverton Rovers', 'shortName': None, 'code': 'RVR',
                    'knownNames': '["the Blues"]'}),
-             team({'contestantId': 'mun', 'position': 'away', 'name': 'Manchester United', 'shortName': 'Man Utd',
-                   'code': 'MUN', 'knownNames': '["United","the Red Devils"]'})]
-    assert resolve('team', 'the Red Devils', teams, [], [], 0.5, 4) == ({'kind': 'team', 'team_id': 'mun',
-                                                                      'label': 'Manchester United'}, [])
+             team({'contestantId': 'mun', 'position': 'away', 'name': 'Forgeham United', 'shortName': 'Forgeham',
+                   'code': 'FGU', 'knownNames': '["United","the Forgemen"]'})]
+    assert resolve('team', 'the Forgemen', teams, [], [], 0.5, 4) == ({'kind': 'team', 'team_id': 'mun',
+                                                                      'label': 'Forgeham United'}, [])
     assert resolve('team', 'Blues', teams, [], [], 0.5, 4)[0]['team_id'] == 'che'
-    # "the" is in both teams' names: it weighs little, so "the Reds" is neither the Blues nor the Red Devils.
-    assert resolve('team', 'the Reds', teams, [], [], 0.5, 4) == (None, [])
+    # "the" is in both teams' names: it weighs little, so "the Mariners" is neither the Blues nor the Forgemen.
+    assert resolve('team', 'the Mariners', teams, [], [], 0.5, 4) == (None, [])
     assert team({'contestantId': 'x', 'position': 'home', 'name': 'X'})['known_names'] == []

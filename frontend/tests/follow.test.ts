@@ -64,13 +64,13 @@ function dom() {
   return { document, doc: stub<Document>(document), get: (id: string) => document.getElementById(id) };
 }
 
-const spec = { kind: "player" as const, player_id: "chelsea-24", team_id: "chelsea", focus: "", label: "Reece James" };
-const follow: Follow = { subscription_id: "s1", topic_id: "topic:a", spec, label: "Reece James" };
-const option: FollowOption = { id: "topic:a", label: "Reece James", spec };
+const spec = { kind: "player" as const, player_id: "riverton-24", team_id: "riverton", focus: "", label: "Sami Lindqvist" };
+const follow: Follow = { subscription_id: "s1", topic_id: "topic:a", spec, label: "Sami Lindqvist" };
+const option: FollowOption = { id: "topic:a", label: "Sami Lindqvist", spec };
 const moments = [
   { id: "km:1", kind: "kick_off", label: "Kick-off", period: 1, clock_seconds: 0 },
-  { id: "km:2", kind: "goal", label: "Goal · Chelsea · Reece James", period: 1, clock_seconds: 300, minute_label: "5'" },
-  { id: "km:3", kind: "goal", label: "Goal · Manchester United · Bruno Fernandes", period: 1, clock_seconds: 420, overturned: true },
+  { id: "km:2", kind: "goal", label: "Goal · Riverton Rovers · Sami Lindqvist", period: 1, clock_seconds: 300, minute_label: "5'" },
+  { id: "km:3", kind: "goal", label: "Goal · Forgeham United · Theo Marchetti", period: 1, clock_seconds: 420, overturned: true },
 ];
 const state = (version: number, extra: Partial<Snapshot> = {}): Snapshot => ({
   type: "snapshot", projection_epoch: "e", version, cards: [], events: [],
@@ -92,13 +92,13 @@ test("follow API: routes, bodies and the shown seq", async () => {
   await api.unfollow("t", "s1");
   await api.followSuggestions("t", 40);
   await api.followSuggestions("t");
-  await api.followMessage("t", "follow James", "r1", 40);
+  await api.followMessage("t", "follow Lindqvist", "r1", 40);
   const S = "/viewer-api/matches/m-1/sessions/t";
   assert.deepEqual(calls.map(([url, init]) => [init.method, url]), [
     ["GET", `${S}/follows`], ["POST", `${S}/follows`], ["DELETE", `${S}/follows/s1`],
     ["GET", `${S}/follow/suggestions?seq=40`], ["GET", `${S}/follow/suggestions`], ["POST", `${S}/follow/messages`]]);
   assert.deepEqual(JSON.parse(String(calls[1]![1].body)), { spec, seq: 40 });
-  assert.deepEqual(JSON.parse(String(calls[5]![1].body)), { prompt: "follow James", request_id: "r1", seq: 40 });
+  assert.deepEqual(JSON.parse(String(calls[5]![1].body)), { prompt: "follow Lindqvist", request_id: "r1", seq: 40 });
 });
 
 function setup(api: Partial<FollowApi>) {
@@ -130,7 +130,7 @@ test("following shows the story feed now; stop following restores the insights",
   await f.follows.follow(option);
   assert.deepEqual(sent[0], ["t", spec, 40]);
   assert.equal(f.renders.at(-1)!.feed_mode, "following");
-  assert.equal(f.renders.at(-1)!.follow?.label, "Reece James");
+  assert.equal(f.renders.at(-1)!.follow?.label, "Sami Lindqvist");
   assert.equal(f.suggestions.length, 1); // refreshed after the change
   await f.follows.unfollow();
   assert.deepEqual(sent[1], ["t", "s1"]);
@@ -167,8 +167,8 @@ test("without a model the follow chat is unavailable but suggestions still follo
 test("a chat turn sends the shown seq, keeps its id for a retry and shows the saved turns", async () => {
   const ids: unknown[] = [];
   let fail = true;
-  const saved: FollowTurn[] = [{ request_id: "uuid", prompt: "James", status: "done",
-    reply: { status: "proposal", text: "Follow Reece James?", proposal: option, candidates: [] } }];
+  const saved: FollowTurn[] = [{ request_id: "uuid", prompt: "Lindqvist", status: "done",
+    reply: { status: "proposal", text: "Follow Sami Lindqvist?", proposal: option, candidates: [] } }];
   const f = setup({
     followMessage: async (...args: unknown[]) => {
       ids.push(args);
@@ -180,12 +180,12 @@ test("a chat turn sends the shown seq, keeps its id for a retry and shows the sa
   let retried = "";
   f.follows.onRetryPrompt = (prompt) => { retried = prompt; };
   f.host.receive(state(2));
-  await f.follows.send("James");
-  assert.equal(retried, "James");
+  await f.follows.send("Lindqvist");
+  assert.equal(retried, "Lindqvist");
   fail = false;
   f.follows.uuid = () => "other";
-  await f.follows.send("James");
-  assert.deepEqual(ids, [["t", "James", "uuid", 40], ["t", "James", "uuid", 40]]);
+  await f.follows.send("Lindqvist");
+  assert.deepEqual(ids, [["t", "Lindqvist", "uuid", 40], ["t", "Lindqvist", "uuid", 40]]);
   assert.deepEqual(f.turns.at(-1), saved);
 });
 
@@ -216,7 +216,7 @@ test("feed: insights with key moments interleaved oldest first, newest at the bo
   view.render(state(1));
   const rows = get("narratives").children;
   assert.deepEqual(rows.map((r) => r.className), ["key-moment", "key-moment", "narrative latest", "key-moment overturned"]);
-  assert.equal(rows[1]!.querySelector(".key-moment-label")!.textContent, "Goal · Chelsea · Reece James");
+  assert.equal(rows[1]!.querySelector(".key-moment-label")!.textContent, "Goal · Riverton Rovers · Sami Lindqvist");
   assert.equal(get("follow-banner").hidden, true);
   // Insights: the follow chat waits behind Customise.
   assert.equal(get("follow-chat").hidden, true);
@@ -247,8 +247,8 @@ test("follow view: Customise swaps Insights for the follow chat until Cancel", (
 test("follow view: another match's story is marked with its teams and outlined, never its score", () => {
   const { doc, get } = dom();
   const view = new MatchView(doc);
-  const other = { id: "mancity-tottenham-1", teams: [{ id: "mancity", name: "Manchester City", short_name: "Man City", code: "MCI", score: 3 },
-    { id: "tottenham", name: "Tottenham Hotspur", short_name: "Spurs", code: "TOT", branding: { crest_asset_id: "tottenham" } }] };
+  const other = { id: "skybridge-whitmore-1", teams: [{ id: "skybridge", name: "Skybridge City", short_name: "Skybridge", code: "SKC", score: 3 },
+    { id: "whitmore", name: "Whitmore Wanderers", short_name: "Whitmore", code: "WHW", branding: { crest_asset_id: "whitmore" } }] };
   view.render({ ...following(1, [{ id: "s1", kind: "subscription", topic_id: "topic:a", period: 1, clock_seconds: 450,
     text: "City press high", other_match: other }]), follow_match: other });
   const story = get("narratives").children.find((r) => /\bnarrative\b/.test(r.className))!;
@@ -268,32 +268,32 @@ test("feed: following shows only the story, tagged, with an empty state and key 
   view.render(following(1));
   let rows = get("narratives").children;
   assert.equal(rows.at(-1)!.className, "story-empty");
-  assert.match(rows.at(-1)!.text, /Following Reece James/);
+  assert.match(rows.at(-1)!.text, /Following Sami Lindqvist/);
   assert.equal(rows.filter((r) => r.className.startsWith("key-moment")).length, 3);
   assert.equal(get("follow-banner").hidden, false);
   assert.equal(get("follow-chat").hidden, true);
-  assert.equal(get("follow-label").textContent, "Reece James");
-  view.render(following(2, [{ id: "s1", kind: "subscription", topic_id: "topic:a", period: 1, clock_seconds: 450, text: "James again" }]));
+  assert.equal(get("follow-label").textContent, "Sami Lindqvist");
+  view.render(following(2, [{ id: "s1", kind: "subscription", topic_id: "topic:a", period: 1, clock_seconds: 450, text: "Lindqvist again" }]));
   rows = get("narratives").children;
   const story = rows.find((r) => r.className.startsWith("narrative"))!;
   assert.equal(story.className, "narrative latest");
-  assert.equal(story.querySelector(".narrative-tag")!.textContent, "Reece James");
+  assert.equal(story.querySelector(".narrative-tag")!.textContent, "Sami Lindqvist");
   assert.equal(rows.some((r) => r.className === "story-empty"), false);
 });
 
 const playlist: Replay = {
   page: 0, page_size: 12, total_items: 2, page_count: 1, seconds: 24, playlist: "/media/hls/m/live.m3u8",
   clips: [
-    { start: 290, end: 302, captions: ["Goal · Chelsea · Reece James"], marks: [300], playlist_start: 290, playlist_end: 302 },
-    { start: 600, end: 612, captions: ["Red card · Casemiro"], marks: [605], playlist_start: 600, playlist_end: 612 },
+    { start: 290, end: 302, captions: ["Goal · Riverton Rovers · Sami Lindqvist"], marks: [300], playlist_start: 290, playlist_end: 302 },
+    { start: 600, end: 612, captions: ["Red card · Adrien Kovalenko"], marks: [605], playlist_start: 600, playlist_end: 612 },
   ],
 };
 
 const goalMoment = { id: "km:2", kind: "goal", period: 1, clock_seconds: 300, minute_label: "5'",
-  label: "Goal · Chelsea · Reece James", team_id: "chelsea", team_name: "Chelsea", player_name: "Reece James",
-  score: "Chelsea 1–0 Manchester United" };
+  label: "Goal · Riverton Rovers · Sami Lindqvist", team_id: "riverton", team_name: "Riverton Rovers", player_name: "Sami Lindqvist",
+  score: "Riverton Rovers 1–0 Forgeham United" };
 const cardMoment = { id: "km:4", kind: "red_card", period: 1, clock_seconds: 605, minute_label: "11'",
-  label: "Red card · Casemiro", team_id: "manutd", team_name: "Manchester United", player_name: "Casemiro" };
+  label: "Red card · Adrien Kovalenko", team_id: "forgeham", team_name: "Forgeham United", player_name: "Adrien Kovalenko" };
 const captured: Replay = { ...playlist, clips: [{ ...playlist.clips[0]!, source_ids: ["km:2"], moments: [goalMoment] },
   { ...playlist.clips[1]!, source_ids: ["km:4"], moments: [cardMoment] }] };
 
@@ -303,7 +303,7 @@ test("feed: a follower's captured clips sit at their moment with a preview card;
   const played: Replay[] = [];
   view.onPlaylistPlay = (replay) => played.push(replay);
   const story = [{ id: "s1", kind: "subscription" as const, topic_id: "topic:a", period: 1, clock_seconds: 450,
-    text: "James again" }];
+    text: "Lindqvist again" }];
   view.render(following(1, story));
   assert.equal(get("narratives").querySelectorAll(".capture").length, 0);
   view.render({ ...following(2, story), follow_playlist: captured });
@@ -316,9 +316,9 @@ test("feed: a follower's captured clips sit at their moment with a preview card;
   const goal = cards[0]!;
   assert.equal(goal.querySelector(".clip-preview-minute")!.textContent, "5'");
   assert.equal(goal.querySelector(".clip-preview-event")!.textContent, "Goal");
-  assert.equal(goal.querySelector(".clip-preview-player")!.textContent, "Reece James");
-  assert.equal(goal.querySelector(".clip-preview-score")!.textContent, "Chelsea 1–0 Manchester United");
-  assert.match(String(goal.querySelector(".capture-play")!["aria-label"]), /Play clip: 5' Goal · Chelsea · Reece James/);
+  assert.equal(goal.querySelector(".clip-preview-player")!.textContent, "Sami Lindqvist");
+  assert.equal(goal.querySelector(".clip-preview-score")!.textContent, "Riverton Rovers 1–0 Forgeham United");
+  assert.match(String(goal.querySelector(".capture-play")!["aria-label"]), /Play clip: 5' Goal · Riverton Rovers · Sami Lindqvist/);
   (goal.querySelector(".capture-play")!.listeners.click as () => void)();
   assert.deepEqual(played[0]!.clips.map((c) => c.source_ids), [["km:2"], ["km:4"]]);  // from this clip on
   (cards[1]!.querySelector(".capture-play")!.listeners.click as () => void)();
@@ -336,9 +336,9 @@ test("feed: Insights shows the bucket's key-event clips for everyone; a followed
   // The captured goal's card replaces its key-moment line; the kick-off and the overturned goal keep theirs.
   const lines = get("narratives").children.filter((r) => r.className.startsWith("key-moment"));
   assert.deepEqual(lines.map((r) => r.querySelector(".key-moment-label")!.textContent),
-    ["Kick-off", "Goal · Manchester United · Bruno Fernandes"]);
-  const other = { id: "mancity-tottenham-1", teams: [{ id: "mancity", name: "Manchester City" },
-    { id: "tottenham", name: "Tottenham" }] };
+    ["Kick-off", "Goal · Forgeham United · Theo Marchetti"]);
+  const other = { id: "skybridge-whitmore-1", teams: [{ id: "skybridge", name: "Skybridge City" },
+    { id: "whitmore", name: "Whitmore" }] };
   view.render({ ...following(2, []), follow_playlist: captured, follow_match: other, moment_playlist: captured });
   const cards = get("narratives").children.filter((r) => r.className.startsWith("capture"));
   assert.equal(cards.length, 2);  // the follow's clips only, not the bucket's
@@ -349,7 +349,7 @@ test("a held state's playlist keeps only the clips its picture has passed", () =
   assert.equal(playlistUntil(playlist, null), null);
   assert.equal(playlistUntil(playlist, 301), null);
   const one = playlistUntil(playlist, 400)!;
-  assert.deepEqual(one.clips.map((c) => c.captions), [["Goal · Chelsea · Reece James"]]);
+  assert.deepEqual(one.clips.map((c) => c.captions), [["Goal · Riverton Rovers · Sami Lindqvist"]]);
   assert.equal(one.total_items, 1);
   assert.equal(one.seconds, 12);
   assert.equal(playlistUntil(playlist, 700)!.clips.length, 2);
@@ -361,7 +361,7 @@ test("reframe bounds this match's clips by its picture, but keeps another match'
   f.host.receive(state(2, { match: { ...state(2).match, media } }));
   f.host.reframe({ ...following(4), follow_playlist: playlist });
   assert.equal(f.renders.at(-1)!.follow_playlist!.clips.length, 1);
-  const other = { id: "mancity-tottenham-1", teams: [] };
+  const other = { id: "skybridge-whitmore-1", teams: [] };
   f.host.reframe({ ...following(5), follow_playlist: playlist, follow_match: other });
   assert.equal(f.renders.at(-1)!.follow_playlist!.clips.length, 2);
 });
@@ -371,12 +371,12 @@ test("follow chat: proposals and candidates follow; only the newest turn acts; t
   const view = new FollowView(doc);
   const chosen: FollowOption[] = [];
   view.onFollow = (o) => chosen.push(o);
-  const other: FollowOption = { id: "topic:b", label: "Reece James (Chelsea)", spec: { ...spec, label: "Reece James (Chelsea)" } };
+  const other: FollowOption = { id: "topic:b", label: "Sami Lindqvist (Riverton Rovers)", spec: { ...spec, label: "Sami Lindqvist (Riverton Rovers)" } };
   const unsafe = "<img src=x onerror=alert(1)>";
   view.actions(true);
   view.render([
     { request_id: "1", prompt: unsafe, status: "done", reply: { status: "proposal", text: unsafe, proposal: option } },
-    { request_id: "2", prompt: "James", status: "done", reply: { status: "clarify", text: "Which James?", candidates: [option, other] } },
+    { request_id: "2", prompt: "Lindqvist", status: "done", reply: { status: "clarify", text: "Which Lindqvist?", candidates: [option, other] } },
   ]);
   const messages = get("follow-messages");
   assert.equal(messages.children[0]!.children[0]!.textContent, unsafe);
@@ -388,7 +388,7 @@ test("follow chat: proposals and candidates follow; only the newest turn acts; t
   assert.deepEqual(chosen, [other]);
   view.suggestions([option]);
   const chip = get("follow-suggestions").children[0]!;
-  assert.equal(chip.textContent, "Reece James");
+  assert.equal(chip.textContent, "Sami Lindqvist");
   chip.listeners.click!();
   assert.equal(chosen.length, 2);
   view.status("Unavailable", true);
@@ -396,12 +396,25 @@ test("follow chat: proposals and candidates follow; only the newest turn acts; t
   assert.equal(chip.disabled, false);
 });
 
+test("answers: a request about both games shows one answer per match, the other match's outlined", () => {
+  const { doc } = dom();
+  const view = new QuestionView(doc);
+  const other = { id: "skybridge-whitmore-1", teams: [{ name: "Skybridge City" }, { name: "Whitmore Wanderers" }] };
+  const reply = { status: "answer", text: "From each match.", parts: [
+    { status: "answer", text: "Redcastle Town: no goals yet." }, { status: "answer", text: "City 1-0.", other_match: other }] };
+  const turn = view.turn(stub({ key: "r9", prompt: "goals from both games", reply, offers: [], clarificationActive: false }));
+  const parts = turn.querySelectorAll(".chat-part");
+  assert.equal(parts.length, 2);
+  assert.doesNotMatch(parts[0]!.className, /cross-match/);
+  assert.match(parts[1]!.className, /cross-match/);
+});
+
 test("answers: another match's answer is outlined with its teams; a story offer follows only on the click", () => {
   const { doc } = dom();
   const view = new QuestionView(doc);
   const offers: unknown[] = [];
   view.onFollowOffer = (offer) => offers.push(offer);
-  const other = { id: "mancity-tottenham-1", teams: [{ name: "Manchester City", code: "MCI" }, { name: "Tottenham Hotspur", code: "TOT" }] };
+  const other = { id: "skybridge-whitmore-1", teams: [{ name: "Skybridge City", code: "SKC" }, { name: "Whitmore Wanderers", code: "WHW" }] };
   const reply = { status: "answer", text: "City lead the press.", other_match: other,
     follow_offer: { prompt: "How is City's press going?", other_match: other } };
   const turn = view.turn(stub({ key: "r1", prompt: "How is City's press going?", reply, offers: [], clarificationActive: false }));

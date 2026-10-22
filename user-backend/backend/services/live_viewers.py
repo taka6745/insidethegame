@@ -42,9 +42,10 @@ class LiveViewers:
         if self.peers.get(peer.token) is peer:
             self.peers.pop(peer.token)
 
-    def replace_profile(self, profile_id):
+    def replace_profile(self, profile_id, viewer_id=''):
+        """A new session of one browser's (viewer, profile) closes that browser's older socket only."""
         for peer in self.peers.values():
-            if peer.viewer['profile_id'] == profile_id:
+            if peer.viewer['profile_id'] == profile_id and peer.viewer.get('viewer_id', '') == viewer_id:
                 peer.close(4001)
 
     def update(self, token, viewer):

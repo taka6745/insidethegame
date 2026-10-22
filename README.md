@@ -19,7 +19,7 @@ Live football, shared match narratives and a personal match companion.
 
 Status key: **deployed** = applied on Azure 22 Oct; **tested** = unit tests plus a run on the local Docker stack ([PLAN.md §10.7](PLAN.md#107-local-integration-check-22-oct-evening)); **built** = code and unit tests, live check pending.
 
-- **Start demo** (tested; deployed). Always exactly three matches; the main game (Arsenal–Liverpool) starts first and opens by default. Start points kickoff, 20′, HT, 60′, 85′; a second click joins the live demo; **Cancel demo** purges everything. A seven-stage progress screen lights each stage from a real readiness check.
+- **Start demo** (tested; deployed). Always exactly three matches; the main game (Redcastle Town–Port Albion) starts first and opens by default. Start points kickoff, 20′, HT, 60′, 85′; a second click joins the live demo; **Cancel demo** purges everything. A seven-stage progress screen lights each stage from a real readiness check.
 - **Seeds** (tested locally). Mid-match starts restore a snapshot recorded on this pipeline, then the feed continues live: "story so far generated earlier on this pipeline; live from N′". Restore runs through a **demo-only adapter** in each owner, mounted only with `DEMO_SEEDS=1` (judge build; off in a release).
 - **Three live matches** (tested; deployed). Tactically scripted 90-minute simulations stream as HLS while their Opta-style events flow through Event Hubs; each run is its own `matchId`, purged on its own.
 - **One ETL pipeline** (deployed). Stream Analytics writes events, SPADL actions, stats and trends to Azure SQL; Data API builder serves GraphQL; Service Bus carries notifications.

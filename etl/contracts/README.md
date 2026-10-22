@@ -29,7 +29,7 @@ Existing fields (`matchId description scheduledKickoff timeStamp provenance cont
 
 | Field | Example | Meaning |
 | --- | --- | --- |
-| `fixture` | `chelsea-united` | Feed catalogue id; `[a-z0-9-]{1,55}`. Config (e.g. audience templates) is keyed by it. |
+| `fixture` | `riverton-forgeham` | Feed catalogue id; `[a-z0-9-]{1,55}`. Config (e.g. audience templates) is keyed by it. |
 | `sourceMatchId` | `product-demo-match` | The recording's own match id (provenance). Never used as an identity. |
 | `runId` | UUID | The feed run; `matchId` = `{fixture}-{first 8 hex of runId}`. |
 | `capabilities` | see below | What this feed provides. Stats a capability does not support are served `available: false`, never zero. |
@@ -47,8 +47,8 @@ Existing fields (`matchId description scheduledKickoff timeStamp provenance cont
   "clock": "broadcast_with_stoppage", "possessionBasis": "confirmed_native_ownership"
 },
 "branding": {
-  "chelsea": {"primaryColour": "#001c68", "secondaryColour": "#0743b7", "crestAssetId": "chelsea"},
-  "manutd":  {"primaryColour": "#c7142b", "secondaryColour": "#7b0015", "crestAssetId": "manutd"}
+  "riverton": {"primaryColour": "#001c68", "secondaryColour": "#0743b7", "crestAssetId": "riverton"},
+  "forgeham":  {"primaryColour": "#c7142b", "secondaryColour": "#7b0015", "crestAssetId": "forgeham"}
 }
 ```
 
@@ -66,9 +66,9 @@ Unchanged v1 fields, including MA3 `seq` (order of MA3 rows: 1, 2, 3… per matc
 Measured ball ownership, one message per sample, sent only once its video time has played.
 
 ```json
-{"feed": "POS", "schemaVersion": 1, "matchId": "chelsea-united-1a2b3c4d", "synthetic": true,
+{"feed": "POS", "schemaVersion": 1, "matchId": "riverton-forgeham-1a2b3c4d", "synthetic": true,
  "sampleId": 1, "periodId": 1, "videoSeconds": 1.0, "durationSeconds": 0.74,
- "contestantId": "manutd", "eventSeq": 4, "timeStamp": "2026-10-20T15:00:01.000Z"}
+ "contestantId": "forgeham", "eventSeq": 4, "timeStamp": "2026-10-20T15:00:01.000Z"}
 ```
 
 | Field | Meaning |
@@ -163,7 +163,7 @@ query ($m: String!, $s: Int!, $after: String) {
     hasNextPage endCursor } }
 ```
 
-Differences from socceraction, none of which changes any recording: look-ahead stops at a period's first `period_end` (so it finalises the period); a shot is never moved by a following deflection (so it is final at once); input is MA3 in seq order, which the feed sends in clock order (socceraction's sort is then the identity); where socceraction would emit NaN at the end of its input, the location is kept. Test fixture for consumers: [spadl-chelsea-united.json](../tests/fixtures/spadl-chelsea-united.json).
+Differences from socceraction, none of which changes any recording: look-ahead stops at a period's first `period_end` (so it finalises the period); a shot is never moved by a following deflection (so it is final at once); input is MA3 in seq order, which the feed sends in clock order (socceraction's sort is then the identity); where socceraction would emit NaN at the end of its input, the location is kept. Test fixture for consumers: [spadl-riverton-forgeham.json](../tests/fixtures/spadl-riverton-forgeham.json).
 
 ## Output 4: trend indicators
 
@@ -205,15 +205,15 @@ query ($m: String!, $s: Int!) {
 ```
 ```json
 {"data": {"executeTrendsAtSeq": [
-  {"trendId": "field_tilt", "family": "indicator", "label": "share of final-third play", "unit": "share", "contestantId": "chelsea",
+  {"trendId": "field_tilt", "family": "indicator", "label": "share of final-third play", "unit": "share", "contestantId": "riverton",
    "window": "last15", "minutes": 15, "fromLabel": "78'", "toLabel": "90+2'", "value": 0.8977, "baseline": 0.7177,
    "delta": 0.1799, "level": "high", "change": null, "flagged": true, "enabled": true}, …],
  "executeTrendSpellsAtSeq": [
-  {"trendId": "territory_spell", "contestantId": "chelsea", "periodId": 2, "fromLabel": "55'", "toLabel": "67'",
+  {"trendId": "territory_spell", "contestantId": "riverton", "periodId": 2, "fromLabel": "55'", "toLabel": "67'",
    "minutes": 13, "zoneShare": 0.8179, "shots": 3, "boxEntries": 19, "ongoing": false, "enabled": false}, …]}}
 ```
 
-(Chelsea–United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
+(Riverton Rovers–United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
 
 ## Output 2: Service Bus topic `match-notifications`
 

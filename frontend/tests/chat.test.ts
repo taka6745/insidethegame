@@ -81,12 +81,12 @@ test('lab chat opens a session only when a question is asked, not on load', asyn
   const calls: string[]=[],v=view();
   const api={session:async (p: string) => { calls.push('session:'+p); return {session_token:'t',turns:[],offers:[],mode:'local'}; },
     ask:async () => { calls.push('ask'); }, history:async () => ({turns:[],offers:[],mode:'local'})};
-  const chat=controller(api,v);chat.profile='chelsea-analytical';
+  const chat=controller(api,v);chat.profile='riverton-analytical';
   await chat.updateMatch({match_id:'m1'});
   assert.deepEqual(calls,[]);
   assert.equal(chat.token,null);
   await chat.send('How many corners?');
-  assert.deepEqual(calls,['session:chelsea-analytical','ask']);
+  assert.deepEqual(calls,['session:riverton-analytical','ask']);
 });
 
 test('without a model the lab chat says answers are unavailable and never opens a session', async () => {

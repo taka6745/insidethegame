@@ -1,4 +1,4 @@
-import { MatchApi, validMatchId } from "./api.ts";
+import { MatchApi, friendly, validMatchId } from "./api.ts";
 import { MatchPicker, sides } from "./picker.ts";
 import { MatchView } from "./view.ts";
 import { QuestionView, sendsOnEnter } from "./chat-view.ts";
@@ -9,8 +9,9 @@ import { FollowView } from "./follow-view.ts";
 import { attachDemoVideo } from "./video.ts";
 import { queueStill, ReplayStage, replayStill } from "./replay-view.ts";
 import { cachePrices, validPrices } from "./receipt.ts";
-import { DemoControls, demoMatches, mainToOpen, showLiveFrom } from "./demo.ts";
+import { DemoControls, demoMatches, mainToOpen, showLiveFrom, showSkip } from "./demo.ts";
 import { DemoProgress } from "./demo-progress.ts";
+import { browserStorage, viewerId } from "./viewer-id.ts";
 
 const byId = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -46,12 +47,12 @@ function showPicker(gone: string | null) {
       const [, list] = await Promise.all([demo.refresh(), api.matches(MATCHES_TIMEOUT_MS)]);
       loaded = true;
       picker.notice("");
-      const matches = demoMatches(list, demo.live, demo.main);
+      const matches = demoMatches(list, demo.live, demo.main, demo.runs, demo.recording);
       const main = mainToOpen(demo, matches, choosing);
       if (main) return location.assign(`/?match=${encodeURIComponent(main)}`);
       picker.render(matches);
     } catch (error) {
-      picker.notice(loaded ? (error as Error).message : "Still starting up. Retrying…");
+      picker.notice(loaded ? friendly(error) : "Still starting up. Retrying…");
     } finally {
       loading = false;
     }
@@ -63,6 +64,7 @@ function showPicker(gone: string | null) {
 
 function openMatch() {
 void showLiveFrom(document, api.match);
+void showSkip(document, api.match);
 
 const view = new MatchView(document);
 const video = attachDemoVideo(document);
@@ -82,6 +84,7 @@ const controller = new MatchController({
   questions,
   live,
   storage: sessionStorage,
+  viewer: viewerId(browserStorage()),
   playhead: () => video.playhead(),
   onGone: () => location.replace(`/?gone=${encodeURIComponent(api.match)}`),
 });
@@ -221,7 +224,7 @@ window.addEventListener("pageshow", (event) => {
 // The token lives in this tab's sessionStorage, so any load in this tab (reload, picker, Start demo) resumes its own
 // session; only Reconnect takes over from another tab. Starting fresh here failed this tab's own pending question.
 controller.start().catch((error: Error) => {
-  view.error(error.message);
+  view.error(friendly(error));
   view.connection("offline");
 });
 

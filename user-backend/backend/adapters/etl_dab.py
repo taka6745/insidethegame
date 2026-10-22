@@ -20,6 +20,9 @@ WATERMARKS = '''query ($ids: [String!]) { matchWatermarks(filter: {matchId: {in:
   items { matchId seq spadlSeq periodId clockSeconds videoSeconds eventTime } } }'''
 STATS = '''query ($m: String!, $s: Int!) { executeStatsAtSeq(matchId: $m, seq: $s) {
   statId kind contestantId label value available unit definition eventTypes complete } }'''
+# Served trend indicators (multi-minute measures such as field tilt), plain labels and meanings, as of seq.
+TRENDS = '''query ($m: String!, $s: Int!) { executeTrendsAtSeq(matchId: $m, seq: $s) {
+  trendId label meaning unit contestantId window minutes value enabled } }'''
 # Final SPADL actions a snapshot may read (local/contracts.md §3), paged in action order.
 ACTIONS = '''query ($m: String!, $from: Int!, $s: Int!, $after: String) { spadlActions(
   filter: {matchId: {eq: $m}, finalSeq: {gt: $from, lte: $s}}, orderBy: {actionId: ASC}, first: 1000, after: $after) {
@@ -146,6 +149,11 @@ class EtlDab:
     async def key_moment_rows(self, match_id, seq):
         """MA3 rows of the key-moment types up to seq (adapters/ma3.key_moment, ma3.score)."""
         return await self.raw_events(match_id, ma3.KEY_MOMENT_TYPES, seq)
+
+    async def trends_at_seq(self, match_id, seq):
+        """Enabled trend indicators as of (match_id, seq): ETL's values, so an answer never computes its own."""
+        data = await self._post(TRENDS, {'m': match_id, 's': seq})
+        return [row for row in data['executeTrendsAtSeq'] or [] if row.get('enabled', True)]
 
     async def stats_at_seq(self, match_id, seq):
         """The catalogue as of (match_id, seq); an empty list means not yet committed (retry)."""

@@ -1,4 +1,4 @@
-"""reference/trends.py: rules on small hand-built inputs, plus Chelsea–United against fixtures/trends-golden.json.
+"""reference/trends.py: rules on small hand-built inputs, plus Riverton Rovers–United against fixtures/trends-golden.json.
 
 The golden file holds full-time and half-time trends and spells (rounded) and the recording's hash. Regenerate after
 a deliberate rule or seed change, or after the recordings are re-rendered (the test names the cause):
@@ -20,7 +20,7 @@ import v2_stream  # noqa: E402
 from test_catalogue import outputs  # noqa: E402
 
 GOLDEN_PATH = Path(__file__).parent / "fixtures" / "trends-golden.json"
-RECORDING = v2_stream.RECORDINGS / "chelsea-united-grf.opta-stream.jsonl"
+RECORDING = v2_stream.RECORDINGS / "riverton-forgeham-grf.opta-stream.jsonl"
 MATCH = {"matchId": "m", "homeContestantId": "home", "awayContestantId": "away"}
 
 
@@ -258,10 +258,10 @@ def recording_hash():
     return hashlib.sha256(RECORDING.read_bytes()).hexdigest()
 
 
-def test_chelsea_united_equals_golden():
+def test_riverton_united_equals_golden():
     golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
     if golden["recording"] != recording_hash():
-        pytest.fail("chelsea-united recording changed: python tests/test_trends.py --regenerate")
+        pytest.fail("riverton-forgeham recording changed: python tests/test_trends.py --regenerate")
     assert snapshots() == golden["snapshots"]
 
 

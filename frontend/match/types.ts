@@ -207,7 +207,7 @@ export interface ClipMoment {
   period?: number | null;
   clock_seconds?: number | null;
   minute_label?: string | null;
-  /** The feed's configured label, e.g. "Goal · Chelsea · Cole Palmer"; its first part names the event. */
+  /** The feed's configured label, e.g. "Goal · Riverton Rovers · Kai Ashworth"; its first part names the event. */
   label?: string | null;
   team_id?: string | null;
   team_name?: string | null;
@@ -220,6 +220,7 @@ export interface Playback {
   transitions: {
     enabled: boolean;
     hold_seconds: number;
+    /** A video path, or `builtin:league` for the CSS sting drawn in the page. */
     asset: string;
     asset_start_seconds: number;
     sting_seconds: number;
@@ -281,6 +282,8 @@ export interface Reply {
   other_match?: OtherMatch | null;
   /** "Follow this story?": the question to set a follow up from; the viewer confirms in the follow view. */
   follow_offer?: FollowOffer | null;
+  /** A request about several live matches: one answer from each, each marked with its match when it is another. */
+  parts?: Reply[];
 }
 export interface FollowOffer {
   prompt: string;

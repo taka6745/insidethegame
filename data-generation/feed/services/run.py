@@ -21,7 +21,8 @@ MAX_WAIT = 1.0
 class SendPolicy:
     """Event Hubs send tunables (FEED_SEND_* settings). Ingress is about 1,000 events/s per throughput unit
     (the emulator throttles larger requests), so a backlog after a stall goes out in capped steps instead of
-    one batch that would be refused forever. A refused send backs off (retry_first doubling up to retry_max);
+    one batch that would be refused forever. A refused send backs off (retry_first, doubling up to retry_max while
+    refusals get nothing through);
     throttling ("server-busy") waits at least the throttle_wait the hub asks for. Unsent items stay due and
     go out in order; video keeps publishing."""
     max_items: int = 200
@@ -95,8 +96,9 @@ class RunTask:
             try:
                 await self.sink.send(self.match_id, bodies)
             except Exception as exc:
-                self._advance(bodies[:getattr(exc, "sent", 0)])
-                self.failures += 1
+                sent = bodies[:getattr(exc, "sent", 0)]
+                self._advance(sent)
+                self.failures = 1 if sent else self.failures + 1  # a large flush that progresses never escalates
                 delay = min(policy.retry_max, policy.retry_first * 2 ** (self.failures - 1))
                 throttled = getattr(exc, "throttled", False)
                 delay = max(delay, policy.throttle_wait) if throttled else delay
@@ -105,6 +107,7 @@ class RunTask:
                             exc_info=not throttled)
                 return
             self._advance(bodies)
+            self.failures = 0
         self.failures, self.retry_at = 0, None
 
     def _advance(self, bodies):

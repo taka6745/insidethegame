@@ -13,7 +13,7 @@ const clip = (start: number, end: number, caption: string) =>
   ({ start: start + 100, end: end + 100, captions: [caption], playlist_start: start, playlist_end: end });
 const replay = (over: Partial<Replay> = {}): Replay => ({
   page: 0, page_size: 12, total_items: 2, seconds: 18, playlist: "/media/hls/m1/live.m3u8",
-  clips: [clip(1, 9, "23′ Palmer header saved"), clip(12, 22, "31′ Goal")], ...over,
+  clips: [clip(1, 9, "23′ Ashworth header saved"), clip(12, 22, "31′ Goal")], ...over,
 });
 
 test("held live states wait for the live playhead and release the newest reached state", () => {
@@ -152,7 +152,7 @@ test("replay VOD starts at its first clip; native HLS is the fallback, otherwise
 
 test("replay player auto-advances at each out point and stops after the last clip", () => {
   const player = new ReplayPlayer(playableClips(replay()));
-  assert.equal(player.caption(), "1/2 · 23′ Palmer header saved");
+  assert.equal(player.caption(), "1/2 · 23′ Ashworth header saved");
   assert.deepEqual(player.time(5), {});
   assert.deepEqual(player.time(9), { seek: 12 });
   assert.equal(player.index, 1);

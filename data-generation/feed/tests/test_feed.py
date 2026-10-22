@@ -11,7 +11,7 @@ import httpx
 
 from feed.routes.http import create_app
 from feed.services.feed import FeedError, FeedService
-from feed.tests.support import FakeClock, FakeSink, MemoryRepository, chelsea, media
+from feed.tests.support import FakeClock, FakeSink, MemoryRepository, riverton, media
 
 START = datetime(2026, 10, 20, 15, 0, 10, tzinfo=timezone.utc)
 KICKOFF = datetime(2026, 10, 20, 15, 2, tzinfo=timezone.utc)  # next-minute from START
@@ -22,7 +22,7 @@ class FeedTestCase(unittest.IsolatedAsyncioTestCase):
 
     async def asyncSetUp(self):
         self.tmp = Path(tempfile.mkdtemp())
-        stream = chelsea()
+        stream = riverton()
         if self.segments:
             stream = dataclasses.replace(stream, media=media(self.tmp / "source", self.segments))
         self.stream = stream
@@ -44,7 +44,7 @@ class FeedTestCase(unittest.IsolatedAsyncioTestCase):
             await self.clock.advance(min(step or remaining, remaining), self.service)
 
     async def start_run(self):
-        run = await self.service.create_run("chelsea-united")
+        run = await self.service.create_run("riverton-forgeham")
         await self.clock.settle(self.service)
         return run
 
@@ -53,7 +53,7 @@ class RunTests(FeedTestCase):
     async def test_ma1_leads_kickoff_then_events_follow(self):
         run = await self.start_run()
         self.assertEqual(run["kickoff"], "2026-10-20T15:02:00Z")
-        self.assertEqual(run["match_id"], f"chelsea-united-{run['run_id'].replace('-', '')[:8]}")
+        self.assertEqual(run["match_id"], f"riverton-forgeham-{run['run_id'].replace('-', '')[:8]}")
         self.assertEqual(self.sink.sent, [])  # 110 s before kickoff: nothing yet.
         await self.run_to(-60.5)
         self.assertEqual(self.sink.sent, [])
@@ -61,10 +61,10 @@ class RunTests(FeedTestCase):
         (key, ma1, sent_at), = self.sink.sent
         self.assertEqual((key, ma1["feed"], ma1["matchId"], ma1["runId"]), (run["match_id"], "MA1", run["match_id"],
                                                                                run["run_id"]))
-        self.assertEqual((ma1["fixture"], ma1["sourceMatchId"]), ("chelsea-united", "product-demo-match"))
+        self.assertEqual((ma1["fixture"], ma1["sourceMatchId"]), ("riverton-forgeham", "product-demo-match"))
         self.assertEqual(ma1["scheduledKickoff"], "2026-10-20T15:02:00.000Z")
         self.assertFalse(ma1["capabilities"]["video"])
-        self.assertEqual(set(ma1["branding"]), {"chelsea", "manutd"})
+        self.assertEqual(set(ma1["branding"]), {"riverton", "forgeham"})
         self.assertEqual((await self.service.runs())[0]["status"], "scheduled")
         await self.run_to(0.3)
         first = self.sink.bodies(kind="MatchEvent")
@@ -189,6 +189,27 @@ class RunTests(FeedTestCase):
         self.assertEqual(seqs, list(range(1, sum(1 for e in self.stream.events if e["video_seconds"] <= 150) + 1)))
         self.assertEqual(len(self.sink.bodies(kind="MA1")), 1)
 
+    async def test_a_large_flush_throttled_while_it_progresses_waits_only_the_throttle_wait(self):
+        from feed.adapters.eventhubs import SendError
+        THROTTLE_WAIT = self.service.policy.throttle_wait
+        attempts, send = [], self.sink.send
+
+        async def throttled(key, bodies):  # every send gets half through, then the hub asks to slow down
+            attempts.append(self.clock.now())
+            sent = max(1, len(bodies) // 2)
+            await send(key, bodies[:sent])
+            raise SendError(sent, throttled=True)
+        run = await self.start_run()
+        await self.run_to(30)
+        self.sink.send = throttled
+        await self.run_to(600)  # ten minutes due at once, like a skip ahead
+        await self.run_to(700, step=1)
+        gaps = [(b - a).total_seconds() for a, b in zip(attempts, attempts[1:])]
+        self.assertGreater(len(gaps), 5)
+        self.assertTrue(all(THROTTLE_WAIT <= g < 2 * THROTTLE_WAIT for g in gaps), gaps)  # progress: no escalation
+        seqs = [b["seq"] for b in self.sink.bodies(run["match_id"], "MatchEvent")]
+        self.assertEqual(seqs, list(range(1, len(seqs) + 1)))
+
     async def test_restart_resumes_without_resending(self):
         run = await self.start_run()
         await self.run_to(30)
@@ -206,13 +227,13 @@ class RunTests(FeedTestCase):
             await self.service.create_run("nope")
         self.assertEqual(error.exception.status, 404)
         with self.assertRaises(FeedError) as error:
-            await self.service.create_run("chelsea-united", "2026-10-20T14:00:00Z")
+            await self.service.create_run("riverton-forgeham", "2026-10-20T14:00:00Z")
         self.assertEqual(error.exception.status, 422)
         with self.assertRaises(FeedError) as error:
-            await self.service.create_run("chelsea-united", start_seconds=600)
+            await self.service.create_run("riverton-forgeham", start_seconds=600)
         self.assertEqual(error.exception.status, 422)
         self.service.allow_seek = True  # dev-only
-        run = await self.service.create_run("chelsea-united", start_seconds=600)
+        run = await self.service.create_run("riverton-forgeham", start_seconds=600)
         await self.clock.settle(self.service)
         self.assertEqual(run["status"], "scheduled")
         self.assertEqual(self.sink.bodies(run["match_id"], "MatchEvent")[-1]["seq"],
@@ -300,12 +321,12 @@ class PurgeTests(FeedTestCase):
         await self.run_to(60)
         self.assertEqual(len(self.sink.sent), sent)  # nothing more for a purged match
         self.assertIn(run["match_id"], self.repository.tombstones)
-        self.assertIsNone(self.repository.create_run("x", run["match_id"], "chelsea-united", KICKOFF))
+        self.assertIsNone(self.repository.create_run("x", run["match_id"], "riverton-forgeham", KICKOFF))
         again = await self.service.purge(run["match_id"])  # idempotent
         self.assertEqual(again["purged"], {"runs": 0, "hls_files": 0})
-        unknown = await self.service.purge("chelsea-united-00000000")
+        unknown = await self.service.purge("riverton-forgeham-00000000")
         self.assertEqual(unknown["purged"], {"runs": 0, "hls_files": 0})
-        self.assertIn("chelsea-united-00000000", self.repository.tombstones)
+        self.assertIn("riverton-forgeham-00000000", self.repository.tombstones)
 
     async def test_purge_all_sets_cutoff(self):
         first, second = await self.start_run(), await self.start_run()
@@ -323,9 +344,9 @@ class PurgeTests(FeedTestCase):
         for body in ({}, {"all": False}, {"all": True, "match_id": "a"}, {"match_id": "../x"}):
             self.assertEqual((await client.post("/admin/matches/purge", json=body)).status_code, 422, body)
         recordings = (await client.get("/recordings")).json()
-        self.assertEqual([r["fixture"] for r in recordings], ["chelsea-united"])
+        self.assertEqual([r["fixture"] for r in recordings], ["riverton-forgeham"])
         self.assertNotIn("events", recordings[0])
-        created = await client.post("/runs", json={"fixture": "chelsea-united", "kickoff": "next-minute"})
+        created = await client.post("/runs", json={"fixture": "riverton-forgeham", "kickoff": "next-minute"})
         self.assertEqual(created.status_code, 201)
         self.assertEqual((await client.post("/runs", json={"fixture": "nope"})).status_code, 404)
         await client.aclose()
@@ -334,11 +355,11 @@ class PurgeTests(FeedTestCase):
 class DemoTests(FeedTestCase):
     async def asyncSetUp(self):
         await super().asyncSetUp()
-        other = dataclasses.replace(self.stream, fixture="arsenal-liverpool")
+        other = dataclasses.replace(self.stream, fixture="redcastle-portalbion")
         self.service.streams[other.fixture] = other
         self.service.seeds = True  # DEMO_SEEDS=1, as local compose and the judge build run it
         self.points = self.repository.demo["start_points"]
-        await self.service.save_demo_settings(self.settings(["chelsea-united", "arsenal-liverpool"], 120, 2), 1)
+        await self.service.save_demo_settings(self.settings(["riverton-forgeham", "redcastle-portalbion"], 120, 2), 1)
 
     def settings(self, fixtures, stagger, cap, points=None):
         return {"fixtures": fixtures, "stagger_seconds": stagger, "max_active_runs": cap,
@@ -349,27 +370,27 @@ class DemoTests(FeedTestCase):
         self.assertEqual(sum(r["started"] for r in results), 1)
         runs = await self.service.runs()
         self.assertEqual([(r["fixture"], r["kickoff"]) for r in runs],
-                         [("chelsea-united", "2026-10-20T15:02:00Z"), ("arsenal-liverpool", "2026-10-20T15:04:00Z")])
+                         [("riverton-forgeham", "2026-10-20T15:02:00Z"), ("redcastle-portalbion", "2026-10-20T15:04:00Z")])
         for result in results:
             self.assertEqual({r["match_id"] for r in result["runs"]}, {r["match_id"] for r in runs})
 
     async def test_the_main_game_starts_first_and_leads_the_saved_order(self):
         saved = await self.service.save_demo_settings(
-            {**self.settings(["chelsea-united", "arsenal-liverpool"], 120, 3), "main_fixture": "arsenal-liverpool"}, 2)
+            {**self.settings(["riverton-forgeham", "redcastle-portalbion"], 120, 3), "main_fixture": "redcastle-portalbion"}, 2)
         self.assertEqual((saved["main_fixture"], saved["fixtures"]),
-                         ("arsenal-liverpool", ["arsenal-liverpool", "chelsea-united"]))
+                         ("redcastle-portalbion", ["redcastle-portalbion", "riverton-forgeham"]))
         result = await self.service.start_demo()
-        self.assertEqual(result["main_fixture"], "arsenal-liverpool")
+        self.assertEqual(result["main_fixture"], "redcastle-portalbion")
         self.assertEqual([(r["fixture"], r["kickoff"]) for r in await self.service.runs()],
-                         [("arsenal-liverpool", "2026-10-20T15:02:00Z"), ("chelsea-united", "2026-10-20T15:04:00Z")])
+                         [("redcastle-portalbion", "2026-10-20T15:02:00Z"), ("riverton-forgeham", "2026-10-20T15:04:00Z")])
         with self.assertRaises(FeedError) as error:
-            await self.service.save_demo_settings({**self.settings(["chelsea-united"], 0, 3), "main_fixture": "nope"}, 3)
+            await self.service.save_demo_settings({**self.settings(["riverton-forgeham"], 0, 3), "main_fixture": "nope"}, 3)
         self.assertEqual(error.exception.status, 422)
 
     async def test_the_cap_refuses_another_run_while_the_demo_is_on(self):
         await self.service.start_demo()
         with self.assertRaises(FeedError) as error:
-            await self.service.create_run("chelsea-united")
+            await self.service.create_run("riverton-forgeham")
         self.assertEqual(error.exception.status, 409)
 
     async def test_a_new_demo_purges_finished_runs_only_after_they_finish(self):
@@ -384,13 +405,13 @@ class DemoTests(FeedTestCase):
 
     async def test_settings_are_validated_and_revision_checked(self):
         twice = [self.points[0], self.points[0]]
-        for args in ((["nope"], 0, 3), (["chelsea-united", "chelsea-united"], 0, 3),
-                     (["chelsea-united", "arsenal-liverpool"], 0, 1), (["chelsea-united"], 0, 3, twice)):
+        for args in ((["nope"], 0, 3), (["riverton-forgeham", "riverton-forgeham"], 0, 3),
+                     (["riverton-forgeham", "redcastle-portalbion"], 0, 1), (["riverton-forgeham"], 0, 3, twice)):
             with self.assertRaises(FeedError) as error:
                 await self.service.save_demo_settings(self.settings(*args), 2)
             self.assertEqual(error.exception.status, 422, args)
         with self.assertRaises(FeedError) as error:
-            await self.service.save_demo_settings(self.settings(["chelsea-united"], 0, 3), 1)  # stale revision
+            await self.service.save_demo_settings(self.settings(["riverton-forgeham"], 0, 3), 1)  # stale revision
         self.assertEqual(error.exception.status, 409)
 
     async def test_a_later_start_point_needs_a_seed_then_resumes_from_it(self):
@@ -398,7 +419,7 @@ class DemoTests(FeedTestCase):
             await self.service.start_demo("20")
         self.assertEqual(error.exception.status, 409)
         points = [self.points[0], {**self.points[1], "seed": "seed-test"}]
-        await self.service.save_demo_settings(self.settings(["chelsea-united"], 120, 3, points), 2)
+        await self.service.save_demo_settings(self.settings(["riverton-forgeham"], 120, 3, points), 2)
         result = await self.service.start_demo("20")
         run = result["runs"][0]
         offset = self.stream.video_at(1, 20)
@@ -418,7 +439,7 @@ class DemoTests(FeedTestCase):
         self.assertTrue(all(self.stream.events[s - 1]["video_seconds"] <= offset + 5 for s in seqs))  # nothing ahead
 
     async def test_a_demo_that_fails_partway_leaves_no_runs(self):
-        await self.service.save_demo_settings(self.settings(["chelsea-united", "arsenal-liverpool"], 120, 3), 2)
+        await self.service.save_demo_settings(self.settings(["riverton-forgeham", "redcastle-portalbion"], 120, 3), 2)
         create, calls = self.service._create, []
 
         async def failing(*args, **kwargs):
@@ -437,7 +458,7 @@ class DemoTests(FeedTestCase):
         return next(r for r in await self.service.runs() if r["match_id"] == run["match_id"])
 
     async def test_a_held_run_stops_at_its_point(self):
-        run = await self.service.create_run("chelsea-united", hold_point="20")
+        run = await self.service.create_run("riverton-forgeham", hold_point="20")
         self.assertEqual(run["held_at"], "20")  # demo control's capture checks it
         hold = self.stream.video_at(1, 20)
         await self.run_to(hold + 30, step=10)
@@ -446,7 +467,7 @@ class DemoTests(FeedTestCase):
         self.assertTrue(all(self.stream.events[b["seq"] - 1]["video_seconds"] < hold for b in sent))
         self.assertEqual((await self._run(run))["video_seconds"], round(hold, 3))
         # A run resumed from that point carries on after exactly the seq the held run stopped at (the seed's).
-        resumed = await self.service.create_run("chelsea-united", resume_point="20")
+        resumed = await self.service.create_run("riverton-forgeham", resume_point="20")
         self.assertEqual(((await self._run(run))["seq"], resumed["awaiting_restore"]), (resumed["seq"], True))
         self.assertEqual(resumed["seq"], max(b["seq"] for b in sent))
 
@@ -454,18 +475,95 @@ class DemoTests(FeedTestCase):
         """A production release (DEMO_SEEDS off): no held or resumed runs, no seeded starts, no release route."""
         self.service.seeds = False
         points = [self.points[0], {**self.points[1], "seed": "seed-test"}]
-        await self.service.save_demo_settings(self.settings(["chelsea-united"], 120, 3, points), 2)
+        await self.service.save_demo_settings(self.settings(["riverton-forgeham"], 120, 3, points), 2)
         for kwargs in ({"hold_point": "20"}, {"resume_point": "20"}):
             with self.assertRaises(FeedError) as error:
-                await self.service.create_run("chelsea-united", **kwargs)
+                await self.service.create_run("riverton-forgeham", **kwargs)
             self.assertEqual(error.exception.status, 403)
         with self.assertRaises(FeedError) as error:
             await self.service.start_demo("20")
         self.assertEqual(error.exception.status, 409)
         client = httpx.AsyncClient(transport=httpx.ASGITransport(create_app(self.service, self.live)),
                                    base_url="http://feed")
-        self.assertIn((await client.post("/runs/chelsea-united-0000aaaa/release")).status_code, (404, 405))
+        self.assertIn((await client.post("/runs/riverton-forgeham-0000aaaa/release")).status_code, (404, 405))
         await client.aclose()
+
+    async def test_skip_ahead_moves_every_run_on_together_and_sends_only_up_to_the_new_clock(self):
+        await self.service.start_demo()
+        await self.run_to(240, step=10)  # both live: the second kicked off at +120 s
+        before = {r["match_id"]: r for r in await self.service.runs()}
+        result = await self.service.skip_demo("10")
+        self.assertEqual(result["skipped_seconds"], 600)
+        await self.clock.settle(self.service)
+        await self.clock.advance(1, self.service)
+        for run in await self.service.runs():
+            old = before[run["match_id"]]
+            self.assertEqual(datetime.fromisoformat(run["kickoff"].replace("Z", "+00:00")),
+                             datetime.fromisoformat(old["kickoff"].replace("Z", "+00:00")) - timedelta(seconds=600))
+            clock = (self.clock.now() - datetime.fromisoformat(run["kickoff"].replace("Z", "+00:00"))).total_seconds()
+            seqs = [b["seq"] for b in self.sink.bodies(run["match_id"], "MatchEvent")]
+            self.assertEqual(seqs, list(range(1, len(seqs) + 1)))  # in order, none twice, none skipped
+            self.assertTrue(all(self.stream.events[s - 1]["video_seconds"] <= clock for s in seqs))  # no future
+            due = sum(1 for e in self.stream.events if e["video_seconds"] <= clock - 1)
+            self.assertGreaterEqual(len(seqs), due)  # everything due by the new clock went out
+
+    async def test_skip_to_a_point_rounds_up_to_whole_minutes_on_the_main_clock(self):
+        await self.service.start_demo()
+        await self.run_to(130, step=10)
+        result = await self.service.skip_demo("to-20")
+        main_clock = 130
+        self.assertEqual(result["skipped_seconds"] % 60, 0)
+        self.assertGreaterEqual(main_clock + result["skipped_seconds"], self.stream.video_at(1, 20))
+        self.assertLess(main_clock + result["skipped_seconds"] - 60, self.stream.video_at(1, 20))
+        with self.assertRaises(FeedError) as error:  # already past it
+            await self.service.skip_demo("to-20")
+        self.assertEqual(error.exception.status, 409)
+
+    async def test_skip_ahead_is_refused_without_a_playing_demo_or_demo_seeds(self):
+        for target, status in (("10", 409), ("nope", 404)):
+            with self.assertRaises(FeedError) as error:
+                await self.service.skip_demo(target)
+            self.assertEqual(error.exception.status, status)
+        await self.service.create_run("riverton-forgeham", hold_point="20")  # a seed recording
+        await self.run_to(30, step=10)
+        with self.assertRaises(FeedError) as error:
+            await self.service.skip_demo("10")
+        self.assertEqual(error.exception.status, 409)
+        self.service.seeds = False
+        with self.assertRaises(FeedError) as error:
+            await self.service.skip_demo("10")
+        self.assertEqual(error.exception.status, 403)
+        client = httpx.AsyncClient(transport=httpx.ASGITransport(create_app(self.service, self.live)),
+                                   base_url="http://feed")
+        self.assertIn((await client.post("/demo/skip", json={"target": "10"})).status_code, (404, 405))
+        await client.aclose()
+        settings = await self.service.demo_settings()  # nothing to offer, and a round-trip save keeps the saved ones
+        self.assertEqual(settings["skip_targets"], [])
+        await self.service.save_demo_settings({k: v for k, v in settings.items() if k != "revision"},
+                                              settings["revision"])
+        self.assertEqual([t["id"] for t in self.repository.demo["skip_targets"]], ["10", "to-20"])
+
+    async def test_skip_ahead_keeps_a_throttled_runs_back_off(self):
+        await self.service.start_demo()
+        await self.run_to(60, step=10)
+        task = next(iter(self.service.tasks.values()))[0]
+        task.failures, task.retry_at = 3, self.clock.now() + timedelta(seconds=30)
+        await self.service.skip_demo("10")
+        moved = next(iter(self.service.tasks.values()))[0]
+        self.assertIsNot(moved, task)
+        self.assertEqual((moved.failures, moved.retry_at), (task.failures, task.retry_at))
+
+    async def test_skip_targets_are_validated_and_kept_when_a_client_leaves_them_out(self):
+        bad = ([{"id": "a", "label": "A"}], [{"id": "a", "label": "A", "minutes": 5, "point": "20"}],
+               [{"id": "a", "label": "A", "point": "nope"}],
+               [{"id": "a", "label": "A", "minutes": 5}, {"id": "a", "label": "B", "minutes": 6}])
+        for skips in bad:
+            with self.assertRaises(FeedError) as error:
+                await self.service.save_demo_settings({**self.settings(["riverton-forgeham"], 0, 3), "skip_targets": skips}, 2)
+            self.assertEqual(error.exception.status, 422, skips)
+        kept = await self.service.save_demo_settings(self.settings(["riverton-forgeham"], 0, 3), 2)
+        self.assertEqual(kept["skip_targets"], self.repository.demo["skip_targets"])
+        self.assertEqual([t["id"] for t in kept["skip_targets"]], ["10", "to-20"])
 
     async def test_http_start_is_201_then_200(self):
         client = httpx.AsyncClient(transport=httpx.ASGITransport(create_app(self.service, self.live)),
@@ -487,11 +585,11 @@ class MediaRootTests(unittest.TestCase):
         from feed.tests.support import RECORDINGS
 
         root = Path(tempfile.mkdtemp())
-        media(root / "chelsea-united" / "hls")
+        media(root / "riverton-forgeham" / "hls")
         (root / "unrelated").mkdir()  # anything else under the root is ignored
         found = discover(RECORDINGS, root)
-        self.assertEqual(found["chelsea-united"].media, root / "chelsea-united" / "hls")
-        self.assertTrue(all(s.media is None for f, s in found.items() if f != "chelsea-united"))
+        self.assertEqual(found["riverton-forgeham"].media, root / "riverton-forgeham" / "hls")
+        self.assertTrue(all(s.media is None for f, s in found.items() if f != "riverton-forgeham"))
         self.assertTrue(all(s.media is None for s in discover(RECORDINGS, None).values()))
 
 

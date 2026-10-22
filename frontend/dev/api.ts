@@ -3,7 +3,7 @@ import { LabApi } from "../lab/api.ts";
 export interface PromptVersion { version: number; template: string; placeholders: string[]; source: string; created_at: string }
 export interface PromptRole { role: string; active_version: number; placeholders: string[]; versions: PromptVersion[] }
 /** `label` is viewer-facing (may use `{home}`/`{away}`); `description` goes to the narrative author. */
-export interface AudienceOption { id: string; label?: string | null; team?: "home" | "away" | null; description: string }
+export interface AudienceOption { id: string; label?: string | null; team?: "home" | "away" | null; in_label?: boolean; description: string }
 export interface AudienceLayer { id: string; description: string; options: AudienceOption[] }
 export interface AudienceBucket { id: string; selections: Record<string, string>; enabled: boolean }
 export interface AudienceConfig { layers: AudienceLayer[]; buckets: AudienceBucket[] }
@@ -73,6 +73,7 @@ export const CONFIG_TABLES = [
   { id: "storyline-policy", title: "Storyline policy", hint: "Storyline lifecycle, salience, focus rotation and analysis caps; the engine reads it at GET /storyline-policy." },
   { id: "cross-match", title: "Cross-match", hint: "Questions, pins and follows about the demo's other live matches: on/off, the name share that picks another match, other teams in follow suggestions." },
   { id: "follow-offer", title: "Follow offer", hint: "The \"Follow this story?\" offer on answers: the yes/no decision question, its threshold, requests per minute and timeout." },
+  { id: "models", title: "Models", hint: "Model per role, switched live: engine summary, compression, analyst and author; backend questions, follow planner and replay. An empty deployment keeps the service's own setting; an effort makes it a reasoning call." },
 ] as const;
 
 /** Thrown when another editor saved first; the screen keeps the draft and offers a reload. */

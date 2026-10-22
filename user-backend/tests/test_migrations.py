@@ -30,14 +30,16 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
     with store.connect() as conn:
         applied = [row['version'] for row in conn.execute('SELECT version FROM schema_migrations ORDER BY version')]
         config = conn.execute('SELECT name, revision FROM backend_config ORDER BY name').fetchall()
-    assert applied[-21:] == ['024_subscriptions.py', '025_grounded_prompts.py',
+    assert [v for v in applied if v >= '024'] == ['024_subscriptions.py', '025_grounded_prompts.py',
                              '026_storyline_policy.py', '027_follow_triggers.py', '028_key_moment_labels.py',
                              '029_policy_prompts.py', '030_grounded_patterns.py', '031_policy_limits.py',
                              '032_follow_retries.py', '033_comparison_claim.py', '034_result_claim.py',
                              '035_author_trim.py', '036_score_claim_reopen.py', '037_replay_playback.py',
                              '038_follow_clips.py', '039_follow_clip_step.py',
                              '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
-                             '043_narrative_clips_match.sql', '044_clip_relevance.py']
+                             '043_narrative_clips_match.sql', '044_clip_relevance.py',
+                             '045_viewer_sessions.sql', '046_clip_lengths.py', '047_model_roles_length_layer.py',
+                             '049_league_sting.py']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:
@@ -53,22 +55,24 @@ def test_pins_become_enabled_flags_and_presence_columns_go(store):
         migrate(conn, [p for p in sorted(MIGRATIONS.glob('*.sql')) if p.name < '018'])
         default = conn.execute("SELECT document FROM audience_templates WHERE fixture='default'").fetchone()['document']
         conn.execute("INSERT INTO audience_templates (fixture, revision, document, pinned_buckets) "
-                     "VALUES ('chelsea-united', 4, %s, ARRAY['away:simple'])", (Jsonb(default),))
-        conn.execute("INSERT INTO received_matches (match_id, fixture, sent_at) VALUES ('chelsea-united-1', 'chelsea-united', now())")
+                     "VALUES ('riverton-forgeham', 4, %s, ARRAY['away:simple'])", (Jsonb(default),))
+        conn.execute("INSERT INTO received_matches (match_id, fixture, sent_at) VALUES ('riverton-forgeham-1', 'riverton-forgeham', now())")
         conn.execute("INSERT INTO audience_catalog (match_id, fixture, document, viewer_counts) "
-                     "VALUES ('chelsea-united-1', 'chelsea-united', %s, '{\"home:simple\": 2}')", (Jsonb(default),))
+                     "VALUES ('riverton-forgeham-1', 'riverton-forgeham', %s, '{\"home:simple\": 2}')", (Jsonb(default),))
     store.initialize()
     with store.connect() as conn:
         rows = {r['fixture']: r for r in conn.execute('SELECT * FROM audience_templates')}
         catalog = conn.execute('SELECT * FROM audience_catalog').fetchone()
     on = lambda document: {b['id'] for b in document['buckets'] if b['enabled']}
-    assert on(rows['chelsea-united']['document']) == {'away:simple'} and rows['chelsea-united']['revision'] == 5
+    # 018 makes revision 5; 047 adds the length layer (revision 6) and keeps every enabled bucket.
+    assert on(rows['riverton-forgeham']['document']) == {'away:simple'} and rows['riverton-forgeham']['revision'] == 6
     # The unedited default enables the demo profiles' buckets.
     assert on(rows['default']['document']) == {'home:analytical', 'away:casual', 'neutral:simple'}
     assert 'pinned_buckets' not in rows['default'] and 'viewer_counts' not in catalog
-    assert catalog['document'] == rows['chelsea-united']['document'] and catalog['revision'] == 2
+    assert catalog['document'] == rows['riverton-forgeham']['document'] and catalog['revision'] == 3  # 018, 047
     labels = [[o['label'] for o in layer['options']] for layer in rows['default']['document']['layers']]
-    assert labels == [['{home}', '{away}', 'Neutral'], ['Simple', 'Casual', 'Experienced', 'Analytical']]
+    assert labels == [['{home}', '{away}', 'Neutral'], ['Simple', 'Casual', 'Experienced', 'Analytical'],
+                      ['Standard', 'Brief']]
 
 
 def test_follow_trigger_tunables_are_added_to_existing_rows_and_edits_are_kept(store):
@@ -437,7 +441,7 @@ def test_replay_playback_is_added_once_valid_and_an_edit_is_kept(store):
         document = conn.execute("SELECT document FROM backend_config WHERE name = 'replay-timing'").fetchone()['document']
     seeded = Replay.model_validate(document).playback
     assert seeded.transitions.enabled and seeded.slow_motion.enabled
-    assert seeded.transitions.asset == '/assets/league/sting/replay-sting.mp4'
+    assert seeded.transitions.asset == 'builtin:league'  # 037's video path, replaced by 049
     edited = {**document['playback'], 'slow_motion': {**document['playback']['slow_motion'], 'enabled': False}}
     for present, expected in ((None, document['playback']), (edited, edited)):
         with store.connect() as conn:
@@ -445,8 +449,48 @@ def test_replay_playback_is_added_once_valid_and_an_edit_is_kept(store):
             if present is not None:
                 document['playback'] = present
             conn.execute("UPDATE backend_config SET document = %s WHERE name = 'replay-timing'", (Jsonb(document),))
-            conn.execute("DELETE FROM schema_migrations WHERE version = '037_replay_playback.py'")
+            conn.execute("DELETE FROM schema_migrations WHERE version IN ('037_replay_playback.py', "
+                         "'049_league_sting.py')")
         store.initialize()
         with store.connect() as conn:
             stored = conn.execute("SELECT document FROM backend_config WHERE name = 'replay-timing'").fetchone()['document']
         assert stored['playback'] == expected
+
+
+def test_the_clip_sting_becomes_the_league_sting_where_unedited(store):
+    import importlib.util
+    from psycopg.types.json import Jsonb
+    from backend.store import MIGRATIONS
+    spec = importlib.util.spec_from_file_location('m049', MIGRATIONS / '049_league_sting.py')
+    m049 = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m049)
+    store.initialize()
+
+    def asset():
+        with store.connect() as conn:
+            return conn.execute("SELECT document FROM backend_config WHERE name = 'replay-timing'"
+                                ).fetchone()['document']['playback']['transitions']['asset']
+    assert asset() == m049.NEW  # a fresh store already uses the league's own sting
+    for old, expected in ((m049.OLD, m049.NEW), ('/assets/my/own-sting.mp4', '/assets/my/own-sting.mp4')):
+        with store.connect() as conn:
+            document = conn.execute("SELECT document FROM backend_config WHERE name = 'replay-timing'"
+                                    ).fetchone()['document']
+            transitions = {**document['playback']['transitions'], 'asset': old}
+            conn.execute("UPDATE backend_config SET document = %s WHERE name = 'replay-timing'",
+                         (Jsonb({**document, 'playback': {**document['playback'], 'transitions': transitions}}),))
+            conn.execute("DELETE FROM schema_migrations WHERE version = '049_league_sting.py'")
+        store.initialize()
+        assert asset() == expected  # a /dev/ edit is kept
+
+
+def test_clip_lengths_tune_only_seeded_values():
+    """046 (PLAN.md §12 M7): an 8 s minimum and 5 s after a goal, unless /dev/ already changed them."""
+    import importlib.util
+    from backend.store import MIGRATIONS
+    spec = importlib.util.spec_from_file_location('m046', MIGRATIONS / '046_clip_lengths.py')
+    m046 = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m046)
+    seeded = {'timing': {'goal': [10.0, 2.0], 'shot': [6.0, 3.0]}}
+    assert m046.tuned(seeded) == {'timing': {'goal': [10.0, 5.0], 'shot': [6.0, 3.0]}, 'min_clip_seconds': 8.0}
+    edited = {'timing': {'goal': [12.0, 3.0]}, 'min_clip_seconds': 4.0}
+    assert m046.tuned(edited) == edited

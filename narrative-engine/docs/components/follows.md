@@ -4,9 +4,9 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and unit-tested (22 Oct). Live smoke against the dev Decision-1 deployment (kickoff to 36', two follows, fake author): 37 decisions, Chelsea's goal fired the Chelsea follow, quiet minutes scored below 1. Moment clips (D3), clip-on topics (D6) and shared key-event clips (D7) built 22 Oct, unit-tested and checked on the local stack (a Spurs follower got Palhinha's second yellow as a clip; D7 clips stored for every bucket; PLAN.md §10.7). Not yet run on Azure |
+| **Status** | Implemented and unit-tested (22 Oct). Live smoke against the dev Decision-1 deployment (kickoff to 36', two follows, fake author): 37 decisions, Riverton Rovers' goal fired the Riverton Rovers follow, quiet minutes scored below 1. Moment clips (D3), clip-on topics (D6) and shared key-event clips (D7) built 22 Oct, unit-tested and checked on the local stack (a Whitmore follower got Palmeira's second yellow as a clip; D7 clips stored for every bucket; PLAN.md §10.7). Not yet run on Azure |
 | **Code** | [`narrative_engine/follows/`](../../narrative_engine/follows/): `topics.py` (source), `pipeline.py` (rules), `steps.py` (steps in the orchestrator); test doubles `devtools/follows.py`, `devtools/fake_decisions.py` |
-| **Tests** | `test_follows.py` (source, prefilter, gap, fire rule; the Chelsea–United recording live = backlog, restart, story so far, GraphQL, purge; no viewer text in the shared state; clip `Score` in the same call, clip-on topics, one `FollowClip` per verdict, `MomentClip` without a follow or decision model, a backend before migration 041) |
+| **Tests** | `test_follows.py` (source, prefilter, gap, fire rule; the Riverton Rovers–United recording live = backlog, restart, story so far, GraphQL, purge; no viewer text in the shared state; clip `Score` in the same call, clip-on topics, one `FollowClip` per verdict, `MomentClip` without a follow or decision model, a backend before migration 041) |
 | **Contract** | [Subscription targets](../../contracts/README.md#subscription-targets), [follow narratives](../../contracts/README.md#follow-narratives-kind-subscription), [follow clips](../../contracts/README.md#follow-clips-type-followclip), [key-event clips](../../contracts/README.md#key-event-clips-type-momentclip) |
 
 ## 1. Topics

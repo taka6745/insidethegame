@@ -1,4 +1,4 @@
-"""Test double of the feed's Event Hubs stream for one run of a checked-in recording (default Chelsea–United).
+"""Test double of the feed's Event Hubs stream for one run of a checked-in recording (default Riverton Rovers–United).
 
 MA1 (with fixture, runId, capabilities, branding), then per canonical event in seq order: POS
 samples up to its video time (POS first at equal times), MatchEvent v2, its MA3 rows (eventSeq).
@@ -10,10 +10,10 @@ from functools import cache
 from pathlib import Path
 
 RECORDINGS = Path(__file__).resolve().parents[2] / "data-generation" / "recordings"
-FIXTURES = ("chelsea-united", "arsenal-liverpool", "mancity-tottenham")
+FIXTURES = ("riverton-forgeham", "redcastle-portalbion", "skybridge-whitmore")
 KICKOFF = datetime(2026, 10, 20, 15, 0, tzinfo=timezone.utc)
-# Chelsea–United keeps the branding its tests were written against; other fixtures use their MA1's.
-TEAMS = {"chelsea": ("Chelsea", "CHE", "#001c68", "#0743b7"), "manutd": ("Man Utd", "MUN", "#c7142b", "#7b0015")}
+# Riverton Rovers–United keeps the branding its tests were written against; other fixtures use their MA1's.
+TEAMS = {"riverton": ("Riverton Rovers", "RVR", "#001c68", "#0743b7"), "forgeham": ("Forgeham", "FGU", "#c7142b", "#7b0015")}
 
 
 def stamp(t):
@@ -21,7 +21,7 @@ def stamp(t):
 
 
 @cache
-def sources(fixture="chelsea-united"):
+def sources(fixture="riverton-forgeham"):
     recording = json.loads((RECORDINGS / f"{fixture}-grf.json").read_text(encoding="utf-8"))
     lines = (RECORDINGS / f"{fixture}-grf.opta-stream.jsonl").read_text(encoding="utf-8").splitlines()
     return recording, [json.loads(line) for line in lines]
@@ -43,7 +43,7 @@ def event_v2(raw, match_id):
             "possession_id": raw["possessionId"], "qualifiers": q}
 
 
-def build(run="1a2b3c4d", kickoff=KICKOFF, fixture="chelsea-united"):
+def build(run="1a2b3c4d", kickoff=KICKOFF, fixture="riverton-forgeham"):
     """The run's messages in send order; matchId = {fixture}-{run}."""
     recording, opta = sources(fixture)
     match_id = f"{fixture}-{run}"
@@ -51,7 +51,7 @@ def build(run="1a2b3c4d", kickoff=KICKOFF, fixture="chelsea-united"):
     ma1 = {**opta[0], "matchId": match_id, "fixture": fixture, "sourceMatchId": recording["match_id"],
            "runId": f"{run}-0000-4000-8000-000000000000", "scheduledKickoff": stamp(kickoff),
            "timeStamp": stamp(kickoff - timedelta(minutes=1)), "capabilities": capabilities(opta[0])}
-    if fixture == "chelsea-united":
+    if fixture == "riverton-forgeham":
         ma1["branding"] = {t: {"primaryColour": p, "secondaryColour": s, "crestAssetId": t}
                            for t, (_, _, p, s) in TEAMS.items()}
         ma1["contestant"] = [{**c, "shortName": TEAMS[c["id"]][0], "code": TEAMS[c["id"]][1]} for c in opta[0]["contestant"]]

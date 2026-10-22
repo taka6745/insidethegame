@@ -25,6 +25,6 @@ Cairo is required by CairoSVG (`brew install cairo` on macOS or `libcairo2` on D
 
 ## Provenance
 
-Original project artwork generated with the built-in image tool on 18 October 2026, then rebuilt with native SVG. These three feature icons contain no Premier League, Microsoft or club marks. The authentic third-party brand assets requested later are separate in [league/](league/PROVENANCE.md) and are not subject to this reconstruction harness. Reference sheets and test outputs are development evidence and are not shipped to browsers.
+Original project artwork generated with the built-in image tool on 18 October 2026, then rebuilt with native SVG. These three feature icons contain no Elephant League, Microsoft or club marks. The authentic third-party brand assets requested later are separate in [league/](league/PROVENANCE.md) and are not subject to this reconstruction harness. Reference sheets and test outputs are development evidence and are not shipped to browsers.
 
 **Prompt:** Create a white three-column reference sheet with black monoline icons on a 24-unit grid: a vertical football pitch with halfway line, circle and penalty boxes; a rounded speech bubble with two lines; a bookmark with a plus sign. Use round caps/joins, consistent optical weight, simple geometry and generous spacing. No labels, gradients, shadows, texture or extra decoration.

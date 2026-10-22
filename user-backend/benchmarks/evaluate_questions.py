@@ -44,8 +44,8 @@ def check(case, body, match_id):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', default='http://localhost:18000')
-    parser.add_argument('--match-id', required=True, help='A finished run of the shipped Chelsea–United fixture')
-    parser.add_argument('--profile', default='chelsea-analytical')
+    parser.add_argument('--match-id', required=True, help='A finished run of the shipped Riverton Rovers–United fixture')
+    parser.add_argument('--profile', default='riverton-analytical')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
@@ -57,7 +57,7 @@ def main():
         listed = httpx.get(f'{args.url}/product/matches', timeout=30).raise_for_status().json()
         match = next((m for m in listed if m['match_id'] == args.match_id), None)
         if not match or match['status'] != 'finished' or match['fixture'] != suite['fixture']:
-            parser.error('Choose a finished run of the shipped Chelsea–United fixture. This runner never starts one.')
+            parser.error('Choose a finished run of the shipped Riverton Rovers–United fixture. This runner never starts one.')
         state = client.get('/state').raise_for_status().json()
         session = client.post('/chat/sessions', json={'profile_id': args.profile}).raise_for_status().json()
         if session['mode'] != 'local':

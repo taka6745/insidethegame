@@ -1,4 +1,4 @@
 {
-  "full_quality": ["arsenal-liverpool"],
+  "full_quality": ["redcastle-portalbion"],
   "secondary": {"video_bitrate": "1.75M", "maxrate": "2.5M", "bufsize": "4M"}
 }

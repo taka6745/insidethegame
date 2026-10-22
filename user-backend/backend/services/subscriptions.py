@@ -184,7 +184,7 @@ class SubscriptionService:
             snapshot, teams, players, storylines = await self._context(match_id, seq)
             follow = await asyncio.to_thread(self.repository.active, token)
             # The planner also knows the other live matches' teams and squads, so "follow City's pressing" or
-            # "follow Haaland" can be proposed there.
+            # "follow Edlund" can be proposed there.
             other_teams, other_players = await self._other_entities(match_id)
             here = self.registry.get(match_id)
             live = await self.cross.listing(here, snapshot) if self.cross else []
@@ -272,7 +272,7 @@ class SubscriptionService:
                 hits.append((found, other, info))
         if not hits:
             return None
-        # Each match resolves against its own names, so a shared word ("Manchester") can match in several: keep the
+        # Each match resolves against its own names, so a shared word (a town two clubs share) can match in several: keep the
         # one whose name fits the subject best, weighting words by rarity across every match searched.
         weight = rarity([(f['label'],) for f, _, _ in hits])
         found, other, info = max(hits, key=lambda hit: match_score(draft.subject, (hit[0]['label'],), weight))

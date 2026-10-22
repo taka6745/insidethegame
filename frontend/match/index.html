@@ -19,22 +19,17 @@
     <header class="masthead">
       <a
         class="league-logo"
-        href="https://www.premierleague.com/en"
-        aria-label="Premier League website"
+        href="/?choose"
+        aria-label="Elephant League matches"
         ><img
-          src="/assets/league/premier-league-white.svg"
-          width="116"
+          src="/assets/league/elephant-league-white.svg"
+          width="128"
           height="48"
-          alt="Premier League"
+          alt="Elephant League"
       /></a>
-      <nav class="league-nav" aria-label="Premier League">
-        <a href="https://www.premierleague.com/en/matches" class="active"
-          >Matches</a
-        ><a href="https://www.premierleague.com/en/tables">Table</a
-        ><a href="https://www.premierleague.com/en/stats">Statistics</a
-        ><a href="https://fantasy.premierleague.com/">Fantasy</a
-        ><a href="https://www.premierleague.com/en/news">News</a
-        ><a href="https://www.premierleague.com/en/clubs">Clubs</a>
+      <nav class="league-nav" aria-label="Elephant League">
+        <a href="/?choose" class="active">Matches</a
+        ><span>Table</span><span>Statistics</span><span>Clubs</span>
       </nav>
       <div class="audience-controls" id="audience-controls" role="group" aria-label="Your match perspective" hidden>
         <label class="sr-only" for="audience-bucket">Your perspective</label>
@@ -107,6 +102,12 @@
           <button id="reconnect" hidden>Reconnect ↗</button>
         </div>
         <p id="match-live-from" class="demo-live-from" hidden></p>
+        <div id="match-skip" class="demo-skip" hidden>
+          <label class="sr-only" for="match-skip-target">Skip ahead by</label>
+          <select id="match-skip-target"></select>
+          <button id="match-skip-go" class="text-button" type="button">Skip ahead</button>
+          <p id="match-skip-note" class="demo-live-from" role="status"></p>
+        </div>
 
       </div>
       <div id="notice" class="notice" role="alert" hidden></div>
@@ -115,7 +116,7 @@
           <section class="match-stage" id="match-stage" aria-label="Match stream" data-mode="live">
             <video id="match-video" playsinline preload="none" aria-label="Match footage" hidden></video>
             <video id="replay-video" playsinline muted preload="auto" aria-label="Replay footage" hidden></video>
-            <div id="replay-sting" class="replay-sting" aria-hidden="true" hidden><video id="replay-sting-video" playsinline muted preload="none"></video></div>
+            <div id="replay-sting" class="replay-sting" aria-hidden="true" hidden><video id="replay-sting-video" playsinline muted preload="none"></video><div class="league-sting"><span class="league-sting-panel"></span><span class="league-sting-streaks"></span><img class="league-sting-mark" src="/assets/league/elephant-league-white.svg" alt="" width="240" height="90"></div></div>
             <button id="pip-return" class="pip-return" type="button" aria-label="Back to live" hidden><span>Live</span></button>
             <div id="replay-overlay" class="replay-overlay" hidden>
               <span id="replay-badge" class="replay-badge" aria-hidden="true">Replay</span>
@@ -276,6 +277,6 @@
       </div>
       </div>
     </main>
-    <footer><span>Hackathon demo · Simulated matches with AI-generated insights · Not an official Premier League product</span><span><a href="/lab/">Developer lab ↗</a> · <a href="/dev/">Config ↗</a></span></footer>
+    <footer><span>Hackathon demo · Simulated matches in a fictional league with AI-generated insights</span><span><a href="/lab/">Developer lab ↗</a> · <a href="/dev/">Config ↗</a></span></footer>
   </body>
 </html>

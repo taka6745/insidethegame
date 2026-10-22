@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { DemoApi, DemoControls, demoMatches, mainToOpen, showLiveFrom } from "../match/demo.ts";
+import { DemoApi, DemoControls, demoMatches, mainToOpen, showLiveFrom, showSkip } from "../match/demo.ts";
 import { AudienceView } from "../match/audience-view.ts";
 import { stub } from "./support.ts";
 
@@ -79,6 +79,17 @@ test("while a demo is on the picker lists only its matches", () => {
   assert.equal(demoMatches(matches, false).length, 3);
 });
 
+test("seed-recording runs are never listed, and a live demo lists only its own runs", () => {
+  // A recording run stops at its hold point (20′): a viewer opening it would see the match freeze there.
+  const matches = [{ match_id: "demo", status: "live" }, { match_id: "rec", status: "live" }, { match_id: "old", status: "live" }];
+  assert.deepEqual(demoMatches(matches, false, null, new Set(), new Set(["rec"])).map((m) => m.match_id), ["demo", "old"]);
+  assert.deepEqual(demoMatches(matches, true, "demo", new Set(["demo"]), new Set(["rec"])).map((m) => m.match_id), ["demo"]);
+  const { document } = doc();
+  const controls = new DemoControls(document, stub<DemoApi>({}));
+  controls.render({ live: true, points: [], runs: [{ match_id: "demo" }], recording: [{ match_id: "rec" }] });
+  assert.deepEqual([[...controls.runs], [...controls.recording]], [["demo"], ["rec"]]);
+});
+
 test("a live demo lists its main game first and opens it unless the viewer came to choose another", () => {
   const matches = [{ match_id: "c" }, { match_id: "main" }, { match_id: "b", status: "finished" }];
   assert.deepEqual(demoMatches(matches, true, "main").map((m) => m.match_id), ["main", "c"]);
@@ -97,7 +108,7 @@ test("a live demo lists its main game first and opens it unless the viewer came 
   assert.equal(controls.main, null);
 });
 
-test("the audience bucket is fixed while the match is live", () => {
+test("viewers can change their team and style while the match is live", () => {
   const { document } = doc();
   const view = new AudienceView(document);
   view.connection(true);
@@ -105,7 +116,9 @@ test("the audience bucket is fixed while the match is live", () => {
   view.render(stub({ audience_buckets: buckets, match: { status: "scheduled" } }));
   assert.equal(view.select.disabled, false);
   view.render(stub({ audience_buckets: buckets, match: { status: "live" } }));
-  assert.equal(view.select.disabled, true);
+  assert.equal(view.select.disabled, false);
+  view.setBusy(true);
+  assert.equal(view.select.disabled, true);  // only while a change is in flight
 });
 
 import { DemoProgress, follow } from "../match/demo-progress.ts";
@@ -156,4 +169,55 @@ test("a match of a seeded demo says the story so far was generated earlier; othe
   assert.equal(from.hidden, true);
   await showLiveFrom(document, "m1", stub<DemoApi>({ state: async () => { throw new Error("no operator"); } }));
   assert.equal(from.hidden, true);
+});
+
+test("a match being recorded as a start point says it pauses there instead of looking frozen", async () => {
+  const { document } = doc();
+  const from = document.getElementById("match-live-from")!;
+  const state = { live: false, points: [], recording: [{ match_id: "rec" }] };
+  await showLiveFrom(document, "rec", stub<DemoApi>({ state: async () => state }));
+  assert.match(from.textContent ?? "", /being recorded as a demo start point and pauses there/);
+  assert.equal(from.hidden, false);
+});
+
+test("a demo control the browser cannot reach shows a plain sentence, never the network error", async () => {
+  const api = new DemoApi(async () => { throw new TypeError("Failed to fetch"); });
+  await assert.rejects(api.state(), (error: Error) => !/fetch/i.test(error.message) && /demo controls/.test(error.message));
+  // A script error inside Start shows a plain sentence; the operator's own refusal shows as it is.
+  const notices: string[] = [];
+  for (const start of [async () => { throw new TypeError("Cannot read properties of undefined (reading 'x')"); },
+    () => new DemoApi(async () => ({ ok: false, status: 409, json: async () => ({ detail: "Pick another start point." }) })).start("20")]) {
+    const { document } = doc();
+    const controls = new DemoControls(document, stub<DemoApi>({ start, state: async () => { throw new Error("no operator"); } }));
+    controls.notice = (message) => notices.push(message);
+    await controls.start();
+  }
+  assert.deepEqual(notices, ["The demo could not be changed. Try again shortly.", "Pick another start point."]);
+});
+
+test("Skip ahead shows in a playing demo's match, posts the target and says the story catches up", async () => {
+  const { nodes, document } = doc();
+  let click: (() => Promise<void>) | undefined;
+  const go = nodes.set("match-skip-go", new El()).get("match-skip-go")!;
+  Object.assign(go, { addEventListener: (_: string, listener: () => Promise<void>) => { click = listener; } });
+  const select = nodes.set("match-skip-target", new El()).get("match-skip-target")!;
+  const posted: unknown[] = [];
+  const state = { points: [], live: true, runs: [{ match_id: "m1" }], skips: [{ id: "20", label: "+20′" }] };
+  const api = new DemoApi(async (url, init) => {
+    if (url.endsWith("skip")) {
+      posted.push(JSON.parse(String(init.body)));
+      return { ok: true, status: 200, json: async () => ({ skipped_seconds: 1200, target: { label: "+20′" } }) };
+    }
+    return { ok: true, status: 200, json: async () => state };
+  });
+  await showSkip(document, "m1", api);
+  assert.equal(nodes.get("match-skip")!.hidden, false);
+  assert.deepEqual(select.children.map((option) => [option.value, option.textContent]), [["20", "+20′"]]);
+  select.value = "20";
+  select.selectedOptions = [select.children[0]];
+  await click!();
+  assert.deepEqual(posted, [{ target: "20" }]);
+  assert.match(nodes.get("match-skip-note")!.textContent, /Skipped 20 minutes/);
+  await showSkip(document, "other", api);  // not one of the demo's matches: no control
+  assert.equal(nodes.get("match-skip")!.hidden, true);
 });

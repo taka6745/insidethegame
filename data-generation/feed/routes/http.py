@@ -40,6 +40,15 @@ class StartPoint(BaseModel):
     seed: str | None = Field(default=None, max_length=100)
 
 
+class SkipTarget(BaseModel):
+    """Demo fast-forward target: whole match minutes, or a start point on the main game's clock."""
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(pattern=r"^[a-z0-9-]{1,20}$")
+    label: str = Field(min_length=1, max_length=40)
+    minutes: int | None = Field(default=None, ge=1, le=120)
+    point: str | None = Field(default=None, max_length=20)
+
+
 class DemoSettings(BaseModel):
     model_config = ConfigDict(extra="forbid")
     fixtures: list[str] = Field(min_length=1, max_length=20)
@@ -47,7 +56,13 @@ class DemoSettings(BaseModel):
     stagger_seconds: int = Field(ge=0, le=3600)
     max_active_runs: int = Field(ge=1, le=20)
     start_points: list[StartPoint] = Field(min_length=1, max_length=20)
+    skip_targets: list[SkipTarget] | None = Field(default=None, max_length=20)  # None: keep the saved ones
     expected_revision: int
+
+
+class DemoSkip(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    target: str = Field(max_length=20)
 
 
 class DemoStart(BaseModel):
@@ -90,6 +105,10 @@ def router(service, live_root):
         async def release(match_id: str, body: Release | None = None):
             return await service.release(match_id, (body or Release()).after_seconds)
 
+        @api.post("/demo/skip")
+        async def skip_demo(body: DemoSkip):
+            return await service.skip_demo(body.target)
+
     @api.get("/runs")
     async def runs():
         return await service.runs()
@@ -100,8 +119,10 @@ def router(service, live_root):
 
     @api.put("/demo")
     async def save_demo(body: DemoSettings):
-        return await service.save_demo_settings(body.model_dump(exclude={"expected_revision"}),
-                                                body.expected_revision)
+        settings = body.model_dump(exclude={"expected_revision"})
+        if settings["skip_targets"] is not None:
+            settings["skip_targets"] = [{k: v for k, v in t.items() if v is not None} for t in settings["skip_targets"]]
+        return await service.save_demo_settings(settings, body.expected_revision)
 
     @api.post("/demo/start")
     async def start_demo(response: Response, body: DemoStart | None = None):

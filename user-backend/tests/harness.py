@@ -19,7 +19,7 @@ from benchmarks.doubles.recording import FixtureEventSource
 from benchmarks.doubles.spadl import actions_from_events, page, raw_from_events
 
 ROOT = Path(__file__).resolve().parents[1]
-MATCH = 'chelsea-madrid-1a2b3c4d'
+MATCH = 'riverton-madrid-1a2b3c4d'
 KINDS = [('goals', ('goal',)), ('shots', ('shot', 'goal')), ('passes', ('pass',)), ('corners', ('corner',)),
          ('cards', ('card',)), ('tackles', ('tackle',))]
 
@@ -98,6 +98,8 @@ class Upstream:
         self.calls = Counter()
         self.canonical = False  # Whether DAB exposes canonicalEvents.
         self.spadl_lag = 0  # How many seqs ETL's SPADL watermark trails its seq watermark.
+        self.trends = []  # executeTrendsAtSeq rows served for every match and seq.
+        self.trend_seqs = []  # the seq each trend read asked for
         self.canonical_missing = set()  # Seqs ETL holds no canonical row for.
         self.transport = httpx.MockTransport(self._graphql)
         self.dab = EtlDab('http://etl-dab/graphql', transport=self.transport)
@@ -141,6 +143,9 @@ class Upstream:
             teams = match.source.spec['teams']
             rows = reference_stats(match.events(variables['s']), teams, match.source.spec.get('capabilities'))
             return httpx.Response(200, json={'data': {'executeStatsAtSeq': rows}})
+        if 'executeTrendsAtSeq' in query:
+            self.trend_seqs.append(variables['s'])
+            return httpx.Response(200, json={'data': {'executeTrendsAtSeq': self.trends}})
         if 'spadlActions' in query:
             self.calls['actions'] += 1
             match = self.matches.get(variables['m'])
@@ -216,7 +221,7 @@ def build(store, *, upstream=None, agent=None, planner=None, narratives=None, me
     return app, upstream, narratives
 
 
-def session(client, match_id=MATCH, profile='chelsea-analytical'):
+def session(client, match_id=MATCH, profile='riverton-analytical'):
     response = client.post(f'/lab/matches/{match_id}/chat/sessions', json={'profile_id': profile})
     assert response.status_code == 200, response.text
     return response.json()['session_token']

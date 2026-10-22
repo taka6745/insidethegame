@@ -9,7 +9,7 @@ from reference import pipeline
 from local_stream.processor import Output, StreamProcessor
 from local_stream.worker import StreamWorker
 
-STREAM = Path(__file__).resolve().parents[2] / "data-generation" / "recordings" / "chelsea-united-grf.opta-stream.jsonl"
+STREAM = Path(__file__).resolve().parents[2] / "data-generation" / "recordings" / "riverton-forgeham-grf.opta-stream.jsonl"
 MESSAGES = [json.loads(line) for line in STREAM.read_text(encoding="utf-8").splitlines()]
 
 
@@ -393,10 +393,10 @@ def test_v2_rows_watermark_and_status():
     assert repo.progress[V2_ID] == (len(expected["canonicalEvents"]), "finished")
     for table in ("matchTeams", "matchPlayers", "canonicalEvents", "possessionSamples", "rawEvents", "keyEvents"):
         assert canonical(repo.rows(table)) == canonical(expected[table]), table
-    team = next(r for r in repo.rows("matchTeams") if r["contestantId"] == "chelsea")
-    assert (team["position"], team["code"], team["primaryColour"]) == ("home", "CHE", "#001c68")
+    team = next(r for r in repo.rows("matchTeams") if r["contestantId"] == "riverton")
+    assert (team["position"], team["code"], team["primaryColour"]) == ("home", "RVR", "#001c68")
     match = repo.rows("matches")[0]
-    assert (match["fixture"], match["sourceMatchId"]) == ("chelsea-united", "product-demo-match")
+    assert (match["fixture"], match["sourceMatchId"]) == ("riverton-forgeham", "product-demo-match")
 
 
 def test_lost_events_hold_the_watermark_before_the_gap(caplog):

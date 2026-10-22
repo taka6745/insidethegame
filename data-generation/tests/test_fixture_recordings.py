@@ -1,4 +1,4 @@
-"""Shipped Arsenal–Liverpool and Manchester City–Tottenham recordings: integrity, facts and exports."""
+"""Shipped Redcastle Town–Port Albion and Skybridge City–Whitmore recordings: integrity, facts and exports."""
 
 from collections import Counter
 import hashlib
@@ -16,21 +16,21 @@ from reference import pipeline
 RECORDINGS = ROOT / "data-generation" / "recordings"
 
 FACTS = {
-    "arsenal-liverpool": {
+    "redcastle-portalbion": {
         "seed": 31, "score": [1, 0], "events": 10902, "f24Rows": 2428, "nudges": [217.12],
         "bounds": [(1, 0, 0), (1, 46, 18), (2, 45, 0), (2, 91, 20)],
-        "goals": [("arsenal-2", 46, 9)],
-        "cards": [("arsenal-9", "yellow"), ("liverpool-9", "yellow")],
+        "goals": [("redcastle-2", 46, 9)],
+        "cards": [("redcastle-9", "yellow"), ("portalbion-9", "yellow")],
         "counts": {"shot": 17, "save": 7, "corner": 3, "card": 2, "offside": 16, "foul": 26},
         "reference": {"shots": (10, 8), "shotsOnTarget": (5, 2), "corners": (2, 1), "yellowCards": (1, 1),
                       "redCards": (0, 0)},
     },
-    "mancity-tottenham": {
+    "skybridge-whitmore": {
         "seed": 43, "score": [1, 1], "events": 11295, "f24Rows": 2575, "nudges": [1019.12, 2590.08, 2909.72, 4604.12],
         "bounds": [(1, 0, 0), (1, 46, 47), (2, 45, 0), (2, 91, 19)],
-        "goals": [("mancity-4", 47, 50), ("mancity-3", 69, 30)],
-        "cards": [("mancity-9", "yellow"), ("tottenham-9", "yellow"), ("tottenham-7", "yellow"),
-                  ("tottenham-7", "second_yellow")],
+        "goals": [("skybridge-4", 47, 50), ("skybridge-3", 69, 30)],
+        "cards": [("skybridge-9", "yellow"), ("whitmore-9", "yellow"), ("whitmore-7", "yellow"),
+                  ("whitmore-7", "second_yellow")],
         "counts": {"shot": 9, "save": 4, "corner": 7, "card": 4, "offside": 8, "foul": 33},
         "reference": {"shots": (9, 1), "shotsOnTarget": (4, 0), "corners": (4, 3), "yellowCards": (1, 2),
                       "redCards": (0, 1)},

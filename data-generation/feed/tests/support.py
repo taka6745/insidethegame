@@ -10,8 +10,8 @@ RECORDINGS = Path(__file__).resolve().parents[2] / "recordings"
 
 
 @functools.cache
-def chelsea():
-    return load(RECORDINGS / "chelsea-united-grf.json")
+def riverton():
+    return load(RECORDINGS / "riverton-forgeham-grf.json")
 
 
 class FakeClock:
@@ -63,9 +63,11 @@ class FakeSink:
 class MemoryRepository:
     def __init__(self, clock):
         self.clock, self.catalogue, self.rows, self.tombstones, self.cutoff = clock, [], {}, set(), None
-        self.demo = {"fixtures": ["chelsea-united"], "main_fixture": "chelsea-united", "stagger_seconds": 120, "max_active_runs": 3,
+        self.demo = {"fixtures": ["riverton-forgeham"], "main_fixture": "riverton-forgeham", "stagger_seconds": 120, "max_active_runs": 3,
                      "start_points": [{"id": "kickoff", "label": "Kick-off", "period": 1, "minute": 0, "seed": None},
-                                      {"id": "20", "label": "20′", "period": 1, "minute": 20, "seed": None}], "revision": 1}
+                                      {"id": "20", "label": "20′", "period": 1, "minute": 20, "seed": None}],
+                     "skip_targets": [{"id": "10", "label": "+10′", "minutes": 10},
+                                      {"id": "to-20", "label": "20′", "point": "20"}], "revision": 1}
 
     def migrate(self):
         pass
@@ -111,8 +113,17 @@ class MemoryRepository:
     def save_demo_settings(self, settings, expected_revision):
         if expected_revision != self.demo["revision"]:
             return None
-        self.demo = {**settings, "revision": expected_revision + 1}
+        skips = settings.get("skip_targets")
+        self.demo = {**settings, "skip_targets": self.demo["skip_targets"] if skips is None else skips,
+                     "revision": expected_revision + 1}
         return dict(self.demo)
+
+    def shift_kickoff(self, match_id, seconds):
+        row = next((r for r in self.rows.values() if r["match_id"] == match_id and r["status"] != "finished"), None)
+        if row is None:
+            return None
+        row["kickoff"] -= timedelta(seconds=seconds)
+        return dict(row)
 
     def delete_runs(self, match_ids):
         doomed = [k for k, r in self.rows.items() if r["match_id"] in match_ids]

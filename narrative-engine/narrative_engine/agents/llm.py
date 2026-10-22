@@ -137,14 +137,37 @@ AGENTS = {"summary": ("minute-summariser", "Summarises one closed match minute")
 
 
 class LLMAgents:
-    def __init__(self, settings, http_client=None):
-        self.settings, self.clients, self.agents = settings, [], {}
-        for role, (name, description) in AGENTS.items():
-            model = getattr(settings, role)
-            client = chat_client(model, settings, http_client)
-            self.clients.append(client)
-            self.agents[role] = Agent(client=client, name=name, description=description,
-                                      default_options={"reasoning_effort": model.effort} if model.effort else None)
+    """`roles` (optional): the user backend's model per role (`GET /model-roles`, edited under /dev/config/models).
+    A role with a deployment runs on that deployment at the same endpoint with its effort; an empty one, or an
+    unreachable backend, keeps this deployment's environment settings."""
+
+    def __init__(self, settings, http_client=None, roles=None):
+        self.settings, self.http_client, self.roles = settings, http_client, roles
+        self.clients, self.agents, self.models = [], {}, {}
+        for role in AGENTS:
+            self._build(role, getattr(settings, role))
+
+    def _build(self, role, model):
+        name, description = AGENTS[role]
+        client = chat_client(model, self.settings, self.http_client)
+        self.clients.append(client)
+        self.models[role] = model
+        self.agents[role] = Agent(client=client, name=name, description=description,
+                                  default_options={"reasoning_effort": model.effort} if model.effort else None)
+
+    async def _apply_roles(self, role):
+        if self.roles is None:
+            return
+        try:
+            override = (await self.roles.get())["value"]["engine"][role]
+        except Exception:  # unreachable or malformed: keep the current model
+            return
+        base = getattr(self.settings, role)
+        wanted = (ModelSettings(override["deployment"], base.base_url, base.api_key, override.get("effort") or None)
+                  if override.get("deployment") else base)
+        current = self.models[role]
+        if (wanted.model, wanted.effort) != (current.model, current.effort):
+            self._build(role, wanted)
 
     async def aclose(self):
         for client in self.clients:
@@ -152,6 +175,7 @@ class LLMAgents:
 
     async def _run(self, role, messages):
         """One agent run: (text, model that answered, token usage)."""
+        await self._apply_roles(role)
         agent = self.agents[role]
         try:
             response = await agent.run(messages)
@@ -161,7 +185,7 @@ class LLMAgents:
         tokens = {"prompt_tokens": usage.get("input_token_count") or 0,
                   "completion_tokens": usage.get("output_token_count") or 0,
                   "total_tokens": usage.get("total_token_count") or 0} if usage else None
-        model = getattr(self.settings, role).recorded(getattr(response.raw_representation, "model", None))
+        model = self.models[role].recorded(getattr(response.raw_representation, "model", None))
         return response.text or "", model, tokens
 
     async def _summary(self, role, prompt, variables):

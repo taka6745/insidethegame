@@ -46,6 +46,6 @@
 | Replay | SPADL actions | Used by |
 | --- | --- | --- |
 | `tests/fixtures/itg-syn-0001.jsonl` (synthetic seeder match; no canonical seqs, so MA3 `seq` stands in for `eventSeq`) | `tests/fixtures/itg-syn-0001-spadl.json`, written by `tools/spadl_fixture.py` with the ETL's converter | orchestrator, GraphQL and service tests |
-| Chelsea–United recording (`data-generation/recordings/`) | the ETL's `etl/tests/fixtures/spadl-chelsea-united.json`; golden stats `catalogue-golden.json` | render snapshots, whole-match backlog-vs-live run |
+| Riverton Rovers–United recording (`data-generation/recordings/`) | the ETL's `etl/tests/fixtures/spadl-riverton-forgeham.json`; golden stats `catalogue-golden.json` | render snapshots, whole-match backlog-vs-live run |
 
 A full fake-agent run over the GraphQL client against a fake DAB gives the same prompts as the fixture run.

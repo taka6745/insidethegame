@@ -6,8 +6,8 @@ from harness import Running
 from test_product import path, start
 
 ORIGINAL_PROFILES = [
-    {'id': 'chelsea-analytical', 'display_name': 'Home analyst', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
     {'id': 'neutral-simple', 'display_name': 'New viewer', 'selections': {'team': 'neutral', 'fan_style': 'simple'}},
+    {'id': 'riverton-analytical', 'display_name': 'Home analyst', 'selections': {'team': 'home', 'fan_style': 'analytical'}},
     {'id': 'united-casual', 'display_name': 'Away fan', 'selections': {'team': 'away', 'fan_style': 'casual'}}]
 
 
@@ -65,13 +65,13 @@ def test_profiles_editor_adds_edits_and_removes_with_revision_checks(store, prof
         assert body['profiles'] == ORIGINAL_PROFILES
         assert run.client.get('/dev/profiles', headers={'If-None-Match': tag}).status_code == 304
         removed = start(run.client, profile='united-casual')['session_token']
-        edited = [{**ORIGINAL_PROFILES[0], 'display_name': 'Blues analyst'}, ORIGINAL_PROFILES[1],
+        edited = [{**ORIGINAL_PROFILES[1], 'display_name': 'Blues analyst'}, ORIGINAL_PROFILES[0],
                   {'id': 'away-experienced', 'display_name': 'Away regular', 'selections': {'team': 'away', 'fan_style': 'experienced'}}]
         saved = run.client.put('/dev/profiles', json={'expected_revision': body['revision'], 'profiles': edited})
         assert saved.status_code == 200 and saved.json() == {
             'revision': body['revision'] + 1, 'profiles': sorted(edited, key=lambda p: p['id'])}
         assert [p['id'] for p in run.client.get('/product/profiles').json()['profiles']] == [
-            'away-experienced', 'chelsea-analytical', 'neutral-simple']
+            'away-experienced', 'neutral-simple', 'riverton-analytical']
         # Stale revision or ETag: refused, nothing written.
         assert run.client.put('/dev/profiles', json={'expected_revision': body['revision'], 'profiles': edited}).status_code == 409
         assert run.client.put('/dev/profiles', json={'profiles': edited}, headers={'If-Match': tag}).status_code == 409
@@ -99,7 +99,8 @@ def test_profiles_follow_renamed_layers(store, profiles_restored):
                    for p in ORIGINAL_PROFILES]
         assert run.client.put('/dev/profiles', json={'expected_revision': revision, 'profiles': renamed}).status_code == 200
         data = start(run.client, profile='united-casual')
-        assert data['audience'] == {'bucket_id': 'away:casual', 'selections': {'side': 'away', 'fan_style': 'casual'}}
+        assert data['audience'] == {'bucket_id': 'away:casual',
+                                    'selections': {'side': 'away', 'fan_style': 'casual', 'length': 'standard'}}
         # The supported team comes from the option's `{away}` label, not from a layer named `team`.
         assert data['snapshot']['profile']['team'] != 'neutral'
 

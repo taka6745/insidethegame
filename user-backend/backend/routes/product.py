@@ -7,7 +7,7 @@ from fastapi import APIRouter, Header, WebSocket, WebSocketDisconnect
 from backend.domain import RuleError
 from backend.models.viewer_audience import ViewerAudience
 from .audiences import cached_json
-from .questions import SessionRequest, MessageRequest
+from .questions import ViewerSessionRequest, MessageRequest
 
 
 async def stream_product(ws, service, match_id, token):
@@ -76,8 +76,8 @@ def product_router(service):
         return cached_json(*await service.prices(), if_none_match)
 
     @router.post('/matches/{match_id}/sessions')
-    async def start(match_id: str, body: SessionRequest):
-        return await service.start(match_id, body.profile_id)
+    async def start(match_id: str, body: ViewerSessionRequest):
+        return await service.start(match_id, body.profile_id, body.viewer_id)
 
     @router.get(session)
     async def bootstrap(match_id: str, token: UUID):

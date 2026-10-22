@@ -1,11 +1,11 @@
-"""A fake-agent run over the whole Chelsea–United recording with its SPADL actions
-(tests/chelsea_united.py; synthetic). Live, the ETL holds only what has arrived when each
+"""A fake-agent run over the whole Riverton Rovers–United recording with its SPADL actions
+(tests/riverton_forgeham.py; synthetic). Live, the ETL holds only what has arrived when each
 notification is sent; as a backlog it already holds the whole match. Both runs must build the
 same prompts, so the engine reads nothing past each step's horizon and its output does not
 depend on how far behind it runs."""
 import asyncio
 
-import chelsea_united
+import riverton_forgeham
 from narrative_engine.devtools.fake_agents import FakeAgents
 from narrative_engine.core.models import MatchClock, parse_notification
 from narrative_engine.core.orchestrator import MatchOrchestrator
@@ -63,14 +63,14 @@ class EtlAsOf(FixtureMatchData):
 
 
 def run(backlog):
-    data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(), actions_path=chelsea_united.ACTIONS,
-                   keys=chelsea_united.key_rows())
+    data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
+                   keys=riverton_forgeham.key_rows())
     agents, store = FakeAgents(), MemoryStore()
-    engine = MatchOrchestrator(chelsea_united.MATCH, data, agents, store, MemorySink(store),
+    engine = MatchOrchestrator(riverton_forgeham.MATCH, data, agents, store, MemorySink(store),
                                targets=StaticTargets(default_targets()[:3]))
 
     async def go():
-        for body, seq in chelsea_united.timeline():
+        for body, seq in riverton_forgeham.timeline():
             data.limit = None if backlog else seq
             await engine.record(parse_notification(body))
             if not backlog:
@@ -78,7 +78,7 @@ def run(backlog):
         data.limit = None
         await engine.work()
     asyncio.run(go())
-    return agents.calls, asyncio.run(store.narratives(chelsea_united.MATCH)), engine.cp["status"]
+    return agents.calls, asyncio.run(store.narratives(riverton_forgeham.MATCH)), engine.cp["status"]
 
 
 def test_backlog_builds_the_same_prompts_as_live():
@@ -92,4 +92,4 @@ def test_backlog_builds_the_same_prompts_as_live():
     shown = sum(line.startswith(("shot, ", "shot_penalty, ", "shot_freekick, ")) for line in lines)
     assert shown == 14  # every SPADL shot of the match, each in exactly one minute summary
     authors = [v for a, v in calls if a == "author"]
-    assert any("Score: Chelsea (home) 1 - 1 Manchester United (away)" in v["game_state_statistics"] for v in authors)
+    assert any("Score: Riverton Rovers (home) 1 - 1 Forgeham United (away)" in v["game_state_statistics"] for v in authors)

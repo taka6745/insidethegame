@@ -48,6 +48,10 @@ variable "models" {
     # generic, so a different model is a change here only. GlobalStandard quota in Australia East: 250K TPM, shared
     # with the backend's `questions` (130K: cross-match questions carry every live match; 50K hit 429).
     "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 120 }
+    # Alternatives any engine or backend role can switch to live under /dev/config/models (PLAN.md §12 M10); the
+    # backend reaches them on this account too. Quota in Australia East: luna 250K, mini 1000K TPM.
+    "gpt-6-luna" = { version = "2026-09-22", capacity = 100 }
+    "gpt-5-mini" = { version = "2025-08-07", capacity = 100 }
     # Story-follow triggers and the authors' claim checks (narrative_engine/decisions, SystemOne API). Capacity is
     # requests per minute (DataZoneStandard quota in Australia East: 60).
     "decision-1" = { model = "Microsoft-Decision-1", version = "1", capacity = 50, format = "Microsoft", sku = "DataZoneStandard" }

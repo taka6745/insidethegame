@@ -1,8 +1,8 @@
 # Recorded-match commentary
 
-**Historical test material.** Bound to the earlier 90-minute Chelsea 2–1 Manchester United GRF recording (seed 37, rendered before [scripted tactics](../../data-generation/docs/components/grf-demo.md#4-scripted-tactics); [event contract](../../data-generation/docs/opta-events.md)), kept byte for byte in [`archive/chelsea-united-grf.json`](archive/chelsea-united-grf.json). Its Opta stream export (`archive/chelsea-united-grf.opta-stream.jsonl`, from `grf_demo.opta_stream`) sits beside it for the backend's SPADL double. The shipped `data-generation/recordings/chelsea-united-grf.json` is a newer match; these fixtures do not describe it. They hold 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
+**Historical test material.** Bound to the earlier 90-minute Riverton Rovers 2–1 Forgeham United GRF recording (seed 37, rendered before [scripted tactics](../../data-generation/docs/components/grf-demo.md#4-scripted-tactics); [event contract](../../data-generation/docs/opta-events.md)), kept byte for byte in [`archive/riverton-forgeham-grf.json`](archive/riverton-forgeham-grf.json). Its Opta stream export (`archive/riverton-forgeham-grf.opta-stream.jsonl`, from `grf_demo.opta_stream`) sits beside it for the backend's SPADL double. The shipped `data-generation/recordings/riverton-forgeham-grf.json` is a newer match; these fixtures do not describe it. They hold 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
 
-Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or an actual Premier League result. No running service serves them; backend tests and the replay benchmark read them.
+Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or an actual Elephant League result. No running service serves them; backend tests and the replay benchmark read them.
 
 ```text
 commentary-text.json (authored prose) + ETL canonical export
@@ -45,7 +45,7 @@ Minute IDs are `p{period}-m{minute}`; `minute` is the 1-based broadcast minute (
     "release": { "cursor": 5702, "period": 1, "clock_seconds": 2820, "video_seconds": 2702.4, "prefix_digest": "<sha256>" },
     "evidence": [ /* canonical ETL events: goals so far + this minute's decisions */ ],
     "recap": "…",
-    "narratives": [{ "bucket_id": "home:simple", "text": "…", "stat_ids": ["chelsea:goals", "…"] }]
+    "narratives": [{ "bucket_id": "home:simple", "text": "…", "stat_ids": ["riverton:goals", "…"] }]
   }],
   "tiers": [{ "id": "…", "tier": "half", "period": 1, "start_seconds": 0, "end_seconds": 2940,
               "child_ids": ["…"], "summary": "…", "release": { ... } }],

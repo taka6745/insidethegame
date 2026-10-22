@@ -34,8 +34,8 @@ flowchart LR
 
 *In short: a match run is a `matchId`; a point in it is `(matchId, seq)`.*
 
-- **`matchId`** = `{fixture}-{first 8 hex of runId}`, ≤ 64 chars, e.g. `chelsea-united-1a2b3c4d`. Only the feed mints it (`POST /runs`). Owners learn about a match from its MA1 on the stream.
-- **Contestant ids** are stable club slugs (`chelsea`, `manutd`) across fixtures and runs, so stat ids and saved pins stay valid.
+- **`matchId`** = `{fixture}-{first 8 hex of runId}`, ≤ 64 chars, e.g. `riverton-forgeham-1a2b3c4d`. Only the feed mints it (`POST /runs`). Owners learn about a match from its MA1 on the stream.
+- **Contestant ids** are stable club slugs (`riverton`, `forgeham`) across fixtures and runs, so stat ids and saved pins stay valid.
 - **`seq`** counts canonical events 1, 2, 3… per match with no gaps, in send order. `seq 0` means MA1 only. MA3 `seq` and POS `sampleId` also count 1, 2, 3… per match in send order; the Azure watermark relies on all three ([Stream Analytics](../etl/docs/components/stream-analytics.md#5-watermarks)).
 - **Snapshot** = `(matchId, seq)`; its string id is `{matchId}:{seq}`. It replaces `run_id`, `recording_hash` and `cursor`. Everything derived cites it: `statsAtSeq` rows, backend cards and projections, and question answers. Engine narratives add `eventSeq` (the watermark they were written from); their own `seq` stays the per-bucket narrative sequence.
 - Data at `(matchId, s)` is immutable once `matchWatermarks.seq ≥ s` (SPADL actions and stats: once `spadlSeq ≥ s`). Read at `s` only when `s ≤` the watermark. Data past the watermark is unreachable.
@@ -47,10 +47,10 @@ flowchart LR
 The feed sends one per canonical event on `match-events` (partition key `matchId`), before that event's MA3 rows. It has no `feed` key, so MA consumers skip it. Consumers: the backend (group `user-backend`) for the snapshot clock and periods, the viewer and lab event ticker and gap recovery; ETL stores it (`canonicalEvents`). Since 2026-10-21 neither the catalogue (§4) nor backend custom rules count it; the ticker still shows its canonical `event_type` ([why](../user-backend/docs/decisions.md#3-open-items)).
 
 ```json
-{"type": "MatchEvent", "version": 2, "matchId": "chelsea-united-1a2b3c4d", "seq": 2,
+{"type": "MatchEvent", "version": 2, "matchId": "riverton-forgeham-1a2b3c4d", "seq": 2,
  "timeStamp": "2026-10-20T15:00:00.240Z", "synthetic": true,
- "event": {"event_id": "grf-che-utd-2", "match_id": "chelsea-united-1a2b3c4d", "revision": 1,
-   "event_type": "touch", "team_id": "manutd", "player_id": "manutd-1", "body_part": "left_foot",
+ "event": {"event_id": "grf-rvr-fgu-2", "match_id": "riverton-forgeham-1a2b3c4d", "revision": 1,
+   "event_type": "touch", "team_id": "forgeham", "player_id": "forgeham-1", "body_part": "left_foot",
    "period": 1, "match_time_seconds": 0, "outcome": null, "distance_metres": null, "deleted": false,
    "sequence": 2, "video_seconds": 0.24, "x": 50.0, "y": 50.0, "possession_id": 1,
    "qualifiers": {"bodyPart": "left_foot"}}}
@@ -101,8 +101,8 @@ query ($m: String!, $s: Int!) {
     hasNextPage endCursor } }
 ```
 ```json
-{"data": {"spadlActions": {"items": [{"actionId": 0, "periodId": 1, "timeSeconds": 2.0, "teamId": "manutd",
-  "playerId": "manutd-1", "typeName": "pass", "resultName": "success", "bodypartName": "foot_left",
+{"data": {"spadlActions": {"items": [{"actionId": 0, "periodId": 1, "timeSeconds": 2.0, "teamId": "forgeham",
+  "playerId": "forgeham-1", "typeName": "pass", "resultName": "success", "bodypartName": "foot_left",
   "startX": 60.480000000000004, "startY": 33.184, "endX": 55.019999999999996, "endY": 26.520000000000003, "startZone": "middle_third",
   "endZone": "middle_third", "seq": 7, "finalSeq": 12, "clockSeconds": 2.0, "videoSeconds": 2.8}, …],
   "hasNextPage": true, "endCursor": "…"}}}
@@ -122,13 +122,13 @@ query ($m: String!) {
 }
 ```
 ```json
-{"data": {"matches": {"items": [{"matchId": "chelsea-united-1a2b3c4d", "fixture": "chelsea-united",
+{"data": {"matches": {"items": [{"matchId": "riverton-forgeham-1a2b3c4d", "fixture": "riverton-forgeham",
   "sourceMatchId": "product-demo-match", "runId": "1a2b3c4d-…", "status": "live",
-  "scheduledKickoff": "2026-10-20T15:00:00.000Z", "synthetic": true, "description": "Chelsea v Manchester United",
+  "scheduledKickoff": "2026-10-20T15:00:00.000Z", "synthetic": true, "description": "Riverton Rovers v Forgeham United",
   "capabilities": "{\"video\":true,\"possessionSamples\":true,…}",
-  "teams": {"items": [{"contestantId": "chelsea", "position": "home", "name": "Chelsea", "shortName": "Chelsea",
-    "code": "CHE", "knownNames": "[\"the Blues\"]", "primaryColour": "#001c68", "secondaryColour": "#0743b7", "crestAssetId": "chelsea"}, …]},
-  "players": {"items": [{"playerId": "chelsea-1", "contestantId": "chelsea", "name": "Cole Palmer",
+  "teams": {"items": [{"contestantId": "riverton", "position": "home", "name": "Riverton Rovers", "shortName": "Riverton Rovers",
+    "code": "RVR", "knownNames": "[\"the Blues\"]", "primaryColour": "#001c68", "secondaryColour": "#0743b7", "crestAssetId": "riverton"}, …]},
+  "players": {"items": [{"playerId": "riverton-1", "contestantId": "riverton", "name": "Kai Ashworth",
     "shirtNumber": 10, "position": "FW", "starter": true}, …]}}]}}}
 ```
 
@@ -140,7 +140,7 @@ query ($ids: [String!]) {
 }
 ```
 ```json
-{"data": {"matchWatermarks": {"items": [{"matchId": "chelsea-united-1a2b3c4d", "seq": 812, "spadlSeq": 812, "periodId": 1,
+{"data": {"matchWatermarks": {"items": [{"matchId": "riverton-forgeham-1a2b3c4d", "seq": 812, "spadlSeq": 812, "periodId": 1,
   "clockSeconds": 402, "videoSeconds": 402.88, "eventTime": "2026-10-20T15:06:42.880Z"}]}}}
 ```
 
@@ -158,7 +158,7 @@ query ($m: String!, $s: Int!) {
   {"statId": "all:goals", "kind": "goals", "contestantId": null, "label": "Both teams goals", "value": 1,
    "available": true, "unit": "", "definition": "Successful SPADL shots (shot, shot_freekick, shot_penalty) plus …",
    "eventTypes": "[\"shot\", \"shot_freekick\", \"shot_penalty\"]", "complete": true},
-  {"statId": "chelsea:possession", "kind": "possession", "contestantId": "chelsea", "label": "Chelsea possession",
+  {"statId": "riverton:possession", "kind": "possession", "contestantId": "riverton", "label": "Riverton Rovers possession",
    "value": 53.1, "available": true, "unit": "%", "definition": "Share of measured …", "eventTypes": "[]", "complete": true}]}}
 ```
 
@@ -168,7 +168,7 @@ query ($m: String!, $s: Int!) {
 
 *In short: 42 stat kinds × 3 scopes = 126 stat ids, defined on SPADL actions; ids never change meaning without a row below.*
 
-Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`, `chelsea:possession`). The backend's card defaults and fallbacks and saved pins (`standard_stat_id`) store these ids. A kind keeps its id when the concept is the same (definition and value may change, recorded below); a new stat gets a new kind; a retired one stays served with `available: false`.
+Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`, `riverton:possession`). The backend's card defaults and fallbacks and saved pins (`standard_stat_id`) store these ids. A kind keeps its id when the concept is the same (definition and value may change, recorded below); a new stat gets a new kind; a retired one stays served with `available: false`.
 
 **Since 2026-10-21 the catalogue counts SPADL actions** (`spadlActions` with `finalSeq ≤ seq`, §3), converted from MA3, instead of canonical MatchEvent v2 events. Cards (MA3 card rows) and possession (POS samples) stay outside SPADL. MA3 has no revisions in this feed, so canonical corrections no longer change stats. Migrations `008_spadl_catalogue.sql` (definitions) and `009_spadl_stats_staged.sql` (staged procedure, VAR overturns) replace `004`'s table and procedure; Python twin [catalogue.py](../etl/reference/catalogue.py); golden values `etl/tests/fixtures/catalogue-golden.json`.
 
@@ -190,7 +190,7 @@ Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`
 
 **Old → new.** Values at full time, `all/home/away`, on the recordings re-rendered 2026-10-22; n/a unavailable. **Bold**: the move to SPADL (2026-10-21) changed the kind's value on that recording; "was A → B" are its canonical and SPADL values on the previous render (the before values belong to the previous renders), other kinds were equal there. "Pass family" = `pass cross throw_in freekick_crossed freekick_short corner_crossed corner_short goalkick`; "shot family" = `shot shot_freekick shot_penalty`.
 
-| # | Kind | Before (canonical events) | Now (SPADL) | Chelsea–United | Arsenal–Liverpool | Man City–Tottenham |
+| # | Kind | Before (canonical events) | Now (SPADL) | Riverton Rovers–United | Redcastle Town–Port Albion | Skybridge–Whitmore |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `goals` | goal | shot, shot_freekick, shot_penalty success + opponent's owngoal − VAR overturns | 2/1/1 | 1/1/0 | 2/1/1 |
 | 2 | `shots` | shot, goal | shot, shot_freekick, shot_penalty | 14/9/5 | 18/10/8 | 10/9/1 |
@@ -240,11 +240,11 @@ The backend serves unavailable rows (retired kinds, missing channels) as unavail
 Why values changed with SPADL (measured on the previous renders):
 - `interceptions`: SPADL's interception includes blocked passes (Opta 74), which the canonical catalogue did not count.
 - `offsides`: SPADL marks the offside pass (Opta 2), credited to the passing team. The MA3 export sends one per offside call, by the offside team (data-generation/docs/opta-events.md), so the values equalled the canonical ones.
-- `passes`, `pass_accuracy`: where no pass of the offside team was flagged (a deflection or loose touch put the player offside), its last touch becomes that offside pass: 4 more passes in Arsenal–Liverpool and 2 in Man City–Tottenham, all unsuccessful.
+- `passes`, `pass_accuracy`: where no pass of the offside team was flagged (a deflection or loose touch put the player offside), its last touch becomes that offside pass: 4 more passes in Redcastle Town–Port Albion and 2 in Skybridge–Whitmore, all unsuccessful.
 - `saves`: SPADL's keeper_save is every Opta save event, including outfield blocks and stops of off-target shots, which the canonical catalogue excluded. `spadlActions.defensiveBlock` and `fromShotOffTarget` mark those rows; `shots_saved` (42) counts only real goalkeeper saves and equalled the old `saves` values. The backend's question agent uses `shots_saved` for "saves" (custom rules: `save_kind` `save`).
 - `kick_offs`, `ball_recoveries`, `aerials_won`: no SPADL action (a kick-off is a pass; a ball recovery becomes a dribble or is dropped; aerial duels are not actions), so retired. Old values above.
 - Every other old kind had the same values on all three previous renders.
-- Man City–Tottenham's 47′ goal is a Rúben Dias own goal (a City `bad_touch`, result `owngoal`; counted for Tottenham), not a Tottenham attempt.
+- Skybridge–Whitmore's 47′ goal is a Joaquín Esteller own goal (a City `bad_touch`, result `owngoal`; counted for Whitmore), not a Whitmore attempt.
 
 ## 4b. Trend definitions
 
@@ -309,8 +309,8 @@ The seed's `definition` and `evidence` texts are served as written.
 
 ```http
 POST /admin/matches/purge
-{"match_id": "chelsea-united-1a2b3c4d"}     or     {"all": true}
-→ 200 {"match_ids": ["chelsea-united-1a2b3c4d"], "purged": {"<store>": <rows>, …}}
+{"match_id": "riverton-forgeham-1a2b3c4d"}     or     {"all": true}
+→ 200 {"match_ids": ["riverton-forgeham-1a2b3c4d"], "purged": {"<store>": <rows>, …}}
 ```
 
 | Owner | In Docker | Removes | Tombstones in |
@@ -345,12 +345,13 @@ Internal `feed:8000`; nginx proxies `/feed-api/` only for the developer screen.
 
 | Route | Body → result |
 | --- | --- |
-| `GET /recordings` | `[{"fixture": "chelsea-united", "source_match_id": "product-demo-match", "description": "…", "teams": [{"id": "chelsea", "name": "Chelsea", "position": "home"}, …], "duration_seconds": 5544.28, "capabilities": {…}, "synthetic": true}]`, catalogue metadata only, never events or media. |
-| `POST /runs` | `{"fixture": "chelsea-united", "kickoff": "next-minute"}` or an ISO-8601 UTC time → `201 {"run_id", "match_id", "fixture", "kickoff", "status": "scheduled"}`. `404` unknown fixture, `422` past kickoff. `next-minute` = the first whole UTC minute ≥ now + 60 s, so MA1 leads by about 60 s. Several runs, including of one fixture, may run at once. |
+| `GET /recordings` | `[{"fixture": "riverton-forgeham", "source_match_id": "product-demo-match", "description": "…", "teams": [{"id": "riverton", "name": "Riverton Rovers", "position": "home"}, …], "duration_seconds": 5544.28, "capabilities": {…}, "synthetic": true}]`, catalogue metadata only, never events or media. |
+| `POST /runs` | `{"fixture": "riverton-forgeham", "kickoff": "next-minute"}` or an ISO-8601 UTC time → `201 {"run_id", "match_id", "fixture", "kickoff", "status": "scheduled"}`. `404` unknown fixture, `422` past kickoff. `next-minute` = the first whole UTC minute ≥ now + 60 s, so MA1 leads by about 60 s. Several runs, including of one fixture, may run at once. |
 | `GET /runs` | `[{"run_id", "match_id", "fixture", "kickoff", "status": "scheduled" \| "live" \| "finished", "seq", "video_seconds"}]`. Purged runs are gone. |
 | `POST /admin/matches/purge` | §5. |
-| `GET /demo`, `PUT /demo` | Demo settings: `fixtures` (main first), `main_fixture` (default `arsenal-liverpool`; starts first, the viewer opens it), `stagger_seconds`, `max_active_runs`, `start_points` (`id`, `label`, `period`, `minute`, `seed`); `PUT` adds `expected_revision` (`409` when stale). |
+| `GET /demo`, `PUT /demo` | Demo settings: `fixtures` (main first), `main_fixture` (default `redcastle-portalbion`; starts first, the viewer opens it), `stagger_seconds`, `max_active_runs`, `start_points` (`id`, `label`, `period`, `minute`, `seed`); `PUT` adds `expected_revision` (`409` when stale). |
 | `POST /demo/start` | `{"point": "kickoff"}` → `201 {"started": true, "point", "runs"}`; while any run is scheduled or live `200 {"started": false, "runs"}` (one demo under concurrent calls). Purges the feed's finished runs first. A point after kick-off without a `seed` is `409`. |
+| `POST /demo/skip` (`DEMO_SEEDS=1` only) | `{"target": "20"}` → `200 {"skipped_seconds", "target", "runs"}`: every unfinished demo run's clock moves on by the same whole minutes (a `skip_targets` entry: `minutes`, or a start `point` read on the main game's clock); each run then sends what became due at once in capped sends and publishes video up to its new clock; matchIds stay. `409` with no playing demo, while a seed is recorded or when already past the target; `404` unknown target; `403` without `DEMO_SEEDS`. |
 | `POST /runs/{match_id}/release` | `{"after_seconds": 5}` → the run that waited for its seed starts, its clock reading the start point `after_seconds` from now; idempotent. |
 | `GET /health` | Readiness. |
 
@@ -360,7 +361,7 @@ Seeds (PLAN.md §10.6): `POST /runs` also takes `hold_point` (a recording run se
 
 ### 7a. Demo control (public)
 
-`local/demo_control.py serve` (Compose `demo-control`); nginx exposes `/demo-api/{start,cancel,state,status}` with no login. `start` purges finished matches from ETL, engine and backend, then calls the feed's `/demo/start`; `cancel` purges every match (`all`) from every owner (§5 order) when the feed lists any run; start and cancel answer at once (`202 {"accepted": true, "pending"}`; `200` when a demo is already on or nothing is there to cancel; `409` at once for a recording or a stale seed) and then run one after another; `state` → `{"points": [{"id", "label", "ready"}], "live", "runs", "live_from", "main_fixture", "main_match_id", "pending", "last"}` (`pending`: queued actions; `last`: how the last start or cancel ended, `{"action", "ok", …}` or `{"ok": false, "status", "detail"}`, which the viewer polls for) (`live_from`: the start point's label when the demo began from a seed; `main_match_id`: the live demo's main game, which the viewer opens by default, while `/?choose` keeps the picker for switching); a seeded `start` restores ETL, engine and backend for each waiting run, then releases them staggered (main game first), or purges them and answers `503` (`409` for a seed of another format, schema or seq: record it again); while a seed is recorded `start` is `409` and `state` omits its held runs; `status` → `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer (PLAN.md §10.6). Start and cancel are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop, which the ingress appends; behind `edge-proxy/` a Cloudflare edge node); `429` over the limit. Capture refuses held runs that stop at another start point (`held_at` on feed runs). Overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`.
+`local/demo_control.py serve` (Compose `demo-control`); nginx exposes `/demo-api/{start,cancel,skip,state,status}` with no login. `skip {target}` forwards to the feed's `/demo/skip` (answers directly; `409` while a start or cancel runs); `state.skips` lists the targets while a demo plays. `start` purges finished matches from ETL, engine and backend, then calls the feed's `/demo/start`; `cancel` purges every match (`all`) from every owner (§5 order) when the feed lists any run; start and cancel answer at once (`202 {"accepted": true, "pending"}`; `200` when a demo is already on or nothing is there to cancel; `409` at once for a recording or a stale seed) and then run one after another; `state` → `{"points": [{"id", "label", "ready"}], "live", "runs", "live_from", "main_fixture", "main_match_id", "pending", "last"}` (`pending`: queued actions; `last`: how the last start or cancel ended, `{"action", "ok", …}` or `{"ok": false, "status", "detail"}`, which the viewer polls for) (`live_from`: the start point's label when the demo began from a seed; `main_match_id`: the live demo's main game, which the viewer opens by default, while `/?choose` keeps the picker for switching); a seeded `start` restores ETL, engine and backend for each waiting run, then releases them staggered (main game first), or purges them and answers `503` (`409` for a seed of another format, schema or seq: record it again); while a seed is recorded `start` is `409` and `state` omits its held runs from `runs` and lists them as `recording` (`[{"match_id"}]`), which the viewer never lists (they stop at their hold point); `status` → `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer (PLAN.md §10.6). Start and cancel are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop, which the ingress appends; behind `edge-proxy/` a Cloudflare edge node); `429` over the limit. Capture refuses held runs that stop at another start point (`held_at` on feed runs). Overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`.
 
 A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the judge build); a production release leaves it off and they answer 404 (feed: 403/409).
 
@@ -371,11 +372,11 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 `GET /product/matches` lists `live` matches first, then `scheduled` (by kickoff), then `finished`:
 
 ```json
-[{"match_id": "chelsea-united-1a2b3c4d", "fixture": "chelsea-united", "status": "live",
-  "scheduled_kickoff": "2026-10-20T15:00:00Z", "description": "Chelsea v Manchester United (synthetic GRF simulation)", "seq": 812, "period": 1, "clock_seconds": 402,
-  "teams": [{"id": "chelsea", "position": "home", "name": "Chelsea", "short_name": "Chelsea", "code": "CHE", "score": 0,
-             "branding": {"primary_colour": "#001c68", "secondary_colour": "#0743b7", "crest_asset_id": "chelsea"}}, …],
-  "video": {"hls": "/media/hls/chelsea-united-1a2b3c4d/live.m3u8"}}]
+[{"match_id": "riverton-forgeham-1a2b3c4d", "fixture": "riverton-forgeham", "status": "live",
+  "scheduled_kickoff": "2026-10-20T15:00:00Z", "description": "Riverton Rovers v Forgeham United (synthetic GRF simulation)", "seq": 812, "period": 1, "clock_seconds": 402,
+  "teams": [{"id": "riverton", "position": "home", "name": "Riverton Rovers", "short_name": "Riverton Rovers", "code": "RVR", "score": 0,
+             "branding": {"primary_colour": "#001c68", "secondary_colour": "#0743b7", "crest_asset_id": "riverton"}}, …],
+  "video": {"hls": "/media/hls/riverton-forgeham-1a2b3c4d/live.m3u8"}}]
 ```
 
 | Today | Multi-match (`M` = `/product/matches/{matchId}`) |
@@ -383,7 +384,7 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 | `POST /product/demo/reset` | Removed; use `./dev demo start` (purge, then feed `POST /runs`). |
 | `GET /product/profiles` | Unchanged (global). |
 | (none) | `GET /product/matches` |
-| `POST /product/sessions` `{profile_id}` | `POST M/sessions` `{profile_id}` |
+| `POST /product/sessions` `{profile_id}` | `POST M/sessions` `{profile_id, viewer_id}` (`viewer_id`: the browser's random v4 UUID; anything else `422`) |
 | `GET /product/{token}` | `GET M/sessions/{token}` |
 | `PUT /product/{token}/audience` | `PUT M/sessions/{token}/audience` |
 | `POST /product/{token}/messages` | `POST M/sessions/{token}/messages` |
@@ -418,9 +419,9 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 | `GET /matches/{matchId}/subscription-targets` | Engine only (ETag): [engine contracts](../narrative-engine/contracts/README.md#subscription-targets) |
 
 ```json
-FollowSpec {"kind": "storyline" | "team" | "player" | "theme", "storyline_id": null, "team_id": "chelsea",
-            "player_id": null, "focus": "", "label": "Chelsea"}
-Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "spec": FollowSpec, "label": "Chelsea",
+FollowSpec {"kind": "storyline" | "team" | "player" | "theme", "storyline_id": null, "team_id": "riverton",
+            "player_id": null, "focus": "", "label": "Riverton Rovers"}
+Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "spec": FollowSpec, "label": "Riverton Rovers",
             "since_seq": 812, "since_period": 1, "since_clock_seconds": 1140, "created_at": "…", "ended_at": null}
 ```
 
@@ -429,7 +430,7 @@ Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "sp
 - **Follow chat** reuses the question tables (`question_turns.channel = 'follow'`); `S` bootstrap's `turns` stay questions only and it adds `follow_turns`. The planner (prompt role `subscription-planner`) drafts; code resolves names to ids. A turn's reply:
   `{"status": "proposal" | "clarify" | "unfollow" | "answer" | "unsupported", "text", "proposal": {"id", "label", "spec"} | null, "candidates": [{"id", "label", "spec"}], "snapshot", "usage"}`. A proposal is never a follow: the viewer confirms with `POST S/follows` and the proposal's `spec`. `unfollow` means the viewer asked to stop; the UI confirms with `DELETE`.
 - **Snapshot (WebSocket and bootstrap) adds** `feed_mode` (`following` | `insights`), `follow` (Follow or null) and `key_moments`. `narratives` follows the feed rules: following → only the followed topic's narratives for the viewer's bucket (`kind: "subscription"`, `topic_id`, `storyline_ids`); not following → the bucket's insights. Unfollowing restores the insights.
-- **`key_moments`** (everyone, followed or not): pivotal facts from ETL's MA3 `rawEvents` (`eventSeq ≤` the snapshot), never authored text: `[{"id": "km:{rawId}", "kind", "label", "period", "clock_seconds", "minute_label", "event_seq", "team_id", "player_id", "overturned"}]` in match order. Kinds: `goal`, `own_goal`, `red_card`, `second_yellow`, `penalty` (awarded; `team_id` = the team that won it), `penalty_missed`, `var_overturn`, `kick_off`, `half_time`, `second_half`, `full_time`, `period_start`, `period_end`. Which kinds show and each `label` template (`Goal · {team} · {scorer}` → "Goal · Chelsea · Cole Palmer"; `Half time · {score}` → "Half time · Chelsea 1–0 Man Utd") are the `key-moment-feed` config table; the seed shows goals, red cards, second yellows, penalties, VAR overturns, kick-off, half-time and full-time. Show them as short, centred, greyed lines; strike through `overturned` goals.
+- **`key_moments`** (everyone, followed or not): pivotal facts from ETL's MA3 `rawEvents` (`eventSeq ≤` the snapshot), never authored text: `[{"id": "km:{rawId}", "kind", "label", "period", "clock_seconds", "minute_label", "event_seq", "team_id", "player_id", "overturned"}]` in match order. Kinds: `goal`, `own_goal`, `red_card`, `second_yellow`, `penalty` (awarded; `team_id` = the team that won it), `penalty_missed`, `var_overturn`, `kick_off`, `half_time`, `second_half`, `full_time`, `period_start`, `period_end`. Which kinds show and each `label` template (`Goal · {team} · {scorer}` → "Goal · Riverton Rovers · Kai Ashworth"; `Half time · {score}` → "Half time · Riverton Rovers 1–0 Forgeham") are the `key-moment-feed` config table; the seed shows goals, red cards, second yellows, penalties, VAR overturns, kick-off, half-time and full-time. Show them as short, centred, greyed lines; strike through `overturned` goals.
 - **`follow_playlist`** (followers only, else null; migration `038_follow_clips.py`, PLAN.md §10.2 D3): the followed topic's moment clips in the chat replay's shape (`clips` with `start`/`end`/`playlist_start`/`playlist_end` on the match's own stream, `captions` from the key-moment labels, `marks`), one page, chronological. A moment joins when the engine sends a `FollowClip` for it (Decision-1's clip `Score` on a key event of `subscriptions.clips.key_types`; apart from the follow narrative, so it does not depend on the narrative's grounding; migration `039_follow_clip_step.py`); only kinds in `clips.timing` clip, cut with that `replay-timing` key; at most the newest `clips.max_items` (and, past the reel's `max_clips`/`max_seconds`, the newest kept); bounded to the viewer's snapshot (`event_seq ≤ seq`, footage the snapshot has reached) and purged with the match. Each clip also carries `moments` (its key moments' preview-card facts: `id`, `kind`, `period`, `clock_seconds`, `minute_label`, `label`, `team_id`, `team_name`, `player_name`, `score` after the moment; PLAN.md §10.2 D6). A topic whose kind `subscriptions.clips.always_for` names clips without Decision-1's clip question (migration `041_capture_clips.py`).
 - **`moment_playlist`** (Insights viewers only, else null; migration `041_capture_clips.py`, PLAN.md §10.2 D7): the key-event clips of the viewer's bucket's shared narratives, in the same shape as `follow_playlist`. A moment joins when the engine sends a `MomentClip` for its key event (`clips.key_types` with `subscriptions.clips.shared` on), apart from the narratives; same kinds, timing, `max_items`, snapshot bound and purge; seeded with the match (`narrative_clips`).
 - **Tunables** (`/dev/config/{table}`, ETag + `expected_revision`): `subscriptions` (decision question, clip question and clippable kinds (`clips`), novelty check, prefilter, limits incl. the minimum gap between a topic's narratives and the follow-chat turns the planner sees, the catch-up step's trigger reason, suggestions, `min_name_match` for the planner's name resolution; permissive defaults) and `key-moment-feed`.

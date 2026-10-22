@@ -210,8 +210,50 @@ class FeedService:
         return {"started": True, "point": point, "main_fixture": settings["main_fixture"],
                 "runs": [self._public(run) for run in runs]}
 
+    async def skip_demo(self, target_id):
+        """Demo fast-forward (DEMO_SEEDS only): move every live demo run's clock on by the same whole minutes.
+        Each run then sends what has become due at once (capped sends) through the normal pipeline, and
+        publishes the video up to its new clock; nothing past the new clock leaves the feed."""
+        if not self.seeds:
+            raise FeedError(403, "Skip ahead needs DEMO_SEEDS=1.")
+        async with self._lock:
+            settings = await asyncio.to_thread(self.repository.demo_settings)
+            target = next((t for t in settings.get("skip_targets") or [] if t["id"] == target_id), None)
+            if target is None:
+                raise FeedError(404, "Unknown skip target.")
+            runs = [r for r in await asyncio.to_thread(self.repository.runs) if r["status"] != "finished"]
+            if not runs or any(r["match_id"] not in self.tasks for r in runs):
+                raise FeedError(409, "No demo is playing yet.")  # none, or still waiting for a seed's restore
+            if any(r.get("hold_seconds") is not None for r in runs):
+                raise FeedError(409, "A seed is being recorded; skip ahead after it.")
+            main = next((r for r in runs if r["fixture"] == settings.get("main_fixture")), runs[0])
+            clock = (self.clock.now() - main["kickoff"]).total_seconds()
+            if "point" in target:
+                seconds = self._point_seconds(settings, main["fixture"], target["point"]) - clock
+            else:
+                seconds = target["minutes"] * 60
+            seconds = min(math.ceil(seconds / 60) * 60,  # whole minutes keep the ETL's minute windows aligned
+                          math.ceil((self.streams[main["fixture"]].duration_seconds - clock) / 60) * 60)
+            if seconds <= 0:
+                raise FeedError(409, f"The demo is already past {target['label']}.")
+            shifted = []
+            for run in runs:
+                task, _ = self.tasks[run["match_id"]]
+                await self._stop(run["match_id"])
+                await asyncio.to_thread(self.repository.progress, run["run_id"], task.position, task.seq, task.status)
+                moved = await asyncio.to_thread(self.repository.shift_kickoff, run["match_id"], seconds)
+                if moved:
+                    self._launch(moved, resume=True)
+                    if moved["match_id"] in self.tasks:  # a throttled hub stays backed off
+                        self.tasks[moved["match_id"]][0].failures, self.tasks[moved["match_id"]][0].retry_at = \
+                            task.failures, task.retry_at
+                    shifted.append(moved)
+        log.info("Demo skipped %d s (%s)", seconds, target["label"])
+        return {"skipped_seconds": seconds, "target": target, "runs": [self._public(r) for r in shifted]}
+
     async def demo_settings(self):
-        return await asyncio.to_thread(self.repository.demo_settings)
+        settings = await asyncio.to_thread(self.repository.demo_settings)
+        return settings if self.seeds else {**settings, "skip_targets": []}  # no Skip ahead without DEMO_SEEDS
 
     async def save_demo_settings(self, settings, expected_revision):
         fixtures = settings["fixtures"]
@@ -229,10 +271,18 @@ class FeedService:
         ids = [p["id"] for p in settings["start_points"]]
         if not ids or len(set(ids)) != len(ids):
             raise FeedError(422, "Give each start point a unique id.")
+        skips = settings.get("skip_targets") if self.seeds else None
+        settings = {**settings, "skip_targets": skips}  # None keeps the saved ones (the /dev/ page round-trips them)
+        if skips is not None:
+            if len({t["id"] for t in skips}) != len(skips):
+                raise FeedError(422, "Give each skip target a unique id.")
+            for t in skips:
+                if ("minutes" in t) == ("point" in t) or ("point" in t and t["point"] not in ids):
+                    raise FeedError(422, f"Skip target {t['id']} needs minutes or a known start point.")
         saved = await asyncio.to_thread(self.repository.save_demo_settings, settings, expected_revision)
         if saved is None:
             raise FeedError(409, "Someone else saved the demo settings first; reload.")
-        return saved
+        return saved if self.seeds else {**saved, "skip_targets": []}
 
     def _public(self, run):
         entry = self.tasks.get(run["match_id"])

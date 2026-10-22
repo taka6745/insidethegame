@@ -1,4 +1,4 @@
-"""fixtures/spadl-chelsea-united.json: the spadlActions rows ETL GraphQL serves for one Chelsea–United run (the
+"""fixtures/spadl-riverton-forgeham.json: the spadlActions rows ETL GraphQL serves for one Riverton Rovers–United run (the
 hand-off for backend and engine tests). A snapshot (matchId, s) reads the rows with finalSeq <= s; `snapshots`
 lists sample seqs with their row counts. Regenerate after a deliberate conversion change:
     python tests/test_spadl_fixture.py --regenerate
@@ -13,7 +13,7 @@ if __name__ == "__main__":
 from reference import spadl  # noqa: E402
 import v2_stream  # noqa: E402
 
-PATH = Path(__file__).parent / "fixtures" / "spadl-chelsea-united.json"
+PATH = Path(__file__).parent / "fixtures" / "spadl-riverton-forgeham.json"
 SEQS = [1, 100, 500, 1000, 2500, 5000, 7500, 10000]
 
 
@@ -24,7 +24,7 @@ def build():
     final = sum(m.get("type") == "MatchEvent" for m in stream)
     snapshots = [{"seq": s, "actions": sum(r["finalSeq"] <= s for r in rows)} for s in [*SEQS, final]]
     return {"description": "SYNTHETIC: SPADL actions converted by etl/reference/spadl.py from the checked-in "
-                           "Chelsea-United GRF recording (tests/v2_stream.py run 1a2b3c4d). Rows as ETL GraphQL "
+                           "Riverton Rovers-United GRF recording (tests/v2_stream.py run 1a2b3c4d). Rows as ETL GraphQL "
                            "spadlActions serves them; read rows with finalSeq <= seq.",
             "matchId": match_id, "homeContestantId": home, "finalSeq": final, "snapshots": snapshots, "actions": rows}
 

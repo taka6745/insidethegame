@@ -93,7 +93,7 @@ def test_procedures_equal_the_reference_at_ten_seqs(loaded, fixture):
 
 def test_empty_outside_the_snapshot_bounds(loaded):
     connect, runs = loaded
-    match_id, final, rows = runs["chelsea-united"]
+    match_id, final, rows = runs["riverton-forgeham"]
     mid = final // 2
     query(connect, "UPDATE dbo.spadlProgress SET seq = %s WHERE matchId = %s", mid, match_id)  # SPADL lags.
     try:
@@ -111,7 +111,7 @@ def test_definitions_are_the_seed_and_reseeding_changes_flags(loaded):
     stored = query(connect, "SELECT * FROM dbo.trendDefinitions ORDER BY displayOrder")
     seed = trends.definitions()
     assert [{k: r[k] for k in seed[0]} for r in stored] == [{**d, "enabled": bool(d["enabled"])} for d in seed]
-    match_id, final, rows = runs["mancity-tottenham"]
+    match_id, final, rows = runs["skybridge-whitmore"]
     # ppda flags its low end: a very high bar makes every value "high"; momentum and fast breaks come on too.
     reseed = [{**d, "enabled": True, "highAt": 1e6 if d["trendId"] == "ppda" else d["highAt"]} for d in seed]
     block = json.dumps([{k: v for k, v in d.items() if k != "displayOrder"} for d in reseed])
@@ -131,7 +131,7 @@ def test_formula_parameters_are_the_seed_and_reseeding_changes_the_values(loaded
     seed = trends.parameters()
     stored = {r["name"]: r["value"] for r in query(connect, "SELECT name, value FROM dbo.trendParameters")}
     assert stored == seed
-    match_id, final, rows = runs["chelsea-united"]
+    match_id, final, rows = runs["riverton-forgeham"]
     rows_of = lambda: query(connect, "SELECT name, value, meaning FROM dbo.trendParameters")
     original = json.dumps([dict(r) for r in rows_of()])
     changed = {**seed, "long_pass_metres": 20.0, "momentum_alpha": 0.7, "flank_lanes": 4.0, "threat_shot": 5.0,
@@ -167,13 +167,13 @@ def test_a_parameter_block_without_every_name_is_refused_and_changes_nothing(loa
 
 
 def test_var_overturns_change_the_game_state_as_the_reference(loaded):
-    """No recording has VAR: City's goal (69') overturned at 80', then City's own goal (47', Spurs') at 85'."""
+    """No recording has VAR: City's goal (69') overturned at 80', then City's own goal (47', Whitmore') at 85'."""
     connect, runs = loaded
-    match_id, final, rows = runs["mancity-tottenham"]
+    match_id, final, rows = runs["skybridge-whitmore"]
     first = lambda minute: min(e["seq"] for e in rows["canonicalEvents"]
                                if e["periodId"] == 2 and e["matchTimeSeconds"] // 60 == minute)
-    var = [{**var_row(match_id, 1, first(80), "mancity"), "timeMin": 80},
-           {**var_row(match_id, 2, first(85), "mancity", own_goal=True), "timeMin": 85}]
+    var = [{**var_row(match_id, 1, first(80), "skybridge"), "timeMin": 80},
+           {**var_row(match_id, 2, first(85), "skybridge", own_goal=True), "timeMin": 85}]
     for r in var:
         query(connect, f"INSERT dbo.rawEvents ({', '.join(r)}) VALUES ({', '.join(['%s'] * len(r))})", *r.values())
     with_var = {**rows, "rawEvents": rows["rawEvents"] + var}
@@ -189,7 +189,7 @@ def test_var_overturns_change_the_game_state_as_the_reference(loaded):
 
 def test_full_time_calls_are_fast(loaded):
     connect, runs = loaded
-    match_id, final, _ = runs["chelsea-united"]
+    match_id, final, _ = runs["riverton-forgeham"]
     for proc in PROCS:
         run(connect, proc, match_id, final)  # Warm the plan cache.
         took = []

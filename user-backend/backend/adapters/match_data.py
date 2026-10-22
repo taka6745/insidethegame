@@ -76,6 +76,16 @@ class EtlDabMatchData:
             self._remember(self._stats, snapshot.id, rows)
         return {'snapshot_id': snapshot.id, 'match_id': snapshot.match_id, 'complete': True, 'stats': rows}
 
+    async def trends(self, snapshot):
+        """ETL's trend indicators at the snapshot ([] when the ETL serves none or is catching up): optional context."""
+        read = getattr(self.dab, 'trends_at_seq', None)
+        if read is None:
+            return []
+        try:
+            return await read(snapshot.match_id, snapshot.seq)
+        except EtlUnavailable:
+            return []
+
     async def actions(self, snapshot, *, offset=0, limit=100, start=None, end=None, actionType=None, playerId=None,
                       teamId=None, period=None, **unused):
         """SPADL actions at the snapshot, filtered and paged ([start, end) on the match clock)."""

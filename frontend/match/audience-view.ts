@@ -9,8 +9,6 @@ export class AudienceView {
   count = 0;
   live = false;
   busy = false;
-  /** A live demo match keeps the bucket the viewer started with. */
-  locked = false;
   choicesKey?: string;
   constructor(document: Document) {
     this.document = document;
@@ -27,11 +25,9 @@ export class AudienceView {
   setBusy(busy: boolean) {
     this.busy = busy;
     // One bucket (or none) leaves nothing to switch to.
-    this.select.disabled = busy || !this.live || this.count < 2 || this.locked;
-    this.select.title = this.locked ? "Your perspective is fixed while the match is live." : "";
+    this.select.disabled = busy || !this.live || this.count < 2;
   }
   render(snapshot: Pick<Snapshot, "audience" | "audience_buckets"> & Partial<Pick<Snapshot, "match">>) {
-    this.locked = snapshot.match?.status === "live";
     const buckets = snapshot.audience_buckets || [];
     const key = JSON.stringify(buckets);
     if (key !== this.choicesKey) {

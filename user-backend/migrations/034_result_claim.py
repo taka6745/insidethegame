@@ -1,6 +1,6 @@
 """Round 16 live check: the result claim reads a half-time score as where the match stands.
 
-At half time the decision model took "Arsenal lead 1-0 at half-time" for how the match ended, so every
+At half time the decision model took "Redcastle Town lead 1-0 at half-time" for how the match ended, so every
 period-end wrap-up that gave the score was dropped. `storyline-policy.claims.result.claim` gets the seed's
 wording where it is still as 030 seeded it (an edited claim is kept). A changed row gets a new revision.
 """

@@ -1,5 +1,9 @@
 import { node } from "./dom.ts";
 import { DemoProgress, follow, type DemoStatus } from "./demo-progress.ts";
+import { friendly } from "./api.ts";
+
+/** Our own sentence for the viewer (status-tagged, so `friendly()` shows it; any other error stays hidden). */
+const said = (message: string, status = 0) => Object.assign(new Error(message), { status });
 
 /** A start point the operator offers; `ready` is false until its seed is recorded. */
 export interface DemoPoint { id: string; label: string; ready: boolean }
@@ -8,9 +12,15 @@ export interface DemoPoint { id: string; label: string; ready: boolean }
 export interface DemoState {
   points: DemoPoint[]; live: boolean; live_from?: string | null; main_match_id?: string | null;
   runs?: { match_id: string }[];
+  /** Seed-recording runs: they stop at their hold point, so viewers are never shown them. */
+  recording?: { match_id: string }[];
   /** Start and cancel answer at once and run in turn: what is still queued, and how the last one ended. */
   pending?: string[]; last?: DemoOutcome | null;
+  /** Skip ahead targets, offered while a demo plays (demo fast-forward). */
+  skips?: { id: string; label: string }[];
 }
+/** A skip moves every demo run on by the same whole minutes; matchIds, follows and sessions carry on. */
+export interface SkipResult { skipped_seconds: number; target: { label: string } }
 interface DemoResult {
   started?: boolean; runs?: { match_id: string; kickoff: string }[]; cancelled?: string[]; live_from?: string | null;
   accepted?: boolean;
@@ -26,20 +36,26 @@ export class DemoApi {
     this.fetcher = fetcher;
   }
   async call<T>(path: string, body?: unknown): Promise<T> {
-    const response = await this.fetcher(`/demo-api/${path}`, {
-      method: body === undefined ? "GET" : "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-    });
+    let response: Awaited<ReturnType<Fetcher>>;
+    try {
+      response = await this.fetcher(`/demo-api/${path}`, {
+        method: body === undefined ? "GET" : "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      });
+    } catch {
+      throw said("Can't reach the demo controls right now. Try again shortly.");  // never the raw network error
+    }
     const data = await response.json().catch(() => ({})) as T & { detail?: unknown };
-    if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "The demo could not be changed. Try again shortly.");
+    if (!response.ok) throw said(typeof data.detail === "string" ? data.detail : "The demo could not be changed. Try again shortly.", response.status);
     return data;
   }
   state() { return this.call<DemoState>("state"); }
   status() { return this.call<DemoStatus>("status"); }
   start(point: string) { return this.settled("start", this.call<DemoResult>("start", { point })); }
   cancel() { return this.settled("cancel", this.call<DemoResult>("cancel", {})); }
+  skip(target: string) { return this.call<SkipResult>("skip", { target }); }
   /** An accepted (queued) start or cancel: wait on /state until it has run, then return how it ended. */
   async settled(action: string, request: Promise<DemoResult>, pollMs = 1000, limit = 600): Promise<DemoResult> {
     const result = await request;
@@ -50,10 +66,10 @@ export class DemoApi {
       if (!state || state.pending?.length) continue;
       const last = state.last;
       if (last?.action !== action) return {};
-      if (!last.ok) throw new Error(last.detail ?? "The demo could not be changed. Try again shortly.");
+      if (!last.ok) throw said(last.detail ?? "The demo could not be changed. Try again shortly.");
       return last;
     }
-    throw new Error("The demo is taking longer than expected; check back shortly.");
+    throw said("The demo is taking longer than expected; check back shortly.");
   }
 }
 
@@ -65,6 +81,9 @@ export class DemoControls {
   live = false;
   /** The live demo's main game, and whether this viewer just started the demo (so it opens even from the picker). */
   main: string | null = null;
+  /** The live demo's matches, and the seed-recording runs to hide. */
+  runs = new Set<string>();
+  recording = new Set<string>();
   started = false;
   progress?: DemoProgress;
   watching = false;
@@ -82,6 +101,8 @@ export class DemoControls {
   render(state: DemoState) {
     this.live = state.live;
     this.main = state.live ? state.main_match_id ?? null : null;
+    this.runs = new Set(state.live ? (state.runs ?? []).map((run) => run.match_id) : []);
+    this.recording = new Set((state.recording ?? []).map((run) => run.match_id));
     const select = this.get<HTMLSelectElement>("demo-point");
     const chosen = select.value;
     select.replaceChildren(...state.points.map((point) => {
@@ -133,7 +154,7 @@ export class DemoControls {
     try {
       this.notice(await work());
     } catch (error) {
-      this.notice((error as Error).message);
+      this.notice(friendly(error, "The demo could not be changed. Try again shortly."));
     } finally {
       this.busy = false;
       await this.refresh();
@@ -162,11 +183,14 @@ export class DemoControls {
   }
 }
 
-/** While a demo is on, only its matches are listed, the main game first. */
+/** While a demo is on, only its matches are listed (when known), the main game first. Seed-recording runs are never
+ * listed: they stop at their hold point, so a viewer opening one would see it freeze there. */
 export function demoMatches<T extends { match_id: string; status?: string }>(
-  matches: readonly T[], live: boolean, main: string | null = null): T[] {
-  if (!live) return [...matches];
-  const shown = matches.filter((match) => match.status !== "finished");
+  matches: readonly T[], live: boolean, main: string | null = null,
+  runs: ReadonlySet<string> = new Set(), recording: ReadonlySet<string> = new Set()): T[] {
+  const listed = matches.filter((match) => !recording.has(match.match_id));
+  if (!live) return listed;
+  const shown = listed.filter((match) => match.status !== "finished" && (!runs.size || runs.has(match.match_id)));
   return [...shown.filter((match) => match.match_id === main), ...shown.filter((match) => match.match_id !== main)];
 }
 
@@ -180,6 +204,39 @@ export function mainToOpen(controls: Pick<DemoControls, "live" | "main" | "start
   return listed.some((match) => match.match_id === main) ? main : null;
 }
 
+/** In a demo match: Skip ahead to one of the operator's targets. The video catches up to the new live edge by itself
+ * (liveCatchUp); the story fills in as the pipeline works through the skipped minutes. */
+export async function showSkip(document: Document, matchId: string, api = new DemoApi()) {
+  const box = document.getElementById("match-skip");
+  const select = document.getElementById("match-skip-target") as HTMLSelectElement | null;
+  const go = document.getElementById("match-skip-go") as HTMLButtonElement | null;
+  const note = document.getElementById("match-skip-note");
+  if (!box || !select || !go || !note) return;
+  const render = async () => {
+    const state = await api.state().catch(() => null);
+    const ours = !!state?.live && (state.runs ?? []).some((run) => run.match_id === matchId);
+    const skips = ours ? state?.skips ?? [] : [];
+    select.replaceChildren(...skips.map(({ id, label }) => Object.assign(node(document, "option", label), { value: id })));
+    box.hidden = !skips.length;
+  };
+  go.addEventListener("click", async () => {
+    go.disabled = true;
+    const label = select.selectedOptions[0]?.textContent ?? "";
+    note.textContent = `Skipping ahead (${label})…`;
+    try {
+      const result = await api.skip(select.value);
+      note.textContent = `Skipped ${Math.round(result.skipped_seconds / 60)} minutes for every demo match. ` +
+        "The picture jumps ahead now; the story catches up over the next minutes.";
+    } catch (error) {
+      note.textContent = friendly(error, "Couldn't skip ahead. Try again shortly.");
+    } finally {
+      go.disabled = false;
+      await render();
+    }
+  });
+  await render();
+}
+
 /** In a match of a demo started from a recorded seed: say the story so far was generated earlier. */
 export async function showLiveFrom(document: Document, matchId: string, api = new DemoApi()) {
   const from = document.getElementById("match-live-from");
@@ -187,7 +244,11 @@ export async function showLiveFrom(document: Document, matchId: string, api = ne
   try {
     const state = await api.state();
     const ours = state.live && state.live_from && (state.runs ?? []).some((run) => run.match_id === matchId);
-    from.textContent = ours ? `The story so far was generated earlier on this pipeline; live from ${state.live_from}.` : "";
+    // A seed-recording run stops at its start point: say so instead of looking frozen there.
+    const recording = (state.recording ?? []).some((run) => run.match_id === matchId);
+    from.textContent = recording
+      ? "This match is being recorded as a demo start point and pauses there. Start the demo or choose another match."
+      : ours ? `The story so far was generated earlier on this pipeline; live from ${state.live_from}.` : "";
   } catch {
     from.textContent = "";  // No operator: not a demo.
   }

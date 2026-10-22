@@ -10,7 +10,7 @@ from psycopg.types.json import Jsonb
 MIGRATIONS = Path(__file__).resolve().parents[1] / "migrations"
 RUN_COLUMNS = ("run_id::text AS run_id, match_id, fixture, kickoff, created_at, status, position, seq, hold_seconds, "
                "resume_seconds, start_point, hold_point")
-DEMO_COLUMNS = "fixtures, main_fixture, stagger_seconds, max_active_runs, start_points, revision"
+DEMO_COLUMNS = "fixtures, main_fixture, stagger_seconds, max_active_runs, start_points, skip_targets, revision"
 
 
 class FeedRepository:
@@ -73,6 +73,12 @@ class FeedRepository:
             return db.execute(f"UPDATE runs SET kickoff = %s, resume_seconds = NULL WHERE match_id = %s "
                               f"AND resume_seconds IS NOT NULL RETURNING {RUN_COLUMNS}", (kickoff, match_id)).fetchone()
 
+    def shift_kickoff(self, match_id, seconds):
+        """Demo fast-forward: the run's clock reads `seconds` later. None if the run is gone or finished."""
+        with self._connect() as db:
+            return db.execute(f"UPDATE runs SET kickoff = kickoff - make_interval(secs => %s) WHERE match_id = %s "
+                              f"AND status <> 'finished' RETURNING {RUN_COLUMNS}", (seconds, match_id)).fetchone()
+
     def runs(self):
         with self._connect() as db:
             # A purge interrupted between tombstone and delete must not revive its runs.
@@ -104,11 +110,12 @@ class FeedRepository:
         with self._connect() as db:
             return db.execute(
                 f"UPDATE demo_settings SET fixtures = %s, main_fixture = %s, stagger_seconds = %s, "
-                f"max_active_runs = %s, start_points = %s, revision = revision + 1 WHERE revision = %s "
-                f"RETURNING {DEMO_COLUMNS}",
+                f"max_active_runs = %s, start_points = %s, skip_targets = COALESCE(%s, skip_targets), "
+                f"revision = revision + 1 WHERE revision = %s RETURNING {DEMO_COLUMNS}",
                 (list(settings["fixtures"]), settings["main_fixture"], settings["stagger_seconds"],
-                 settings["max_active_runs"],
-                 Jsonb(settings["start_points"]), expected_revision)).fetchone()
+                 settings["max_active_runs"], Jsonb(settings["start_points"]),
+                 Jsonb(settings["skip_targets"]) if settings.get("skip_targets") is not None else None,
+                 expected_revision)).fetchone()
 
     def delete_runs(self, match_ids):
         with self._connect() as db:

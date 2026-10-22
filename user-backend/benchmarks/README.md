@@ -1,6 +1,6 @@
 # Filter checks, outside pytest
 
-The [question golden set](question_cases.json) has twelve full-match prompts plus thirteen timed ones on the shipped Chelsea–United recording: standard stats, possession and shots split per team, custom/follow-up/percentage stats, a player's on-ball actions, clarification and its answer, who was sent off (read from MA3 cards; nobody in this match), match description, general football and two refusals that must name what is missing. `tests/test_question_cases.py` recomputes every expected value from the recording.
+The [question golden set](question_cases.json) has twelve full-match prompts plus thirteen timed ones on the shipped Riverton Rovers–United recording: standard stats, possession and shots split per team, custom/follow-up/percentage stats, a player's on-ball actions, clarification and its answer, who was sent off (read from MA3 cards; nobody in this match), match description, general football and two refusals that must name what is missing. `tests/test_question_cases.py` recomputes every expected value from the recording.
 
 In process (no API, database or shared stack): snapshots `(matchId, seq)` are cut from the recording; SPADL actions come from its MA3 stream through ETL's converter (`etl/reference/spadl.py`, `finalSeq ≤ seq`) and standard stats from ETL's reference catalogue (`etl/reference/catalogue.py`). Since 21 October 2026 both golden sets use SPADL definitions; changed expectations and before/after scores: [results/spadl-golden.md](results/spadl-golden.md).
 
@@ -12,13 +12,13 @@ python -m benchmarks.question_inprocess --env-file ../.local/backend-llm.env --o
 
 `--agent fixture` replays each case's `fixture` decision (a correct one, or one the local model actually returned) through the real question agent, planner, compiler, rule engine and ETL-row answers; `tests/test_question_golden.py` requires every scripted case to pass. Prose cases (match, football) need the model.
 
-Against a running stack, a **finished** run of the Chelsea–United fixture:
+Against a running stack, a **finished** run of the Riverton Rovers–United fixture:
 
 ```sh
-PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --match-id chelsea-united-XXXXXXXX --output .local/benchmarks/questions-api.json
+PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --match-id riverton-forgeham-XXXXXXXX --output .local/benchmarks/questions-api.json
 ```
 
-This calls the configured local model through the API and takes over the Chelsea demo profile's chat session; it skips the timed cases and never clicks Track. Automatic checks cover status, source and values; review every explanation and generated rule by hand. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
+This calls the configured local model through the API and takes over the Riverton Rovers demo profile's chat session; it skips the timed cases and never clicks Track. Automatic checks cover status, source and values; review every explanation and generated rule by hand. Results are not a blanket accuracy score. The original 100-filter corpus below is unchanged.
 
 The replay golden set (`replay_cases.json`, `python -m benchmarks.replay_eval --agent fixture|local`) also fails any caption that calls an unsaved shot saved, and `text_excludes` words in a reply. Its key-moment cases (`"recording": "archive"`) run against the archived earlier recording with the narrative fixtures bound to it; the others run against the shipped recording with no narratives.
 
@@ -31,7 +31,7 @@ Run it from the repository root with the backend Python environment activated (d
          │                           ↑ compare every delivery
          └─ prompt → framework agents → generated rule → filter engine
 
-2,710 SPADL actions (Chelsea–United) → generated unique rules → timed engine.ingest
+2,710 SPADL actions (Riverton Rovers–United) → generated unique rules → timed engine.ingest
                                             → 1 / 5 / 100 events/s queue model
 ```
 
@@ -65,7 +65,7 @@ PYTHONPATH=user-backend python -m benchmarks.full_match  # 100 generated rules v
 
 ## Performance
 
-The generated rules use actual player/action-type/period combinations from the SPADL actions of Chelsea–United plus distinct integer time windows. No agent creates the bulk rules. These are distinct canonical rule IDs, not necessarily distinct results on this recording; many windows overlap and some upper bounds extend beyond the observed game. Two workloads expose different costs:
+The generated rules use actual player/action-type/period combinations from the SPADL actions of Riverton Rovers–United plus distinct integer time windows. No agent creates the bulk rules. These are distinct canonical rule IDs, not necessarily distinct results on this recording; many windows overlap and some upper bounds extend beyond the observed game. Two workloads expose different costs:
 
 | Workload | What it measures |
 | --- | --- |

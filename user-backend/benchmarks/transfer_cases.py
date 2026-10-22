@@ -23,7 +23,7 @@ REQUESTS = [
      "Strictly later than 70:00."),
     (39, "Count either team's corners starting exactly at 60:00, but stop before 61:00.",
      "Include 60:00 and exclude 61:00."),
-    (49, "Add together the distance of Chelsea's passes in metres, including their unsuccessful passes.",
+    (49, "Add together the distance of Riverton Rovers' passes in metres, including their unsuccessful passes.",
      "Total pass distance, all outcomes."),
     (54, "How many metres do both teams' completed passes add up to in the second half? Keep that total updated.",
      "Only successful passes in the second half."),

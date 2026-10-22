@@ -22,7 +22,7 @@ BACKEND = Path(__file__).resolve().parents[1] / 'backend'
 def other_source():
     """A second fixture with its own clubs and players, so any cross-match leak is visible."""
     data = json.loads(FixtureEventSource().content)
-    names = {'chelsea': ('north', 'North FC'), 'madrid': ('south', 'South United')}
+    names = {'riverton': ('north', 'North FC'), 'madrid': ('south', 'South United')}
     for team in data['teams']:
         team['id'], team['name'] = names[team['id']]
     players = {p['id']: f'n-{p["id"]}' for p in data['players']}
@@ -66,25 +66,25 @@ def test_two_matches_never_cite_each_other(store):
     with Running(store, agent=agent, upstream=two_matches(), matches=(MATCH, OTHER)) as run:
         run.send(30, MATCH)
         run.send(12, OTHER)
-        deliver(run, narrative(MATCH, event_seq=30, text='Chelsea story.'))
+        deliver(run, narrative(MATCH, event_seq=30, text='Riverton Rovers story.'))
         deliver(run, narrative(OTHER, event_seq=12, text='North story.'))
         for match_id in (MATCH, OTHER):
             refresh(run, match_id)
         home, away = start(run.client), start(run.client, OTHER)
         cards = {c['id'].split(':')[0] for c in home['snapshot']['cards']}
-        assert cards == {'chelsea'} and {c['id'].split(':')[0] for c in away['snapshot']['cards']} == {'north'}
-        assert [n['text'] for n in home['snapshot']['narratives']] == ['Chelsea story.']
+        assert cards == {'riverton'} and {c['id'].split(':')[0] for c in away['snapshot']['cards']} == {'north'}
+        assert [n['text'] for n in home['snapshot']['narratives']] == ['Riverton Rovers story.']
         assert [n['text'] for n in away['snapshot']['narratives']] == ['North story.']
-        assert all(e['team_id'] in ('chelsea', 'madrid', None) for e in home['snapshot']['events'])
+        assert all(e['team_id'] in ('riverton', 'madrid', None) for e in home['snapshot']['events'])
         assert all(e['team_id'] in ('north', 'south', None) for e in away['snapshot']['events'])
         first = ask(run.client, home['session_token'], 'show the shots')
         second = ask(run.client, away['session_token'], 'show the shots', OTHER)
         assert first['snapshot']['id'] == f'{MATCH}:30' and second['snapshot']['id'] == f'{OTHER}:12'
         assert first['replay']['clips'] is not None and second['replay']['items']
-        assert agent.found[0] and all(row['team'] in ('Chelsea', 'Madrid') for row in agent.found[0])
+        assert agent.found[0] and all(row['team'] in ('Riverton Rovers', 'Madrid') for row in agent.found[0])
         assert agent.found[1] and all(row['team'] in ('North FC', 'South United') for row in agent.found[1])
         assert 'North' not in agent.contexts[0] and 'South' not in agent.contexts[0]
-        assert 'Chelsea' not in agent.contexts[1] and 'Mbapp' not in agent.contexts[1]
+        assert 'Riverton Rovers' not in agent.contexts[1] and 'Mbapp' not in agent.contexts[1]
         # Custom stats are per match: a rule for one match is refused on the other.
         rule = {'match_id': OTHER, 'operation': 'count', 'predicates': []}
         assert run.client.post(f'/lab/matches/{MATCH}/calculations', json={'rule': rule}).status_code == 422
@@ -264,7 +264,7 @@ def test_a_seed_restores_under_a_new_match_id_and_carries_on(store):
     takes the next events from its stream."""
     with Running(store, upstream=two_matches(), matches=(MATCH, OTHER), enable_demo_seeds=True) as run:
         run.send(20)
-        deliver(run, narrative(MATCH, event_seq=20, text='Chelsea story.'))
+        deliver(run, narrative(MATCH, event_seq=20, text='Riverton Rovers story.'))
         exported = run.client.post('/admin/matches/export', json={'match_id': MATCH}).json()
         seed, schema = exported['tables'], exported['schema']
         assert len(seed['received_events']) == 20 and len(seed['engine_narratives']) == 1

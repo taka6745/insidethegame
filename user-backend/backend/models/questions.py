@@ -51,6 +51,8 @@ class QuestionDraft(Strict):
     evidence_ids: list[str] = Field(default_factory=list, max_length=20)
     replay_items: list[ReplayItem] = Field(default_factory=list, max_length=36)  # replay_clips.MAX_ITEMS
     refine_offer: str | None = Field(default=None, max_length=200)
+    # A request about several live matches (PLAN.md §12 M8): the service answers it from each of these, in turn.
+    per_match: list[str] = Field(default_factory=list, max_length=5)
 
     @model_validator(mode='after')
     def follow_up(self):
@@ -76,3 +78,5 @@ class QuestionReply(QuestionDraft):
     other_match: dict | None = None
     # "Follow this story?" (PLAN.md §10.2 D5b): {prompt, other_match}; the viewer sets the follow up themselves.
     follow_offer: dict | None = None
+    # One answer per match for a request about several (`per_match`), each marked with its match like any other.
+    parts: list[dict] = Field(default_factory=list)

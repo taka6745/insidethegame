@@ -145,12 +145,12 @@ def test_original_recovery_asks_to_restate_instead_of_cutting_long_goal():
 
 def test_standard_percentage_keeps_unit_in_answer_and_track_offer():
     from backend.models.stat_offers import stat_answer
-    stat = {'id': 'home:possession', 'label': 'Chelsea possession', 'value': 35.9,
+    stat = {'id': 'home:possession', 'label': 'Riverton Rovers possession', 'value': 35.9,
             'unit': '%', 'available': True, 'complete': True}
     tools = SimpleNamespace(stats=[stat], offers=[], goal=None,
                             payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', match_id='match')))
     result = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer',
         standard_stat_id=stat['id'], text='Ignored'), tools))
-    assert result.text == 'Chelsea possession: 35.9%.'
+    assert result.text == 'Riverton Rovers possession: 35.9%.'
     assert tools.offers[0]['unit'] == '%'
     assert stat_answer(tools.offers[0]) == result.text

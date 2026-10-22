@@ -23,11 +23,11 @@ storylines that develop across it."
 }
 
 Some examples of a good summary include:
-- Away team (Liverpool) dominated this period with 67% possession and 4 shots
+- Away team (Port Albion) dominated this period with 67% possession and 4 shots
 on goal, and were unlucky not to score after a saved penalty. Home team
-(Manchester United) spent most of the period defending deep in their own half.
+(Forgeham United) spent most of the period defending deep in their own half.
 - An even opening 10 minutes. Both teams traded spells of possession, with home
-team (Manchester United) producing the only shot on target.
+team (Forgeham United) producing the only shot on target.
 
 The game state match statistics at the end of this time window are as follows:
 {$game_state_statistics[time_window]}

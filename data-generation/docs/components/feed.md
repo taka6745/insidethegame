@@ -8,7 +8,7 @@
 | **Owns** | Its own Postgres server (locally `feed-postgres`, on a network only the feed joins), database `feed`: recordings catalogue, runs, purge tombstones, `demo_settings` ([migrations](../../feed/migrations/) 001–005) |
 | **Out** | Event Hubs `match-events`, partition key `matchId`: MA1, `MatchEvent` v2, MA3, POS ([local contracts](../../../local/contracts.md#2-matchevent-v2), [ETL contracts](../../../etl/contracts/README.md)) |
 | **Media** | `GET /hls/{matchId}/live.m3u8` and its segments: played footage only ([§6](../../../local/contracts.md#6-live-media-hls)) |
-| **Admin (dev only)** | `GET /recordings`, `POST /runs`, `GET /runs`, `POST /admin/matches/purge`, `GET`/`PUT /demo`, `POST /demo/start`, `GET /health`; with `DEMO_SEEDS=1` also `POST /runs/{matchId}/release` ([§7](../../../local/contracts.md#7-feed-admin-api-dev-only)). Public `/demo-api/` goes through demo control, never straight here |
+| **Admin (dev only)** | `GET /recordings`, `POST /runs`, `GET /runs`, `POST /admin/matches/purge`, `GET`/`PUT /demo`, `POST /demo/start`, `GET /health`; with `DEMO_SEEDS=1` also `POST /runs/{matchId}/release` and `POST /demo/skip` ([§7](../../../local/contracts.md#7-feed-admin-api-dev-only)). Public `/demo-api/` goes through demo control, never straight here |
 | **Host port** | `ITG_FEED_PORT` (default 18030) |
 
 ## 1. Layout
@@ -50,8 +50,9 @@ feed DB (runs) ────┘                    └─▶ live-media/{matchId}
 
 | Piece | Behaviour | Status |
 | --- | --- | --- |
-| `demo_settings` (002, 005) | Fixtures, `main_fixture` (default `arsenal-liverpool`), `stagger_seconds` 120, `max_active_runs` 3, start points (kick-off, 20′, second half, 60′, 85′; each maps to every fixture's own video second, `seed` names the recorded seed); `GET`/`PUT /demo` edit it from `/dev/`, revision-checked | Unit + Postgres tests |
+| `demo_settings` (002, 005) | Fixtures, `main_fixture` (default `redcastle-portalbion`), `stagger_seconds` 120, `max_active_runs` 3, start points (kick-off, 20′, second half, 60′, 85′; each maps to every fixture's own video second, `seed` names the recorded seed); `GET`/`PUT /demo` edit it from `/dev/`, revision-checked | Unit + Postgres tests |
 | `POST /demo/start {point}` | Once: while any run is scheduled or live it returns those runs (concurrent clicks make one demo). Purges finished runs, then creates the fixtures main game first, staggered. A failure part-way purges what it made | Unit tests; local stack |
+| `POST /demo/skip {target}` | Demo fast-forward (`DEMO_SEEDS=1`): moves every playing demo run's kickoff back by the same whole minutes (`skip_targets` in the demo settings, migration 007), restarts its task at the saved position (keeping any send back-off); without `DEMO_SEEDS` `GET /demo` lists no targets. What became due goes out at once in capped sends, video publishes to the new clock. Whole minutes keep the ETL's minute windows aligned; nothing past the new clock is sent | Unit tests (virtual clock); Postgres repository test |
 | Cap | `POST /runs` past `max_active_runs` is `409`, so `/dev/` starts obey it too | Unit tests |
 | Held run (003, 006) | `POST /runs {hold_point}` sends nothing at or past the point's video second (HLS included): demo control records a seed from it; the run lists the point as `held_at`, which capture checks | Unit tests; four seeds recorded locally |
 | Waiting run (003, 004) | A seeded start (or `resume_point`) creates the run waiting (`awaiting_restore: true`): nothing sent; position and seq taken as delivered. `POST /runs/{id}/release {after_seconds}` starts its clock at the point, without MA1 or earlier events; idempotent. `start_point` is kept so the viewer says "live from N′" | Unit tests; local stack |
@@ -91,6 +92,6 @@ Every `recordings/*.json` (not an `.opta-*` export) whose team ids match a [`ros
 | `FEED_ALLOW_SEEK` | `0` | Dev only |
 | `DEMO_SEEDS` | `0` | `1`: held and released runs, seeded demo starts (judge build; off for a production release) |
 | `FEED_SEND_MAX_ITEMS` | `200` | Items per Event Hubs send (ingress is about 1,000 events/s per throughput unit) |
-| `FEED_SEND_RETRY_FIRST_SECONDS` / `FEED_SEND_RETRY_MAX_SECONDS` | `2` / `60` | Back-off after a refused send, doubling |
+| `FEED_SEND_RETRY_FIRST_SECONDS` / `FEED_SEND_RETRY_MAX_SECONDS` | `2` / `60` | Back-off after a refused send, doubling while refusals get nothing through |
 | `FEED_SEND_THROTTLE_WAIT_SECONDS` | `10` | Minimum wait after a `server-busy` refusal |
 | `FEED_BLOB_CONNECTION_STRING` | unset | Azure: recordings, media and played HLS in Blob Storage instead of the three directories ([deployment](../deployment.md#2-azure)) |

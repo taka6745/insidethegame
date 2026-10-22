@@ -9,7 +9,7 @@ from .conversation_eval import evaluate_conversation
 GOAL = Goal(description="Count Mbappé headed contacts", player_ids=("mbappe",), body_part="head")
 READY = PlanOutcome(status="ready", source="fixture", goal=GOAL, rule=GOAL.target_rule("match"), model_calls=0)
 ASK = PlanOutcome(status="clarification", source="fixture", model_calls=0,
-                  clarification=Clarification(question="Which player?", options=["Mbappé", "Palmer"]),
+                  clarification=Clarification(question="Which player?", options=["Mbappé", "Ashworth"]),
                   message="Which player?")
 
 
@@ -48,7 +48,7 @@ class ConversationChecks(unittest.TestCase):
         self.assertEqual(result["unnecessary_clarifications"], 1)
         self.assertEqual([r["prompt"] for r in workflow.requests], ["His headers?", "Mbappé.", "All his headed contacts."])
         self.assertEqual(len(workflow.requests[-1]["history"]), 4)
-        self.assertIn("Options:\n1. Mbappé\n2. Palmer", workflow.requests[-1]["history"][1]["content"])
+        self.assertIn("Options:\n1. Mbappé\n2. Ashworth", workflow.requests[-1]["history"][1]["content"])
         self.assertNotIn("expected", str(workflow.requests))
 
     def test_fully_specified_prompt_with_clarification_can_recover(self):

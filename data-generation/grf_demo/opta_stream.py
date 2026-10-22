@@ -7,7 +7,7 @@ event) and possessionId. pos_rows() gives the POS possession samples the feed se
 file holds MA1 and MA3 only. Without --out it also rewrites <recording>.opta-f24.json. Synthetic,
 Opta-style; not Stats Perform data.
 
-    python -m grf_demo.opta_stream recordings/chelsea-united-grf.json
+    python -m grf_demo.opta_stream recordings/riverton-forgeham-grf.json
 """
 
 import argparse
@@ -84,7 +84,7 @@ def ma1(recording, f24, sha256):
         "scheduledKickoff": stamp(KICK_OFF), "timeStamp": stamp(KICK_OFF - timedelta(minutes=1)),
         "provenance": "SYNTHETIC: simulated with Google Research Football (Apache-2.0), converted by "
                       "data-generation/grf_demo/opta_stream.py; Opta-style, not Stats Perform data. "
-                      "Illustrative real-name lineups; not an actual match.",
+                      "Fictional Elephant League clubs and players; not an actual match.",
         "sourceRecordingSha256": sha256,
         "capabilities": capabilities(recording),
         "branding": {team["id"]: branding(team) for team in teams},

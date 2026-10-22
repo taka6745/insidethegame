@@ -142,6 +142,9 @@
 .chat-turn {
   margin-bottom: 24px;
 }
+.chat-part {  /* one match's answer within a several-match answer */
+  margin: 12px 0 0;
+}
 .chat-prompt {
   font-size: 13px;
   background: #370b43;

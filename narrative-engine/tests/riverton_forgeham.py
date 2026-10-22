@@ -1,4 +1,4 @@
-"""The checked-in Chelsea–United GRF recording (synthetic) as engine test data: its MA1/MA3 replay
+"""The checked-in Riverton Rovers–United GRF recording (synthetic) as engine test data: its MA1/MA3 replay
 (data-generation/recordings), the ETL's SPADL fixture for it (etl/tests/fixtures; same canonical
 seqs as the replay's `eventSeq`), catalogue golden stats, and the ETL notifications and keyEvents
 rows the replay produces (etl/contracts/README.md: key event types, MinuteClosed per minute)."""
@@ -9,10 +9,10 @@ from narrative_engine.core.models import parse_notification
 from narrative_engine.devtools.fixture_data import FixtureMatchData
 
 ROOT = Path(__file__).resolve().parents[2]
-REPLAY = ROOT / "data-generation" / "recordings" / "chelsea-united-grf.opta-stream.jsonl"
-ACTIONS = ROOT / "etl" / "tests" / "fixtures" / "spadl-chelsea-united.json"
+REPLAY = ROOT / "data-generation" / "recordings" / "riverton-forgeham-grf.opta-stream.jsonl"
+ACTIONS = ROOT / "etl" / "tests" / "fixtures" / "spadl-riverton-forgeham.json"
 GOLDEN = ROOT / "etl" / "tests" / "fixtures" / "catalogue-golden.json"
-MATCH = "chelsea-united-1a2b3c4d"
+MATCH = "riverton-forgeham-1a2b3c4d"
 T = "2026-10-20T15:00:00Z"
 
 

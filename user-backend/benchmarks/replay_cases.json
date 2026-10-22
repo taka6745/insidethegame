@@ -1,5 +1,5 @@
 {
- "description": "Replay golden set over the shipped 90-minute recording. Expectations are filters over the observed prefix, so they stay exact if the recording is regenerated; player-specific cases name players from that recording. Since 2026-10-21 expectations are SPADL filters (action_types, results, bodyparts, zones, shot_outcomes) over ETL's converted actions, or {\"cards\": colour} for MA3 cards; evidence ids are a{actionId} or card:{id}. Cases marked \"recording\": \"archive\" (key-moment summaries) run against narrative-engine/fixtures/archive/chelsea-united-grf.json with the narrative fixtures bound to it; every other case runs against the shipped recording with no narratives.",
+ "description": "Replay golden set over the shipped 90-minute recording. Expectations are filters over the observed prefix, so they stay exact if the recording is regenerated; player-specific cases name players from that recording. Since 2026-10-21 expectations are SPADL filters (action_types, results, bodyparts, zones, shot_outcomes) over ETL's converted actions, or {\"cards\": colour} for MA3 cards; evidence ids are a{actionId} or card:{id}. Cases marked \"recording\": \"archive\" (key-moment summaries) run against narrative-engine/fixtures/archive/riverton-forgeham-grf.json with the narrative fixtures bound to it; every other case runs against the shipped recording with no narratives.",
  "cases": [
   {
    "id": "goals-full-time",
@@ -77,7 +77,7 @@
   },
   {
    "id": "player-shots",
-   "prompt": "Show me Tosin Adarabioyo's shots",
+   "prompt": "Show me Joel Hartigan's shots",
    "at": "full_time",
    "expect": {
     "filters": {
@@ -86,20 +86,20 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "player_id": "chelsea-5"
+     "player_id": "riverton-5"
     }
    }
   },
   {
    "id": "headers-by-player",
-   "prompt": "Show me all the headers by Cole Palmer",
+   "prompt": "Show me all the headers by Kai Ashworth",
    "at": "full_time",
    "expect": {
     "filters": {
      "bodyparts": [
       "head"
      ],
-     "player_id": "chelsea-1"
+     "player_id": "riverton-1"
     }
    }
   },
@@ -246,8 +246,8 @@
    }
   },
   {
-   "id": "player-shots-chelsea",
-   "prompt": "Show me Enzo Fernández's shots",
+   "id": "player-shots-riverton",
+   "prompt": "Show me Nico Barrowclough's shots",
    "at": "full_time",
    "expect": {
     "filters": {
@@ -256,13 +256,13 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "player_id": "chelsea-7"
+     "player_id": "riverton-7"
     }
    }
   },
   {
    "id": "player-shots-united",
-   "prompt": "Show me Kobbie Mainoo's shots",
+   "prompt": "Show me Callum Brightwell's shots",
    "at": "full_time",
    "expect": {
     "filters": {
@@ -271,13 +271,13 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "player_id": "manutd-9"
+     "player_id": "forgeham-9"
     }
    }
   },
   {
    "id": "player-goals",
-   "prompt": "Replay Mainoo's goals",
+   "prompt": "Replay Brightwell's goals",
    "at": "full_time",
    "expect": {
     "filters": [
@@ -290,21 +290,21 @@
       "results": [
        "success"
       ],
-      "player_id": "manutd-9"
+      "player_id": "forgeham-9"
      }
     ]
    }
   },
   {
-   "id": "headers-by-cunha",
-   "prompt": "Show me Cunha's headers",
+   "id": "headers-by-karabey",
+   "prompt": "Show me Karabey's headers",
    "at": "full_time",
    "expect": {
     "filters": {
      "bodyparts": [
       "head"
      ],
-     "player_id": "manutd-10"
+     "player_id": "forgeham-10"
     }
    }
   },
@@ -372,34 +372,34 @@
    }
   },
   {
-   "id": "saves-sanchez",
-   "prompt": "Show me Sánchez's saves",
+   "id": "saves-brenner",
+   "prompt": "Show me Brenner's saves",
    "at": "full_time",
    "expect": {
     "filters": {
      "action_types": [
       "keeper_save"
      ],
-     "player_id": "chelsea-0"
+     "player_id": "riverton-0"
     }
    }
   },
   {
-   "id": "saves-lammens",
-   "prompt": "Show me the saves by Lammens",
+   "id": "saves-halloran",
+   "prompt": "Show me the saves by Halloran",
    "at": "full_time",
    "expect": {
     "filters": {
      "action_types": [
       "keeper_save"
      ],
-     "player_id": "manutd-0"
+     "player_id": "forgeham-0"
     }
    }
   },
   {
    "id": "tackles-won-team-half",
-   "prompt": "Show me Chelsea's tackles won in the second half",
+   "prompt": "Show me Riverton Rovers' tackles won in the second half",
    "at": "full_time",
    "expect": {
     "filters": {
@@ -409,7 +409,7 @@
      "results": [
       "success"
      ],
-     "team_id": "chelsea",
+     "team_id": "riverton",
      "period": 2
     }
    },
@@ -494,7 +494,7 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "team_id": "manutd"
+     "team_id": "forgeham"
     }
    },
    "fixture": false
@@ -510,14 +510,14 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "player_id": "chelsea-5"
+     "player_id": "riverton-5"
     }
    },
    "fixture": false
   },
   {
    "id": "absent-team",
-   "prompt": "Show me Arsenal's shots",
+   "prompt": "Show me Redcastle Town's shots",
    "at": "full_time",
    "expect": {
     "absent": true
@@ -560,7 +560,7 @@
   },
   {
    "id": "off-target-shots-not-saved",
-   "prompt": "Show me Andrey Santos's shots",
+   "prompt": "Show me Rory Calloway's shots",
    "at": "full_time",
    "expect": {
     "filters": {
@@ -569,7 +569,7 @@
       "shot_penalty",
       "shot_freekick"
      ],
-     "player_id": "chelsea-9"
+     "player_id": "riverton-9"
     }
    },
    "note": "Every case also fails a caption calling an unsaved shot saved (shot_outcome is the evidence)."
@@ -584,7 +584,7 @@
      "saved"
     ]
    },
-   "note": "20′–25′: off-target shots by Mainoo and Andrey Santos (Lammens touched the second after it was off target), a foul and an offside; nothing was saved"
+   "note": "20′–25′: off-target shots by Brightwell and Rory Calloway (Halloran touched the second after it was off target), a foul and an offside; nothing was saved"
   }
  ]
 }

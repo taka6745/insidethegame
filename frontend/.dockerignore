@@ -19,7 +19,5 @@
 !tools/vendor.sh
 !assets/league/
 !assets/league/*.svg
-!assets/league/fonts/
-!assets/league/fonts/*.woff2
 !assets/league/clubs/
 !assets/league/clubs/*.svg

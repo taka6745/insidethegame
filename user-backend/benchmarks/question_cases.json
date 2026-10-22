@@ -1,17 +1,17 @@
 {
-  "recording": "data-generation/recordings/chelsea-united-grf.json",
-  "recording_hash": "1cee97820117f3eb2a6645c793fa16303f05b4462d11ce13e59b360354e046ee",
+  "recording": "data-generation/recordings/riverton-forgeham-grf.json",
+  "recording_hash": "a1963ad40befdde296b559de1db5fd6a78826d5b46493f60f6cae0f7b4011596",
   "match_id": "product-demo-match",
-  "fixture": "chelsea-united",
+  "fixture": "riverton-forgeham",
   "cases": [
     {
       "id": "standard",
-      "prompt": "How many shots has Chelsea had this game?",
+      "prompt": "How many shots has Riverton Rovers had this game?",
       "review": "9 SPADL shot-family actions (goal included); ETL stat, no custom rule",
-      "standard_stat_id": "chelsea:shots",
+      "standard_stat_id": "riverton:shots",
       "offers": [
         [
-          "chelsea:shots",
+          "riverton:shots",
           9
         ]
       ],
@@ -20,19 +20,19 @@
         "decision": {
           "status": "reuse",
           "standard_stat_ids": [
-            "chelsea:shots"
+            "riverton:shots"
           ]
         }
       }
     },
     {
       "id": "standard-restarts",
-      "prompt": "How many corners has Manchester United taken?",
+      "prompt": "How many corners has Forgeham United taken?",
       "review": "3 corners taken",
-      "standard_stat_id": "manutd:corners",
+      "standard_stat_id": "forgeham:corners",
       "offers": [
         [
-          "manutd:corners",
+          "forgeham:corners",
           3
         ]
       ],
@@ -41,7 +41,7 @@
         "decision": {
           "status": "reuse",
           "standard_stat_ids": [
-            "manutd:corners"
+            "forgeham:corners"
           ]
         }
       }
@@ -49,15 +49,15 @@
     {
       "id": "possession",
       "prompt": "What is the possession split?",
-      "review": "ETL possession per team, never an event count: Chelsea 63.6%, United 36.4%",
+      "review": "ETL possession per team, never an event count: Riverton Rovers 63.6%, United 36.4%",
       "standard_stat_id": "all:possession",
       "offers": [
         [
-          "chelsea:possession",
+          "riverton:possession",
           63.6
         ],
         [
-          "manutd:possession",
+          "forgeham:possession",
           36.4
         ]
       ],
@@ -68,8 +68,8 @@
           "goal": {
             "description": "Possession split",
             "team_ids": [
-              "chelsea",
-              "manutd"
+              "riverton",
+              "forgeham"
             ]
           }
         }
@@ -78,7 +78,7 @@
     },
     {
       "id": "custom",
-      "prompt": "How many passes did Chelsea make in the second half?",
+      "prompt": "How many passes did Riverton Rovers make in the second half?",
       "review": "473 pass-family actions (catalogue definition); custom period-2 count, offer Track, no live registration",
       "offer_value": 473,
       "fixture": {
@@ -86,7 +86,7 @@
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Chelsea passes in the second half",
+            "description": "Riverton Rovers passes in the second half",
             "action_types": [
               "pass",
               "cross",
@@ -98,7 +98,7 @@
               "goalkick"
             ],
             "team_ids": [
-              "chelsea"
+              "riverton"
             ],
             "period": 2
           }
@@ -107,7 +107,7 @@
     },
     {
       "id": "followup",
-      "prompt": "What about Manchester United?",
+      "prompt": "What about Forgeham United?",
       "review": "209 United second-half pass-family actions; period kept",
       "offer_value": 209,
       "fixture": {
@@ -115,7 +115,7 @@
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Manchester United passes in the second half",
+            "description": "Forgeham United passes in the second half",
             "action_types": [
               "pass",
               "cross",
@@ -127,7 +127,7 @@
               "goalkick"
             ],
             "team_ids": [
-              "manutd"
+              "forgeham"
             ],
             "period": 2
           }
@@ -136,7 +136,7 @@
     },
     {
       "id": "composite",
-      "prompt": "What percentage of Chelsea's passes were completed in the second half?",
+      "prompt": "What percentage of Riverton Rovers' passes were completed in the second half?",
       "review": "386 / 473 = 81.61%; SPADL pass family, success over all (offside and failed passes are incomplete)",
       "offer_value": 81.607,
       "fixture": {
@@ -144,11 +144,11 @@
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Chelsea second-half pass completion",
+            "description": "Riverton Rovers second-half pass completion",
             "operation": "percentage",
             "inputs": [
               {
-                "description": "Completed Chelsea passes",
+                "description": "Completed Riverton Rovers passes",
                 "action_types": [
                   "pass",
                   "cross",
@@ -160,7 +160,7 @@
                   "goalkick"
                 ],
                 "team_ids": [
-                  "chelsea"
+                  "riverton"
                 ],
                 "period": 2,
                 "results": [
@@ -168,7 +168,7 @@
                 ]
               },
               {
-                "description": "All Chelsea passes",
+                "description": "All Riverton Rovers passes",
                 "action_types": [
                   "pass",
                   "cross",
@@ -180,7 +180,7 @@
                   "goalkick"
                 ],
                 "team_ids": [
-                  "chelsea"
+                  "riverton"
                 ],
                 "period": 2
               }
@@ -209,7 +209,7 @@
     },
     {
       "id": "clarification-answer",
-      "prompt": "Andrey Santos",
+      "prompt": "Rory Calloway",
       "review": "3 SPADL shot-family actions (1 goal included); shots metric kept",
       "offer_value": 3,
       "fixture": {
@@ -217,14 +217,14 @@
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Andrey Santos shots",
+            "description": "Rory Calloway shots",
             "action_types": [
               "shot",
               "shot_penalty",
               "shot_freekick"
             ],
             "player_ids": [
-              "chelsea-9"
+              "riverton-9"
             ]
           }
         }
@@ -232,8 +232,8 @@
     },
     {
       "id": "match",
-      "prompt": "How is Chelsea looking this game?",
-      "review": "1-1: Mainoo 10′ (9:35) and Andrey Santos 72′ (71:16), both penalties; no cards. No invented tactics or xG.",
+      "prompt": "How is Riverton Rovers looking this game?",
+      "review": "1-1: Brightwell 10′ (9:35) and Rory Calloway 72′ (71:16), both penalties; no cards. No invented tactics or xG.",
       "answer_kind": "match"
     },
     {
@@ -244,7 +244,7 @@
     },
     {
       "id": "unsupported-speed",
-      "prompt": "What is Cole Palmer's top speed?",
+      "prompt": "What is Kai Ashworth's top speed?",
       "review": "Names the missing tracking/speed data; no substitute stat",
       "status": "unsupported",
       "text_includes": [
@@ -260,7 +260,7 @@
     },
     {
       "id": "unsupported-xg",
-      "prompt": "What is Chelsea's xG?",
+      "prompt": "What is Riverton Rovers' xG?",
       "review": "Names missing xG; no substitute stat",
       "status": "unsupported",
       "text_includes": [
@@ -281,22 +281,22 @@
         "clock": "4:43"
       },
       "prompt": "Score and shots per team?",
-      "review": "4:43: score 0-0; shots Chelsea 0, United 1; per team, never one combined count",
+      "review": "4:43: score 0-0; shots Riverton Rovers 0, United 1; per team, never one combined count",
       "offers": [
         [
-          "chelsea:goals",
+          "riverton:goals",
           0
         ],
         [
-          "manutd:goals",
+          "forgeham:goals",
           0
         ],
         [
-          "chelsea:shots",
+          "riverton:shots",
           0
         ],
         [
-          "manutd:shots",
+          "forgeham:shots",
           1
         ]
       ],
@@ -318,14 +318,14 @@
       "id": "corners-each-team",
       "at": "halftime",
       "prompt": "Corners each team",
-      "review": "Half-time: Chelsea 0, United 2 corners taken; per team",
+      "review": "Half-time: Riverton Rovers 0, United 2 corners taken; per team",
       "offers": [
         [
-          "chelsea:corners",
+          "riverton:corners",
           0
         ],
         [
-          "manutd:corners",
+          "forgeham:corners",
           2
         ]
       ],
@@ -346,19 +346,19 @@
       "review": "Half-time 0-1; possession 58.6/41.4 at the period-end delivery (58.7/41.3 a moment later)",
       "offers": [
         [
-          "chelsea:goals",
+          "riverton:goals",
           0
         ],
         [
-          "manutd:goals",
+          "forgeham:goals",
           1
         ],
         [
-          "chelsea:possession",
+          "riverton:possession",
           58.6
         ],
         [
-          "manutd:possession",
+          "forgeham:possession",
           41.4
         ]
       ],
@@ -383,7 +383,7 @@
       "review": "No United cards by 60:00 (none in the match); nobody sent off, read from MA3 cards",
       "offers": [
         [
-          "manutd:cards",
+          "forgeham:cards",
           0
         ]
       ],
@@ -395,27 +395,27 @@
         "decision": {
           "status": "reuse",
           "standard_stat_ids": [
-            "manutd:cards"
+            "forgeham:cards"
           ]
         }
       },
       "fixture_note": "Routed as match, as models do; code reroutes who-was-sent-off to the cards stat"
     },
     {
-      "id": "chelsea-on-target-percentage",
+      "id": "riverton-on-target-percentage",
       "at": {
         "period": 1,
         "clock": "40:00"
       },
-      "prompt": "% of Chelsea shots on target",
+      "prompt": "% of Riverton Rovers shots on target",
       "review": "1 on target of 3 shots = 33.3%, from ETL shots_on_target / shots",
       "offers": [
         [
-          "chelsea:shots_on_target",
+          "riverton:shots_on_target",
           1
         ],
         [
-          "chelsea:shots",
+          "riverton:shots",
           3
         ]
       ],
@@ -427,8 +427,8 @@
         "decision": {
           "status": "reuse",
           "standard_stat_ids": [
-            "chelsea:shots_on_target",
-            "chelsea:shots"
+            "riverton:shots_on_target",
+            "riverton:shots"
           ],
           "formula": "percentage"
         }
@@ -438,22 +438,22 @@
       "id": "final-score-shots-each",
       "at": "end",
       "prompt": "Final score + shots each",
-      "review": "1-1; shots Chelsea 9, United 5",
+      "review": "1-1; shots Riverton Rovers 9, United 5",
       "offers": [
         [
-          "chelsea:goals",
+          "riverton:goals",
           1
         ],
         [
-          "manutd:goals",
+          "forgeham:goals",
           1
         ],
         [
-          "chelsea:shots",
+          "riverton:shots",
           9
         ],
         [
-          "manutd:shots",
+          "forgeham:shots",
           5
         ]
       ],
@@ -474,15 +474,15 @@
     {
       "id": "keeper-saves",
       "at": "end",
-      "prompt": "Lammens saves",
-      "review": "2: Lammens's real saves (keeper_save with save_kind save, as ETL's shots_saved); his touch of an off-target shot is wide_touch. Would be 3 if every SPADL keeper_save counted.",
+      "prompt": "Halloran saves",
+      "review": "2: Halloran's real saves (keeper_save with save_kind save, as ETL's shots_saved); his touch of an off-target shot is wide_touch. Would be 3 if every SPADL keeper_save counted.",
       "offer_value": 2,
       "fixture": {
         "route": "statistic",
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Senne Lammens saves",
+            "description": "Viktor Halloran saves",
             "action_types": [
               "keeper_save"
             ],
@@ -490,7 +490,7 @@
               "save"
             ],
             "player_ids": [
-              "manutd-0"
+              "forgeham-0"
             ]
           }
         }
@@ -500,14 +500,14 @@
       "id": "shots-split-per-team",
       "at": "end",
       "prompt": "Shots split per team",
-      "review": "A split of a count is each team's count: Chelsea 9, United 5; never declined as a share",
+      "review": "A split of a count is each team's count: Riverton Rovers 9, United 5; never declined as a share",
       "offers": [
         [
-          "chelsea:shots",
+          "riverton:shots",
           9
         ],
         [
-          "manutd:shots",
+          "forgeham:shots",
           5
         ]
       ],
@@ -524,15 +524,15 @@
     {
       "id": "player-touches",
       "at": "end",
-      "prompt": "Cole Palmer's touches",
-      "review": "71 SPADL actions by Palmer of every type except dribble (carries are inferred, not touches); SPADL has no separate touch record; never unsupported",
+      "prompt": "Kai Ashworth's touches",
+      "review": "71 SPADL actions by Ashworth of every type except dribble (carries are inferred, not touches); SPADL has no separate touch record; never unsupported",
       "offer_value": 71,
       "fixture": {
         "route": "statistic",
         "decision": {
           "status": "custom",
           "goal": {
-            "description": "Cole Palmer's on-ball actions",
+            "description": "Kai Ashworth's on-ball actions",
             "action_types": [
               "pass",
               "cross",
@@ -557,7 +557,7 @@
               "goalkick"
             ],
             "player_ids": [
-              "chelsea-1"
+              "riverton-1"
             ]
           }
         }
@@ -568,17 +568,17 @@
       "id": "leader-completed-passes",
       "at": "end",
       "prompt": "Which player has completed the most passes?",
-      "review": "Andrey Santos 110 completed pass-family actions; next Enzo Fernández and Pedro Neto 104, Reece James 101 (rule engine per player over SPADL actions)",
+      "review": "Rory Calloway 110 completed pass-family actions; next Nico Barrowclough and Ilan Petrakis 104, Sami Lindqvist 101 (rule engine per player over SPADL actions)",
       "leaders": [
         [
-          "chelsea-9",
+          "riverton-9",
           110
         ]
       ],
       "text_includes": [
-        "andrey santos",
+        "rory calloway",
         "110",
-        "enzo fernández (chelsea) 104"
+        "nico barrowclough (riverton rovers) 104"
       ],
       "fixture": {
         "route": "statistic",
@@ -609,21 +609,21 @@
       "id": "leader-shots-tie",
       "at": "end",
       "prompt": "Who has had the most shots?",
-      "review": "Two-way tie on 3 shots (goals included): Tosin Adarabioyo, Andrey Santos; both offered",
+      "review": "Two-way tie on 3 shots (goals included): Joel Hartigan, Rory Calloway; both offered",
       "leaders": [
         [
-          "chelsea-5",
+          "riverton-5",
           3
         ],
         [
-          "chelsea-9",
+          "riverton-9",
           3
         ]
       ],
       "text_includes": [
         "joint leaders",
-        "tosin adarabioyo",
-        "andrey santos",
+        "joel hartigan",
+        "rory calloway",
         "3 each"
       ],
       "fixture": {
@@ -646,15 +646,15 @@
       "id": "leader-tackles-team",
       "at": "end",
       "prompt": "Which United player has made the most tackles?",
-      "review": "Lisandro Martínez 4; next de Ligt 3, Casemiro 2 (United only)",
+      "review": "Luca Ferrandi 4; next Ekwueme 3, Adrien Kovalenko 2 (United only)",
       "leaders": [
         [
-          "manutd-4",
+          "forgeham-4",
           4
         ]
       ],
       "text_includes": [
-        "lisandro martínez, 4",
+        "luca ferrandi, 4",
         "next:"
       ],
       "fixture": {
@@ -667,7 +667,7 @@
               "tackle"
             ],
             "team_ids": [
-              "manutd"
+              "forgeham"
             ],
             "rank_by": "player"
           }
@@ -678,16 +678,16 @@
       "id": "leader-tackles-halftime-tie",
       "at": "halftime",
       "prompt": "Most tackles by a player so far",
-      "review": "At half-time Casemiro leads on 2; the players on 1 are runners-up (first three listed), not leaders",
+      "review": "At half-time Adrien Kovalenko leads on 2; the players on 1 are runners-up (first three listed), not leaders",
       "leaders": [
         [
-          "manutd-8",
+          "forgeham-8",
           2
         ]
       ],
       "text_includes": [
-        "casemiro (manchester united), 2",
-        "tosin adarabioyo (chelsea) 1"
+        "adrien kovalenko (forgeham united), 2",
+        "joel hartigan (riverton rovers) 1"
       ],
       "fixture": {
         "route": "statistic",

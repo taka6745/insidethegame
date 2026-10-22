@@ -1,10 +1,10 @@
-"""Prompt rendering: snapshots over the Chelsea–United recording and the ETL's SPADL fixture for it
-(tests/chelsea_united.py), plus the synthetic match itg-syn-0001 (etl/seeder; not real data)."""
+"""Prompt rendering: snapshots over the Riverton Rovers–United recording and the ETL's SPADL fixture for it
+(tests/riverton_forgeham.py), plus the synthetic match itg-syn-0001 (etl/seeder; not real data)."""
 import asyncio
 import json
 from pathlib import Path
 
-import chelsea_united
+import riverton_forgeham
 from narrative_engine.context.builder import ContextBuilder
 from narrative_engine.context.render import MatchInfo, describe_action, render_events, render_ledger, render_match, \
     render_stats, score
@@ -15,12 +15,12 @@ FIXTURES = Path(__file__).parent / "fixtures"
 with open(FIXTURES / "itg-syn-0001.jsonl") as f:
     MESSAGES = [json.loads(line) for line in f]
 INFO = MatchInfo.from_ma1(MESSAGES[0])
-DATA = chelsea_united.data()
+DATA = riverton_forgeham.data()
 CU = DATA.info
 
 
 def minute(period, minute_):
-    """The minute-summary match_events of one Chelsea–United minute."""
+    """The minute-summary match_events of one Riverton Rovers–United minute."""
     async def go():
         clock = MatchClock(period, minute_)
         return (await ContextBuilder(DATA, MemoryStore()).summary_variables(
@@ -37,35 +37,35 @@ def test_match_info_reads_teams_and_lineups():
 def test_goal_minute_snapshot():
     assert minute(2, 71) == """\
 72' (second half)
-  71:10 CHE Tosin Adarabioyo: take_on, success, box
-  71:13 CHE Tosin Adarabioyo: cross, success, left foot, left wing → box
-  71:13 MUN Matheus Cunha: foul, fail, own box
-  71:13 key event: Penalty to Chelsea, conceded by Matheus Cunha (Manchester United)
-  71:16 CHE Andrey Santos: shot_penalty, success, left foot, box
-  71:16 key event: Goal for Chelsea, Andrey Santos (penalty)
-  71:38 CHE Moisés Caicedo: cross, success, right foot, left wing → box
-  71:43 MUN Matthijs de Ligt: tackle, fail, own box
-  71:47 CHE Moisés Caicedo: cross, success, right foot, left wing → box
-  71:52 CHE Reece James: take_on, success, box
-  71:55 CHE Moisés Caicedo: cross, success, left foot, left wing → box
-  totals: CHE passes 10/11 completed, carries 7, final-third entries 1, box entries 6; MUN passes 0/0 completed, \
+  71:10 RVR Joel Hartigan: take_on, success, box
+  71:13 RVR Joel Hartigan: cross, success, left foot, left wing → box
+  71:13 FGU Yusuf Karabey: foul, fail, own box
+  71:13 key event: Penalty to Riverton Rovers, conceded by Yusuf Karabey (Forgeham United)
+  71:16 RVR Rory Calloway: shot_penalty, success, left foot, box
+  71:16 key event: Goal for Riverton Rovers, Rory Calloway (penalty)
+  71:38 RVR Felix Adeyinka: cross, success, right foot, left wing → box
+  71:43 FGU Moses Ekwueme: tackle, fail, own box
+  71:47 RVR Felix Adeyinka: cross, success, right foot, left wing → box
+  71:52 RVR Sami Lindqvist: take_on, success, box
+  71:55 RVR Felix Adeyinka: cross, success, left foot, left wing → box
+  totals: RVR passes 10/11 completed, carries 7, final-third entries 1, box entries 6; FGU passes 0/0 completed, \
 carries 1, final-third entries 1"""
 
 
 def test_penalty_and_set_piece_minute_snapshot():
     assert minute(1, 9) == """\
 10' (first half)
-  09:01 MUN Bryan Mbeumo: interception, fail, left midfield
-  09:14 CHE Pedro Neto: cross, success, right foot, right wing → box
-  09:20 MUN Bruno Fernandes: clearance, success, left foot, own third → box
-  09:31 CHE Reece James: foul, fail, own box
-  09:31 key event: Penalty to Manchester United, conceded by Reece James (Chelsea)
-  09:35 MUN Kobbie Mainoo: shot_penalty, success, left foot, box
-  09:35 key event: Goal for Manchester United, Kobbie Mainoo (penalty)
-  09:42 MUN Bruno Fernandes: interception, fail, own third
-  09:53 CHE Liam Delap: foul, fail, left wing
-  09:59 MUN Lisandro Martínez: freekick_crossed, fail, left foot, own third → midfield
-  totals: CHE passes 8/12 completed, carries 9, final-third entries 2, box entries 2; MUN passes 1/4 completed, \
+  09:01 FGU Jamal Whitcombe: interception, fail, left midfield
+  09:14 RVR Ilan Petrakis: cross, success, right foot, right wing → box
+  09:20 FGU Theo Marchetti: clearance, success, left foot, own third → box
+  09:31 RVR Sami Lindqvist: foul, fail, own box
+  09:31 key event: Penalty to Forgeham United, conceded by Sami Lindqvist (Riverton Rovers)
+  09:35 FGU Callum Brightwell: shot_penalty, success, left foot, box
+  09:35 key event: Goal for Forgeham United, Callum Brightwell (penalty)
+  09:42 FGU Theo Marchetti: interception, fail, own third
+  09:53 RVR Dario Mensforth: foul, fail, left wing
+  09:59 FGU Luca Ferrandi: freekick_crossed, fail, left foot, own third → midfield
+  totals: RVR passes 8/12 completed, carries 9, final-third entries 2, box entries 2; FGU passes 1/4 completed, \
 carries 3, final-third entries 1"""
 
 
@@ -73,7 +73,7 @@ def test_period_end_minute_settles_every_action():
     assert minute(1, 46) == """\
 45+2' (first half)
   46:18 first half ends
-  totals: MUN passes 8/8 completed, carries 6, final-third entries 1, box entries 2"""
+  totals: FGU passes 8/8 completed, carries 6, final-third entries 1, box entries 2"""
     assert minute(1, 45).splitlines()[0] == "45+1' (first half)"
 
 
@@ -97,16 +97,16 @@ def test_late_settled_actions_go_under_the_window_heading():
 
 def test_action_lines_use_spadl_names_and_team_relative_places():
     cross = {"typeName": "cross", "resultName": "success", "bodypartName": "foot_left", "bodypartObserved": True,
-             "teamId": "manutd", "startZone": "final_third", "startY": 60.0, "endZone": "opp_box", "endY": 34.0}
+             "teamId": "forgeham", "startZone": "final_third", "startY": 60.0, "endZone": "opp_box", "endY": 34.0}
     assert describe_action(cross, CU) == "cross, success, left foot, right wing → box"  # away: y is mirrored
-    assert describe_action({**cross, "teamId": "chelsea", "bodypartObserved": False}, CU) == \
+    assert describe_action({**cross, "teamId": "riverton", "bodypartObserved": False}, CU) == \
         "cross, success, left wing → box"
     assert describe_action({**cross, "typeName": "tackle"}, CU) == "tackle, success, left foot, right wing"
     assert render_events(CU, []) == "No recorded events."
 
 
 def test_keeper_saves_that_are_not_goalkeeper_saves_say_so():
-    # No Chelsea–United keeper_save is an outfield block since the 2026-10-22 re-render: mark a save as one.
+    # No Riverton Rovers–United keeper_save is an outfield block since the 2026-10-22 re-render: mark a save as one.
     block = {**next(a for a in DATA.actions_rows if a["typeName"] == "keeper_save"), "defensiveBlock": True}
     assert describe_action(block, CU).startswith("keeper_save, success, outfield block, not a goalkeeper save")
     wide = next(a for a in DATA.actions_rows if a["fromShotOffTarget"])
@@ -116,15 +116,15 @@ def test_keeper_saves_that_are_not_goalkeeper_saves_say_so():
 
 
 def test_stats_table_snapshot():
-    rows = chelsea_united.golden_stats()[11133]
-    table, meanings = render_stats(rows, CU, MatchClock(2, 91), chelsea_united.key_rows()).split("\nWhat each counts:\n")
+    rows = riverton_forgeham.golden_stats()[11133]
+    table, meanings = render_stats(rows, CU, MatchClock(2, 91), riverton_forgeham.key_rows()).split("\nWhat each counts:\n")
     # The catalogue's definitions follow the table: box entries can outnumber final-third entries, and say so.
     assert "- Box entries: " in meanings and "can outnumber final-third entries" in meanings
     assert len(meanings.splitlines()) == 9
     assert table == """\
 As of 90+2' (second half)
-Score: Chelsea (home) 1 - 1 Manchester United (away)
-| Statistic | Chelsea | Manchester United |
+Score: Riverton Rovers (home) 1 - 1 Forgeham United (away)
+| Statistic | Riverton Rovers | Forgeham United |
 | --- | --- | --- |
 | Possession (share of ball time) | 63.6% | 36.4% |
 | Shots (on target) | 9 (3) | 5 (2) |

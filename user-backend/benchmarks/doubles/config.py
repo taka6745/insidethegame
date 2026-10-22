@@ -14,12 +14,14 @@ def seeded(name):
     if name in ('cross-match', 'follow-offer'):
         module = migration('040_cross_match')
         return CONFIGS[name].model_validate(module.CONFIG if name == 'cross-match' else module.OFFER)
+    if name == 'models':
+        return CONFIGS[name].model_validate(migration('047_model_roles_length_layer').MODELS)
     text = ''.join(seed.read_text() for seed in SEEDS)
     match = re.search(r"VALUES \('" + re.escape(name) + r"', '(.*?)'::jsonb\)", text, re.S)
     document = json.loads(match.group(1))
     if name == 'replay-timing':
-        document = {**migration('022_spadl_replay_timing').remap(document),
-                    'playback': migration('037_replay_playback').PLAYBACK}
+        document = migration('046_clip_lengths').tuned({**migration('022_spadl_replay_timing').remap(document),
+                                                        'playback': migration('037_replay_playback').PLAYBACK})
     return CONFIGS[name].model_validate(document)
 
 

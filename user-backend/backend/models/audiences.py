@@ -19,6 +19,8 @@ class AudienceOption(StrictModel):
     label: Annotated[str, Field(min_length=1, max_length=60)] | None = None
     # The side this option backs. Unset: the engine reads a label naming only `{home}` or `{away}`.
     team: Literal["home", "away"] | None = None
+    # False: left out of the viewer's bucket name (a layer's default option, e.g. Standard length).
+    in_label: bool | None = None
 
 
 class AudienceLayer(StrictModel):

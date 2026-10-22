@@ -23,7 +23,7 @@ from backend.services.question_answers import UNAVAILABLE, model_catalogue, reso
 from backend.services.rule_availability import supported_rule, unsupported_reason
 from harness import MATCH, Running, Upstream, ask, session
 
-INITIAL = "how many times has the ball touched man utd's head"
+INITIAL = "how many times has the ball touched forgeham's head"
 FOLLOW_UP = 'any of them. anytime the ball touched someones head'
 CAPABILITIES = {'supported_event_types': ['pass', 'shot', 'goal', 'clearance'],
                 'body_parts': False, 'body_part_event_types': ['pass', 'shot', 'goal'],
@@ -48,8 +48,8 @@ def test_contract_follows_feed_coverage_not_observed_events():
 
 
 def action(**changes):
-    base = {'match_id': 'match', 'action_id': 0, 'period': 1, 'match_time_seconds': 60, 'team_id': 'manutd',
-            'player_id': 'manutd-1', 'action_type': 'clearance', 'result': 'success', 'bodypart': 'head',
+    base = {'match_id': 'match', 'action_id': 0, 'period': 1, 'match_time_seconds': 60, 'team_id': 'forgeham',
+            'player_id': 'forgeham-1', 'action_type': 'clearance', 'result': 'success', 'bodypart': 'head',
             'bodypart_observed': True, 'start_x': 10.0, 'start_y': 30.0, 'end_x': 30.0, 'end_y': 30.0,
             'start_zone': 'own_box', 'end_zone': 'defensive_third', 'seq': 1, 'final_seq': 1}
     return SpadlAction(**base | changes)
@@ -73,9 +73,9 @@ def test_recorded_count_requires_declared_body_parts_and_counts_only_observed():
     with pytest.raises(ValidationError):
         Goal(description='Invalid escape hatch', coverage='recorded', operation='sum', sum_field='distance_metres',
              action_types=['pass'])
-    # Reported: "Cole Palmer's touches" came back recorded with no body part and failed validation
+    # Reported: "Kai Ashworth's touches" came back recorded with no body part and failed validation
     # twice, so the viewer got "unsupported". A plain count of every action is a complete count.
-    plain = Goal(description="Cole Palmer's on-ball actions", coverage='recorded', player_ids=['chelsea-1'])
+    plain = Goal(description="Kai Ashworth's on-ball actions", coverage='recorded', player_ids=['riverton-1'])
     assert plain.coverage == 'complete' and supported_rule(plain.target_rule('match'), CAPABILITIES)
 
 
@@ -96,20 +96,20 @@ class RecordedContactsModel:
         assert payload['measurement_support']['recorded_bodyparts']
         if payload['request'] == FOLLOW_UP:
             assert payload['context']['conversation'][0]['content'] == INITIAL
-        return {'status': 'custom', 'goal': {'description': 'Manchester United headers',
-                'team_ids': ['manutd'], 'bodyparts': ['head'], 'coverage': 'recorded'}}
+        return {'status': 'custom', 'goal': {'description': 'Forgeham United headers',
+                'team_ids': ['forgeham'], 'bodyparts': ['head'], 'coverage': 'recorded'}}
 
 
 def contact_source():
     """Independent golden actions: observed headers count, defaults and the other team do not."""
-    spec = json.loads((Path(__file__).parents[2] / 'data-generation/recordings/chelsea-united-grf.json').read_text())
-    def row(identifier, kind='pass', part='head', team='manutd'):
+    spec = json.loads((Path(__file__).parents[2] / 'data-generation/recordings/riverton-forgeham-grf.json').read_text())
+    def row(identifier, kind='pass', part='head', team='forgeham'):
         return {'eventId': identifier, 'matchId': spec['match_id'], 'revision': 1, 'typeName': kind,
                 'teamId': team, 'playerId': team + '-1', 'periodId': 1, 'timeMin': 1, 'timeSec': 0, 'outcome': 'success',
                 'qualifiers': [] if part is None else [{'type': 'bodyPart', 'value': part}]}
     rows = [row('a'), row('b', 'shot'), row('unknown', 'clearance', None), row('foot', part='foot'),
-            row('other-team', team='chelsea'), row('tackle', 'tackle', None), row('right', part='right_foot'),
-            row('c'), row('foot-2', part='foot'), row('d', 'clearance'), row('chelsea-2', team='chelsea')]
+            row('other-team', team='riverton'), row('tackle', 'tackle', None), row('right', part='right_foot'),
+            row('c'), row('foot-2', part='foot'), row('d', 'clearance'), row('riverton-2', team='riverton')]
     for i, event in enumerate(rows, 1):
         event['sequence'] = i
     spec.pop('playback', None)
@@ -133,14 +133,14 @@ def test_exact_united_conversation_answers_pins_and_updates_recorded_count(store
             run.service.repository.finish(token, turn['id'], {
                 'status': 'clarification', 'answer_kind': 'statistic', 'offers': [],
                 'text': 'Do you mean all headed contacts (any touch with the head), headed passes, '
-                        'or headed shots by Manchester United?'})
+                        'or headed shots by Forgeham United?'})
         else:
             first = ask(run.client, token, INITIAL).json()
             assert first['status'] == 'answer', first
             assert first['offers'][0]['value'] == 2
         second = ask(run.client, token, FOLLOW_UP).json()
         assert second['status'] == 'answer', second
-        assert second['text'] == 'Recorded Manchester United headers: 2.'
+        assert second['text'] == 'Recorded Forgeham United headers: 2.'
         assert second['clarification'] is None
         assert run.match().engine.count == 0  # Offered, not auto-pinned.
         offer = second['offers'][0]
@@ -162,7 +162,7 @@ def test_exact_united_conversation_answers_pins_and_updates_recorded_count(store
         assert run.client.get(f'{chat}/{token}').json()['offers'][-1]['calculation_id'] == identifier
 
 
-TEAMS = [{'id': 'chelsea', 'name': 'Chelsea'}, {'id': 'manutd', 'name': 'Manchester United'}]
+TEAMS = [{'id': 'riverton', 'name': 'Riverton Rovers'}, {'id': 'forgeham', 'name': 'Forgeham United'}]
 
 
 def stat(identifier, label, team, value):
@@ -170,13 +170,13 @@ def stat(identifier, label, team, value):
             'available': True, 'complete': True}
 
 
-# Shipped Chelsea–United values: ETL possession is a share, not a count of events.
+# Shipped Riverton Rovers–United values: ETL possession is a share, not a count of events.
 CATALOGUE = [stat('all:possession', 'Both teams possession', None, 100.0),
-             stat('chelsea:possession', 'Chelsea possession', 'chelsea', 53.2),
-             stat('manutd:possession', 'Manchester United possession', 'manutd', 46.8),
+             stat('riverton:possession', 'Riverton Rovers possession', 'riverton', 53.2),
+             stat('forgeham:possession', 'Forgeham United possession', 'forgeham', 46.8),
              stat('all:pass_accuracy', 'Both teams pass accuracy', None, 79.4),
-             stat('chelsea:pass_accuracy', 'Chelsea pass accuracy', 'chelsea', 81.0),
-             stat('manutd:pass_accuracy', 'Manchester United pass accuracy', 'manutd', 77.1)]
+             stat('riverton:pass_accuracy', 'Riverton Rovers pass accuracy', 'riverton', 81.0),
+             stat('forgeham:pass_accuracy', 'Forgeham United pass accuracy', 'forgeham', 77.1)]
 
 
 class PlainCountModel:
@@ -188,30 +188,30 @@ class PlainCountModel:
 
 
 @pytest.mark.parametrize('request_text, goal, status, standard_stat_id', [
-    # Reported: the split compiled as a count of every Chelsea/United event (11,388).
-    ('What is the possession split?', {'description': 'Possession split', 'team_ids': ['chelsea', 'manutd']},
+    # Reported: the split compiled as a count of every Riverton Rovers/United event (11,388).
+    ('What is the possession split?', {'description': 'Possession split', 'team_ids': ['riverton', 'forgeham']},
      'reuse', 'all:possession'),
-    ('How much possession has Chelsea had?', {'description': 'Chelsea possession', 'team_ids': ['chelsea']},
-     'reuse', 'chelsea:possession'),
-    ("What is United's pass accuracy?", {'description': 'United passes', 'team_ids': ['manutd'],
-     'action_types': PASS, 'results': ['success']}, 'reuse', 'manutd:pass_accuracy'),
+    ('How much possession has Riverton Rovers had?', {'description': 'Riverton Rovers possession', 'team_ids': ['riverton']},
+     'reuse', 'riverton:possession'),
+    ("What is United's pass accuracy?", {'description': 'United passes', 'team_ids': ['forgeham'],
+     'action_types': PASS, 'results': ['success']}, 'reuse', 'forgeham:pass_accuracy'),
     ('Possession split in the second half?', {'description': 'Possession split', 'period': 2}, 'unsupported', None),
-    ("What percentage of Palmer's passes were completed?", {'description': 'Palmer completed passes',
-     'player_ids': ['chelsea-1'], 'action_types': PASS, 'results': ['success']}, 'unsupported', None),
+    ("What percentage of Ashworth's passes were completed?", {'description': 'Ashworth completed passes',
+     'player_ids': ['riverton-1'], 'action_types': PASS, 'results': ['success']}, 'unsupported', None),
     ('How many times did United lose possession?', {'description': 'United bad touches',
-     'team_ids': ['manutd'], 'action_types': ['bad_touch']}, 'ready', None),
+     'team_ids': ['forgeham'], 'action_types': ['bad_touch']}, 'ready', None),
     # Reported: declined as "a percentage needs two counts". A split of a count is per team.
     ('Shots split per team', {'description': 'Shots split per team', 'action_types': SHOTS}, 'ready', None),
 ])
 def test_named_measure_is_never_a_plain_event_count(request_text, goal, status, standard_stat_id):
-    context = {'match_id': 'm', 'teams': TEAMS, 'players': [{'id': 'chelsea-1', 'name': 'Cole Palmer'}],
+    context = {'match_id': 'm', 'teams': TEAMS, 'players': [{'id': 'riverton-1', 'name': 'Kai Ashworth'}],
                'standard_stats': CATALOGUE}
     outcome = asyncio.run(RuleWorkflow(GoalAgent(PlainCountModel(goal)), StructuredRuleCompiler())
                           .plan(request_text, context))
     assert (outcome.status, outcome.standard_stat_id) == (status, standard_stat_id)
     if status == 'unsupported':
         assert 'not a count of events' in outcome.message or 'two named counts' in outcome.message
-    composite = Goal(description='Palmer pass completion %', operation='percentage', inputs=[
+    composite = Goal(description='Ashworth pass completion %', operation='percentage', inputs=[
         {'description': 'completed', 'action_types': PASS, 'results': ['success']},
         {'description': 'all', 'action_types': PASS}])
     assert not plain_measure('pass completion percentage', composite)
@@ -226,9 +226,9 @@ def test_possession_split_answers_each_team_from_etl():
     tools = tools_for(CATALOGUE)
     draft = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',
                                                      standard_stat_id='all:possession'), tools))
-    assert draft.text == 'Chelsea possession: 53.2%. Manchester United possession: 46.8%.'
-    assert [offer['standard_stat_id'] for offer in tools.offers] == ['chelsea:possession', 'manutd:possession']
-    assert draft.evidence_ids == ['stat:chelsea:possession', 'stat:manutd:possession']
+    assert draft.text == 'Riverton Rovers possession: 53.2%. Forgeham United possession: 46.8%.'
+    assert [offer['standard_stat_id'] for offer in tools.offers] == ['riverton:possession', 'forgeham:possession']
+    assert draft.evidence_ids == ['stat:riverton:possession', 'stat:forgeham:possession']
     # Overall pass accuracy is not the sum of team accuracies: one row.
     draft = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',
                                                      standard_stat_id='all:pass_accuracy'), tools))
@@ -236,12 +236,12 @@ def test_possession_split_answers_each_team_from_etl():
     # Models see the split, not a bare 100% both-teams share; ids are unchanged for reuse.
     shown = {row['id']: row for row in model_catalogue(CATALOGUE)}
     assert shown['all:possession']['label'] == 'Possession split by team'
-    assert shown['all:possession']['value'] == {'chelsea': 53.2, 'manutd': 46.8}
+    assert shown['all:possession']['value'] == {'riverton': 53.2, 'forgeham': 46.8}
     assert shown['all:pass_accuracy'] == CATALOGUE[3]
     missing = tools_for([{**CATALOGUE[1], 'available': False, 'value': None}])
     draft = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',
-                                                     standard_stat_id='chelsea:possession'), missing))
-    assert draft.text == 'Sorry, I cannot answer that. Chelsea possession is not available in this recording.'
+                                                     standard_stat_id='riverton:possession'), missing))
+    assert draft.text == 'Sorry, I cannot answer that. Riverton Rovers possession is not available in this recording.'
 
 
 def test_unsupported_answers_name_the_missing_channel():
@@ -259,7 +259,7 @@ def test_unsupported_answers_name_the_missing_channel():
     assert unavailable('This recording has no tracking speed or distance data.').text == (
         'Sorry, I cannot answer that. This recording has no tracking speed or distance data.')
     # Model-written reasons cannot carry numbers; unknown reasons stay generic.
-    for reason in (None, '', 'Palmer ran 11 km.', 'x' * 241):
+    for reason in (None, '', 'Ashworth ran 11 km.', 'x' * 241):
         assert unavailable(reason).text == UNAVAILABLE
 
 
@@ -272,7 +272,7 @@ def test_plain_saves_read_real_goalkeeper_saves():
     assert reuse.standard_stat_ids == ['home:shots_saved', 'all:shots_saved'] and reuse.standard_stat_id == 'home:shots_saved'
     every = GoalDecision(status='reuse', standard_stat_id='all:saves')
     assert measure_decision('All save events, including blocks', every, context) is every
-    custom = measure_decision('Vicario saves', GoalDecision(status='custom', goal=Goal(
+    custom = measure_decision('Bertolli saves', GoalDecision(status='custom', goal=Goal(
         description='Saves', action_types=['keeper_save'], player_ids=['p1'])), context)
     assert custom.goal.save_kinds == ('save',)
 

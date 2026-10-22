@@ -71,7 +71,7 @@ Look at the results with the history API (`python -m narrative_engine.api .local
 | `test_orchestrator.py` | Full matches, triggers, idempotency, backlog equals live, restarts, retries, report |
 | `test_llm_agents.py` | Agents against a mocked API: parsing, retries, per-role settings, prompt templates |
 | `test_graphql_data.py` | ETL GraphQL client against a fake DAB, no future leakage |
-| `test_graphql_live.py` | Read-only checks against the shared stack's ETL GraphQL (`ETL_GRAPHQL_URL`, default `:15001`): a Chelsea–United feed run's MA3 rows, key events, SPADL actions and golden stats equal the recording's test data up to its watermark (skips without such a run) |
+| `test_graphql_live.py` | Read-only checks against the shared stack's ETL GraphQL (`ETL_GRAPHQL_URL`, default `:15001`): a Riverton Rovers–United feed run's MA3 rows, key events, SPADL actions and golden stats equal the recording's test data up to its watermark (skips without such a run) |
 | `test_store_contract.py` | Memory and Cosmos stores behave the same (Cosmos part skips without `COSMOS_ENDPOINT`) |
 | `test_api.py` | History GraphQL queries and errors |
 | `test_servicebus.py` | Router: concurrent matches, model limit across matches, model gate order, purge (one, all, restart), final period from MA1, `eventSeq`, health without the backend; settling, publisher |

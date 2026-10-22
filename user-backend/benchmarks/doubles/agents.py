@@ -22,12 +22,12 @@ class FixtureGoalAgent:
             "track total headers in this game by mbappe": {"player_ids": ("mbappe",), "bodyparts": head},
             "track mbappe's headers": {"player_ids": ("mbappe",), "bodyparts": head},
             "track mbappe's headed shots": {"player_ids": ("mbappe",), "bodyparts": head, "action_types": shots},
-            "track chelsea's corners after the 60th minute": {"team_ids": ("chelsea",), "action_types": corners, "after_seconds": 3600},
+            "track riverton's corners after the 60th minute": {"team_ids": ("riverton",), "action_types": corners, "after_seconds": 3600},
             "corners after the 60th minute": {"action_types": corners, "after_seconds": 3600},
             "corners after the 70th minute": {"action_types": corners, "after_seconds": 4200},
             "track second-half corners": {"action_types": corners, "period": 2},
             "track headers since minute 20": {"bodyparts": head, "from_seconds": 1200},
-            "track total chelsea pass distance": {"team_ids": ("chelsea",), "action_types": ("pass",), "operation": "sum", "sum_field": "distance_metres"},
+            "track total riverton pass distance": {"team_ids": ("riverton",), "action_types": ("pass",), "operation": "sum", "sum_field": "distance_metres"},
         }
         data = phrases.get(normalized(prompt))
         if data is None:

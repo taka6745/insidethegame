@@ -45,7 +45,7 @@ class TelemetryTests(unittest.TestCase):
         passes = [e for e in self.adapter.events if e["typeName"] == "pass"]
         self.assertEqual(len(passes), 1)
         self.assertEqual(passes[0]["outcome"], "success")
-        self.assertEqual(passes[0]["playerId"], "chelsea-1")
+        self.assertEqual(passes[0]["playerId"], "riverton-1")
         self.adapter.consume(touch([0, 1]), 0.3)
         self.adapter.consume(touch([1, 12], 2, 400), 0.4)
         self.assertEqual(
@@ -60,14 +60,14 @@ class TelemetryTests(unittest.TestCase):
             self.adapter.events[0]["qualifiers"],
             [{"type": "bodyPart", "value": "head"}],
         )
-        self.assertEqual(self.adapter.events[0]["playerId"], "manutd-1")
+        self.assertEqual(self.adapter.events[0]["playerId"], "forgeham-1")
 
     def test_conceding_teams_last_touch_without_an_attempt_is_its_own_goal(self):
         row = frame(100, score=[1, 0])
         row["last_touch"] = [1, 12]
         self.adapter.consume(row, 0.1)
         event = self.adapter.events[0]
-        self.assertEqual((event["typeName"], event["teamId"]), ("goal", "manutd"))
+        self.assertEqual((event["typeName"], event["teamId"]), ("goal", "forgeham"))
         self.assertEqual(event["playerId"], self.adapter.players.get((1, 12)))
         self.assertIn({"type": "ownGoal", "value": True}, event["qualifiers"])
         self.assertIn({"type": "score", "value": "1-0"}, event["qualifiers"])
@@ -78,7 +78,7 @@ class TelemetryTests(unittest.TestCase):
         self.adapter.consume(frame(3000, owner=[0, 1]), 3)
         self.assertEqual(
             self.adapter.possession_samples,
-            [{"video_seconds": 3, "team_id": "chelsea", "duration_seconds": 0.01}],
+            [{"video_seconds": 3, "team_id": "riverton", "duration_seconds": 0.01}],
         )
         self.assertFalse(self.adapter.events)
 
@@ -133,7 +133,7 @@ class TelemetryTests(unittest.TestCase):
         canonical = self.adapter.canonical_events()
         self.assertEqual([e["typeName"] for e in canonical], ["touch", "touch", "goal"])
         self.assertIsNone(canonical[-1]["playerId"])
-        self.assertEqual(canonical[-1]["teamId"], "manutd")
+        self.assertEqual(canonical[-1]["teamId"], "forgeham")
         self.assertIn({"type": "situation", "value": "regular_play"}, canonical[-1]["qualifiers"])
         self.assertEqual([e for e in canonical if e["typeName"] in ("save", "shot")], [])
 

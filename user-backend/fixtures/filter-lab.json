@@ -1,11 +1,11 @@
 {
   "synthetic": true,
   "match_id": "filter-lab-match",
-  "description": "Fictional Chelsea vs Madrid fixture. No real match, licensed feed or official vendor schema.",
+  "description": "Fictional Riverton Rovers vs Madrid fixture. No real match, licensed feed or official vendor schema.",
   "teams": [
     {
-      "id": "chelsea",
-      "name": "Chelsea"
+      "id": "riverton",
+      "name": "Riverton Rovers"
     },
     {
       "id": "madrid",
@@ -19,14 +19,14 @@
       "team_id": "madrid"
     },
     {
-      "id": "palmer",
-      "name": "Cole Palmer",
-      "team_id": "chelsea"
+      "id": "ashworth",
+      "name": "Kai Ashworth",
+      "team_id": "riverton"
     },
     {
-      "id": "colwill",
-      "name": "Levi Colwill",
-      "team_id": "chelsea"
+      "id": "rivas",
+      "name": "Matteo Rivas",
+      "team_id": "riverton"
     },
     {
       "id": "vinicius",
@@ -97,7 +97,7 @@
       "sequence": 3,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 1,
       "timeMin": 20,
@@ -113,8 +113,8 @@
       "sequence": 4,
       "revision": 1,
       "typeName": "pass",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 1,
       "timeMin": 25,
       "timeSec": 0,
@@ -138,8 +138,8 @@
       "sequence": 5,
       "revision": 1,
       "typeName": "pass",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 1,
       "timeMin": 27,
       "timeSec": 0,
@@ -221,8 +221,8 @@
       "sequence": 9,
       "revision": 1,
       "typeName": "clearance",
-      "teamId": "chelsea",
-      "playerId": "colwill",
+      "teamId": "riverton",
+      "playerId": "rivas",
       "periodId": 1,
       "timeMin": 46,
       "timeSec": 0,
@@ -263,7 +263,7 @@
       "sequence": 11,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 60,
@@ -279,7 +279,7 @@
       "sequence": 12,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 60,
@@ -353,7 +353,7 @@
       "sequence": 16,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 67,
@@ -369,7 +369,7 @@
       "sequence": 17,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 70,
@@ -385,7 +385,7 @@
       "sequence": 18,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 71,
@@ -426,8 +426,8 @@
       "sequence": 20,
       "revision": 1,
       "typeName": "tackle",
-      "teamId": "chelsea",
-      "playerId": "colwill",
+      "teamId": "riverton",
+      "playerId": "rivas",
       "periodId": 2,
       "timeMin": 73,
       "timeSec": 0,
@@ -442,8 +442,8 @@
       "sequence": 21,
       "revision": 1,
       "typeName": "card",
-      "teamId": "chelsea",
-      "playerId": "colwill",
+      "teamId": "riverton",
+      "playerId": "rivas",
       "periodId": 2,
       "timeMin": 74,
       "timeSec": 0,
@@ -500,8 +500,8 @@
       "sequence": 24,
       "revision": 1,
       "typeName": "goal",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 2,
       "timeMin": 80,
       "timeSec": 0,
@@ -521,8 +521,8 @@
       "sequence": 25,
       "revision": 1,
       "typeName": "pass",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 2,
       "timeMin": 82,
       "timeSec": 0,
@@ -562,8 +562,8 @@
       "sequence": 27,
       "revision": 1,
       "typeName": "foul",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 2,
       "timeMin": 84,
       "timeSec": 0,
@@ -599,8 +599,8 @@
       "sequence": 29,
       "revision": 1,
       "typeName": "interception",
-      "teamId": "chelsea",
-      "playerId": "palmer",
+      "teamId": "riverton",
+      "playerId": "ashworth",
       "periodId": 2,
       "timeMin": 86,
       "timeSec": 0,
@@ -615,7 +615,7 @@
       "sequence": 30,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 88,
@@ -647,7 +647,7 @@
       "sequence": 32,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 89,
@@ -663,7 +663,7 @@
       "sequence": 33,
       "revision": 2,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 89,
@@ -679,7 +679,7 @@
       "sequence": 34,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 95,
@@ -695,7 +695,7 @@
       "sequence": 18,
       "revision": 1,
       "typeName": "corner",
-      "teamId": "chelsea",
+      "teamId": "riverton",
       "playerId": null,
       "periodId": 2,
       "timeMin": 71,
@@ -761,8 +761,8 @@
       "expected_final": 3
     },
     {
-      "id": "chelsea-corners-after-60",
-      "label": "Track Chelsea corners taken after 60:00",
+      "id": "riverton-corners-after-60",
+      "label": "Track Riverton Rovers corners taken after 60:00",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -777,7 +777,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "match_time_seconds",
@@ -812,8 +812,8 @@
       "expected_final": 7
     },
     {
-      "id": "chelsea-corners-from-60",
-      "label": "Track Chelsea corners taken from 60:00 inclusive",
+      "id": "riverton-corners-from-60",
+      "label": "Track Riverton Rovers corners taken from 60:00 inclusive",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -828,7 +828,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "match_time_seconds",
@@ -840,8 +840,8 @@
       "expected_final": 6
     },
     {
-      "id": "chelsea-corners-after-70",
-      "label": "Track Chelsea corners taken after 70:00",
+      "id": "riverton-corners-after-70",
+      "label": "Track Riverton Rovers corners taken after 70:00",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -856,7 +856,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "match_time_seconds",
@@ -869,7 +869,7 @@
     },
     {
       "id": "corners-60-to-70",
-      "label": "Track Chelsea corners after 60:00 through 70:00",
+      "label": "Track Riverton Rovers corners after 60:00 through 70:00",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -884,7 +884,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "match_time_seconds",
@@ -1008,8 +1008,8 @@
       "expected_final": 2
     },
     {
-      "id": "chelsea-goals",
-      "label": "Track Chelsea goals",
+      "id": "riverton-goals",
+      "label": "Track Riverton Rovers goals",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -1025,7 +1025,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "result",
@@ -1066,8 +1066,8 @@
       "expected_final": 0
     },
     {
-      "id": "successful-chelsea-passes",
-      "label": "Track completed Chelsea passes",
+      "id": "successful-riverton-passes",
+      "label": "Track completed Riverton Rovers passes",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -1088,7 +1088,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "result",
@@ -1102,8 +1102,8 @@
       "expected_final": 9
     },
     {
-      "id": "failed-chelsea-passes",
-      "label": "Track incomplete Chelsea passes",
+      "id": "failed-riverton-passes",
+      "label": "Track incomplete Riverton Rovers passes",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -1124,7 +1124,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "result",
@@ -1139,7 +1139,7 @@
     },
     {
       "id": "successful-pass-metres",
-      "label": "Track completed Chelsea pass distance in metres",
+      "label": "Track completed Riverton Rovers pass distance in metres",
       "rule": {
         "match_id": "filter-lab-match",
         "operation": "sum",
@@ -1161,7 +1161,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           },
           {
             "field": "result",
@@ -1260,8 +1260,8 @@
       "expected_final": 2
     },
     {
-      "id": "chelsea-defensive-actions",
-      "label": "Track Chelsea tackles, clearances and interceptions",
+      "id": "riverton-defensive-actions",
+      "label": "Track Riverton Rovers tackles, clearances and interceptions",
       "rule": {
         "match_id": "filter-lab-match",
         "predicates": [
@@ -1277,7 +1277,7 @@
           {
             "field": "team_id",
             "op": "eq",
-            "value": "chelsea"
+            "value": "riverton"
           }
         ]
       },

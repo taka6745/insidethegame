@@ -120,7 +120,7 @@ The background worker retries failures with backoff doubling from 5 s up to 120 
 | **Reads** | `executeTrendsAtSeq`, `executeTrendSpellsAtSeq` at the analysis's seq ([local contracts §4b](../../../local/contracts.md)); enabled trends only |
 | **Writes** | Cosmos `analyses` (immutable snapshot each) and `storylines` (current state); narratives' `analysisId`, `storylineIds` |
 | **Prompts** | `match-analyst` v4 (inputs and reply schema, its limits filled from the policy by `prompt_limits`; labels and headlines in plain football words from the indicators' meanings; resolved storylines shown without ids; no pattern list, no rules beyond the schema); `narrative-author` v5 added `{storylines}`, `{match_trends}`, v6 the trend units |
-| **Tests** | `test_storylines.py`, `test_storylines_run.py` (whole Chelsea–United match: backlog = live, focus after 10', all resolved at full time, purge) |
+| **Tests** | `test_storylines.py`, `test_storylines_run.py` (whole Riverton Rovers–United match: backlog = live, focus after 10', all resolved at full time, purge) |
 
 ### 5.1 The analyst and the validator
 

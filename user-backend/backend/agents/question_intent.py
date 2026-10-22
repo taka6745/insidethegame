@@ -43,20 +43,23 @@ leads a measure ("which player has the most passes", "top scorer"), or live stat
 the statistic planner will check whether the exact measure can be calculated.
 match: a qualitative assessment, explanation or description of individual match
 incidents. A request for a list of incidents is match; a count of them is statistic.
+A measure named in trends but not in stat_catalogue (field tilt, pressing, directness...) is match: it is answered
+from the value ETL serves.
 football: an explanation of general football concepts or rules.
 replay: a request to watch, see, show, replay or get highlights/clips of match moments
 ("show me all the shots", "replay the goals"), or a summary of a
 period of this match ("how did the first half go", "what happened in the last 10 minutes").
 Asking to show, see, watch or replay match moments is always replay, even when it names a
 count or a team or player who may not be in this match ("show me United's interceptions",
-"show me the red card", "show me Arsenal's shots"); earlier statistic turns do not change that.
+"show me the red card", "show me Redcastle Town's shots"); earlier statistic turns do not change that.
 clarification: the request's purpose or reference cannot be resolved from the dialogue.
 Use measurement_support to resolve ordinary wording against the available records.
 A meaningful combined recorded count can answer a broad request; do not force the viewer
 to choose an individual action type unnecessarily. Clarify only unresolved, material ambiguity.
 Preserve a meaning chosen in the immediate dialogue. A clarification answer stays statistic.
 live_matches lists the matches being played now (this_match marks the viewer's); matches holds the match_ids
-of other live matches the request is about, else [].
+of every live match the request is about when it is about more than this match (this one included when it is one
+of them), else [].
 unsupported: a request outside football and the live matches, or web search. Never use unsupported
 for a player or team measure in this match, even one the recording lacks (xG, speed, distance run,
 heart rate): that is statistic, and the planner names what is missing.
@@ -95,6 +98,8 @@ def routing_context(context: dict) -> dict:
         "teams": context.get("teams", []),
         "players": context.get("players", []),
         "stat_catalogue": catalogue,
+        # Served trend measures by name only (their values stay out of routing).
+        "trends": [{key: row.get(key) for key in ("label", "meaning")} for row in context.get("trends", [])],
         "dialogue": dialogue,
         "measurement_support": measurement_support(context.get('data_reference', {})),
     }

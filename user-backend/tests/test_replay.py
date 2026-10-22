@@ -11,11 +11,11 @@ from backend.services.replay import ReplayBuilder, ReplayTools
 from backend.services.replay_clips import ReplayPlanError
 from benchmarks.doubles.config import seeded
 
-PLAYERS = [{"id": "chelsea-1", "name": "Cole Palmer"}, {"id": "manutd-7", "name": "Bruno Fernandes"}]
-TEAMS = [{"id": "chelsea", "name": "Chelsea"}, {"id": "manutd", "name": "Manchester United"}]
+PLAYERS = [{"id": "riverton-1", "name": "Kai Ashworth"}, {"id": "forgeham-7", "name": "Theo Marchetti"}]
+TEAMS = [{"id": "riverton", "name": "Riverton Rovers"}, {"id": "forgeham", "name": "Forgeham United"}]
 
 
-def row(identifier, kind, at, *, period=1, team="chelsea", player="chelsea-1", result="success", possession=1,
+def row(identifier, kind, at, *, period=1, team="riverton", player="riverton-1", result="success", possession=1,
         bodypart=None, shot_outcome=None, start_zone="middle_third", end_zone="middle_third"):
     """One SPADL action as match_data.actions serves it (SpadlAction.row)."""
     return {"id": identifier, "action_type": kind, "result": result, "team_id": team, "player_id": player,
@@ -26,9 +26,9 @@ def row(identifier, kind, at, *, period=1, team="chelsea", player="chelsea-1", r
 
 HISTORY = [
     row("e1", "pass", 60, result="fail", bodypart="head"),
-    row("e2", "interception", 61, team="manutd", player="manutd-7", possession=2),
+    row("e2", "interception", 61, team="forgeham", player="forgeham-7", possession=2),
     row("e3", "shot", 300, result="fail", bodypart="head", shot_outcome="saved", end_zone="opp_box"),
-    row("e4", "shot", 900, team="manutd", player="manutd-7", possession=3, bodypart="foot_right", shot_outcome="goal"),
+    row("e4", "shot", 900, team="forgeham", player="forgeham-7", possession=3, bodypart="foot_right", shot_outcome="goal"),
     row("e5", "dribble", 901),
     row("e6", "shot", 3000, period=2, result="fail", shot_outcome="off_target"),
 ]
@@ -53,7 +53,7 @@ class Matches:
 class Narratives:
     async def read(self, snapshot, operation, **filters):
         if operation == "key_moments":
-            return {"items": [{"id": "km-goal", "rank": 1, "title": "15′ Fernandes scores", "period": 1,
+            return {"items": [{"id": "km-goal", "rank": 1, "title": "15′ Marchetti scores", "period": 1,
                                "event_ids": ["e4"], "start_video_seconds": 880.0, "end_video_seconds": 915.0}]}
         return {"items": [{"id": "half-1", "tier": "half", "period": 1, "summary": "United led at the break."}]}
 
@@ -69,7 +69,7 @@ def run(coroutine):
 
 def test_find_events_filters_spadl_values_and_skips_carries():
     toolkit = tools()
-    found = run(toolkit.find_events(player_id="chelsea-1", bodyparts=["head"]))
+    found = run(toolkit.find_events(player_id="riverton-1", bodyparts=["head"]))
     assert [r["id"] for r in found["listed"]] == ["e1", "e3"]
     assert found["listed"][1]["minute"] == "6′" and found["complete_list"]
     assert toolkit.cited == {"e1", "e3"}
@@ -78,31 +78,31 @@ def test_find_events_filters_spadl_values_and_skips_carries():
 
 
 def test_cards_are_searched_separately_and_second_yellows_count_as_both():
-    cards = [{"id": "card:1", "colour": "yellow", "team_id": "manutd", "player_id": "manutd-7", "period": 1,
+    cards = [{"id": "card:1", "colour": "yellow", "team_id": "forgeham", "player_id": "forgeham-7", "period": 1,
               "match_time_seconds": 100, "video_seconds": 100.0},
-             {"id": "card:2", "colour": "second_yellow", "team_id": "manutd", "player_id": "manutd-7", "period": 2,
+             {"id": "card:2", "colour": "second_yellow", "team_id": "forgeham", "player_id": "forgeham-7", "period": 2,
               "match_time_seconds": 3100, "video_seconds": 3100.0}]
     toolkit = tools(cards=cards)
     assert [r["id"] for r in run(toolkit.find_cards("yellow"))["listed"]] == ["card:1", "card:2"]
     assert [r["id"] for r in run(toolkit.find_cards("red"))["listed"]] == ["card:2"]
     assert run(toolkit.find_cards(None, period=1))["listed"][0]["type"] == "card"
-    assert toolkit.caption("card:2", "event") == "52′ Bruno Fernandes second yellow card"
+    assert toolkit.caption("card:2", "event") == "52′ Theo Marchetti second yellow card"
 
 
 def test_off_target_shot_is_never_captioned_saved():
     # Reported: a replay summary called an off-target shot "saved" because the keeper touched it.
     rows = [row("s1", "shot", 4469, period=2, result="fail", shot_outcome="off_target"),
-            row("k1", "keeper_save", 4469, period=2, team="manutd", player="manutd-7"),
+            row("k1", "keeper_save", 4469, period=2, team="forgeham", player="forgeham-7"),
             row("s2", "shot", 4500, period=2, result="fail", shot_outcome="saved")]
     toolkit = tools(rows)
     listed = run(toolkit.find_events(action_types=["shot", "keeper_save"]))["listed"]
     assert listed[0]["shot_outcome"] == "off_target"  # The model sees the shot's own outcome.
     decision = finish(ReplayDecision(status="answer", text="Shots.", items=[
-        {"source_id": "s1", "kind": "event", "caption": "75′ Palmer shot saved"},
-        {"source_id": "k1", "kind": "event", "caption": "75′ Fernandes saves"},
-        {"source_id": "s2", "kind": "event", "caption": "76′ Palmer shot saved"}]), toolkit)
-    assert [i.caption for i in decision.items] == ["75′ Cole Palmer shot off target", "75′ Fernandes saves",
-                                                   "76′ Palmer shot saved"]
+        {"source_id": "s1", "kind": "event", "caption": "75′ Ashworth shot saved"},
+        {"source_id": "k1", "kind": "event", "caption": "75′ Marchetti saves"},
+        {"source_id": "s2", "kind": "event", "caption": "76′ Ashworth shot saved"}]), toolkit)
+    assert [i.caption for i in decision.items] == ["75′ Kai Ashworth shot off target", "75′ Marchetti saves",
+                                                   "76′ Ashworth shot saved"]
 
 
 def test_plan_json_is_taken_from_a_wrapped_model_reply():
@@ -118,17 +118,17 @@ def test_uncaptioned_items_get_plain_captions_from_evidence():
     toolkit = tools()
     run(toolkit.find_events(action_types=["shot"]))
     run(toolkit.key_moments())
-    assert toolkit.caption("e3", "event") == "6′ Cole Palmer header shot saved"
-    assert toolkit.caption("e1", "event") == "2′ Cole Palmer headed failed pass"
-    assert toolkit.caption("km-goal", "key_moment") == "15′ Fernandes scores"
+    assert toolkit.caption("e3", "event") == "6′ Kai Ashworth header shot saved"
+    assert toolkit.caption("e1", "event") == "2′ Kai Ashworth headed failed pass"
+    assert toolkit.caption("km-goal", "key_moment") == "15′ Marchetti scores"
 
 
 def test_more_ids_become_captioned_items_only_when_cited():
     toolkit = tools()
     run(toolkit.find_events(action_types=["shot"]))
     decision = finish(ReplayDecision(status="answer", text="Shots.", more_ids=["e3", "e3", "e6", "invented"]), toolkit)
-    assert [(i.source_id, i.caption) for i in decision.items] == [("e3", "6′ Cole Palmer header shot saved"),
-                                                                  ("e6", "51′ Cole Palmer shot off target")]
+    assert [(i.source_id, i.caption) for i in decision.items] == [("e3", "6′ Kai Ashworth header shot saved"),
+                                                                  ("e6", "51′ Kai Ashworth shot off target")]
 
 
 def test_broad_answers_with_a_refine_offer_keep_one_page():
@@ -162,10 +162,24 @@ def test_builder_rejects_uncited_evidence_and_cuts_within_periods():
     items = [{"source_id": "e4", "kind": "event", "caption": "Goal", "lead_in": "normal"},
              {"source_id": "e3", "kind": "event", "caption": "Header saved", "lead_in": "normal"}]
     built = ReplayBuilder().build(toolkit, items)
-    assert [(c["start"], c["end"]) for c in built["clips"]] == [(294.0, 303.0), (890.0, 902.0)]
+    assert [(c["start"], c["end"]) for c in built["clips"]] == [(294.0, 303.0), (890.0, 905.0)]
     assert built["playlist"] is None and not built["truncated"]
     with pytest.raises(ReplayPlanError):
         ReplayBuilder().build(toolkit, [{**items[0], "source_id": "e5"}])
+
+
+def test_own_goal_clips_show_the_attack_and_say_who_it_counts_for():
+    # United attack (possession 7 from 1000 s); a Riverton Rovers defender's single touch (possession 8) is the own goal.
+    rows = [row("a1", "pass", 1000, team="forgeham", player="forgeham-7", possession=7),
+            row("a2", "cross", 1012, team="forgeham", player="forgeham-7", possession=7),
+            row("og", "bad_touch", 1014, result="owngoal", possession=8)]
+    toolkit = tools(rows)
+    run(toolkit.find_events(results=["owngoal"]))
+    item = {"source_id": "og", "kind": "event", "caption": "Theo Marchetti goal", "lead_in": "move"}
+    built = ReplayBuilder().build(toolkit, [item])
+    assert built["clips"][0]["start"] == 999.0  # the United move, not the defender's one-touch possession
+    # The model's caption named the wrong scorer: an own goal is always captioned from evidence.
+    assert toolkit.checked_caption("og", "event", item["caption"]) == "17′ Kai Ashworth own goal (Forgeham United goal)"
 
 
 def test_builder_never_cuts_past_the_observed_prefix():
@@ -310,3 +324,13 @@ def test_the_sting_cut_happens_while_it_fully_covers_the_picture():
         with pytest.raises(ValidationError):
             Transitions.model_validate({**seed, "cut_seconds": cut, "fade_seconds": fade})
     assert Transitions.model_validate({**seed, "cut_seconds": 0.3, "fade_seconds": 0.3}).cut_seconds == 0.3
+
+
+def test_events_behind_a_location_stat_can_be_found_for_a_replay():
+    """PLAN.md §12 M14: 'show me those take-ons in their own half' searches with the stat's location bound."""
+    rows = [{**row("t1", "take_on", 100), "start_x": 30.0}, {**row("t2", "take_on", 200), "start_x": 70.0},
+            {**row("p1", "keeper_punch", 300, team="forgeham", player="forgeham-7"), "start_x": 5.0}]
+    toolkit = tools(rows)
+    found = run(toolkit.find_events(action_types=["take_on"], locations=[{"field": "start_x", "lte": 52.5}]))
+    assert [item["id"] for item in found["listed"]] == ["t1"]
+    assert [item["id"] for item in run(toolkit.find_events(action_types=["keeper_punch"]))["listed"]] == ["p1"]

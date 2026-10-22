@@ -11,12 +11,12 @@ from .cases import cases
 # Exact JSON string values only: event IDs, clocks, revisions and weights stay fixed.
 ENTITY_REMAP = {
     "mbappe": "noah-laurent", "Kylian Mbappé": "Noah Laurent",
-    "palmer": "mateo-silva", "Cole Palmer": "Mateo Silva",
-    "colwill": "owen-reed", "Levi Colwill": "Owen Reed",
+    "ashworth": "mateo-castagna", "Kai Ashworth": "Mateo Castagna",
+    "rivas": "owen-reed", "Matteo Rivas": "Owen Reed",
     "vinicius": "luca-costa", "Vinícius": "Luca Costa",
     "camavinga": "elias-nouri", "Camavinga": "Elias Nouri",
     "courtois": "hugo-voss", "Courtois": "Hugo Voss",
-    "chelsea": "harbour", "Chelsea": "Harbour FC",
+    "riverton": "harbour", "Riverton Rovers": "Harbour FC",
     "madrid": "ridge", "Madrid": "Ridge United",
 }
 
@@ -48,7 +48,7 @@ STAT_REQUESTS = [
      "Successful tackle events only."),
     (77, "average", "Keep Ridge United's yellows on the screen as a count.",
      "Yellow-card events for Ridge United."),
-    (84, "average", "How many fouls has Mateo Silva committed in this game?",
+    (84, "average", "How many fouls has Mateo Castagna committed in this game?",
      "Fouls committed by Mateo, not fouls against him."),
     (51, "clear", "Add up the recorded metres of Harbour FC's unsuccessful passes. I want distance, not a pass count.",
      "Sum distance for failed passes only."),
@@ -61,11 +61,11 @@ STAT_REQUESTS = [
     (5, "ambiguous", "Track our headed contacts across all event types.",
      "Harbour FC."),
     (99, "ambiguous", "Track his completed-pass distance in metres since 80:00, including 80:00.",
-     "Mateo Silva."),
+     "Mateo Castagna."),
     (23, "ambiguous", "Count both teams' corners strictly after that minute.",
      "After 60:00; exclude anything exactly at 60:00."),
     (10, "ambiguous", "How many headed goals has that player scored?",
-     "Mateo Silva."),
+     "Mateo Castagna."),
 ]
 
 CONTROLS = [
@@ -73,7 +73,7 @@ CONTROLS = [
      "Expected-goals values, not a count of shots or goals."),
     ("Track Harbour FC possession as a percentage of playing time.",
      "Possession time percentage, not pass share."),
-    ("Count Mateo Silva's aerial duels won.",
+    ("Count Mateo Castagna's aerial duels won.",
      "Contested headers he won, not his headed passes."),
     ("Show the distance Owen Reed has run in metres so far.",
      "The player's running distance, not pass distance."),

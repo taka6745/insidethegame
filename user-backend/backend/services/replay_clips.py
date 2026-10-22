@@ -44,7 +44,10 @@ def window(item, events, moments, possession_starts, config):
         start = max(start, at - config.max_move_seconds)
     else:
         start = at - before * config.lead_in[lead]
-    return start, at + after, event["period"]
+    end = at + after
+    if end - start < config.min_clip_seconds:  # widen the lead-in: the moment keeps its after
+        start = end - config.min_clip_seconds
+    return start, end, event["period"]
 
 
 def plan_clips(items, *, events, moments, periods, observed_video, config, possession_starts=None, page=0):

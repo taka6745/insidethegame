@@ -1,4 +1,4 @@
-"""Storylines over the whole Chelsea–United recording (synthetic) with fake agents, and ETL's Python twin of
+"""Storylines over the whole Riverton Rovers–United recording (synthetic) with fake agents, and ETL's Python twin of
 the trend procedures (etl/reference/trends.py) serving the trends. Live (the ETL holds only what has arrived)
 and as a backlog (it holds the whole match), the analyst and author get the same prompts, and the analyses
 and storylines are the same. Expectations come from the recording, so a re-rendered one needs no edit."""
@@ -6,7 +6,7 @@ import asyncio
 import sys
 from functools import cache
 
-import chelsea_united
+import riverton_forgeham
 from test_recording_run import EtlAsOf
 from narrative_engine.agents.prompt_source import PLACEHOLDER, shipped
 from narrative_engine.api import schema
@@ -19,7 +19,7 @@ from narrative_engine.service import Router
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink
 
-ETL = chelsea_united.ROOT / "etl"
+ETL = riverton_forgeham.ROOT / "etl"
 sys.path[:0] = [str(ETL), str(ETL / "tests")]
 import v2_stream  # noqa: E402  (ETL's test stream of the same recording)
 from reference import pipeline, spadl, trends as reference  # noqa: E402
@@ -52,22 +52,22 @@ def spells_at(seq):
 
 
 def run(backlog):
-    data = EtlAsOf(chelsea_united.REPLAY, stats=chelsea_united.golden_stats(), actions_path=chelsea_united.ACTIONS,
-                   keys=chelsea_united.key_rows(), trends=trends_at, spells=spells_at)
+    data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
+                   keys=riverton_forgeham.key_rows(), trends=trends_at, spells=spells_at)
     agents, store = FakeAgents(), MemoryStore()
     targets = StaticTargets(default_targets()[:3])
-    engine = MatchOrchestrator(chelsea_united.MATCH, data, agents, store, MemorySink(store), targets=targets)
+    engine = MatchOrchestrator(riverton_forgeham.MATCH, data, agents, store, MemorySink(store), targets=targets)
 
     async def go():
-        for body, seq in chelsea_united.timeline():
+        for body, seq in riverton_forgeham.timeline():
             data.limit = None if backlog else seq
             await engine.record(parse_notification(body))
             if not backlog:
                 await engine.work()
         data.limit = None
         await engine.work()
-        return (await store.analyses(chelsea_united.MATCH), await store.storylines(chelsea_united.MATCH),
-                await store.narratives(chelsea_united.MATCH))
+        return (await store.analyses(riverton_forgeham.MATCH), await store.storylines(riverton_forgeham.MATCH),
+                await store.narratives(riverton_forgeham.MATCH))
     analyses, lines, narratives = asyncio.run(go())
     return {"calls": agents.calls, "analyses": analyses, "storylines": lines, "narratives": narratives,
             "data": data, "agents": agents, "store": store, "targets": targets}
@@ -89,7 +89,7 @@ def test_backlog_and_live_give_the_same_analyses_storylines_and_prompts():
 
 def test_analyses_run_every_five_minutes_and_at_half_and_full_time():
     live, _ = runs()
-    played = sorted({MatchClock(e["periodId"], e["timeMin"]) for e in chelsea_united.ma3()})
+    played = sorted({MatchClock(e["periodId"], e["timeMin"]) for e in riverton_forgeham.ma3()})
     ends = {p: max(c for c in played if c.periodId == p) for p in (1, 2)}
     due = [c for c in played if (c.timeMin + 1) % 5 == 0 and not stoppage(c) and c != ends[c.periodId]]
     refs = [a["ref"] for a in live["analyses"]]
@@ -142,7 +142,7 @@ def test_graphql_serves_storylines_and_the_narratives_focus():
     query = """query ($m: String!, $u: String!) {
       storylines(matchId: $m) { id label status outcome beats { at { label } headline analysisId } keyEventIds }
       narratives(matchId: $m, userType: $u, first: 200) { items { analysisId storylineIds triggerType } } }"""
-    result = asyncio.run(schema.execute(query, {"m": chelsea_united.MATCH, "u": "home:simple"},
+    result = asyncio.run(schema.execute(query, {"m": riverton_forgeham.MATCH, "u": "home:simple"},
                                         context_value={"store": live["store"]}))
     assert result.errors is None
     lines = result.data["storylines"]
@@ -154,9 +154,9 @@ def test_graphql_serves_storylines_and_the_narratives_focus():
 def test_purge_removes_analyses_and_storylines():
     live, _ = runs()
     router = Router(live["data"], live["agents"], live["store"], MemorySink(), targets=live["targets"])
-    result = asyncio.run(router.purge(chelsea_united.MATCH))
+    result = asyncio.run(router.purge(riverton_forgeham.MATCH))
     assert result["purged"]["analyses"] == len(live["analyses"]) > 0
     assert result["purged"]["storylines"] == len(live["storylines"]) > 0
-    assert asyncio.run(live["store"].analyses(chelsea_united.MATCH)) == []
-    assert asyncio.run(live["store"].storylines(chelsea_united.MATCH)) == []
-    assert chelsea_united.MATCH in asyncio.run(live["store"].tombstones())[0]
+    assert asyncio.run(live["store"].analyses(riverton_forgeham.MATCH)) == []
+    assert asyncio.run(live["store"].storylines(riverton_forgeham.MATCH)) == []
+    assert riverton_forgeham.MATCH in asyncio.run(live["store"].tombstones())[0]

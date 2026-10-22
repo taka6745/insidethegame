@@ -20,13 +20,11 @@ const icons = ["pitch", "insight", "track"].map(
   (name) => `assets/icons/${name}.svg`,
 );
 const brandAssets = [
-  "assets/league/premier-league-white.svg",
-  "assets/league/premier-league.svg",
+  "assets/league/elephant-league-white.svg",
+  "assets/league/elephant-league.svg",
   "assets/league/microsoft.svg",
-  "assets/league/clubs/chelsea.svg",
-  "assets/league/clubs/manutd.svg",
-  "assets/league/fonts/PremierLeague-Regular.woff2",
-  "assets/league/fonts/PremierLeague-Bold.woff2",
+  "assets/league/clubs/riverton.svg",
+  "assets/league/clubs/forgeham.svg",
 ];
 const sizes = await Promise.all(
   [...files.map((name) => `dist/match/${name}`), ...icons, ...brandAssets].map(

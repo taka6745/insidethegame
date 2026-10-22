@@ -9,6 +9,9 @@ locals {
     ETL_ADMIN_URL    = "http://${local.etl.admin_host}"
     ENGINE_ADMIN_URL = "http://${local.engine_host}"
     BACKEND_URL      = "http://${local.backend_host}"
+    # Kept warm while a demo is live (the owners' health checks are always included): the ETL's data API and
+    # this app itself, which otherwise scale to zero in a quiet spell mid-match.
+    DEMO_KEEP_WARM_URLS = join(",", [replace(local.etl.graphql_url, "/graphql", "/health"), "http://${local.demo_host}/health"])
   }
   demo_secrets = {
     "etl-admin-token"    = { env = "ETL_ADMIN_TOKEN", value = local.etl.admin_token }

@@ -44,4 +44,9 @@ def policy_router(service):
     async def read(if_none_match: str | None = Header(default=None)):
         return cached_json(*await service.document('storyline-policy'), if_none_match)
 
+    @router.get('/model-roles', responses={304: {'description': 'Roles unchanged'}})
+    async def models(if_none_match: str | None = Header(default=None)):
+        """The engine's model per role (edited under /dev/config/models)."""
+        return cached_json(*await service.document('models'), if_none_match)
+
     return router

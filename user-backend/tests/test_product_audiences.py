@@ -6,7 +6,7 @@ from starlette.websockets import WebSocketDisconnect
 
 from test_product import OTHER, ask, deliver, narrative, path, refresh, start, until
 
-TEMPLATE = '/dev/fixtures/chelsea-madrid/audience-config'
+TEMPLATE = '/dev/fixtures/riverton-madrid/audience-config'
 DEMO_BUCKETS = {'home:analytical', 'away:casual', 'neutral:simple'}
 
 
@@ -18,7 +18,7 @@ def select(client, token, bucket_id='away:casual', match_id=MATCH):
 
 def enabled(client, match_id=MATCH):
     body = client.get(f'/matches/{match_id}/audience-config').json()
-    assert len(body['buckets']) == 12
+    assert len(body['buckets']) == 24  # 12 audiences, each Standard and (disabled) Brief length (047)
     assert {b['id'] for b in body['buckets'] if b['enabled']} == {t['bucket_id'] for t in body['generation_targets']}
     return {t['bucket_id'] for t in body['generation_targets']}
 
@@ -39,7 +39,7 @@ def test_every_enabled_bucket_reroutes_feed_and_cards_without_changing_account_o
         token = data['session_token']
         # Labels come from the template: `{home}`/`{away}` become this match's team names.
         assert data['snapshot']['audience_buckets'][:2] == [
-            {'id': 'home:simple', 'label': 'Chelsea · Simple'}, {'id': 'home:casual', 'label': 'Chelsea · Casual'}]
+            {'id': 'home:simple', 'label': 'Riverton Rovers · Simple'}, {'id': 'home:casual', 'label': 'Riverton Rovers · Casual'}]
         assert len(data['snapshot']['audience_buckets']) == 12
         profiles = run.service.repository.profiles()
         tag = run.client.get(f'/matches/{MATCH}/audience-config').headers['etag']
@@ -53,8 +53,9 @@ def test_every_enabled_bucket_reroutes_feed_and_cards_without_changing_account_o
             for bucket in everything:
                 team, style = bucket.split(':')
                 snapshot = select(run.client, token, bucket)['snapshot']
-                assert snapshot['audience'] == {'bucket_id': bucket, 'selections': {'team': team, 'fan_style': style}}
-                support = {'home': 'chelsea', 'away': 'madrid', 'neutral': 'neutral'}[team]
+                assert snapshot['audience'] == {'bucket_id': bucket, 'selections': {'team': team, 'fan_style': style,
+                                                                                       'length': 'standard'}}
+                support = {'home': 'riverton', 'away': 'madrid', 'neutral': 'neutral'}[team]
                 assert snapshot['bucket_id'] == bucket and snapshot['profile']['team'] == support
                 assert snapshot['version'] > version
                 version = snapshot['version']
@@ -89,7 +90,7 @@ def test_choice_preserves_chat_pins_and_survives_takeover_and_restart(store):
 
 
 @pytest.mark.parametrize('body', [
-    {'bucket_id': 'chelsea:simple'}, {'bucket_id': 'away:simple'},  # Unknown; configured but disabled.
+    {'bucket_id': 'riverton:simple'}, {'bucket_id': 'away:simple'},  # Unknown; configured but disabled.
     {'team': 'home', 'fan_style': 'simple'}, {}, {'bucket_id': 'home:analytical', 'enabled': True}])
 def test_invalid_choices_never_write(store, body):
     with Running(store) as run:
@@ -155,4 +156,4 @@ def test_question_agent_uses_match_audience_override(store):
         token = start(run.client)['session_token']
         select(run.client, token, 'neutral:simple')
         ask(run.client, token, 'how is it going')
-        assert seen == [{'team': 'neutral', 'fan_style': 'simple'}]
+        assert seen == [{'team': 'neutral', 'fan_style': 'simple', 'length': 'standard'}]

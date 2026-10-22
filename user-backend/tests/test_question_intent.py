@@ -17,6 +17,8 @@ def test_routing_context_excludes_values_and_keeps_immediate_stat_clarification(
     context = {
         "standard_stats": [{"id": "shots", "label": "Team shots", "definition": "Recorded shot attempts", "value": 987}],
         "compact": {"text": "Numerical recap 654"},
+        "trends": [{"trend": "field_tilt", "label": "field tilt", "meaning": "share of final-third play",
+                    "unit": "share", "values": {"riverton": {"last5": 0.321}}}],
         "history": [
             {"user": "How many shots?", "reply": {"answer_kind": "statistic", "status": "answer",
                 "standard_stat_id": "shots", "text": "987 shots", "goal": None}},
@@ -26,7 +28,8 @@ def test_routing_context_excludes_values_and_keeps_immediate_stat_clarification(
     }
     routed = routing_context(context)
     assert "987" not in json.dumps(routed)
-    assert "654" not in json.dumps(routed)
+    assert "654" not in json.dumps(routed) and "0.321" not in json.dumps(routed)
+    assert routed["trends"] == [{"label": "field tilt", "meaning": "share of final-third play"}]  # M15: routed as match
     assert routed["dialogue"][-1]["intent"]["clarification"] == "Headed passes, shots or all recorded contacts?"
     assert routed["dialogue"][0]["intent"]["standard_stat"] == {"id": "shots", "label": "Team shots", "definition": "Recorded shot attempts"}
 
@@ -180,31 +183,36 @@ def test_router_rejects_invalid_contract_after_one_repair():
     assert model.calls == 2
 
 
-LIVE = [{"match_id": "ars", "this_match": True, "teams": ["Arsenal", "Liverpool"], "minute": 20, "period": 1},
-        {"match_id": "che", "this_match": False, "teams": ["Chelsea", "Manchester United"], "minute": 18, "period": 1},
-        {"match_id": "mci", "this_match": False, "teams": ["Manchester City", "Tottenham Hotspur"], "minute": 16,
+LIVE = [{"match_id": "ars", "this_match": True, "teams": ["Redcastle Town", "Port Albion"], "minute": 20, "period": 1},
+        {"match_id": "che", "this_match": False, "teams": ["Riverton Rovers", "Forgeham United"], "minute": 18, "period": 1},
+        {"match_id": "mci", "this_match": False, "teams": ["Skybridge City", "Whitmore Wanderers"], "minute": 16,
          "period": 1}]
 
 
 def test_router_sees_the_live_matches_as_data():
     routed = routing_context({"live_matches": LIVE})
     assert routed["live_matches"][1] == {"match_id": "che", "this_match": False,
-                                         "teams": ["Chelsea", "Manchester United"], "minute": 18}
+                                         "teams": ["Riverton Rovers", "Forgeham United"], "minute": 18}
 
 
 @pytest.mark.parametrize("route", ["replay", "statistic", "clarification"])
-def test_a_data_request_about_several_other_matches_offers_only_the_real_ones(route):
-    """'Show me the shots on goal from the other matches': the chips are the live matches, never invented ones."""
+def test_a_data_request_about_several_matches_is_answered_from_each(route):
+    """'Show me the shots on goal from the other matches': answered from each real live match (the service fans out),
+    never narrowed to one and never met with invented choices."""
     class Router:
         async def route(self, prompt, context):
             question = "Which competition?" if route == "clarification" else None
-            options = ["Other Premier League matches", "International matches"] if route == "clarification" else []
+            options = ["Other Elephant League matches", "International matches"] if route == "clarification" else []
             return QuestionIntent(route=route, question=question, options=options, matches=["che", "mci", "nope"])
 
     draft = asyncio.run(QuestionAgent(SimpleNamespace(), router=Router()).answer(
         "show me the shots on goal from the other matches", {"live_matches": LIVE}, SimpleNamespace()))
-    assert draft.status == "clarification"
-    assert draft.clarification.options == ["Chelsea v Manchester United", "Manchester City v Tottenham Hotspur"]
+    assert draft.status == "answer" and draft.per_match == ["che", "mci"]
+    within = asyncio.run(QuestionAgent(SimpleNamespace(), router=Router()).answer(
+        "show me the shots on goal from the other matches", {"live_matches": LIVE, "single_match": True},
+        SimpleNamespace(replay=None)) if route == "clarification" else asyncio.sleep(0, None))
+    if within is not None:  # inside one match's answer the request is not fanned out again
+        assert within.per_match == []
 
 
 def test_a_request_about_one_other_match_or_none_is_not_redirected():

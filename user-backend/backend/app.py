@@ -1,5 +1,6 @@
 """Composition root: the multi-match user backend. Swap adapters here, not in services."""
 import asyncio
+import logging
 import os
 from contextlib import asynccontextmanager, suppress
 
@@ -34,6 +35,17 @@ from .services.questions import QuestionService
 from .services.subscriptions import SubscriptionService
 from .services.replay import ReplayBuilder
 from .store import Store
+from .adapters.llm import set_role_models
+
+
+async def watch_models(config, interval=2.0):
+    """Applies /dev/config/models' backend roles to every agent within `interval` seconds."""
+    while True:
+        try:
+            set_role_models((await config.get('models')).backend.model_dump())
+        except Exception as exc:  # an unreadable row keeps the last roles; the next pass retries
+            logging.getLogger(__name__).warning('Model roles unavailable: %s', type(exc).__name__)
+        await asyncio.sleep(interval)
 
 
 def create_app(store, dab, *, narratives=None, narrative_url=None, narrative_transport=None, agent=None, planner=None,
@@ -72,6 +84,7 @@ def create_app(store, dab, *, narratives=None, narrative_url=None, narrative_tra
         await registry.initialize()
         tasks = [asyncio.create_task(stream(registry, product)) for stream in streams]
         tasks.append(asyncio.create_task(registry.watch_gaps(dab.canonical_event, config)))
+        tasks.append(asyncio.create_task(watch_models(config)))
         try:
             yield
         finally:

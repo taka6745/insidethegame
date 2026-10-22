@@ -65,7 +65,7 @@ function setup(options: { reducedMotion?: boolean } = {}) {
 const replay: Replay = {
   page: 0, page_size: 12, total_items: 2, seconds: 20, playlist: "/media/hls/m1/live.m3u8",
   clips: [
-    { start: 100, end: 110, captions: ["23′ Palmer header saved"], playlist_start: 1, playlist_end: 11, marks: [106] },
+    { start: 100, end: 110, captions: ["23′ Ashworth header saved"], playlist_start: 1, playlist_end: 11, marks: [106] },
     { start: 200, end: 210, captions: ["31′ Goal"], playlist_start: 14, playlist_end: 24 },
   ],
 };
@@ -81,7 +81,7 @@ test("Play moves the replay to the stage, live becomes the corner picture, Back 
   assert.equal(get("replay-video").muted, true);
   assert.equal(streams[0]!.url, "/media/hls/m1/live.m3u8");
   assert.deepEqual(streams[0]!.options.start, 1);
-  assert.equal(get("replay-caption").textContent, "1/2 · 23′ Palmer header saved");
+  assert.equal(get("replay-caption").textContent, "1/2 · 23′ Ashworth header saved");
   assert.equal(get("replay-close").focused, true);
   assert.equal(get("replay-badge").textContent, "Replay 1/2");
   // One bar for the reel (two 10 s clips): the clip join at 50%, the event at 106 s at 30%.
@@ -251,6 +251,34 @@ test("between clips the stage pauses, fades the sting in, cuts under it and fade
   assert.equal(fire(), 300);
   assert.equal(sting.hidden, true);
   assert.equal(clip.paused, true);
+  assert.equal(timers.length, 0);
+});
+
+test("the league's built-in sting draws in the page, loads no video and keeps the same timing", async () => {
+  const { stage, get, timers, fire } = setup();
+  stage.open({ ...replay, playback: {
+    transitions: { enabled: true, hold_seconds: 0.6, asset: "builtin:league", asset_start_seconds: 0,
+      sting_seconds: 2.4, cut_seconds: 0.5, fade_seconds: 0.3 },
+    slow_motion: { enabled: false, rate: 0.5, ramp_seconds: 1, before_seconds: 1, after_seconds: 2 },
+  } });
+  await Promise.resolve();
+  const video = get("replay-video"), sting = get("replay-sting"), clip = get("replay-sting-video");
+  assert.equal(clip.src, undefined);  // no video asset is loaded
+  assert.equal(sting.dataset.kind, "builtin");
+  assert.equal(sting.style["--sting-length"], "2.4s");
+  video.paused = false;
+  video.currentTime = 11;
+  video.emit("timeupdate");
+  assert.equal(fire(), 600);
+  assert.equal(sting.hidden, false);
+  assert.equal(sting.dataset.state, "in");
+  assert.equal(clip.paused, true);  // the video element stays idle
+  assert.equal(fire(), 500);
+  assert.equal(video.currentTime, 14);
+  assert.equal(fire(), 1600);
+  assert.equal(sting.dataset.state, "out");
+  assert.equal(fire(), 300);
+  assert.equal(sting.hidden, true);
   assert.equal(timers.length, 0);
 });
 

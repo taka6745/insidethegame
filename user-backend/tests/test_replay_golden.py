@@ -9,8 +9,8 @@ import pytest
 from benchmarks import replay_eval
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORDING = ROOT / "data-generation/recordings/chelsea-united-grf.json"
-ARCHIVE = ROOT / "narrative-engine/fixtures/archive/chelsea-united-grf.json"
+RECORDING = ROOT / "data-generation/recordings/riverton-forgeham-grf.json"
+ARCHIVE = ROOT / "narrative-engine/fixtures/archive/riverton-forgeham-grf.json"
 NARRATIVES = ROOT / "narrative-engine/fixtures/grf-narratives.json"
 CASES = Path(replay_eval.__file__).with_name("replay_cases.json")
 

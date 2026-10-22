@@ -99,9 +99,10 @@ export class QuestionView {
     this.get("agent-mode").textContent =
       session.mode === "unavailable" ? "No model configured" : "";
   }
-  turn(turn: RenderedTurn, reveal = false): HTMLElement {
-    const article = node(this.document, "article", "", "chat-turn");
-    article.append(node(this.document, "p", turn.prompt, "chat-prompt"));
+  /** part: one match's answer within a several-match answer (no prompt of its own). */
+  turn(turn: RenderedTurn, reveal = false, part = false): HTMLElement {
+    const article = node(this.document, "article", "", part ? "chat-turn chat-part" : "chat-turn");
+    if (!part) article.append(node(this.document, "p", turn.prompt, "chat-prompt"));
     if (!turn.reply) {
       const waiting = turn.status !== "failed";
       const answer = node(
@@ -182,6 +183,10 @@ export class QuestionView {
       article.append(card);
     }
     if (turn.reply.replay) article.append(this.replay(turn, turn.reply.replay));
+    (turn.reply.parts ?? []).forEach((part, index) => {  // one answer per match, marked like any other match's
+      article.append(this.turn({ key: `${turn.key}:${index}`, reply: part, offers: part.offers ?? [],
+        clarificationActive: false }, reveal, true));
+    });
     const offer = turn.reply.follow_offer;
     if (offer && !this.declined.has(String(turn.key))) article.append(this.followOffer(String(turn.key), offer));
     return markOtherMatch(this.document, article, turn.reply.other_match);

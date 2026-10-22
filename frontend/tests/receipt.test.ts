@@ -17,7 +17,7 @@ test("receipt line is compact: facts, tokens, seconds and estimated cost", () =>
 });
 
 test("facts come from evidence, then replay clips, then offered stats", () => {
-  assert.deepEqual(answerFacts({ text: "", evidence: [{ id: "stat:x", kind: "stat", label: "Chelsea shots" }] }), ["Chelsea shots"]);
+  assert.deepEqual(answerFacts({ text: "", evidence: [{ id: "stat:x", kind: "stat", label: "Riverton Rovers shots" }] }), ["Riverton Rovers shots"]);
   assert.deepEqual(answerFacts({ text: "", replay: { page: 0, page_size: 12, total_items: 1, seconds: 9, clips: [],
     items: [{ source_id: "e", caption: "28′ Goal" }] } }), ["28′ Goal"]);
   assert.deepEqual(answerFacts({ text: "", offers: [{ id: "o", label: "United corners" }] }), ["United corners"]);

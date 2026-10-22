@@ -1,6 +1,6 @@
 """Round 17: a storyline label's score claim is checked, and a resolved storyline can reopen.
 
-Live, the label "Arsenal's late equalizer" passed every check though the goal made it 1-0, and a storyline
+Live, the label "Redcastle Town's late equalizer" passed every check though the goal made it 1-0, and a storyline
 resolved at 45' came back at 50' as a second one with the same label. `storyline-policy.claims.score` asks
 the decision model whether a sentence states a score or what a goal did to it, and whether the ledger (which
 now gives the score after each goal) shows it; `storylines.reopen_within` (minutes) reopens a resolved storyline

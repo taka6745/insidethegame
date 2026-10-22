@@ -18,13 +18,13 @@ RECORDINGS = ROOT / "data-generation" / "recordings"
 class OptaStreamTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        content = (RECORDINGS / "chelsea-united-grf.json").read_bytes()
+        content = (RECORDINGS / "riverton-forgeham-grf.json").read_bytes()
         cls.recording = json.loads(content)
         cls.messages = stream(cls.recording, hashlib.sha256(content).hexdigest())
         cls.outputs = pipeline.stream_outputs(cls.messages, 60)
 
     def test_shipped_stream_is_reproducible(self):
-        shipped = (RECORDINGS / "chelsea-united-grf.opta-stream.jsonl").read_text(encoding="utf-8")
+        shipped = (RECORDINGS / "riverton-forgeham-grf.opta-stream.jsonl").read_text(encoding="utf-8")
         self.assertEqual([json.loads(line) for line in shipped.splitlines()], self.messages)
 
     def test_contract_shape(self):
@@ -44,7 +44,7 @@ class OptaStreamTests(unittest.TestCase):
 
     def test_ma1_additions(self):
         ma1 = self.messages[0]
-        self.assertEqual((ma1["fixture"], ma1["sourceMatchId"]), ("chelsea-united", "product-demo-match"))
+        self.assertEqual((ma1["fixture"], ma1["sourceMatchId"]), ("riverton-forgeham", "product-demo-match"))
         self.assertTrue(ma1["provenance"].startswith("SYNTHETIC"))
         self.assertIn("Google Research Football (Apache-2.0)", ma1["provenance"])
         caps = ma1["capabilities"]
@@ -56,11 +56,11 @@ class OptaStreamTests(unittest.TestCase):
         self.assertEqual(caps["bodyPartActionTypes"][:2] + caps["bodyPartActionTypes"][-3:],
                          ["pass", "cross", "shot", "shot_penalty", "shot_freekick"])
         self.assertEqual(body_part_action_types(["pass", "shot"]), list(SPADL_PASS_FAMILY))  # Goals unknown.
-        self.assertEqual(set(ma1["branding"]), {"chelsea", "manutd"})
+        self.assertEqual(set(ma1["branding"]), {"riverton", "forgeham"})
         self.assertTrue(all(b["primaryColour"].startswith("#") for b in ma1["branding"].values()))
         self.assertEqual([(c["code"], c["shortName"]) for c in ma1["contestant"]],
-                         [("CHE", "Chelsea"), ("MUN", "Man Utd")])
-        self.assertEqual([c["knownNames"] for c in ma1["contestant"]], [["the Blues"], ["United", "the Red Devils"]])
+                         [("RVR", "Riverton"), ("FGU", "Forgeham")])
+        self.assertEqual([c["knownNames"] for c in ma1["contestant"]], [["the Rovers", "the Blues"], ["United", "the Forgemen"]])
 
     def test_event_seq_follows_canonical_order(self):
         seqs = {e["eventId"]: i for i, e in enumerate(self.recording["events"], 1)}
@@ -81,7 +81,7 @@ class OptaStreamTests(unittest.TestCase):
         owned = Counter()
         for p in pos:
             owned[p["contestantId"]] += p["durationSeconds"]
-        share = round(100 * owned["chelsea"] / sum(owned.values()))
+        share = round(100 * owned["riverton"] / sum(owned.values()))
         self.assertEqual(share, 64)
 
     def test_reference_totals(self):

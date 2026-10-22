@@ -9,7 +9,7 @@ from pathlib import Path
 import httpx
 
 from feed.adapters.hls import LIVE, LivePlaylist
-from feed.tests.support import chelsea, media
+from feed.tests.support import riverton, media
 
 CONNECTION = os.environ.get("FEED_TEST_BLOB_CONNECTION_STRING")
 
@@ -35,7 +35,7 @@ class BlobTests(unittest.IsolatedAsyncioTestCase):
         self.storage.live().remove(self.match_id)
 
     def test_segments_are_published_only_once_played_and_purged(self):
-        stream = dataclasses.replace(chelsea(), fixture=self.fixture)  # chelsea() is shared
+        stream = dataclasses.replace(riverton(), fixture=self.fixture)  # riverton() is shared
         self.storage.attach_media({self.fixture: stream})
         live = self.storage.live()
         playlist = LivePlaylist(stream.media, live.dir(self.match_id))
@@ -60,7 +60,7 @@ class BlobTests(unittest.IsolatedAsyncioTestCase):
 
         class Service:
             ready = True
-        stream = dataclasses.replace(chelsea(), fixture=self.fixture)  # chelsea() is shared
+        stream = dataclasses.replace(riverton(), fixture=self.fixture)  # riverton() is shared
         self.storage.attach_media({self.fixture: stream})
         live = self.storage.live()
         LivePlaylist(stream.media, live.dir(self.match_id)).publish(2.0)

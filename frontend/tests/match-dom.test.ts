@@ -243,13 +243,13 @@ test("audience dropdown lists only the match's enabled buckets and keeps the sel
   const view = new AudienceView(asDocument(document));
   const select = () => fromElement(view.select), controls = () => fromElement(view.controls);
   const state = {audience: {bucket_id: "away:experienced", selections: {team: "away", fan_style: "experienced"}},
-    audience_buckets: [{id: "home:simple", label: "Chelsea · Simple"}, {id: "away:experienced", label: "Manchester United · Experienced"}]};
+    audience_buckets: [{id: "home:simple", label: "Riverton Rovers · Simple"}, {id: "away:experienced", label: "Forgeham United · Experienced"}]};
   view.render(state);
   assert.deepEqual(select().children.map(option => [option.value, option.textContent]),
-    [["home:simple", "Chelsea · Simple"], ["away:experienced", "Manchester United · Experienced"]]);
+    [["home:simple", "Riverton Rovers · Simple"], ["away:experienced", "Forgeham United · Experienced"]]);
   assert.equal(controls().hidden, false);
   assert.deepEqual(view.selection(), {bucket_id: "away:experienced"});
-  assert.equal(view.label(state), "Manchester United · Experienced");
+  assert.equal(view.label(state), "Forgeham United · Experienced");
   const option = select().children[1];
   view.render({...state});
   assert.equal(select().children[1], option);
@@ -288,13 +288,13 @@ test("standard stat gains tracking controls and removes them after unpin", () =>
 test("club colours and crests come from the match data, never a club table", () => {
   const document = documentStub(),
     view = new MatchView(asDocument(document));
-  view.teams = [{ id: "arsenal", branding: { primary_colour: "#ef0107", secondary_colour: "#063672", crest_asset_id: "arsenal" } }];
+  view.teams = [{ id: "redcastle", branding: { primary_colour: "#ef0107", secondary_colour: "#063672", crest_asset_id: "redcastle" } }];
   view.render({
     match: {
       status: "live",
       teams: [
-        { id: "arsenal", name: "Arsenal", code: "ARS", score: 1 },
-        { id: "spurs", name: "Tottenham Hotspur", branding: { primary_colour: "url(x)", crest_asset_id: "../evil" } },
+        { id: "redcastle", name: "Redcastle Town", code: "RCT", score: 1 },
+        { id: "whitmore", name: "Whitmore Wanderers", branding: { primary_colour: "url(x)", crest_asset_id: "../evil" } },
       ],
       clock_seconds: 1200,
     },
@@ -303,29 +303,29 @@ test("club colours and crests come from the match data, never a club table", () 
   const home = document.getElementById("home-banner");
   assert.equal(home.dataset.club, "branded");
   assert.deepEqual(home.style.props, { "--club-primary": "#ef0107", "--club-secondary": "#063672" });
-  assert.equal(document.getElementById("home-crest").src, "/assets/league/clubs/arsenal.svg");
+  assert.equal(document.getElementById("home-crest").src, "/assets/league/clubs/redcastle.svg");
   assert.equal(document.getElementById("home-mark").hidden, true);
   const away = document.getElementById("away-banner");
   assert.equal(away.dataset.club, "unknown");
   assert.deepEqual(away.style.props, {});
   assert.equal(document.getElementById("away-crest").hidden, true);
-  assert.equal(document.getElementById("away-mark").textContent, "TOT");
+  assert.equal(document.getElementById("away-mark").textContent, "WHI");  // no code: the name's first letters
   // A missing crest file falls back to the monogram and stays that way.
   document.getElementById("home-crest").listeners.error!();
-  view.render({ match: { status: "live", teams: [{ id: "arsenal", name: "Arsenal", code: "ARS" }] },
+  view.render({ match: { status: "live", teams: [{ id: "redcastle", name: "Redcastle Town", code: "RCT" }] },
     cards: [], events: [], narratives: [] });
   assert.equal(document.getElementById("home-crest").hidden, true);
   assert.equal(document.getElementById("home-mark").hidden, false);
-  assert.equal(document.getElementById("home-mark").textContent, "ARS");
+  assert.equal(document.getElementById("home-mark").textContent, "RCT");
 });
 
 test("a scheduled match counts down to kickoff, then shows the live clock", () => {
   const document = documentStub(), view = new MatchView(asDocument(document));
   const kickoff = "2026-10-20T15:00:00.000Z", at = Date.parse(kickoff);
-  const state = (match: object) => ({ match: { teams: [{ name: "Chelsea" }, { name: "Manchester United" }], ...match },
+  const state = (match: object) => ({ match: { teams: [{ name: "Riverton Rovers" }, { name: "Forgeham United" }], ...match },
     cards: [], events: [], narratives: [] });
   view.render(state({ status: "scheduled", scheduled_kickoff: kickoff, clock_seconds: null }));
-  assert.equal(document.getElementById("home-name").textContent, "Chelsea");
+  assert.equal(document.getElementById("home-name").textContent, "Riverton Rovers");
   view.tick(at - 75_000);
   assert.equal(document.getElementById("match-clock").textContent, "KO in 1:15");
   view.tick(at + 1000);
@@ -382,7 +382,7 @@ test("failed answers stop loading and empty-state refresh preserves its DOM", ()
 
 test("Insights renders upstream narrative wording unchanged as text", () => {
   const view = new MatchView(asDocument(documentStub()));
-  const text = "Five corners since the break give Chelsea chances to threaten. <No rewrite>";
+  const text = "Five corners since the break give Riverton Rovers chances to threaten. <No rewrite>";
   const article = fromElement(view.narrative({ clock_seconds: 4260, text }));
   assert.equal(article.children[0]!.textContent, "71:00");
   assert.equal(article.children[1]!.textContent, text);
@@ -390,9 +390,9 @@ test("Insights renders upstream narrative wording unchanged as text", () => {
 
 test("percentage offers retain ETL units in the chat card", () => {
   const document = documentStub(), view = new QuestionView(asDocument(document));
-  view.render({turns: [{id: "percentage", prompt: "Chelsea possession?", reply: {
-    text: "Chelsea possession: 35.9%.",
-    offers: [{id: "offer", label: "Chelsea possession", value: 35.9, unit: "%"}],
+  view.render({turns: [{id: "percentage", prompt: "Riverton Rovers possession?", reply: {
+    text: "Riverton Rovers possession: 35.9%.",
+    offers: [{id: "offer", label: "Riverton Rovers possession", value: 35.9, unit: "%"}],
   }}]});
   assert.equal(document.getElementById("chat-messages").querySelector("strong")!.textContent, "35.9%");
 });
@@ -403,8 +403,8 @@ const replayReply = (over: Partial<Replay> = {}): Replay => ({
     within_seconds: 3, then_team: "opponent" },
   refine_offer: "Narrow to the second half?",
   clips: [
-    { start: 1300, end: 1310, captions: ["21′ Palmer shot"], playlist_start: 1, playlist_end: 11 },
-    { start: 1380, end: 1392, captions: ["23′ Palmer header saved"], playlist_start: 14, playlist_end: 26 },
+    { start: 1300, end: 1310, captions: ["21′ Ashworth shot"], playlist_start: 1, playlist_end: 11 },
+    { start: 1380, end: 1392, captions: ["23′ Ashworth header saved"], playlist_start: 14, playlist_end: 26 },
   ],
   ...over,
 });
@@ -418,14 +418,14 @@ test("replay replies show a playable frame with length, derived definition and r
   view.onReplayPlay = (value, opener) => played.push(value, opener);
   const framed: unknown[] = [];
   view.onReplayFrame = (value, canvas) => framed.push(value, canvas);
-  view.render({ turns: [{ id: 7, prompt: "Show Palmer's chances", reply: {
-    text: "Palmer had two chances.", answer_kind: "replay", replay } }] });
+  view.render({ turns: [{ id: 7, prompt: "Show Ashworth's chances", reply: {
+    text: "Ashworth had two chances.", answer_kind: "replay", replay } }] });
   const card = document.getElementById("chat-messages").querySelector(".replay-card")!;
   const shown = texts(card);
   for (const expected of ["2 clips · 01:42", "Page 1 of 2",
     "Derived: failed pass, then opponent touch within 3 s", "Narrow to the second half?", "Show more"])
     assert.ok(shown.includes(expected), expected);
-  assert.ok(!shown.some((text) => text?.includes("Palmer")), "captions are not listed in chat");
+  assert.ok(!shown.some((text) => text?.includes("Ashworth")), "captions are not listed in chat");
   assert.equal(framed[0], replay);
   assert.equal(framed[1], card.querySelector(".replay-still"));
   assert.equal(card.querySelector(".replay-previous"), null);
@@ -575,8 +575,8 @@ test("composite offers and pinned cards preserve units and unavailable values", 
 test("answers carry a compact receipt; facts expand and new prices re-cost it without re-asking", () => {
   const document = documentStub(), view = new QuestionView(asDocument(document));
   view.prices = { input: 0.4, output: 1.6 };
-  view.render({ turns: [{ id: 3, prompt: "Chelsea shots?", reply: { text: "Chelsea have 16 shots.",
-    evidence: [{ id: "stat:chelsea:shots", kind: "stat", label: "Chelsea shots" }],
+  view.render({ turns: [{ id: 3, prompt: "Riverton Rovers shots?", reply: { text: "Riverton Rovers have 16 shots.",
+    evidence: [{ id: "stat:riverton:shots", kind: "stat", label: "Riverton Rovers shots" }],
     usage: { input_tokens: 1450, output_tokens: 350, calls: 2, seconds: 4.2 } } }] });
   const line = document.getElementById("chat-messages").querySelector(".answer-receipt-line")!;
   assert.equal(line.textContent, "✓ 1 fact · 1.8k tok · 4.2s · $0.001");
@@ -584,7 +584,7 @@ test("answers carry a compact receipt; facts expand and new prices re-cost it wi
   assert.equal(facts.hidden, true);
   line.listeners.click!();
   assert.equal(facts.hidden, false);
-  assert.ok(texts(facts).includes("Chelsea shots"));
+  assert.ok(texts(facts).includes("Riverton Rovers shots"));
   view.setPrices({ input: 400, output: 1600 });
   assert.equal(line.textContent, "✓ 1 fact · 1.8k tok · 4.2s · $1.140");
 });

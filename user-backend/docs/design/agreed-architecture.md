@@ -38,7 +38,7 @@ Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not pa
 | Isolated generated-code executor | Run generated Python/filter logic with a fixed library set and controlled access to read-only GraphQL. |
 | Frontend | Show match footage, stat cards, agent chat and the narrative feed; submit questions and user actions. Play requested replay clips while live continues picture-in-picture. |
 
-**Viewer questions never prompt, inject into or trigger the neutral narrative engine.** “How is Chelsea going?” is answered by the question agent using available facts and narratives. It does not create a personal narrative workflow.
+**Viewer questions never prompt, inject into or trigger the neutral narrative engine.** “How is Riverton Rovers going?” is answered by the question agent using available facts and narratives. It does not create a personal narrative workflow.
 
 Narrative deduplication is explicitly outside this backend. Do not add a parent-insight deduplication subsystem here. Transport/event replay protection needed for accurate stat calculations is a different concern.
 

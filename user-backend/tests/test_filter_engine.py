@@ -14,7 +14,7 @@ from benchmarks.doubles.spadl import actions_from_events
 
 SCENARIO = json.loads((Path(__file__).parents[1] / "fixtures/filter-lab.json").read_text())
 DEFAULT = {"match_id": "match", "action_id": 1, "action_type": "corner_crossed", "result": "success",
-           "bodypart": "foot", "team_id": "chelsea", "match_time_seconds": 4025, "period": 2, "start_x": 50.0,
+           "bodypart": "foot", "team_id": "riverton", "match_time_seconds": 4025, "period": 2, "start_x": 50.0,
            "start_y": 34.0, "end_x": 50.0, "end_y": 34.0, "start_zone": "middle_third", "end_zone": "middle_third",
            "seq": 1, "final_seq": 1}
 
@@ -87,9 +87,9 @@ def test_duplicate_and_conflicting_final_action():
 
 
 def test_equivalent_rules_reuse_id_despite_order_membership_and_duplicates():
-    a = rule(predicate("team_id", "chelsea"), predicate("action_type", ["shot", "shot_penalty"], "in"))
+    a = rule(predicate("team_id", "riverton"), predicate("action_type", ["shot", "shot_penalty"], "in"))
     b = rule(predicate("action_type", ["shot_penalty", "shot", "shot_penalty"], "in"),
-             predicate("team_id", ["chelsea"], "in"), predicate("team_id", "chelsea"))
+             predicate("team_id", ["riverton"], "in"), predicate("team_id", "riverton"))
     engine = FilterEngine()
     assert engine.register(a).calculation_id == engine.register(b).calculation_id
     assert engine.count == 1
@@ -107,7 +107,7 @@ def test_membership_intersection_and_contradictory_rules():
     engine = FilterEngine()
     calc = engine.register(rule(predicate("action_type", ["corner_crossed", "shot"], "in"),
                                 predicate("action_type", "corner_crossed")))
-    impossible = engine.register(rule(predicate("team_id", "chelsea"), predicate("team_id", "madrid")))
+    impossible = engine.register(rule(predicate("team_id", "riverton"), predicate("team_id", "madrid")))
     engine.ingest(action())
     assert engine.get(calc.calculation_id).value == 1
     assert engine.get(impossible.calculation_id).value == 0
@@ -190,7 +190,7 @@ def test_index_result_matches_independent_full_scan_with_many_combinations():
     rng = random.Random(42)
     engine = FilterEngine()
     definitions = []
-    choices = [("action_type", ["corner_crossed", "shot", "pass"]), ("team_id", ["chelsea", "madrid"]),
+    choices = [("action_type", ["corner_crossed", "shot", "pass"]), ("team_id", ["riverton", "madrid"]),
                ("player_id", ["a", "b"]), ("bodypart", ["head", "foot"]), ("period", [1, 2]),
                ("result", ["success", "fail"]), ("end_zone", ["opp_box", "middle_third"])]
     for _ in range(150):
@@ -202,7 +202,7 @@ def test_index_result_matches_independent_full_scan_with_many_combinations():
     actions = []
     for index in range(100):
         item = action(action_id=index, action_type=rng.choice(["corner_crossed", "shot", "pass"]),
-                      team_id=rng.choice(["chelsea", "madrid"]), player_id=rng.choice(["a", "b", None]),
+                      team_id=rng.choice(["riverton", "madrid"]), player_id=rng.choice(["a", "b", None]),
                       bodypart=rng.choice(["head", "foot"]), period=rng.choice([1, 2]),
                       result=rng.choice(["success", "fail"]), end_zone=rng.choice(["opp_box", "middle_third"]),
                       match_time_seconds=rng.choice([100, 3000, 4000]))
@@ -213,7 +213,7 @@ def test_index_result_matches_independent_full_scan_with_many_combinations():
 
 
 @pytest.mark.parametrize("kwargs", [
-    {"field": "team_id", "op": "gt", "value": "chelsea"},
+    {"field": "team_id", "op": "gt", "value": "riverton"},
     {"field": "player_id", "op": "eq", "value": True},
     {"field": "match_time_seconds", "op": "gt", "value": "60"},
     {"field": "match_time_seconds", "op": "gt", "value": float("nan")},
@@ -258,3 +258,30 @@ def test_restore_delivery_version_without_replaying_old_versions():
     assert engine.ingest(action(action_id=2))[0].version == 16
     with pytest.raises(ValueError):
         engine.restore_version(calc.calculation_id, 2)
+
+
+def test_formula_stats_from_the_team_review_evaluate_exactly():
+    """PLAN.md §12 M9: 'take-ons in their own half' (a location bound) and 'pass success rate' (a percentage of two
+    counts) compile to rules whose values match an independent scan of the same SPADL actions."""
+    from backend.agents.models import Goal, LocationBound
+
+    team = "riverton"
+    actions = [action(action_id=i + 1, action_type=kind, result=result, start_x=x, team_id=side)
+               for i, (kind, result, x, side) in enumerate([
+                   ("take_on", "success", 30.0, team), ("take_on", "fail", 52.5, team), ("take_on", "success", 70.0, team),
+                   ("take_on", "success", 20.0, "madrid"), ("pass", "success", 40.0, team), ("pass", "success", 60.0, team),
+                   ("pass", "fail", 80.0, team), ("pass", "success", 50.0, "madrid")])]
+    own_half = Goal(description="take-ons in own half", action_types=("take_on",), team_ids=(team,),
+                    locations=(LocationBound(field="start_x", lte=52.5),))
+    passes = dict(action_types=("pass",), team_ids=(team,))
+    rate = Goal(description="pass success rate", operation="percentage", inputs=(
+        Goal(description="completed passes", results=("success",), **passes), Goal(description="passes", **passes)))
+    engine = FilterEngine()
+    ids = [engine.register(goal.target_rule("match")).calculation_id for goal in (own_half, rate)]
+    for item in actions:
+        engine.ingest(item)
+    mine = [a for a in actions if a.team_id == team]
+    takeons = sum(1 for a in mine if a.action_type == "take_on" and a.start_x <= 52.5)
+    made = [a for a in mine if a.action_type == "pass"]
+    assert engine.get(ids[0]).value == takeons == 2
+    assert float(engine.get(ids[1]).value) == pytest.approx(100 * sum(a.result == "success" for a in made) / len(made))

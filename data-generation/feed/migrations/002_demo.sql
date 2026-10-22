@@ -10,7 +10,7 @@ CREATE TABLE demo_settings (
 );
 
 INSERT INTO demo_settings (fixtures, stagger_seconds, max_active_runs, start_points)
-VALUES (ARRAY['chelsea-united', 'arsenal-liverpool', 'mancity-tottenham'], 120, 3,
+VALUES (ARRAY['riverton-forgeham', 'redcastle-portalbion', 'skybridge-whitmore'], 120, 3,
         '[{"id": "kickoff", "label": "Kick-off", "period": 1, "minute": 0, "seed": null},
           {"id": "20", "label": "20′", "period": 1, "minute": 20, "seed": null},
           {"id": "ht", "label": "Second half", "period": 2, "minute": 45, "seed": null},

@@ -3,9 +3,8 @@ from psycopg.types.json import Jsonb
 
 
 class EngineNarratives:
-    # Newest rows per snapshot read, across the match's buckets (about 92 minutes x 12 buckets fit, plus key moments).
-    def __init__(self, store, limit=2400):
-        self.store, self.limit = store, limit
+    def __init__(self, store):
+        self.store = store
 
     def save(self, narrative):
         """True if new; redeliveries (same id) and unknown or purged matches change nothing."""
@@ -50,18 +49,21 @@ class EngineNarratives:
             found.setdefault(r['bucket_id'], []).append(r['moment_id'])
         return found
 
-    def items(self, snapshot, closed_through=0):
-        """The match's newest narratives written from data at or before the snapshot, oldest first,
-        in the product feed's item shape (one bucket per item). Without an eventSeq, the clock bounds it.
-        closed_through: the last period whose end the snapshot has observed; its steps (e.g. a
-        full-time summary stamped after the final event's clock) are all released."""
+    def items(self, snapshot, closed_through=0, per_bucket=200):
+        """The match's newest narratives written from data at or before the snapshot, at most `per_bucket` per
+        bucket (so enabling more buckets never trims another's history), oldest first, in the product feed's item
+        shape (one bucket per item). Without an eventSeq, the clock bounds it. closed_through: the last period whose
+        end the snapshot has observed; its steps (e.g. a full-time summary stamped after the final event's clock)
+        are all released."""
         with self.store.connect() as conn:
-            rows = conn.execute('''SELECT * FROM engine_narratives WHERE match_id=%s
-                AND (event_seq <= %s OR (event_seq IS NULL AND ((period, clock_seconds) <= (%s, %s) OR period <= %s)))
-                ORDER BY period DESC, clock_seconds DESC, created_at DESC LIMIT %s''',
+            rows = conn.execute('''SELECT * FROM (SELECT *, row_number() OVER (PARTITION BY bucket_id
+                    ORDER BY period DESC, clock_seconds DESC, created_at DESC) AS newest
+                FROM engine_narratives WHERE match_id=%s
+                AND (event_seq <= %s OR (event_seq IS NULL AND ((period, clock_seconds) <= (%s, %s) OR period <= %s)))) n
+                WHERE newest <= %s ORDER BY period, clock_seconds, created_at''',
                 (snapshot.match_id, snapshot.seq, snapshot.period or 1, snapshot.clock_seconds or 0, closed_through,
-                 self.limit)).fetchall()
+                 per_bucket)).fetchall()
         return [{'id': r['id'], 'text': r['text'], 'clock_seconds': r['clock_seconds'], 'period': r['period'],
                  'buckets': [r['bucket_id']], 'synthetic': True,
                  'trigger': r['trigger']['type'], 'prompt_version': r['prompt_version'],
-                 'audience_revision': r['audience_revision'], 'event_seq': r['event_seq']} for r in reversed(rows)]
+                 'audience_revision': r['audience_revision'], 'event_seq': r['event_seq']} for r in rows]

@@ -7,7 +7,7 @@ from backend.app import create_app
 from harness import MATCH, Upstream, build
 
 PATH = f'/matches/{MATCH}/audience-config'
-TEMPLATE = '/dev/fixtures/chelsea-madrid/audience-config'
+TEMPLATE = '/dev/fixtures/riverton-madrid/audience-config'
 
 
 def started(store, *matches):
@@ -19,7 +19,7 @@ def started(store, *matches):
     return client, upstream
 
 
-def template(client, fixture='chelsea-madrid'):
+def template(client, fixture='riverton-madrid'):
     body = client.get(f'/dev/fixtures/{fixture}/audience-config').json()
     return {'expected_revision': body['revision'], 'config': body['config']}
 
@@ -39,14 +39,16 @@ def test_new_match_serves_all_twelve_definitions_and_only_enabled_targets_withou
     client, _ = started(store)
     body = client.get(PATH).json()
     assert body['schema_version'] == 1 and body['match_id'] == MATCH and body['revision'] == 1
-    assert len(body['buckets']) == 12 and 'profiles' not in body
+    # 12 team × style buckets, each with a disabled Brief twin (the length layer, migration 047).
+    assert len(body['buckets']) == 24 and 'profiles' not in body
     # The unedited default enables the demo profiles' buckets (migration 018); viewers enable nothing.
     targets = body['generation_targets']
     assert sorted(t['bucket_id'] for t in targets) == sorted(DEMO_BUCKETS)
     # Engine shape (narrative_engine/audience/targets.py): every layer's and option's description.
     target = next(t for t in targets if t['bucket_id'] == 'home:analytical')
-    assert target['selections'] == {'team': 'home', 'fan_style': 'analytical'}
-    assert [(layer['id'], layer['option']['id']) for layer in target['layers']] == [('team', 'home'), ('fan_style', 'analytical')]
+    assert target['selections'] == {'team': 'home', 'fan_style': 'analytical', 'length': 'standard'}
+    assert [(layer['id'], layer['option']['id']) for layer in target['layers']] == [('team', 'home'), ('fan_style', 'analytical'),
+                                                                                        ('length', 'standard')]
     assert all(layer['description'] and layer['option']['description'] for layer in target['layers'])
     assert body['layers'][0]['options'][0]['label'] == '{home}' and body['layers'][1]['options'][0]['label'] == 'Simple'
     client.__exit__(None, None, None)
@@ -62,12 +64,12 @@ def test_unknown_match_is_404_and_purged_match_is_gone(store):
 
 
 def test_enabled_flags_choose_targets_for_every_match_of_the_fixture(store):
-    client, _ = started(store, MATCH, 'chelsea-madrid-99999999', 'other-fixture-11111111')
+    client, _ = started(store, MATCH, 'riverton-madrid-99999999', 'other-fixture-11111111')
     tag = client.get(PATH).headers['etag']
     update = enabled(template(client), ['home:simple'])
     revision = update['expected_revision']
     assert client.put(TEMPLATE, json=update).json() == {'revision': revision + 1}
-    for match_id in (MATCH, 'chelsea-madrid-99999999'):
+    for match_id in (MATCH, 'riverton-madrid-99999999'):
         body = client.get(f'/matches/{match_id}/audience-config').json()
         assert [t['bucket_id'] for t in body['generation_targets']] == ['home:simple']
         # A catalogue is copied on first read: the already-read match moved to revision 2.
@@ -78,8 +80,8 @@ def test_enabled_flags_choose_targets_for_every_match_of_the_fixture(store):
     assert client.get(PATH, headers={'If-None-Match': tag}).status_code == 200
     assert client.put(TEMPLATE, json=update).status_code == 409  # Stale revision.
     listing = client.get('/dev/audience-templates').json()
-    assert {'fixture': 'chelsea-madrid', 'revision': revision + 1} in listing['templates']
-    assert {'match_id': MATCH, 'fixture': 'chelsea-madrid', 'revision': 2, 'enabled': ['home:simple']} in listing['matches']
+    assert {'fixture': 'riverton-madrid', 'revision': revision + 1} in listing['templates']
+    assert {'match_id': MATCH, 'fixture': 'riverton-madrid', 'revision': 2, 'enabled': ['home:simple']} in listing['matches']
     client.__exit__(None, None, None)
 
 

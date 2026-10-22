@@ -144,7 +144,7 @@ test("HTTP adapter only sends intent, token and offer identifiers", async () => 
   const api = new MatchApi(async (...args) => {
     calls.push(args);
     return { ok: true, status: 200, json: async () => ({}) };
-  }, "/viewer-api", "chelsea-united-1a2b3c4d");
+  }, "/viewer-api", "riverton-forgeham-1a2b3c4d");
   await api.ask("token", "shots?", "uuid");
   await api.track("token", "offer");
   await api.unpin("token", "rule");
@@ -158,7 +158,7 @@ test("HTTP adapter only sends intent, token and offer identifiers", async () => 
   assert.equal(calls.pop()![0], "/viewer-api/prices");
   assert.deepEqual(JSON.parse(String(calls[1]![1].body)), {});
   assert.equal(calls[2]![1].method, "DELETE");
-  const M = "/viewer-api/matches/chelsea-united-1a2b3c4d/sessions";
+  const M = "/viewer-api/matches/riverton-forgeham-1a2b3c4d/sessions";
   assert.deepEqual(calls.map(([url]) => url),
     [`${M}/token/messages`, `${M}/token/offers/offer/track`, `${M}/token/pins/rule`]);
   assert.equal(

@@ -19,19 +19,42 @@ def model_configured():
 
 
 
-def chat_client(model: str, client):
-    """A chat model answers over Chat Completions. A reasoning model (LOCAL_LLM_EFFORT set, e.g. gpt-6.1-sol on Azure
-    AI Foundry) goes over the Responses API, the only one where it takes function tools with reasoning."""
-    if os.getenv("LOCAL_LLM_EFFORT"):
+ENV = object()  # effort not given: this deployment's LOCAL_LLM_EFFORT
+
+# Agent name -> role in the `models` config table (models/config.ModelRoles, edited under /dev/config/models).
+ROLE_OF = {"match_question": "questions", "question_goal": "questions", "question_intent": "questions",
+           "development_agent": "questions", "match_replay": "replay", "subscription_planner": "follow_planner"}
+_role_models: dict[str, dict] = {}
+
+
+def set_role_models(roles: dict) -> None:
+    """The backend's role overrides, refreshed live by app.watch_models."""
+    _role_models.clear()
+    _role_models.update(roles)
+
+
+def role_model(name: str, default_model: str):
+    """(model, effort) for an agent: its role's /dev/ deployment and effort when a deployment is set, else this
+    deployment's LOCAL_LLM_MODEL and LOCAL_LLM_EFFORT. A role with a deployment but no effort keeps this
+    deployment's effort: the Foundry models reject the chat call's temperature 0."""
+    role = _role_models.get(ROLE_OF.get(name, name)) or {}
+    if role.get("deployment"):
+        return role["deployment"], role.get("effort") or os.getenv("LOCAL_LLM_EFFORT") or None
+    return default_model, os.getenv("LOCAL_LLM_EFFORT") or None
+
+
+def chat_client(model: str, client, effort=ENV):
+    """A chat model answers over Chat Completions. A reasoning model (an effort, e.g. gpt-6.1-sol on Azure AI
+    Foundry) goes over the Responses API, the only one where it takes function tools with reasoning."""
+    if (os.getenv("LOCAL_LLM_EFFORT") if effort is ENV else effort):
         return OpenAIChatClient(model=model, async_client=client)
     return OpenAIChatCompletionClient(model=model, async_client=client)
 
 
-def chat_options(max_tokens: int) -> dict:
+def chat_options(max_tokens: int, effort=ENV) -> dict:
     """Model call options. A chat model gets temperature 0. A reasoning model rejects temperature, takes a reasoning
-    effort (LOCAL_LLM_EFFORT), and counts its reasoning against max_tokens, so it gets LOCAL_LLM_REASONING_TOKENS
-    more."""
-    effort = os.getenv("LOCAL_LLM_EFFORT")
+    effort, and counts its reasoning against max_tokens, so it gets LOCAL_LLM_REASONING_TOKENS more."""
+    effort = os.getenv("LOCAL_LLM_EFFORT") if effort is ENV else effort
     if not effort:
         return {"temperature": 0, "max_tokens": max_tokens}
     return {"reasoning": {"effort": effort},
@@ -68,9 +91,10 @@ class LocalJsonModel:
             async with httpx.AsyncClient(timeout=self.timeout, transport=self.transport) as http:
                 async with AsyncOpenAI(base_url=self.base_url, api_key=self.api_key or "local-development",
                                        http_client=http, max_retries=0, timeout=self.timeout) as client:
+                    model, effort = role_model(self.name, self.model)
                     agent = Agent(name=self.name, instructions=system,
-                                  client=chat_client(self.model, client),
-                                  default_options=chat_options(3000))
+                                  client=chat_client(model, client, effort),
+                                  default_options=chat_options(3000, effort))
                     # Each call is stateless. The workflow carries only the goal and
                     # validation feedback; no conversation is shared between viewers.
                     options = {"response_format": response_schema} if response_schema is not None else {}

@@ -9,7 +9,7 @@ from backend.models.rules import Rule, Predicate
 from backend.services.filter_engine import FilterEngine
 
 
-def leaf(results=(), *, team='chelsea', operation='count', start=3600):
+def leaf(results=(), *, team='riverton', operation='count', start=3600):
     terms = [Predicate(field='action_type', op='eq', value='pass'),
              Predicate(field='team_id', op='eq', value=team),
              Predicate(field='match_time_seconds', op='gte', value=start)]
@@ -26,7 +26,7 @@ def formula(operation='percentage', *, left=None, right=None):
 
 def event(identifier, time, result='success', distance=0.0, **changes):
     """A pass along x: its ball distance is `distance` metres."""
-    return SpadlAction(**(dict(match_id='match', action_id=identifier, action_type='pass', team_id='chelsea',
+    return SpadlAction(**(dict(match_id='match', action_id=identifier, action_type='pass', team_id='riverton',
                                match_time_seconds=time, period=2, result=result, bodypart='foot', start_x=0.0,
                                start_y=34.0, end_x=distance, end_y=34.0, start_zone='own_box', end_zone='own_box',
                                seq=1, final_seq=1) | changes))
@@ -110,7 +110,7 @@ def test_spadl_identity_and_unit_validation():
 
 def test_average_goal_includes_zero_distances():
     goal = Goal(description='Mean completed pass distance',operation='average',sum_field='distance_metres',
-                action_types=['pass'],results=['success'],team_ids=['chelsea'],from_seconds=3600)
+                action_types=['pass'],results=['success'],team_ids=['riverton'],from_seconds=3600)
     engine = FilterEngine()
     result = engine.register(goal.target_rule('match'),LEDGER)
     assert result.value == 10

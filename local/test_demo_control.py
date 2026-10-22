@@ -19,6 +19,8 @@ class DemoControlTests(unittest.TestCase):
         self.refuse_restore, self.resume_seq, self.refuse_status, self.refuse_purge = set(), 7, 409, set()
         self.gate = threading.Event()
         self.gate.set()
+        self.slow_purge, self.owner_gate, self.purging = set(), threading.Event(), threading.Event()
+        self.owner_gate.set()
         self.settings = {"fixtures": ["b", "a", "c"], "main_fixture": "b", "stagger_seconds": 120, "start_points": [{"id": "kickoff", "label": "Kick-off", "period": 1, "minute": 0, "seed": None},
                                           {"id": "20", "label": "20′", "period": 1, "minute": 20, "seed": None}]}
 
@@ -41,6 +43,10 @@ class DemoControlTests(unittest.TestCase):
                               "awaiting_restore": bool(point["seed"]), "seq": self.resume_seq if point["seed"] else 0}
                              for i, f in enumerate(["a", "b", "c"])]
                 return httpx.Response(201, json={"started": True, "point": point, "runs": self.runs})
+            if path == "/demo/skip":
+                if not any(r["status"] != "finished" for r in self.runs):
+                    return httpx.Response(409, json={"detail": "No demo is playing yet."})
+                return httpx.Response(200, json={"skipped_seconds": 600, "target": body, "runs": self.runs})
             if path.endswith("/release"):
                 run = next(r for r in self.runs if r["match_id"] == path.split("/")[2])
                 run.update(awaiting_restore=False, after=body["after_seconds"])
@@ -52,13 +58,18 @@ class DemoControlTests(unittest.TestCase):
             if path == "/admin/matches/purge":
                 if request.url.host in self.refuse_purge:
                     return httpx.Response(500, json={"detail": "down"})
+                if body.get("match_id") in self.slow_purge:
+                    self.purging.set()
+                    self.owner_gate.wait(5)
                 if request.url.host == "feed":
                     self.gate.wait(5)
                     self.runs = [] if body.get("all") else [r for r in self.runs if r["match_id"] != body["match_id"]]
                 return httpx.Response(200, json={"match_ids": [body.get("match_id")], "purged": {}})
             return httpx.Response(404, json={"detail": "nope"})
 
-        self.client = TestClient(demo_control.app(httpx.Client(transport=httpx.MockTransport(handler))))
+        self.now = 0.0  # the sweep's clock
+        self.client = TestClient(demo_control.app(httpx.Client(transport=httpx.MockTransport(handler)),
+                                                  clock=lambda: self.now))
 
     def settle(self):
         """Wait for the queued start or cancel to finish; how it ended (start and cancel answer 202 at once)."""
@@ -76,7 +87,7 @@ class DemoControlTests(unittest.TestCase):
         self.runs = [{"match_id": "old", "status": "finished"}]
         self.assertEqual(self.client.post("/start").status_code, 202)
         self.assertTrue(self.settle()["started"])
-        self.assertEqual(self.purged(), [("etl-stream", "old"), ("narrative-live", "old"), ("backend", "old")])
+        self.assertEqual(sorted(self.purged()), [("backend", "old"), ("etl-stream", "old"), ("narrative-live", "old")])
         self.assertFalse(self.client.post("/start").json()["started"])
         self.assertTrue(self.client.get("/state").json()["live"])
 
@@ -86,8 +97,52 @@ class DemoControlTests(unittest.TestCase):
         self.runs[0]["status"] = "finished"  # Staggered: the first can end before the others.
         self.assertEqual(self.client.post("/cancel").status_code, 202)
         self.assertEqual(self.settle()["cancelled"], ["m0", "m1", "m2"])
-        self.assertEqual(self.purged(), [("feed", "all"), ("etl-stream", "all"), ("narrative-live", "all"),
-                                         ("backend", "all")])
+        purged = self.purged()
+        self.assertEqual(purged[0], ("feed", "all"))  # the feed first; the others after it, at once
+        self.assertEqual(sorted(purged[1:]), [("backend", "all"), ("etl-stream", "all"), ("narrative-live", "all")])
+
+    def test_a_finished_run_of_a_live_demo_is_never_swept(self):
+        self.runs = [{"match_id": "old", "status": "finished"}, {"match_id": "live", "status": "playing"}]
+        self.assertEqual(self.client.app.state.sweep_once(), [])
+        self.now += demo_control.SWEEP_GRACE_SECONDS * 10  # however long the rest of the demo plays
+        self.assertEqual(self.client.app.state.sweep_once(), [])
+        self.assertEqual(self.purged(), [])
+
+    def test_finished_runs_are_swept_between_demos_so_a_start_purges_nothing(self):
+        self.runs = [{"match_id": "old", "status": "finished"}]
+        self.assertEqual(self.client.app.state.sweep_once(), [])  # just finished: still watchable at full time
+        self.now += demo_control.SWEEP_GRACE_SECONDS
+        self.assertEqual(self.client.app.state.sweep_once(), ["old"])
+        self.assertEqual(self.client.app.state.sweep_once(), [])  # once only
+        self.runs = [{"match_id": "old", "status": "finished"}]
+        self.calls.clear()
+        self.client.post("/start")
+        self.assertTrue(self.settle()["started"])
+        self.assertEqual(self.purged(), [])
+
+    def test_a_cancel_never_waits_on_a_sweeps_purge(self):
+        self.runs = [{"match_id": "old", "status": "finished"}]
+        self.client.app.state.sweep_once()  # sees it finish
+        self.now += demo_control.SWEEP_GRACE_SECONDS
+        self.slow_purge.add("old")
+        self.owner_gate.clear()  # the sweep's purge of "old" hangs (a slow owner)
+        sweep = threading.Thread(target=self.client.app.state.sweep_once)
+        sweep.start()
+        self.assertTrue(self.purging.wait(5))
+        began = time.monotonic()
+        self.client.post("/cancel")
+        self.settle()
+        self.assertLess(time.monotonic() - began, 3)  # not held up by the sweep
+        self.owner_gate.set()
+        sweep.join(5)
+
+    def test_a_sweep_waits_out_a_start_or_cancel(self):
+        self.runs = [{"match_id": "old", "status": "finished"}]
+        self.gate.clear()
+        self.client.post("/cancel")
+        self.assertEqual(self.client.app.state.sweep_once(), [])
+        self.gate.set()
+        self.settle()
 
     def test_cancel_with_nothing_on_purges_nothing(self):
         self.assertEqual(self.client.post("/cancel").json()["cancelled"], [])
@@ -148,12 +203,23 @@ class DemoControlTests(unittest.TestCase):
         self.assertNotIn("rec-", json.dumps([b for _, b in restores]))
         self.assertEqual([r["after"] for r in self.runs], [125, 5, 245])  # a, b (main: furthest along), c
 
+    def test_a_seeded_start_purges_the_previous_demo_alongside_the_restore_and_releases_after_it(self):
+        self.seed()
+        self.runs = [{"match_id": "old", "status": "finished"}]
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["live_from"], "20′")
+        order = [(h, p) for h, p, _ in self.calls if p in ("/admin/matches/purge", "/demo/start") or p.endswith("/release")]
+        purges = [i for i, (h, p) in enumerate(order) if p == "/admin/matches/purge"]
+        releases = [i for i, (h, p) in enumerate(order) if p.endswith("/release")]
+        self.assertEqual(len(purges), 3)
+        self.assertLess(max(purges), min(releases))  # viewers never list the old matches beside the new three
+
     def test_a_seed_of_another_format_is_refused_before_any_run_starts(self):
         manifest = self.seed()
         manifest.write_text(json.dumps({**json.loads(manifest.read_text()), "format": 1}))
         response = self.client.post("/start", json={"point": "20"})
         self.assertEqual(response.status_code, 409)
-        self.assertIn("recording again", response.json()["detail"])
+        self.assertIn("isn't available right now", response.json()["detail"])  # the seed error is logged, never shown
         self.assertFalse([c for c in self.calls if c[1] in ("/demo/start", "/admin/matches/restore")])
 
     def test_an_owner_refusing_the_seed_schema_or_a_seq_mismatch_is_a_409_and_purges_the_runs(self):
@@ -169,7 +235,9 @@ class DemoControlTests(unittest.TestCase):
 
     def test_a_recording_in_progress_is_no_demo_and_blocks_a_start(self):
         self.runs = [{"match_id": "rec-a", "fixture": "a", "status": "live", "hold_seconds": 1200.0}]
-        self.assertFalse(self.client.get("/state").json()["live"])
+        state = self.client.get("/state").json()
+        self.assertFalse(state["live"])
+        self.assertEqual(state["recording"], [{"match_id": "rec-a"}])  # the viewer hides it: it stops at 20′
         self.assertEqual(self.client.post("/start").status_code, 409)
         self.assertFalse(self.purged())  # the recording is untouched
 
@@ -190,7 +258,16 @@ class DemoControlTests(unittest.TestCase):
         self.assertEqual({m for host, m in self.purged() if host == "feed"}, {"m0", "m1", "m2"})
         self.assertEqual(self.runs, [])  # no run left waiting on a seed that will not come
 
+    def test_status_callers_share_one_check_per_cache_window(self):
+        self.client.get("/status")
+        probes = len([c for c in self.calls if c[1] == "/health"])
+        for _ in range(20):
+            self.client.get("/status")
+        self.assertEqual(len([c for c in self.calls if c[1] == "/health"]), probes)  # no fan-out per caller
+
     def test_status_reports_each_stage_from_real_checks(self):
+        self.addCleanup(setattr, demo_control, "STATUS_CACHE_SECONDS", demo_control.STATUS_CACHE_SECONDS)
+        demo_control.STATUS_CACHE_SECONDS = 0
         self.down = {"narrative-live"}
         self.client.post("/start")
         self.settle()
@@ -218,6 +295,18 @@ class DemoControlTests(unittest.TestCase):
         parts["backend"]["engine_narratives"] = []
         self.assertFalse(demo_control.settled(parts, {"seq": 2}))  # a narrative is still on the bus
 
+    def test_skip_ahead_is_offered_while_a_demo_plays_and_forwards_to_the_feed(self):
+        self.settings["skip_targets"] = [{"id": "20", "label": "+20′", "minutes": 20}]
+        self.assertEqual(self.client.get("/state").json()["skips"], [])  # nothing playing
+        self.assertEqual(self.client.post("/skip", json={"target": "20"}).status_code, 409)
+        self.client.post("/start")
+        self.settle()
+        self.assertEqual(self.client.get("/state").json()["skips"], [{"id": "20", "label": "+20′"}])
+        moved = self.client.post("/skip", json={"target": "20"})
+        self.assertEqual((moved.status_code, moved.json()["skipped_seconds"]), (200, 600))
+        self.assertIn(("feed", "/demo/skip", {"target": "20"}), self.calls)
+        self.assertEqual(self.client.post("/skip", json={}).status_code, 422)
+
     def test_state_names_the_main_game_to_open_by_default(self):
         self.assertEqual([self.client.get("/state").json()[k] for k in ("main_fixture", "main_match_id")], ["b", None])
         self.client.post("/start")
@@ -242,6 +331,17 @@ class DemoControlTests(unittest.TestCase):
         self.assertEqual([p["ready"] for p in self.client.get("/state").json()["points"]], [True, True])
         manifest.write_text(json.dumps({**json.loads(manifest.read_text()), "format": 1}))
         self.assertEqual([p["ready"] for p in self.client.get("/state").json()["points"]], [True, False])
+
+    def test_keep_warm_touches_every_owner_only_while_a_demo_is_live(self):
+        warm = self.client.app.state.keep_warm_once
+        self.calls.clear()
+        self.assertFalse(warm())
+        self.assertEqual([path for _, path, _ in self.calls if path == "/health"], [])
+        self.runs = [{"match_id": "m0", "fixture": "a", "status": "live"}]
+        self.calls.clear()
+        self.assertTrue(warm())
+        self.assertEqual({host for host, path, _ in self.calls if path == "/health"},
+                         {"feed", "etl-stream", "narrative-live", "backend"})
 
 
 if __name__ == "__main__":

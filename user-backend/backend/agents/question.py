@@ -4,7 +4,7 @@ import re
 import httpx
 from agent_framework import Agent, tool
 from openai import AsyncOpenAI
-from backend.adapters.llm import LocalJsonModel, chat_client, chat_options
+from backend.adapters.llm import LocalJsonModel, chat_client, chat_options, role_model
 from backend.models.actions import ActionType
 from backend.models.questions import QuestionDraft
 from .question_instructions import QUESTION_INSTRUCTIONS
@@ -27,8 +27,8 @@ class QuestionAgent:
     async def answer(self, prompt, context, tools):
         tools.original_prompt = prompt
         intent = await self.router.route(prompt, context)
-        if (bounded := match_choice(intent, context)) is not None:
-            return bounded
+        if (scope := match_scope(intent, context)) is not None:
+            return scope
         if intent.route == "match" and SENT_OFF.search(prompt) and not EXPLAIN.search(prompt):
             # Who was sent off is read from MA3 cards by code, not written as model prose.
             intent = intent.model_copy(update={"route": "statistic"})
@@ -42,7 +42,9 @@ class QuestionAgent:
                                  clarification={"question": intent.question, "options": intent.options,
                                                 "allow_free_text": intent.allow_free_text})
         if intent.route == "replay":
-            return replay_draft(await self.replay.plan(prompt, context, tools.replay))
+            # Trend values are no replay evidence: kept out of the replay agent's (multi-turn) input.
+            replay_context = {key: value for key, value in context.items() if key != 'trends'}
+            return replay_draft(await self.replay.plan(prompt, replay_context, tools.replay))
         if intent.route == "unsupported":
             return QuestionDraft(answer_kind="match", status="unsupported",
                                  text="Sorry, I can only answer questions about football and this match.")
@@ -88,11 +90,12 @@ class QuestionAgent:
         async with httpx.AsyncClient(timeout=min(cfg.timeout, 60), transport=cfg.transport) as http:
             async with AsyncOpenAI(base_url=cfg.base_url, api_key=cfg.api_key or 'local-development',
                                    http_client=http, max_retries=0) as client:
-                chat = chat_client(cfg.model, client)
+                model, effort = role_model('match_question', cfg.model)
+                chat = chat_client(model, client, effort)
                 chat.function_invocation_configuration.update(max_iterations=7, max_function_calls=6, max_duration_seconds=55)
                 agent = Agent(name='match_question', client=chat, instructions=QUESTION_INSTRUCTIONS,
                               tools=[read_standard_stats, search_actions, read_cards, read_recaps, prepare_stat, lookup_spadl],
-                              default_options={**chat_options(1600),'allow_multiple_tool_calls':False})
+                              default_options={**chat_options(1600, effort),'allow_multiple_tool_calls':False})
                 response = await agent.run(json.dumps({'question':prompt, **context}),
                                            options={'response_format':QuestionDecision})
         if response.finish_reason == 'length':
@@ -100,16 +103,18 @@ class QuestionAgent:
         return QuestionDecision.model_validate_json(response.text).draft(tools)
 
 
-def match_choice(intent, context):
-    """A data request about several other live matches, none named: ask which, offering only the real matches
-    (their team names, which the service resolves on the next turn). None otherwise."""
-    others = {row['match_id']: row for row in context.get('live_matches', []) if not row['this_match']}
-    chosen = [others[i] for i in dict.fromkeys(intent.matches) if i in others]
-    if len(chosen) < 2 or intent.route not in ('statistic', 'replay', 'clarification'):
+def match_scope(intent, context):
+    """A data request about several live matches (this one or others): answered from each of them in turn by the
+    service, never narrowed to one or met with invented choices. None otherwise, and within one of those answers."""
+    if context.get('single_match'):
         return None
-    options = [' v '.join(row['teams']) for row in chosen][:5]
-    return QuestionDraft(answer_kind='match', status='clarification', text='Which match?',
-                         clarification={'question': 'Which match?', 'options': options, 'allow_free_text': True})
+    rows = {row['match_id']: row for row in context.get('live_matches', [])}
+    chosen = [i for i in dict.fromkeys(intent.matches) if i in rows]
+    if len(chosen) < 2 or intent.route not in ('statistic', 'replay', 'clarification', 'match'):
+        return None
+    names = ', '.join(' v '.join(rows[i]['teams']) for i in chosen)
+    return QuestionDraft(answer_kind='match', status='answer', text=f'From each match: {names}.'[:1800],
+                         per_match=chosen[:5])
 
 
 def replay_draft(decision):

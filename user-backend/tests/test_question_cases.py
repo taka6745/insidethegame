@@ -16,7 +16,7 @@ def spadl_actions():
     sys.path.insert(0, str(ROOT / 'etl'))
     from reference import spadl
     from benchmarks.doubles.spadl import ma3_rows
-    return spadl, spadl.actions(ma3_rows(ROOT / SUITE['recording']), 'chelsea')
+    return spadl, spadl.actions(ma3_rows(ROOT / SUITE['recording']), 'riverton')
 
 
 def test_question_cases_match_the_shipped_recording():
@@ -35,34 +35,34 @@ def test_question_cases_match_the_shipped_recording():
         owned[sample['team_id']] += sample['duration_seconds']
     share = {team: round(100 * seconds / sum(owned.values()), 1) for team, seconds in owned.items()}
     passes = spadl.PASS_FAMILY
-    completed = count(passes, teamId='chelsea', periodId=2, resultName='success')
+    completed = count(passes, teamId='riverton', periodId=2, resultName='success')
     expected = {
-        'standard': [['chelsea:shots', count(spadl.SHOT_FAMILY, teamId='chelsea')]],
-        'standard-restarts': [['manutd:corners', count({'corner_crossed', 'corner_short'}, teamId='manutd')]],
-        'possession': [['chelsea:possession', share['chelsea']], ['manutd:possession', share['manutd']]],
-        'custom': count(passes, teamId='chelsea', periodId=2),
-        'followup': count(passes, teamId='manutd', periodId=2),
-        'composite': round(100 * completed / count(passes, teamId='chelsea', periodId=2), 3),
-        'clarification-answer': count(spadl.SHOT_FAMILY, playerId='chelsea-9'),
-        'keeper-saves': count({'keeper_save'}, playerId='manutd-0', fromShotOffTarget=False, defensiveBlock=False),
-        'player-touches': count(set(spadl.ACTIONTYPES) - {'dribble', 'non_action'}, playerId='chelsea-1'),
+        'standard': [['riverton:shots', count(spadl.SHOT_FAMILY, teamId='riverton')]],
+        'standard-restarts': [['forgeham:corners', count({'corner_crossed', 'corner_short'}, teamId='forgeham')]],
+        'possession': [['riverton:possession', share['riverton']], ['forgeham:possession', share['forgeham']]],
+        'custom': count(passes, teamId='riverton', periodId=2),
+        'followup': count(passes, teamId='forgeham', periodId=2),
+        'composite': round(100 * completed / count(passes, teamId='riverton', periodId=2), 3),
+        'clarification-answer': count(spadl.SHOT_FAMILY, playerId='riverton-9'),
+        'keeper-saves': count({'keeper_save'}, playerId='forgeham-0', fromShotOffTarget=False, defensiveBlock=False),
+        'player-touches': count(set(spadl.ACTIONTYPES) - {'dribble', 'non_action'}, playerId='riverton-1'),
     }
     cases = {case['id']: case for case in SUITE['cases']}
     for identifier, value in expected.items():
         assert cases[identifier].get('offers', cases[identifier].get('offer_value')) == value, identifier
-    assert next(p['name'] for p in recording['players'] if p['id'] == 'chelsea-9') == cases['clarification-answer']['prompt']
+    assert next(p['name'] for p in recording['players'] if p['id'] == 'riverton-9') == cases['clarification-answer']['prompt']
     leaders = Counter(a['playerId'] for a in actions if a['typeName'] in passes and a['resultName'] == 'success')
     assert cases['leader-completed-passes']['leaders'] == [list(leaders.most_common(1)[0])]
 
 
 def test_possession_case_requires_both_etl_rows_not_a_count():
     case = next(case for case in SUITE['cases'] if case['id'] == 'possession')
-    snapshot = {'match_id': 'chelsea-united-1a2b3c4d'}
+    snapshot = {'match_id': 'riverton-forgeham-1a2b3c4d'}
     split = {'status': 'answer', 'snapshot': snapshot, 'standard_stat_id': 'all:possession',
              'offers': [{'kind': 'standard', 'standard_stat_id': i, 'value': v} for i, v in case['offers']]}
-    assert all(check(case, split, 'chelsea-united-1a2b3c4d').values())
+    assert all(check(case, split, 'riverton-forgeham-1a2b3c4d').values())
     count = {'status': 'answer', 'snapshot': snapshot, 'offers': [{'rule': {}, 'value': 11388}]}
-    assert not all(check(case, count, 'chelsea-united-1a2b3c4d').values())
+    assert not all(check(case, count, 'riverton-forgeham-1a2b3c4d').values())
 
 
 def test_timed_question_cases_match_the_recording_prefix():
@@ -97,7 +97,7 @@ def test_timed_question_cases_match_the_recording_prefix():
                     a['resultName'] == 'owngoal' for a in final if a['teamId'] != team)
             if kind == 'shots_on_target':  # Goals plus saved attempts ending on the goal line (team-relative).
                 return sum(a['resultName'] == 'success' or a['sourceTypeId'] == 15 and (
-                    a['endX'] if team == 'chelsea' else 105 - a['endX']) >= 105 for a in shots)
+                    a['endX'] if team == 'riverton' else 105 - a['endX']) >= 105 for a in shots)
             return len(shots) if kind == 'shots' else sum(a['typeName'] in ('corner_crossed', 'corner_short') for a in rows)
         for stat, expected in case.get('offers', []):
             assert value(stat) == expected, (case['id'], stat)

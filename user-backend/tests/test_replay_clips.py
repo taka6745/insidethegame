@@ -23,7 +23,7 @@ def item(source, caption="c", lead="normal", kind="event"):
 def test_type_table_default_and_lead_in_scaling():
     events = [event("g", 100, "goal"), event("i", 300, "interception"), event("s", 600, "shot")]
     clips, total, pages = plan([item("g"), item("i"), item("s", lead="long")], events)
-    assert [(c.start, c.end) for c in clips] == [(90, 102), (296, 302), (588, 603)]
+    assert [(c.start, c.end) for c in clips] == [(90, 105), (294, 302), (588, 603)]  # i: widened to min_clip_seconds
     assert (total, pages) == (3, 1)
 
 
@@ -31,7 +31,7 @@ def test_move_lead_in_starts_at_possession_gain_with_a_cap():
     events = [event("g", 500, "goal", possession=7), event("h", 900, "goal", possession=8)]
     clips, *_ = plan([item("g", lead="move"), item("h", lead="move")], events,
                      possession_starts={7: 488.0, 8: 800.0})
-    assert [(c.start, c.end) for c in clips] == [(487, 502), (875, 902)]
+    assert [(c.start, c.end) for c in clips] == [(487, 505), (875, 905)]
 
 
 def test_overlapping_clips_merge_and_keep_both_captions():
@@ -44,7 +44,7 @@ def test_overlapping_clips_merge_and_keep_both_captions():
 def test_clamped_to_period_and_observed_position_never_future():
     events = [event("late", 2795, "goal"), event("live", 3990, "goal", period=2)]
     clips, *_ = plan([item("late"), item("live")], events, observed=3992.0)
-    assert [(c.start, c.end) for c in clips] == [(2785, 2797), (3980, 3992)]
+    assert [(c.start, c.end) for c in clips] == [(2785, 2800), (3980, 3992)]
 
 
 def test_unknown_or_unobserved_evidence_is_rejected():
@@ -64,8 +64,8 @@ def test_pages_fill_by_rank_within_twelve_clips_and_three_minutes_and_lose_nothi
     events = [event(f"e{i}", 100 + i * 60, "goal") for i in range(30)]
     items = [item(f"e{i}", lead="long") for i in reversed(range(30))]  # Ranked latest first.
     clips, total, pages = plan(items, events)
-    assert (len(clips), total, pages) == (8, 30, 4)  # 8 x 22 s fits in 180 s.
-    assert [c.source_ids[0] for c in clips] == [f"e{i}" for i in range(22, 30)]  # Top ranked, in time order.
+    assert (len(clips), total, pages) == (7, 30, 5)  # 7 x 25 s fits in 180 s.
+    assert [c.source_ids[0] for c in clips] == [f"e{i}" for i in range(23, 30)]  # Top ranked, in time order.
     shown = [c.source_ids[0] for p in range(pages) for c in plan(items, events, page=p)[0]]
     assert sorted(shown) == sorted(f"e{i}" for i in range(30))
     passes = [event(f"p{i}", 100 + i * 60) for i in range(13)]
@@ -78,7 +78,7 @@ def test_goal_key_moments_end_shortly_after_the_goal_and_clips_mark_their_events
                       "event_ids": ["shot", "g"]}}
     events = [event("shot", 490, "shot"), event("g", 500, "goal")]
     clips, *_ = plan([item("km", kind="key_moment")], events, moments=moments)
-    assert (clips[0].start, clips[0].end, clips[0].marks) == (480, 502, [490, 500])
+    assert (clips[0].start, clips[0].end, clips[0].marks) == (480, 505, [490, 500])
     merged, *_ = plan([item("shot"), item("g")], events)
     assert merged[0].marks == [490, 500]
 

@@ -19,6 +19,9 @@ from .locks import KeyedLocks
 from .replay import ReplayBuilder, ReplayTools
 
 NO_MODEL = 'Questions are unavailable: no model is configured for this service.'
+# ETL trend windows (etl/contracts output 4) in words, for evidence labels.
+WINDOWS = {'last5': 'last 5 minutes', 'prev10': 'the 10 minutes before the last 5', 'last15': 'last 15 minutes',
+           'half': 'this half', 'match': 'whole match'}
 
 
 class QuestionService:
@@ -32,7 +35,7 @@ class QuestionService:
         self.cross = cross  # services/cross_match.CrossMatch: questions and pins about the demo's other matches
         self.decide, self._offers = decide, Window()  # adapters/decision: "Follow this story?" offers (D5b)
         self._locks = KeyedLocks()  # Session takeover fencing, per match.
-        self.session_started = None  # async callback(match_id, profile_id): a takeover closes the old socket.
+        self.session_started = None  # async callback(match_id, profile_id, viewer_id): a takeover closes that viewer's old socket.
         # One application-wide admission limit, across matches, profiles and takeovers.
         self._slots = asyncio.Semaphore(max_active)
 
@@ -59,12 +62,12 @@ class QuestionService:
             raise RuleError('profile_not_found', 'This demo profile was removed. Choose another profile.', 409)
         return profile
 
-    async def start(self, match_id, profile_id):
+    async def start(self, match_id, profile_id, viewer_id=''):
         async with self._locks(match_id):
             await self.registry.require(match_id)
-            token = await asyncio.to_thread(self.repository.start, profile_id, match_id)
+            token = await asyncio.to_thread(self.repository.start, profile_id, match_id, viewer_id)
             if self.session_started:
-                await self.session_started(match_id, profile_id)
+                await self.session_started(match_id, profile_id, viewer_id)
             return await self.read(match_id, token)
 
     async def read(self, match_id, token):
@@ -91,6 +94,7 @@ class QuestionService:
         here = match = self.registry.get(match_id)
         # A question naming another live match is answered from that match at its own position, never this seq.
         other = self.cross and await self.cross.named(here, prompt)
+        info = None
         if other:
             match, info = other
             payload = await self.match_data.capture(match)
@@ -105,54 +109,28 @@ class QuestionService:
         started, usage = time.perf_counter(), start_usage()
         try:
             async with asyncio.timeout(self.timeout):
-                stats, compact = await asyncio.gather(self.match_data.stats(payload.snapshot),
-                                                      self.narratives.compact(payload.snapshot))
-                # The match's audience choice overrides the account's defaults; names stay private.
-                profile = {**(await self.profile(row['profile_id']))['selections'],
-                           **((row.get('audience') or {}).get('selections') or {})}
-                history = [{'user': t['prompt'], 'reply': {key: t['reply'].get(key) for key in (
-                    'status', 'answer_kind', 'text', 'clarification', 'goal', 'statistic_request', 'standard_stat_id')}}
-                    for t in row['turns'][-12:] if t['reply']]
-                replay_config = await self.config.get('replay-timing')
-                toolkit = QuestionTools(payload, self.match_data, self.narratives, self.planner, stats['stats'], compact,
-                                        history, replay_config)
-                # The demo's live matches (teams, minute played): askable, and answerable as a list.
-                live = await self.cross.listing(here, None if other else payload.snapshot) if self.cross else []
-                for row in live:
-                    toolkit.evidence['match:' + row['match_id']] = {
-                        'id': 'match:' + row['match_id'], 'kind': 'match', 'label': ' v '.join(row['teams'])}
-                context = {'snapshot': payload.snapshot.model_dump(), 'teams': payload.teams, 'players': payload.players,
-                    'live_matches': [{**row, 'evidence_id': 'match:' + row['match_id']} for row in live],
-                    'data_reference': payload.data_reference, 'profile': profile, 'history': history,
-                    'standard_stats': [{**s, 'evidence_id': 'stat:' + s['id']} for s in model_catalogue(stats['stats'])],
-                    'compact': {**compact, 'tail': [toolkit._event_reference(e) for e in compact.get('tail', [])[:100]],
-                                'tail_truncated': len(compact.get('tail', [])) > 100,
-                                'key_events': [toolkit._event_reference(e) for e in compact.get('key_events', [])[-100:]]}}
-                draft = QuestionDraft.model_validate(await self.agent.answer(prompt, context, toolkit))
-                draft = await resolve_answer(draft, toolkit)
-                if any(identifier not in toolkit.evidence for identifier in draft.evidence_ids):
-                    raise ValueError('Unverified evidence reference')
-                offers = toolkit.offers if draft.status == 'answer' else []
-                if offers:
-                    # Stat values come from ETL or deterministic evaluation, never model prose.
-                    draft.text = toolkit.answer_text or ' '.join(stat_answer(offer) for offer in offers)
-                if draft.status == 'unsupported' and draft.answer_kind == 'replay':
-                    # Statistic and routing refusals carry checked fixed reasons; replay prose does not.
-                    draft.text = UNAVAILABLE
-                replay = None
-                if draft.answer_kind == 'replay' and draft.status == 'answer' and draft.replay_items:
-                    items = [item.model_dump() for item in draft.replay_items]
-                    await toolkit.replay.load()  # Summary plans may cite only key moments.
-                    edge = await self.replays.edge(payload.snapshot, self._video(match))
-                    replay = {**self.replays.build(toolkit.replay, items, edge=edge), 'items': items,
-                              'refine_offer': draft.refine_offer, 'derived': toolkit.replay.derived}
-                reply = QuestionReply(**draft.model_dump(), snapshot=payload.snapshot, offers=offers,
-                    evidence=[toolkit.evidence[i] for i in draft.evidence_ids], mode=self.agent.mode,
-                    goal=toolkit.goal if offers else None, replay=replay,
-                    usage=usage_dict(usage, time.perf_counter() - started),
-                    other_match=header(match, info) if other else None).model_dump(mode='json')
+                reply, draft, offers = await self._answer(prompt, row, here, match, info, payload, usage, started)
+                if draft.per_match and self.cross:
+                    # A request about several live matches: one answer from each, at each one's own position.
+                    parts = []
+                    for part_id in draft.per_match:
+                        part_match, part_info = here, None
+                        if part_id != here.match_id:
+                            part_match = await self.cross.other(here.match_id, part_id)
+                            part_info = await self.cross.info_of(part_match)
+                            if part_info is None:
+                                continue  # unmarked, it would read as this match's answer
+                        part_payload = await self.match_data.capture(part_match, seq if part_match is here else None)
+                        part, _, _ = await self._answer(prompt, row, here, part_match, part_info, part_payload, usage,
+                                                        started, single=True)
+                        parts.append({**part, 'usage': None})  # the whole answer's usage is receipted once, below
+                    # The parts carry their own match headers; the answer as a whole belongs to no one match.
+                    reply = {**reply, 'parts': parts, 'other_match': None,
+                             'usage': usage_dict(usage, time.perf_counter() - started)}
+                    offers = []
             # Outside the answer's timeout: a slow offer check (its own timeout) never fails the answer.
-            reply['follow_offer'] = await self._follow_offer(prompt, draft, offers, reply['other_match'])
+            reply['follow_offer'] = None if reply.get('parts') else await self._follow_offer(
+                prompt, draft, offers, reply['other_match'])
             async with self._locks(match_id), here.guard():
                 # The match cannot be purged between this check and the database commit.
                 await asyncio.to_thread(self.repository.finish, token, turn['id'], reply)
@@ -177,6 +155,77 @@ class QuestionService:
             detail = ' <- '.join(str(e) for e in _chain(exc) if str(e))[:600]
             logging.getLogger(__name__).warning('Question %s failed: %s %s', turn['id'], type(exc).__name__, detail)
             return failure
+
+    async def _answer(self, prompt, row, here, match, info, payload, usage, started, single=False):
+        """One answer from `match` (another live match when `info` is given: marked with its header). Returns
+        (reply, draft, offers). single: an answer within a several-match request, scoped to this match alone."""
+        stats, compact = await asyncio.gather(self.match_data.stats(payload.snapshot),
+                                              self.narratives.compact(payload.snapshot))
+        trends = await self.match_data.trends(payload.snapshot) if hasattr(self.match_data, 'trends') else []
+        # The match's audience choice overrides the account's defaults; names stay private.
+        profile = {**(await self.profile(row['profile_id']))['selections'],
+                   **((row.get('audience') or {}).get('selections') or {})}
+        history = [{'user': t['prompt'], 'reply': {key: t['reply'].get(key) for key in (
+            'status', 'answer_kind', 'text', 'clarification', 'goal', 'statistic_request', 'standard_stat_id')}}
+            for t in row['turns'][-12:] if t['reply']]
+        replay_config = await self.config.get('replay-timing')
+        toolkit = QuestionTools(payload, self.match_data, self.narratives, self.planner, stats['stats'], compact,
+                                history, replay_config)
+        # The demo's live matches (teams, minute played): askable, and answerable as a list.
+        live = await self.cross.listing(here, None if info else payload.snapshot) if self.cross else []
+        for entry in live:
+            toolkit.evidence['match:' + entry['match_id']] = {
+                'id': 'match:' + entry['match_id'], 'kind': 'match', 'label': ' v '.join(entry['teams'])}
+        # Multi-minute measures (field tilt, pressing...) as ETL serves them: an answer about one cites its value.
+        # Grouped per trend (about 190 rows otherwise): values by team id and window; the id is derived, not listed.
+        names = {t['id']: t['name'] for t in payload.teams}
+        served = {}
+        for trend in trends:
+            identifier = f"trend:{trend['trendId']}:{trend['contestantId']}:{trend['window']}"
+            team = names.get(trend['contestantId'], trend['contestantId'])
+            label = f"{trend.get('label') or trend['trendId']} ({team}, {WINDOWS.get(trend['window'], trend['window'])})"
+            toolkit.evidence[identifier] = {'id': identifier, 'kind': 'trend', 'label': label, 'value': trend['value']}
+            entry = served.setdefault(trend['trendId'], {'trend': trend['trendId'], 'label': trend.get('label'),
+                                                         'meaning': trend.get('meaning'), 'unit': trend.get('unit'),
+                                                         'values': {}})
+            value = trend['value']
+            entry['values'].setdefault(trend['contestantId'], {})[trend['window']] = \
+                round(value, 3) if isinstance(value, float) else value
+        served = list(served.values())
+        context = {'snapshot': payload.snapshot.model_dump(), 'teams': payload.teams, 'players': payload.players,
+            'live_matches': [{**entry, 'evidence_id': 'match:' + entry['match_id']} for entry in live],
+            'trends': served,
+            'data_reference': payload.data_reference, 'profile': profile, 'history': history,
+            'standard_stats': [{**s, 'evidence_id': 'stat:' + s['id']} for s in model_catalogue(stats['stats'])],
+            'compact': {**compact, 'tail': [toolkit._event_reference(e) for e in compact.get('tail', [])[:100]],
+                        'tail_truncated': len(compact.get('tail', [])) > 100,
+                        'key_events': [toolkit._event_reference(e) for e in compact.get('key_events', [])[-100:]]}}
+        if single:
+            context['single_match'] = True
+        draft = QuestionDraft.model_validate(await self.agent.answer(prompt, context, toolkit))
+        draft = await resolve_answer(draft, toolkit)
+        if any(identifier not in toolkit.evidence for identifier in draft.evidence_ids):
+            raise ValueError('Unverified evidence reference')
+        offers = toolkit.offers if draft.status == 'answer' else []
+        if offers:
+            # Stat values come from ETL or deterministic evaluation, never model prose.
+            draft.text = toolkit.answer_text or ' '.join(stat_answer(offer) for offer in offers)
+        if draft.status == 'unsupported' and draft.answer_kind == 'replay':
+            # Statistic and routing refusals carry checked fixed reasons; replay prose does not.
+            draft.text = UNAVAILABLE
+        replay = None
+        if draft.answer_kind == 'replay' and draft.status == 'answer' and draft.replay_items:
+            items = [item.model_dump() for item in draft.replay_items]
+            await toolkit.replay.load()  # Summary plans may cite only key moments.
+            edge = await self.replays.edge(payload.snapshot, self._video(match))
+            replay = {**self.replays.build(toolkit.replay, items, edge=edge), 'items': items,
+                      'refine_offer': draft.refine_offer, 'derived': toolkit.replay.derived}
+        reply = QuestionReply(**draft.model_dump(), snapshot=payload.snapshot, offers=offers,
+            evidence=[toolkit.evidence[i] for i in draft.evidence_ids], mode=self.agent.mode,
+            goal=toolkit.goal if offers else None, replay=replay,
+            usage=usage_dict(usage, time.perf_counter() - started),
+            other_match=header(match, info) if info else None).model_dump(mode='json')
+        return reply, draft, offers
 
     async def _follow_offer(self, prompt, draft, offers, other_match):
         """{prompt, other_match} when the decision model judges a non-statistic question to be about a developing

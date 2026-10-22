@@ -242,6 +242,7 @@ async def serve():
     from narrative_engine.decisions import DecisionSettings, from_settings
     from narrative_engine.follows.topics import HttpTopicSource
     from narrative_engine.match_data.etl_graphql import GraphQLMatchData
+    from narrative_engine.transport.http_cache import CachedJson
     from narrative_engine.transport.servicebus import ServiceBusPublisher, SubscriptionListener
 
     load_env()
@@ -249,10 +250,11 @@ async def serve():
     env = os.environ
     settings = Settings.from_env(env)
     data = GraphQLMatchData(env["ETL_GRAPHQL_URL"])
-    agents = LLMAgents(LLMSettings.from_env())  # no model configured: fails here, visibly
+    backend = httpx.AsyncClient(timeout=10)
+    roles = CachedJson(backend, f"{env['USER_BACKEND_URL'].rstrip('/')}/model-roles", settings.backend_cache_seconds)
+    agents = LLMAgents(LLMSettings.from_env(), roles=roles)  # no model configured: fails here, visibly
     store = await open_store(env)
     publisher = ServiceBusPublisher(env["SERVICEBUS_NARRATIVES"])
-    backend = httpx.AsyncClient(timeout=10)
     targets = HttpTargetSource(env["USER_BACKEND_URL"], backend, settings.backend_cache_seconds)
     prompts = HttpPromptSource(env["USER_BACKEND_URL"], backend, settings.backend_cache_seconds)
     policy = HttpPolicySource(env["USER_BACKEND_URL"], backend, settings.backend_cache_seconds)

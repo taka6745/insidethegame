@@ -1,15 +1,3 @@
-@font-face {
-  font-family: Premier League;
-  src: url("/assets/league/fonts/PremierLeague-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: Premier League;
-  src: url("/assets/league/fonts/PremierLeague-Bold.woff2") format("woff2");
-  font-weight: 700 900;
-  font-display: swap;
-}
 :root {
   color-scheme: dark;
   --bg: #18001f;
@@ -19,7 +7,7 @@
   --text: #fff;
   --mint: #05f0c7;
   --purple: #963cff;
-  --font: "Premier League", Arial, sans-serif;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 * {
   box-sizing: border-box;
@@ -103,10 +91,14 @@ button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visi
   font-weight: 700;
   flex: 1;
 }
-.league-nav a {
+.league-nav a,
+.league-nav span {
   flex-shrink: 0;
   position: relative;
   padding: 20px 0;
+}
+.league-nav span {
+  opacity: .6;
 }
 .league-nav a.active::after {
   content: "";
@@ -554,7 +546,8 @@ footer a {
   #audience-bucket {
     max-width: 210px;
   }
-  .league-nav a {
+  .league-nav a,
+  .league-nav span {
     padding: 18px 0;
   }
   main {
@@ -738,6 +731,67 @@ footer a {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* The league's own sting (asset `builtin:league`): a diagonal sweep with motion streaks and the league mark. */
+.league-sting {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #2a0a3a;
+}
+.replay-sting[data-kind="builtin"] {
+  background: transparent;
+}
+.replay-sting[data-kind="builtin"] video {
+  display: none;
+}
+.replay-sting[data-kind="builtin"] .league-sting {
+  display: block;
+}
+.league-sting-panel {
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(115deg, #3d195b 0%, #6a2c91 45%, #05f0c7 100%);
+  transform: translateX(-60%) skewX(-18deg);
+}
+.league-sting-streaks {
+  position: absolute;
+  inset: 0;
+  opacity: .5;
+  background: repeating-linear-gradient(170deg, transparent 0 34px, rgba(255, 255, 255, .55) 34px 36px, transparent 36px 70px);
+  transform: translateX(-30%);
+}
+.league-sting-mark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(40%, 260px);
+  height: auto;
+  transform: translate(-50%, -50%) scale(.6);
+  opacity: 0;
+}
+.replay-sting[data-state="in"] .league-sting-panel {
+  animation: league-sweep var(--sting-length, 2.4s) cubic-bezier(.2, .8, .2, 1) both;
+}
+.replay-sting[data-state="in"] .league-sting-streaks {
+  animation: league-streaks var(--sting-length, 2.4s) linear both;
+}
+.replay-sting[data-state="in"] .league-sting-mark {
+  animation: league-mark var(--sting-length, 2.4s) cubic-bezier(.2, .8, .2, 1) both;
+}
+@keyframes league-sweep {
+  from { transform: translateX(-60%) skewX(-18deg); }
+  to { transform: translateX(10%) skewX(-18deg); }
+}
+@keyframes league-streaks {
+  from { transform: translateX(-30%); }
+  to { transform: translateX(30%); }
+}
+@keyframes league-mark {
+  0%, 15% { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+  35%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
 }
 .replay-overlay {
   position: absolute;
@@ -993,6 +1047,15 @@ footer a {
   font-size: 13px;
   color: var(--muted, #8ea3b8);
 }
+/* Demo fast-forward: a small select and button; wraps on narrow screens. */
+.demo-skip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.demo-skip[hidden] { display: none; }
+.demo-skip p:empty { display: none; }
 /* Demo start: the pipeline, each stage lit by a real readiness check. */
 .demo-progress {
   margin: 0 0 18px;

@@ -183,6 +183,6 @@ class ContextBuilder:
             "key_event_ledger": render_ledger(ledger, info, await self.overturned(match_id, ledger)),
             "combined_match_context": render_blocks(blocks),
             "match_events": play,
-            "narrative_excerpts": "\n".join(f"- {n.text}" for n in previous) or "None yet.",
+            "narrative_excerpts": "\n".join(f"- {n.matchTime.label} {n.text}" for n in previous) or "None yet.",
             **(story or {"storylines": "No storylines yet.", "match_trends": "No trend data yet."}),
         }

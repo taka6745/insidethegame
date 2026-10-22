@@ -119,7 +119,7 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 **Implemented in the backend (21 Oct) and read by the engine (22 Oct).** Shape (ETag/`If-None-Match`; `revision` grows with every follow, unfollow and follower bucket change; `config_revision` with every `/dev/config/subscriptions` edit):
 
 ```json
-{"schema_version": 1, "match_id": "chelsea-united-1a2b3c4d", "revision": 7, "config_revision": 1,
+{"schema_version": 1, "match_id": "riverton-forgeham-1a2b3c4d", "revision": 7, "config_revision": 1,
  "decision": {"instructions": "How far does this update move the followed story?",
               "levels": ["It does not touch the story", "...", "It is a turning point for the story"],
               "trigger_level": 2, "min_confidence": 0.3},
@@ -134,8 +134,8 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
  "clips": {"enabled": true, "key_types": ["Goal", "OwnGoal", "RedCard", "PenaltyAwarded", "PenaltyMissed", "VarOverturn"], "instructions": "…", "levels": ["…"], "min_level": 3, "min_confidence": 0.5, "timing": {"goal": "goal"}, "max_items": 12, "always_for": [], "shared": true},
  "topics": [{"topic_id": "topic:3fa2c1d0e4b5a697", "created_seq": 812, "followers": 2,
              "buckets": ["away:casual", "home:analytical"],
-             "spec": {"kind": "storyline", "storyline_id": "sl:chelsea-united-1a2b3c4d:2", "team_id": null,
-                      "player_id": null, "focus": "", "label": "Chelsea's grip on midfield"}}]}
+             "spec": {"kind": "storyline", "storyline_id": "sl:riverton-forgeham-1a2b3c4d:2", "team_id": null,
+                      "player_id": null, "focus": "", "label": "Riverton Rovers' grip on midfield"}}]}
 ```
 
 - **`spec.kind`**: `storyline` (one storyline id from this engine), `team` (contestant id), `player` (player id and its `team_id`) or `theme` (`focus` only, the viewer's words). `focus` narrows any kind; `label` is the first follower's name for it.

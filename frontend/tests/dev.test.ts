@@ -56,7 +56,7 @@ test("renaming a layer or option keeps its buckets' enabled flags", () => {
 });
 
 test("profile drafts need unique ids, a name and option ids", () => {
-  const row = { id: "chelsea-analytical", display_name: "Chelsea analyst", selections: "team=home, fan_style=analytical" };
+  const row = { id: "riverton-analytical", display_name: "Riverton Rovers analyst", selections: "team=home, fan_style=analytical" };
   assert.equal(profilesIssue([row]), "");
   assert.match(profilesIssue([]), /at least one/);
   assert.match(profilesIssue([row, row]), /used twice/);
@@ -110,8 +110,8 @@ test("purge runs feed, ETL, engine, backend in order and stops at the first fail
 
 test("feed console starts a fixture at the next minute; nothing else goes to the feed", async () => {
   const { api, calls } = devApi(() => json({ run_id: "r", match_id: "f-1", fixture: "f", kickoff: "2026-10-20T15:00:00Z", status: "scheduled" }, 201));
-  await api.startRun("chelsea-united");
-  assert.deepEqual([calls[0]![0], JSON.parse(String(calls[0]![1].body))], ["/feed-api/runs", { fixture: "chelsea-united", kickoff: "next-minute" }]);
+  await api.startRun("riverton-forgeham");
+  assert.deepEqual([calls[0]![0], JSON.parse(String(calls[0]![1].body))], ["/feed-api/runs", { fixture: "riverton-forgeham", kickoff: "next-minute" }]);
 });
 
 test("config tables use ETag polling and revision-checked saves with conflicts kept as drafts", async () => {
@@ -165,14 +165,14 @@ test("audience templates are listed, read and saved per fixture with revision co
   const { api, calls } = devApi((url, init) => init.method === "PUT" && url.includes("stale")
     ? json({ code: "audience_revision_conflict", detail: "Reload" }, 409) : json({ revision: 5, templates: [], matches: [] }));
   await api.templates();
-  await api.template("chelsea-united");
+  await api.template("riverton-forgeham");
   const config = { layers: [], buckets: [{ id: "home", selections: { team: "home" }, enabled: true }] };
-  await api.saveTemplate("chelsea-united", config, 4);
+  await api.saveTemplate("riverton-forgeham", config, 4);
   await assert.rejects(api.saveTemplate("stale", config, 1), ConflictError);
   assert.deepEqual(calls.map(([url, init]) => `${init.method ?? "GET"} ${url}`), [
     "GET /dev-api/audience-templates",
-    "GET /dev-api/fixtures/chelsea-united/audience-config",
-    "PUT /dev-api/fixtures/chelsea-united/audience-config",
+    "GET /dev-api/fixtures/riverton-forgeham/audience-config",
+    "PUT /dev-api/fixtures/riverton-forgeham/audience-config",
     "PUT /dev-api/fixtures/stale/audience-config"]);
   assert.deepEqual(JSON.parse(String(calls[2]![1].body)), { config, expected_revision: 4 });
   assert.match(parseDraft("[1]").issue, /JSON object/);

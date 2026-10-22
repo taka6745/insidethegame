@@ -1,22 +1,12 @@
-# Premier League visual assets
+# League visual assets
 
-Retrieved from the official public Premier League website on **18 October 2026** for the user-requested hackathon integration prototype. These are third-party assets, not generated artwork or project-owned branding. Rights remain with their respective owners; these source URLs are provenance, not a licence grant. Check the applicable hackathon/brand permissions before wider distribution.
+> **In short:** the demo shows a fictional league, the **Elephant League** (PLAN.md §12 M6). Its wordmark, club crests and clip transition are original project artwork, drawn as plain SVG and CSS on 22–23 October 2026. Names, colours and crest paths come from one mapping, `data-generation/grf_demo/league.json`.
 
-| Local file | Official source |
+| File | Origin |
 |---|---|
-| `fonts/PremierLeague-Regular.woff2` | https://www.premierleague.com/resources/v1.54.15/fonts/PremierLeagueW01-Regular.woff2 |
-| `fonts/PremierLeague-Bold.woff2` | https://www.premierleague.com/resources/v1.54.15/fonts/PremierLeagueW01-Bold.woff2 |
-| `premier-league.svg` | https://www.premierleague.com/resources/v1.54.15/i/svg-files/elements/pl-logo-light.svg |
-| `premier-league-white.svg` | https://www.premierleague.com/resources/v1.54.15/i/svg-files/elements/pl-logo-dark.svg |
-| `microsoft.svg` | https://www.premierleague.com/resources/v1.54.15/i/svg-files/elements/microsoft-logo-dark-mode.svg |
-| `clubs/chelsea.svg` | https://resources.premierleague.com/premierleague25/badges-alt/8.svg |
-| `clubs/manutd.svg` | https://resources.premierleague.com/premierleague25/badges-alt/1.svg |
-| `clubs/arsenal.svg` | https://resources.premierleague.com/premierleague25/badges-alt/3.svg (retrieved 21 October 2026) |
-| `clubs/liverpool.svg` | https://resources.premierleague.com/premierleague25/badges-alt/14.svg (retrieved 21 October 2026) |
-| `clubs/mancity.svg` | https://resources.premierleague.com/premierleague25/badges-alt/43.svg (retrieved 21 October 2026) |
-| `sting/replay-sting.mp4` | https://cdn.dribbble.com/userupload/22741704/file/original-83c776ca591dc243f60fc51a853c9096.gif (downloaded 22 October 2026). Use permitted per developer: hackathon allows Premier League resources; community GIF. Converted to H.264 MP4, visually identical (800×600, 3.56 s, SSIM 0.997 against the GIF; 0.66 MB instead of 3.56 MB); frames unedited. Played between replay clips (`replay-timing.playback.transitions.asset`). |
-| `clubs/tottenham.svg` | https://resources.premierleague.com/premierleague25/badges-alt/6.svg (retrieved 21 October 2026) |
+| `elephant-league.svg`, `elephant-league-white.svg` | Original wordmark: simple elephant mark plus system-font text |
+| `clubs/riverton.svg`, `forgeham.svg`, `redcastle.svg`, `portalbion.svg`, `skybridge.svg`, `whitmore.svg` | Original shield crests with invented club codes and simple emblems |
+| Clip transition (`builtin:league`) | Original CSS animation in `match/styles.css` (diagonal sweep, streaks, league mark), no media file |
+| `microsoft.svg` | Microsoft logo, used only for the "Built with Microsoft Agent Framework" attribution |
 
-The font family/weights were verified against the official site's `resources/v1.54.15/styles/screen.css`. The prototype uses two local WOFF2 weights with `font-display: swap`, not an external font dependency. Club-colour banners are our CSS composition with the authentic crests; no match footage or editorial photography is included.
-
-The viewer footer identifies a hackathon demo and says it is not an official Premier League product. It labels the matches as simulated and the insights as AI-generated. The app has no real sign-in or account collection. Microsoft attribution describes the Agent Framework implementation; it does not claim to be Copilot or an official released feature.
+The Premier League fonts, logos, club crests and the third-party sting video were removed on 23 October 2026; the recordings were re-rendered with the fictional clubs and players.

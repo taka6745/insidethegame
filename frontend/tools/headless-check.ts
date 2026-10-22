@@ -2,7 +2,7 @@
 // CSP violations. Start tools/mock-server.ts (or a real stack) first.
 // Usage: node tools/headless-check.ts http://127.0.0.1:18099 [path…] [--shots DIR] [--flow follow|unavailable|sting|capture]
 // --flow drives the Insights follow chat on match pages (against tools/mock-server.ts; `unavailable` with MOCK_NO_MODEL=1),
-// or `sting`: the between-clip sting layer fades in over the stage with its video decoded, and out again;
+// or `sting`: the league's built-in between-clip sting fades in over the stage, drawn in CSS, and out again;
 // or `capture`: captured clips show as preview cards in Insights and in the followed story (PLAN.md §10.2 D6–D7).
 import { spawn } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -37,10 +37,11 @@ const following = (label: string) => `expect(shown("#follow-banner") && !shown("
   || expect($$(".key-moment").length >= 2, "key moments missing while following")`;
 const stop = [`$("#follow-stop").click(); return ""`, insights];
 // The stage's sting as ReplayStage drives it (match/replay-view.ts sting()): the mock has no footage for a reel.
-const sting = (state: string) => `const layer = $("#replay-sting"), video = $("#replay-sting-video");
-  $("#match-stage").dataset.mode = "replay"; layer.hidden = false; layer.style.setProperty("--sting-fade", "0.3s");
-  if (!video.getAttribute("src")) { video.src = "/assets/league/sting/replay-sting.mp4"; video.currentTime = 0.15; }
-  video.play(); void layer.offsetWidth; layer.dataset.state = "${state}"; return ""`;
+// The league's built-in sting (`builtin:league`): CSS only, no video asset.
+const sting = (state: string) => `const layer = $("#replay-sting");
+  $("#match-stage").dataset.mode = "replay"; layer.hidden = false; layer.dataset.kind = "builtin";
+  layer.style.setProperty("--sting-fade", "0.3s"); layer.style.setProperty("--sting-length", "2.4s");
+  void layer.offsetWidth; layer.dataset.state = "${state}"; return ""`;
 const covers = `(() => { const a = $("#replay-sting").getBoundingClientRect(), b = $("#match-stage").getBoundingClientRect();
   return Math.abs(a.width - b.width) <= 2 && Math.abs(a.height - b.height) <= 2; })()`;  // inside the 1px border
 const previews = (where: string) => `expect($$(".capture .clip-preview").length >= 2, "no clip preview cards ${where}")
@@ -58,7 +59,7 @@ const flows: Record<string, [string, string][]> = {
   sting: [
     ["sting-in", sting("in")],
     ["sting-shown", `expect(getComputedStyle($("#replay-sting")).opacity === "1", "sting not faded in")
-      || expect($("#replay-sting-video").readyState >= 2 && $("#replay-sting-video").videoWidth > 0, "sting video not decoded")
+      || expect(getComputedStyle($(".league-sting")).display === "block", "built-in sting not drawn")
       || expect(${covers}, "sting does not cover the stage")`],
     ["sting-out", sting("out")],
     ["sting-gone", `expect(getComputedStyle($("#replay-sting")).opacity === "0", "sting not faded out")`],
@@ -66,27 +67,27 @@ const flows: Record<string, [string, string][]> = {
   follow: [
     ["insights", insights],
     ["open", open], ["opened", opened],
-    ["chip", `$$("#follow-suggestions button").find((b) => b.textContent.includes("Reece James")).click(); return ""`],
-    ["following", following("Reece James")],
+    ["chip", `$$("#follow-suggestions button").find((b) => b.textContent.includes("Sami Lindqvist")).click(); return ""`],
+    ["following", following("Sami Lindqvist")],
     ["stop", stop[0]!], ["restored", stop[1]!], ["open-2", open],
-    ["chat", `submit("Follow Cole Palmer please"); return ""`],
+    ["chat", `submit("Follow Kai Ashworth please"); return ""`],
     ["proposal", `expect($(".follow-proposal"), "no proposal card") || ($$(".follow-proposal .follow-action").at(-1).click(), "")`],
-    ["following-chat", following("Cole Palmer")],
+    ["following-chat", following("Kai Ashworth")],
     ["stop-2", stop[0]!], ["restored-2", stop[1]!], ["open-3", open],
     ["ask-ambiguous", `submit("Cole or Kobbie"); return ""`],
     ["clarify", `expect($$(".clarification-option").length === 2, "no clarification candidates") || ($$(".clarification-option")[1].click(), "")`],
-    ["following-clarified", following("Kobbie Mainoo")],
+    ["following-clarified", following("Callum Brightwell")],
     ["stop-3", stop[0]!], ["restored-3", stop[1]!],
   ],
   unavailable: [
-    ["chat", `submit("Follow Cole Palmer"); return ""`],
+    ["chat", `submit("Follow Kai Ashworth"); return ""`],
     ["refused", `expect(/unavailable/i.test($("#follow-status").textContent), "no unavailable status") || expect($("#follow-input").disabled, "composer still enabled") || expect(!$("#follow-suggestions button").disabled, "chips disabled")`],
     ["chip", `$("#follow-suggestions button").click(); return ""`],
     ["following", following("")],
     ["stop", stop[0]!],
   ],
 };
-const pages = paths.length ? paths : ["/", "/?match=chelsea-united-1a2b3c4d", "/lab/", "/dev/"];
+const pages = paths.length ? paths : ["/", "/?match=riverton-forgeham-1a2b3c4d", "/lab/", "/dev/"];
 const chrome = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const port = 9300 + Math.floor(Math.random() * 500);
 const profile = await mkdtemp(join(tmpdir(), "itg-headless-"));

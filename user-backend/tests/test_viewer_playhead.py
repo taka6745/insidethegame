@@ -37,7 +37,7 @@ def test_answers_never_cite_actions_after_the_viewers_seq(store, route):
     with Running(store, agent=agent) as run:
         run.send(20)
         token = start(run.client)['session_token'] if route == 'product' else run.client.post(
-            f'/lab/matches/{MATCH}/chat/sessions', json={'profile_id': 'chelsea-analytical'}).json()['session_token']
+            f'/lab/matches/{MATCH}/chat/sessions', json={'profile_id': 'riverton-analytical'}).json()['session_token']
         for shown in (8, 2):
             reply = ask(run.client, token, shown, route)
             assert reply['snapshot']['seq'] == shown and reply['snapshot']['id'] == f'{MATCH}:{shown}'

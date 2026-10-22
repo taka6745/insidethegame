@@ -1,6 +1,6 @@
 # Narrative Generation Engine: Design and Implementation Plan
 
-Inside the Game hackathon (Microsoft / Premier League). This document describes the narrative generation engine: what it does, how it fits with the other services, how match context is built, the agents and their prompts, storage, triggers, and the Azure infrastructure it runs on.
+Inside the Game hackathon (Microsoft / Elephant League). This document describes the narrative generation engine: what it does, how it fits with the other services, how match context is built, the agents and their prompts, storage, triggers, and the Azure infrastructure it runs on.
 
 Scope: this document covers the narrative generation engine only. The ETL service and the user service are described only at the level of the interfaces the engine uses.
 
@@ -232,8 +232,8 @@ Your response should be brief, and use the following JSON structure:
 }
 
 Some examples of a good summary include:
-- Home team (Manchester United) maintained possession for most of the minute, completing all 15 of their passes. This is against the run of play, as away team (Liverpool) has had 62% possession so far.
-- Away team (Liverpool) won a penalty after sustained pressure in the box, but it was saved by home team goalkeeper Lammens.
+- Home team (Forgeham United) maintained possession for most of the minute, completing all 15 of their passes. This is against the run of play, as away team (Port Albion) has had 62% possession so far.
+- Away team (Port Albion) won a penalty after sustained pressure in the box, but it was saved by home team goalkeeper Halloran.
 
 The current game state match statistics are as follows:
 {$game_state_statistics}
@@ -258,8 +258,8 @@ Your response should be brief, and use the following JSON structure:
 }
 
 Some examples of a good summary include:
-- Away team (Liverpool) dominated this period with 67% possession and 4 shots on goal, and were unlucky not to score after a saved penalty. Home team (Manchester United) spent most of the period defending deep in their own half.
-- An even opening 10 minutes. Both teams traded spells of possession, with home team (Manchester United) producing the only shot on target.
+- Away team (Port Albion) dominated this period with 67% possession and 4 shots on goal, and were unlucky not to score after a saved penalty. Home team (Forgeham United) spent most of the period defending deep in their own half.
+- An even opening 10 minutes. Both teams traded spells of possession, with home team (Forgeham United) producing the only shot on target.
 
 The game state match statistics at the end of this time window are as follows:
 {$game_state_statistics[time_window]}
@@ -287,7 +287,7 @@ The user type you will be building narratives for is {$user_type}.
 
 Your response should be brief, and should contain the narrative excerpt only. The following is an example for a neutral experienced user type:
 
-That goal from the home team (Manchester United) comes entirely against the run of play. A dominant away team (Liverpool) will be regretting those 6 missed shots they've racked up this half.
+That goal from the home team (Forgeham United) comes entirely against the run of play. A dominant away team (Port Albion) will be regretting those 6 missed shots they've racked up this half.
 
 This narrative step was triggered by:
 {$trigger_reason}
@@ -326,8 +326,8 @@ One document per match. Scheduler state and checkpoints.
 {
   "id": "match:{matchId}",
   "matchId": "...",
-  "homeTeam": "Manchester United",
-  "awayTeam": "Liverpool",
+  "homeTeam": "Forgeham United",
+  "awayTeam": "Port Albion",
   "status": "live",
   "clock": { "period": 1, "minute": 23, "addedMinute": 0 },
   "lastSummarisedMinute": { "period": 1, "minute": 22, "addedMinute": 0 },

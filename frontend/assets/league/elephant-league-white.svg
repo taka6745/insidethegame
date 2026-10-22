@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 56" role="img" aria-label="Elephant League">
+<g transform="translate(6 6)"><path d="M20 2c-9 0-15 6-16 14-1 6 1 11 4 14v12c0 3-2 5-4 5" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/><path d="M14 4c6-3 20-3 26 4 3 4 4 9 3 14v20c0 3-2 5-5 5s-5-2-5-5v-6h-6v6c0 3-2 5-5 5s-5-2-5-5V22c-2-6-1-13 2-18z" fill="#ffffff"/><path d="M24 10c6 0 10 5 9 11-1 5-6 7-10 5" fill="none" stroke="#3d195b" stroke-width="2.4" stroke-linecap="round"/><circle cx="16" cy="14" r="2.2" fill="#3d195b"/></g>
+<text x="58" y="25" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="17" fill="#ffffff">Elephant</text>
+<text x="58" y="44" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="17" fill="#ffffff">League</text>
+</svg>

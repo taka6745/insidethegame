@@ -47,7 +47,7 @@ flowchart LR
 
 1. `POST /runs` mints the `matchId`, stores the run and starts a task.
 2. At kickoff − 60 s the task sends MA1 (teams, lineups, capabilities, branding, provenance).
-3. From kickoff it sleeps until the next item or segment is due, sends everything due in sends of at most 200 items (a backlog after a stall goes out in steps; Event Hubs ingress is about 1,000 events/s per throughput unit), copies played segments even while sends are retried, and saves its position. A refused send counts what went out and backs off (2 s doubling to 60 s; at least 10 s when Event Hubs throttles with `server-busy`); the rest goes out later in order, never dropped. A send the hub took but did not confirm can arrive twice; consumers drop redeliveries by seq, MA3 id and sampleId. The limits are `FEED_SEND_*` [settings](components/feed.md#6-settings).
+3. From kickoff it sleeps until the next item or segment is due, sends everything due in sends of at most 200 items (a backlog after a stall goes out in steps; Event Hubs ingress is about 1,000 events/s per throughput unit), copies played segments even while sends are retried, and saves its position. A refused send counts what went out and backs off (2 s doubling to 60 s while refusals get nothing through; at least 10 s when Event Hubs throttles with `server-busy`); the rest goes out later in order, never dropped. A send the hub took but did not confirm can arrive twice; consumers drop redeliveries by seq, MA3 id and sampleId. The limits are `FEED_SEND_*` [settings](components/feed.md#6-settings).
 4. After the final `period_end` and the last segment the run is `finished`.
 5. Purge tombstones, stops the task, then deletes the row and the HLS directory.
 

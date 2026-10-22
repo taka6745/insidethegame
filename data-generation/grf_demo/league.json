@@ -1,0 +1,173 @@
+{
+  "_about": "Source of truth for the fictional league the demo shows (PLAN.md §12 M6). Keyed by the previous real club id (for migration); `fixtures` maps old fixture keys to new ones. Invented names, colours, crests and players (in the simulator's slot order: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM); none are real people.",
+  "league": {
+    "name": "Elephant League",
+    "short": "EL",
+    "wordmark": "/assets/league/elephant-league.svg",
+    "wordmark_light": "/assets/league/elephant-league-white.svg",
+    "disclaimer": "Hackathon demo · Simulated matches in a fictional league with AI-generated insights"
+  },
+  "clubs": {
+    "chelsea": {
+      "id": "riverton",
+      "name": "Riverton Rovers",
+      "short": "Riverton",
+      "code": "RVR",
+      "known": [
+        "the Rovers",
+        "the Blues"
+      ],
+      "primary": "#1d4fd8",
+      "secondary": "#ffffff",
+      "crest": "/assets/league/clubs/riverton.svg",
+      "players": [
+        "Aldo Brenner",
+        "Kai Ashworth",
+        "Dario Mensforth",
+        "Lewis Okafor-Dean",
+        "Matteo Rivas",
+        "Joel Hartigan",
+        "Sami Lindqvist",
+        "Nico Barrowclough",
+        "Felix Adeyinka",
+        "Rory Calloway",
+        "Ilan Petrakis"
+      ]
+    },
+    "manutd": {
+      "id": "forgeham",
+      "name": "Forgeham United",
+      "short": "Forgeham",
+      "code": "FGU",
+      "known": [
+        "United",
+        "the Forgemen"
+      ],
+      "primary": "#d4142d",
+      "secondary": "#111111",
+      "crest": "/assets/league/clubs/forgeham.svg",
+      "players": [
+        "Viktor Halloran",
+        "Jamal Whitcombe",
+        "Bruno Castellane",
+        "Ewan Tierney",
+        "Luca Ferrandi",
+        "Moses Ekwueme",
+        "Oskar Lindgard",
+        "Theo Marchetti",
+        "Adrien Kovalenko",
+        "Callum Brightwell",
+        "Yusuf Karabey"
+      ]
+    },
+    "arsenal": {
+      "id": "redcastle",
+      "name": "Redcastle Town",
+      "short": "Redcastle",
+      "code": "RCT",
+      "known": [
+        "the Castle",
+        "Town"
+      ],
+      "primary": "#d80d1d",
+      "secondary": "#ffffff",
+      "crest": "/assets/league/clubs/redcastle.svg",
+      "players": [
+        "Henrik Solberg",
+        "Marcus Ellingham",
+        "Rafael Quintero",
+        "Owen Pritchard",
+        "Samuel Achterberg",
+        "Diego Mercado",
+        "Jonah Fairweather",
+        "Anton Vesely",
+        "Kofi Mensah-Lyle",
+        "Elias Nordahl",
+        "Tobias Renwick"
+      ]
+    },
+    "liverpool": {
+      "id": "portalbion",
+      "name": "Port Albion",
+      "short": "Albion",
+      "code": "PAL",
+      "known": [
+        "Albion",
+        "the Mariners"
+      ],
+      "primary": "#f0ece2",
+      "secondary": "#a3122b",
+      "crest": "/assets/league/clubs/portalbion.svg",
+      "players": [
+        "Gareth Holloway",
+        "Idris Rowntree",
+        "Cyrus Delacroix",
+        "Finn Marwood",
+        "Bastien Laroque",
+        "Kwame Asante-Ford",
+        "Leo Varga",
+        "Mateus Pinheiro",
+        "Reuben Ashdown",
+        "Dominik Hrabal",
+        "Teo Albescu"
+      ]
+    },
+    "mancity": {
+      "id": "skybridge",
+      "name": "Skybridge City",
+      "short": "Skybridge",
+      "code": "SKC",
+      "known": [
+        "City",
+        "the Skyblues"
+      ],
+      "primary": "#6cabdd",
+      "secondary": "#14213d",
+      "crest": "/assets/league/clubs/skybridge.svg",
+      "players": [
+        "Pavel Kostelec",
+        "Arlo Benning",
+        "Gustav Edlund",
+        "Nathan Coyle",
+        "Joaquín Esteller",
+        "Mikkel Brandt",
+        "Rafe Doherty",
+        "Emil Sandvik",
+        "Tariq Oduya",
+        "Lorenzo Castagna",
+        "Jules Arnaud-Petit"
+      ]
+    },
+    "tottenham": {
+      "id": "whitmore",
+      "name": "Whitmore Wanderers",
+      "short": "Whitmore",
+      "code": "WHW",
+      "known": [
+        "the Wanderers",
+        "the Whites"
+      ],
+      "primary": "#f5f5f5",
+      "secondary": "#132257",
+      "crest": "/assets/league/clubs/whitmore.svg",
+      "players": [
+        "Ivo Bertolli",
+        "Kenji Harlow",
+        "Ricardo Fontes",
+        "Alfie Penrose",
+        "Cassius Ferreira-Lowe",
+        "Mick Vandenbroek",
+        "Pedro Valcárcel",
+        "Jorge Palmeira",
+        "Ousmane Diallo-Reeves",
+        "Lukas Halvorsen",
+        "Xavier Simonet"
+      ]
+    }
+  },
+  "fixtures": {
+    "chelsea-united": "riverton-forgeham",
+    "arsenal-liverpool": "redcastle-portalbion",
+    "mancity-tottenham": "skybridge-whitmore"
+  }
+}

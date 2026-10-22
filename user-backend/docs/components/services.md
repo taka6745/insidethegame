@@ -61,6 +61,19 @@ Inputs cannot be formulas; zero denominators give `null` (unavailable, still tra
 
 `replay.py` gives the replay agent bounded tools over one snapshot's SPADL actions and MA3 cards (`find_events` with SPADL filters, `find_cards`, sequences with a recorded `description`, recent minutes, key moments, recaps) and checks captions (an unsaved shot is never called saved). Evidence ids are `a{actionId}` and `card:{id}`; clip timing keys are SPADL types plus `goal` and `card`. `replay_clips.py` cuts each item from the `replay-timing` config (seconds before/after per type, lead-in `short`/`normal`/`long` multipliers, `move` = from the team's last possession gain), clamps to the period and the published playlist's end, merges overlaps and pages (`max_clips` per page, `max_items` per answer). `replay_page` re-cuts a saved replay without a model call.
 
+How long a clip runs: the agent only picks the evidence and a lead-in; code picks the seconds.
+
+| Clip | Length |
+| --- | --- |
+| Shot, save, card, other action | `timing[type]` before and after (a shot 6 s + 3 s), times the lead-in (`short` 0.5×, `long` 2×) |
+| Goal | 10 s before, 5 s after (046; was 2 s, which cut the reaction) |
+| `move` lead-in | from the attacking team's last possession gain, capped at `max_move_seconds` (25 s): a goal after a long build-up runs much longer than one from a rebound |
+| Own goal | as a goal; its `move` starts at the attack before the defender's touch, which is often a one-touch possession of its own; its caption always comes from evidence (who scored it, which side it counts for) |
+| Any event clip | at least `min_clip_seconds` (8 s, 046), widened backwards: a quick action with a short lead-in no longer lasts two or three seconds. The period start, the viewer's position and the published footage still cut it |
+| Key moment | its authored window; a goal moment ends 5 s after the goal |
+
+So clips differ mainly by lead-in: `move` follows the whole attack, the others a fixed window.
+
 ## 6. Projections
 
 *In short: one shared snapshot per match; per-viewer composition never queries upstreams.*

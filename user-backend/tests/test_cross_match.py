@@ -18,11 +18,11 @@ from benchmarks.doubles.recording import FixtureEventSource
 from harness import MATCH, Running, Upstream
 from test_subscriptions import deliver, follow, narrative, path, start, view
 
-OTHER = 'arsenal-liverpool-0badc0de'
+OTHER = 'redcastle-portalbion-0badc0de'
 # The second match: the same recording under other names (team ids stay; names are what viewers type).
-RENAMES = {'Chelsea': 'Arsenal', 'Madrid': 'Liverpool', 'Kylian Mbappé': 'Mohamed Salah', 'Cole Palmer': 'Bukayo Saka',
-           'Levi Colwill': 'William Saliba', 'Vinícius': 'Luis Díaz', 'Camavinga': 'Alexis Mac Allister',
-           'Courtois': 'Alisson Becker'}
+RENAMES = {'Riverton Rovers': 'Redcastle Town', 'Madrid': 'Port Albion', 'Kylian Mbappé': 'Idris Rowntree', 'Kai Ashworth': 'Marcus Ellingham',
+           'Matteo Rivas': 'Samuel Achterberg', 'Vinícius': 'Luis Díaz', 'Camavinga': 'Alexis Mac Allister',
+           'Courtois': 'Gareth Holloway'}
 
 
 def other_source():
@@ -53,13 +53,13 @@ def refresh(run, match_id):
 
 
 def test_names_are_weighted_by_rarity_across_matches():
-    entities = [('Manchester City', 'Man City', 'MCI'), ('Manchester United', 'Man Utd', 'MUN'),
-                ('Tottenham Hotspur', 'Spurs', 'TOT'), ('Chelsea',)]
+    entities = [('Skybridge City', 'Skybridge', 'SKC'), ('Forgeham United', 'Forgeham', 'FGU'),
+                ('Whitmore Wanderers', 'Whitmore', 'WHW'), ('Riverton Rovers',)]
     weight = rarity(entities)
-    assert coverage('what is the score in City v Spurs?', entities[2], weight) == 1.0  # a whole known name
-    assert coverage('what is the score in City v Spurs?', entities[0], weight) >= 0.5  # its rare word
-    assert coverage('what is the score in City v Spurs?', entities[1], weight) == 0.0
-    assert coverage('how are the reds doing', entities[3], weight) == 0.0
+    assert coverage('what is the score in City v Whitmore?', entities[2], weight) == 1.0  # a whole known name
+    assert coverage('what is the score in City v Whitmore?', entities[0], weight) >= 0.5  # its rare word
+    assert coverage('what is the score in City v Whitmore?', entities[1], weight) == 0.0
+    assert coverage('how are the mariners doing', entities[3], weight) == 0.0
 
 
 def test_a_question_naming_another_match_is_answered_from_it_at_its_own_position(store):
@@ -67,13 +67,13 @@ def test_a_question_naming_another_match_is_answered_from_it_at_its_own_position
         run.send(20)
         run.send(9, match_id=OTHER)
         token = start(run.client)['session_token']
-        reply = ask(run, token, 'How are Arsenal doing?', seq=3)
+        reply = ask(run, token, 'How are Redcastle Town doing?', seq=3)
         assert reply['other_match']['id'] == OTHER
-        assert [t['name'] for t in reply['other_match']['teams']] == ['Arsenal', 'Liverpool']
+        assert [t['name'] for t in reply['other_match']['teams']] == ['Redcastle Town', 'Port Albion']
         assert all('score' not in t for t in reply['other_match']['teams'])
         # That match's own position (9 deliveries), never the viewer's seq (3) and never past it.
         assert reply['snapshot']['match_id'] == OTHER and reply['snapshot']['seq'] == 9
-        own = ask(run, token, 'How is Cole Palmer doing?', seq=3)
+        own = ask(run, token, 'How is Kai Ashworth doing?', seq=3)
         assert own['other_match'] is None and own['snapshot']['match_id'] == MATCH and own['snapshot']['seq'] == 3
 
 
@@ -98,9 +98,65 @@ def test_questions_see_the_live_matches_and_can_answer_what_else_is_on(store):
         reply = ask(run, token, 'what other games are playing right now', seq=3)
         here, other = seen[0]
         assert here['this_match'] and here['match_id'] == MATCH and not other['this_match']
-        assert other['teams'] == ['Arsenal', 'Liverpool'] and other['minute'] is not None
+        assert other['teams'] == ['Redcastle Town', 'Port Albion'] and other['minute'] is not None
         assert reply['status'] == 'answer' and reply['evidence'] == [
-            {'id': f'match:{OTHER}', 'kind': 'match', 'label': 'Arsenal v Liverpool'}]
+            {'id': f'match:{OTHER}', 'kind': 'match', 'label': 'Redcastle Town v Port Albion'}]
+
+
+def test_a_request_about_both_games_is_answered_from_each_at_its_own_position(store):
+    """'Show me the goals from both games' (PLAN.md §12 M8): one answer per match, each at that match's position, the
+    other marked with its header; never narrowed to one match."""
+    from backend.models.questions import QuestionDraft
+
+    class Agent:
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            if not context.get('single_match'):
+                return QuestionDraft(answer_kind='match', status='answer', text='From each match.',
+                                     per_match=[m['match_id'] for m in context['live_matches']])
+            return QuestionDraft(answer_kind='match', status='answer', text=f"At {context['snapshot']['seq']}.")
+    with two_matches(store, agent=Agent()) as run:
+        run.send(20)
+        run.send(9, match_id=OTHER)
+        token = start(run.client)['session_token']
+        reply = ask(run, token, 'show me the goals from both games', seq=3)
+        here, other = reply['parts']
+        assert (here['snapshot']['match_id'], here['snapshot']['seq'], here['other_match']) == (MATCH, 3, None)
+        assert (other['snapshot']['match_id'], other['snapshot']['seq']) == (OTHER, 9)
+        assert other['other_match']['id'] == OTHER and reply['follow_offer'] is None
+        # One receipt for the whole answer: the parts' model calls are in it, not shown again per part.
+        assert here['usage'] is None and other['usage'] is None and reply['usage'] is not None
+
+
+def test_a_trend_question_sees_etls_served_value_and_can_cite_it(store):
+    """PLAN.md §12 M15: field tilt is a served trend; the answer gets ETL's value as evidence, never its own sum."""
+    from backend.models.questions import QuestionDraft
+    seen = []
+
+    class Agent:
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            seen.append(context['trends'])
+            tilt = context['trends'][0]
+            return QuestionDraft(answer_kind='match', status='answer', evidence_ids=['trend:field_tilt:riverton:last5'],
+                                 text=f"{tilt['label']}: {tilt['values']['riverton']['last5']}.")
+    with two_matches(store, agent=Agent()) as run:
+        run.upstream.trends = [{'trendId': 'field_tilt', 'label': 'share of final-third play', 'meaning': 'm',
+                                'unit': 'share', 'contestantId': 'riverton', 'window': 'last5', 'minutes': 5,
+                                'value': 0.62, 'enabled': True},
+                               {'trendId': 'momentum', 'label': 'momentum', 'meaning': 'm', 'unit': 'index',
+                                'contestantId': 'riverton', 'window': 'last5', 'minutes': 5, 'value': 1.0, 'enabled': False}]
+        run.send(20)
+        token = start(run.client)['session_token']
+        reply = ask(run, token, 'what is the field tilt?', seq=12)
+        assert reply['snapshot']['seq'] == 12
+        assert [t['label'] for t in seen[0]] == ['share of final-third play']  # disabled trends never shown
+        assert reply['evidence'][0]['kind'] == 'trend' and reply['evidence'][0]['value'] == 0.62
+        assert reply['evidence'][0]['label'] == 'share of final-third play (Riverton Rovers, last 5 minutes)'  # words, not ids
+        # Bounded at the viewer's snapshot: ETL is asked as of the answer's seq, never its newest.
+        assert run.upstream.trend_seqs and set(run.upstream.trend_seqs) == {reply['snapshot']['seq']}
 
 
 def test_cross_match_reach_is_off_in_config(store):
@@ -111,9 +167,9 @@ def test_cross_match_reach_is_off_in_config(store):
         assert run.client.put('/dev/config/cross-match', json={
             'expected_revision': current['revision'], 'value': {**current['value'], 'enabled': False}}).status_code == 200
         token = start(run.client)['session_token']
-        assert ask(run, token, 'How are Arsenal doing?')['other_match'] is None
+        assert ask(run, token, 'How are Redcastle Town doing?')['other_match'] is None
         response = run.client.post(path(token) + '/follows', json={
-            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Liverpool'}, 'match_id': OTHER})
+            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Port Albion'}, 'match_id': OTHER})
         assert response.status_code == 404
 
 
@@ -126,7 +182,7 @@ def test_another_matchs_story_reaches_the_follow_view_marked_and_bounded_by_that
         offered = [s for s in suggestions if s.get('match_id') == OTHER]
         assert offered and offered[0]['other_match']['id'] == OTHER
         response = run.client.post(path(token) + '/follows', json={
-            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Liverpool'}, 'match_id': OTHER})
+            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Port Albion'}, 'match_id': OTHER})
         assert response.status_code == 200, response.text
         followed = response.json()['follow']
         assert followed['match_id'] == OTHER and followed['bucket_id']
@@ -135,17 +191,17 @@ def test_another_matchs_story_reaches_the_follow_view_marked_and_bounded_by_that
         assert targets['topics'][0]['buckets'] == [followed['bucket_id']]  # that match's catalogue, not the viewer's
         assert run.client.get(f'/matches/{MATCH}/subscription-targets').json()['topics'] == []
         bucket = followed['bucket_id']
-        assert deliver(run, narrative(OTHER, bucket, 1, 'Liverpool press.', followed['topic_id'], event_seq=8))
+        assert deliver(run, narrative(OTHER, bucket, 1, 'Port Albion press.', followed['topic_id'], event_seq=8))
         assert deliver(run, narrative(OTHER, bucket, 2, 'Not played yet.', followed['topic_id'], event_seq=12))
         refresh(run, OTHER)
         snapshot = view(run, token)
         assert snapshot['feed_mode'] == 'following' and snapshot['follow_match']['id'] == OTHER
-        assert [(n['text'], n['other_match']['id']) for n in snapshot['narratives']] == [('Liverpool press.', OTHER)]
+        assert [(n['text'], n['other_match']['id']) for n in snapshot['narratives']] == [('Port Albion press.', OTHER)]
         assert all('score' not in t for t in snapshot['follow_match']['teams'])
         # The other match moves on: this viewer's view follows it without this match changing.
         run.send(5, match_id=OTHER)
         refresh(run, OTHER)
-        assert [n['text'] for n in view(run, token)['narratives']] == ['Liverpool press.', 'Not played yet.']
+        assert [n['text'] for n in view(run, token)['narratives']] == ['Port Albion press.', 'Not played yet.']
         # Unfollowing changes that match's targets; purging it ends the follow.
         assert run.client.post('/admin/matches/purge', json={'match_id': OTHER}).status_code == 200
         assert run.client.get(path(token) + '/follows').json()['follow'] is None
@@ -163,7 +219,7 @@ def test_purging_the_viewers_match_ends_its_follow_of_another_match_with_a_new_r
         run.send(9, match_id=OTHER)
         token = start(run.client)['session_token']
         response = run.client.post(path(token) + '/follows', json={
-            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Liverpool'}, 'match_id': OTHER})
+            'spec': {'kind': 'team', 'team_id': 'madrid', 'label': 'Port Albion'}, 'match_id': OTHER})
         assert response.status_code == 200, response.text
         before = run.client.get(f'/matches/{OTHER}/subscription-targets')
         assert before.json()['topics']
@@ -176,18 +232,18 @@ def test_purging_the_viewers_match_ends_its_follow_of_another_match_with_a_new_r
 
 
 def test_a_pinned_stat_from_another_match_shows_its_value_there_marked():
-    shared = {'match': {'id': OTHER, 'fixture': 'arsenal-liverpool',
-                        'teams': [{'id': 'arsenal', 'name': 'Arsenal', 'score': 2}, {'id': 'liverpool', 'name': 'Liverpool'}]},
-              'stats': [{'id': 'arsenal:shots', 'label': 'Arsenal shots', 'value': 7, 'available': True}],
+    shared = {'match': {'id': OTHER, 'fixture': 'redcastle-portalbion',
+                        'teams': [{'id': 'redcastle', 'name': 'Redcastle Town', 'score': 2}, {'id': 'portalbion', 'name': 'Port Albion'}]},
+              'stats': [{'id': 'redcastle:shots', 'label': 'Redcastle Town shots', 'value': 7, 'available': True}],
               'calculations': {}}
     product = ProductService.__new__(ProductService)
     product.projections = {OTHER: SimpleNamespace(shared=shared)}
-    offer = {'kind': 'standard', 'standard_stat_id': 'arsenal:shots', 'label': 'Arsenal shots'}
-    card = product.cross_card(f'standard:arsenal:shots@{OTHER}', offer)
-    assert card['value'] == 7 and card['pinned'] and card['id'] == f'standard:arsenal:shots@{OTHER}'
+    offer = {'kind': 'standard', 'standard_stat_id': 'redcastle:shots', 'label': 'Redcastle Town shots'}
+    card = product.cross_card(f'standard:redcastle:shots@{OTHER}', offer)
+    assert card['value'] == 7 and card['pinned'] and card['id'] == f'standard:redcastle:shots@{OTHER}'
     assert card['other_match'] == header_of(shared['match']) and 'score' not in card['other_match']['teams'][0]
     product.projections = {}
-    gone = product.cross_card(f'standard:arsenal:shots@{OTHER}', offer)
+    gone = product.cross_card(f'standard:redcastle:shots@{OTHER}', offer)
     assert gone['available'] is False and 'other_match' not in gone
     assert sources({'offers': [{'calculation_id': f'standard:x@{OTHER}'}, {'calculation_id': 'standard:y'}],
                     'follow': {'match_id': 'third'}}, MATCH) == {OTHER, 'third'}
@@ -209,12 +265,12 @@ def offer(decide, draft, offers=(), config=None):
     service.decide, service.config = decide, config or SeededConfig()
     from backend.adapters.decision import Window
     service._offers = Window()
-    return asyncio.run(service._follow_offer('How is Saka getting on?', draft, list(offers), None))
+    return asyncio.run(service._follow_offer('How is Ellingham getting on?', draft, list(offers), None))
 
 
 def test_a_story_question_gets_one_follow_offer_and_stats_never_do():
-    story = SimpleNamespace(status='answer', answer_kind='match', text='Saka keeps beating his man.')
-    assert offer(Decide(0.9), story) == {'prompt': 'How is Saka getting on?', 'other_match': None}
+    story = SimpleNamespace(status='answer', answer_kind='match', text='Ellingham keeps beating his man.')
+    assert offer(Decide(0.9), story) == {'prompt': 'How is Ellingham getting on?', 'other_match': None}
     assert offer(Decide(0.2), story) is None
     stat = SimpleNamespace(status='answer', answer_kind='statistic', text='7 shots.')
     decide = Decide(0.99)
@@ -222,8 +278,8 @@ def test_a_story_question_gets_one_follow_offer_and_stats_never_do():
     assert offer(decide, story, offers=[{'id': 'o'}]) is None and decide.calls == 0
     assert offer(Decide(RuntimeError('down')), story) is None  # optional: the answer never fails with it
     unsupported = SimpleNamespace(status='unsupported', answer_kind='match', text='No.')
-    assert offer(Decide(0.99), unsupported) == {'prompt': 'How is Saka getting on?', 'other_match': None}
-    clarify = SimpleNamespace(status='clarification', answer_kind='match', text='Which Saka?')
+    assert offer(Decide(0.99), unsupported) == {'prompt': 'How is Ellingham getting on?', 'other_match': None}
+    clarify = SimpleNamespace(status='clarification', answer_kind='match', text='Which Ellingham?')
     assert offer(Decide(0.99), clarify) is None
 
 
@@ -244,25 +300,25 @@ def test_another_match_is_named_only_above_the_configured_share_and_above_this_m
         return SimpleNamespace(match_id=match_id, fixture=match_id, purged=False,
                                info={'teams': [{'id': t, 'name': t} for t in teams],
                                      'players': [{'id': p, 'name': p} for p in players]})
-    here = match('here', ['Chelsea', 'Manchester United'], ['Cole Palmer'])
-    city = match('city', ['Manchester City', 'Tottenham Hotspur'], ['Erling Haaland'])
+    here = match('here', ['Riverton Rovers', 'Forgeham United'], ['Kai Ashworth'])
+    city = match('city', ['Forgeham City', 'Whitmore Wanderers'], ['Gustav Edlund'])  # shares "Forgeham"
     registry = SimpleNamespace(matches={'here': here, 'city': city})
 
     async def info(m):
         return m.info
     cross = CrossMatch(registry, SimpleNamespace(info=info), SeededConfig())
     named = lambda text: asyncio.run(cross.named(here, text))
-    assert named('Is Haaland scoring?')[0] is city
-    assert named('How is Tottenham doing?')[0] is city
-    assert named('How is Cole Palmer doing?') is None
-    assert named('What about Manchester?') is None  # shared by both matches: this one is not outscored
+    assert named('Is Edlund scoring?')[0] is city
+    assert named('How is Whitmore doing?')[0] is city
+    assert named('How is Kai Ashworth doing?') is None
+    assert named('What about Forgeham?') is None  # shared by both matches: this one is not outscored
 
 
 def test_the_follow_chat_finds_a_name_in_another_match_when_this_one_has_none():
     from backend.services.subscriptions import SubscriptionService
-    city = SimpleNamespace(match_id='city', fixture='mancity-tottenham', purged=False)
-    teams = [{'id': 'mancity', 'name': 'Manchester City', 'short_name': 'Man City', 'known_names': ['City']},
-             {'id': 'tottenham', 'name': 'Tottenham Hotspur', 'short_name': 'Spurs'}]
+    city = SimpleNamespace(match_id='city', fixture='skybridge-whitmore', purged=False)
+    teams = [{'id': 'skybridge', 'name': 'Skybridge City', 'short_name': 'Skybridge', 'known_names': ['City']},
+             {'id': 'whitmore', 'name': 'Whitmore Wanderers', 'short_name': 'Whitmore'}]
 
     class Cross:
         async def settings(self):
@@ -282,17 +338,17 @@ def test_the_follow_chat_finds_a_name_in_another_match_when_this_one_has_none():
     service._context, service.match_data = context, SimpleNamespace(info=info)
     draft = SimpleNamespace(kind='team', subject="City's pressing")
     found = asyncio.run(service._elsewhere('here', draft, SimpleNamespace(min_name_match=0.5)))
-    assert found['team_id'] == 'mancity' and found['match_id'] == 'city' and found['other_match']['id'] == 'city'
+    assert found['team_id'] == 'skybridge' and found['match_id'] == 'city' and found['other_match']['id'] == 'city'
     option = SubscriptionService._option('here', {**found, 'label': 'City'})
-    assert option['match_id'] == 'city' and option['spec']['team_id'] == 'mancity'
-    assert option['id'] != SubscriptionService._option('here', {'kind': 'team', 'team_id': 'mancity', 'label': 'City'})['id']
+    assert option['match_id'] == 'city' and option['spec']['team_id'] == 'skybridge'
+    assert option['id'] != SubscriptionService._option('here', {'kind': 'team', 'team_id': 'skybridge', 'label': 'City'})['id']
 
 
 def test_the_follow_planner_sees_the_other_matches_teams_and_squads():
     from backend.services.subscriptions import SubscriptionService
-    city = SimpleNamespace(match_id='city', fixture='mancity-tottenham', purged=False)
-    info = {'teams': [{'id': 'mancity', 'name': 'Manchester City'}],
-            'players': [{'id': 'haaland', 'name': 'Erling Haaland', 'team_id': 'mancity'}]}
+    city = SimpleNamespace(match_id='city', fixture='skybridge-whitmore', purged=False)
+    info = {'teams': [{'id': 'skybridge', 'name': 'Skybridge City'}],
+            'players': [{'id': 'edlund', 'name': 'Gustav Edlund', 'team_id': 'skybridge'}]}
 
     class Cross:
         async def settings(self):
@@ -323,17 +379,17 @@ def test_purging_another_match_sends_its_followers_back_to_insights():
 
 def test_the_follow_chat_picks_the_match_whose_name_fits_best_not_the_first_that_matches():
     from backend.services.subscriptions import SubscriptionService
-    united = SimpleNamespace(match_id='utd', fixture='chelsea-united', purged=False)
-    city = SimpleNamespace(match_id='city', fixture='mancity-tottenham', purged=False)
-    teams = {'utd': [{'id': 'chelsea', 'name': 'Chelsea'}, {'id': 'manutd', 'name': 'Manchester United'}],
-             'city': [{'id': 'mancity', 'name': 'Manchester City'}, {'id': 'tottenham', 'name': 'Tottenham Hotspur'}]}
+    united = SimpleNamespace(match_id='utd', fixture='riverton-forgeham', purged=False)
+    city = SimpleNamespace(match_id='city', fixture='skybridge-whitmore', purged=False)
+    teams = {'utd': [{'id': 'riverton', 'name': 'Skybridge Rovers'}, {'id': 'forgeham', 'name': 'Forgeham United'}],
+             'city': [{'id': 'skybridge', 'name': 'Skybridge City'}, {'id': 'whitmore', 'name': 'Whitmore Wanderers'}]}
 
     class Cross:
         async def settings(self):
             return SimpleNamespace(enabled=True)
 
         def others(self, match_id):
-            return [united, city]  # the shared word "Manchester" matches in the first one too
+            return [united, city]  # the shared word "Skybridge" matches in the first one too
 
     service = SubscriptionService.__new__(SubscriptionService)
     service.cross = Cross()
@@ -344,9 +400,9 @@ def test_the_follow_chat_picks_the_match_whose_name_fits_best_not_the_first_that
     async def info(match):
         return {'teams': teams[match.match_id], 'players': []}
     service._context, service.match_data = context, SimpleNamespace(info=info)
-    draft = SimpleNamespace(kind='team', subject='Manchester City')
+    draft = SimpleNamespace(kind='team', subject='Skybridge City')
     found = asyncio.run(service._elsewhere('here', draft, SimpleNamespace(min_name_match=0.3)))
-    assert found['team_id'] == 'mancity' and found['match_id'] == 'city'
+    assert found['team_id'] == 'skybridge' and found['match_id'] == 'city'
 
 
 def test_another_match_stands_where_etl_has_it_with_stoppage_minutes():

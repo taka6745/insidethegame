@@ -36,19 +36,19 @@ function picker() {
 test("the picker links each listed match by id with status, score and clock", () => {
   const { view, nodes } = picker();
   view.render([
-    { match_id: "chelsea-united-1a2b3c4d", status: "live", clock_seconds: 431,
-      teams: [{ id: "manutd", position: "away", name: "Manchester United", score: 0, branding: { crest_asset_id: "manutd" } },
-        { id: "chelsea", position: "home", name: "Chelsea", score: 1, branding: { crest_asset_id: "chelsea", primary_colour: "#001c68" } }] },
+    { match_id: "riverton-forgeham-1a2b3c4d", status: "live", clock_seconds: 431,
+      teams: [{ id: "forgeham", position: "away", name: "Forgeham United", score: 0, branding: { crest_asset_id: "forgeham" } },
+        { id: "riverton", position: "home", name: "Riverton Rovers", score: 1, branding: { crest_asset_id: "riverton", primary_colour: "#001c68" } }] },
     { match_id: "Bad/Id", status: "live", teams: [] },
-    { match_id: "arsenal-spurs-0f0f0f0f", status: "finished", teams: [{ name: "Arsenal" }, { name: "Spurs" }] },
+    { match_id: "redcastle-whitmore-0f0f0f0f", status: "finished", teams: [{ name: "Redcastle Town" }, { name: "Whitmore" }] },
   ]);
   const rows = nodes.get("match-list")!.children;
   assert.equal(rows.length, 2);
   const link = rows[0]!.children[0]!;
-  assert.equal(link.href, "/?match=chelsea-united-1a2b3c4d");
+  assert.equal(link.href, "/?match=riverton-forgeham-1a2b3c4d");
   assert.equal(link.dataset.status, "live");
-  assert.match(link.text, /^Chelsea 1 – 0 Live · 7:11 Manchester United$/);
-  assert.equal(link.children[0]!.children[0]!.src, "/assets/league/clubs/chelsea.svg");
+  assert.match(link.text, /^Riverton Rovers 1 – 0 Live · 7:11 Forgeham United$/);
+  assert.equal(link.children[0]!.children[0]!.src, "/assets/league/clubs/riverton.svg");
   assert.match(rows[1]!.text, /v Full time/);
 });
 
@@ -56,7 +56,7 @@ test("an empty list says when matches appear; ids outside the slug shape never r
   const { view, nodes } = picker();
   view.render([]);
   assert.match(nodes.get("match-list")!.text, /about a minute before kick-off/);
-  assert.ok(validMatchId("chelsea-united-1a2b3c4d"));
+  assert.ok(validMatchId("riverton-forgeham-1a2b3c4d"));
   for (const bad of ["", "../x", "A", "a b", "x".repeat(65), null]) assert.equal(validMatchId(bad), false);
   assert.deepEqual(sides([{ position: "away", name: "B" }, { position: "home", name: "A" }]).map((t) => t.name), ["A", "B"]);
 });
