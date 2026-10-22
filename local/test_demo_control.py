@@ -203,6 +203,20 @@ class DemoControlTests(unittest.TestCase):
         self.assertNotIn("rec-", json.dumps([b for _, b in restores]))
         self.assertEqual([r["after"] for r in self.runs], [125, 5, 245])  # a, b (main: furthest along), c
 
+    def test_the_picker_reads_offered_seeds_into_memory_so_a_start_reads_nothing_from_the_share(self):
+        manifest = self.seed()
+        self.client.get("/state")
+        for _ in range(100):
+            if len([p for p in demo_control._seed_texts if p.parents[1] == manifest.parent]) == 9:
+                break
+            time.sleep(0.01)
+        for owner in demo_control.SEED_OWNERS:  # gone from the share: the start uses what the picker read
+            __import__("shutil").rmtree(manifest.parent / owner)
+        self.client.post("/start", json={"point": "20"})
+        self.assertEqual(self.settle()["live_from"], "20′")
+        demo_control.preload_seeds(frozenset(), "abc")  # a seed no longer offered is forgotten
+        self.assertFalse([p for p in demo_control._seed_texts if p.parents[1] == manifest.parent])
+
     def test_a_seeded_start_purges_the_previous_demo_alongside_the_restore_and_releases_after_it(self):
         self.seed()
         self.runs = [{"match_id": "old", "status": "finished"}]

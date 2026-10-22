@@ -167,14 +167,43 @@ def seed_ready(seed_id, fixtures):
         return False
 
 
+# Seed files never change under a seed id, and reading one from the share is seconds at 60′: the start points'
+# seeds are read once into memory (preload_seeds, when the picker asks /state) and kept while they are offered.
+_seed_texts, _seed_lock = {}, threading.Lock()
+
+
+def seed_text(seed_id, owner, fixture):
+    path = SEED_ROOT / seed_id / owner / f'{fixture}.json'
+    text = _seed_texts.get(path)
+    if text is None:
+        text = path.read_text()
+        with _seed_lock:
+            _seed_texts[path] = text
+    return text
+
+
+def preload_seeds(seed_ids, fixtures):
+    """Read these seeds' files into memory and forget any other seed's (re-recorded or no longer offered)."""
+    with _seed_lock:
+        for path in [p for p in _seed_texts if p.parents[1] not in {SEED_ROOT / s for s in seed_ids}]:
+            del _seed_texts[path]
+    for seed_id in seed_ids:
+        for owner in SEED_OWNERS:
+            for fixture in fixtures:
+                try:
+                    seed_text(seed_id, owner, fixture)
+                except OSError:
+                    pass  # a missing file is refused at start (seed_manifest / restore), not here
+
+
 def seed_parts(seed_id, manifest, fixture, match_id, run_id):
     """One fixture's seed, rewritten for a new run: its matchId and runId everywhere, and its MA1 as sent now."""
-    root, source = SEED_ROOT / seed_id, manifest['fixtures'][fixture]
+    source = manifest['fixtures'][fixture]
 
     def moved(text):
         return text.replace(source['source_match_id'], match_id).replace(source['source_run_id'], run_id)
 
-    parts = {owner: json.loads(moved((root / owner / f'{fixture}.json').read_text())) for owner in SEED_OWNERS}
+    parts = {owner: json.loads(moved(seed_text(seed_id, owner, fixture))) for owner in SEED_OWNERS}
     now = datetime.now(timezone.utc).isoformat()
     for row in parts['etl'].get('matches', []):  # the run's MA1 counts as sent now (purge-all cut-offs)
         payload = json.loads(row['payload'])
@@ -322,6 +351,7 @@ def app(http=None, clock=time.monotonic):
     # Start's cleanup has its own worker, so cold keep-warm wakes on `background` cannot delay the release it gates.
     cleaner = ThreadPoolExecutor(max_workers=1)
     finished_at = {}  # match_id -> clock() when the sweep first saw it finished (the feed lists no finish time)
+    preloaded = {'seeds': frozenset()}  # the seed ids last read into memory (preload_seeds)
 
     def submit(action, run):
         def job():
@@ -368,6 +398,10 @@ def app(http=None, clock=time.monotonic):
         points = [{'id': p['id'], 'label': p['label'],
                    'ready': p['minute'] == 0 and p['period'] == 1 or seed_ready(p['seed'], settings['fixtures'])}
                   for p in settings['start_points']]
+        offered = frozenset(p['seed'] for p, q in zip(settings['start_points'], points) if q['ready'] and p['seed'])
+        if offered != preloaded['seeds']:  # a viewer is at the picker: have the seeds in memory before Start
+            preloaded['seeds'] = offered
+            background.submit(preload_seeds, offered, tuple(settings['fixtures']))
         # A demo started from a seed: its runs' clocks began past kick-off ("live from" that point).
         seeded = {p['id']: p for p in settings['start_points'] if p['seed']}
         live_from = next((p['label'] for p in seeded.values() for r in active if r.get('started_from') == p['id']), None)
