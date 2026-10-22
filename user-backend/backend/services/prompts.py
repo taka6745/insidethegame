@@ -28,7 +28,8 @@ class PromptService:
                  for role, version in active.items()}
         for row in rows:
             role = roles[row.pop('role')]
-            role['placeholders'] = row['placeholders']  # identical for every version of a role
+            if row['version'] == role['active_version']:  # a save must keep the active version's placeholders
+                role['placeholders'] = row['placeholders']
             role['versions'].append({**row, 'created_at': row['created_at'].isoformat()})
         return {'roles': sorted(roles.values(), key=lambda r: r['role'])}
 

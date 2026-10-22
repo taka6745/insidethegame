@@ -1,10 +1,13 @@
 """Backend-owned prompt store: seeded versions, placeholder guard, optimistic saves and rollback."""
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi.testclient import TestClient
 
 from backend.app import create_app
+from backend.services.prompts import PromptService
 from harness import Upstream
 
 SEEDS = Path(__file__).parents[1] / 'migrations/prompts'
@@ -110,3 +113,16 @@ def test_pipeline_lists_backend_and_tolerates_missing_upstreams(store):
         services = client.get('/dev/pipeline').json()['services']
     assert services[0] == {'name': 'user-backend', 'status': 'ok'}
     assert services[1]['name'] == 'etl' and services[1]['status'] == 'unavailable'
+
+
+def test_the_editor_is_given_the_active_versions_placeholders_not_an_older_ones():
+    class Versions:  # newest first, as the repository lists them; v1 had fewer placeholders than v2
+        def versions(self):
+            at = datetime(2026, 10, 22, tzinfo=timezone.utc)
+            return {'narrative-author': 2}, [
+                {'role': 'narrative-author', 'version': 2, 'template': '{a} {b}', 'placeholders': ['a', 'b'],
+                 'source': 'seed', 'created_at': at},
+                {'role': 'narrative-author', 'version': 1, 'template': '{a}', 'placeholders': ['a'],
+                 'source': 'seed', 'created_at': at}]
+    role, = asyncio.run(PromptService(Versions()).versions())['roles']
+    assert role['placeholders'] == ['a', 'b'] and [v['version'] for v in role['versions']] == [2, 1]
