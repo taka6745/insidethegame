@@ -96,7 +96,7 @@ resource "azurerm_container_app" "demo_control" {
   }
 
   template {
-    min_replicas = 0
+    min_replicas = 1 # kept warm through judging: a cold picker took ~40 s
     max_replicas = 1 # one operator: start and cancel are serialised in the process
 
     container {
