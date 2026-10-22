@@ -93,7 +93,15 @@ export class DemoControls {
     this.document = document;
     this.api = api;
     this.get("demo-start").addEventListener("click", () => void this.start());
-    this.get("demo-cancel").addEventListener("click", () => void this.cancel());
+    // Cancel asks in the page first; Escape or Keep watching closes the dialog without cancelling.
+    const confirm = this.get<HTMLDialogElement>("demo-cancel-dialog");
+    this.get("demo-cancel").addEventListener("click", () => {
+      confirm.returnValue = "";
+      confirm.showModal();
+    });
+    confirm.addEventListener("close", () => {
+      if (confirm.returnValue === "confirm") void this.cancel();
+    });
   }
   get<T extends HTMLElement = HTMLElement>(id: string) {
     return this.document.getElementById(id) as T;
@@ -175,7 +183,6 @@ export class DemoControls {
     });
   }
   cancel() {
-    if (!globalThis.confirm?.("Cancel the demo for everyone watching it?")) return Promise.resolve();
     return this.act(async () => {
       await this.api.cancel();
       return "Demo cancelled.";

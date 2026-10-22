@@ -17,7 +17,8 @@ class El {
   className = "";
   title = "";
   replaceChildren(...children: El[]) { this.children = children; }
-  addEventListener() {}
+  listeners: Record<string, () => void> = {};
+  addEventListener(name: string, fn: () => void) { this.listeners[name] = fn; }
 }
 function doc() {
   const nodes = new Map<string, El>();
@@ -71,6 +72,37 @@ test("start points without a seed are offered but disabled; a live demo shows on
   assert.equal(document.getElementById("demo-live-from")!.textContent,
     "The story so far was generated earlier on this pipeline; live from 60′.");
   assert.deepEqual([nodes.get("demo-start")!.hidden, nodes.get("demo-cancel")!.hidden], [true, false]);
+});
+
+test("Cancel demo asks in the page and cancels only once confirmed", async () => {
+  const { nodes, document } = doc();
+  let cancels = 0, opened = 0;
+  const controls = new DemoControls(document, stub<DemoApi>({
+    cancel: async () => { cancels += 1; return {}; },
+    state: async () => ({ live: false, points: [] }),
+  }));
+  const dialog = nodes.get("demo-cancel-dialog")!;
+  dialog.showModal = () => { opened += 1; };
+  const original = globalThis.confirm;
+  globalThis.confirm = () => assert.fail("no native confirm");
+  try {
+    for (const answer of ["keep", ""]) {  // Keep watching, then Escape
+      nodes.get("demo-cancel")!.listeners.click!();
+      assert.equal(dialog.returnValue, "");
+      dialog.returnValue = answer;
+      dialog.listeners.close!();
+    }
+    await new Promise((done) => setTimeout(done));
+    assert.deepEqual([opened, cancels], [2, 0]);
+    nodes.get("demo-cancel")!.listeners.click!();
+    dialog.returnValue = "confirm";
+    dialog.listeners.close!();
+    await new Promise((done) => setTimeout(done));
+    assert.equal(cancels, 1);
+    assert.equal(controls.busy, false);
+  } finally {
+    globalThis.confirm = original;
+  }
 });
 
 test("while a demo is on the picker lists only its matches", () => {

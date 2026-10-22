@@ -49,6 +49,16 @@
           <button id="demo-cancel" class="text-button" type="button" hidden>Cancel demo</button>
           <p id="demo-live-from" class="demo-live-from" hidden></p>
         </div>
+        <dialog id="demo-cancel-dialog" class="confirm-dialog" aria-labelledby="demo-cancel-title" aria-describedby="demo-cancel-detail">
+          <form method="dialog">
+            <h2 id="demo-cancel-title">Cancel the demo?</h2>
+            <p id="demo-cancel-detail">It stops for everyone watching it.</p>
+            <div class="confirm-actions">
+              <button class="text-button" value="keep" autofocus>Keep watching</button>
+              <button class="primary" value="confirm">Cancel demo</button>
+            </div>
+          </form>
+        </dialog>
         <section id="demo-progress" class="demo-progress" aria-label="Demo starting" aria-live="polite" hidden></section>
         <p id="picker-notice" class="notice" role="alert" hidden></p>
         <ul id="match-list" class="match-list" aria-live="polite">

@@ -1076,6 +1076,36 @@ footer a {
   font-size: 13px;
   color: var(--muted, #8ea3b8);
 }
+/* Cancel demo asks in the page: a small modal dialog in the viewer's surface colours. */
+.confirm-dialog {
+  width: min(360px, calc(100vw - 32px));
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+}
+.confirm-dialog::backdrop {
+  background: rgb(10 0 14 / 70%);
+}
+.confirm-dialog h2 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+.confirm-dialog p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+}
+.confirm-actions .text-button {
+  font-size: 12px;
+}
 /* Demo fast-forward: a small select and button; wraps on narrow screens. */
 .demo-skip {
   display: flex;
