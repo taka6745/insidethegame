@@ -1,11 +1,11 @@
 # Overview
 
-> **In short:** match events stream into Event Hubs; one Stream Analytics job writes raw events, key events and per-minute statistics to serverless Azure SQL and sends notifications to Service Bus; Data API builder serves the tables over GraphQL. Implemented and tested; applied to Azure 22 Oct for the Azure test (demo acceptance pending).
+> **In short:** match events stream into Event Hubs; one Stream Analytics job writes raw events, key events and per-minute statistics to serverless Azure SQL and sends notifications to Service Bus; Data API builder serves the tables over GraphQL. Implemented, tested and deployed to Azure.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · applied to Azure 22 Oct for the Azure test (demo acceptance pending) |
-| **Demo** | Seed export/restore on the admin API, only with `DEMO_SEEDS=1` (implemented, SQL-tested, used for the four local seeds) |
+| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · deployed to Azure by `./dev azure up` (redeployed 23 Oct) and run there with three concurrent matches |
+| **Demo** | Seed export/restore on the admin API, only with `DEMO_SEEDS=1` (implemented, SQL-tested; all four seeds recorded on Azure) |
 | **Event format** | Opta MA1 (match info) and MA3 (events), labelled `synthetic: true` |
 | **Runs on** | Event Hubs, Stream Analytics, Azure SQL serverless, Data API builder on Container Apps, Service Bus |
 | **Writes** | SQL tables `matches`, `rawEvents`, `keyEvents`, `minuteStats`; Service Bus `match-notifications` |
@@ -34,18 +34,17 @@
 
 ## 3. Status by area
 
-*In short: built and verified against a Python reference; real-time speed needs a setting change.*
+*In short: built, verified against a Python reference and running on Azure.*
 
 | Area | Status |
 | --- | --- |
 | Event contract, Opta codes | Implemented |
-| Seeder (synthetic match, replay) | Implemented, tested; temporary until data generation provides matches |
+| Seeder (synthetic match, replay) | Implemented, tested; developer tool for synthetic replays and `devtools verify` (the feed produces the stack's matches) |
 | SQL tables and view | Tested locally and in Azure against the reference |
-| Stream Analytics query | MA1/MA3 outputs were deployed (dev, deleted 2026-10-21); a 10x replay matched the reference for GraphQL and Service Bus. Multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API: implemented and tested against the reference and local stream; applied 22 Oct, Azure match run pending ([decisions](decisions.md#3-open-items)) |
-| Data API builder | Applied 22 Oct (internal ingress, scales to zero) |
-| Stream schedule (spend guard) | Applied 22 Oct: match events start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
-| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested, used for the local seeds; the 20′ seed recorded on Azure 22 Oct (HT, 60′, 85′ not yet) |
-| Real-time (1x) match | `./dev azure up` sets `window_seconds = 60`; Azure run part of the pending acceptance |
+| Stream Analytics query | Deployed; real-time (`window_seconds = 60`) match runs on Azure with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
+| Data API builder | Deployed (internal ingress, scales to zero) |
+| Stream schedule (spend guard) | Deployed: match events (or demo Start) start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
+| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested; 20′, HT, 60′ and 85′ recorded on Azure and restored by seeded starts |
 | Local stream stand-in (`local_stream/`) | Implemented, unit- and SQL-tested, runs 1x replays in the local Docker stack; not deployed as a worker. Also MatchEvent v2, POS, watermarks, the stat catalogue, per-match purge and demo seeds (`DEMO_SEEDS=1`) ([local-stream](components/local-stream.md)) |
 
 ## 4. Glossary

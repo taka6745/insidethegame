@@ -4,8 +4,8 @@
 
 | | |
 | --- | --- |
-| **Status** | Applied 22 Oct by `./dev azure up` for the Azure test ([runbook](../../terraform/runbook.md)): the whole pipeline with the multi-match outputs, `match-progress` input, purge API, SPADL app, `sql/azure` triggers and the stream schedule. Demo acceptance (PLAN.md §10.4) pending |
-| **Demo seeds** | `demo_seeds` (default on, judge build) sets `DEMO_SEEDS=1` on the admin app; `./dev azure up --release` turns it off |
+| **Applied by** | `./dev azure up` ([deployment](../../terraform/docs/deployment.md)): the whole pipeline with the multi-match outputs, `match-progress` input, purge API, SPADL app, `sql/azure` triggers and the stream schedule |
+| **Demo seeds** | `demo_seeds` (default on, demo build) sets `DEMO_SEEDS=1` on the admin app; `./dev azure up --release` turns it off |
 | **Terraform** | [`infra/`](../infra/), local state (`./dev azure` keeps it in `.local/terraform/etl/`); also hosts the shared Container Apps environment and registry |
 | **Region** | Australia East |
 | **Cost when idle** | Low: SQL auto-pauses (free offer), DAB scales to zero, the job runs only while match events flow (stream schedule); Event Hubs and Service Bus Standard bill hourly |
@@ -35,11 +35,11 @@ cd etl
 cp infra/local.auto.tfvars.example infra/local.auto.tfvars    # subscription and budget emails
 terraform -chdir=infra init
 terraform -chdir=infra apply
-.venv/Scripts/python -m devtools azure-setup                    # migrations, sql/azure triggers, identity grants
+.venv/bin/python -m devtools azure-setup                    # migrations, sql/azure triggers, identity grants
 # Purge API: build the image into the registry, apply with its tag, then grant its identity.
 az acr build --registry "$(terraform -chdir=infra output -raw registry)" --image etl-stream:TAG .
 terraform -chdir=infra apply -var admin_image_tag=TAG
-.venv/Scripts/python -m devtools azure-setup
+.venv/bin/python -m devtools azure-setup
 ```
 
 Purge: the purge API has internal ingress. The `/dev/` Matches panel calls it through the frontend's `/purge-api/etl`, which adds `Authorization: Bearer <admin_token>`; the browser never sees the token. Body: `{"match_id": …}` or `{"all": true}`.
@@ -51,18 +51,18 @@ Stop the job before an apply that changes its query, inputs or outputs. DAB and 
 *In short: start, replay, check, stop.*
 
 ```sh
-.venv/Scripts/python -m devtools asa start
+.venv/bin/python -m devtools asa start
 ETL_EVENTHUB_CONNECTION_STRING=$(terraform -chdir=infra output -raw eventhub_send_connection_string) \
-  .venv/Scripts/python -m seeder.replay seeder/matches/itg-syn-0001.jsonl --speed 10 --target eventhub --match-id demo1
+  .venv/bin/python -m seeder.replay seeder/matches/itg-syn-0001.jsonl --speed 10 --target eventhub --match-id demo1
 # DAB has internal ingress: expose it only while verifying, then set it back to internal
 az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type external
-.venv/Scripts/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(terraform -chdir=infra output -raw graphql_url | sed 's/.internal//')"
+.venv/bin/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(terraform -chdir=infra output -raw graphql_url | sed 's/.internal//')"
 az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type internal
-.venv/Scripts/python -m devtools check-notifications .local/replays/demo1.jsonl
-.venv/Scripts/python -m devtools asa stop
+.venv/bin/python -m devtools check-notifications .local/replays/demo1.jsonl
+.venv/bin/python -m devtools asa stop
 ```
 
-At ⅓ streaming unit the job runs about two minutes behind a 10x replay. For a real-time match, set `window_seconds = 60` and apply (with the job stopped).
+At ⅓ streaming unit the job runs about two minutes behind a 10x replay. `./dev azure up` sets `window_seconds = 60` for real-time matches (about 40 % SU, about 25 s watermark delay); change it only with the job stopped.
 
 ## 4. Access for other services
 

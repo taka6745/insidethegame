@@ -8,7 +8,7 @@
 | **Storage** | Azure SQL serverless (free offer, auto-pause) |
 | **API** | Data API builder 2.1.5 on Container Apps |
 | **Delivery** | At least once everywhere; inserts and messages are deduplicated by key |
-| **Azure** | Applied 22 Oct (Azure test); Stream Analytics started and stopped by the spend guard's schedule |
+| **Azure** | Stream Analytics started and stopped by the spend guard's schedule |
 
 ## 1. Diagram
 
@@ -76,7 +76,7 @@ The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `p
 
 *In short: one resource group, dev-sized everything.*
 
-| Resource | Name (dev deployment of 2026-10-21, since deleted; `./dev azure up` mints new suffixes) | Size and notes |
+| Resource | Name (example suffix; `./dev azure up` mints its own) | Size and notes |
 | --- | --- | --- |
 | Resource group | `rg-itg-etl-dev` | Budget alert at US$50/month |
 | Event Hubs | namespace `itg-etl-dev-0zvxh-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `stream-analytics-progress`, `user-backend` |
@@ -86,8 +86,8 @@ The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `p
 | Service Bus | `itg-etl-dev-0zvxh-sbns`, topic `match-notifications` | Standard; duplicate detection 10 min; subscription `narrative-engine` (10 deliveries) |
 | Stream schedule | `stream_schedule.tf` | Two Event Hubs metric alerts call the guard's runbook: match events start the job, 30 min (`stream_idle_window`) without them stop it |
 | Log Analytics | `itg-etl-dev-0zvxh-logs` | Container Apps logs, 0.5 GB/day cap |
-| Registry, purge API | `admin.tf` | Applied 22 Oct: Basic ACR; `itg-etl-dev-admin` (0–1 replicas) once `admin_image_tag` is set; with `demo_seeds` also the seed export/restore routes |
-| SPADL post-processor | `spadl.tf` | Applied 22 Oct: `itg-etl-dev-spadl` (1 replica, no ingress; `ETL_ROLE=spadl`) once `admin_image_tag` is set |
+| Registry, purge API | `admin.tf` | Basic ACR; `itg-etl-dev-admin` (0–1 replicas) once `admin_image_tag` is set; with `demo_seeds` also the seed export/restore routes |
+| SPADL post-processor | `spadl.tf` | `itg-etl-dev-spadl` (1 replica, no ingress; `ETL_ROLE=spadl`) once `admin_image_tag` is set |
 
 ## 6. Guarantees and limits
 

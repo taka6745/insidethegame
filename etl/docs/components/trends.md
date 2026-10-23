@@ -4,10 +4,10 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested against SQL Server 2022 and 2025-CU9 (parity with the reference on all three recordings) · not yet run on the shared stack or Azure |
+| **Status** | Implemented · tested against SQL Server 2022 and 2025-CU9 (parity with the reference on all three recordings) · read by the engine's analyst locally and on Azure |
 | **Code** | [`011_trend_definitions.sql`](../../sql/migrations/011_trend_definitions.sql) (table, seed), [`014_trend_patterns.sql`](../../sql/migrations/014_trend_patterns.sql) (procedures, columns, the current seed; replaces `012`), [`015_trend_parameters.sql`](../../sql/migrations/015_trend_parameters.sql) (`trendParameters`: the formulas' constants; `trendMinuteRows` reads them), [`018_trend_labels.sql`](../../sql/migrations/018_trend_labels.sql) (plain labels for writers), [`devtools/calibrate_trends.py`](../../devtools/calibrate_trends.py) (thresholds from the recordings), [`reference/trends.py`](../../reference/trends.py) |
 | **Served as** | DAB `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` ([contract](../../contracts/README.md#output-4-trend-indicators)) |
-| **Definitions** | [local contracts §4b](../../../local/contracts.md#4b-trend-definitions) |
+| **Definitions** | [local contracts §4b](../../../local/contracts/README.md#4b-trend-definitions) |
 | **Tests** | `test_trends.py` (rules, golden), `test_sql_trends.py` (SQL = reference, bounds, VAR game state, re-seed, speed) |
 
 ## 1. How it works
@@ -55,7 +55,7 @@ Served in one window only, without a baseline: `territory_fade` in `last15` (the
 
 *In short: the scripted-tactics recordings support control, style, flank, fade and game-state claims and territory spells; not momentum.*
 
-The S1 v2 experiment (permutation tests over shuffled minutes, team distinctness, calibration on the three scripted-tactics recordings) seeded `014`: possession, field tilt, attacking-half and final-third share, defensive height, box entries, dominance, PPDA (low end), directness, both flanks, the late fade and territory by game state enabled, with thresholds from `devtools.calibrate_trends` (the outer 20% / 10% of served values in the trend's direction; change at the 90th percentile of |delta|); shots, box shots, final-third entries, fouls and cards enabled as counts (cards: no thresholds, any card is a key event); territory spells enabled, pressure spells only alongside territory (`requires`); contests, aggression, fast breaks, long-ball share and momentum disabled. Each row's `evidence` says why.
+The trend experiment (permutation tests over shuffled minutes, team distinctness, calibration on the three scripted-tactics recordings) seeded `014`: possession, field tilt, attacking-half and final-third share, defensive height, box entries, dominance, PPDA (low end), directness, both flanks, the late fade and territory by game state enabled, with thresholds from `devtools.calibrate_trends` (the outer 20% / 10% of served values in the trend's direction; change at the 90th percentile of |delta|); shots, box shots, final-third entries, fouls and cards enabled as counts (cards: no thresholds, any card is a key event); territory spells enabled, pressure spells only alongside territory (`requires`); contests, aggression, fast breaks, long-ball share and momentum disabled. Each row's `evidence` says why.
 
 ## 5. Re-seeding
 
@@ -75,4 +75,4 @@ Formula constants re-seed the same way: a migration declaring the whole `@trendP
 
 *In short: a few hundred milliseconds on an emulated server, set-based except the momentum loop.*
 
-At full time (Riverton Rovers–United before its 2026-10-22 re-render: 11,392 events, 2,963 actions, 5,356 samples; now 11,133, 2,710 and 5,198) each procedure took 220–420 ms on SQL Server 2022 under x86 emulation on an Apple-silicon laptop with the CPU busy (`statsAtSeq`: 75–170 ms there); `test_sql_trends.py` fails above 500 ms. Native SQL Server is several times faster. The window functions over the final actions (next action, chain start, first entries) and the table-variable inserts dominate.
+At full time (Riverton Rovers–Forgeham United, an earlier render with 11,392 events, 2,963 actions and 5,356 samples) each procedure took 220–420 ms on SQL Server 2022 under x86 emulation on an Apple-silicon laptop with the CPU busy (`statsAtSeq`: 75–170 ms there); `test_sql_trends.py` fails above 500 ms. Native SQL Server is several times faster. The window functions over the final actions (next action, chain start, first entries) and the table-variable inserts dominate.

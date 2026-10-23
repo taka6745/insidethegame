@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | **Applied 22 Oct (`./dev azure up`, Azure test; match run part of the pending acceptance).** Outputs 1–5 (MA1/MA3) matched the reference on a 10x replay in the earlier dev deployment (deleted 2026-10-21). Outputs 6–9 (`possessionSamples`, `matchTeams`, `matchPlayers`, `canonicalEvents`, `matchProgressMarks`), the `match-progress` input, MA1 `fixture sourceMatchId runId capabilities` columns, and the Azure SQL triggers ([sql](sql.md#azure-only-stream-analytics-rows)). `MAX … OVER … WHEN`, `SessionWindow` and the array UDFs are checked by tests and the docs; their output on a live Azure match is not yet compared |
+| **Status** | Runs real-time matches on Azure with every output, the `match-progress` input and the Azure SQL triggers ([sql](sql.md#5-azure-only-stream-analytics-rows)). Progress lookback is 10 minutes and sessions are capped at 4 hours: a one-day bound ran the job out of memory (`test_azure_parity.py` checks the bounds) |
 | **Runs** | Only while matches play: the [stream schedule](#6-run-only-while-matches-play) starts and stops it |
 | **Code** | [`stream-analytics/query.asaql`](../../stream-analytics/query.asaql), [`stream-analytics/udfs/src/`](../../stream-analytics/udfs/src/) (TypeScript; `./dev udfs` compiles each to the plain `function main` `.js` Terraform uploads) |
 | **Job** | StandardV2, ⅓ streaming unit, compatibility 1.2, created stopped |
@@ -87,7 +87,7 @@ Edit `udfs/src/*.ts`, then run `./dev udfs`: `tsc` (`udfs/tsconfig.json`, ES2015
 
 The [local worker](local-stream.md) commits rows and the watermark in one transaction. Stream Analytics writes each output separately, so the job cannot know when another output's rows are in SQL. It writes marks instead: (`seq`, highest MA3 `seq`, highest POS `sampleId` sent so far). Event Hubs keeps send order per partition (`matchId`), and the feed sends an event's MA3 rows before the next event, so these numbers cover everything the watermark promises. The marks read the hub a second time without `TIMESTAMP BY` (consumer group `stream-analytics-progress`) because MA3 timestamps follow the match clock, not send order. The "sent so far" highs look back 10 minutes and the quiet-spell sessions last at most 4 hours: `MAX … OVER` holds every row of its window in memory and a start reads back the longest window, so the earlier one-day bounds ran the job out of memory on a hub holding a day of demos (23 Oct; no marks, so no watermark). `test_azure_parity.py` checks no recording goes that long without each kind of message.
 
-Azure SQL's `INSTEAD OF INSERT` triggers advance `matchProgress` to the highest mark whose events `1..seq`, MA3 rows `1..ma3Seq` and POS samples `1..sampleId` are all stored, whichever output lands last. This relies on the feed numbering canonical events, MA3 rows and POS samples 1, 2, 3… per match ([contracts](../../../local/contracts.md#1-identity-and-snapshots)). `reference/pipeline.py` (`progress_marks`, `watermark`, `match_status`) is the expected result.
+Azure SQL's `INSTEAD OF INSERT` triggers advance `matchProgress` to the highest mark whose events `1..seq`, MA3 rows `1..ma3Seq` and POS samples `1..sampleId` are all stored, whichever output lands last. This relies on the feed numbering canonical events, MA3 rows and POS samples 1, 2, 3… per match ([contracts](../../../local/contracts/README.md#1-identity-and-snapshots)). `reference/pipeline.py` (`progress_marks`, `watermark`, `match_status`) is the expected result.
 
 Not equal to local: Service Bus notifications for a match purged while live keep flowing until its feed run stops (the narrative engine drops them by its own tombstones), and rows stamped after a purge-all cut-off for a match whose MA1 was never stored are kept until the next purge.
 
@@ -102,4 +102,4 @@ Not equal to local: Service Bus notifications for a match purged while live keep
 | `stream-start` | Incoming messages > 0 in the last minute | `stream-start`: start, resuming after the last output, so events buffered while it starts are processed (kick-off a minute or two late, then caught up) |
 | `stream-stop` | None for `stream_idle_window` (default `PT30M`, longer than half time) | `stream-stop` |
 
-The guard's last resort (90 % of the credit) also stops the job; `./dev azure up` restores it ([runbook §4](../../../terraform/runbook.md#4-spend-guard-and-idle-saver)). Implemented and applied 22 Oct; seeing it fire on a real match is part of the pending acceptance.
+The guard's last resort (90 % of the credit) also stops the job; `./dev azure up` restores it ([spend guard](../../../terraform/docs/components/guard.md)). Demo control's Start also asks the guard to start the job at once rather than wait for the traffic alert.

@@ -1,17 +1,17 @@
 # ETL contracts
 
-> **In short:** one Event Hubs stream per match in (MA1, MA3, POS and canonical `MatchEvent` v2), GraphQL (including SPADL actions) and Service Bus notifications out. MA1/MA3 v1 fields are unchanged; the multi-match additions below are **implemented and tested in the local stream** (`etl-stream`); the Stream Analytics query implements the same outputs (MA1, MA3, POS, `MatchEvent` v2, watermark marks), equal to the local stream by test; applied to Azure 22 Oct by `./dev azure up` (its live-match run is part of the pending demo acceptance).
+> **In short:** one Event Hubs stream per match in (MA1, MA3, POS and canonical `MatchEvent` v2), GraphQL (including SPADL actions) and Service Bus notifications out. MA1/MA3 v1 fields are unchanged; the multi-match additions below run in the local stream (`etl-stream`) and in the Stream Analytics query on Azure (MA1, MA3, POS, `MatchEvent` v2, watermark marks), equal by test.
 
 | | |
 | --- | --- |
-| **Inputs** | Event Hubs `match-events`, partition key `matchId`: `MA1`, `MA3`, `POS` ([schema](match-event.schema.json), [codes](opta-codes.json)) and `MatchEvent` v2 ([local contracts](../../local/contracts.md#2-matchevent-v2)) |
-| **Outputs** | DAB GraphQL (below and [local contracts](../../local/contracts.md#3-etl-graphql-dab)); Service Bus `match-notifications` |
+| **Inputs** | Event Hubs `match-events`, partition key `matchId`: `MA1`, `MA3`, `POS` ([schema](match-event.schema.json), [codes](opta-codes.json)) and `MatchEvent` v2 ([local contracts](../../local/contracts/README.md#2-matchevent-v2)) |
+| **Outputs** | DAB GraphQL (below and [local contracts](../../local/contracts/README.md#3-etl-graphql-dab)); Service Bus `match-notifications` |
 | **Match identity** | `matchId = {fixture}-{run8}`, minted by the feed; never reused |
 | **Snapshot identity** | `(matchId, seq)`; `seq` = canonical `MatchEvent` sequence |
-| **Admin** | `POST /admin/matches/purge` ([purge contract](../../local/contracts.md#5-purge)); with `DEMO_SEEDS=1` only, [seed export and restore](#admin-demo-seeds-demo_seeds-only) |
+| **Admin** | `POST /admin/matches/purge` ([purge contract](../../local/contracts/README.md#5-purge)); with `DEMO_SEEDS=1` only, [seed export and restore](#admin-demo-seeds-demo_seeds-only) |
 | **Executable rules** | [reference pipeline](../reference/pipeline.py) |
-| **SPADL** | [spadlActions](#output-3-spadl-actions) from MA3 ([schema](spadl-action.schema.json), [rules](../reference/spadl.py)); **implemented and tested locally; applied to Azure 22 Oct** |
-| **Trends** | [Output 4](#output-4-trend-indicators): indicators, spells and momentum at a snapshot ([rules](../reference/trends.py), [definitions](../../local/contracts.md#4b-trend-definitions)); **implemented and tested locally; applied to Azure 22 Oct** |
+| **SPADL** | [spadlActions](#output-3-spadl-actions) from MA3 ([schema](spadl-action.schema.json), [rules](../reference/spadl.py)); **implemented, tested and deployed** |
+| **Trends** | [Output 4](#output-4-trend-indicators): indicators, spells and momentum at a snapshot ([rules](../reference/trends.py), [definitions](../../local/contracts/README.md#4b-trend-definitions)); **implemented, tested and deployed** |
 
 ## Input: Event Hubs `match-events`
 
@@ -93,7 +93,7 @@ Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhos
 | `keyEvents` | key event | Authoritative narrative ledger (see types below). |
 | `minuteStats` | contestant, minute, window | Per-minute deltas. Usually prefer `matchStatsAsOfs`. |
 | `matchStatsAsOfs` | contestant, match minute | Running totals as of the end of that minute. |
-| `matches` (extended), `matchWatermarks`, `statDefinitions`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); in Azure from Stream Analytics once deployed. |
+| `matches` (extended), `matchWatermarks`, `statDefinitions`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts/README.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); in Azure from Stream Analytics once deployed. |
 | `spadlActions` | action ([below](#output-3-spadl-actions)) | SPADL actions converted from MA3; the stat catalogue counts these. |
 | `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` | definition; indicator × team × window; spell; minute × team ([below](#output-4-trend-indicators)) | Trend indicators for the narrative engine's analyst. |
 
@@ -169,7 +169,7 @@ Differences from socceraction, none of which changes any recording: look-ahead s
 
 *In short: who controls the game, per window, as of a snapshot; thresholds and claimability are configuration.*
 
-Three procedures recompute from the rows final at `(matchId, s)` on every call, so a backlog read equals the live one. Like `executeStatsAtSeq`, each returns `[]` for an unknown or purged match or for `s` above `seq` or `spadlSeq` (retry), never a partial set. Formulas: [local contracts §4b](../../local/contracts.md#4b-trend-definitions); twin [reference/trends.py](../reference/trends.py); [component page](../docs/components/trends.md).
+Three procedures recompute from the rows final at `(matchId, s)` on every call, so a backlog read equals the live one. Like `executeStatsAtSeq`, each returns `[]` for an unknown or purged match or for `s` above `seq` or `spadlSeq` (retry), never a partial set. Formulas: [local contracts §4b](../../local/contracts/README.md#4b-trend-definitions); twin [reference/trends.py](../reference/trends.py); [component page](../docs/components/trends.md).
 
 ```text
 canonicalEvents (minutes) ┐
@@ -213,7 +213,7 @@ query ($m: String!, $s: Int!) {
    "minutes": 13, "zoneShare": 0.8179, "shots": 3, "boxEntries": 19, "ongoing": false, "enabled": false}, …]}}
 ```
 
-(Riverton Rovers–United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
+(Riverton Rovers–Forgeham United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
 
 ## Output 2: Service Bus topic `match-notifications`
 
@@ -229,11 +229,11 @@ JSON body; application property `notificationType` (same value as `messageType`)
 - `MinuteClosed` and the SQL write for that minute happen together. If `matchStatsAsOfs` has no row for that minute yet, retry briefly.
 - Replays can run faster than real time (`--speed 10` gives 6-second minutes), so don't assume 60 seconds per minute.
 
-**Status:** verified against the reference pipeline in the earlier dev deployment (deleted 2026-10-21; `./dev azure up` recreated it 22 Oct). Subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. In the shared Docker stack, `local_stream/` sends the same bodies, properties and MessageIds to the Service Bus emulator (subscription `narrative-live`). Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. On Azure, messages only flow while the Stream Analytics job is running (the stream schedule starts it when match events arrive and stops it after 30 quiet minutes) and the feed (or a seeder replay) is sending.
+**Status:** verified against the reference pipeline on Azure. Subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. In the shared Docker stack, `local_stream/` sends the same bodies, properties and MessageIds to the Service Bus emulator (subscription `narrative-live`). Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. On Azure, messages only flow while the Stream Analytics job is running (the stream schedule starts it when match events arrive and stops it after 30 quiet minutes) and the feed (or a seeder replay) is sending.
 
 ## Admin: demo seeds (`DEMO_SEEDS` only)
 
-Demo-only routes on the ETL admin API (bearer token like the purge), present only with `DEMO_SEEDS=1` (local compose and the judge build); a production release has none. Implemented and SQL-tested ([component page](../docs/components/local-stream.md#4-demo-seeds-demo_seeds-only)).
+Demo-only routes on the ETL admin API (bearer token like the purge), present only with `DEMO_SEEDS=1` (local compose and the demo build); a production release has none. Implemented and SQL-tested ([component page](../docs/components/local-stream.md#4-demo-seeds-demo_seeds-only)).
 
 | Route | Body / reply | Refusals |
 | --- | --- | --- |

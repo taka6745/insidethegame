@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · unit- and SQL-tested · run in the local stack (`./dev up backend`) · not deployed as a worker (Azure runs the real job, equal by test on all three recordings: `test_azure_parity.py`). The same image's purge API is the Azure admin app (`infra/admin.tf`; applied 22 Oct). Demo seed routes: implemented and SQL-tested, `DEMO_SEEDS=1` only |
+| **Status** | Implemented · unit- and SQL-tested · run in the local stack (`./dev up backend`) · not deployed as a worker (Azure runs the real job, equal by test on all three recordings: `test_azure_parity.py`). The same image's purge API is the Azure admin app (`infra/admin.tf`). Demo seed routes: implemented and SQL-tested, `DEMO_SEEDS=1` only |
 | **Code** | [`local_stream/`](../../local_stream/) (worker, processor, repository, SDK adapters, `state.sql`, `init-sql.sh`) |
 | **Image** | [`Dockerfile`](../../Dockerfile), compose service `etl-stream`; DAB `/health` (anonymous) backs the `etl-dab` healthcheck |
 | **Reads** | Event Hubs `match-events`, consumer group `stream-analytics`: MA1, MA3, POS, `MatchEvent` v2 |
@@ -25,7 +25,7 @@ feed run ─ MA1/MA3/POS/MatchEvent v2 ─→ Event Hubs ─→ etl-stream ─�
 - **Watermark:** event *s* is complete once anything else arrives for its match (its MA3 rows come straight after it), or after `ETL_WATERMARK_IDLE_SECONDS` (3 s) of quiet. `matchProgress` holds it; the `matchWatermarks` view joins its event. `status` goes `scheduled` → `live` (first event) → `finished` (watermark reaches the final `period_end`).
 - **SPADL:** a second thread runs the [SPADL post-processor](spadl.md) on its own connection: committed MA3 rows → `spadlActions`, `matchWatermarks.spadlSeq`.
 - **Stat catalogue:** `statsAtSeq(@matchId, @seq)` counts SPADL actions, MA3 card rows and POS samples by the `statDefinitions` rows ([SQL](sql.md)); it is empty above the watermark or `spadlSeq`.
-- **Admin (`ETL_ADMIN_PORT`, default 8000):** `GET /health`; `POST /admin/matches/purge` with `{"match_id": …}` or `{"all": true}` ([purge contract](../../../local/contracts.md#5-purge)). It writes the tombstone (`purgedMatches`; `all` also sets `purgeCutoff`), then deletes the match's rows, progress, window and outbox in the same transaction; checkpoints and `statDefinitions` stay. Tombstones survive restarts, so redelivered messages never recreate the match. On Azure the image runs with `ETL_ROLE=admin`: only this API, against Azure SQL with its managed identity (`ETL_SQL_AUTH=managed-identity`, driver `mssql-python`), POST behind `Authorization: Bearer $ETL_ADMIN_TOKEN`; Azure SQL's triggers enforce the tombstones ([SQL §5](sql.md#5-azure-only-stream-analytics-rows)).
+- **Admin (`ETL_ADMIN_PORT`, default 8000):** `GET /health`; `POST /admin/matches/purge` with `{"match_id": …}` or `{"all": true}` ([purge contract](../../../local/contracts/README.md#5-purge)). It writes the tombstone (`purgedMatches`; `all` also sets `purgeCutoff`), then deletes the match's rows, progress, window and outbox in the same transaction; checkpoints and `statDefinitions` stay. Tombstones survive restarts, so redelivered messages never recreate the match. On Azure the image runs with `ETL_ROLE=admin`: only this API, against Azure SQL with its managed identity (`ETL_SQL_AUTH=managed-identity`, driver `mssql-python`), POST behind `Authorization: Bearer $ETL_ADMIN_TOKEN`; Azure SQL's triggers enforce the tombstones ([SQL §5](sql.md#5-azure-only-stream-analytics-rows)).
 - **Windows:** 60-second event-time tumbling windows. A minute closes when the next minute's first event arrives, or after 75 s without messages for that match (paused run, full time).
 - **Notifications:** `MinuteClosed`, `KeyEventDetected`, `PeriodStarted`, `PeriodEnded`, with `notificationType` for the `narrative-live` subscription filter.
 
@@ -45,11 +45,11 @@ One worker process, one SQL round trip per row: about 50 messages/s on the emula
 
 *In short: a demo-only adapter on the admin API exports one match's rows and restores them under a new matchId.*
 
-[`demo_seeds.py`](../../local_stream/demo_seeds.py) adds two routes to the admin server when `DEMO_SEEDS=1` (local compose; the judge build's admin app); without it they do not exist. Authorised like the purge.
+[`demo_seeds.py`](../../local_stream/demo_seeds.py) adds two routes to the admin server when `DEMO_SEEDS=1` (local compose; the demo build's admin app); without it they do not exist. Authorised like the purge.
 
 | Route | Does |
 | --- | --- |
 | `GET /admin/matches/export?match_id=` | `{match_id, schema, tables}`: every match table's rows (events, SPADL, trend inputs, progress, windows) and a fingerprint of their columns |
 | `POST /admin/matches/restore {match_id, max_seq, schema, tables}` | One transaction, then the worker reloads its state from SQL (as after a restart). `409` for another schema, a known or tombstoned match, rows of another match or past `max_seq`; `413` over 512 MB |
 
-Demo control records a seed from a *held* feed run and restores it before releasing the new run, which then sends only what follows: the rows equal one uninterrupted run (`test_sql_seeds.py`). Rows go in the shapes the stream writes; no core code knows a demo exists ([PLAN.md §10.6](../../../PLAN.md)).
+Demo control records a seed from a *held* feed run and restores it before releasing the new run, which then sends only what follows: the rows equal one uninterrupted run (`test_sql_seeds.py`). Rows go in the shapes the stream writes; no core code knows a demo exists ([demo control](../../../local/docs/components/demo-control.md)).

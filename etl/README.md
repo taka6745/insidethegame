@@ -4,9 +4,9 @@
 
 ![ETL owns standard statistics and historical events](architecture.svg)
 
-**Implemented and tested; applied to Azure 22 Oct for the Azure test (demo acceptance pending)** (the multi-match outputs, Azure SQL triggers and purge API are tested locally; their Azure match run is part of the acceptance: [decisions](docs/decisions.md#3-open-items)). Turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus.
+**Implemented, tested and deployed to Azure** ([status](docs/overview.md#3-status-by-area)). Turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus.
 
-**Local pipeline stand-in (`local_stream/`): implemented and tested locally; not deployed as a worker (on Azure the same image serves only the purge and demo-seed API).** `./dev up backend` also runs this pipeline's SQL schema and Data API builder 2.1.5 config on the stack's SQL Server (database `insidethegame`, GraphQL `http://localhost:15001/graphql`, `http://etl-dab:5000/graphql` inside Docker). A Python worker replaces Stream Analytics: it reads MA1, MA3, POS and `MatchEvent` v2 from Event Hubs (consumer group `stream-analytics`), applies `reference/` one message at a time, writes `matches`/`rawEvents`/`keyEvents`/`minuteStats` plus the multi-match read models (teams, players, canonical events, possession samples, watermarks; [contracts](../local/contracts.md#3-etl-graphql-dab)), serves the 126-stat SPADL catalogue (42 kinds × 3 scopes) through `executeStatsAtSeq`, purges per match (`POST /admin/matches/purge`), and sends the [notifications](contracts/README.md#output-2-service-bus-topic-match-notifications) to `match-notifications` (subscription `narrative-live`, filtered on `notificationType`). Each feed run is its own match: `{fixture}-{first 8 hex of run id}`. The earlier recorded-match stand-in (`demo_etl/`) is deleted; its stat catalogue lives here (`statDefinitions`, `executeStatsAtSeq`).
+**Local pipeline stand-in (`local_stream/`): implemented and tested locally; not deployed as a worker (on Azure the same image serves only the purge and demo-seed API).** `./dev up backend` also runs this pipeline's SQL schema and Data API builder 2.1.5 config on the stack's SQL Server (database `insidethegame`, GraphQL `http://localhost:15001/graphql`, `http://etl-dab:5000/graphql` inside Docker). A Python worker replaces Stream Analytics: it reads MA1, MA3, POS and `MatchEvent` v2 from Event Hubs (consumer group `stream-analytics`), applies `reference/` one message at a time, writes `matches`/`rawEvents`/`keyEvents`/`minuteStats` plus the multi-match read models (teams, players, canonical events, possession samples, watermarks; [contracts](../local/contracts/README.md#3-etl-graphql-dab)), serves the 126-stat SPADL catalogue (42 kinds × 3 scopes) through `executeStatsAtSeq`, purges per match (`POST /admin/matches/purge`), and sends the [notifications](contracts/README.md#output-2-service-bus-topic-match-notifications) to `match-notifications` (subscription `narrative-live`, filtered on `notificationType`). Each feed run is its own match: `{fixture}-{first 8 hex of run id}`. The earlier recorded-match stand-in (`demo_etl/`) is deleted; its stat catalogue lives here (`statDefinitions`, `executeStatsAtSeq`).
 
 ```text
 feed ─ MA1/MA3/POS/MatchEvent v2 ─→ Event Hubs ─→ local_stream ─→ SQL Server ─→ etl-dab GraphQL
@@ -19,15 +19,15 @@ Windows are 60-second event-time tumbling windows; a minute closes when the next
 | --- | --- |
 | **Documentation** | [docs/](docs/README.md): overview, architecture, one page per component, development, deployment, decisions |
 | **For consumers** | [contracts/](contracts/README.md): GraphQL queries, Service Bus messages, key-event conventions (Azure pipeline) |
-| **Demo seeds** | `local_stream/demo_seeds.py`: export and restore one match's rows on the admin API, mounted only with `DEMO_SEEDS=1` (local compose, judge build); [local-stream §4](docs/components/local-stream.md#4-demo-seeds-demo_seeds-only) |
+| **Demo seeds** | `local_stream/demo_seeds.py`: export and restore one match's rows on the admin API, mounted only with `DEMO_SEEDS=1` (local compose, demo build); [local-stream §4](docs/components/local-stream.md#4-demo-seeds-demo_seeds-only) |
 | **Spend guard** | Stream Analytics runs only while match events flow (`infra/stream_schedule.tf`, [stream-analytics §6](docs/components/stream-analytics.md#6-run-only-while-matches-play)) |
 
 The catalogue counts final SPADL actions converted from MA3 (`finalSeq ≤ seq`); cards come from MA3 card rows and possession from the feed's POS samples; metrics the MA1 capabilities don't cover are unavailable. Synthetic football is not an official Opta feed.
 
 ```sh
-cd etl && python -m venv .venv && .venv/Scripts/pip install -r requirements-test.txt   # Windows path shown
-.venv/Scripts/python -m pytest tests
-.venv/Scripts/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
+cd etl && python3 -m venv .venv && .venv/bin/pip install -r requirements-test.txt
+.venv/bin/python -m pytest tests
+.venv/bin/python -m devtools local-up        # SQL Server + DAB in Docker, GraphQL on :5000
 ```
 
 | Folder | Contents |

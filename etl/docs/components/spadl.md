@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · unit-, parity- and SQL-tested (local and Azure schemas) · run in the shared stack (three concurrent matches, 2026-10-21, [verification](../../../local/verification.md)) · not run on Azure yet |
+| **Status** | Implemented · unit-, parity- and SQL-tested (local and Azure schemas) · runs in the shared stack and on Azure with three concurrent matches |
 | **Code** | [`spadl/worker.py`](../../spadl/worker.py); rules in [`reference/spadl.py`](../../reference/spadl.py) |
 | **Reads** | SQL `matchProgress` (watermark), `matches`, `rawEvents` (MA3 payloads with `eventSeq ≤` watermark), `purgedMatches` |
 | **Writes** | `spadlActions`, `spadlProgress` (served as `matchWatermarks.spadlSeq`) |

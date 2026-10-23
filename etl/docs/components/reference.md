@@ -17,6 +17,7 @@
 | --- | --- |
 | Codes (from `contracts/opta-codes.json`) | Event types and qualifiers by name |
 | `has_q`, `q_value` | Qualifier lookups (as the UDFs) |
+| `qualifiers(row)` | `{qualifierId: value}` of an MA3 row (catalogue and trends) |
 | `key_event(event)` | `(keyType, detail)` or `None` |
 | `period_change(event)` | `PeriodStarted` / `PeriodEnded` or `None` |
 | `stat_deltas(event)` | The event's contribution to each minute statistic |

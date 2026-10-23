@@ -1,6 +1,12 @@
 # ETL documentation
 
-> **In short:** the ETL turns a live stream of Opta-style match events into queryable history, a key-event ledger and running statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Start with the overview, then the architecture; each component page maps to one folder.
+> **In short:** the ETL turns a live stream of Opta-style match events into queryable history, a key-event ledger and running statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Start with the overview, then the architecture; each component page maps to one folder (trends spans `sql/` and `reference/`).
+
+| | |
+| --- | --- |
+| **Status** | [overview §3](overview.md#3-status-by-area) |
+| **Contracts** | [../contracts/README.md](../contracts/README.md) |
+| **Run locally** | [development.md](development.md) |
 
 Every page follows the same layout: an **In short** summary and a facts table at the top, then numbered sections that each open with a one-line *In short*.
 
@@ -11,19 +17,19 @@ docs/
 ├── README.md                 this index
 ├── overview.md               what the ETL does, status, inputs and outputs, glossary
 ├── architecture.md           diagram, components, runtime flow, data model, Azure resources
-├── components/               one page per folder in etl/
+├── components/               one page per code folder in etl/, plus trends
 │   ├── seeder.md             synthetic match generator and replay to Event Hubs
 │   ├── stream-analytics.md   the Stream Analytics query and JavaScript UDFs
 │   ├── sql.md                tables and the matchStatsAsOf view
 │   ├── dab.md                Data API builder: the GraphQL API
 │   ├── reference.md          Python reference implementation of the rules (and the SPADL converter)
 │   ├── spadl.md              SPADL post-processor: MA3 → spadlActions
-│   ├── trends.md             trend indicators at a snapshot (SQL procedures + reference)
+│   ├── trends.md             trend indicators at a snapshot (spans sql/ and reference/)
 │   ├── devtools.md           local stack, loading, verification, job start/stop
 │   └── local-stream.md       local Stream Analytics stand-in, purge API and demo seeds
 ├── development.md            local setup, stand-ins for Azure, commands, tests
 ├── deployment.md             Terraform, setup, running a replay, costs
-├── decisions.md              design versus implementation, open items, LATER list
+├── decisions.md              design versus implementation, open items
 └── design/                   original design material, kept for history (not updated)
     ├── original-design.md    the ETL section of the design stage README
     └── design-board.svg      export of the board's ETL section
@@ -46,7 +52,7 @@ docs/
 | Folder | Contents | Page |
 | --- | --- | --- |
 | `contracts/` | Event schema, Opta codes, consumer contracts | [contracts](../contracts/README.md) |
-| `seeder/` | Synthetic match and replay (temporary, until data generation exists) | [seeder](components/seeder.md) |
+| `seeder/` | Synthetic match and replay (developer tool for synthetic replays and `devtools verify`) | [seeder](components/seeder.md) |
 | `stream-analytics/` | Job query and UDFs | [stream-analytics](components/stream-analytics.md) |
 | `sql/` | Database migrations | [sql](components/sql.md), [trends](components/trends.md) |
 | `dab/` | Data API builder configuration | [dab](components/dab.md) |

@@ -1,10 +1,10 @@
 # Seeder
 
-> **In short:** generates a synthetic Opta match that exercises every key event, and replays any match file onto Event Hubs (or into a timestamped file) at a chosen speed, lined up with Stream Analytics windows. Temporary: data generation will supply real generated matches later.
+> **In short:** generates a synthetic Opta match that exercises every key event, and replays any match file onto Event Hubs (or into a timestamped file) at a chosen speed, lined up with Stream Analytics windows. A developer tool: the feed (`data-generation/`) produces the stack's matches; the seeder stays for synthetic replays and `devtools verify`.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · used for every dev replay |
+| **Status** | Implemented · tested |
 | **Code** | [`seeder/`](../../seeder/): `generate.py`, `replay.py`, `matches/itg-syn-0001.jsonl` |
 | **Data** | SYNTHETIC: invented teams, players and events, `synthetic: true` with provenance |
 | **Depends on** | [reference](reference.md) `opta` codes |

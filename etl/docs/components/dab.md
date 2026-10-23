@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Applied 22 Oct (internal ingress), anonymous read · multi-match and trend entities tested locally; their Azure reads are part of the pending demo acceptance |
+| **Status** | Deployed (internal ingress), anonymous read · every entity tested locally and read by the backend and engine on Azure |
 | **Code** | [`dab/dab-config.json`](../../dab/dab-config.json) |
 | **Image** | `mcr.microsoft.com/azure-databases/data-api-builder:2.1.5` |
 | **URL (Azure)** | Internal only: `terraform -chdir=etl/infra output graphql_url` (apps in the shared Container Apps environment) |
