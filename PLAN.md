@@ -162,7 +162,7 @@ The feed is an external provider (Event Hubs + HLS over HTTP); the ETL is the on
 
 1. `./dev azure up` from clean; spend budget and guard in place. **Done.**
 2. Seeds recorded (D2) on `gpt-6.1-sol`. **Done.**
-3. From a fresh browser: Start demo at each start point, plus kickoff; Cancel demo between them. **20′, HT and 60′ checked; kickoff and 85′ open.**
+3. From a fresh browser: Start demo at each start point, plus kickoff; Cancel demo between them. **All five checked (kickoff and 85′ on 23 Oct after the cleanup redeploy).**
 4. Check every §10.3 target and the D1–D7 rows; screenshot each. **Partly (§10.3).**
 5. Leave idle for 12 h; confirm idle cost and that the next Start demo cold-starts within target. **Open.**
 6. Record results here; fix and repeat any failed row.
@@ -196,11 +196,11 @@ Passed: seeded 20′ start, questions, cross-match follow, Skip ahead, capture c
 
 *In short: deployed at the azurecontainerapps.io URL and msft-hackathon.koda-software.com; redeployed 23 Oct with the fictional league; all agents on `gpt-6.1-sol`; all four seeds recorded; checked as an anonymous viewer.*
 
-- **Deployed:** 5c377c6 (demo build, image `v20261023114741`); edge `UPSTREAM` unchanged.
+- **Deployed:** 5e11159 (demo build, image `v20261023125814`); edge `UPSTREAM` unchanged.
 - **Fixed while deploying:** Stream Analytics compile and memory limits (10-minute lookback, 4 h sessions); the guard's Automation account in East US (Free Trial); serverless SQL resume retries; media upload with azcopy; details in git history.
 - **Verified as an anonymous viewer:** three matches, main game first, video and seeded insights; questions in about 6 s; cross-match answers with a follow offer; cross-match follow with catch-up in about 10 s; a capture card played as a replay; Skip ahead +10′/+20′; Cancel; a 69′ equaliser now firing a follow narrative.
-- **Measured:** seeded 60′ start 8.1 s (restore 5.2–5.8 s); engine lag about 0.5 minutes; about US$2 of tokens per session of three matches to half time; idle about A$6–7/day plus the warm demo control.
-- **Open:** grounding not sampled on Azure; the 12 h idle check; kickoff and 85′ starts from a fresh browser.
+- **Measured:** seeded 60′ start 8.1 s (restore 5.2–5.8 s); 23 Oct starts settled in 2 s (kickoff, every stage ready by 52 s), 37 s (85′) and 31 s (20′), Cancel 30–99 s; engine lag about 0.5 minutes; about US$2 of tokens per session of three matches to half time; idle about A$6–7/day plus the warm demo control.
+- **Open:** grounding not sampled on Azure; the 12 h idle check.
 
 ## 12. Team review actions (22 Oct meeting)
 
