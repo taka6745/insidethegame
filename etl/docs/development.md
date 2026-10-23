@@ -32,7 +32,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements-test.txt   # requ
 | Stream Analytics | `reference/pipeline.py`, run by `devtools load-local`, which inserts the expected rows |
 | Service Bus | `load-local` writes notifications to `.local/notifications.jsonl` |
 
-**Test:** install `requirements-test.txt`, then `python -m pytest tests`. For the SQL tests, point `ETL_TEST_SQL_PASSWORD` (and `ETL_TEST_SQL_HOST`/`PORT`) at a throwaway SQL Server; unit tests use repository doubles (`tests/support.py`, shared with `devtools.calibrate_trends`) and do not claim database coverage; `tests/sql_server.py` holds the SQL helpers. The `Dockerfile` builds the local stream image (`--target stream`), which Azure also runs as the purge API (`ETL_ROLE=admin`).
+**Test:** install `requirements-test.txt`, then `python -m pytest tests`. For the SQL tests, point `ETL_TEST_SQL_PASSWORD` (and `ETL_TEST_SQL_HOST`/`PORT`) at a throwaway SQL Server; unit tests use repository doubles (`tests/support.py`, shared with `devtools.calibrate_trends`) and do not claim database coverage; `tests/sql_server.py` holds the SQL helpers and `tests/v2_stream.py` replays a recording as the feed's Event Hubs stream (most tests and `devtools.calibrate_trends`). The `Dockerfile` builds the local stream image (`--target stream`), which Azure also runs as the purge API (`ETL_ROLE=admin`).
 
 `etl/docker-compose.yml` runs SQL Server 2025-CU9; the shared stack runs 2022 under x86 emulation; the tests pass on both. Docker Desktop hangs when its disk fills, so check free space first.
 
@@ -54,6 +54,8 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements-test.txt   # requ
 
 | File | Covers |
 | --- | --- |
+| `test_seed_bounds.py` | A demo seed holds nothing past its seq, in any table it restores (`local_stream/demo_seeds.past_seq`) |
+| `test_devtools.py` | `devtools` reads the stack outputs from `./dev azure`'s state |
 | `test_seeder_and_pipeline.py` | Generated match content, replay scheduling and windows, reference outputs (key events, deltas, notifications, running totals) |
 | `test_udfs.py` | The Stream Analytics JavaScript UDFs run in Node and agree with the Python rules; each generated `udfs/*.js` equals its compiled `udfs/src/*.ts` (skips without Node / `tsc`) |
 | `test_azure_parity.py` | On all three recordings: the reference (Stream Analytics rows, marks → watermark and status) equals the local stream worker row for row and along the match; the row UDFs equal the reference |
@@ -69,7 +71,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements-test.txt   # requ
 | `test_sql_seeds.py` | Real SQL Server: a held run's seed exported, purged and restored under a new matchId equals the recorded rows and carries on to the same rows as an uninterrupted run; refusals (other schema, known match, rows past the seq) |
 | `test_sql_azure.py` | Real SQL Server with `sql/azure`: the job's rows as independent, reordered and parallel output batches give the reference watermark, status and (after the SPADL post-processor) `statsAtSeq`; purge, tombstones and the purge-all cut-off hold against later inserts and post-processor steps |
 
-The SQL view and the deployed query are checked end to end by `devtools verify` and `check-notifications`, locally and in Azure.
+The SQL view and the deployed query are checked end to end by `devtools verify` and `check-notifications` (local or Azure GraphQL).
 
 ## 5. Conventions
 

@@ -40,11 +40,11 @@
 | --- | --- |
 | Event contract, Opta codes | Implemented |
 | Seeder (synthetic match, replay) | Implemented, tested; developer tool for synthetic replays and `devtools verify` (the feed produces the stack's matches) |
-| SQL tables and view | Tested locally and in Azure against the reference |
-| Stream Analytics query | Implemented; real-time (`window_seconds = 60`) match runs on Azure with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
+| SQL tables and view | Tested against the reference |
+| Stream Analytics query | Implemented with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
 | Data API builder | Implemented (internal ingress, scales to zero) |
 | Stream schedule (spend guard) | Implemented: match events (or demo Start) start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
-| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested; restored by seeded starts on Azure |
+| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested |
 | Local stream stand-in (`local_stream/`) | Implemented, unit- and SQL-tested, runs 1x replays in the local Docker stack; not deployed as a worker. Also MatchEvent v2, POS, watermarks, the stat catalogue, per-match purge and demo seeds (`DEMO_SEEDS=1`) ([local-stream](components/local-stream.md)) |
 
 ## 4. Glossary

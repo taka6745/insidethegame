@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested against SQL Server 2022 and 2025-CU9 (parity with the reference on all three recordings) · read by the engine's analyst locally and on Azure |
+| **Status** | Implemented · tested against SQL Server 2022 and 2025-CU9 (parity with the reference on all three recordings) · read by the engine's analyst |
 | **Code** | [`011_trend_definitions.sql`](../../sql/migrations/011_trend_definitions.sql) (table, seed), [`014_trend_patterns.sql`](../../sql/migrations/014_trend_patterns.sql) (procedures, columns, the current seed; replaces `012`), [`015_trend_parameters.sql`](../../sql/migrations/015_trend_parameters.sql) (`trendParameters`: the formulas' constants; `trendMinuteRows` reads them), [`018_trend_labels.sql`](../../sql/migrations/018_trend_labels.sql) (plain labels for writers), [`devtools/calibrate_trends.py`](../../devtools/calibrate_trends.py) (thresholds from the recordings), [`reference/trends.py`](../../reference/trends.py) |
 | **Served as** | DAB `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` ([contract](../../contracts/README.md#output-4-trend-indicators)) |
 | **Definitions** | [local contracts §4b](../../../local/contracts/README.md#4b-trend-definitions) |

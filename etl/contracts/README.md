@@ -232,7 +232,7 @@ query ($m: String!, $s: Int!) {
    "delta": 0.1799, "level": "high", "change": null, "flagged": true, "enabled": true}, …],
  "executeTrendSpellsAtSeq": [
   {"trendId": "territory_spell", "contestantId": "riverton", "periodId": 2, "fromLabel": "55'", "toLabel": "67'",
-   "minutes": 13, "zoneShare": 0.8179, "shots": 3, "boxEntries": 19, "ongoing": false, "enabled": false}, …]}}
+   "minutes": 13, "zoneShare": 0.8179, "shots": 3, "boxEntries": 19, "ongoing": false, "enabled": true}, …]}}
 ```
 
 (Riverton Rovers–Forgeham United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
@@ -246,6 +246,6 @@ Demo-only routes on the ETL admin API (bearer token like the purge), present onl
 | Route | Body / reply | Refusals |
 | --- | --- | --- |
 | `GET /admin/matches/export?match_id=` | `{match_id, schema, tables: {table: [rows]}}` | `422` bad id, `503` retry |
-| `POST /admin/matches/restore` | `{match_id, max_seq, schema, tables}` → `{match_id, restored: {table: count}}` | `409` other schema, known or tombstoned match, rows of another match or past `max_seq`; `413` over 512 MB |
+| `POST /admin/matches/restore` | `{match_id, max_seq, schema, tables}` → `{match_id, restored: {table: count}}` | `409` other schema, known or tombstoned match, rows of another match or past `max_seq`; `413` over 512 MB; `422` bad body; `503` retry |
 
 Demo control is the only caller ([demo control](../../local/docs/components/demo-control.md#2-seeds)): it rewrites the seed to the new run's matchId, restores the ETL alongside the backend, then the engine, then releases the feed run.

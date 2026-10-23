@@ -50,7 +50,7 @@
 | `PenaltyAwarded` (`conceded`) | type 4, outcome 0, qualifier 9 |
 | `PenaltyMissed` | types 13/14/15 with qualifier 9 |
 | `RedCard` (`second-yellow`) | type 17 with qualifier 32 or 33 |
-| `VarOverturn` | type 900 with qualifier 901 = `goal-overturned`; also a −1 goal delta |
+| `VarOverturn` | type 900 with qualifier 901: `goal-overturned`, or `own-goal-overturned` for an own goal; also a −1 goal delta |
 
 ## 3. Timing settings
 
