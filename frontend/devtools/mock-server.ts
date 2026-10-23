@@ -156,6 +156,10 @@ const snapshot = (id: string, token = "") => {
     follow_playlist: follow ? clipsOf(id) : null, moment_playlist: follow ? null : clipsOf(id) };
 };
 const runs = [...matches].map(([id, m]) => ({ run_id: `${id.slice(-8)}-0000`, match_id: id, fixture: m.fixture, kickoff: new Date(started).toISOString(), status: m.status, seq: 800, video_seconds: clockOf(id) ?? 0 }));
+const demo = { fixtures: ["redcastle-portalbion", "riverton-forgeham", "skybridge-whitmore"], main_fixture: "redcastle-portalbion",
+  stagger_seconds: 120, max_active_runs: 3, revision: 1,
+  start_points: [["kickoff", "Kick-off", 1, 0], ["20", "20′", 1, 20], ["ht", "Second half", 2, 45], ["60", "60′", 2, 60], ["85", "85′", 2, 85]]
+    .map(([id, label, period, minute]) => ({ id: String(id), label: String(label), period: Number(period), minute: Number(minute), seed: null as string | null })) };
 const config: Record<string, { revision: number; value: unknown }> = {
   presentation: { revision: 3, value: { card_slots: 5, default_stats: { team: ["{team}:shots"], neutral: ["all:goals"] },
     fallback_stats: { team: ["{team}:passes"], neutral: ["all:passes"] }, excluded_stats: [], protected_stat_kinds: [] } },
@@ -339,6 +343,14 @@ async function api(req: IncomingMessage, res: ServerResponse, path: string) {
     runs.push(run);
     return send(res, 201, run);
   }
+  if (path === "/demo-api/state") return send(res, 200, { points: demo.start_points.map(({ id, label }) => ({ id, label, ready: true })), live: false, runs: [], pending: [], last: null, skips: [] });
+  if (path === "/feed-api/demo" && method === "GET") return send(res, 200, demo);
+  if (path === "/feed-api/demo" && method === "PUT") {
+    const { expected_revision, ...input } = await body(req);
+    if (expected_revision !== demo.revision) return send(res, 409, { detail: "Revision conflict" });
+    Object.assign(demo, input, { revision: demo.revision + 1 });
+    return send(res, 200, demo);
+  }
   if (path === "/feed-api/admin/matches/purge" || /^\/purge-api\/(etl|engine|backend)$/.test(path)) return send(res, 200, purge(await body(req)));
   return send(res, 404, { detail: "Not found" });
 }
@@ -368,7 +380,7 @@ async function file(req: IncomingMessage, res: ServerResponse, path: string) {
 
 const server = createServer((req, res) => {
   const path = new URL(req.url || "/", "http://mock").pathname;
-  const handled = /^\/(viewer-api|api|dev-api|feed-api|purge-api)\//.test(path) ? api(req, res, path)
+  const handled = /^\/(viewer-api|api|dev-api|feed-api|purge-api|demo-api)\//.test(path) ? api(req, res, path)
     : path.startsWith("/media/") ? Promise.resolve(send(res, 404, { detail: "No footage in the mock" })) : file(req, res, path);
   handled.catch((error: Error) => send(res, 500, { detail: error.message }));
 });
