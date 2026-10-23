@@ -28,6 +28,8 @@ class DemoControlTests(unittest.TestCase):
             path, body = request.url.path, json.loads(request.content or b"null")
             self.calls.append((request.url.host, path, body))
             if path == "/health":
+                if request.url.host.startswith("warm"):  # a cold keep-warm app, slow to answer
+                    self.owner_gate.wait(5)
                 return httpx.Response(200 if request.url.host not in self.down else 503, json={})
             if path == "/product/matches":
                 return httpx.Response(200, json=[{"match_id": m} for m in self.listed])
@@ -107,6 +109,23 @@ class DemoControlTests(unittest.TestCase):
             self.assertIn(("guard", "/webhooks", None), self.calls)
         finally:
             demo_control.STREAM_START_URL = url
+
+    def test_stream_start_does_not_wait_behind_slow_keep_warm_wakes(self):
+        urls, url = demo_control.KEEP_WARM_URLS, demo_control.STREAM_START_URL
+        demo_control.KEEP_WARM_URLS = ["https://warm1/health", "https://warm2/health", "https://warm3/health"]
+        demo_control.STREAM_START_URL = "https://guard/webhooks?token=secret"
+        self.owner_gate.clear()
+        try:
+            self.client.post("/start")
+            for _ in range(200):
+                if ("guard", "/webhooks", None) in self.calls:
+                    break
+                time.sleep(0.01)
+            self.assertIn(("guard", "/webhooks", None), self.calls)
+        finally:
+            self.owner_gate.set()
+            demo_control.KEEP_WARM_URLS, demo_control.STREAM_START_URL = urls, url
+            self.settle()
 
     def test_cancel_purges_every_run_from_every_owner_feed_first(self):
         self.client.post("/start")

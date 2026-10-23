@@ -460,9 +460,9 @@ def app(http=None, clock=time.monotonic):
     @api.post('/start')
     def start_demo(body: Start | None = None):
         point = (body or Start()).point
+        if STREAM_START_URL:  # its own thread: wakes and seed preloads on `background` must not delay it
+            threading.Thread(target=start_stream, daemon=True).start()
         wake()
-        if STREAM_START_URL:
-            background.submit(start_stream)
         if not work['pending']:
             active = split()[0]
             if active:
