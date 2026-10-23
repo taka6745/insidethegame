@@ -52,7 +52,7 @@ def test_seed_copies_match_the_engine_sources():
                          ('match-analyst', 'match-analyst.v4'), ('match-analyst.v3', 'match-analyst.v3'),
                          ('narrative-author', 'narrative-author.v7'),
                          ('match-analyst.v2', 'match-analyst.v2'), ('match-analyst.v1', 'match-analyst.v1'),
-                         ('narrative-author.v5', 'narrative-author.v5'), ('narrative-author.v4', 'narrative-author.v4'),
+                         ('narrative-author.v6', 'narrative-author.v6'), ('narrative-author.v5', 'narrative-author.v5'), ('narrative-author.v4', 'narrative-author.v4'),
                          ('subscription-decision', 'subscription-decision.v2'),
                          ('subscription-decision.v1', 'subscription-decision.v1')):
         assert (SEEDS / f'{role}.txt').read_bytes() == (ENGINE / f'{source}.txt').read_bytes()

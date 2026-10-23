@@ -70,7 +70,7 @@ There is no `048`. The runner keys the ledger by file name only. Configuration r
 | `match-analyst.txt` | `match-analyst.v4` (labels in plain words) | `030` |
 | `match-analyst.v3.txt`, `.v2.txt`, `.v1.txt` | `match-analyst.v3`, `.v2`, `.v1` | `029`, `025`, `023` |
 | `narrative-author.txt` | `narrative-author.v7` (one or two short sentences) | `042` |
-| `narrative-author.v5.txt`, `.v4.txt` | `narrative-author.v5`, `.v4` | `023`, `021` |
+| `narrative-author.v6.txt`, `.v5.txt`, `.v4.txt` | `narrative-author.v6`, `.v5`, `.v4` | `025`, `023`, `021` |
 | `subscription-decision.txt`, `.v1.txt` | `subscription-decision.v2`, `.v1` | `029`, `024` |
 | `subscription-author.txt` | `subscription-author.v1` | `024` |
 | `subscription-planner.txt`, `.v1.txt` | This service's own role (the follow chat's planner), v2 and v1 | `042`, `024` |

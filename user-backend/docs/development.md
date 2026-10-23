@@ -34,6 +34,7 @@ The image has two targets: `runtime` (backend + migrations, no tests or fixtures
 | `NARRATIVE_SERVICEBUS_CONNECTION_STRING`, `_TOPIC`, `_SUBSCRIPTION` | `narratives` / `user-backend` |
 | `FEED_HLS_BASE`, `PUBLIC_HLS_BASE` | Feed playlist origin over HTTP; browser path (`/media/hls/`) |
 | `LOCAL_LLM_BASE_URL`, `LOCAL_LLM_MODEL`, `LOCAL_LLM_API_KEY`, `LOCAL_LLM_TIMEOUT_SECONDS` | Model endpoint; without the first two the service is not ready |
+| `LOCAL_LLM_MODE` | `local` (default); any other value raises (the fixture mode is removed) |
 | `LOCAL_LLM_EFFORT`, `LOCAL_LLM_REASONING_TOKENS` | A reasoning effort sends agents over the Responses API with no temperature, plus extra output tokens (default 8000) |
 | `AGENT_*`, `QUESTION_*`, `FILTER_MAX_CALCULATIONS` | Agent and question limits ([agents §5](components/agents.md#5-limits-and-configuration)) |
 | `ENABLE_DEV_FEED`, `ENABLE_FILTER_LAB` | Mount `/dev/*` and `/lab/*` (local, and on Azure with `dev_admin` behind nginx basic auth) |

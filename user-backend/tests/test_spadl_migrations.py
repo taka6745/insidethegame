@@ -166,7 +166,7 @@ def test_storyline_prompts_keep_an_edit_of_v5_and_skip_a_fresh_store(store):
 def test_grounded_prompts_replace_unedited_seeds_and_keep_edits(store):
     from backend.models.prompts import placeholders
     v1, v5 = ((SEEDS / name).read_text(encoding='utf-8') for name in ('match-analyst.v1.txt', 'narrative-author.v5.txt'))
-    v2, v6 = ((SEEDS / name).read_text(encoding='utf-8') for name in ('match-analyst.v2.txt', 'narrative-author.txt'))
+    v2, v6 = ((SEEDS / name).read_text(encoding='utf-8') for name in ('match-analyst.v2.txt', 'narrative-author.v6.txt'))
     assert placeholders(v2) == placeholders(v1) and placeholders(v6) == placeholders(v5)
     with store.connect() as conn:
         before_spadl(conn, store)

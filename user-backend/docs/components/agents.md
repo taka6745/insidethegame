@@ -66,7 +66,7 @@ A share, split, percentage, ratio or rate is never a plain count: the planner re
 | Goal JSON schema | SPADL enums (`action_types`, `results`, `bodyparts`, `start_zones`/`end_zones`, `shot_outcomes`, `save_kinds`) plus `locations` (team-relative x/y bounds); the model picks fixed values |
 | Context `data_reference` | The [SPADL profile](adapters.md#5-spadl-reference): one-line meanings per type, result, body part, zone and family, outside-SPADL facts, and this match's `availability` |
 | `measurement_support` | Availability only: complete body-part types, recorded body parts, shot outcomes, locations, filters, unavailable data |
-| `semantics.py` | Metric mapping in SPADL terms (passes = pass family, shots = shot family, on target = `shot_outcomes [goal, saved]`, saves = the `shots_saved` stat or `save_kinds [save]`, touches = all actions) |
+| `semantics.py` | Metric mapping in SPADL terms (passes = pass family, shots = shot family, on target = `shot_outcomes [goal, saved]`, saves = the `shots_saved` stat or `save_kinds [save]`, touches = every action except dribbles, which are inferred carries) |
 | `lookup_spadl(term)` | Definition, Opta source, catalogue stats and a goal example per term (question and replay agents) |
 
 Tools never return raw action rows or the JSON schema; searches return filtered compact actions, values come from the engine. `AGENT_DATA_SKILL=feed` (off by default) gives the goal agent the SPADL dictionary via `skills/event-data/SKILL.md` instead of the fixed metric mapping. Token and accuracy figures: [benchmarks §5](benchmarks.md#5-measured-results).

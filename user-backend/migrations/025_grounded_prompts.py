@@ -1,6 +1,6 @@
 """Grounded storylines: match-analyst v2 and narrative-author v6.
 
-The seeds in migrations/prompts/ are those templates (the analyst's kept as match-analyst.v2.txt since 029), byte for byte, with unchanged placeholders. The analyst reads a
+The seeds in migrations/prompts/ are those templates (match-analyst.v2.txt, narrative-author.v6.txt), byte for byte, with unchanged placeholders. The analyst reads a
 side-by-side trend table and gives confidence as a level ("low", "medium", "high"); the author's prompt describes
 the trend units and drops its example excerpt. Grounding itself is checked in the engine. A fresh store is seeded with them at startup. An existing store gets each as its
 next version; it becomes active only while the role still runs an unedited seed, so /dev/ edits stay.
@@ -8,7 +8,7 @@ next version; it becomes active only while the role still runs an unedited seed,
 from pathlib import Path
 
 SEEDS = Path(__file__).parent / 'prompts'
-FILES = {'match-analyst': 'match-analyst.v2.txt', 'narrative-author': 'narrative-author.txt'}  # analyst v3: 029
+FILES = {'match-analyst': 'match-analyst.v2.txt', 'narrative-author': 'narrative-author.v6.txt'}
 
 
 def migrate(conn):
