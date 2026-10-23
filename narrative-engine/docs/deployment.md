@@ -4,9 +4,9 @@
 
 | | |
 | --- | --- |
-| **Status** | Applied 22 Oct by `./dev azure up` for the Azure test ([runbook](../../terraform/runbook.md)); `decision-1` applied, the `writer` switch to `gpt-6.1-sol` is in Terraform but not yet in the applied state; demo acceptance (PLAN.md §10.4) pending |
-| **Models** | `writer` = Azure OpenAI `gpt-6.1-sol` (GlobalStandard, 200K TPM; every agent at effort `low`, its lowest) · `decision-1` = Microsoft-Decision-1 (DataZoneStandard, 50 requests/minute) |
-| **Demo build** | `demo_seeds` sets `DEMO_SEEDS=1`; `./dev azure up` turns it on for the judge build, `./dev azure up --release` turns it off ([service §5](components/service.md#5-demo-seeds-demo_seeds)) |
+| **Status** | Deployed with every service by `./dev azure up` ([runbook](../../terraform/docs/deployment.md)) |
+| **Models** | `writer` = Azure OpenAI `gpt-6.1-sol` (GlobalStandard, 120K TPM; every agent at effort `low`, its lowest) · `decision-1` = Microsoft-Decision-1 (DataZoneStandard, 50 requests/minute) |
+| **Demo build** | `demo_seeds` sets `DEMO_SEEDS=1`; `./dev azure up` turns it on for the demo build, `./dev azure up --release` turns it off ([demo](components/demo.md)) |
 | **Terraform** | [`infra/`](../infra/), local state, reads the ETL's state for its Service Bus namespace and Container Apps environment |
 | **Region** | Australia East |
 | **Cost when idle** | About US$10–20/month (Container App always on, registry); models and Cosmos are pay per use |
@@ -25,6 +25,16 @@
 | `monitoring.tf` | Log Analytics workspace, Application Insights, the "Narrative engine" workbook |
 | `variables.tf`, `outputs.tf`, `versions.tf` | Inputs, outputs (secrets marked sensitive), providers |
 
+| Resource | Name (dev) | Notes |
+| --- | --- | --- |
+| Resource group | `rg-itg-narrative-dev` | Budget alert at US$20/month |
+| Container App | `itg-narrative-dev-engine` | 0.5 vCPU, 1 GiB, 1 replica, internal ingress on 8000 (only the backend, the frontend's dev purge proxy and demo control call it); `DEMO_SEEDS=1` on the demo build; in the ETL's environment (one per region on the trial) |
+| Container Registry | `itgnarrativedevdhcyoacr` | Basic; images built locally and pushed |
+| Cosmos DB | `itg-narrative-dev-dhcyo-cosmos` | Serverless; engine uses managed identity |
+| Azure AI Foundry (AI Services) | `itg-narrative-dev-dhcyo-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low) and `decision-1` (Microsoft-Decision-1, 50 requests/minute); the user backend adds its own `questions` deployment here |
+| Service Bus topic | `narratives` | In the ETL namespace; subscriptions `user-backend`, `narrative-check`. The engine reads `match-notifications` through the ETL's `narrative-engine` subscription |
+| Application Insights | `itg-narrative-dev-dhcyo-appi` | Own Log Analytics workspace (0.2 GB/day cap); workbook "Narrative engine" |
+
 ## 2. Deploying
 
 *In short: apply, build, apply again with the image tag.*
@@ -34,7 +44,7 @@ cd narrative-engine
 cp infra/local.auto.tfvars.example infra/local.auto.tfvars      # subscription and budget emails
 terraform -chdir=infra init
 terraform -chdir=infra apply                                    # everything except the app
-.venv/Scripts/python -m narrative_engine.devtools.azure build --tag v4 --local
+.venv/bin/python -m devtools.azure build --tag v4 --local
 terraform -chdir=infra apply -var engine_image_tag=v4 -var user_backend_url=<backend url>
 ```
 
@@ -44,23 +54,21 @@ terraform -chdir=infra apply -var engine_image_tag=v4 -var user_backend_url=<bac
 
 ## 3. Changing a model
 
-*In short: add a deployment, point an agent at it, apply.*
+*In short: switch live under `/dev/config/models` ([agents §3](components/agents.md#3-model-settings)), or add a deployment, point an agent at it and apply.*
+
+The alternates `gpt-6-luna` and `gpt-5-mini` are already deployed. To make a role's model permanent:
 
 ```hcl
 # infra/local.auto.tfvars (or -var)
-models = {
-  "writer" = { model = "gpt-6.1-sol", version = "2026-09-29", capacity = 200 }
-  "gpt-5"      = { version = "<version>", capacity = 50 }
-}
 agents = {
   summary     = { model = "writer", effort = "low" }
   compression = { model = "writer", effort = "low" }
   analyst     = { model = "writer", effort = "low" }
-  author      = { model = "gpt-5", effort = "medium" }
+  author      = { model = "gpt-6-luna", effort = "medium" }
 }
 ```
 
-Terraform creates the deployment and sets `OPENAI_MODEL_AUTHOR` and `OPENAI_EFFORT_AUTHOR` on the app. Every narrative records its model, so the report can compare runs. Models that are not OpenAI format take `format` and `sku` in `models`; a different API altogether means changing `chat_client()` in [agents](components/agents.md#2-how-a-call-is-made).
+A new model is an entry in `models` (keep the defaults beside it). Terraform sets `OPENAI_MODEL_AUTHOR` and `OPENAI_EFFORT_AUTHOR` on the app. Every narrative records its model, so the report can compare runs. Models that are not OpenAI format take `format` and `sku` in `models`; a different API altogether means changing `chat_client()` in [agents](components/agents.md#2-how-a-call-is-made).
 
 ## 4. Monitoring
 

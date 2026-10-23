@@ -1,6 +1,6 @@
 """Read-only checks of the GraphQL client against the real ETL GraphQL of the shared stack (`./dev up backend`).
 
-Targets a feed run of the Riverton Rovers–United recording (`./dev demo start riverton-forgeham`, matchId
+Targets a feed run of the Riverton Rovers–Forgeham United recording (`./dev demo start riverton-forgeham`, matchId
 riverton-forgeham-{run}); skipped unless ETL_GRAPHQL_URL (default http://localhost:15001/graphql) answers and
 holds one past seq 500. Up to the run's watermark, the live reads must equal the recording's test data
 (tests/riverton_forgeham.py): MA3 rows, key events, SPADL actions and the catalogue's golden values. Never writes.
@@ -27,7 +27,7 @@ FIELDS = ACTION_FIELDS.split()
 
 
 def feed_run():
-    """(matchId, snapshot seq) of the most advanced Riverton Rovers–United feed run, or skip."""
+    """(matchId, snapshot seq) of the most advanced Riverton Rovers–Forgeham United feed run, or skip."""
     query = ("{ matches(filter: {fixture: {eq: \"riverton-forgeham\"}}) { items { matchId } } "
              "matchWatermarks { items { matchId seq spadlSeq } } }")
     try:
@@ -39,7 +39,7 @@ def feed_run():
              if w["matchId"] in runs]
     seq, match_id = max(marks, default=(0, None))
     if seq < 500:
-        pytest.skip("no Riverton Rovers–United feed run past seq 500 in the ETL")
+        pytest.skip("no Riverton Rovers–Forgeham United feed run past seq 500 in the ETL")
     return match_id, seq
 
 

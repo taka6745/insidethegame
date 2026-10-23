@@ -1,11 +1,12 @@
 # Devtools
 
-> **In short:** developer commands that are not part of the deployed service: run a whole match locally, wire your machine to Azure dev, build and push the image, check what reached Service Bus, and render an HTML report of a match's summaries, compressions and narratives.
+> **In short:** developer commands that are not part of the deployed service: run a whole match locally, wire your machine to Azure dev, build and push the image, check what reached Service Bus, render an HTML report of a match, and rebuild test fixtures.
 
 | | |
 | --- | --- |
 | **Status** | Implemented · used throughout development |
-| **Code** | [`narrative_engine/devtools/`](../../narrative_engine/devtools/): `local.py`, `azure.py`, `report.py`, `fixture_data.py` (in-memory `MatchData` test double), `fake_agents.py` (`FakeAgents`, no model calls), `fake_decisions.py` (`FakeDecisions`: fixed answers or a rule), `targets.py` and `follows.py` (fixed buckets and followed topics). The service image excludes this folder (`.dockerignore`) |
+| **Code** | [`devtools/`](../../devtools/) at the service root: `local.py`, `azure.py`, `report.py`; fixture tools `spadl_fixture.py`, `bind_commentary.py`, `commentary_schema.py` ([fixtures](fixtures.md)). Not in the image (`.dockerignore` keeps only `narrative_engine/`) |
+| **Run** | From `narrative-engine/`: `python -m devtools.<command>`. Test doubles (fake agents and decisions, the fixture reader, fixed targets and topics) come from `tests/doubles/` |
 | **Secrets** | Read from Terraform outputs into the ignored `.env`; never printed |
 
 ## 1. Local runs (`local.py`)
@@ -13,7 +14,7 @@
 *In short: replay ETL notifications through the real orchestrator on your machine.*
 
 ```sh
-python -m narrative_engine.devtools.local NOTIFICATIONS.jsonl [options]
+python -m devtools.local NOTIFICATIONS.jsonl [options]
 ```
 
 | Option | Effect |
@@ -41,3 +42,12 @@ python -m narrative_engine.devtools.local NOTIFICATIONS.jsonl [options]
 *In short: one HTML page showing how the engine thought about a match.*
 
 A timeline in creation order: minute summaries (blue), compressions with the blocks they replaced (purple) and narrative steps with each bucket's text (green), with models, prompt versions and tokens. Filters hide kinds of card or pick one bucket. The page is self-contained and works in dark mode.
+
+## 4. Fixture tools
+
+*In short: regenerate the engine's test fixtures.*
+
+| Command | Writes |
+| --- | --- |
+| `python devtools/spadl_fixture.py tests/fixtures/itg-syn-0001.jsonl tests/fixtures/itg-syn-0001-spadl.json` | SPADL actions for the synthetic match, with the ETL's converter (`etl/reference/spadl.py`) |
+| `python devtools/bind_commentary.py CANONICAL_EXPORT --reviewed-hash <sha256>` | `fixtures/grf-narratives.json` from the authored text ([fixtures](fixtures.md)) |

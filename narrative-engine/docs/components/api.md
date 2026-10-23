@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · applied to Azure 22 Oct (Azure test; demo acceptance pending) |
+| **Status** | Implemented · tested |
 | **Code** | [`narrative_engine/api.py`](../../narrative_engine/api.py) |
 | **Library** | Strawberry GraphQL (ASGI) on uvicorn; no web framework |
 | **URL (Azure)** | `https://itg-narrative-dev-engine.internal.<environment domain>/graphql`: internal ingress, anonymous read inside the environment |
@@ -23,7 +23,7 @@
 | `storylines(matchId)` | The match's storylines (label, team, status, salience, beats, linked `keyEventIds`), in the order they opened |
 | `contextBlocks(matchId, includeSuperseded = true)` | Neutral context summaries (`level` 0 minute, 1 five-minute, 2 earlier/period; `tier` `minute`, `five-minute`, `twenty-minute`, `half`), oldest first; `false` returns only the active context |
 
-Narratives carry `eventSeq`, the canonical seq of the data they were written from, and `analysisId`/`storylineIds` (the storyline they advance). The service also answers `GET /health` and `POST /admin/matches/purge` (`{"match_id"}` or `{"all": true}`, [contract](../../../local/contracts.md#5-purge)) beside `/graphql` (`service.service_app`). On Azure the ingress is internal and the purge also needs `Authorization: Bearer $ADMIN_TOKEN`; the frontend's `/purge-api/engine` adds it.
+Narratives carry `eventSeq`, the canonical seq of the data they were written from, and `analysisId`/`storylineIds` (the storyline they advance). The service also answers `GET /health` and `POST /admin/matches/purge` (`{"match_id"}` or `{"all": true}`, [contract](../../../local/contracts/README.md#5-purge)) beside `/graphql` (`service.service_app`). On Azure the ingress is internal and the purge also needs `Authorization: Bearer $ADMIN_TOKEN`; the frontend's `/purge-api/engine` adds it.
 
 Invalid buckets or topic ids and `first` outside 1–200 are GraphQL errors.
 
@@ -41,7 +41,7 @@ Invalid buckets or topic ids and `first` outside 1–200 are GraphQL errors.
 
 ```sh
 python -m narrative_engine.api .local/narratives.jsonl --port 8000
-python -m narrative_engine.devtools.local <notifications.jsonl> --serve 8000
+python -m devtools.local <notifications.jsonl> --serve 8000
 ```
 
 Then open `http://localhost:8000/graphql` for the GraphiQL explorer.

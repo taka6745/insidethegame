@@ -1,12 +1,12 @@
 # Overview
 
-> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one to three sentence narratives for each active audience bucket when something happens. It is implemented and tested; applied to Azure on 22 Oct for the Azure test (demo acceptance pending).
+> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one to three sentence narratives for each active audience bucket when something happens. It is implemented, tested and deployed to Azure.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (186 tests on 22 Oct, 2 need a local DAB) · Container App `itg-narrative-dev-engine` applied 22 Oct (Azure test; demo acceptance pending) |
+| **Status** | Implemented · tested · deployed: Container App `itg-narrative-dev-engine`, redeployed 23 Oct with the fictional league; all four demo seeds recorded on Azure |
 | **Language** | Python 3.11, asyncio |
-| **Runs on** | Azure Container Apps (one replica); Microsoft Agent Framework on Azure AI Foundry: `gpt-6.1-sol` (`writer`, effort low; in Terraform) and Microsoft-Decision-1 (`decision-1`, applied) |
+| **Runs on** | Azure Container Apps (one replica); Microsoft Agent Framework on Azure AI Foundry: `gpt-6.1-sol` (`writer`, every agent at effort low) and Microsoft-Decision-1 (`decision-1`) |
 | **Reads** | ETL GraphQL (SPADL actions, key events, the SPADL stat catalogue, MA3 facts outside SPADL); Service Bus `match-notifications`; user-backend audience targets and prompts |
 | **Writes** | Cosmos DB (`checkpoints`, `contextBlocks`, `narratives`, `analyses`, `storylines`, follow decisions and narratives, `tombstones`); Service Bus `narratives` (also `FollowClip`, `MomentClip`) |
 | **Serves** | Narrative history GraphQL at `/graphql` |
@@ -31,7 +31,7 @@ Summaries and compression are done once per match and shared by every bucket; on
 
 *In short: the user backend's audience catalogue defines the buckets; only active ones get narratives.*
 
-The engine reads the backend's `generation_targets` (for example `home:analytical`: team × fan style, each with a description) and writes only for those enabled in the backend's configuration (toggled in `/dev/`; there is no viewer presence). The descriptions and MA1 team names become the author's audience text. The service has no fallback: while the backend cannot answer, authoring waits and `/health` is 503. Only tests and devtools use the original 12 buckets (`home`/`away`/`neutral` × `simple`/`casual`/`experienced`/`analyst`).
+The engine reads the backend's `generation_targets` (for example team × fan style × length, each layer and option with a description) and writes only for those enabled in the backend's configuration (toggled in `/dev/`; there is no viewer presence). The descriptions and MA1 team names become the author's audience text. The service has no fallback: while the backend cannot answer, authoring waits and `/health` is 503. Only tests and devtools use the original 12 buckets (`home`/`away`/`neutral` × `simple`/`casual`/`experienced`/`analyst`).
 
 ## 3. Inputs and outputs
 
@@ -48,7 +48,7 @@ The engine reads the backend's `generation_targets` (for example `home:analytica
 
 ## 4. Status by area
 
-*In short: everything is built and tested locally; it was verified in Azure dev before 21 Oct, re-applied 22 Oct for the Azure test; the demo acceptance (PLAN.md §10.4) is pending.*
+*In short: everything is built, tested and deployed; grounding quality has not yet been sampled on Azure.*
 
 | Area | Status |
 | --- | --- |
@@ -57,14 +57,14 @@ The engine reads the backend's `generation_targets` (for example `home:analytica
 | Agents (Agent Framework on Azure AI Foundry) | Implemented, tested (mocked API), run on full matches |
 | Narrative history GraphQL | Implemented, tested; internal ingress on Azure |
 | Service Bus and Cosmos DB | Implemented, verified in Azure on 10x replays (204/204 narratives delivered) |
-| Monitoring (Application Insights, workbook) | Deployable |
+| Monitoring (Application Insights, workbook) | Deployed |
 | Targets and prompts from the user backend | Implemented, tested (mocked HTTP); runs in the local stack as `narrative-live` |
 | Concurrent matches: one orchestrator per matchId, a global model gate (summaries first, per-match fairness), purge with Cosmos tombstones (`POST /admin/matches/purge`), `tier` on context blocks, `eventSeq` on narratives | Implemented, tested (router, gate, memory store) |
-| Local stack (`./dev up backend`): ETL `etl-stream` stand-in → SQL + DAB → `narrative-live` → backend → viewer | Implemented, run on live replays; not deployed |
-| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Riverton Rovers–United recording); live smoke with the dev Decision-1 deployment, then on the shared stack (22 Oct) |
-| Moment clips: `FollowClip` (D3), clip-on topics (D6), `MomentClip` for shared key-event narratives (D7) | Implemented, unit-tested, checked on the local stack (22 Oct); not yet on Azure |
-| Demo seeds: export/restore under `DEMO_SEEDS=1` (D2) | Implemented, unit-tested (export → purge-all → restore → continue), used for every local seed (22 Oct); not yet on Azure |
-| Real-time (1x) three-match run | Local stack to half time and beyond (R16–R17, 22 Oct); Azure run is part of the demo acceptance (planned) |
+| Local stack (`./dev up backend`): ETL `etl-stream` stand-in → SQL + DAB → `narrative-live` → backend → viewer | Implemented, run on live replays (local only) |
+| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Riverton Rovers–Forgeham United recording); run on the local stack and Azure |
+| Moment clips: `FollowClip`, clip-on topics, `MomentClip` for shared key-event narratives | Implemented, tested; deployed (a capture card played as a replay on Azure) |
+| Demo seeds: export/restore under `DEMO_SEEDS=1` | Implemented, tested; deployed (seeded 60′ start in about 8 s) |
+| Real-time (1x) three-match run | Run locally and on Azure (engine lag about half a match minute) |
 
 ## 5. Glossary
 

@@ -4,8 +4,8 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (mocked API) · Foundry deployment `writer` = `gpt-6.1-sol` in Terraform (effort low), not yet in the applied state; the engine app was applied 22 Oct |
-| **Code** | [`narrative_engine/agents/`](../../narrative_engine/agents/): `llm.py`, `prompts/`; fakes in [`devtools/fake_agents.py`](../../narrative_engine/devtools/fake_agents.py) |
+| **Status** | Implemented · tested (mocked API); on Azure every agent uses Foundry deployment `writer` = `gpt-6.1-sol` (effort low) |
+| **Code** | [`narrative_engine/agents/`](../../narrative_engine/agents/): `llm.py`, `prompts/`; fakes in [`tests/doubles/fake_agents.py`](../../tests/doubles/fake_agents.py) |
 | **Libraries** | `agent-framework-core`, `agent-framework-openai`, `openai` |
 | **Interface** | `summarise(variables, prompt)`, `compress(variables, prompt)`, `analyse(variables, prompt, feedback)`, `author(variables, prompt, feedback)` → `AgentResult` |
 | **Tests** | `test_llm_agents.py` |
@@ -18,12 +18,12 @@
 | --- | --- | --- | --- | --- |
 | `minute-summariser` | Once per closed minute with events | `minute-summary.v3` | JSON `{"summary": ...}` | minimal |
 | `context-compressor` | When a compression rule fires | `context-compression.v2` | JSON `{"summary": ...}` | minimal |
-| `match-analyst` | Every 5 match minutes, half and full time ([core §5](core.md#5-analysis-and-storylines-analysis)) | `match-analyst.v4` | JSON observations citing trend numbers, checked by `analysis/validator.py` | (role default) |
-| `narrative-author` | Once per bucket per step | `narrative-author.v6` | Plain text, one to three sentences | low |
+| `match-analyst` | Every 5 match minutes, half and full time ([analysis](analysis.md)) | `match-analyst.v4` | JSON observations citing trend numbers, checked by `analysis/validator.py` | (role default) |
+| `narrative-author` | Once per bucket per step | `narrative-author.v7` | Plain text, one to three sentences | low |
 
 Default effort is the local stack's; on Azure every role runs `gpt-6.1-sol` at `low`, its lowest effort (`infra/variables.tf` `agents`). Follow narratives use the `narrative-author` role with the `subscription-author` prompt ([follows](follows.md#4-authoring)).
 
-Calls are stateless: each run gets a freshly built prompt and no conversation history (design principle 4). A summary reply that is not valid JSON gets one follow-up asking for the JSON only; an empty author reply is retried once; an analyst reply with no JSON object gets one follow-up, then goes to the validator as it is. The grounding checks ([core §5](core.md#5-analysis-and-storylines-analysis)) allow one repair turn per analysis and per excerpt: `analyse` and `author` take `feedback` (the earlier reply and the reasons) and continue that conversation.
+Calls are stateless: each run gets a freshly built prompt and no conversation history (design principle 4). A summary reply that is not valid JSON gets one follow-up asking for the JSON only; an empty author reply is retried once; an analyst reply with no JSON object gets one follow-up, then goes to the validator as it is. The grounding checks ([analysis](analysis.md)) allow one repair turn per analysis and per excerpt: `analyse` and `author` take `feedback` (the earlier reply and the reasons) and continue that conversation.
 
 ## 2. How a call is made
 
@@ -48,7 +48,9 @@ Calls are stateless: each run gets a freshly built prompt and no conversation hi
 
 Unset `OPENAI_*` settings fall back to the local model's `LOCAL_LLM_BASE_URL`, `LOCAL_LLM_MODEL` and `LOCAL_LLM_API_KEY` (a dummy key when unset); the local stack passes them from the ignored `.local/backend-llm.env`, as for the user backend.
 
-Example, a stronger author only: `OPENAI_MODEL_AUTHOR=gpt-5 OPENAI_EFFORT_AUTHOR=medium`. In Azure the same is done in Terraform ([deployment §3](../deployment.md#3-changing-a-model)).
+Example, a different author only: `OPENAI_MODEL_AUTHOR=gpt-6-luna OPENAI_EFFORT_AUTHOR=medium`. In Azure the same is done in Terraform ([deployment §3](../deployment.md#3-changing-a-model)).
+
+**Live switch per role.** The service also reads the user backend's `GET /model-roles` (ETag-cached; edited under `/dev/config/models`). A role with a deployment there runs on that deployment at the same endpoint with its effort; an empty one, or an unreachable backend, keeps the environment's settings. On Azure the alternates `gpt-6-luna` and `gpt-5-mini` are deployed beside `writer` for this.
 
 Check the connection for all four roles: `python -m narrative_engine.agents.llm`.
 
@@ -60,7 +62,7 @@ Runtime templates live in `agents/prompts/` with `{placeholder}` variables (JSON
 
 The service takes each role's active template from the backend's prompts API (`prompt_source.HttpPromptSource`), if its placeholders equal the shipped file's; otherwise the work pauses and `/health` is 503 ([core §4](core.md#4-audience-targets)). Only tests and devtools use the shipped files directly.
 
-## 5. Fakes (`devtools/fake_agents.py`)
+## 5. Fakes (`tests/doubles/fake_agents.py`)
 
 *In short: deterministic text with no model calls, for tests and offline runs.*
 

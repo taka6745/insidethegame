@@ -51,15 +51,17 @@ The rendered overview diagram is [../architecture.svg](../architecture.svg); the
 | [Core](components/core.md) | `core/` | Match clock and message models, settings, the orchestrator |
 | [Context](components/context.md) | `context/` | Compression rules, prompt text from ETL data, prompt variables per agent |
 | [Agents](components/agents.md) | `agents/` | Minute summariser, context compressor, match analyst, narrative author |
-| [Analysis](components/core.md#5-analysis-and-storylines-analysis) | `analysis/` | Grounding validator for the analyst; storyline reducer and focus choice |
+| [Analysis](components/analysis.md) | `analysis/` | Grounding validator for the analyst; storyline reducer and focus choice |
 | [Match data](components/match-data.md) | `match_data/` | ETL reads, bounded by the horizon |
 | [Decisions](components/decisions.md) | `decisions/` | Bounded classifiers: Microsoft-Decision-1, constrained-LLM fallback |
 | [Follows](components/follows.md) | `follows/` | Followed topics, trigger rules, follow evaluation and authoring steps |
 | [Store](components/store.md) | `store/` | Checkpoints, context blocks, narratives, analyses, storylines, follow decisions and narratives |
 | [Transport](components/transport.md) | `transport/` | Service Bus in and out; JSONL files locally |
 | [API](components/api.md) | `api.py` | Narrative history GraphQL |
-| [Demo seeds](components/service.md#5-demo-seeds-demo_seeds) | `demo/` | Seed export/restore, mounted only with `DEMO_SEEDS=1` |
-| [Devtools](components/devtools.md) | `devtools/` | Local runs, Azure helpers, HTML report (not deployed) |
+| [Demo seeds](components/demo.md) | `demo/` | Seed export/restore, mounted only with `DEMO_SEEDS=1` |
+| [Devtools](components/devtools.md) | `devtools/` (service root) | Local runs, Azure helpers, HTML report, fixture tools (not deployed) |
+
+The folder names map onto the house layers: `core/` holds models and the orchestrator (the service layer), `store/` the repositories, `transport/` and `match_data/` the adapters, and `api.py` and `service.py` the HTTP layer and composition root.
 
 ## 3. Runtime flows
 
@@ -107,9 +109,9 @@ A step records the horizon at the time it was queued and waits for the minutes c
 
 Each key event, minute recap, storyline update and period end also queues a follow evaluation when anything is followed: one Decision-1 call for the involved topics, the decision stored, then one narrative per fired topic and follower bucket ([follows](components/follows.md)).
 
-### 3.8 Moment clips (PLAN.md §10.2 D3, D6, D7)
+### 3.8 Moment clips
 
-*Implemented 22 Oct; unit-tested and checked on the local stack; not yet on Azure.* The engine never cuts video: it says which key event deserves a clip, and the backend cuts it from the played stream.
+The engine never cuts video: it says which key event deserves a clip, and the backend cuts it from the played stream.
 
 | Message | When | Who sees it |
 | --- | --- | --- |
@@ -118,9 +120,9 @@ Each key event, minute recap, storyline update and period end also queues a foll
 
 Both are sent before and apart from the narratives, so a narrative dropped as ungrounded keeps its clip ([contracts](../contracts/README.md#follow-clips-type-followclip)).
 
-### 3.9 Demo seeds (PLAN.md §10.6, D2)
+### 3.9 Demo seeds
 
-*Implemented 22 Oct; unit-tested and used on the local stack; not yet on Azure.* With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start point and later restores them under a new matchId; the engine adopts the match as after a restart and continues live ([service §5](components/service.md#5-demo-seeds-demo_seeds)).
+With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start point and later restores them under a new matchId; the engine adopts the match as after a restart and continues live ([demo](components/demo.md)).
 
 ## 4. Data model
 
@@ -154,7 +156,7 @@ Both are sent before and apart from the narratives, so a narrative dropped as un
 
 ### 4.4 `analyses` and `storylines`
 
-Immutable match analyses and the storylines' current state ([core §5](components/core.md#5-analysis-and-storylines-analysis)).
+Immutable match analyses and the storylines' current state ([analysis](components/analysis.md)).
 
 ### 4.5 `subscriptionDecisions` and `subscriptionNarratives`
 
@@ -164,22 +166,14 @@ Immutable follow decisions (`subdec:{matchId}:{trigger ref}`) and follow narrati
 
 *In short: the engine owns its resource group; it borrows the ETL's Service Bus namespace and Container Apps environment.*
 
-| Resource | Name (dev) | Notes |
-| --- | --- | --- |
-| Resource group | `rg-itg-narrative-dev` | Budget alert at US$20/month |
-| Container App | `itg-narrative-dev-engine` | 0.5 vCPU, 1 GiB, 1 replica, internal ingress on 8000 (only the backend, the frontend's dev purge proxy and demo control call it); `DEMO_SEEDS=1` on the judge build; in the ETL's environment (one per region on the trial) |
-| Container Registry | `itgnarrativedevdhcyoacr` | Basic; images built locally and pushed |
-| Cosmos DB | `itg-narrative-dev-dhcyo-cosmos` | Serverless; engine uses managed identity |
-| Azure AI Foundry (AI Services) | `itg-narrative-dev-dhcyo-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low; not yet in the applied state) and `decision-1` (Microsoft-Decision-1, 50 requests/minute; applied); the user backend adds its own `questions` deployment here |
-| Service Bus topic | `narratives` | In the ETL namespace; subscriptions `user-backend`, `narrative-check`. The engine reads `match-notifications` through the ETL's `narrative-engine` subscription |
-| Application Insights | `itg-narrative-dev-dhcyo-appi` | Own Log Analytics workspace (0.2 GB/day cap); workbook "Narrative engine" |
+One Container App (internal ingress, one replica), a container registry, serverless Cosmos DB, an Azure AI Foundry account (`writer`, `decision-1`), the `narratives` topic in the ETL's namespace and Application Insights. Files and settings: [deployment §1](deployment.md#1-infrastructure).
 
 ## 6. Guarantees and limits
 
 *In short: what holds under failure, and what is out of scope.*
 
 - **Idempotent:** block and step IDs are deterministic; a duplicate or redelivered message changes nothing.
-- **No future leakage:** every ETL read is bounded by the horizon recorded with the work: MA3 rows and key events by clock, SPADL actions and catalogue stats by canonical seq (a key-event step by its own row's). Only settled SPADL actions are stored and reads wait for `spadlSeq`, so a backlog builds the same prompts as live (`test_recording_run.py`, whole Riverton Rovers–United match).
+- **No future leakage:** every ETL read is bounded by the horizon recorded with the work: MA3 rows and key events by clock, SPADL actions and catalogue stats by canonical seq (a key-event step by its own row's). Only settled SPADL actions are stored and reads wait for `spadlSeq`, so a backlog builds the same prompts as live (`test_recording_run.py`, whole Riverton Rovers–Forgeham United match).
 - **Restart-safe:** all progress is in the checkpoint; a restart resumes the queue. A lost Service Bus connection reconnects in-process with backoff (1 s doubling to 30 s); unsettled messages are redelivered.
 - **Single replica:** workers live in memory, so a second replica would race. Leader election is not built.
 - **Throughput:** a match costs about 1.2 summary or compression calls per match minute, 0.2 analyst calls (one every five minutes), plus about 0.12–0.16 author calls per minute per active bucket (storyline turns add a few steps but reset the ten-minute scheduled step) (the three GRF recordings: 92–94 summaries, 20–24 compressions, 11–15 steps; 2.65–3.17 calls per match minute with 12 buckets). The engine keeps up while `matches × (1.2 + 0.15 × buckets) × mean call seconds ≤ 60 × MODEL_CONCURRENCY`. Example: three matches with two buckets each make about 4.5 calls a minute, so at `MODEL_CONCURRENCY=2` (the local stack, which shares its model with viewer questions) calls must average under about 25 s. Above that a backlog builds. Nothing is dropped: it stays in each checkpoint and drains in match order, mostly during half time. Summaries are served first, so author steps (what viewers see) carry the lag; a short run can be purged before its later scheduled steps are written. Each step logs `closed through` to show the lag.

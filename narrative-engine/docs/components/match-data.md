@@ -1,12 +1,12 @@
 # Match data
 
-> **In short:** everything the engine reads from the ETL, behind one interface. `etl_graphql.py` queries the ETL's Data API builder in Azure or locally; the test double `devtools/fixture_data.py` serves a replay file from memory for tests and offline runs. Every read is bounded by a match clock, or by the canonical seq of the latest MA3 row up to it, and MA3 reads also by the ETL's committed seq (`eventSeq ≤ matchWatermarks.seq`), so the engine never sees events the ETL has not announced or committed.
+> **In short:** everything the engine reads from the ETL, behind one interface. `etl_graphql.py` queries the ETL's Data API builder in Azure or locally; the test double `tests/doubles/fixture_data.py` serves a replay file from memory for tests and offline runs. Every read is bounded by a match clock, or by the canonical seq of the latest MA3 row up to it, and MA3 reads also by the ETL's committed seq (`eventSeq ≤ matchWatermarks.seq`), so the engine never sees events the ETL has not announced or committed.
 
 | | |
 | --- | --- |
 | **Status** | Implemented · tested against a fake DAB and read-only against the Azure dev DAB |
-| **Code** | [`narrative_engine/match_data/`](../../narrative_engine/match_data/): `__init__.py` (interface), `etl_graphql.py`; test double in [`devtools/fixture_data.py`](../../narrative_engine/devtools/fixture_data.py) |
-| **Reads** | ETL GraphQL: `matches`, `rawEvents`, `keyEvents`, `spadlActions`, `matchWatermarks.spadlSeq`, `executeStatsAtSeq`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq` ([ETL contracts](../../../etl/contracts/README.md), [local contracts §3–4](../../../local/contracts.md#3-etl-graphql-dab)) |
+| **Code** | [`narrative_engine/match_data/`](../../narrative_engine/match_data/): `__init__.py` (interface), `etl_graphql.py`; test double in [`tests/doubles/fixture_data.py`](../../tests/doubles/fixture_data.py) |
+| **Reads** | ETL GraphQL: `matches`, `rawEvents`, `keyEvents`, `spadlActions`, `matchWatermarks.spadlSeq`, `executeStatsAtSeq`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq` ([ETL contracts](../../../etl/contracts/README.md), [local contracts §3–4](../../../local/contracts/README.md#3-etl-graphql-dab)) |
 | **Tests** | `test_graphql_data.py`, `test_recording_run.py`, `test_graphql_live.py` (skips when the ETL is unreachable) |
 
 ## 1. Interface (`MatchData`)
@@ -37,7 +37,7 @@
 - Only final actions are stored, so the window `(afterSeq, seq]` is the same however late it is read: backlog equals live (`test_recording_run.py`).
 - Pages are followed until complete.
 
-## 3. Fixture reader (`devtools/fixture_data.py`)
+## 3. Fixture reader (`tests/doubles/fixture_data.py`)
 
 *In short: the same interface over a replay file and its notifications; a test double, never used by the service.*
 
@@ -45,7 +45,7 @@
 
 | Replay | SPADL actions | Used by |
 | --- | --- | --- |
-| `tests/fixtures/itg-syn-0001.jsonl` (synthetic seeder match; no canonical seqs, so MA3 `seq` stands in for `eventSeq`) | `tests/fixtures/itg-syn-0001-spadl.json`, written by `tools/spadl_fixture.py` with the ETL's converter | orchestrator, GraphQL and service tests |
-| Riverton Rovers–United recording (`data-generation/recordings/`) | the ETL's `etl/tests/fixtures/spadl-riverton-forgeham.json`; golden stats `catalogue-golden.json` | render snapshots, whole-match backlog-vs-live run |
+| `tests/fixtures/itg-syn-0001.jsonl` (synthetic seeder match; no canonical seqs, so MA3 `seq` stands in for `eventSeq`) | `tests/fixtures/itg-syn-0001-spadl.json`, written by `devtools/spadl_fixture.py` with the ETL's converter | orchestrator, GraphQL and service tests |
+| Riverton Rovers–Forgeham United recording (`data-generation/recordings/`) | the ETL's `etl/tests/fixtures/spadl-riverton-forgeham.json`; golden stats `catalogue-golden.json` | render snapshots, whole-match backlog-vs-live run |
 
 A full fake-agent run over the GraphQL client against a fake DAB gives the same prompts as the fixture run.

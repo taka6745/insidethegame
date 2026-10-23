@@ -4,8 +4,8 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested; used by story follows and their moment clips ([follows](follows.md)) and the claim checks (22 Oct). Live smoke against the dev Decision-1 deployment passed; Azure deployment `decision-1` (DataZoneStandard, 50 requests/minute) applied 22 Oct |
-| **Code** | [`narrative_engine/decisions/`](../../narrative_engine/decisions/): `__init__.py` (questions, answers, `DecisionModel`, `DecisionSettings`), `systemone.py`, `llm.py`; test double [`devtools/fake_decisions.py`](../../narrative_engine/devtools/fake_decisions.py) |
+| **Status** | Implemented · tested; used by story follows, their moment clips ([follows](follows.md)) and the claim checks. Azure deployment `decision-1` (DataZoneStandard, 50 requests/minute) |
+| **Code** | [`narrative_engine/decisions/`](../../narrative_engine/decisions/): `__init__.py` (questions, answers, `DecisionModel`, `DecisionSettings`), `systemone.py`, `llm.py`; test double [`tests/doubles/fake_decisions.py`](../../tests/doubles/fake_decisions.py) |
 | **Tests** | `test_decisions.py` (httpx.MockTransport); `python -m narrative_engine.decisions.systemone` makes one live call and never prints the key |
 | **Contract** | [Subscription targets](../../contracts/README.md#subscription-targets) |
 

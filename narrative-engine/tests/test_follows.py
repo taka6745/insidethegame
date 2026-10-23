@@ -1,5 +1,5 @@
 """Story follows: the topic source, the trigger rules (prefilter, gap, fire rule) and the pipeline over the whole
-Riverton Rovers–United recording (synthetic) with fake agents and a fake decision model. Live and as a backlog the
+Riverton Rovers–Forgeham United recording (synthetic) with fake agents and a fake decision model. Live and as a backlog the
 decision model gets the same states and questions and the follow narratives are the same; a restart reuses the
 stored decision instead of asking again; a purge removes the follow documents."""
 import asyncio

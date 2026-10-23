@@ -4,11 +4,11 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · applied to Azure 22 Oct (Azure test; demo acceptance pending) |
+| **Status** | Implemented · tested |
 | **Code** | [`narrative_engine/service.py`](../../narrative_engine/service.py) |
 | **Run** | `python -m narrative_engine.service` (the Dockerfile's command) |
 | **Depends on** | every other component |
-| **Tests** | `tests/test_servicebus.py` (router: concurrent matches, model limit, purge and restart, health; settle, publisher; seed export → purge-all → restore under a new id, and no seed routes without `DEMO_SEEDS`) |
+| **Tests** | `tests/test_servicebus.py` (router: concurrent matches, model limit, purge and restart, health; settle, publisher; seed routes: [demo](demo.md)) |
 
 ## 1. Responsibilities
 
@@ -40,7 +40,7 @@
 | `OPENAI_*`, `LOCAL_LLM_*` | Required: model settings per agent (Azure AI Foundry in Azure), falling back to the local model's settings; see [agents](agents.md#3-model-settings). Without them the service fails at start-up. Fake agents and the memory store are for tests and devtools only |
 | `PORT` | GraphQL port (default 8000); also `GET /health` and the internal `POST /admin/matches/purge` |
 | `ADMIN_TOKEN` | Optional (set on Azure): the purge (and, with `DEMO_SEEDS`, export and restore) then needs `Authorization: Bearer <token>` |
-| `DEMO_SEEDS` | `1` mounts the demo seed adapter ([§5](#5-demo-seeds-demo_seeds)); local compose and the Azure judge build (`demo_seeds`) set it, a production release (`./dev azure up --release`) leaves it off |
+| `DEMO_SEEDS` | `1` mounts the [demo seed adapter](demo.md); local compose and the Azure demo build (`demo_seeds`) set it, a production release (`./dev azure up --release`) leaves it off |
 | `APPLICATIONINSIGHTS_CONNECTION_STRING` | Optional; enables traces and log export |
 | `ENABLE_SENSITIVE_DATA` | `true` adds prompts and replies to traces (off by default) |
 | `OTEL_SERVICE_NAME` | Name shown in Application Insights (`narrative-engine`) |
@@ -53,7 +53,7 @@
 | --- | --- |
 | `handle(body, messageType)` | Parse the message; drop it if the match is tombstoned or `admit` refuses it; else `accept` it on the match's orchestrator |
 | `admit(message)` | For a match not seen since start-up: refuse (and tombstone) it if its MA1 `timeStamp` (or, with no MA1 in the ETL, the notification's time) is before the purge-all cut-off |
-| `purge(matchId)` / `purge(everything=True)` | `POST /admin/matches/purge` ([contract](../../../local/contracts.md#5-purge)): write tombstones (and, for `all`, the cut-off) first, then stop the workers and delete checkpoints, blocks and narratives. Returns `{"match_ids", "purged": {"checkpoints", "contextBlocks", "narratives"}}`. Other matches are untouched |
+| `purge(matchId)` / `purge(everything=True)` | `POST /admin/matches/purge` ([contract](../../../local/contracts/README.md#5-purge)): write tombstones (and, for `all`, the cut-off) first, then stop the workers and delete checkpoints, blocks and narratives. Returns `{"match_ids", "purged": {"checkpoints", "contextBlocks", "narratives"}}`. Other matches are untouched |
 | `poll_targets()` | Every `TARGETS_POLL_SECONDS`: let go of finished matches, re-read targets for the rest |
 | `start()` | Load tombstones and the cut-off, kick the workers of every live match not tombstoned |
 | `health()` | The prompt source's problems (empty when healthy) |
@@ -66,16 +66,3 @@
 *In short: Agent Framework spans and the engine's own logs go to Application Insights.*
 
 `configure_telemetry()` calls Azure Monitor's `configure_azure_monitor(logger_name="narrative_engine")` and Agent Framework's `enable_instrumentation()` (sensitive data only with `ENABLE_SENSITIVE_DATA=true`). Each agent run becomes an `invoke_agent <name>` span with a nested `chat <model>` span carrying latency and token counts. Cosmos, Service Bus and HTTP calls are traced too. How to view it: [deployment.md](../deployment.md#4-monitoring).
-
-## 5. Demo seeds (`DEMO_SEEDS`)
-
-*In short: a demo-only ASGI layer that exports one match's documents and restores them under a new matchId, so a demo can start mid-match (PLAN.md §10.6, D2). Implemented; unit-tested and used on the local stack (22 Oct); not yet run on Azure.*
-
-| | |
-| --- | --- |
-| **Code** | [`narrative_engine/demo/seeds.py`](../../narrative_engine/demo/seeds.py) (`seed_app` wraps the service app in `service.py`) |
-| **Routes** | `POST /admin/matches/export {match_id}` → `{match_id, schema, containers}`; `POST /admin/matches/restore {match_id, max_seq, schema, containers}` → `{match_id, restored}`; bearer `ADMIN_TOKEN` when set |
-| **Seeded** | `checkpoints` (follow state and pending follow steps cleared), `contextBlocks`, `narratives`, `analyses`, `storylines`; never viewers' follow decisions or follow narratives |
-| **Caller** | Demo control (`local/demo_control.py`), never the viewer |
-
-Restore writes documents in the shapes the orchestrator writes, then registers the match (`Router.engine`) as after a restart, so the next notification continues from the seed; no core code branches on a demo. It answers `409` for another schema fingerprint, a known, purged or tombstoned match, documents of another match, or narratives past `max_seq`; `503` for any other failure (demo control then purges the run everywhere). Without `DEMO_SEEDS=1` neither route exists (`test_without_the_demo_setting_the_service_has_no_seed_routes`).

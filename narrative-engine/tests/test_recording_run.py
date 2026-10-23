@@ -1,4 +1,4 @@
-"""A fake-agent run over the whole Riverton Rovers–United recording with its SPADL actions
+"""A fake-agent run over the whole Riverton Rovers–Forgeham United recording with its SPADL actions
 (tests/riverton_forgeham.py; synthetic). Live, the ETL holds only what has arrived when each
 notification is sent; as a backlog it already holds the whole match. Both runs must build the
 same prompts, so the engine reads nothing past each step's horizon and its output does not

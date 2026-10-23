@@ -1,4 +1,4 @@
-"""Storylines over the whole Riverton Rovers–United recording (synthetic) with fake agents, and ETL's Python twin of
+"""Storylines over the whole Riverton Rovers–Forgeham United recording (synthetic) with fake agents, and ETL's Python twin of
 the trend procedures (etl/reference/trends.py) serving the trends. Live (the ETL holds only what has arrived)
 and as a backlog (it holds the whole match), the analyst and author get the same prompts, and the analyses
 and storylines are the same. Expectations come from the recording, so a re-rendered one needs no edit."""

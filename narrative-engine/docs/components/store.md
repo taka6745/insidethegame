@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · applied to Azure 22 Oct (Cosmos DB serverless; Azure test, demo acceptance pending) |
+| **Status** | Implemented · tested (Cosmos DB serverless on Azure) |
 | **Code** | [`narrative_engine/store/`](../../narrative_engine/store/): `__init__.py` (interface), `cosmos.py`, `memory.py` |
 | **Auth** | Entra ID only (`DefaultAzureCredential`: `az login` locally, managed identity in Azure) |
 | **Tests** | `test_store_contract.py` (memory always; real Cosmos when `COSMOS_ENDPOINT` is set) |
@@ -41,7 +41,7 @@
 | `checkpoints` | One per match ([fields](../architecture.md#41-checkpoints-one-document-per-match)) |
 | `contextBlocks` | Every block, superseded ones included |
 | `narratives` | Every narrative |
-| `analyses` | Every match analysis, immutable ([core §5](core.md#5-analysis-and-storylines-analysis)) |
+| `analyses` | Every match analysis, immutable ([analysis](analysis.md)) |
 | `storylines` | Every storyline's current state |
 | `subscriptionDecisions` | Every story-follow decision, immutable ([follows](follows.md)) |
 | `subscriptionNarratives` | Every follow narrative (`kind: subscription`) |

@@ -1,4 +1,4 @@
-"""Prompt rendering: snapshots over the Riverton Rovers–United recording and the ETL's SPADL fixture for it
+"""Prompt rendering: snapshots over the Riverton Rovers–Forgeham United recording and the ETL's SPADL fixture for it
 (tests/riverton_forgeham.py), plus the synthetic match itg-syn-0001 (etl/seeder; not real data)."""
 import asyncio
 import json
@@ -20,7 +20,7 @@ CU = DATA.info
 
 
 def minute(period, minute_):
-    """The minute-summary match_events of one Riverton Rovers–United minute."""
+    """The minute-summary match_events of one Riverton Rovers–Forgeham United minute."""
     async def go():
         clock = MatchClock(period, minute_)
         return (await ContextBuilder(DATA, MemoryStore()).summary_variables(
@@ -106,7 +106,7 @@ def test_action_lines_use_spadl_names_and_team_relative_places():
 
 
 def test_keeper_saves_that_are_not_goalkeeper_saves_say_so():
-    # No Riverton Rovers–United keeper_save is an outfield block in the current render: mark a save as one.
+    # No Riverton Rovers–Forgeham United keeper_save is an outfield block in the current render: mark a save as one.
     block = {**next(a for a in DATA.actions_rows if a["typeName"] == "keeper_save"), "defensiveBlock": True}
     assert describe_action(block, CU).startswith("keeper_save, success, outfield block, not a goalkeeper save")
     wide = next(a for a in DATA.actions_rows if a["fromShotOffTarget"])

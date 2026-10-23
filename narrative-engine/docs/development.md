@@ -6,8 +6,8 @@
 | --- | --- |
 | **Needs** | Python 3.11; Azure CLI and Terraform only for Azure work; Docker only to build the image |
 | **Settings** | Ignored `narrative-engine/.env` (never committed) |
-| **Tests** | `pytest tests` (186 on 22 Oct, 2 skip without Cosmos/DAB). The store contract also runs against the local Cosmos emulator: `COSMOS_ENDPOINT=http://127.0.0.1:18081 COSMOS_KEY=<emulator key>` |
-| **Whole product locally** | `ACCEPT_EULA=Y ./dev up backend` runs this engine as `narrative-live` (GraphQL :18012, Cosmos emulator, local model from `.local/backend-llm.env`) on the ETL's `etl-stream` + `etl-dab` stand-in, with targets and prompts from the user backend: [../../DEVELOPMENT.md](../../DEVELOPMENT.md); logs with `./dev logs narrative-live`. Compose sets `DEMO_SEEDS=1`, so demo control can record and restore seeds ([service §5](components/service.md#5-demo-seeds-demo_seeds)) |
+| **Tests** | `pytest tests` (a few skip without Cosmos or a local DAB). The store contract also runs against the local Cosmos emulator: `COSMOS_ENDPOINT=http://127.0.0.1:18081 COSMOS_KEY=<emulator key>` |
+| **Whole product locally** | `ACCEPT_EULA=Y ./dev up backend` runs this engine as `narrative-live` (GraphQL :18012, Cosmos emulator, local model from `.local/backend-llm.env`) on the ETL's `etl-stream` + `etl-dab` stand-in, with targets and prompts from the user backend: [../../DEVELOPMENT.md](../../DEVELOPMENT.md); logs with `./dev logs narrative-live`. Compose sets `DEMO_SEEDS=1`, so demo control can record and restore seeds ([demo](components/demo.md)) |
 
 ## 1. Setup
 
@@ -15,12 +15,12 @@
 
 ```sh
 cd narrative-engine
-py -3.11 -m venv .venv                       # Windows; python3.11 elsewhere
-.venv/Scripts/pip install -r requirements-dev.txt     # requirements.txt plus pytest
-PYTHONUTF8=1 .venv/Scripts/python -m pytest tests
+python3.11 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt     # requirements.txt plus pytest
+.venv/bin/python -m pytest tests
 ```
 
-On Windows, `PYTHONUTF8=1` is needed for the shipped-fixture test, which reads UTF-8 files.
+Run everything from `narrative-engine/`: tests import `narrative_engine` and the developer commands run as `python -m devtools.<command>`.
 
 ## 2. Local stand-ins
 
@@ -29,7 +29,7 @@ On Windows, `PYTHONUTF8=1` is needed for the shipped-fixture test, which reads U
 | Azure piece | Local stand-in | Switch |
 | --- | --- | --- |
 | Cosmos DB | `MemoryStore` (dictionaries) | `COSMOS_ENDPOINT` unset |
-| ETL GraphQL | `FixtureMatchData` over `tests/fixtures/` (synthetic match `itg-syn-0001` and its SPADL actions, `tools/spadl_fixture.py`), or the ETL's local DAB in Docker on :5000 | `--data fixture\|graphql`, `--actions` |
+| ETL GraphQL | `FixtureMatchData` over `tests/fixtures/` (synthetic match `itg-syn-0001` and its SPADL actions, `devtools/spadl_fixture.py`), or the ETL's local DAB in Docker on :5000 | `--data fixture\|graphql`, `--actions` |
 | Service Bus in | ETL notifications JSONL (`etl/.local/notifications.jsonl` from the ETL's `load-local`, or `tests/fixtures/itg-syn-0001-notifications.jsonl`) | `devtools.local` |
 | Service Bus out | `.local/narratives.jsonl` | `devtools.local --out` |
 | Foundry | `FakeAgents`, or any OpenAI-compatible API in `.env` | `--agents fake\|llm` |
@@ -42,19 +42,19 @@ The `MemoryStore` and Cosmos store share a contract test, and a fake-agent run o
 
 ```sh
 # 1. Whole match, fake agents, offline (seconds)
-.venv/Scripts/python -m narrative_engine.devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl
+.venv/bin/python -m devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl
 
 # 2. Real models, two buckets (about 5 minutes on Foundry)
-.venv/Scripts/python -m narrative_engine.devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl \
+.venv/bin/python -m devtools.local tests/fixtures/itg-syn-0001-notifications.jsonl \
   --agents llm --buckets neutral:casual,home:analyst
 
 # 3. Real models and the Azure dev ETL data
-ETL_GRAPHQL_URL=<dev graphql url> .venv/Scripts/python -m narrative_engine.devtools.local \
+ETL_GRAPHQL_URL=<dev graphql url> .venv/bin/python -m devtools.local \
   tests/fixtures/itg-syn-0001-notifications.jsonl --data graphql --match-id itg-syn-0001-cloud4 --agents llm
 
 # 4. The full service on your machine against Azure dev (Service Bus, Cosmos DB)
-.venv/Scripts/python -m narrative_engine.devtools.azure env      # settings into .env
-USER_BACKEND_URL=<backend url> .venv/Scripts/python -m narrative_engine.service   # no backend: paused, /health 503
+.venv/bin/python -m devtools.azure env      # settings into .env
+USER_BACKEND_URL=<backend url> .venv/bin/python -m narrative_engine.service   # no backend: paused, /health 503
 ```
 
 Look at the results with the history API (`python -m narrative_engine.api .local/narratives.jsonl`) or, for Cosmos data, the HTML report (`devtools.azure report --match-id X`).
@@ -71,12 +71,15 @@ Look at the results with the history API (`python -m narrative_engine.api .local
 | `test_orchestrator.py` | Full matches, triggers, idempotency, backlog equals live, restarts, retries, report |
 | `test_llm_agents.py` | Agents against a mocked API: parsing, retries, per-role settings, prompt templates |
 | `test_graphql_data.py` | ETL GraphQL client against a fake DAB, no future leakage |
-| `test_graphql_live.py` | Read-only checks against the shared stack's ETL GraphQL (`ETL_GRAPHQL_URL`, default `:15001`): a Riverton Rovers–United feed run's MA3 rows, key events, SPADL actions and golden stats equal the recording's test data up to its watermark (skips without such a run) |
+| `test_graphql_live.py` | Read-only checks against the shared stack's ETL GraphQL (`ETL_GRAPHQL_URL`, default `:15001`): a Riverton Rovers–Forgeham United feed run's MA3 rows, key events, SPADL actions and golden stats equal the recording's test data up to its watermark (skips without such a run) |
 | `test_store_contract.py` | Memory and Cosmos stores behave the same (Cosmos part skips without `COSMOS_ENDPOINT`) |
 | `test_api.py` | History GraphQL queries and errors |
 | `test_servicebus.py` | Router: concurrent matches, model limit across matches, model gate order, purge (one, all, restart), final period from MA1, `eventSeq`, health without the backend; settling, publisher |
 | `test_backend_sources.py` | Audience targets and prompts from the user backend (mocked HTTP): ETag, framing, placeholder validation, no fallback, pinning, health problems |
 | `test_shipped_fixtures.py` | The authored commentary fixtures bind to the shipped recording |
+| `test_follows.py`, `test_decisions.py`, `test_storylines*.py`, `test_recording_run.py`, `test_model_roles.py` | Story follows, decision models, storylines over the recording, backlog equals live, model per role |
+
+Test doubles live in `tests/doubles/` (fake agents and decisions, `FixtureMatchData`, fixed targets and topics); helpers shared by several test modules (a mocked user backend, `EtlAsOf`, ETL trend rows) in `tests/support.py`; the Riverton Rovers–Forgeham United recording as test data in `tests/riverton_forgeham.py`.
 
 Fixtures in `tests/fixtures/` are synthetic and labelled so.
 

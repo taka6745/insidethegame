@@ -4,10 +4,10 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · applied to Azure 22 Oct (Azure test; demo acceptance pending) |
-| **Code** | [`narrative_engine/transport/`](../../narrative_engine/transport/): `servicebus.py`, `files.py` |
+| **Status** | Implemented · tested |
+| **Code** | [`narrative_engine/transport/`](../../narrative_engine/transport/): `servicebus.py`, `files.py`, `http_cache.py` (ETag-cached JSON reads from the user backend), `asgi.py` (bearer check, JSON responses and body reading for the admin routes in `service.py` and [demo](demo.md)) |
 | **Topics** | In: `match-notifications` (sub `narrative-engine` in Azure, `narrative-live` locally). Out: `narratives` |
-| **Auth** | Shared access keys scoped to listen or send (LATER: managed identity) |
+| **Auth** | Shared access keys scoped to listen or send (managed identity is a production gap: [terraform decisions](../../../terraform/docs/decisions.md)) |
 | **Tests** | `test_servicebus.py` |
 
 ## 1. Receiving (`SubscriptionListener`)

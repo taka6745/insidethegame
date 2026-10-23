@@ -1,16 +1,31 @@
-# Recorded-match commentary
+# Fixtures
 
-**Historical test material.** Bound to the earlier 90-minute Riverton Rovers 2–1 Forgeham United GRF recording (seed 37, rendered before [scripted tactics](../../data-generation/docs/components/grf-demo.md#4-scripted-tactics); [event contract](../../data-generation/docs/opta-events.md)), kept byte for byte in [`archive/riverton-forgeham-grf.json`](archive/riverton-forgeham-grf.json). Its Opta stream export (`archive/riverton-forgeham-grf.opta-stream.jsonl`, from `grf_demo.opta_stream`) sits beside it for the backend's SPADL double. The shipped `data-generation/recordings/riverton-forgeham-grf.json` is a newer match; these fixtures do not describe it. They hold 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
+> **In short:** historical, synthetic test material: authored commentary for an earlier Riverton Rovers 2–1 Forgeham United GRF recording, bound to its events. Backend tests and the replay benchmark read it; no running service serves it.
 
-Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or an actual Elephant League result. No running service serves them; backend tests and the replay benchmark read them.
+| | |
+| --- | --- |
+| **Status** | Historical test material (synthetic; not runtime output) |
+| **Files** | [`fixtures/`](../../fixtures/): `commentary-text.json` (authored), `grf-narratives.json` (bound), `archive/` (the recording they describe) |
+| **Tools** | [`devtools/bind_commentary.py`](../../devtools/bind_commentary.py) (binder), [`devtools/commentary_schema.py`](../../devtools/commentary_schema.py) (executable schema) |
+| **Used by** | `user-backend/tests/test_replay_golden.py`, `user-backend/benchmarks/replay_eval.py`, `tests/test_shipped_fixtures.py` |
+
+## 1. Provenance
+
+*In short: authored offline, fact-checked against the events, kept byte for byte.*
+
+Bound to the earlier 90-minute Riverton Rovers 2–1 Forgeham United GRF recording (seed 37, rendered before [scripted tactics](../../../data-generation/docs/components/grf-demo.md#4-scripted-tactics); [event contract](../../../data-generation/contracts/README.md)), kept byte for byte in [`fixtures/archive/riverton-forgeham-grf.json`](../../fixtures/archive/riverton-forgeham-grf.json). Its Opta stream export (`archive/riverton-forgeham-grf.opta-stream.jsonl`, from `grf_demo.opta_stream`) sits beside it for the backend's SPADL double. The shipped `data-generation/recordings/riverton-forgeham-grf.json` is a newer match; these fixtures do not describe it. They hold 92 broadcast minutes × 12 buckets, 24 tier recaps and 10 key moments, schema v2. Prose was fact-checked against the events by independent reviewers.
+
+Demo content authored offline by AI agents from the canonical events and video contact sheets, then checked against the events in review passes. It is not runtime LLM output or a real match result. No running service serves them; backend tests and the replay benchmark read them.
 
 ```text
 commentary-text.json (authored prose) + ETL canonical export
-        → tools/bind_commentary.py --reviewed-hash <sha256>
+        → devtools/bind_commentary.py CANONICAL_EXPORT --reviewed-hash <sha256>
         → grf-narratives.json (schema v2; adds release, evidence, digests)
 ```
 
-## Authored input: `commentary-text.json`
+## 2. Authored input: `commentary-text.json`
+
+*In short: prose per broadcast minute and bucket, tier recaps and ranked key moments.*
 
 ```jsonc
 {
@@ -34,7 +49,9 @@ commentary-text.json (authored prose) + ETL canonical export
 
 Minute IDs are `p{period}-m{minute}`; `minute` is the 1-based broadcast minute (`timeMin + 1`), so stoppage stays in its own period. Every minute from the period's first to the one containing its `period_end` is required, even when empty. Tier values: `five-minute`, `ten-minute`, `twenty-minute`, `half`. Ranks are unique across the match; key-moment IDs must not reveal the rank.
 
-## Bound output: `grf-narratives.json`
+## 3. Bound output: `grf-narratives.json`
+
+*In short: the prose bound to the recording's events, with release timing and evidence.*
 
 ```jsonc
 {
@@ -61,6 +78,6 @@ Minute IDs are `p{period}-m{minute}`; `minute` is the 1-based broadcast minute (
 | Tier | Its last child's release; also needs every child intact |
 | Key moment | All its events delivered and video passed `end_video_seconds` |
 
-The `release` metadata records when each unit could first be shown; the replay benchmark uses its `video_seconds` to hide later units. [`tools/commentary_schema.py`](../tools/commentary_schema.py) is the executable schema.
+The `release` metadata records when each unit could first be shown; the replay benchmark uses its `video_seconds` to hide later units. [`devtools/commentary_schema.py`](../../devtools/commentary_schema.py) is the executable schema.
 
 Before binding, review **all** prose against the event evidence; the binder checks structure and timing, not natural-language claims.

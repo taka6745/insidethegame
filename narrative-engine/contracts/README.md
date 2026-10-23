@@ -4,16 +4,16 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested locally (unit and the shared stack); engine applied to Azure 22 Oct, demo acceptance pending |
+| **Status** | Implemented · tested · deployed |
 | **Outputs** | GraphQL history · Service Bus `narratives` (bucket narratives, follow narratives, `FollowClip`, `MomentClip`) |
 | **Inputs** | ETL notifications and GraphQL · backend audience targets, prompts, policy, subscription targets |
 | **Admin** | `POST /admin/matches/purge` always; `POST /admin/matches/export` and `/restore` only with `DEMO_SEEDS=1` |
 
-What the user backend can rely on. Live narratives arrive on Service Bus; this GraphQL API serves history for joins and reconnects. Inputs come from the [ETL contracts](../../etl/contracts/README.md): SPADL actions (Output 3), the SPADL stat catalogue (`executeStatsAtSeq`) and the trend indicators (`executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, [local contracts §4b](../../local/contracts.md)), read at the step's canonical seq, plus key events, MA1 and MA3.
+What the user backend can rely on. Live narratives arrive on Service Bus; this GraphQL API serves history for joins and reconnects. Inputs come from the [ETL contracts](../../etl/contracts/README.md): SPADL actions (Output 3), the SPADL stat catalogue (`executeStatsAtSeq`) and the trend indicators (`executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, [local contracts §4b](../../local/contracts/README.md)), read at the step's canonical seq, plus key events, MA1 and MA3.
 
 ## Output 1: GraphQL (narrative history, read-only)
 
-**Implemented** ([api.py](../narrative_engine/api.py)). On Azure (`./dev azure up`) it is on the engine's internal ingress at `/graphql`, reachable only inside the Container Apps environment (the user backend); anonymous read there. Local stack: `127.0.0.1:18012`. Offline: `python -m narrative_engine.api .local/narratives.jsonl` or `python -m narrative_engine.devtools.local <notifications> --serve 8000`, then `http://localhost:8000/graphql`.
+**Implemented** ([api.py](../narrative_engine/api.py)). On Azure (`./dev azure up`) it is on the engine's internal ingress at `/graphql`, reachable only inside the Container Apps environment (the user backend); anonymous read there. Local stack: `127.0.0.1:18012`. Offline: `python -m narrative_engine.api .local/narratives.jsonl` or `python -m devtools.local <notifications> --serve 8000`, then `http://localhost:8000/graphql`.
 
 | Query | Returns | Use |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ query ($m: String!, $u: String!, $after: Int!) {
 ```
 
 - **`userType`** is a bucket id from the user backend's audience catalogue (for example `home:analytical`). A malformed id is a GraphQL error, as is `first` outside 1–200.
-- **`eventSeq`** is the canonical `MatchEvent` seq of the newest data the narrative was written from (MA3 `eventSeq` of the key event's own row for a key-event step, else of the latest row up to its horizon; [snapshot identity](../../local/contracts.md#1-identity-and-snapshots)). Show a narrative at snapshot `(matchId, s)` only when `eventSeq ≤ s`. `null` when no MA3 row precedes it.
+- **`eventSeq`** is the canonical `MatchEvent` seq of the newest data the narrative was written from (MA3 `eventSeq` of the key event's own row for a key-event step, else of the latest row up to its horizon; [snapshot identity](../../local/contracts/README.md#1-identity-and-snapshots)). Show a narrative at snapshot `(matchId, s)` only when `eventSeq ≤ s`. `null` when no MA3 row precedes it.
 - **`seq`** counts 1, 2, 3… per match and bucket, with no gaps. Keep the last `seq` you showed per bucket; on reconnect, ask for `afterSeq` = that value. Following `endCursor` while `hasNextPage` gets everything.
 - **`stepId`** is shared by every bucket's version of one narrative step (a goal, half time, a scheduled update). `id` is unique and stable: `narr:{matchId}:{userType}:{seq}`.
 - **`matchTime`** uses the ETL's Opta clock (`periodId`, 0-based `timeMin`) and its broadcast `label` (`45+2'`). A bucket only gets narratives while it is in `activeUserTypes` (enabled in the backend's config; steps already queued when it is disabled still finish). A bucket enabled mid-match, or re-enabled, gets a `catchUp` narrative, then continues with the rest.
@@ -59,7 +59,7 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 
 ### Follow narratives (`kind: subscription`)
 
-**Implemented (engine 22 Oct, [follows](../docs/components/follows.md)); the backend accepts it.** Same topic, same document, plus `kind`, `topicId` and `decision`; application properties add `kind` (`bucket` on bucket narratives). One narrative per triggered topic **per bucket of its followers** (generation shared by every follower in that bucket; the backend delivers per subscription). Bucket narratives carry `kind: "bucket"` (or omit it).
+**Implemented ([follows](../docs/components/follows.md)); the backend accepts it.** Same topic, same document, plus `kind`, `topicId` and `decision`; application properties add `kind` (`bucket` on bucket narratives). One narrative per triggered topic **per bucket of its followers** (generation shared by every follower in that bucket; the backend delivers per subscription). Bucket narratives carry `kind: "bucket"` (or omit it).
 
 ```json
 {"id": "sub:demo:topic:3fa2c1d0e4b5a697:home:analytical:2", "kind": "subscription", "topicId": "topic:3fa2c1d0e4b5a697",
@@ -77,7 +77,7 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 
 ### Follow clips (`type: FollowClip`)
 
-**Implemented (22 Oct; PLAN.md §10.2 D3).** Same topic. One message per (topic, key event) whose decision verdict carries `clip` (below), sent before and apart from that topic's narratives, so a narrative dropped as ungrounded never loses the moment's clip. Re-sent on a step retry; `MessageId` = `id`; application properties `matchId` and `kind: "clip"` (no `userType`: a clip belongs to the topic, not a bucket).
+**Implemented.** Same topic. One message per (topic, key event) whose decision verdict carries `clip` (below), sent before and apart from that topic's narratives, so a narrative dropped as ungrounded never loses the moment's clip. Re-sent on a step retry; `MessageId` = `id`; application properties `matchId` and `kind: "clip"` (no `userType`: a clip belongs to the topic, not a bucket).
 
 ```json
 {"type": "FollowClip", "id": "clip:demo:topic:3fa2c1d0e4b5a697:2700000390", "matchId": "demo",
@@ -88,11 +88,11 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 
 - `eventId`: the key event's MA3 id (ETL `keyEvents.id`); the backend's key moment is `km:{eventId}`. `eventSeq`: the seq the decision was made at; the clip shows once a viewer's snapshot reaches it.
 - The backend keeps one clip per (topic, moment) and drops clips of a topic it does not know.
-- A topic whose kind `clips.always_for` names is clip-on from creation: on a clip moment it is a candidate for, its verdict carries `clip` without the clip `Score` question (PLAN.md §10.2 D6).
+- A topic whose kind `clips.always_for` names is clip-on from creation: on a clip moment it is a candidate for, its verdict carries `clip` without the clip `Score` question.
 
 ### Key-event clips (`type: MomentClip`)
 
-**Implemented (22 Oct; PLAN.md §10.2 D7).** Same topic. One message per key event of `clips.key_types` that triggers the shared (bucket) author step, when the `clips` of the last subscription-targets read have `enabled` and `shared` (no follow or decision model needed; `shared` missing reads as off); sent before and apart from that step's narratives, so their grounding never decides it. Re-sent on a step retry; `MessageId` = `id`; application properties `matchId` and `kind: "clip"`.
+**Implemented.** Same topic. One message per key event of `clips.key_types` that triggers the shared (bucket) author step, when the `clips` of the last subscription-targets read have `enabled` and `shared` (no follow or decision model needed; `shared` missing reads as off); sent before and apart from that step's narratives, so their grounding never decides it. Re-sent on a step retry; `MessageId` = `id`; application properties `matchId` and `kind: "clip"`.
 
 ```json
 {"type": "MomentClip", "id": "mclip:demo:2700000390", "matchId": "demo", "buckets": ["home:casual", "neutral:simple"],
@@ -110,13 +110,13 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 | Request | Used for |
 | --- | --- |
 | `GET /matches/{matchId}/audience-config` | `generation_targets` for this run-scoped matchId (the backend resolves its fixture's audience template): the active buckets and their layer/option descriptions. Empty = write nothing; a newly active bucket gets a `catchUp` narrative |
-| `GET /storyline-policy` | `{table, revision, value: {analysis, storylines, repair}}` (ETag): every storyline tunable ([core §5](../docs/components/core.md#5-analysis-and-storylines-analysis)); unavailable pauses the work |
+| `GET /storyline-policy` | `{table, revision, value: {analysis, storylines, repair}}` (ETag): every storyline tunable ([analysis](../docs/components/analysis.md)); unavailable pauses the work |
 | `GET /narrative-prompts` | Global active template per role (`minute-summary`, `context-compression`, `match-analyst`, `narrative-author`, `subscription-decision`, `subscription-author`; the list also has the backend's own `subscription-planner`); used only if its placeholders equal the shipped file's |
 | `GET /matches/{matchId}/subscription-targets` | Followed topics and the follow tunables (below); poll like the audience targets. Empty `topics` = no follow work |
 
 ### Subscription targets
 
-**Implemented in the backend (21 Oct) and read by the engine (22 Oct).** Shape (ETag/`If-None-Match`; `revision` grows with every follow, unfollow and follower bucket change; `config_revision` with every `/dev/config/subscriptions` edit):
+**Implemented in the backend and read by the engine.** Shape (ETag/`If-None-Match`; `revision` grows with every follow, unfollow and follower bucket change; `config_revision` with every `/dev/config/subscriptions` edit):
 
 ```json
 {"schema_version": 1, "match_id": "riverton-forgeham-1a2b3c4d", "revision": 7, "config_revision": 1,
@@ -148,15 +148,15 @@ No fallback: while the backend cannot answer (or a prompt is invalid), authoring
 
 ## Admin: purge
 
-`POST /admin/matches/purge` `{"match_id": …}` or `{"all": true}` per the [purge contract](../../local/contracts.md#5-purge). Tombstones (and the `all` cut-off) are written to Cosmos first, so a restart plus late notifications cannot recreate a purged match; then the orchestrator stops and its checkpoint, context blocks, narratives, analyses, storylines, follow decisions and follow narratives are deleted. Response `{"match_ids": [...], "purged": {"checkpoints": n, "contextBlocks": n, "narratives": n, "analyses": n, "storylines": n, "subscriptionDecisions": n, "subscriptionNarratives": n}}`. Internal only; with `ADMIN_TOKEN` set (Azure) it also needs `Authorization: Bearer <token>`.
+`POST /admin/matches/purge` `{"match_id": …}` or `{"all": true}` per the [purge contract](../../local/contracts/README.md#5-purge). Tombstones (and the `all` cut-off) are written to Cosmos first, so a restart plus late notifications cannot recreate a purged match; then the orchestrator stops and its checkpoint, context blocks, narratives, analyses, storylines, follow decisions and follow narratives are deleted. Response `{"match_ids": [...], "purged": {"checkpoints": n, "contextBlocks": n, "narratives": n, "analyses": n, "storylines": n, "subscriptionDecisions": n, "subscriptionNarratives": n}}`. Internal only; with `ADMIN_TOKEN` set (Azure) it also needs `Authorization: Bearer <token>`.
 
 ## Admin: demo seeds (`DEMO_SEEDS=1` only)
 
-**Implemented (22 Oct; PLAN.md §10.6, D2).** Called by demo control, never by the viewer. Without `DEMO_SEEDS=1` both routes are absent (production release). Same bearer rule as the purge.
+**Implemented.** Called by demo control, never by the viewer. Without `DEMO_SEEDS=1` both routes are absent (production release). Same bearer rule as the purge.
 
 | Route | Body | Response |
 | --- | --- | --- |
 | `POST /admin/matches/export` | `{"match_id"}` | `{"match_id", "schema", "containers": {"checkpoints", "contextBlocks", "narratives", "analyses", "storylines": [...]}}` |
 | `POST /admin/matches/restore` | `{"match_id", "max_seq", "schema", "containers"}` (`match_id` is the new run's) | `{"match_id", "restored": {container: n}}`; `409` another schema, a known or purged match, documents of another match, narratives past `max_seq`; `422` malformed; `503` failed (retry) |
 
-Restore clears the checkpoint's follow state; follow decisions and follow narratives belong to viewers and are never seeded. The engine then carries on from the seed at the next notification ([service §5](../docs/components/service.md#5-demo-seeds-demo_seeds)).
+Restore clears the checkpoint's follow state; follow decisions and follow narratives belong to viewers and are never seeded. The engine then carries on from the seed at the next notification ([demo](../docs/components/demo.md)).
