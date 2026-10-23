@@ -296,6 +296,20 @@ continue), backend (export, refusals, restore, the match tracked again).
   - **Jargon:** the analyst's trend table showed ids (`ppda`, `field_tilt`), which leaked into labels and insights. It now shows each trend's plain label; the validator maps labels back to ids, so evidence is still checked against the served rows. ETL migration 018 relabels `field_tilt` ("share of final-third play") and `def_height` ("defending height"). Test: `test_writers_see_trend_labels_never_ids_and_the_analyst_cites_by_label`.
   - **Suites:** backend 607 (Postgres), engine 185 + 2 skipped, ETL 97 (SQL Server); the backend's prompt-copy test now points at author v7.
 
+### 10.8 Local check on the fictional league (23 Oct)
+
+*In short: every suite passes on HEAD and the full flow works on itg-local with the Azure sol seeds; four fixes.*
+
+- **Suites:** data-generation 108, feed 41 (Postgres + Azurite), ETL 103 (SQL Server 2025) then 23 seed/stream tests after the fix, engine 191, backend 627 (+1) and every broker probe, frontend 198, demo control 28, `./dev terraform check`, `./dev udfs --check`.
+- **Fixed:**
+  - Feed blob route test double lacked `seeds` (failed since DEMO_SEEDS).
+  - Azure seeds were refused locally ("another ETL schema"): the fingerprint covered the stand-in's `localStreamWindows`, which Azure lacks. It is now left out; an Azure seed's closed windows come from its minute stats, so the worker reopens nothing (`test_sql_seeds.py[azure]`, fails without the fix). `demo_control.py adopt {seed_id}` offers a copied seed.
+  - /dev/ refused every narrative-author save ("Unknown {match_trends}, {storylines}"): it was given the oldest version's placeholders, not the active one's (`test_prompts.py`).
+  - /dev/ audience saves dropped each option's `team` and `in_label` (Standard's `in_label: false`), so one save changed bucket labels (`dev.test.ts`).
+- **Flow (anonymous viewer, localhost:18020, local model):** stale pre-league matches purged first. Start demo 20′: ready in 2.8 s, Redcastle Town v Port Albion opened with the story so far, picture at 20:11 about 25 s after Start; three matches listed, main first. First live narratives at 24′ about 6.5 min after Start, one per enabled bucket (home:analytical, away:casual, neutral:simple), author v9; engine lag about 2–2.5 match minutes. "How many shots has Redcastle Town had?" 2, in 10.7 s; "How is the Skybridge City v Whitmore game going?" a marked answer as of 19:59 in 21.3 s. Follow Whitmore (other match) confirmed; catch-up in about 40 s. Skip +10′: picture jumped in about 25 s. The 48′ own goal arrived as a capture card (Skybridge 0–1 Whitmore) with its follow narrative and played as a replay with live picture-in-picture. Cancel: in-page dialog, every owner empty within 5 s. No shared narrative names another match's teams (75 scanned).
+- **Live config (/dev/):** disabling away:casual on redcastle-portalbion took its next step to 2 buckets (audience revision 2) while the other matches kept 3. A narrative-author v10 asking for a "Live check:" opening was used by the very next steps of all three matches. Both restored (v9 active; template inherits the default again).
+- Left running: a demo seeded from 20′ (started 00:10 UTC, ready in 8.8 s). Host swap 3.8 of 5 GB in use; the stack used 3.7 GiB.
+
 ## 11. Azure judge build (22 Oct)
 
 *In short: up at the azurecontainerapps.io URL and msft-hackathon.koda-software.com; all agents on gpt-6.1-sol. Redeployed 23 Oct with the fictional league; all four seeds recorded on sol; a seeded 60′ start takes about 8 s.*

@@ -85,12 +85,16 @@ viewer ─ /demo-api/{start,cancel,state,status} ─▶ demo-control ─┬▶ f
 | Cancel demo | Purge every match from every owner, feed first | Tested |
 | Status | Seven stages, each from a real check; wakes apps scaled to zero | Tested |
 | `record {point} [--from {point}]`, `capture {point}` | Held runs send nothing at or past the point; capture waits until every owner settled, then exports | Tested; 20′, HT, 60′, 85′ recorded 22 Oct |
+| `adopt {seed_id}` | Offers a copied seed at its own start point | Tested 23 Oct (the four Azure sol seeds, locally) |
 
 ```sh
 docker compose -p itg-local exec demo-control python /checks/demo_control.py record 20
 docker compose -p itg-local exec demo-control python /checks/demo_control.py capture 20
 docker compose -p itg-local exec demo-control python /checks/demo_control.py record ht --from 20   # chain HT, 60, 85
+docker compose -p itg-local exec demo-control python /checks/demo_control.py adopt 20-20261022T184253Z   # a seed copied from Azure
 ```
+
+A seed copied into `.local/seeds/` from another stack (Azure Files) is offered once `adopt` names it on its start point. The ETL fingerprint leaves out the local stand-in's `localStreamWindows`, so Azure and local seeds fit both; an Azure seed's closed windows come from its minute stats.
 
 Point ids: `kickoff`, `20`, `ht`, `60`, `85` (feed `demo_settings`, editable in `/dev/`). Seed routes exist only with `DEMO_SEEDS=1` (default here); without it each owner has no export or restore route. Start and cancel share one rate limit (10/min, burst 5); state and status are limited per client. Contract: [§7a](contracts.md#7a-demo-control-public).
 
