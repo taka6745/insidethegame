@@ -81,6 +81,13 @@ class BlobTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(live.remove(self.match_id), 0)
         self.assertNotIn(self.match_id, live.match_ids())
 
+    def test_a_purge_reuses_pooled_connections(self):
+        container = self.storage.service.get_container_client("live")
+        for i in range(200):
+            container.upload_blob(f"{self.match_id}/s{i:03}.ts", b"x")
+        with self.assertNoLogs("urllib3.connectionpool", "WARNING"):  # "Connection pool is full"
+            self.assertEqual(self.storage.live().remove(self.match_id), 200)
+
     def test_segments_are_published_only_once_played_and_purged(self):
         stream = dataclasses.replace(riverton(), fixture=self.fixture)  # riverton() is shared
         self.storage.attach_media({self.fixture: stream})

@@ -6,6 +6,7 @@ import threading
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest import mock
 
 import httpx
 
@@ -270,6 +271,18 @@ class MediaTests(FeedTestCase):
         listed = [line for line in (self.live / run["match_id"] / "live.m3u8").read_text().splitlines()
                   if line.endswith(".ts")]
         self.assertEqual(listed, [f"{i:05d}.ts" for i in range(4)])
+
+    async def test_played_segments_are_linked_not_copied(self):
+        run = await self.start_run()
+        directory, source = self.live / run["match_id"], self.stream.media
+        with mock.patch("feed.adapters.hls.shutil.copyfile", side_effect=AssertionError("copied")):
+            await self.run_to(7.9)
+        segments = sorted(directory.glob("*.ts"))
+        self.assertEqual([p.name for p in segments], [f"{i:05d}.ts" for i in range(3)])  # played only
+        self.assertTrue(all(p.is_symlink() and p.read_bytes() == (source / p.name).read_bytes() for p in segments))
+        await self.service.purge(run["match_id"])
+        self.assertFalse(directory.exists())
+        self.assertEqual(len(list(source.glob("*.ts"))), self.segments)  # the packaged media stays
 
     async def test_purge_waits_for_an_in_flight_segment_copy(self):
         run = await self.start_run()

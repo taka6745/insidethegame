@@ -28,9 +28,9 @@ FEED_TEST_DATABASE_URL=postgresql://user:pass@localhost:5432/feed_test python -m
 
 | Suite | Proves |
 | --- | --- |
-| `feed/tests/test_feed.py` | MA1 lead, send order and `seq`, nothing ahead of the clock, two concurrent runs, restart resume, HLS gate and 404s, purge (incl. an in-flight segment copy) and tombstones, seek off by default; Start demo (one demo under concurrent calls, main game first, run cap 409), held runs stop at their point, seeded runs wait for release then resume without MA1, no seed path without `DEMO_SEEDS` |
+| `feed/tests/test_feed.py` | MA1 lead, send order and `seq`, nothing ahead of the clock, two concurrent runs, restart resume, HLS gate and 404s, played segments linked not copied, purge (incl. an in-flight segment copy) and tombstones, seek off by default; Start demo (one demo under concurrent calls, main game first, run cap 409), held runs stop at their point, seeded runs wait for release then resume without MA1, no seed path without `DEMO_SEEDS` |
 | `feed/tests/test_feed_db.py` | Migrations, runs, catalogue sync, tombstones and cut-off on real Postgres |
-| `feed/tests/test_blob.py` | Blob Storage HLS gate and purge (Azurite or a throwaway account) |
+| `feed/tests/test_blob.py` | Blob Storage HLS gate and purge, no connection-pool overflow (Azurite or a throwaway account) |
 | `tests/test_opta_stream.py`, `test_fixture_recordings.py` | Exports reproducible from the recordings; scores, goals, cards and ETL reference totals pinned for `redcastle-portalbion` and `skybridge-whitmore` (`riverton-forgeham` in `test_recording.py`) |
 | `tests/test_opta_events.py`, `test_telemetry_v2.py`, `test_grf_demo.py` | Event derivation rules; the feed's event types and qualifiers equal the backend `Event` contract |
 | `tests/test_fixtures.py` | Rosters, kits, exports follow the recording |

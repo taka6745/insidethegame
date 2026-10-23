@@ -9,14 +9,29 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+import requests
 from azure.core.exceptions import ResourceNotFoundError
+from azure.core.pipeline.transport import RequestsTransport
 from azure.storage.blob import BlobServiceClient, ContentSettings
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 PLAYLIST = ContentSettings(content_type="application/vnd.apple.mpegurl", cache_control="no-cache")
 COPY_TIMEOUT = 60.0
 
 
 DELETE_WORKERS = 16  # not Blob Batch: Azurite (local and CI) refuses it
+
+
+def transport():
+    """One pooled connection per purge worker (requests keeps 10, so 16 workers overflowed it)."""
+    session = requests.Session()
+    # Retries off as in the SDK's own adapter: its pipeline retries.
+    retries = Retry(total=False, redirect=False, raise_on_status=False)
+    adapter = HTTPAdapter(pool_maxsize=DELETE_WORKERS, max_retries=retries)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return RequestsTransport(session=session)
 
 
 class BlobDir:
@@ -91,7 +106,7 @@ class BlobLive:
 
 class BlobStorage:
     def __init__(self, connection_string):
-        self.service = BlobServiceClient.from_connection_string(connection_string)
+        self.service = BlobServiceClient.from_connection_string(connection_string, transport=transport())
 
     def download_recordings(self, directory):
         """Copies recordings/*.json (top level) into directory; returns it."""

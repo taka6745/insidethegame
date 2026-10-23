@@ -1,4 +1,4 @@
-"""A run's live HLS playlist: packaged segments are copied in only once they have played.
+"""A run's live HLS playlist: packaged segments are linked (or copied) in only once played.
 
 The served directory never holds footage past the run's clock. The playlist is written only
 once it lists a segment, so it does not exist (404) before the first segment or after a purge.
@@ -47,12 +47,15 @@ class LocalDir:
         return (self.path / name).exists()
 
     def copy_from(self, source, name):
+        """A symbolic link, else a copy. Local media is a read-only mount on another device (no hard links),
+        where copying a seeded start's hundreds of played segments delayed its first playlist by a minute."""
         self.path.mkdir(parents=True, exist_ok=True)
-        temporary = self.path / (name + ".tmp")
+        original, temporary = os.path.abspath(source.path / name), self.path / (name + ".tmp")
+        temporary.unlink(missing_ok=True)
         try:
-            os.link(source.path / name, temporary)
+            os.symlink(original, temporary)
         except OSError:
-            shutil.copyfile(source.path / name, temporary)
+            shutil.copyfile(original, temporary)
         temporary.replace(self.path / name)  # Whole files only.
 
     def write_text(self, name, text):

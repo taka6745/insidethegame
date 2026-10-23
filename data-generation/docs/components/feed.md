@@ -21,8 +21,8 @@
 | `models/stream.py` | `FixtureStream`: one fixture's items in send order, independent of any run |
 | `adapters/recordings.py` | Discovers `recordings/*.json`, builds each stream (MA1/MA3/POS from `grf_demo.opta_stream`, `MatchEvent` v2 bodies) |
 | `adapters/eventhubs.py` | Event Hubs producer, one partition key per match |
-| `adapters/hls.py` | Live playlist: copies a packaged segment in only once it has played (disk directories) |
-| `adapters/blob.py` | The same directories in Azure Blob Storage |
+| `adapters/hls.py` | Live playlist: links a packaged segment in only once it has played (disk directories) |
+| `adapters/blob.py` | The same directories in Azure Blob Storage (server-side copies; purge deletes with 16 workers over a 16-connection pool) |
 | `services/feed.py` | Catalogue, runs (capped by `demo_settings.max_active_runs`), the demo start, purge |
 | `services/run.py` | One run on the wall clock |
 | `services/clock.py` | Wall clock; tests substitute a fake |
@@ -64,7 +64,7 @@ Seed recording and seeded starts exist only with `DEMO_SEEDS=1` (local compose a
 
 *In short: the served directory never holds footage past the run's clock.*
 
-A packaged segment is hard-linked (or copied) into `live-media/{matchId}/` once its end ≤ the run's video clock, then the `EVENT` playlist is rewritten atomically. The playlist is 404 until the first segment exists and after a purge; `#EXT-X-ENDLIST` follows the last segment. The route serves only plain file names inside a valid matchId directory.
+A packaged segment is symlinked (copied where links fail) into `live-media/{matchId}/` once its end ≤ the run's video clock, then the `EVENT` playlist is rewritten atomically; on Azure it is copied server-side into `live`. A seeded 20′ start links about 600 segments per match in about 1.5 s locally, so the first playlist follows release within seconds (copying them took about a minute). The playlist is 404 until the first segment exists and after a purge; `#EXT-X-ENDLIST` follows the last segment. The route serves only plain file names inside a valid matchId directory.
 
 ## 4. Purge
 
