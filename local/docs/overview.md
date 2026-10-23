@@ -1,6 +1,6 @@
 # Overview
 
-> **In short:** `./dev` runs the whole product on one machine: the feed (a simulated provider), the ETL stand-in, the narrative engine, the backend, the viewer and demo control, on Microsoft emulators. Tested; local only, except demo control, which is also deployed on Azure.
+> **In short:** `./dev` runs the whole product on one machine: the feed (a simulated provider), the ETL stand-in, the narrative engine, the backend, the viewer and demo control, on Microsoft emulators. Tested; local only, except demo control, which also runs on Azure ([status](../../PLAN.md#11-azure-judge-build)).
 
 | | |
 | --- | --- |

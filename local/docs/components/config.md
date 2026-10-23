@@ -12,7 +12,7 @@
 | `compose.yaml` | Every service, its profile, health check and loopback port; read with `--env-file local/env.defaults` so no root `.env` leaks in |
 | `env.defaults` | EULA `N`, agent and question limits (`QUESTION_TIMEOUT_SECONDS` 240 because custom-stat questions chain several model calls); ports and model concurrency default in `compose.yaml` |
 | `config/eventhubs.json`, `config/servicebus.json` | Emulator hubs, consumer groups, topics and subscriptions (Terraform keeps the same names) |
-| `sql/postgres.sql` | Creates `accounts` and `matchapp` on a fresh volume; schemas come from backend migrations |
+| `sql/postgres.sql` | Creates `matchapp` on a fresh volume (`accounts` is the container's `POSTGRES_DB`); schemas come from backend migrations |
 | `settings.py` | Docker-network endpoints and the emulators' public keys for the checks |
 | `connections.env.example` | Host-side values for running a service directly on the laptop (copy into that service's ignored `.env`) |
 | `verify.env.example` | A second project's ports and name, beside `itg-local` |

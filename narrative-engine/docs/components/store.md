@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (Cosmos DB serverless on Azure) |
+| **Status** | Implemented · contract-tested against `COSMOS_ENDPOINT` (the emulator locally) |
 | **Code** | [`narrative_engine/store/`](../../narrative_engine/store/): `__init__.py` (interface), `cosmos.py`, `memory.py` |
 | **Auth** | Entra ID (`DefaultAzureCredential`, managed identity) in Azure; key (`COSMOS_KEY`) for the local emulator |
 | **Tests** | `test_store_contract.py` (memory always; real Cosmos when `COSMOS_ENDPOINT` is set) |

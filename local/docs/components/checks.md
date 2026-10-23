@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Code** | `check.py`, `broker_ready.py`, `etl_stream_check.py`, `broker_check.py`, `backend_broker_check.py` |
-| **Shared** | `settings.py` (local endpoints and public emulator credentials); purge owners from `demo_control.OWNERS` |
+| **Shared** | `settings.py` (local endpoints and public emulator credentials); purge owners from `demo_control.OWNER` / `CONSUMERS` |
 | **Runs in** | `tools` image (`check.py`), the backend image with `local/` mounted at `/checks` (probes) |
 
 | Script | Run by | Proves |

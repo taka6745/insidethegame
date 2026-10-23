@@ -22,7 +22,7 @@
 | `engine_narratives.py` (`EngineNarratives`) | `engine_narratives`, `narrative_clips` | Text stored as delivered; `items(snapshot, closed_period)` returns what the snapshot may show; a `MomentClip` adds one row per (bucket, moment), `clips` returns those at or before the snapshot's seq |
 | `subscriptions.py` (`SubscriptionRepository`) | `subscription_topics`, `subscriptions`, `subscription_revisions`, `subscription_narratives`, `subscription_clips` | One active follow per viewer (unique index); identical follows share a topic; every change bumps the match's targets revision; narratives and clips of unknown or purged topics are dropped; one clip per (topic, moment), the newest `clips.max_items` per topic at a snapshot |
 | `backend/demo/seeds.py` (`SeedRepository`, demo only) | A match's stream rows, catalogue, engine narratives and `narrative_clips` | See [demo](demo.md) |
-| Profiles (Accounts DB) | `demo_profiles` + revision row | `GET`/`PUT /dev/profiles` replace the list under an expected revision |
+| `profiles.py` (`ProfileRepository`, Accounts DB) | `demo_profiles` + revision row | `GET`/`PUT /dev/profiles` replace the list under an expected revision |
 
 ## 2. Purge scope
 
