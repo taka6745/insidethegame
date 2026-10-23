@@ -11,7 +11,7 @@ import re
 import httpx
 from openai import APIStatusError, AsyncOpenAI
 
-from . import Answer, Choice, DecisionError, Decisions, Noul, Score, merge_tokens, recorded_model
+from . import Answer, Choice, DecisionError, Decisions, Noul, merge_tokens, recorded_model
 
 SYSTEM = ("You are a classifier. Read the state and answer every question with one of its allowed values and "
           "your confidence (0 to 1) that the value is right. Reply with only the JSON object the schema describes.")

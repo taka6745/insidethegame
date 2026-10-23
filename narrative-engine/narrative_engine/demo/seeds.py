@@ -1,4 +1,4 @@
-"""Demo seeds (PLAN.md §10.6): export one match's match-level documents, or load them under a new matchId.
+"""Demo seeds: export one match's match-level documents, or load them under a new matchId.
 
 Restore writes documents in the shapes the orchestrator writes and registers the match as known, so the
 engine carries on as if it had run since kick-off; no core code knows a demo exists. Viewers' follow
@@ -6,10 +6,11 @@ decisions and narratives are never part of a seed."""
 import asyncio
 import copy
 import hashlib
-import hmac
 import json
 import logging
 from dataclasses import asdict, fields
+
+from narrative_engine.transport.asgi import authorized, bearer, read_body, respond
 
 log = logging.getLogger("narrative_engine.demo")
 SEED_STORES = ("checkpoints", "contextBlocks", "narratives", "analyses", "storylines")
@@ -157,12 +158,7 @@ async def restore(router, match_id, containers, max_seq, seed_schema):
 
 def seed_app(inner, router, admin_token=None):
     """ASGI in front of the service app: `POST /admin/matches/export|restore`, everything else passes through."""
-    expected = f"Bearer {admin_token}".encode() if admin_token else None
-
-    async def respond(send, status, body):
-        await send({"type": "http.response.start", "status": status,
-                    "headers": [(b"content-type", b"application/json")]})
-        await send({"type": "http.response.body", "body": json.dumps(body).encode()})
+    expected = bearer(admin_token)
 
     async def app(scope, receive, send):
         path = scope.get("path")
@@ -170,13 +166,9 @@ def seed_app(inner, router, admin_token=None):
             return await inner(scope, receive, send)
         if scope.get("method") != "POST":
             return await respond(send, 405, {"detail": "method not allowed"})
-        if expected and not hmac.compare_digest(dict(scope["headers"]).get(b"authorization", b""), expected):
+        if not authorized(scope, expected):
             return await respond(send, 401, {"detail": "unauthorized"})
-        body, more = b"", True
-        while more:
-            message = await receive()
-            body += message.get("body", b"")
-            more = message.get("more_body", False)
+        body = await read_body(receive)
         try:
             request = json.loads(body or b"{}")
             match_id = request["match_id"]

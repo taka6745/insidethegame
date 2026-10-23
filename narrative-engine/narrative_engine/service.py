@@ -24,7 +24,6 @@ whose MA1 predates the latest purge-all cut-off.
 """
 import asyncio
 import contextlib
-import hmac
 import json
 import logging
 import os
@@ -34,6 +33,7 @@ from narrative_engine.core.config import Settings
 from narrative_engine.core.gate import ModelGate
 from narrative_engine.core.models import parse_notification, parse_time
 from narrative_engine.core.orchestrator import MatchOrchestrator, utcnow
+from narrative_engine.transport.asgi import authorized, bearer, read_body, respond
 
 log = logging.getLogger("narrative_engine")
 
@@ -167,13 +167,9 @@ class Router:
 
 
 def service_app(api, router, admin_token=None):
-    """ASGI: `GET /health`, `POST /admin/matches/purge` (local-contract §5), else GraphQL.
+    """ASGI: `GET /health`, `POST /admin/matches/purge`, else GraphQL.
     With admin_token the purge needs `Authorization: Bearer <token>` (Azure; ingress is internal too)."""
-    expected = f"Bearer {admin_token}".encode() if admin_token else None
-    async def respond(send, status, body):
-        await send({"type": "http.response.start", "status": status,
-                    "headers": [(b"content-type", b"application/json")]})
-        await send({"type": "http.response.body", "body": json.dumps(body).encode()})
+    expected = bearer(admin_token)
 
     async def app(scope, receive, send):
         path, method = scope.get("path"), scope.get("method")
@@ -185,13 +181,9 @@ def service_app(api, router, admin_token=None):
                                  {"status": "unhealthy", "problems": problems} if problems else {"status": "ok"})
         if path == "/health" or method != "POST":
             return await respond(send, 405, {"detail": "method not allowed"})
-        if expected and not hmac.compare_digest(dict(scope["headers"]).get(b"authorization", b""), expected):
+        if not authorized(scope, expected):
             return await respond(send, 401, {"detail": "unauthorized"})
-        body, more = b"", True
-        while more:
-            message = await receive()
-            body += message.get("body", b"")
-            more = message.get("more_body", False)
+        body = await read_body(receive)
         try:
             request = json.loads(body or b"{}")
             match_id, everything = request.get("match_id"), request.get("all", False)
@@ -268,7 +260,7 @@ async def serve():
              router.poll_targets()]
     port = int(env.get("PORT", 8000))
     app = service_app(NarrativeApi(store), router, env.get("ADMIN_TOKEN"))
-    if env.get("DEMO_SEEDS") == "1":  # demo-only adapter (PLAN.md §10.6); a production release leaves it off
+    if env.get("DEMO_SEEDS") == "1":  # demo-only adapter; a production release leaves it off
         from narrative_engine.demo.seeds import seed_app
         app = seed_app(app, router, env.get("ADMIN_TOKEN"))
     server = uvicorn.Server(uvicorn.Config(app, host="0.0.0.0", port=port, log_level="warning"))
