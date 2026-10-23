@@ -5,12 +5,12 @@ import os
 from agent_framework import WorkflowBuilder
 
 from backend.adapters.llm import LocalJsonModel, model_configured
-from .compiler import StructuredRuleCompiler, RuleHarness
-from .models import ConversationMessage, PlanOutcome
-from .settings import AgentSettings
-from .orchestrator import GoalAgent
-from .workflow_steps import DefineGoal, GenerateRule, PlanningRequest, ValidateRule
-from .data_skill import EventDataSkill
+from backend.agents.compiler import StructuredRuleCompiler, RuleHarness
+from backend.agents.models import ConversationMessage, PlanOutcome
+from backend.agents.settings import AgentSettings
+from backend.agents.orchestrator import GoalAgent
+from backend.agents.workflow_steps import DefineGoal, GenerateRule, PlanningRequest, ValidateRule
+from backend.agents.data_skill import EventDataSkill
 
 
 class RuleWorkflow:
@@ -62,12 +62,10 @@ def workflow_from_env(*, data_reference: dict | None = None) -> RuleWorkflow | N
     if not model_configured():
         return None
     settings = AgentSettings.from_env()
-    timeout = float(os.getenv("AGENT_PLAN_TIMEOUT_SECONDS", "60"))
-    if not 1 <= timeout <= 300:
-        raise ValueError("AGENT_PLAN_TIMEOUT_SECONDS must be between 1 and 300")
     if settings.data_skill == "feed" and data_reference is None:
         raise ValueError("The active event adapter must supply the agent data reference")
     skill = EventDataSkill(data_reference) if settings.data_skill == "feed" else None
     return RuleWorkflow(GoalAgent(LocalJsonModel.from_env(name="question_goal"), response_mode=settings.goal_output_mode,
                                   data_skill=skill),
-                        StructuredRuleCompiler(), source="local", max_repairs=settings.max_repairs, timeout_seconds=timeout)
+                        StructuredRuleCompiler(), source="local", max_repairs=settings.max_repairs,
+                        timeout_seconds=settings.plan_timeout)

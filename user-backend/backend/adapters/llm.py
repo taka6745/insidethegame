@@ -2,6 +2,7 @@
 import json
 import os
 import logging
+from contextlib import asynccontextmanager
 from typing import Protocol
 
 import httpx
@@ -10,13 +11,22 @@ from agent_framework.exceptions import AgentFrameworkException
 from agent_framework.openai import OpenAIChatClient, OpenAIChatCompletionClient
 from openai import AsyncOpenAI, APIStatusError, APIConnectionError
 
-from .usage import UsageTransport
+from backend.adapters.usage import UsageTransport
 
 
 def model_configured():
     """True when the local model's endpoint and model are configured (values are never logged)."""
     return bool(os.getenv("LOCAL_LLM_BASE_URL") and os.getenv("LOCAL_LLM_MODEL"))
 
+
+@asynccontextmanager
+async def openai_client(base_url: str, api_key: str, http_timeout: float,
+                        transport: httpx.AsyncBaseTransport | None = None, **options):
+    """An OpenAI-compatible client without SDK retries; the workflow decides what to retry."""
+    async with httpx.AsyncClient(timeout=http_timeout, transport=transport) as http:
+        async with AsyncOpenAI(base_url=base_url, api_key=api_key or "local-development",
+                               http_client=http, max_retries=0, **options) as client:
+            yield client
 
 
 ENV = object()  # effort not given: this deployment's LOCAL_LLM_EFFORT
@@ -88,17 +98,16 @@ class LocalJsonModel:
 
     async def complete(self, system: str, payload: dict, *, response_schema: dict | None = None) -> dict:
         try:
-            async with httpx.AsyncClient(timeout=self.timeout, transport=self.transport) as http:
-                async with AsyncOpenAI(base_url=self.base_url, api_key=self.api_key or "local-development",
-                                       http_client=http, max_retries=0, timeout=self.timeout) as client:
-                    model, effort = role_model(self.name, self.model)
-                    agent = Agent(name=self.name, instructions=system,
-                                  client=chat_client(model, client, effort),
-                                  default_options=chat_options(3000, effort))
-                    # Each call is stateless. The workflow carries only the goal and
-                    # validation feedback; no conversation is shared between viewers.
-                    options = {"response_format": response_schema} if response_schema is not None else {}
-                    response = await agent.run(json.dumps(payload), options=options)
+            async with openai_client(self.base_url, self.api_key, self.timeout, self.transport,
+                                     timeout=self.timeout) as client:
+                model, effort = role_model(self.name, self.model)
+                agent = Agent(name=self.name, instructions=system,
+                              client=chat_client(model, client, effort),
+                              default_options=chat_options(3000, effort))
+                # Each call is stateless. The workflow carries only the goal and
+                # validation feedback; no conversation is shared between viewers.
+                options = {"response_format": response_schema} if response_schema is not None else {}
+                response = await agent.run(json.dumps(payload), options=options)
                 if response.finish_reason == "length":
                     raise ModelError("Local model output was truncated", reason="truncated_output")
                 content = response.text

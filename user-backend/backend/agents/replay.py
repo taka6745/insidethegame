@@ -3,12 +3,10 @@ import json
 import logging
 from typing import Literal
 
-import httpx
 from agent_framework import Agent, tool
-from openai import AsyncOpenAI
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from backend.adapters.llm import LocalJsonModel, chat_client, chat_options, role_model
+from backend.adapters.llm import LocalJsonModel, chat_client, chat_options, openai_client, role_model
 from backend.models.actions import ActionType, Bodypart, Result, SaveKind, ShotOutcome, Zone
 from backend.agents.models import LocationBound
 from backend.services.spadl_lookup import lookup
@@ -184,21 +182,19 @@ class ReplayAgent:
             return await tools.recaps(tier, period)
 
         cfg = self.settings
-        async with httpx.AsyncClient(timeout=min(cfg.timeout, 60), transport=cfg.transport) as http:
-            async with AsyncOpenAI(base_url=cfg.base_url, api_key=cfg.api_key or "local-development",
-                                   http_client=http, max_retries=0) as client:
-                model, effort = role_model("match_replay", cfg.model)
-                chat = chat_client(model, client, effort)
-                chat.function_invocation_configuration.update(max_iterations=8, max_function_calls=8,
-                                                              max_duration_seconds=80)
-                agent = Agent(name="match_replay", client=chat, instructions=instructions(tools.config),
-                              tools=[find_events, find_cards, find_sequences, recent, key_moments, recaps, lookup_spadl],
-                              default_options={**chat_options(2400, effort),
-                                               "allow_multiple_tool_calls": False})
-                state = await tools.match_state()
-                tools.cite_shown(context)  # Events the agent is shown in its input are evidence too.
-                response = await agent.run(json.dumps({"request": prompt, "match_state": state, **context}),
-                                           options={"response_format": ReplayDecision})
+        async with openai_client(cfg.base_url, cfg.api_key, min(cfg.timeout, 60), cfg.transport) as client:
+            model, effort = role_model("match_replay", cfg.model)
+            chat = chat_client(model, client, effort)
+            chat.function_invocation_configuration.update(max_iterations=8, max_function_calls=8,
+                                                          max_duration_seconds=80)
+            agent = Agent(name="match_replay", client=chat, instructions=instructions(tools.config),
+                          tools=[find_events, find_cards, find_sequences, recent, key_moments, recaps, lookup_spadl],
+                          default_options={**chat_options(2400, effort),
+                                           "allow_multiple_tool_calls": False})
+            state = await tools.match_state()
+            tools.cite_shown(context)  # Events the agent is shown in its input are evidence too.
+            response = await agent.run(json.dumps({"request": prompt, "match_state": state, **context}),
+                                       options={"response_format": ReplayDecision})
         if response.finish_reason == "length":
             raise ValueError("Truncated replay plan")
         try:

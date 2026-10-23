@@ -1,18 +1,16 @@
 """Native Microsoft Agent Framework question agent with allowlisted function tools."""
 import json
 import re
-import httpx
 from agent_framework import Agent, tool
-from openai import AsyncOpenAI
-from backend.adapters.llm import LocalJsonModel, chat_client, chat_options, role_model
+from backend.adapters.llm import LocalJsonModel, chat_client, chat_options, openai_client, role_model
 from backend.models.actions import ActionType
 from backend.models.questions import QuestionDraft
-from .question_instructions import QUESTION_INSTRUCTIONS
-from .question_contracts import QuestionDecision
-from .question_intent import QuestionIntentRouter
-from .football_reference import load_reference
-from .replay import ReplayAgent
-from .measurement_support import measurement_support
+from backend.agents.question_instructions import QUESTION_INSTRUCTIONS
+from backend.agents.question_contracts import QuestionDecision
+from backend.agents.question_intent import QuestionIntentRouter
+from backend.agents.football_reference import load_reference
+from backend.agents.replay import ReplayAgent
+from backend.agents.measurement_support import measurement_support
 from backend.services.question_answers import SENT_OFF
 
 EXPLAIN = re.compile(r'\b(?:why|how|explain|describe|what happened)\b', re.I)
@@ -87,17 +85,15 @@ class QuestionAgent:
             return await tools.prepare(request)
 
         cfg = self.settings
-        async with httpx.AsyncClient(timeout=min(cfg.timeout, 60), transport=cfg.transport) as http:
-            async with AsyncOpenAI(base_url=cfg.base_url, api_key=cfg.api_key or 'local-development',
-                                   http_client=http, max_retries=0) as client:
-                model, effort = role_model('match_question', cfg.model)
-                chat = chat_client(model, client, effort)
-                chat.function_invocation_configuration.update(max_iterations=7, max_function_calls=6, max_duration_seconds=55)
-                agent = Agent(name='match_question', client=chat, instructions=QUESTION_INSTRUCTIONS,
-                              tools=[read_standard_stats, search_actions, read_cards, read_recaps, prepare_stat, lookup_spadl],
-                              default_options={**chat_options(1600, effort),'allow_multiple_tool_calls':False})
-                response = await agent.run(json.dumps({'question':prompt, **context}),
-                                           options={'response_format':QuestionDecision})
+        async with openai_client(cfg.base_url, cfg.api_key, min(cfg.timeout, 60), cfg.transport) as client:
+            model, effort = role_model('match_question', cfg.model)
+            chat = chat_client(model, client, effort)
+            chat.function_invocation_configuration.update(max_iterations=7, max_function_calls=6, max_duration_seconds=55)
+            agent = Agent(name='match_question', client=chat, instructions=QUESTION_INSTRUCTIONS,
+                          tools=[read_standard_stats, search_actions, read_cards, read_recaps, prepare_stat, lookup_spadl],
+                          default_options={**chat_options(1600, effort),'allow_multiple_tool_calls':False})
+            response = await agent.run(json.dumps({'question':prompt, **context}),
+                                       options={'response_format':QuestionDecision})
         if response.finish_reason == 'length':
             raise ValueError('Truncated question answer')
         return QuestionDecision.model_validate_json(response.text).draft(tools)
