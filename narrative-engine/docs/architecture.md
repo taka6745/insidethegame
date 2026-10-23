@@ -69,6 +69,8 @@ The folder names map onto the house layers: `core/` holds models and the orchest
 
 ### 3.1 Record, then work
 
+*In short: record the message in the checkpoint first; a per-match worker does the slow work.*
+
 1. A listener receives a message and the router passes it to that match's orchestrator (`accept`).
 2. **Record:** the orchestrator updates the checkpoint (closed minutes, horizon, audience targets) and queues any narrative steps, then saves it. The message is completed.
 3. **Work:** the match's background worker loops until nothing is due. On each turn it runs the earliest ready step, or else summarises the next closed minute, or else closes a finished period.
@@ -78,16 +80,22 @@ A step records the horizon at the time it was queued and waits for the minutes c
 
 ### 3.2 Each minute (`MinuteClosed`)
 
+*In short: summarise, compress when due, and queue a scheduled step after ten quiet minutes.*
+
 1. Every unsummarised minute up to the closed one is summarised in order. A minute with no events, and a merge of only such minutes, gets a fixed block without a model call.
 2. Compression runs if due (rules in [context](components/context.md#2-compression-rules)).
 3. If ten summarised minutes have passed without a narrative step, a `scheduled` step is queued, except in stoppage time and on a period's last minute, where the half-time or full-time step follows within minutes. A period's last minute also skips the regular compression, because closing the period merges it all.
 
 ### 3.3 Key event (`KeyEventDetected`)
 
+*In short: every key event gets its own step at once.*
+
 1. A `keyEvent` step is queued straight away (no debounce), so a VAR overturn gets its own corrective step.
 2. The author sees the key-event ledger with overturned goals marked, raw events since the last summary, the memory blocks and the bucket's last five narratives.
 
 ### 3.4 Half and full time (`PeriodEnded`)
+
+*In short: close the period, collapse its blocks, queue the half- or full-time step.*
 
 1. `PeriodEnded` closes the period's last minute at once, at the End event's clock and second (from the notification), without waiting for `MinuteClosed` or the ETL's idle flush. That minute is summarised once its End row is readable in ETL GraphQL (the SQL write can trail the notification; the worker retries).
 2. The period's blocks collapse into one block for that period, so memory never spans half time.
@@ -95,11 +103,15 @@ A step records the horizon at the time it was queued and waits for the minutes c
 
 ### 3.5 Audience targets
 
+*In short: the backend's enabled buckets decide who is written for; no fallback.*
+
 1. The orchestrator reads the user backend's `GET /matches/{matchId}/audience-config` on every message and every `TARGETS_POLL_SECONDS` (ETag-cached). Its `generation_targets` are the buckets enabled in the backend's configuration (toggled in `/dev/`); there is no viewer presence.
 2. A bucket enabled mid-match gets a `catchUp` step at the current horizon; a disabled one gets no further steps.
 3. Never read yet (backend down): steps wait and `/health` is 503. There is no fallback list of buckets.
 
 ### 3.6 One narrative step
+
+*In short: draft every bucket, check grounding, save, then publish.*
 
 1. Buckets are chosen when the step is queued: the current targets (an empty list writes nothing).
 2. The author drafts every bucket's text (4 at once); the grounding check runs on each, and the decision model answers the claim questions for all drafts in one call; failures get the policy's rewrites.
@@ -107,9 +119,13 @@ A step records the horizon at the time it was queued and waits for the minutes c
 
 ### 3.7 Story follows
 
+*In short: followed topics get one decision call per update and narratives only when they fire.*
+
 Each key event, minute recap, storyline update and period end also queues a follow evaluation when anything is followed: one Decision-1 call for the involved topics, the decision stored, then one narrative per fired topic and follower bucket ([follows](components/follows.md)).
 
 ### 3.8 Moment clips
+
+*In short: the engine names the moments; the backend cuts the clips.*
 
 The engine never cuts video: it says which key event deserves a clip, and the backend cuts it from the played stream.
 
@@ -122,6 +138,8 @@ Both are sent before and apart from the narratives, so a narrative dropped as un
 
 ### 3.9 Demo seeds
 
+*In short: a restored match continues as after a restart.*
+
 With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start point and later restores them under a new matchId; the engine adopts the match as after a restart and continues live ([demo](components/demo.md)).
 
 ## 4. Data model
@@ -130,6 +148,8 @@ With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start poin
 
 ### 4.1 `checkpoints` (one document per match)
 
+*In short: all progress of a match, so a restart resumes it.*
+
 | Field | Meaning |
 | --- | --- |
 | `status` | `live` or `complete` |
@@ -137,28 +157,39 @@ With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start poin
 | `horizon` | Latest announced `(clock, second)` |
 | `periodEnds`, `closedPeriods` | Where periods ended; which have been collapsed |
 | `minutesSinceStep` | Drives the ten-minute scheduled step |
-| `targets`, `left` | Last audience targets read (revision, buckets); match minute each dropped bucket left |
+| `targets` | Last audience targets read (revision, buckets) |
 | `pending`, `done` | Queued narrative steps and analyses (trigger, clock, horizon, buckets, gate; on the first attempt the prompt, the canonical `seq` it reads to and, for a narrative step, the analysis and focus storyline are pinned) and finished refs |
 | `analysis`, `focusLog` | The latest analysis run (`id`, `horizon`); the last ten focus storylines (rotation) |
-| `follows`, `followPairs`, `followFired` | Last followed topics and tunables read; (topic, bucket) pairs seen; each topic's last fire (gap) |
+| `follows`, `followPairs`, `followFired` | Last followed topics and tunables read; (topic, bucket) pairs seen; each topic's last fire (gap) 
+| `followRetries`, `clips` | "Story so far" steps dropped as ungrounded, waiting to be queued again at a later horizon (`catch_up.retries`); the last served `clips` settings (for `MomentClip`) |
 
 ### 4.2 `contextBlocks`
+
+*In short: the match memory, one block per summarised span.*
 
 `id` (`block:{matchId}:{level}:{start}:{end}`), `level` (0 minute, 1 five-minute, 2 earlier), `tier` (`minute`, `five-minute`, `twenty-minute`, `half`), `coversFrom`, `coversTo`, `summary`, `statsTime`, `model`, `promptVersion`, `tokens`, `createdAt`, `supersededBy`.
 
 ### 4.2a `tombstones`
 
+*In short: purged matches stay purged.*
+
 `id` = `matchId` of a purged match (permanent), plus `*all*` with the purge-all `cutoff`.
 
 ### 4.3 `narratives`
+
+*In short: one document per bucket and step.*
 
 `id` (`narr:{matchId}:{userType}:{seq}`), `userType`, `seq`, `stepId` (`{matchId}:{trigger ref}`), `trigger` (`type`, `ref`, `reason`, `eventIds`), `matchTime`, `text`, `model`, `promptVersion`, `tokens`, `createdAt`, `timeSec`, `audienceRevision`, `eventSeq`, `analysisId`, `storylineIds`. This is also the Service Bus message body.
 
 ### 4.4 `analyses` and `storylines`
 
+*In short: analyses are immutable; storylines hold their current state.*
+
 Immutable match analyses and the storylines' current state ([analysis](components/analysis.md)).
 
 ### 4.5 `subscriptionDecisions` and `subscriptionNarratives`
+
+*In short: follow decisions and the narratives they fired.*
 
 Immutable follow decisions (`subdec:{matchId}:{trigger ref}`) and follow narratives (`sub:{matchId}:{topicId}:{userType}:{seq}`, `kind: subscription`) ([follows](components/follows.md)).
 
@@ -176,5 +207,5 @@ One Container App (internal ingress, one replica), a container registry, serverl
 - **No future leakage:** every ETL read is bounded by the horizon recorded with the work: MA3 rows and key events by clock, SPADL actions and catalogue stats by canonical seq (a key-event step by its own row's). Only settled SPADL actions are stored and reads wait for `spadlSeq`, so a backlog builds the same prompts as live (`test_recording_run.py`, whole Riverton Rovers–Forgeham United match).
 - **Restart-safe:** all progress is in the checkpoint; a restart resumes the queue. A lost Service Bus connection reconnects in-process with backoff (1 s doubling to 30 s); unsettled messages are redelivered.
 - **Single replica:** workers live in memory, so a second replica would race. Leader election is not built.
-- **Throughput:** a match costs about 1.2 summary or compression calls per match minute, 0.2 analyst calls (one every five minutes), plus about 0.12–0.16 author calls per minute per active bucket (storyline turns add a few steps but reset the ten-minute scheduled step) (the three GRF recordings: 92–94 summaries, 20–24 compressions, 11–15 steps; 2.65–3.17 calls per match minute with 12 buckets). The engine keeps up while `matches × (1.2 + 0.15 × buckets) × mean call seconds ≤ 60 × MODEL_CONCURRENCY`. Example: three matches with two buckets each make about 4.5 calls a minute, so at `MODEL_CONCURRENCY=2` (the local stack, which shares its model with viewer questions) calls must average under about 25 s. Above that a backlog builds. Nothing is dropped: it stays in each checkpoint and drains in match order, mostly during half time. Summaries are served first, so author steps (what viewers see) carry the lag; a short run can be purged before its later scheduled steps are written. Each step logs `closed through` to show the lag.
+- **Throughput:** a match costs about 1.2 summary or compression calls per match minute, 0.2 analyst calls (one every five minutes), plus about 0.12–0.16 author calls per minute per active bucket (storyline turns add a few steps but reset the ten-minute scheduled step) (the three GRF recordings: 92–94 summaries, 20–24 compressions, 11–15 steps; 2.65–3.17 calls per match minute with 12 buckets). The engine keeps up while `matches × (1.4 + 0.15 × buckets) × mean call seconds ≤ 60 × MODEL_CONCURRENCY`. Example: three matches with two buckets each make about 5.1 calls a minute, so at `MODEL_CONCURRENCY=2` (the local stack, which shares its model with viewer questions) calls must average under about 23 s. Above that a backlog builds. Nothing is dropped: it stays in each checkpoint and drains in match order, mostly during half time. Summaries are served first, so author steps (what viewers see) carry the lag; a short run can be purged before its later scheduled steps are written. Each step logs `closed through` to show the lag.
 - **Not supported:** extra time and penalty shoot-outs; stat-selection output (handled by the user backend).

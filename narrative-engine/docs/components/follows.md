@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (unit, the local stack and Azure: a cross-match follow with its catch-up, a goal against a followed team firing a follow narrative) |
+| **Status** | Implemented · tested (unit and the local stack: a cross-match follow with its catch-up, a goal against a followed team firing a follow narrative) |
 | **Code** | [`narrative_engine/follows/`](../../narrative_engine/follows/): `topics.py` (source), `pipeline.py` (rules), `steps.py` (steps in the orchestrator); test doubles `tests/doubles/follows.py`, `tests/doubles/fake_decisions.py` |
 | **Tests** | `test_follows.py` (source, prefilter, gap, fire rule; the Riverton Rovers–Forgeham United recording live = backlog, restart, story so far, GraphQL, purge; no viewer text in the shared state; clip `Score` in the same call, clip-on topics, one `FollowClip` per verdict, `MomentClip` without a follow or decision model, a backend before migration 041) |
 | **Contract** | [Subscription targets](../../contracts/README.md#subscription-targets), [follow narratives](../../contracts/README.md#follow-narratives-kind-subscription), [follow clips](../../contracts/README.md#follow-clips-type-followclip), [key-event clips](../../contracts/README.md#key-event-clips-type-momentclip) |

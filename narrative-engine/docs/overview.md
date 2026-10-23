@@ -53,18 +53,18 @@ The engine reads the backend's `generation_targets` (for example team × fan sty
 | Area | Status |
 | --- | --- |
 | Core rules (clock, compression, triggers, orchestrator) | Implemented, tested |
-| ETL GraphQL client | Implemented, tested against a fake DAB and the Azure dev DAB |
+| ETL GraphQL client | Implemented, tested against a fake DAB |
 | Agents (Agent Framework on Azure AI Foundry) | Implemented, tested (mocked API), run on full matches |
 | Narrative history GraphQL | Implemented, tested; internal ingress on Azure |
-| Service Bus and Cosmos DB | Implemented, verified in Azure on 10x replays (204/204 narratives delivered) |
+| Service Bus and Cosmos DB | Implemented, tested |
 | Monitoring (Application Insights, workbook) | Implemented |
 | Targets and prompts from the user backend | Implemented, tested (mocked HTTP); runs in the local stack as `narrative-live` |
 | Concurrent matches: one orchestrator per matchId, a global model gate (summaries first, per-match fairness), purge with Cosmos tombstones (`POST /admin/matches/purge`), `tier` on context blocks, `eventSeq` on narratives | Implemented, tested (router, gate, memory store) |
 | Local stack (`./dev up backend`): ETL `etl-stream` stand-in → SQL + DAB → `narrative-live` → backend → viewer | Implemented, run on live replays (local only) |
-| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Riverton Rovers–Forgeham United recording); run on the local stack and Azure |
+| Story follows (followed topics, Decision-1 triggers, follow narratives, GraphQL) and decision-model claim checks | Implemented, tested (fakes over the Riverton Rovers–Forgeham United recording); run on the local stack |
 | Moment clips: `FollowClip`, clip-on topics, `MomentClip` for shared key-event narratives | Implemented, tested |
 | Demo seeds: export/restore under `DEMO_SEEDS=1` | Implemented, tested |
-| Real-time (1x) three-match run | Run locally and on Azure (engine lag about half a match minute) |
+| Real-time (1x) three-match run | Run on the local stack |
 
 ## 5. Glossary
 

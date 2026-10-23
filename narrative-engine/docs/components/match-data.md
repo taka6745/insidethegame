@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested against a fake DAB and read-only against the Azure dev DAB |
+| **Status** | Implemented · tested against a fake DAB |
 | **Code** | [`narrative_engine/match_data/`](../../narrative_engine/match_data/): `__init__.py` (interface), `etl_graphql.py`; test double in [`tests/doubles/fixture_data.py`](../../tests/doubles/fixture_data.py) |
 | **Reads** | ETL GraphQL: `matches`, `rawEvents`, `keyEvents`, `spadlActions`, `matchWatermarks.spadlSeq`, `executeStatsAtSeq`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq` ([ETL contracts](../../../etl/contracts/README.md), [local contracts §3–4](../../../local/contracts/README.md#3-etl-graphql-dab)) |
 | **Tests** | `test_graphql_data.py`, `test_recording_run.py`, `test_graphql_live.py` (skips when the ETL is unreachable) |

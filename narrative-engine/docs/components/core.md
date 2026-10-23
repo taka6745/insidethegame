@@ -15,9 +15,13 @@
 
 ### 1.1 `MatchClock`
 
+*In short: a match minute is unique only with its period.*
+
 `(periodId, timeMin)`, ordered by period then minute. `timeMin` is 0-based; first-half added time continues (46 = `45+2'`) and the second half restarts at 45, so a minute is unique only with its period. `label` gives the broadcast label (`24'`, `45+3'`), `key` a stable string for IDs, and `next()` the following minute.
 
 ### 1.2 Messages
+
+*In short: what arrives from the ETL and the backend.*
 
 | Class | From | Key fields |
 | --- | --- | --- |
@@ -30,6 +34,8 @@
 Buckets are not messages: the orchestrator reads the user backend's current targets ([audience](#4-audience-targets)).
 
 ### 1.3 Records
+
+*In short: what the engine stores and returns.*
 
 `Trigger` (why a step runs), `AgentResult` (text, model, prompt version, tokens), `ContextBlock` and `Narrative`. Field lists: [architecture §4](../architecture.md#4-data-model).
 
@@ -56,6 +62,8 @@ Buckets are not messages: the orchestrator reads the user backend's current targ
 
 ### 3.1 Entry points
 
+*In short: `accept` for the service, `handle` for tests.*
+
 | Method | Use |
 | --- | --- |
 | `accept(message)` | Service: record, wake the background worker, return at once |
@@ -66,6 +74,8 @@ Buckets are not messages: the orchestrator reads the user backend's current targ
 
 ### 3.2 What `record` does per message
 
+*In short: each message moves the checkpoint and may queue steps.*
+
 | Message | Recorded |
 | --- | --- |
 | `MinuteClosed` | `closedThrough` and `horizon` move forward |
@@ -74,6 +84,8 @@ Buckets are not messages: the orchestrator reads the user backend's current targ
 | `PeriodChanged` (end) | The period's end and its last minute are closed at the End event's clock (from the body, else the ETL) |
 
 ### 3.3 The work loop
+
+*In short: ready steps first, then summaries, then period closes.*
 
 Under a per-match lock, repeat until nothing is due:
 
@@ -87,12 +99,16 @@ A match runs one step at a time; a step's author calls run together (up to `auth
 
 ### 3.4 Running a step
 
+*In short: pin the inputs, write each bucket, mark the step done.*
+
 1. Rebuild the trigger reason (for key events from the stored row and match info). On the first attempt, pin the author prompt, the seq, the latest analysis and the focus storyline ([analysis](analysis.md#2-storylines)).
    For a key event whose `keyType` is in the served `clips.key_types`, with `clips.enabled` and `clips.shared`, `_publish_moment_clip` first sends one `MomentClip` for the step's buckets ([contract](../../contracts/README.md#key-event-clips-type-momentclip)). It is sent apart from the narratives (their grounding never drops it) and again on a retry; no follow or decision model is needed.
 2. Render the storylines (focus marked) and the flagged trends once for the step. For each of the step's buckets, under that bucket's lock and the global author limit: if a narrative for this step already exists, publish it again; otherwise build the author variables at the step's horizon, call the author, save the narrative with the next `seq`, then publish it.
 3. Remove the step from `pending` and add its ref to `done`.
 
 ### 3.5 Identifiers
+
+*In short: deterministic IDs make retries idempotent.*
 
 | Thing | ID |
 | --- | --- |
