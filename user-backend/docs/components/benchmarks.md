@@ -16,7 +16,7 @@
 | Set | Command (from `user-backend/`) |
 | --- | --- |
 | Questions (`question_cases.json`: 12 full-match + 13 timed prompts) | `python -m benchmarks.question_inprocess --agent fixture` (scripted) or `--env-file ../.local/backend-llm.env` (local model) |
-| Replays (`replay_cases.json`) | `python -m benchmarks.replay_eval --agent fixture` or `--agent local`; `./dev benchmark replay` |
+| Replays (`replay_cases.json`) | `python -m benchmarks.replay_eval --agent fixture` or `--agent local`; `./dev benchmark replay [--agent fixture]` (default local model; the double fails the `"fixture": false` cases by design, 35/42) |
 | Questions against a running stack | `PYTHONPATH=user-backend python -m benchmarks.evaluate_questions --match-id riverton-forgeham-XXXXXXXX` (repo root; a finished run; takes over the home analyst's chat, skips timed cases, never tracks) |
 
 Snapshots are cut from the shipped Riverton Rovers–Forgeham United recording; SPADL actions come from its MA3 stream through ETL's converter (`etl/reference/spadl.py`, `finalSeq ≤ seq`) and standard stats from ETL's reference catalogue (`etl/reference/catalogue.py`), so no API, database or stack is needed. `tests/test_question_cases.py` recomputes every expected value from the recording. Scripted mode replays each case's recorded decision through the real agents, planner, compiler, rule engine and ETL-row answers. Replay cases also fail a caption that calls an unsaved shot saved; key-moment cases (`"recording": "archive"`) run against the archived recording with the narrative fixtures bound to it.

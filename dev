@@ -131,12 +131,13 @@ case "${1:-help}" in
       values) module=benchmarks.value_reads; extra=(--output /results/performance/value-reads.json) ;;
       replay) module=benchmarks.replay_eval
               extra=(--agent local --recording /data-generation/recordings/riverton-forgeham-grf.json
+                     --archive /narrative-engine/fixtures/archive/riverton-forgeham-grf.json
                      --narratives /narrative-engine/fixtures/grf-narratives.json --output /results/replay/report.json) ;;
       *) echo "Choose filters, agents, values or replay." >&2; exit 2 ;;
     esac
     compose run --rm --build --no-deps --user "$(id -u):$(id -g)" \
       -v "$PWD/user-backend:/app:ro" -v "$PWD/data-generation:/data-generation:ro" \
-      -v "$PWD/narrative-engine:/narrative-engine:ro" \
+      -v "$PWD/narrative-engine:/narrative-engine:ro" -v "$PWD/etl:/etl:ro" \
       -v "$PWD/.local/benchmarks:/results" backend python -m "$module" "${extra[@]}" "$@"
     ;;
   udfs) node etl/stream-analytics/udfs/build.ts "${@:2}" ;;

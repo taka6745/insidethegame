@@ -3,28 +3,28 @@
   "cohort": "data-transfer",
   "models": [
     {
-      "label": "small-3b",
-      "model": "small model B (3B)",
+      "label": "model-b",
+      "model": "small model B",
       "expected_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ]
     },
     {
-      "label": "small-8b",
-      "model": "small model C (8B)",
+      "label": "model-c",
+      "model": "small model C",
       "expected_models": [
-        "small model C (8B) route 1",
-        "small model C (8B) route 2"
+        "small model C route 1",
+        "small model C route 2"
       ]
     },
     {
-      "label": "mid-20b",
-      "model": "open model A (20B)",
+      "label": "model-a",
+      "model": "open model A",
       "expected_models": [
-        "open model A (20B) route 2",
-        "open model A (20B) route 3",
-        "open model A (20B) route 1",
-        "open model A (20B)"
+        "open model A route 2",
+        "open model A route 3",
+        "open model A route 1",
+        "open model A"
       ]
     },
     {
@@ -258,8 +258,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -267,13 +267,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1971,
@@ -283,7 +283,7 @@
           "status": "ok",
           "request_bytes": 8531,
           "request_sha256": "d96c2ba17233825e6607a80780873051425a3dfbf4bf87cd8cca97a58e5a0e99",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.48
@@ -291,7 +291,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2004,
@@ -301,7 +301,7 @@
           "status": "ok",
           "request_bytes": 8674,
           "request_sha256": "93be33c500abe2b45e567372a3c273c7b9985593eb114843f8f2f697e75a71f4",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.581
@@ -400,8 +400,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -410,13 +410,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3266,
@@ -426,7 +426,7 @@
           "status": "ok",
           "request_bytes": 14705,
           "request_sha256": "6b09d4dd0cdca48e60de62575b289d455e90d0c783492d631e5e6603fa8a8d8a",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.578
@@ -434,7 +434,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3303,
@@ -444,7 +444,7 @@
           "status": "ok",
           "request_bytes": 14855,
           "request_sha256": "b58c6adf36aa6c5bbae5c8e352332caca61c773da16b0b2a256854ca470b2aa3",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.635
@@ -543,8 +543,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -552,13 +552,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1976,
@@ -568,7 +568,7 @@
           "status": "ok",
           "request_bytes": 8537,
           "request_sha256": "4eae8dde2319f804159766d0919cd206ffdc5fbd54379ea32cf721054550907e",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.302
@@ -576,7 +576,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2013,
@@ -586,7 +586,7 @@
           "status": "ok",
           "request_bytes": 8687,
           "request_sha256": "22d3f2d4e6fb33a31f185c4ae7af326c2f2122027ba425fde845f2cd1767d25f",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.601
@@ -685,8 +685,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -695,13 +695,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3261,
@@ -711,7 +711,7 @@
           "status": "ok",
           "request_bytes": 14699,
           "request_sha256": "16f1654ca5ce39391f67319d9c71dff5ade4e28291c14e1952289189404cc534",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.408
@@ -719,7 +719,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3294,
@@ -729,7 +729,7 @@
           "status": "ok",
           "request_bytes": 14842,
           "request_sha256": "ffb73342371b7d944582e35736d70acb9848af0dacb6bbed4059c651a573a620",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.607
@@ -828,8 +828,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -837,13 +837,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1971,
@@ -853,7 +853,7 @@
           "status": "ok",
           "request_bytes": 8538,
           "request_sha256": "20c652c11c18e13c86de082f60299fee0eac8b7dda7c7b473e45399d17909d1c",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.436
@@ -861,7 +861,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2008,
@@ -871,7 +871,7 @@
           "status": "ok",
           "request_bytes": 8688,
           "request_sha256": "3e8d8aa4bf91fe322d02cb6279eb315e2f01f716448e2d90d276308914631c99",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.549
@@ -970,8 +970,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -980,13 +980,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3261,
@@ -996,7 +996,7 @@
           "status": "ok",
           "request_bytes": 14685,
           "request_sha256": "2174d0b779b9073fd7a56330592738014afc92c7efba42f0a67c651ae020c3f1",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.707
@@ -1004,7 +1004,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3294,
@@ -1014,7 +1014,7 @@
           "status": "ok",
           "request_bytes": 14823,
           "request_sha256": "be02db5f08fce96763c1396317864c87768d6cafa6058d0f808df3e8c504002e",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.496
@@ -1113,8 +1113,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -1123,13 +1123,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3261,
@@ -1139,7 +1139,7 @@
           "status": "ok",
           "request_bytes": 14706,
           "request_sha256": "5a6f7c79f0abcb7c16070232a7fed9ad63e7c66c22196773c157d4fae4d62c01",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.471
@@ -1147,7 +1147,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3298,
@@ -1157,7 +1157,7 @@
           "status": "ok",
           "request_bytes": 14856,
           "request_sha256": "3547af6935cdd9491582db4b75bd7f5b4539718924804b937cf947143fc3c0c3",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.632
@@ -1254,8 +1254,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1263,13 +1263,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1971,
@@ -1279,7 +1279,7 @@
           "status": "ok",
           "request_bytes": 8517,
           "request_sha256": "e554a654756e207f0812062317dfda55f8e6aa26ff2572f9297eaf3cfd6f985d",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.583
@@ -1287,7 +1287,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2004,
@@ -1297,7 +1297,7 @@
           "status": "ok",
           "request_bytes": 8655,
           "request_sha256": "819e904a5df179551a2a04019a750e9a8b5a18ca6bbbc914296dd52e3528a4c1",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.4
@@ -1396,8 +1396,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1405,13 +1405,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1973,
@@ -1421,7 +1421,7 @@
           "status": "ok",
           "request_bytes": 8539,
           "request_sha256": "5863a25b942d3f3d8181de19693cec45d8c8ebe9c3565ce3ea439b6a27b4b1af",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.373
@@ -1429,7 +1429,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2007,
@@ -1439,7 +1439,7 @@
           "status": "ok",
           "request_bytes": 8683,
           "request_sha256": "087f3afe853fae16c07097e104c2d80fee2354591ad0b8509810d6dbc32e048c",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.433
@@ -1538,8 +1538,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -1548,13 +1548,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3259,
@@ -1564,7 +1564,7 @@
           "status": "ok",
           "request_bytes": 14684,
           "request_sha256": "89748ee9b0a4e377abba6d4b57a733fb648cee2ed6e973e90956a845859529d9",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.637
@@ -1572,7 +1572,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3288,
@@ -1582,7 +1582,7 @@
           "status": "ok",
           "request_bytes": 14810,
           "request_sha256": "c0c66a618adce6331887f6cec977f6e636557ebb731cec54006e6e3a685aae8f",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.429
@@ -1681,8 +1681,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -1691,13 +1691,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3263,
@@ -1707,7 +1707,7 @@
           "status": "ok",
           "request_bytes": 14707,
           "request_sha256": "184007690ddc6cbb01169a82df63450d5efb6e482380bf08d6867c6542870ab1",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.613
@@ -1715,7 +1715,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3297,
@@ -1725,7 +1725,7 @@
           "status": "ok",
           "request_bytes": 14851,
           "request_sha256": "0f23a6aa502251aa56eeef8cf391623164b3eafbff356c4e036013fdcba1ad95",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.584
@@ -1824,8 +1824,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -1833,13 +1833,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -1849,7 +1849,7 @@
           "status": "ok",
           "request_bytes": 8516,
           "request_sha256": "ac31fdbd6ba5112273968fa3a3b425e71cb42abcadf8d0662cabce624e68c8e5",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.469
@@ -1857,7 +1857,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1998,
@@ -1867,7 +1867,7 @@
           "status": "ok",
           "request_bytes": 8642,
           "request_sha256": "a21d9f0794434f2d5031f298970ab271c786664c8b56c5c450a5cc7687e59bed",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.523
@@ -1966,8 +1966,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -1976,13 +1976,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3259,
@@ -1992,7 +1992,7 @@
           "status": "ok",
           "request_bytes": 14677,
           "request_sha256": "15c567825f6d465a212661c217be10766e718996a4bfca595c75f4e6045d1a8e",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.516
@@ -2000,7 +2000,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3297,
@@ -2010,7 +2010,7 @@
           "status": "ok",
           "request_bytes": 14821,
           "request_sha256": "288cf26de4897ee0e190d1438a60df74219bc0afd67e8e2c8c736b3cfbb32df5",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.395
@@ -2109,8 +2109,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2118,13 +2118,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -2134,7 +2134,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "1103e378f317b18338cc3ee05a02eacce4a6b70aa33dd44a2409e5b526afeb22",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.56
@@ -2142,7 +2142,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2000,
@@ -2152,7 +2152,7 @@
           "status": "ok",
           "request_bytes": 8640,
           "request_sha256": "8046be4a663c4d3f52c0be28bcd8cd9f64e282083fd574f9dff71d04731ea1cc",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.643
@@ -2251,8 +2251,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -2261,13 +2261,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3259,
@@ -2277,7 +2277,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "f4a1185d4f28b85dffd655a6d1902f61ad7ee9a0a76dada6b46f5e22218e33e3",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.561
@@ -2285,7 +2285,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3290,
@@ -2295,7 +2295,7 @@
           "status": "ok",
           "request_bytes": 14808,
           "request_sha256": "545f875c2da6f659a81d9f09a15b5731860396c2e0a240f07ed64e896e61959c",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.278
@@ -2394,8 +2394,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2403,13 +2403,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -2419,7 +2419,7 @@
           "status": "ok",
           "request_bytes": 8509,
           "request_sha256": "77d5bdebce75198f2c531c794bfc4e74258b436ac6b0211b27cb1078c48d91dc",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.389
@@ -2427,7 +2427,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2007,
@@ -2437,7 +2437,7 @@
           "status": "ok",
           "request_bytes": 8653,
           "request_sha256": "7715adb00301cc08e31ac0251d130346bec4aa14c2c932e4db828788714d1baf",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.599
@@ -2587,8 +2587,8 @@
       "delivery": 1,
       "expected": 0.0,
       "actual": 8.0,
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2596,13 +2596,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1977,
@@ -2612,7 +2612,7 @@
           "status": "ok",
           "request_bytes": 8553,
           "request_sha256": "d8746bb32d72d730e08bca589e050c606daac78260dd4978961be0fefcd28ebc",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.427
@@ -2620,7 +2620,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2008,
@@ -2630,7 +2630,7 @@
           "status": "ok",
           "request_bytes": 8685,
           "request_sha256": "3e709b6b382ae98077123e172cde46d14b99b0557d888a352742b0beca68e9e4",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.601
@@ -2729,8 +2729,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -2739,13 +2739,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3259,
@@ -2755,7 +2755,7 @@
           "status": "ok",
           "request_bytes": 14693,
           "request_sha256": "d8e503a5670d65c6f2dffe619ca99e0199ed7fa167dc0052708ae4cc42fcccd6",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.587
@@ -2763,7 +2763,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3291,
@@ -2773,7 +2773,7 @@
           "status": "ok",
           "request_bytes": 14833,
           "request_sha256": "31b7ce00cb14b685cfd72bd83853263cbe5806a9521e1f019e2367940ef7b250",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.614
@@ -2872,8 +2872,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -2881,13 +2881,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -2897,7 +2897,7 @@
           "status": "ok",
           "request_bytes": 8525,
           "request_sha256": "97a5d671e11d7dd70b91447914ed8f57750d9e58efa2b1fe38fc0a952864c2d1",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.57
@@ -2905,7 +2905,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2001,
@@ -2915,7 +2915,7 @@
           "status": "ok",
           "request_bytes": 8665,
           "request_sha256": "2c2eece8188b6167700ff2aa2abe221a8f60ca77c03f2af575f05ca925f0e277",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.438
@@ -3014,8 +3014,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -3024,13 +3024,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3267,
@@ -3040,7 +3040,7 @@
           "status": "ok",
           "request_bytes": 14721,
           "request_sha256": "ad312b2801eb223e3207b19e304806530dc716ad6d297df7bc49666ce03b73d2",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.717
@@ -3048,7 +3048,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3298,
@@ -3058,7 +3058,7 @@
           "status": "ok",
           "request_bytes": 14853,
           "request_sha256": "281e7301bbead4e106307378f5b12b23d9204b50a07f9a287f0e09e986df12d7",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.621
@@ -3157,8 +3157,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3166,13 +3166,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1971,
@@ -3182,7 +3182,7 @@
           "status": "ok",
           "request_bytes": 8530,
           "request_sha256": "e360a24a71f175d80d0db6921d6425440f607bbc3c660b7e94da661998994f18",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.496
@@ -3190,7 +3190,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2007,
@@ -3200,7 +3200,7 @@
           "status": "ok",
           "request_bytes": 8676,
           "request_sha256": "9029c640dc43b5951a262c31beb5e838b1fbe4e8b6810e38536c6eb8084e9783",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.409
@@ -3299,8 +3299,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -3309,13 +3309,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3262,
@@ -3325,7 +3325,7 @@
           "status": "ok",
           "request_bytes": 14705,
           "request_sha256": "bf3e9509426a008ebbffb956d96fb0f65bd61dfe06b5583b06989ceb91a7d7da",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.468
@@ -3333,7 +3333,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3298,
@@ -3343,7 +3343,7 @@
           "status": "ok",
           "request_bytes": 14862,
           "request_sha256": "49f1dcd02f5d0db7f9d0f3aee43644dc99a5214573b5fb42afd9be0f2fb58239",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.469
@@ -3442,8 +3442,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3451,13 +3451,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1972,
@@ -3467,7 +3467,7 @@
           "status": "ok",
           "request_bytes": 8537,
           "request_sha256": "810c7f87276a1eba08e232bbb299022a9799328cc3af9b999325bf9d20e1f21a",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.266
@@ -3475,7 +3475,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2008,
@@ -3485,7 +3485,7 @@
           "status": "ok",
           "request_bytes": 8694,
           "request_sha256": "b735b22b60a0071c1852a9ffa8f9917177b59df9590ac30d78aae4c07a979e83",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.433
@@ -3584,8 +3584,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -3594,13 +3594,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3261,
@@ -3610,7 +3610,7 @@
           "status": "ok",
           "request_bytes": 14698,
           "request_sha256": "f39cc7da3f11238c6cc8cdce9dccd8b24e91b6e174f53004b45cde4342899db6",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.627
@@ -3618,7 +3618,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3297,
@@ -3628,7 +3628,7 @@
           "status": "ok",
           "request_bytes": 14844,
           "request_sha256": "c1afd7acfb5596f942d372f37e3ece2bf5ea997fa06f14da712904e67f4e8bd1",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.511
@@ -3733,8 +3733,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -3743,13 +3743,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3329,
@@ -3759,7 +3759,7 @@
           "status": "ok",
           "request_bytes": 14926,
           "request_sha256": "5c8ddfbd4901239ad9d2d0e276c58bff2f8fa5357e42bbd2eba074d3ab6faa6b",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.424
@@ -3858,8 +3858,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -3867,13 +3867,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1965,
@@ -3883,7 +3883,7 @@
           "status": "ok",
           "request_bytes": 8504,
           "request_sha256": "dd58a9492bdaa94e818e328275f4636227a37f54eda9d7578cea71c07d53f266",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.439
@@ -3891,7 +3891,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1993,
@@ -3901,7 +3901,7 @@
           "status": "ok",
           "request_bytes": 8611,
           "request_sha256": "f7909314efc518d1006802e3dd5c6bc22a811e31d1df452d3a75ecb21df692f8",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.582
@@ -4006,8 +4006,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4015,13 +4015,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2039,
@@ -4031,7 +4031,7 @@
           "status": "ok",
           "request_bytes": 8758,
           "request_sha256": "768c69b8876fc4e8254105e48857a91427a410eabe8926ef57a0c757d953945a",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.66
@@ -4130,8 +4130,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -4140,13 +4140,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3255,
@@ -4156,7 +4156,7 @@
           "status": "ok",
           "request_bytes": 14672,
           "request_sha256": "7333245d0ec3ebdb686c779fd6106d4d5436cb679bacd96ce3438c9c3703bcd9",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.47
@@ -4164,7 +4164,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3283,
@@ -4174,7 +4174,7 @@
           "status": "ok",
           "request_bytes": 14779,
           "request_sha256": "8b6131a155b04cbf2d7b3f1b78ddee3a2674a412517d3fcf4d92488e9e55ddf4",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.462
@@ -4273,8 +4273,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4282,13 +4282,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1966,
@@ -4298,7 +4298,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "10c0a1a24639feebc2e14d9cdf995e44df78885620c5848158ce117962d59bdc",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.25
@@ -4306,7 +4306,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2005,
@@ -4316,7 +4316,7 @@
           "status": "ok",
           "request_bytes": 8651,
           "request_sha256": "3b195c2dcbd7c5ba6aedba867a2c7e89283950294a40f4ad98e2dd0198f67057",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.569
@@ -4415,8 +4415,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -4425,13 +4425,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3255,
@@ -4441,7 +4441,7 @@
           "status": "ok",
           "request_bytes": 14668,
           "request_sha256": "3c64f9996de7f0ecacad4fe42afd0f5da8b001b7128a6c14bf005a8f4de93220",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.287
@@ -4449,7 +4449,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3283,
@@ -4459,7 +4459,7 @@
           "status": "ok",
           "request_bytes": 14778,
           "request_sha256": "530c7cfe89399df6aa5e20f76059a567206654aa757afc6edde7464806ca03ab",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.472
@@ -4558,8 +4558,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -4568,13 +4568,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3256,
@@ -4584,7 +4584,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "3b132ad53a095bca836a49c85571614fbcc5839676534bb0152b4c7f278c1317",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.672
@@ -4592,7 +4592,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3295,
@@ -4602,7 +4602,7 @@
           "status": "ok",
           "request_bytes": 14819,
           "request_sha256": "6687a8c55e99b02389ab5c413dc6e2c3ae3414caf688b8028fdd7d3fd15e503c",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.519
@@ -4699,8 +4699,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4708,13 +4708,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1965,
@@ -4724,7 +4724,7 @@
           "status": "ok",
           "request_bytes": 8500,
           "request_sha256": "9c7d993521a0f5f5752ead9ed2a0887a19c24cb4a88189ab94e81106180126d2",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.537
@@ -4732,7 +4732,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1993,
@@ -4742,7 +4742,7 @@
           "status": "ok",
           "request_bytes": 8610,
           "request_sha256": "f6826117255be9caae72faef907b8587e1c657dc96a3d2c0cc7e143ce68d022f",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.418
@@ -4841,8 +4841,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -4850,13 +4850,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1969,
@@ -4866,7 +4866,7 @@
           "status": "ok",
           "request_bytes": 8518,
           "request_sha256": "522999e2c5f22edf6d0ca420e1bb8313a59e4f4021571ff34615b234316451d5",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.533
@@ -4874,7 +4874,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2006,
@@ -4884,7 +4884,7 @@
           "status": "ok",
           "request_bytes": 8669,
           "request_sha256": "5a79bec6b3dc7a49a5050d50b86eb92ffae9375eff0dc387b8174396c97874b5",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.412
@@ -4983,8 +4983,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -4993,13 +4993,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3257,
@@ -5009,7 +5009,7 @@
           "status": "ok",
           "request_bytes": 14683,
           "request_sha256": "b7760f74a087b2000a9afbaa265f72efaca5746cd6c389d5620e6a1414f34554",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.403
@@ -5017,7 +5017,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3290,
@@ -5027,7 +5027,7 @@
           "status": "ok",
           "request_bytes": 14822,
           "request_sha256": "9646264c9204147931b7764b48c47dd1d9bbbb8c47cfbe368078de27323631cf",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.459
@@ -5126,8 +5126,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5135,13 +5135,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1967,
@@ -5151,7 +5151,7 @@
           "status": "ok",
           "request_bytes": 8515,
           "request_sha256": "3c46f18a902e81e2436d648400ddcb417698cf5e1f632716631018de500382dd",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.434
@@ -5159,7 +5159,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2000,
@@ -5169,7 +5169,7 @@
           "status": "ok",
           "request_bytes": 8654,
           "request_sha256": "937b50d3168ddf71a9c8b2cf57cc763ec614d6b9a4791813b0f294d828fa11ee",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.638
@@ -5268,8 +5268,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -5278,13 +5278,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3259,
@@ -5294,7 +5294,7 @@
           "status": "ok",
           "request_bytes": 14686,
           "request_sha256": "fd51034d48585523929fe4412e085776f595825f3db32673ee278ffb5d3e445d",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.612
@@ -5302,7 +5302,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3296,
@@ -5312,7 +5312,7 @@
           "status": "ok",
           "request_bytes": 14835,
           "request_sha256": "6688a1d0dabc58a0dc85ada3f7c2a34fae2e43cc25de6f9d17885b3fabee3cdf",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.646
@@ -5409,8 +5409,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -5419,13 +5419,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3258,
@@ -5435,7 +5435,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "bd2650d256140e6c44e3e4ac80bcf64a387822f5465729e5fd62fbf8cde5c580",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.402
@@ -5443,7 +5443,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3292,
@@ -5453,7 +5453,7 @@
           "status": "ok",
           "request_bytes": 14823,
           "request_sha256": "8619a65117e41028ae0561aeb68f79aeb7e117e27381eeec2f98c0838e96c0df",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.238
@@ -5552,8 +5552,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5561,13 +5561,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1970,
@@ -5577,7 +5577,7 @@
           "status": "ok",
           "request_bytes": 8528,
           "request_sha256": "55c5fadd7a01d18238cc0417aa6c20319d35578702ad06a1fd248ff01bae8769",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.429
@@ -5585,7 +5585,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2005,
@@ -5595,7 +5595,7 @@
           "status": "ok",
           "request_bytes": 8685,
           "request_sha256": "edb79cddbfeb3ea3a961f134d03c84ee35c232de3abfb6123c5ed8e4e1709a75",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.464
@@ -5694,8 +5694,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -5703,13 +5703,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 1968,
@@ -5719,7 +5719,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "3f8fb8eb8ba97133aaf388654c7f6e34fa98da9875dba34a451cf8e93bb0d80e",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.42
@@ -5727,7 +5727,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 2002,
@@ -5737,7 +5737,7 @@
           "status": "ok",
           "request_bytes": 8655,
           "request_sha256": "01915b7cdddea7542a3ba8c2cd9e730b1e85a34b7ce4abe3bc726c091de79d8d",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.22
@@ -5836,8 +5836,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "small-3b",
-      "requested_model": "small model B (3B)",
+      "model_label": "model-b",
+      "requested_model": "small model B",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -5846,13 +5846,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model B (3B) route 1"
+        "small model B route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3260,
@@ -5862,7 +5862,7 @@
           "status": "ok",
           "request_bytes": 14696,
           "request_sha256": "c50a43834e812c67a929759681de3d3a4dad48bb28dfc89cbbfb81f8f63e5aa7",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.593
@@ -5870,7 +5870,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model B (3B) route 1"
+            "small model B route 1"
           ],
           "tokens": {
             "prompt_tokens": 3295,
@@ -5880,7 +5880,7 @@
           "status": "ok",
           "request_bytes": 14853,
           "request_sha256": "a0749229586d23f449f4818b40e4f9309fd51dc6d91cd101a05934b71b6f536a",
-          "requested_model": "small model B (3B)",
+          "requested_model": "small model B",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.48
@@ -6024,8 +6024,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6033,13 +6033,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -6049,7 +6049,7 @@
           "status": "ok",
           "request_bytes": 8531,
           "request_sha256": "afad3d335280f8d39e8f960857c853bfdfb703b9415f36aba725022eaf17051a",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.717
@@ -6197,8 +6197,8 @@
       "delivery": 2,
       "expected": 1.0,
       "actual": 0.0,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -6207,13 +6207,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3247,
@@ -6223,7 +6223,7 @@
           "status": "ok",
           "request_bytes": 14705,
           "request_sha256": "3a359b32826d8e560c808b9e599d35ad13d35c4d8af2f5be3c1fb31c261a7ef2",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.317
@@ -6367,8 +6367,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -6377,13 +6377,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3242,
@@ -6393,7 +6393,7 @@
           "status": "ok",
           "request_bytes": 14699,
           "request_sha256": "20dba95b4bcc1ecde23b24111b4ff1fb4c72e3fd835323bc06150085dc01e939",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.801
@@ -6547,8 +6547,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6556,13 +6556,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -6572,7 +6572,7 @@
           "status": "ok",
           "request_bytes": 8538,
           "request_sha256": "7073e57025a1779770aa6813bed3692a525fd929266c752582787b430f23c35a",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.304
@@ -6768,8 +6768,8 @@
       "delivery": 10,
       "expected": 1.0,
       "actual": 2.0,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -6777,13 +6777,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1957,
@@ -6793,7 +6793,7 @@
           "status": "ok",
           "request_bytes": 8537,
           "request_sha256": "f0b31123e57bc41af4f12a4c490b65570799711740d6ab2d8d68cdff22410cb3",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.278
@@ -6801,7 +6801,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1998,
@@ -6811,7 +6811,7 @@
           "status": "ok",
           "request_bytes": 8711,
           "request_sha256": "662f92a03a88b23b22989759208a6943fa7b4b76f72e94ab058ef7d7ea029b7d",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.361
@@ -6987,8 +6987,8 @@
       "delivery": 10,
       "expected": 1.0,
       "actual": 0.0,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -6997,13 +6997,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3242,
@@ -7013,7 +7013,7 @@
           "status": "ok",
           "request_bytes": 14706,
           "request_sha256": "ce199f5333fb9ce57a1cb4677f3fd661b555645cabb8c057fdf482779ad012e3",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.493
@@ -7147,8 +7147,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -7157,13 +7157,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3242,
@@ -7173,7 +7173,7 @@
           "status": "ok",
           "request_bytes": 14685,
           "request_sha256": "a923530d0512c841eef91b7bc6fb546dd8eebd746e8dd4ddc5e19d4aacdcb3f6",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.565
@@ -7317,8 +7317,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -7326,13 +7326,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1954,
@@ -7342,7 +7342,7 @@
           "status": "ok",
           "request_bytes": 8539,
           "request_sha256": "a1e25752963a90ae1bee54eb95c931063576c9a3bfe2af31460527e5502d84e0",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.45
@@ -7408,8 +7408,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -7417,13 +7417,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -7433,7 +7433,7 @@
           "status": "ok",
           "request_bytes": 8517,
           "request_sha256": "5c50f26bb60895e420db0778c83c8a987cb3d37dd49189f457ff27792a265682",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.534
@@ -7441,7 +7441,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -7451,7 +7451,7 @@
           "status": "ok",
           "request_bytes": 8517,
           "request_sha256": "5c50f26bb60895e420db0778c83c8a987cb3d37dd49189f457ff27792a265682",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.568
@@ -7595,8 +7595,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -7605,13 +7605,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3240,
@@ -7621,7 +7621,7 @@
           "status": "ok",
           "request_bytes": 14684,
           "request_sha256": "5675640d948823367988c271a8eeabc5f02cc21dba072cc685eb399fdefea2f7",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.614
@@ -7765,8 +7765,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -7775,13 +7775,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3244,
@@ -7791,7 +7791,7 @@
           "status": "ok",
           "request_bytes": 14707,
           "request_sha256": "4e9f9a8ef5a270e1b91c8cfe5dfdc64691256be6fe065eb4ec9773d8d6f54605",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.524
@@ -7935,8 +7935,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -7944,13 +7944,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -7960,7 +7960,7 @@
           "status": "ok",
           "request_bytes": 8516,
           "request_sha256": "b75dfd179095376ace65c815138197716111797b0a8900ea565458a0677b750c",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.104
@@ -8026,8 +8026,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -8035,13 +8035,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -8051,7 +8051,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "f0c68f8b881ad48dbbb1fe7b5b310babc27d7c1985b97624590798a03ad6a472",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.345
@@ -8059,7 +8059,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -8069,7 +8069,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "f0c68f8b881ad48dbbb1fe7b5b310babc27d7c1985b97624590798a03ad6a472",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.337
@@ -8203,8 +8203,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -8213,13 +8213,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3240,
@@ -8229,7 +8229,7 @@
           "status": "ok",
           "request_bytes": 14677,
           "request_sha256": "2a118a40387b8674d2bd477db9c8d0155c0c391867cfb57ca5f11136dc2ee76b",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.854
@@ -8382,8 +8382,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -8392,13 +8392,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3240,
@@ -8408,7 +8408,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "252abccd33913982f0330adb9e3bc57b8cd40baee37796846ad847fa5f5b2b38",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.514
@@ -8542,8 +8542,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -8551,13 +8551,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -8567,7 +8567,7 @@
           "status": "ok",
           "request_bytes": 8509,
           "request_sha256": "c90ff12dc5b4f6334b59eede942b5276d0617c41e6a32a0659e06f52c90914b3",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.848
@@ -8705,8 +8705,8 @@
       "delivery": 4,
       "expected": 0.0,
       "actual": 12.0,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -8714,13 +8714,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1958,
@@ -8730,7 +8730,7 @@
           "status": "ok",
           "request_bytes": 8553,
           "request_sha256": "1d939ef123da074d23e34adbd9053fd2883f4552dce5cfff16c0c6828153dbdb",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.218
@@ -8807,8 +8807,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -8817,13 +8817,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3240,
@@ -8833,7 +8833,7 @@
           "status": "ok",
           "request_bytes": 14693,
           "request_sha256": "ebab0239c541e361c621c6012b5a76ca7f86dfed4696ef9b3db91b3e13e4da50",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.765
@@ -8841,7 +8841,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3258,
@@ -8851,7 +8851,7 @@
           "status": "ok",
           "request_bytes": 14772,
           "request_sha256": "975332b0219caf16e69c36a7459ac24da33776d186f083d9030f9a98f61fbfcd",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 6.291
@@ -8928,8 +8928,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -8938,13 +8938,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3248,
@@ -8954,7 +8954,7 @@
           "status": "ok",
           "request_bytes": 14721,
           "request_sha256": "6e15fbfc4814d78c2b13dc1b595c28fed78401cf326438ea1ede8cfc350164ef",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.669
@@ -8962,7 +8962,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3266,
@@ -8972,7 +8972,7 @@
           "status": "ok",
           "request_bytes": 14800,
           "request_sha256": "4c09d3bdae8bc8246b13050a8a53a224d17adefb128048f7ddb76c345b920b92",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.795
@@ -9160,8 +9160,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -9169,13 +9169,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -9185,7 +9185,7 @@
           "status": "ok",
           "request_bytes": 8525,
           "request_sha256": "d78126a1de0c18316c36d114efff2c06e82446615fe960355db312a320dde3fe",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.457
@@ -9251,8 +9251,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -9260,13 +9260,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -9276,7 +9276,7 @@
           "status": "ok",
           "request_bytes": 8530,
           "request_sha256": "987b3b06e0d84925b465e1bf990e86ab5c653a72cf4571e78e01f8c092e2a7d0",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.577
@@ -9284,7 +9284,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1952,
@@ -9294,7 +9294,7 @@
           "status": "ok",
           "request_bytes": 8530,
           "request_sha256": "987b3b06e0d84925b465e1bf990e86ab5c653a72cf4571e78e01f8c092e2a7d0",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.116
@@ -9442,8 +9442,8 @@
       "ok": true,
       "final_value": 7.0,
       "deliveries_checked": 35,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -9452,13 +9452,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3242,
@@ -9468,7 +9468,7 @@
           "status": "ok",
           "request_bytes": 14698,
           "request_sha256": "3875cd2e78ed7227d81c85367cb0db6d08bf97330a6e43e61fffc109f35c59fa",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.816
@@ -9610,8 +9610,8 @@
       "delivery": 2,
       "expected": 1.0,
       "actual": 0.0,
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -9620,13 +9620,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3243,
@@ -9636,7 +9636,7 @@
           "status": "ok",
           "request_bytes": 14705,
           "request_sha256": "c08b5c0defeac2df361d56e9dcfc036ec6f525e9ccc267c8685829753d37bae7",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.291
@@ -9752,8 +9752,8 @@
         "expected": 0.0,
         "actual": 1.0
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -9761,13 +9761,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1946,
@@ -9777,7 +9777,7 @@
           "status": "ok",
           "request_bytes": 8504,
           "request_sha256": "0d66eb92d9b967e2d102e5ad6b2a4773fc8a1eb7171c41da2825ec86c1de01b9",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.99
@@ -9925,8 +9925,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -9934,13 +9934,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1953,
@@ -9950,7 +9950,7 @@
           "status": "ok",
           "request_bytes": 8537,
           "request_sha256": "c19e4ed886ea44980c5918e95ef36ba00ed525e4c04df55312a8ed409ef37b10",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.46
@@ -10124,8 +10124,8 @@
         "expected": 0.0,
         "actual": 1.0
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -10134,13 +10134,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3236,
@@ -10150,7 +10150,7 @@
           "status": "ok",
           "request_bytes": 14672,
           "request_sha256": "aace82e734de931d1fa1a39f2193df9ecb1b97f50494939de3d0fcb6943088f8",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.814
@@ -10354,8 +10354,8 @@
           "sum_field": null
         }
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -10363,13 +10363,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1947,
@@ -10379,7 +10379,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "cd249bf6d76f1bf5da36721181f84efa865824e9936b6ebae12e59dd73d0b099",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.949
@@ -10492,8 +10492,8 @@
         "ready"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -10502,13 +10502,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3310,
@@ -10518,7 +10518,7 @@
           "status": "ok",
           "request_bytes": 14926,
           "request_sha256": "ac7655b4e6810b6d914720d94418348cc116676d278ce78b99a6eb0c8ee222e1",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.147
@@ -10526,7 +10526,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3329,
@@ -10536,7 +10536,7 @@
           "status": "ok",
           "request_bytes": 15005,
           "request_sha256": "95ed318f667ba984fe49e8bc96c6751552dd2fb1e131cf1df51a9a83e51866fc",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.484
@@ -10682,8 +10682,8 @@
         "expected": 0.0,
         "actual": 1.0
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -10692,13 +10692,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3237,
@@ -10708,7 +10708,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "893f41a88caae41b45859e526b3ca6f15837390e0adcfd204bed69f0280ba405",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.609
@@ -10819,8 +10819,8 @@
         "ready"
       ],
       "actual_status": "clarification",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -10828,13 +10828,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 2020,
@@ -10844,7 +10844,7 @@
           "status": "ok",
           "request_bytes": 8758,
           "request_sha256": "2aa28760e78483c6a39edf782ddbabb6bf6e29c99587aba7f068bcf981ba9d0c",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.649
@@ -10899,8 +10899,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -10908,13 +10908,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1950,
@@ -10924,7 +10924,7 @@
           "status": "ok",
           "request_bytes": 8518,
           "request_sha256": "875e9b887eb5304c872c5af1e054e5b5ef49c35e25afc326e4abeefe3eb3409d",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.525
@@ -11096,8 +11096,8 @@
         "expected": 0.0,
         "actual": 1.0
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -11106,13 +11106,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3236,
@@ -11122,7 +11122,7 @@
           "status": "ok",
           "request_bytes": 14668,
           "request_sha256": "479b8700e8572f9fbc40ffa5a53378058bb667f0665b9ed1d1c711ae4776d953",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.113
@@ -11262,8 +11262,8 @@
         "unsupported"
       ],
       "actual_status": "ready",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -11272,13 +11272,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3240,
@@ -11288,7 +11288,7 @@
           "status": "ok",
           "request_bytes": 14686,
           "request_sha256": "248331292ac36995c9650fc790524be632b9204d5b7bebe6923a44f1bc12054b",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.516
@@ -11358,8 +11358,8 @@
         ],
         "actual_status": "failed"
       },
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -11367,13 +11367,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1946,
@@ -11383,7 +11383,7 @@
           "status": "ok",
           "request_bytes": 8500,
           "request_sha256": "7cb4a4fb3af3cdb00598e402dd54566bd405452dbdaa0b0363ada2cd226d2ee2",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.947
@@ -11391,7 +11391,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1946,
@@ -11401,7 +11401,7 @@
           "status": "ok",
           "request_bytes": 8500,
           "request_sha256": "7cb4a4fb3af3cdb00598e402dd54566bd405452dbdaa0b0363ada2cd226d2ee2",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.382
@@ -11515,8 +11515,8 @@
         "unsupported"
       ],
       "actual_status": "ready",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -11524,13 +11524,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1951,
@@ -11540,7 +11540,7 @@
           "status": "ok",
           "request_bytes": 8528,
           "request_sha256": "34f54d863fb18d9eaff341d099182665a743ba114d9021a4b9b8a9779d0805bc",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.186
@@ -11712,8 +11712,8 @@
         "unsupported"
       ],
       "actual_status": "ready",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -11722,13 +11722,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3238,
@@ -11738,7 +11738,7 @@
           "status": "ok",
           "request_bytes": 14683,
           "request_sha256": "47688cfc2d5327c49b80db100d400cfc1ac662f9a8d0482e4d1712ddb802cc7d",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.228
@@ -11804,8 +11804,8 @@
         "unsupported"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -11813,13 +11813,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1948,
@@ -11829,7 +11829,7 @@
           "status": "ok",
           "request_bytes": 8515,
           "request_sha256": "db3c9da4d329c563f0a3fb847655c89abd36277168b6f9f3baa3ae1effc32f43",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.666
@@ -11837,7 +11837,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1948,
@@ -11847,7 +11847,7 @@
           "status": "ok",
           "request_bytes": 8515,
           "request_sha256": "db3c9da4d329c563f0a3fb847655c89abd36277168b6f9f3baa3ae1effc32f43",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.236
@@ -11987,8 +11987,8 @@
         "unsupported"
       ],
       "actual_status": "ready",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -11997,13 +11997,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3241,
@@ -12013,7 +12013,7 @@
           "status": "ok",
           "request_bytes": 14696,
           "request_sha256": "14e6cbed466ae7cd566b2ff467e7344d767183c98e7ddf9e3a6eb6d8f4c10feb",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.937
@@ -12090,8 +12090,8 @@
         "unsupported"
       ],
       "actual_status": "failed",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -12100,13 +12100,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3239,
@@ -12116,7 +12116,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "f0b03fde03ff6182fb762c0b078e85492528acc66dbcef90d8fb7c2a3d1a15d8",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.55
@@ -12124,7 +12124,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 3257,
@@ -12134,7 +12134,7 @@
           "status": "ok",
           "request_bytes": 14755,
           "request_sha256": "f78b846563165ded3478b59190d82f009b80bcad67815aea4d14aa924673d5ec",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.069
@@ -12189,8 +12189,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "small-8b",
-      "requested_model": "small model C (8B)",
+      "model_label": "model-c",
+      "requested_model": "small model C",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -12198,13 +12198,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "small model C (8B) route 1"
+        "small model C route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "small model C (8B) route 1"
+            "small model C route 1"
           ],
           "tokens": {
             "prompt_tokens": 1949,
@@ -12214,7 +12214,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "a61edc4aa72d6ad48bfc70463ac168c09b66eff92ec5124ad99725a47b14cec7",
-          "requested_model": "small model C (8B)",
+          "requested_model": "small model C",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.268
@@ -12358,8 +12358,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -12367,13 +12367,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2015,
@@ -12383,7 +12383,7 @@
           "status": "ok",
           "request_bytes": 8530,
           "request_sha256": "8723d464f66a4f35996cbbf4467f0ae4978c4843c3ae89f42bb6753f8fd7983d",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.788
@@ -12537,8 +12537,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -12547,13 +12547,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3318,
@@ -12563,7 +12563,7 @@
           "status": "ok",
           "request_bytes": 14704,
           "request_sha256": "207fab60fe1fcff2c6df0ee3c1fa5014e9b17fb49c606067de10e6c2f68cc11d",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.985
@@ -12707,8 +12707,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -12717,13 +12717,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3313,
@@ -12733,7 +12733,7 @@
           "status": "ok",
           "request_bytes": 14698,
           "request_sha256": "d7645dd86bcf1d91625305bcb61e05bf606ab06c7ea8731b3bc273e37c3e49c6",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.846
@@ -12887,8 +12887,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -12896,13 +12896,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2020,
@@ -12912,7 +12912,7 @@
           "status": "ok",
           "request_bytes": 8536,
           "request_sha256": "ebeab789cc91d8f65df40c5849ab49f6b6770d1b56c6732cba531f8abf7e760a",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.873
@@ -13066,8 +13066,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -13075,13 +13075,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2015,
@@ -13091,7 +13091,7 @@
           "status": "ok",
           "request_bytes": 8537,
           "request_sha256": "e5b93a0f2f8416274ce2758c24d1445151541cc5e85c866c715cdf10eafe471c",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.124
@@ -13225,8 +13225,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -13235,13 +13235,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3313,
@@ -13251,7 +13251,7 @@
           "status": "ok",
           "request_bytes": 14684,
           "request_sha256": "42c5d761b5b7121623f1b58289bce4b559639a1f3e5be584d4e787b702d54b53",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.925
@@ -13405,8 +13405,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -13415,13 +13415,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3313,
@@ -13431,7 +13431,7 @@
           "status": "ok",
           "request_bytes": 14705,
           "request_sha256": "4da7c4ad4c139c9de57657716f2307b6a0fc40c2ead778e5210f29ea82311099",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 1.341
@@ -13565,8 +13565,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -13574,13 +13574,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2016,
@@ -13590,7 +13590,7 @@
           "status": "ok",
           "request_bytes": 8516,
           "request_sha256": "5631a67160a54bd5c4a1ce5c2fcc1b6a34cf647838ff39d13a3a77976fa448ec",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.471
@@ -13734,8 +13734,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -13743,13 +13743,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2018,
@@ -13759,7 +13759,7 @@
           "status": "ok",
           "request_bytes": 8538,
           "request_sha256": "a36cf063bea5e0d6b96ced8a6ff6ab4a77a3e0997ee235178d5e9f21f26fd426",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.853
@@ -13903,8 +13903,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -13913,13 +13913,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3316,
@@ -13929,7 +13929,7 @@
           "status": "ok",
           "request_bytes": 14706,
           "request_sha256": "7d4308cad84515eda2e8c39c53dd7db870d0f335ca1bb1e047bd3f8fc7ec00c6",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.489
@@ -13992,8 +13992,8 @@
         "ready"
       ],
       "actual_status": "unsupported",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -14002,13 +14002,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3312,
@@ -14018,7 +14018,7 @@
           "status": "ok",
           "request_bytes": 14683,
           "request_sha256": "5dbf1f7d95661679fba4bceba0647d25f5388374e44d83b0b881f50cc0c97373",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 7.417
@@ -14162,8 +14162,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -14171,13 +14171,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2014,
@@ -14187,7 +14187,7 @@
           "status": "ok",
           "request_bytes": 8507,
           "request_sha256": "7c6727d3ce2a7c30ad3a452f82325b15a5035b7f83193a4e10b5ab79b12c7ffe",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.259
@@ -14250,8 +14250,8 @@
         "ready"
       ],
       "actual_status": "unsupported",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -14259,13 +14259,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2014,
@@ -14275,7 +14275,7 @@
           "status": "ok",
           "request_bytes": 8515,
           "request_sha256": "9d3a526b2bf93b5575b29ed7d77043e63b1b880fbf7d25b7d2ed0f3ca55b15fe",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.574
@@ -14419,8 +14419,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -14429,13 +14429,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3312,
@@ -14445,7 +14445,7 @@
           "status": "ok",
           "request_bytes": 14675,
           "request_sha256": "cf8fcb6e486fc93f954357a036c4258e3f0895c846f27b4a170e9588900763bd",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.032
@@ -14579,8 +14579,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -14589,13 +14589,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3311,
@@ -14605,7 +14605,7 @@
           "status": "ok",
           "request_bytes": 14676,
           "request_sha256": "1f83c0aa1860e5a53a9ebd551000bb042c4f900d212edb15e5fbd5a1cf7537b5",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.853
@@ -14749,8 +14749,8 @@
       "ok": true,
       "final_value": 20.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -14758,13 +14758,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2022,
@@ -14774,7 +14774,7 @@
           "status": "ok",
           "request_bytes": 8552,
           "request_sha256": "1b71f97be3e016b59dffca50fdf9260362dee03946384455d8c4664ea7aa7122",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.951
@@ -14908,8 +14908,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -14917,13 +14917,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2013,
@@ -14933,7 +14933,7 @@
           "status": "ok",
           "request_bytes": 8508,
           "request_sha256": "4ef242f4057187342a1b8759f8a67e52d87af44587fa3d098f83d8be93ad053e",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.756
@@ -15077,8 +15077,8 @@
       "ok": true,
       "final_value": 20.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -15087,13 +15087,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3320,
@@ -15103,7 +15103,7 @@
           "status": "ok",
           "request_bytes": 14720,
           "request_sha256": "e430cd9512a697de6df4b3886d5ce4c4a940b5d8f09c19f68b2afb7d38aef0a1",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 3.747
@@ -15261,8 +15261,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -15271,13 +15271,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3312,
@@ -15287,7 +15287,7 @@
           "status": "ok",
           "request_bytes": 14692,
           "request_sha256": "2ded623d3fa60a3fffe804381a55c4003c55c4569b47f5cdf3dd2edf2b197179",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 6.555
@@ -15435,8 +15435,8 @@
       "ok": true,
       "final_value": 7.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -15444,13 +15444,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2016,
@@ -15460,7 +15460,7 @@
           "status": "ok",
           "request_bytes": 8529,
           "request_sha256": "f00d0ab955cc37b796e9c6b15f3c0c87b6ce649fe76845e1aa26fa836aaabee5",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 6.382
@@ -15618,8 +15618,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -15627,13 +15627,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2014,
@@ -15643,7 +15643,7 @@
           "status": "ok",
           "request_bytes": 8524,
           "request_sha256": "100e3700e6f85c3a7376ec1e2c24b7436ec6480dd720f1fcda56743f2e22c61a",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 9.712
@@ -15791,8 +15791,8 @@
       "ok": true,
       "final_value": 7.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -15801,13 +15801,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3314,
@@ -15817,7 +15817,7 @@
           "status": "ok",
           "request_bytes": 14697,
           "request_sha256": "d70c0db90874e28f2ccd6467bf8984ac932511024a8b73ee7e05020742189740",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 9.624
@@ -15943,8 +15943,8 @@
       "ok": true,
       "final_value": 4.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -15953,13 +15953,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3315,
@@ -15969,7 +15969,7 @@
           "status": "ok",
           "request_bytes": 14704,
           "request_sha256": "0e5641063535365117e9842aa9feb7231b8f70f2e54fa282f3292b57c7141d22",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 4.885
@@ -16095,8 +16095,8 @@
       "ok": true,
       "final_value": 4.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -16104,13 +16104,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2017,
@@ -16120,7 +16120,7 @@
           "status": "ok",
           "request_bytes": 8536,
           "request_sha256": "7763f89ca29f2f95f6903e10d9d188212a8907393cbf80cf990f187463be75b9",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 7.455
@@ -16276,8 +16276,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -16285,13 +16285,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2010,
@@ -16301,7 +16301,7 @@
           "status": "ok",
           "request_bytes": 8503,
           "request_sha256": "8692f574ba69ffd8349ff46ad3fbfe04d21991ac3e9409bd6dd56d86d3a6b203",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.828
@@ -16309,7 +16309,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2046,
@@ -16319,7 +16319,7 @@
           "status": "ok",
           "request_bytes": 8654,
           "request_sha256": "452eddb64c86c8fe058047110eb9d24b2da779d7bcc6c62e69e3f921504fb271",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 13.356
@@ -16475,8 +16475,8 @@
       "ok": true,
       "final_value": 2.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -16485,13 +16485,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3307,
@@ -16501,7 +16501,7 @@
           "status": "ok",
           "request_bytes": 14671,
           "request_sha256": "dd5a9598d706736c45f786b095b30432d50de2ff7eab33811a7d83a90e00a6bd",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.502
@@ -16509,7 +16509,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3343,
@@ -16519,7 +16519,7 @@
           "status": "ok",
           "request_bytes": 14822,
           "request_sha256": "f6c6ea8d1c9397cda4fe70c7eaae94cee0458869cbb4fd0fa2fa0c4b8ecb3c6d",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 1.045
@@ -16675,8 +16675,8 @@
       "ok": true,
       "final_value": 7.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -16684,13 +16684,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2010,
@@ -16700,7 +16700,7 @@
           "status": "ok",
           "request_bytes": 8507,
           "request_sha256": "b5051c8f57ad6b8663e1f75907d04c9ad70c091c2d95b98e601527b2a7cd9293",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 1.432
@@ -16708,7 +16708,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2049,
@@ -16718,7 +16718,7 @@
           "status": "ok",
           "request_bytes": 8652,
           "request_sha256": "8c408bfc4499be4aa71204d091378b246ee25af8c7cbf6736ce507d04bb435f0",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.965
@@ -16908,8 +16908,8 @@
       "ok": true,
       "final_value": 15.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -16918,13 +16918,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3381,
@@ -16934,7 +16934,7 @@
           "status": "ok",
           "request_bytes": 14925,
           "request_sha256": "57a1f8f6d5f7edb8b866716149fecf0f26f98bf0bd7d55baa64669952107c794",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 12.696
@@ -17124,8 +17124,8 @@
       "ok": true,
       "final_value": 15.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -17133,13 +17133,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2082,
@@ -17149,7 +17149,7 @@
           "status": "ok",
           "request_bytes": 8757,
           "request_sha256": "c29f044fcc2fb121b3f49a0f9ac2259f130a25907a50932f9c4d887834f44331",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.862
@@ -17305,8 +17305,8 @@
       "ok": true,
       "final_value": 7.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -17315,14 +17315,14 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1",
-        "open model A (20B) route 2"
+        "open model A route 1",
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 3308,
@@ -17332,7 +17332,7 @@
           "status": "ok",
           "request_bytes": 14675,
           "request_sha256": "1c1ac4b7e6c6d882833dd35a79abb09c7a38905d6d021c9bec8615125e5bebf6",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 0.911
@@ -17340,7 +17340,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3348,
@@ -17350,7 +17350,7 @@
           "status": "ok",
           "request_bytes": 14820,
           "request_sha256": "eb7d3d9dd4de9374b6f9176de1c68af35e35b91e97a42dbe7f96c0e6d9e66add",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.031
@@ -17405,8 +17405,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -17414,13 +17414,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2013,
@@ -17430,7 +17430,7 @@
           "status": "ok",
           "request_bytes": 8517,
           "request_sha256": "bc5ad3598e48a10aa470258e91ef4bd2e8654aa7f257d5fb66e4eded66b1fa0d",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.612
@@ -17485,8 +17485,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -17495,13 +17495,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3312,
@@ -17511,7 +17511,7 @@
           "status": "ok",
           "request_bytes": 14685,
           "request_sha256": "0572b46e13b879e4a2957bd036f9937b0490e7d28cbd8df35ffd38e6eb39e2b4",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.152
@@ -17566,8 +17566,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -17576,13 +17576,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3310,
@@ -17592,7 +17592,7 @@
           "status": "ok",
           "request_bytes": 14682,
           "request_sha256": "7dc34f3c3280a57a2e30f877160ddc1ac468f75c2dcd9bb42ee5c9ca209ba16b",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.672
@@ -17647,8 +17647,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -17656,13 +17656,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 2"
+        "open model A route 2"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 2"
+            "open model A route 2"
           ],
           "tokens": {
             "prompt_tokens": 2011,
@@ -17672,7 +17672,7 @@
           "status": "ok",
           "request_bytes": 8514,
           "request_sha256": "76d5c4f763008e7d427e90f2f1049131d54fb2376862d22732acde3d072b60d3",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 0.349
@@ -17846,8 +17846,8 @@
       "ok": true,
       "final_value": 1.0,
       "deliveries_checked": 35,
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -17856,13 +17856,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3308,
@@ -17872,7 +17872,7 @@
           "status": "ok",
           "request_bytes": 14667,
           "request_sha256": "fbe3fde03923d7f28936802d0e8bd66dcc2573a060e110ae8925823cdeef5ebb",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.67
@@ -17880,7 +17880,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3336,
@@ -17890,7 +17890,7 @@
           "status": "ok",
           "request_bytes": 14777,
           "request_sha256": "5b5323a89a7b97c48805dcadba892eb0fcb1e59f1473ee403b894ae1fbc787c2",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 9.793
@@ -17945,8 +17945,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -17954,13 +17954,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2014,
@@ -17970,7 +17970,7 @@
           "status": "ok",
           "request_bytes": 8527,
           "request_sha256": "8dfdfa432462eb473818840a20ca06f6fc37886145b36b44d7ca0f09f4b52bd0",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 3.956
@@ -18173,8 +18173,8 @@
       },
       "ok": false,
       "reason": "different_constraints",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": false,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -18182,13 +18182,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2010,
@@ -18198,7 +18198,7 @@
           "status": "ok",
           "request_bytes": 8499,
           "request_sha256": "76648cc537462846843dd02921e46fd1832fc4238b23fe37c1d706299b5791f4",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 2.082
@@ -18206,7 +18206,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2038,
@@ -18216,7 +18216,7 @@
           "status": "ok",
           "request_bytes": 8609,
           "request_sha256": "e29737b4cd06e33011f80809d9cfe05b36bfafc3f7cf89fdc7dcd193315a7a52",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 5.341
@@ -18271,8 +18271,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": true,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -18281,13 +18281,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3311,
@@ -18297,7 +18297,7 @@
           "status": "ok",
           "request_bytes": 14675,
           "request_sha256": "e01f0d7b4c94f2065c48a3c007185384c89b7597af9352b7ee9141e4010e38b5",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 2.236
@@ -18394,8 +18394,8 @@
         "unsupported"
       ],
       "actual_status": "clarification",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "skill",
       "interpretation_ok": false,
       "prompt_sha256": "ee788251a9e5cfac8d8d249bfcbe25e573f86babbb3a487912c5aaa70ccca38f",
@@ -18404,13 +18404,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3312,
@@ -18420,7 +18420,7 @@
           "status": "ok",
           "request_bytes": 14695,
           "request_sha256": "5b55118cd8926fa2a43e58bae240475032cfc36c3c2134fd6d26b946806962f9",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.568
@@ -18428,7 +18428,7 @@
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 3362,
@@ -18438,7 +18438,7 @@
           "status": "ok",
           "request_bytes": 14933,
           "request_sha256": "003a2d92c23229f567113fb4a2eac2f013969d763c59dac2f05204973f7edf35",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "fe3579071b51b1c8a56495e922c644e953928c34eac389564f61da865839f94c",
           "seconds": 5.44
@@ -18493,8 +18493,8 @@
       "actual_rule": null,
       "ok": true,
       "reason": "status",
-      "model_label": "mid-20b",
-      "requested_model": "open model A (20B)",
+      "model_label": "model-a",
+      "requested_model": "open model A",
       "variant": "current",
       "interpretation_ok": true,
       "prompt_sha256": "67f1c8b29f7cc56fbddab9465722d4435926142bc220ab3334f60a94592ff6a5",
@@ -18502,13 +18502,13 @@
       "pin_verified": true,
       "pin_reason": "verified",
       "actual_models": [
-        "open model A (20B) route 1"
+        "open model A route 1"
       ],
       "calls": [
         {
           "http_status": 200,
           "actual_models": [
-            "open model A (20B) route 1"
+            "open model A route 1"
           ],
           "tokens": {
             "prompt_tokens": 2013,
@@ -18518,7 +18518,7 @@
           "status": "ok",
           "request_bytes": 8507,
           "request_sha256": "bb3a6cc5b0d5d04e6a08529af4ca46f4d4f5b1139058dd4fb0ec7436edceb956",
-          "requested_model": "open model A (20B)",
+          "requested_model": "open model A",
           "response_format": "prompt",
           "system_prompt_sha256": "aa697c4f26876101405544da6258b19e11ce5ffc4d9f08c80a4ed68044c48047",
           "seconds": 4.444
