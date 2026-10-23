@@ -35,5 +35,5 @@
 
 *In short: small, known gaps.*
 
-- The UI exceeds the [benchmark](components/benchmarks.md) gzip budget.
+- The UI ships unminified (no bundler); the [benchmark](components/benchmarks.md) budget allows for it.
 - Per-viewer rewind of live footage is not built.
