@@ -16,7 +16,7 @@ PLAYLIST = ContentSettings(content_type="application/vnd.apple.mpegurl", cache_c
 COPY_TIMEOUT = 60.0
 
 
-DELETE_WORKERS = 16
+DELETE_WORKERS = 16  # not Blob Batch: Azurite (local and CI) refuses it
 
 
 class BlobDir:
@@ -56,8 +56,14 @@ class BlobDir:
     def remove(self):
         names = [b.name for b in self.container.list_blobs(name_starts_with=self.prefix)]
         with ThreadPoolExecutor(max_workers=DELETE_WORKERS) as pool:  # one by one, a played match took over a minute
-            list(pool.map(self.container.delete_blob, names))
+            list(pool.map(self._delete, names))
         return len(names)
+
+    def _delete(self, name):
+        try:
+            self.container.delete_blob(name)
+        except ResourceNotFoundError:  # already gone: a purge retried after a partial failure
+            pass
 
 
 class BlobLive:

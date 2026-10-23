@@ -36,6 +36,21 @@ class RemoveTests(unittest.TestCase):
         self.assertEqual(len(set(Container.deleted)), 300)
         self.assertGreater(len(Container.threads), 1)
 
+    def test_remove_skips_blobs_already_gone(self):
+        from types import SimpleNamespace
+        from azure.core.exceptions import ResourceNotFoundError
+        from feed.adapters.blob import BlobDir
+
+        class Container:
+            def list_blobs(self, name_starts_with):
+                return [SimpleNamespace(name=f"{name_starts_with}{i}.ts") for i in range(3)]
+
+            def delete_blob(self, name):
+                if name.endswith("1.ts"):
+                    raise ResourceNotFoundError("gone")
+
+        self.assertEqual(BlobDir(Container(), "m").remove(), 3)
+
 
 @unittest.skipUnless(CONNECTION, "FEED_TEST_BLOB_CONNECTION_STRING not set")
 class BlobTests(unittest.IsolatedAsyncioTestCase):
@@ -56,6 +71,15 @@ class BlobTests(unittest.IsolatedAsyncioTestCase):
         for blob in self.media.list_blobs(name_starts_with=self.fixture + "/"):
             self.media.delete_blob(blob.name)
         self.storage.live().remove(self.match_id)
+
+    def test_remove_purges_every_blob_and_is_idempotent(self):
+        live = self.storage.live()
+        container = self.storage.service.get_container_client("live")
+        for i in range(40):
+            container.upload_blob(f"{self.match_id}/s{i:03}.ts", b"x")
+        self.assertEqual(live.remove(self.match_id), 40)
+        self.assertEqual(live.remove(self.match_id), 0)
+        self.assertNotIn(self.match_id, live.match_ids())
 
     def test_segments_are_published_only_once_played_and_purged(self):
         stream = dataclasses.replace(riverton(), fixture=self.fixture)  # riverton() is shared
