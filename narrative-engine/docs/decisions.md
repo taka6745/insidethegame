@@ -50,7 +50,7 @@
 | Analyst limits and a result phrase list in code | Analyst v3 fills its limits from the storyline policy (`prompt_limits`), the validator reads the same section; a result before full time is a third `claims` question (`result`) in the same batched decision call | No magic numbers, no phrase lists |
 | Clips as a Phase 2 resolver | The engine flags clip-worthy key events in the follow decision call (clip `Score`, or clip-on kinds in `clips.always_for`) and sends `FollowClip`; shared key-event steps send `MomentClip`; the backend cuts the clip | No extra model call; a narrative dropped as ungrounded keeps its clip; common events never clip |
 | Mid-match starts by replaying from kick-off | Recorded seeds restored under a new matchId through a demo-only adapter (`DEMO_SEEDS=1`), then the match continues live | Seconds instead of minutes to a rich story so far; core code never branches on a demo, and a production release has no seed routes |
-| Managed identity everywhere, Key Vault | Managed identity for Cosmos; scoped keys as Container App secrets elsewhere | Contributor cannot create role assignments |
+| Managed identity everywhere, Key Vault | Managed identity for Cosmos; scoped keys as Container App secrets elsewhere | Kept simple for the demo; managed identity everywhere is a production gap |
 | Leader election for the scheduler | One replica | Enough for the demo |
 | Newest run supersedes older runs (`MATCH_IDS`) | Every matchId runs; lifecycle from MA1, the final `PeriodEnded` and tombstones | Several matches at once |
 | Fallback to 12 buckets and shipped prompts | None in the service: pause and `/health` 503 | No hard-coded data on the live path |

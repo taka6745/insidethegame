@@ -29,27 +29,20 @@
 | --- | --- | --- |
 | Resource group | `rg-itg-narrative-dev` | Budget alert at 20/month (billing currency, A$) |
 | Container App | `itg-narrative-dev-engine` | 0.5 vCPU, 1 GiB, 1 replica, internal ingress on 8000 (only the backend, the frontend's dev purge proxy and demo control call it); `DEMO_SEEDS=1` on the demo build; in the ETL's environment (one per region on the trial) |
-| Container Registry | `itgnarrativedevdhcyoacr` | Basic; images built locally and pushed |
-| Cosmos DB | `itg-narrative-dev-dhcyo-cosmos` | Serverless; engine uses managed identity |
-| Azure AI Foundry (AI Services) | `itg-narrative-dev-dhcyo-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low) and `decision-1` (Microsoft-Decision-1, 50 requests/minute), plus the switchable alternatives `gpt-6-luna` and `gpt-5-mini` (100K TPM each); the user backend adds its own `questions` deployment here |
+| Container Registry | `itgnarrativedev<suffix>acr` | Basic; images built locally and pushed |
+| Cosmos DB | `itg-narrative-dev-<suffix>-cosmos` | Serverless; engine uses managed identity |
+| Azure AI Foundry (AI Services) | `itg-narrative-dev-<suffix>-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low) and `decision-1` (Microsoft-Decision-1, 50 requests/minute), plus the switchable alternatives `gpt-6-luna` and `gpt-5-mini` (100K TPM each); the user backend adds its own `questions` deployment here |
 | Service Bus topic | `narratives` | In the ETL namespace; subscriptions `user-backend`, `narrative-check`. The engine reads `match-notifications` through the ETL's `narrative-engine` subscription |
-| Application Insights | `itg-narrative-dev-dhcyo-appi` | Own Log Analytics workspace (0.2 GB/day cap); workbook "Narrative engine" |
+| Application Insights | `itg-narrative-dev-<suffix>-appi` | Own Log Analytics workspace (0.2 GB/day cap); workbook "Narrative engine" |
 
 ## 2. Deploying
 
-*In short: apply, build, apply again with the image tag.*
+*In short: `./dev azure up` applies this stack with the others; `./dev azure plan` previews it.*
 
-```sh
-cd narrative-engine
-cp infra/local.auto.tfvars.example infra/local.auto.tfvars      # subscription and budget emails
-terraform -chdir=infra init
-terraform -chdir=infra apply                                    # everything except the app
-.venv/bin/python -m devtools.azure build --tag v4 --local
-terraform -chdir=infra apply -var engine_image_tag=v4 -var user_backend_url=<backend url>
-```
+`./dev azure up` (confirm with the developer first; it asks before applying) applies `infra/` with its state in `.local/terraform/narrative/`, builds the engine image on the host, pushes it and applies again with its tag and the backend's URL ([terraform deployment](../../terraform/docs/deployment.md)). There is no single-stack command: change `infra/` and rerun `./dev azure up`; unchanged stacks stay as they are. Do not run `terraform` in `infra/` directly: its state there would duplicate every resource.
 
 - `user_backend_url` is required: the engine reads audience targets and prompts there and has no fallback. The ETL subscription keeps old replays; purge them (`POST /admin/matches/purge`, internal) rather than narrating them.
-- Trial subscription limits shape this: one Container Apps environment per region (so the engine uses the ETL's), no ACR Tasks (so `--local`), and a Contributor role that cannot create role assignments (so keys instead of managed identity, except for Cosmos).
+- Trial subscription limits shape this: one Container Apps environment per region (so the engine uses the ETL's) and no ACR Tasks (so images are built on the host). Keys instead of managed identity (except for Cosmos) are a production gap.
 - Providers that had to be registered once: `Microsoft.CognitiveServices`, `Microsoft.ContainerRegistry`, `Microsoft.Insights`.
 
 ## 3. Changing a model
@@ -59,7 +52,7 @@ terraform -chdir=infra apply -var engine_image_tag=v4 -var user_backend_url=<bac
 The alternates `gpt-6-luna` and `gpt-5-mini` are already deployed. To make a role's model permanent:
 
 ```hcl
-# infra/local.auto.tfvars (or -var)
+# infra/local.auto.tfvars (Terraform loads it on the next ./dev azure up)
 agents = {
   summary     = { model = "writer", effort = "low" }
   compression = { model = "writer", effort = "low" }
@@ -72,7 +65,7 @@ A new model is an entry in `models` (keep the defaults beside it). Terraform set
 
 ## 4. Monitoring
 
-*In short: Application Insights `{name_prefix}-{suffix}-appi` (e.g. `itg-narrative-dev-xxxxx-appi`), with a ready-made workbook.*
+*In short: Application Insights `{name_prefix}-{suffix}-appi` with a ready-made workbook.*
 
 | Where (portal) | Shows |
 | --- | --- |

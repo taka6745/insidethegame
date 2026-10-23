@@ -48,7 +48,7 @@ Rerun `up` after a failure: apps keep the last complete up's image tag (`.local/
 - **Start demo** calls demo control (`/demo-api/`, internal, one replica kept warm). Seeded start points need seeds on the `seeds` share: run `demo_control.py record`/`capture` inside demo control with `az containerapp exec` ([demo control](../../local/docs/components/demo-control.md)).
 - `<url>/dev/` (user `dev`, password in `.local/terraform/dev-admin-password.txt`) → Matches → start. Matches start at the next whole minute, from 00:00.
 - The `/dev/` purge reaches every owner: the feed via `/feed-api/`, ETL, engine and backend via `/purge-api/{owner}` (nginx adds the ETL and engine bearer tokens).
-- Stream Analytics starts and stops itself with match traffic ([guard](components/guard.md)); `cd etl && python -m devtools asa stop` stops it by hand.
+- Stream Analytics starts and stops itself with match traffic ([guard](components/guard.md)); `cd etl && python3 -m devtools asa stop` stops it by hand (host Python and `az login`; it reads `.local/terraform/etl/`).
 
 ## 4. Demo URL (edge proxy)
 

@@ -7,6 +7,7 @@
     python -m devtools local-down [--wipe]
     python -m devtools azure-setup               after terraform apply: migrations, Azure triggers, grants
     python -m devtools asa start|stop|status     Stream Analytics bills only while running
+    python -m devtools output NAME               one Terraform output of the ETL stack (secrets included)
     python -m devtools check-notifications REPLAY.jsonl   peek Service Bus and compare with the reference
 """
 import argparse
@@ -225,9 +226,14 @@ def verify_spadl(url, messages, outputs, match_id):
     return problems
 
 
-def terraform_outputs():
-    result = subprocess.run(["terraform", "output", "-json"], cwd=ETL / "infra", capture_output=True, text=True, check=True)
-    return {k: v["value"] for k, v in json.loads(result.stdout).items()}
+def terraform_outputs(state=ETL.parent / ".local" / "terraform" / "etl" / "terraform.tfstate"):
+    """The ETL stack's outputs: from `./dev azure`'s state when it exists, else `terraform output` in infra/."""
+    if state.exists():
+        outputs = json.loads(state.read_text())["outputs"]
+    else:
+        outputs = json.loads(subprocess.run(["terraform", "output", "-json"], cwd=ETL / "infra",
+                                            capture_output=True, text=True, check=True).stdout)
+    return {k: v["value"] for k, v in outputs.items()}
 
 
 def az(*args):
@@ -283,8 +289,7 @@ def check_notifications(replay, window, subscription="narrative-engine"):
     """Peek (without consuming) the subscription and compare messages for this replay's match."""
     from azure.servicebus import ServiceBusClient
 
-    connection = subprocess.run(["terraform", "output", "-raw", "servicebus_listen_connection_string"],
-                                cwd=ETL / "infra", capture_output=True, text=True, check=True).stdout
+    connection = terraform_outputs()["servicebus_listen_connection_string"]
     messages = read_replay(replay)
     match_id = messages[0]["matchId"]
     expected = {pipeline.message_id_for(n): n for n in pipeline.stream_outputs(messages, window)["notifications"]}
@@ -332,6 +337,7 @@ def main():
     sub.add_parser("azure-setup")
     a = sub.add_parser("asa")
     a.add_argument("action", choices=["start", "stop", "status"])
+    sub.add_parser("output").add_argument("name")
     for name in ("load-local", "verify", "check-notifications"):
         p = sub.add_parser(name)
         p.add_argument("replay", type=Path)
@@ -350,6 +356,8 @@ def main():
         azure_setup()
     elif args.command == "asa":
         asa(args.action)
+    elif args.command == "output":
+        print(terraform_outputs()[args.name])
     elif args.command == "check-notifications":
         check_notifications(args.replay, args.window)
     elif args.command == "load-local":

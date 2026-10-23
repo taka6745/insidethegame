@@ -6,7 +6,7 @@
 | --- | --- |
 | **Image** | `frontend/Dockerfile` (Node build stage, nginx serves only compiled output), pushed to the shared registry as `frontend:<tag>` |
 | **Scale** | 0–2 replicas |
-| **URL** | `terraform output public_url` (printed by `./dev azure up`); public name `msft-hackathon.koda-software.com` |
+| **URL** | Printed by `./dev azure up` (the app stack's output `public_url`); public name `msft-hackathon.koda-software.com` |
 
 ## 1. Settings
 

@@ -28,36 +28,26 @@
 
 ## 2. Deploying
 
-*In short: apply, then set up the database.*
+*In short: `./dev azure up` applies this stack with the others; `./dev azure plan` previews it.*
 
-```sh
-cd etl
-cp infra/local.auto.tfvars.example infra/local.auto.tfvars    # subscription and budget emails
-terraform -chdir=infra init
-terraform -chdir=infra apply
-.venv/bin/python -m devtools azure-setup                    # migrations, sql/azure triggers, identity grants
-# Purge API: build the image into the registry, apply with its tag, then grant its identity.
-az acr build --registry "$(terraform -chdir=infra output -raw registry)" --image etl-stream:TAG .
-terraform -chdir=infra apply -var admin_image_tag=TAG
-.venv/bin/python -m devtools azure-setup
-```
+`./dev azure up` (confirm with the developer first; it asks before applying) applies `infra/` with its state in `.local/terraform/etl/`, builds and pushes the `etl-stream` image on the host, runs `devtools azure-setup` (migrations, `sql/azure` triggers, identity grants) and starts the job ([terraform deployment](../../terraform/docs/deployment.md)). There is no single-stack command: change `infra/` and rerun `./dev azure up`; unchanged stacks stay as they are. Do not run `terraform` in `infra/` directly: its state there would duplicate every resource.
 
 Purge: the purge API has internal ingress. The `/dev/` Matches panel calls it through the frontend's `/purge-api/etl`, which adds `Authorization: Bearer <admin_token>`; the browser never sees the token. Body: `{"match_id": …}` or `{"all": true}`.
 
-Stop the job before an apply that changes its query, inputs or outputs. DAB and the job's outputs need the tables from every migration, so run `azure-setup` straight after an apply that adds entities or outputs, then restart the DAB revision. `azure-setup` also grants DAB `EXECUTE` on `statsAtSeq`, applies `sql/azure/` (rerunnable) and, once the purge API exists, grants it read and write.
+`up` stops the job before applying (query, input and output changes need it stopped), runs `azure-setup` after the apply (DAB and the job's outputs need every migration's tables) and restarts the DAB revision. `azure-setup` also grants DAB `EXECUTE` on `statsAtSeq` and the trend procedures, applies `sql/azure/` (rerunnable) and, once the purge API exists, grants it read and write.
 
 ## 3. Running a live replay
 
-*In short: start, replay, check, stop.*
+*In short: start, replay, check, stop (host Python and `az login`; `devtools` reads the stack's outputs from `.local/terraform/etl/`).*
 
 ```sh
 .venv/bin/python -m devtools asa start
-ETL_EVENTHUB_CONNECTION_STRING=$(terraform -chdir=infra output -raw eventhub_send_connection_string) \
+ETL_EVENTHUB_CONNECTION_STRING=$(.venv/bin/python -m devtools output eventhub_send_connection_string) \
   .venv/bin/python -m seeder.replay seeder/matches/itg-syn-0001.jsonl --speed 10 --target eventhub --match-id demo1
 # DAB has internal ingress: expose it only while verifying, then set it back to internal
-az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type external
-.venv/bin/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(terraform -chdir=infra output -raw graphql_url | sed 's/.internal//')"
-az containerapp ingress update -g "$(terraform -chdir=infra output -raw resource_group)" -n "$(terraform -chdir=infra output -raw dab_app_name)" --type internal
+az containerapp ingress update -g "$(.venv/bin/python -m devtools output resource_group)" -n "$(.venv/bin/python -m devtools output dab_app_name)" --type external
+.venv/bin/python -m devtools verify .local/replays/demo1.jsonl --graphql "$(.venv/bin/python -m devtools output graphql_url | sed 's/.internal//')"
+az containerapp ingress update -g "$(.venv/bin/python -m devtools output resource_group)" -n "$(.venv/bin/python -m devtools output dab_app_name)" --type internal
 .venv/bin/python -m devtools check-notifications .local/replays/demo1.jsonl
 .venv/bin/python -m devtools asa stop
 ```

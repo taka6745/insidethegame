@@ -88,7 +88,7 @@ Measured ball ownership, one message per sample, sent only once its video time h
 
 *In short: read-only GraphQL over the ETL tables, views and procedures.*
 
-Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhost:15001/graphql` (shared stack, `./dev up backend`). Azure: internal ingress only (`terraform -chdir=etl/infra output graphql_url`), reachable from apps in the shared Container Apps environment; it scales to zero, so the first request can take ~30 s (the database may also be resuming from auto-pause). All queries support `filter`, `orderBy`, `first`, `after`.
+Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhost:15001/graphql` (shared stack, `./dev up backend`). Azure: internal ingress only (`cd etl && python3 -m devtools output graphql_url`), reachable from apps in the shared Container Apps environment; it scales to zero, so the first request can take ~30 s (the database may also be resuming from auto-pause). All queries support `filter`, `orderBy`, `first`, `after`.
 
 | Query | One row per | Use |
 | --- | --- | --- |

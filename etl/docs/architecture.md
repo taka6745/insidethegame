@@ -79,13 +79,13 @@ The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `p
 | Resource | Name (example suffix; `./dev azure up` mints its own) | Size and notes |
 | --- | --- | --- |
 | Resource group | `rg-itg-etl-dev` | Budget alert at 50/month (billing currency, A$) |
-| Event Hubs | namespace `itg-etl-dev-0zvxh-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `stream-analytics-progress`, `user-backend` |
-| Stream Analytics | `itg-etl-dev-0zvxh-asa` | StandardV2, ⅓ streaming unit; created stopped, bills only while running |
-| Azure SQL | server `itg-etl-dev-0zvxh-sql`, database `insidethegame` | General Purpose serverless, free offer, auto-pause after 60 min; Entra-only auth |
-| Container Apps | environment `itg-etl-dev-0zvxh-cae`, app `itg-etl-dev-dab` | DAB, 0–1 replicas; the narrative engine shares this environment |
-| Service Bus | `itg-etl-dev-0zvxh-sbns`, topic `match-notifications` | Standard; duplicate detection 10 min; subscription `narrative-engine` (10 deliveries) |
+| Event Hubs | namespace `itg-etl-dev-<suffix>-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `stream-analytics-progress`, `user-backend` |
+| Stream Analytics | `itg-etl-dev-<suffix>-asa` | StandardV2, ⅓ streaming unit; created stopped, bills only while running |
+| Azure SQL | server `itg-etl-dev-<suffix>-sql`, database `insidethegame` | General Purpose serverless, free offer, auto-pause after 60 min; Entra-only auth |
+| Container Apps | environment `itg-etl-dev-<suffix>-cae`, app `itg-etl-dev-dab` | DAB, 0–1 replicas; the narrative engine shares this environment |
+| Service Bus | `itg-etl-dev-<suffix>-sbns`, topic `match-notifications` | Standard; duplicate detection 10 min; subscription `narrative-engine` (10 deliveries) |
 | Stream schedule | `stream_schedule.tf` | Two Event Hubs metric alerts call the guard's runbook: match events start the job, 30 min (`stream_idle_window`) without them stop it |
-| Log Analytics | `itg-etl-dev-0zvxh-logs` | Container Apps logs, 0.5 GB/day cap |
+| Log Analytics | `itg-etl-dev-<suffix>-logs` | Container Apps logs, 0.5 GB/day cap |
 | Registry, purge API | `admin.tf` | Basic ACR; `itg-etl-dev-admin` (0–1 replicas) once `admin_image_tag` is set; with `demo_seeds` also the seed export/restore routes |
 | SPADL post-processor | `spadl.tf` | `itg-etl-dev-spadl` (1 replica, no ingress; `ETL_ROLE=spadl`) once `admin_image_tag` is set |
 

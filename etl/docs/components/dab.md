@@ -7,7 +7,7 @@
 | **Status** | Implemented (internal ingress on Azure), anonymous read · every entity tested locally |
 | **Code** | [`dab/dab-config.json`](../../dab/dab-config.json) |
 | **Image** | `mcr.microsoft.com/azure-databases/data-api-builder:2.1.5` |
-| **URL (Azure)** | Internal only: `terraform -chdir=etl/infra output graphql_url` (apps in the shared Container Apps environment) |
+| **URL (Azure)** | Internal only: `cd etl && python3 -m devtools output graphql_url` (apps in the shared Container Apps environment) |
 | **Local** | `http://localhost:5000/graphql` (`python -m devtools local-up`) |
 
 ## 1. Entities

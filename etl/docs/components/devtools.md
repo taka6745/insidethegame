@@ -6,8 +6,8 @@
 | --- | --- |
 | **Status** | Implemented · used throughout development |
 | **Code** | [`devtools/__main__.py`](../../devtools/__main__.py), [`devtools/calibrate_trends.py`](../../devtools/calibrate_trends.py) |
-| **Needs** | Docker (local stack), `sqlcmd`, Azure CLI and Terraform outputs (Azure commands) |
-| **Secrets** | Local SA password generated into the ignored `.env`; Azure secrets from Terraform outputs, never printed |
+| **Needs** | Docker (local stack), `sqlcmd`, Azure CLI and the stack's Terraform outputs (Azure commands; read from `./dev azure`'s `.local/terraform/etl/` state, else `terraform output` in `infra/`) |
+| **Secrets** | Local SA password generated into the ignored `.env`; Azure secrets from Terraform outputs, printed only by `output` |
 
 ## 1. Commands
 
@@ -21,8 +21,9 @@
 | `load-local REPLAY.jsonl --window N` | Insert the rows the job would write and write notifications to `.local/notifications.jsonl` |
 | `verify REPLAY.jsonl [--window N] [--graphql URL]` | Compare every GraphQL table and the view with the reference |
 | `check-notifications REPLAY.jsonl [--window N]` | Peek the `narrative-engine` subscription and compare with the reference notifications |
-| `azure-setup` | After `terraform apply`: migrations, `sql/azure` triggers, then database users and roles for the job, DAB (also `EXECUTE` on `statsAtSeq` and the trend procedures) and, once deployed, the purge API |
+| `azure-setup` | Run by `./dev azure up` after each ETL apply: migrations, `sql/azure` triggers, then database users and roles for the job, DAB (also `EXECUTE` on `statsAtSeq` and the trend procedures) and, once deployed, the purge API |
 | `asa start\|stop\|status` | Control the Stream Analytics job; it bills only while running |
+| `output NAME` | Print one Terraform output of the ETL stack (secrets included; use it inside `$(…)`) |
 | `python -m devtools.calibrate_trends` | Print the trend thresholds (`notableAt`, `highAt`, `changeAt`) the shipped recordings give, for the newest `trendDefinitions` seed |
 
 `--window N` is the tumbling window in seconds (60 ÷ replay speed; default 6, Azure real time 60).
