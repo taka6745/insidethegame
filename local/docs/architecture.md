@@ -31,7 +31,7 @@ feed ─ MA1, MA3, POS, MatchEvent v2 → Event Hubs ─┬→ backend (received
 | --- | --- | --- |
 | User databases | PostgreSQL 16, `accounts` + `matchapp` | `localhost:15432` |
 | Cosmos | Microsoft Cosmos vNext emulator (UI on `11234`) | `http://localhost:18081` |
-| Match events (`backend` + `azure`) | Microsoft Event Hubs emulator | AMQP `localhost:15672` |
+| Match events (`backend` + `azure`) | Microsoft Event Hubs emulator, with Azurite as its private storage | AMQP `localhost:15672` |
 | Notifications and narratives (`backend` + `azure`) | Microsoft Service Bus emulator | AMQP `localhost:15673` |
 | Service Bus storage + ETL SQL (`backend` + `azure`) | SQL Server 2022 Developer | `localhost:11433` |
 | ETL pipeline | SQL `insidethegame` + Data API builder 2.1.5 + `etl-stream` | `http://localhost:15001/graphql` |

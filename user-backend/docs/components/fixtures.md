@@ -1,6 +1,6 @@
 # Fixtures
 
-> **In short:** `fixtures/filter-lab.json` is hand-authored synthetic data for tests and benchmarks: a fictional Riverton Rovers v Madrid match with 35 deliveries, corrections and deletions. No real match, player data, footage or Opta content; the runtime never reads it.
+> **In short:** `fixtures/filter-lab.json` is hand-authored synthetic data for tests and benchmarks: a fictional two-team match (a frozen fixture; its team labels predate the fictional league) with 35 deliveries, corrections and deletions. No real match, player data, footage or Opta content; the runtime never reads it.
 
 | | |
 | --- | --- |
