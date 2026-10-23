@@ -39,7 +39,7 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
                              '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
                              '043_narrative_clips_match.sql', '044_clip_relevance.py',
                              '045_viewer_sessions.sql', '046_clip_lengths.py', '047_model_roles_length_layer.py',
-                             '049_league_sting.py']
+                             '049_league_sting.py', '050_neutral_prompt_examples.py']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:
@@ -481,6 +481,37 @@ def test_the_clip_sting_becomes_the_league_sting_where_unedited(store):
             conn.execute("DELETE FROM schema_migrations WHERE version = '049_league_sting.py'")
         store.initialize()
         assert asset() == expected  # a /dev/ edit is kept
+
+
+def test_prompt_examples_become_neutral_and_an_edit_keeps_its_own_lines(store):
+    from backend.models.prompts import placeholders
+    from backend.store import MIGRATIONS
+    seeds = MIGRATIONS / 'prompts'
+    store.initialize()
+    new = {role: (seeds / f'{role}.txt').read_text() for role in ('context-compression', 'minute-summary')}
+    old = {'context-compression': new['context-compression'].replace('(Team A)', '(Manchester United)')
+           .replace('(Team B)', '(Liverpool)') + '\nKeep it short.',  # a /dev/ edit over the old seed
+           'minute-summary': new['minute-summary'].replace('(Team B)', '(Port Albion)')
+           .replace('the home team goalkeeper.', 'home team goalkeeper Halloran.')}
+    with store.connect() as conn:
+        for role, template in old.items():
+            source = 'dev' if role == 'context-compression' else 'seed'
+            conn.execute('INSERT INTO narrative_prompts VALUES (%s, 1, %s, %s, %s, now())',
+                         (role, template, placeholders(template), source))
+            conn.execute('INSERT INTO narrative_prompt_active VALUES (%s, 1, 1)', (role,))
+        conn.execute("DELETE FROM schema_migrations WHERE version = '050_neutral_prompt_examples.py'")
+    store.initialize()
+    with store.connect() as conn:
+        active = {r['role']: r for r in conn.execute('SELECT a.role, a.version, p.template, p.source FROM '
+                                                     'narrative_prompt_active a JOIN narrative_prompts p USING (role, version)')}
+        kept = conn.execute("SELECT count(*) AS n FROM narrative_prompts WHERE version = 1").fetchone()['n']
+    assert kept == 2  # the old versions stay
+    edit = active['context-compression']
+    assert (edit['version'], edit['source'], edit['template']) == (2, 'dev', new['context-compression'] + '\nKeep it short.')
+    assert (active['minute-summary']['version'], active['minute-summary']['template']) == (2, new['minute-summary'])
+    store.initialize()  # applied once
+    with store.connect() as conn:
+        assert conn.execute("SELECT max(version) AS v FROM narrative_prompts").fetchone()['v'] == 2
 
 
 def test_clip_lengths_tune_only_seeded_values():

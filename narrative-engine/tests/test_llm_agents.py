@@ -70,7 +70,7 @@ def test_templates_take_exactly_the_engine_variables(real_variables):
         rendered = render_template(prompt, real_variables[agent])
         assert not PLACEHOLDER.search(rendered.replace('{"summary"', ""))
     assert (shipped("narrative-author").label, shipped("minute-summary").label) == \
-        ("narrative-author.v7", "minute-summary.v2")
+        ("narrative-author.v7", "minute-summary.v3")
     analyst = set(PLACEHOLDER.findall(shipped("match-analyst").template))
     assert analyst == {"analysis_reason", "game_state_statistics", "key_event_ledger", "combined_match_context",
                        "match_trends", "storylines", "max_observations", "max_evidence", "confidence_levels",
@@ -81,6 +81,7 @@ def test_templates_take_exactly_the_engine_variables(real_variables):
 
 def test_originals_are_unchanged_and_runtime_keeps_their_wording():
     for original, runtime in [("minute-summary", "minute-summary.v1"), ("minute-summary", "minute-summary.v2"),
+                              ("minute-summary", "minute-summary.v3"), ("context-compression", "context-compression.v2"),
                               ("narrative-author", "narrative-author.v2"), ("narrative-author", "narrative-author.v3"),
                               ("narrative-author", "narrative-author.v4"), ("narrative-author", "narrative-author.v5"),
                               ("narrative-author", "narrative-author.v6"), ("narrative-author", "narrative-author.v7")]:
@@ -92,7 +93,7 @@ def test_summary_parses_json_and_records_model_prompt_and_tokens(real_variables)
     api = FakeApi(reply('```json\n{"summary": "Home team (Riverside FC) kept the ball."}\n```'))
     result = asyncio.run(agents(api).summarise(real_variables["summarise"]))
     assert (result.text, result.model, result.promptVersion) == \
-           ("Home team (Riverside FC) kept the ball.", "local-model", "minute-summary.v2")  # not Azure: no model id
+           ("Home team (Riverside FC) kept the ball.", "local-model", "minute-summary.v3")  # not Azure: no model id
     assert result.tokens == {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15}
     request, body = api.requests[0]
     assert body["model"] == "m-summary" and request.url == "https://llm.example/v1/chat/completions"

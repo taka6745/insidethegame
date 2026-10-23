@@ -47,7 +47,7 @@ def test_seeds_are_active_with_their_placeholders_and_etag(client):
 def test_seed_copies_match_the_engine_sources():
     if not ENGINE.exists():
         return  # The backend image ships only its own fixtures.
-    for role, source in (('minute-summary', 'minute-summary.v2'), ('context-compression', 'context-compression.v1'),
+    for role, source in (('minute-summary', 'minute-summary.v3'), ('context-compression', 'context-compression.v2'),
                          ('match-analyst', 'match-analyst.v4'), ('match-analyst.v3', 'match-analyst.v3'),
                          ('narrative-author', 'narrative-author.v7'),
                          ('match-analyst.v2', 'match-analyst.v2'), ('match-analyst.v1', 'match-analyst.v1'),
