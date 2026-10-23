@@ -8,7 +8,7 @@
 | **Start** | `ACCEPT_EULA=Y ./dev up backend`, then `./dev demo start [fixture…]` |
 | **Ports** | API `localhost:18000` ([explorer](http://localhost:18000/docs)); viewer, lab and `/dev/` on `localhost:18020` |
 | **Model** | `.local/backend-llm.env` (`LOCAL_LLM_*`, mode `600`, never committed or printed) |
-| **Contracts** | [local/contracts.md](../../local/contracts.md) §1–8 |
+| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) §1–8 |
 
 ## 1. Run it
 
@@ -34,12 +34,13 @@ The image has two targets: `runtime` (backend + migrations, no tests or fixtures
 | `NARRATIVE_SERVICEBUS_CONNECTION_STRING`, `_TOPIC`, `_SUBSCRIPTION` | `narratives` / `user-backend` |
 | `FEED_HLS_BASE`, `PUBLIC_HLS_BASE` | Feed playlist origin over HTTP; browser path (`/media/hls/`) |
 | `LOCAL_LLM_BASE_URL`, `LOCAL_LLM_MODEL`, `LOCAL_LLM_API_KEY`, `LOCAL_LLM_TIMEOUT_SECONDS` | Model endpoint; without the first two the service is not ready |
+| `LOCAL_LLM_EFFORT`, `LOCAL_LLM_REASONING_TOKENS` | A reasoning effort sends agents over the Responses API with no temperature, plus extra output tokens (default 8000) |
 | `AGENT_*`, `QUESTION_*`, `FILTER_MAX_CALCULATIONS` | Agent and question limits ([agents §5](components/agents.md#5-limits-and-configuration)) |
 | `ENABLE_DEV_FEED`, `ENABLE_FILTER_LAB` | Mount `/dev/*` and `/lab/*` (local only) |
-| `DEMO_SEEDS` | `1` mounts the demo seed routes (local compose, judge build); unset in a production release |
+| `DEMO_SEEDS` | `1` mounts the demo seed routes (local compose, demo build); unset in a production release |
 | `DECISION_*` | Microsoft-Decision-1 for the follow offer (`.local/decision.env`, never printed); without it the question model answers |
 
-Tunables (card presentation, replay timing and playback, key-moment ranks and feed, answer prices, gap timeout, story follows and clips, storyline policy, cross-match, follow offer), audience templates, prompts and demo profiles are edited at [localhost:18020/dev/](http://localhost:18020/dev/) and survive purges.
+Tunables (card presentation, replay timing and playback, key-moment ranks and feed, answer prices, gap timeout, story follows and clips, storyline policy, cross-match, follow offer, model per role), audience templates, prompts and demo profiles are edited at [localhost:18020/dev/](http://localhost:18020/dev/) and survive purges.
 
 ## 3. Local stand-ins
 
@@ -61,12 +62,12 @@ cd user-backend
 ACCOUNTS_DATABASE_URL=postgresql://… MATCH_APP_DATABASE_URL=postgresql://… pytest -q
 ```
 
-`tests/harness.py` plays the feed (messages through the real parser) and ETL DAB (an `httpx` transport answering the contract's queries, including `spadlActions` and MA3 `rawEvents` from `benchmarks/doubles/spadl.py`, from committed events); agent doubles live in `benchmarks/doubles/`. No model, broker or cloud account is needed.
+`tests/harness.py` plays the feed (messages through the real parser) and ETL DAB (an `httpx` transport answering the contract's queries, including `spadlActions` and MA3 `rawEvents` from `benchmarks/doubles/spadl.py`, from committed events); agent doubles live in `benchmarks/doubles/`; `tests/support.py` holds the viewer-session helpers shared by the product, follow and multi-match tests. No model, broker or cloud account is needed.
 
 | Check | Evidence |
 | --- | --- |
 | Isolation | Two live matches never cite each other's cards, narratives, answers or replays (`test_multi_match.py`) |
-| Sessions | One profile on two matches; a token is `404` under another match; takeover closes the old socket (`4001`); per-match session locks |
+| Sessions | One session per (viewer, profile, match); two browsers on one profile never take each other over; a token is `404` under another match; a viewer's new session closes its old socket (`4001`); per-match session locks |
 | Restart | Every match rebuilt from received events and saved calculations; custom values recounted from SPADL actions, versions only move forward |
 | No future data | Snapshot = min(ETL watermark, spadlSeq, received); only actions with `finalSeq ≤ seq`; answers never cite anything after the viewer's `seq` |
 | SPADL | DSL predicates, zones, x/y, shot outcomes, recorded body parts; contract file freshness; migrations `020`/`021` (`test_spadl_contract.py`, `test_spadl_migrations.py`) |

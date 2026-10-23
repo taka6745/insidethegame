@@ -7,7 +7,7 @@
 | **Process** | One FastAPI app (`backend.app:from_env`), background tasks for the two broker consumers and gap recovery |
 | **Databases** | Accounts (demo profiles) and Match App (everything else, schema `user_backend`) on one Postgres server |
 | **Snapshot** | `(matchId, seq)`; nothing past ETL's watermark, its SPADL watermark `spadlSeq` or what this service received is reachable |
-| **Locks** | Per match: the match lock (events, calculations, purge fence) and per-match session locks (takeover) |
+| **Locks** | Per match: the match lock (events, calculations, purge fence) and per-match session locks (one viewer's takeover) |
 | **Diagrams** | [../architecture.svg](../architecture.svg), [narrative-framing.svg](narrative-framing.svg) |
 
 ## 1. Diagram
@@ -42,6 +42,7 @@ flowchart LR
 | Layer | Folder | Page |
 | --- | --- | --- |
 | Wiring, storage, errors | `backend/app.py`, `store.py`, `domain.py` | [app](components/app.md) |
+| Demo-only seeds | `backend/demo/` | [demo](components/demo.md) |
 | Upstreams | `backend/adapters/` | [adapters](components/adapters.md) |
 | Agents | `backend/agents/` | [agents](components/agents.md) |
 | Contracts | `backend/models/` | [models](components/models.md) |
@@ -63,15 +64,15 @@ flowchart LR
 
 **Questions.** The client sends the `seq` it is showing; the backend answers at `min(latest snapshot, viewer seq)`, so an answer never cites an event the viewer has not seen. Model work runs outside match and database locks; the commit re-checks the match is not purged.
 
-**Audiences.** Generation is driven only by configuration. A fixture's template (or `default`) lists layers, options and buckets, each bucket with an `enabled` flag edited in `/dev/`. The engine's `generation_targets` are exactly the enabled buckets. The viewer picks one enabled bucket; that choice only changes which narratives and default cards the viewer sees.
+**Audiences.** Generation is driven only by configuration. A fixture's template (or `default`) lists layers, options and buckets, each bucket with an `enabled` flag edited in `/dev/`. The engine's `generation_targets` are exactly the enabled buckets. The viewer picks one enabled bucket and may change it at any time; that choice only changes which narratives and default cards the viewer sees.
 
 **Narratives.** Engine narratives (Service Bus) are saved per match and shown once the snapshot reaches their `eventSeq` (or, without one, their clock); a closed period releases all of its steps.
 
 **Clips.** The engine's `FollowClip` (a followed topic's moment) and `MomentClip` (a key event on the shared narratives) are saved per match; the projection cuts them into `follow_playlist` and `moment_playlist` with `replay-timing`, bounded to the snapshot ([services §10](components/services.md#10-clips-cross-game-and-follow-offers)).
 
-**Cross-game.** A question, pin or follow that names another live match of the demo reads that match at its own position and marks the result with its header (`other_match`); no match's own narratives ever mention another.
+**Cross-game.** A question, pin or follow that names another live match reads that match at its own position and marks the result with its header (`other_match`); no match's own narratives ever mention another.
 
-**Demo seeds.** With `DEMO_SEEDS=1`, demo control exports a match's rows at a start point and later restores them under a new `matchId`; the registry then adopts it as after a restart ([services §11](components/services.md#11-demo-seeds)).
+**Demo seeds.** With `DEMO_SEEDS=1`, demo control exports a match's rows at a start point and later restores them under a new `matchId`; the registry then adopts it as after a restart ([demo](components/demo.md)).
 
 **Purge.** `POST /admin/matches/purge` tombstones, then deletes the match's rows, closes its sockets with `4404` and drops its projection. Configuration stays.
 
@@ -82,7 +83,7 @@ flowchart LR
 | Tables | Holds | Purged |
 | --- | --- | --- |
 | `received_matches`, `received_events`, `match_calculations`, `match_gaps`, `calculation_id_map` | Stream data and custom results per match | Per match |
-| `question_conversations`, `question_sessions`, `question_turns`, `question_offers` | Chat (questions and follow), sessions and pins per (profile, match) | Per match |
+| `question_conversations`, `question_sessions`, `question_turns`, `question_offers` | Chat (questions and follow), sessions and pins per (viewer, profile, match) | Per match |
 | `engine_narratives`, `narrative_clips`, `audience_catalog` | Narratives, key-event clips per bucket and each match's copy of its audience template | Per match |
 | `subscription_topics`, `subscriptions`, `subscription_revisions`, `subscription_narratives`, `subscription_clips` | Story follows, their targets revision and delivered follow narratives | Per match |
 | `match_tombstones`, `match_purge_cutoff`, `stream_checkpoints` | Purge fences and broker positions | Never |
@@ -118,4 +119,4 @@ Projections, WebSocket fan-out, buffered gap events and plan conversations are p
 | Questions | Per-account quotas and a bounded queue; `QUESTION_MAX_ACTIVE` is per process today |
 | Recovery | Job leases and fencing; a starting replica must not fail another's in-flight answers (today startup marks every pending turn failed) |
 
-Measure before claiming viewer scale: event rate × candidate rules, question rate × model latency, fan-out and reconnect bursts, and recovery with a worker killed mid-commit. The [filter benchmarks](../benchmarks/README.md) measure the algorithm, not these limits.
+Measure before claiming viewer scale: event rate × candidate rules, question rate × model latency, fan-out and reconnect bursts, and recovery with a worker killed mid-commit. The [filter benchmarks](components/benchmarks.md#4-filter-performance) measure the algorithm, not these limits.

@@ -12,9 +12,9 @@
 
 *In short: swap adapters in `create_app`, never in services.*
 
-`create_app(store, dab, …)` builds the `MatchRegistry`, `ConfigService`, ETL match-data port, narrative history, audience, prompt, question and product services, then mounts routers. `from_env()` reads the environment ([development](../development.md#2-configuration)) and adds the broker consumers. The lifespan initialises the store, config, prompts, questions, audiences and registry (restart rebuild), starts the stream tasks, and closes projections and the DAB client on shutdown.
+`create_app(store, dab, …)` builds the `MatchRegistry`, `ConfigService`, ETL match-data port, narrative history, audience, prompt, question and product services, then mounts routers. `from_env()` reads the environment ([development](../development.md#2-configuration)) and adds the broker consumers. The lifespan initialises the store, config, prompts, questions, audiences and registry (restart rebuild), starts the stream tasks and `watch_models` (re-reads the `models` config row every 2 s and applies the backend roles), and closes projections and the DAB client on shutdown.
 
-Optional routers: `/dev/*` with `ENABLE_DEV_FEED=1`; `/lab/*` with `ENABLE_FILTER_LAB=1`; the demo seed routes (`backend/demo/seeds.py`, [services §11](services.md#11-demo-seeds)) with `DEMO_SEEDS=1` (local compose and the judge build; a production release leaves it off). `decide` (the follow offer's yes/no) comes from `DECISION_*` (Microsoft-Decision-1), else the question model. `/health` and `/ready` report `model` (`configured`/`missing`), `database`, the match count and open stream `gaps`; they return `503` until a model is configured and the database answers.
+Optional routers: `/dev/*` with `ENABLE_DEV_FEED=1`; `/lab/*` with `ENABLE_FILTER_LAB=1`; the demo seed routes ([demo](demo.md)) with `DEMO_SEEDS=1` (local compose and the demo build; a production release leaves it off). `decide` (the follow offer's yes/no) comes from `DECISION_*` (Microsoft-Decision-1), else the question model. `/health` and `/ready` report `model` (`configured`/`missing`), `database`, the match count and open stream `gaps`; they return `503` until a model is configured and the database answers.
 
 ## 2. Store
 

@@ -1,6 +1,6 @@
 # Adapters
 
-> **In short:** every upstream lives behind one adapter: the Event Hubs and Service Bus consumers, ETL GraphQL (Data API builder), the engine's GraphQL, the feed's HLS playlist, the model client and the SPADL data reference. Services never import an SDK or a URL.
+> **In short:** every upstream lives behind one adapter: the Event Hubs and Service Bus consumers, ETL GraphQL (Data API builder), the engine's GraphQL, the feed's HLS playlist, the model and decision clients and the SPADL data reference. Services never import an SDK or a URL.
 
 | | |
 | --- | --- |
@@ -67,11 +67,13 @@ Errors raise `EtlUnavailable`; callers turn it into `503 snapshot_unavailable` o
 - `hls_media.py`: reads the feed's played playlist at `FEED_HLS_BASE/{matchId}/live.m3u8`; its end is the furthest a replay may reach. The browser path is `/media/hls/{matchId}/live.m3u8` (`PUBLIC_HLS_BASE`).
 - `health.py`: probes upstream `/health` URLs for `/dev/pipeline`; failures are data.
 
-## 4. Model client and usage
+## 4. Model and decision clients, usage
 
-*In short: Microsoft Agent Framework agents over a configured chat-completions endpoint.*
+*In short: Microsoft Agent Framework agents over a configured OpenAI-compatible endpoint, one model per role.*
 
-`llm.py` creates Microsoft Agent Framework `Agent` instances on `OpenAIChatCompletionClient` when `LOCAL_LLM_BASE_URL` and `LOCAL_LLM_MODEL` are set (locally an OpenAI-compatible development endpoint; in Azure an Azure AI Foundry / Azure OpenAI deployment). SDK retries are disabled so application retry limits stay exact. `usage.py` counts tokens, calls and seconds per question and never records the model or provider.
+`llm.py` builds every agent's client when `LOCAL_LLM_BASE_URL` and `LOCAL_LLM_MODEL` are set (locally a development endpoint; in Azure the Foundry deployment). `openai_client` is the one place the SDK client is made, with SDK retries off so application retry limits stay exact. `role_model` picks each agent's deployment and effort from the `models` config row (`ROLE_OF`: questions, replay, follow_planner), else `LOCAL_LLM_MODEL` and `LOCAL_LLM_EFFORT`. A reasoning effort selects the Responses API (the only one that takes function tools with reasoning) with no temperature and `LOCAL_LLM_REASONING_TOKENS` more output; a chat model uses Chat Completions with temperature 0.
+
+`decision.py` asks one yes/no question for the follow offer: Microsoft-Decision-1 via `DECISION_*` (the engine's envelope), else the question model constrained to yes/no. Values are never logged. `usage.py` counts tokens, calls and seconds per question and never records the model or provider.
 
 ## 5. SPADL reference
 

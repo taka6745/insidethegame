@@ -1,6 +1,6 @@
 # Services
 
-> **In short:** the application use cases. `MatchRegistry` and `LiveMatch` own each match's received events (the clock) and its custom rules over SPADL actions read from ETL; the filter engine updates every matching rule per action; `ProductService` keeps one projection per match and composes each viewer's view; `QuestionService` answers at a snapshot; the replay services cut clips deterministically; moment playlists, cross-game reach and the follow offer serve the demo features ([§10](#10-clips-cross-game-and-follow-offers)); the demo seed adapter sits outside the services ([§11](#11-demo-seeds)).
+> **In short:** the application use cases. `MatchRegistry` and `LiveMatch` own each match's received events (the clock) and its custom rules over SPADL actions read from ETL; the filter engine updates every matching rule per action; `ProductService` keeps one projection per match and composes each viewer's view; `QuestionService` answers at a snapshot; the replay services cut clips deterministically; moment playlists, cross-game reach and the follow offer are ordinary services ([§10](#10-clips-cross-game-and-follow-offers)); the demo seed adapter sits outside them ([demo](demo.md)).
 
 | | |
 | --- | --- |
@@ -25,7 +25,7 @@ capture(match) ─ watermark ─▶ s = min(received seq, watermark seq, spadlSe
               └ sync_actions(s): DAB spadlActions with actions_seq < finalSeq ≤ s ─▶ engine.ingest ─▶ values[(finalSeq, value)]
 ```
 
-`LiveMatch.sync_actions` reads only new final actions (they never change), checks `actionId` continuity and persists changed results. `actions_at(seq)` is the prefix a snapshot reads, so nothing past `spadlSeq` is reachable. `register` validates a rule against the match's capabilities (body parts, shot outcomes, locations) and attribution (a player rule with unattributed matching actions is unavailable, not zero), calculates it over the actions read so far, replays its value history, persists it and adds it to the shared engine. Equivalent rules share one `calculation_id`. `FILTER_MAX_CALCULATIONS` caps distinct calculations per match (default 10,000, 1–1,000,000). `value_at(id, seq)` gives custom cards the same snapshot as ETL stats. A tracked rule with no SPADL equivalent (migrations/020) shows as an unavailable card with its reason.
+`LiveMatch.sync_actions` reads only new final actions (they never change), checks `actionId` continuity and persists changed results. `actions_at(seq)` is the prefix a snapshot reads, so nothing past `spadlSeq` is reachable. `register` validates a rule against the match's capabilities (body parts, shot outcomes, locations) and attribution (a player rule with unattributed matching actions is unavailable, not zero), calculates it over the actions read so far, replays its value history, persists it and adds it to the shared engine. Equivalent rules share one `calculation_id`. `FILTER_MAX_CALCULATIONS` caps distinct calculations per match (default 10,000, 1–1,000,000). `value_at(id, seq)` gives custom cards the same snapshot as ETL stats. A tracked rule with no SPADL equivalent shows as an unavailable card with its reason.
 
 ## 3. Filter engine
 
@@ -66,10 +66,10 @@ How long a clip runs: the agent only picks the evidence and a lead-in; code pick
 | Clip | Length |
 | --- | --- |
 | Shot, save, card, other action | `timing[type]` before and after (a shot 6 s + 3 s), times the lead-in (`short` 0.5×, `long` 2×) |
-| Goal | 10 s before, 5 s after (046; was 2 s, which cut the reaction) |
+| Goal | 10 s before, 5 s after (the reaction) |
 | `move` lead-in | from the attacking team's last possession gain, capped at `max_move_seconds` (25 s): a goal after a long build-up runs much longer than one from a rebound |
 | Own goal | as a goal; its `move` starts at the attack before the defender's touch, which is often a one-touch possession of its own; its caption always comes from evidence (who scored it, which side it counts for) |
-| Any event clip | at least `min_clip_seconds` (8 s, 046), widened backwards: a quick action with a short lead-in no longer lasts two or three seconds. The period start, the viewer's position and the published footage still cut it |
+| Any event clip | at least `min_clip_seconds` (8 s), widened backwards, so a quick action with a short lead-in still shows enough to follow. The period start, the viewer's position and the published footage still cut it |
 | Key moment | its authored window; a goal moment ends 5 s after the goal |
 
 So clips differ mainly by lead-in: `move` follows the whole attack, the others a fixed window.
@@ -80,7 +80,7 @@ So clips differ mainly by lead-in: `move` follows the whole attack, the others a
 
 `product.py` refreshes a match's projection on every committed change: ETL stats at the snapshot, the score from MA3 goals and VAR decisions, the newest 30 received events (ticker), engine narratives the snapshot may show and custom values at that seq. Unavailable stats carry `unavailable_reason` (ETL's definition, e.g. a retired kind). Each viewer's view: up to `card_slots` cards = pinned stats plus `presentation` defaults (fallbacks when a default is unavailable; excluded stats never shown; pins displace the lowest-priority default, never a protected kind), and the narratives addressed to the viewer's bucket (while following: only the followed topic's narratives for that bucket, [§9](#9-story-follows)), plus the pivotal key moments at the snapshot (`key_moments.py`, `key-moment-feed` config) for everyone. Engine narratives carry no stat recommendations today, so defaults come from config. `live_viewers.py` keeps one bounded queue per socket; a full queue closes it (`1013`) so the client reconnects to a fresh snapshot.
 
-Sessions: one per (profile, match). Starting a session takes over the previous one for that pair (its socket closes `4001`). Session locks are per match, so one match's takeovers and pins never wait on another's.
+Sessions: one per (viewer, profile, match), where a viewer is one browser. A viewer's new session takes over its previous one for that profile and match (its socket closes `4001`); another browser on the same profile gets its own session and conversation. The viewer may change bucket at any time. Session locks are per match, so one match's takeovers and pins never wait on another's.
 
 ## 7. Questions
 
@@ -98,22 +98,16 @@ Sessions: one per (profile, match). Starting a session takes over the previous o
 
 *In short: one follow per viewer; the planner drafts, code resolves ids; everything bounded to the viewer's snapshot.*
 
-`subscriptions.py` validates a follow's ids against the teams, players and storylines at the viewer's `seq` (storylines opened later are unknown, resolved ones refused), stores it under the match guard and republishes the viewer's snapshot. Suggestions are by rule: open storylines by salience, players in the key moments, then teams. The follow chat (`subscription_planner.py`, prompt role `subscription-planner`) reuses the question turn tables (`channel = 'follow'`); names are resolved to ids by rarity-weighted word overlap (`min_name_match`), and a proposal is never a follow until the viewer confirms. `targets` builds the engine's `subscription-targets` document (topics with their followers' buckets, plus the `subscriptions` tunables) with an ETag. Limits come from the `subscriptions` config row ([contracts §8b](../../../local/contracts.md#8b-story-follows)).
+`subscriptions.py` validates a follow's ids against the teams, players and storylines at the viewer's `seq` (storylines opened later are unknown, resolved ones refused), stores it under the match guard and republishes the viewer's snapshot. Suggestions are by rule: open storylines by salience, players in the key moments, then teams. The follow chat (`subscription_planner.py`, prompt role `subscription-planner`) reuses the question turn tables (`channel = 'follow'`); names are resolved to ids by rarity-weighted word overlap (`min_name_match`), and a proposal is never a follow until the viewer confirms. `targets` builds the engine's `subscription-targets` document (topics with their followers' buckets, plus the `subscriptions` tunables) with an ETag. Limits come from the `subscriptions` config row ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)).
 
 ## 10. Clips, cross-game and follow offers
 
-*In short: demo features D3–D7 as ordinary services; nothing branches on a demo.*
+*In short: ordinary services; nothing branches on a demo.*
 
 | File | Does | Status |
 | --- | --- | --- |
-| `follow_clips.py` | `moment_playlists`: a followed topic's clips (`subscription_clips`, from the engine's `FollowClip`) and a bucket's key-event clips (`narrative_clips`, from `MomentClip`) cut with `replay-timing` on the match's own stream, chronological, bounded to the viewer's snapshot. Each clip carries its moments' `CARD_FIELDS` (minute, label, team, player, score after) for the preview card. Served as `follow_playlist` and `moment_playlist` | Implemented, tested; run on the local stack |
-| `cross_match.py` | `CrossMatch.named` finds another live match a viewer's words name (rarity-weighted, best fit wins), `.other` gets one by id, `.listing` gives the agents every live match (teams, minute); `header` marks content (teams and branding, never the score). Each match is read at its own position (config `cross-match`) | Implemented, tested; run on the local stack |
-| `questions.py` `_follow_offer` | One yes/no per non-statistic answer (`adapters/decision.py`: Microsoft-Decision-1, else the question model); `follow_offer` when it clears `follow-offer.min_probability`; paced and time-boxed, never blocks the answer | Implemented, unit-tested; not yet seen live |
+| `follow_clips.py` | `moment_playlists`: a followed topic's clips (`subscription_clips`, from the engine's `FollowClip`) and a bucket's key-event clips (`narrative_clips`, from `MomentClip`) cut with `replay-timing` on the match's own stream, chronological, bounded to the viewer's snapshot. Each clip carries its moments' `CARD_FIELDS` (minute, label, team, player, score after) for the preview card. Served as `follow_playlist` and `moment_playlist` | Implemented, tested |
+| `cross_match.py` | `CrossMatch.named` finds another live match a viewer's words name (rarity-weighted, best fit wins), `.other` gets one by id, `.listing` gives the agents every live match (teams, minute); `header` marks content (teams and branding, never the score). Each match is read at its own position (config `cross-match`) | Implemented, tested |
+| `questions.py` `_follow_offer` | One yes/no per non-statistic answer (`adapters/decision.py`: Microsoft-Decision-1, else the question model); `follow_offer` when it clears `follow-offer.min_probability`; paced and time-boxed, never blocks the answer | Implemented, tested |
 
-Every replay also carries `playback` (`replay-timing.playback`, migration 037) for the viewer's sting transitions and slow motion.
-
-## 11. Demo seeds
-
-*In short: a demo-only adapter, mounted with `DEMO_SEEDS=1`.*
-
-`backend/demo/seeds.py` adds `POST /admin/matches/export` and `/admin/matches/restore` (internal; demo control calls them). Restore writes `received_matches`, `received_events`, `match_gaps`, `audience_catalog`, `engine_narratives` and `narrative_clips` as the stream consumer would, refusing another schema, a known or tombstoned match, rows of another match and rows past `max_seq` (`409 seed_refused`), then `MatchRegistry.adopt` tracks the match as after a restart. Viewers' sessions, follows, questions and calculations are never seeded. Without the flag the routes do not exist (`test_seed_routes_exist_only_with_the_demo_setting`).
+Every replay also carries `playback` (`replay-timing.playback`) for the viewer's sting transitions (the league's CSS sting, `builtin:league`) and slow motion.

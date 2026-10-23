@@ -6,8 +6,8 @@
 | --- | --- |
 | **Code** | [`backend/agents/`](../../backend/agents/) |
 | **Framework** | `agent-framework-core`, `agent-framework-openai` (pinned in `requirements.txt`) |
-| **Model** | Configured by `LOCAL_LLM_*`: locally the local model; on Azure the Foundry deployment `questions` (`gpt-6.1-sol`, `LOCAL_LLM_EFFORT=low`, Terraform). None configured → `/ready` 503 and questions refused (`model_unavailable`) |
-| **Decision model** | Follow offer (D5b): Microsoft-Decision-1 via `DECISION_*`, else the question model as a constrained yes/no ([services §10](services.md#10-clips-cross-game-and-follow-offers)) |
+| **Model** | Configured by `LOCAL_LLM_*`: locally the local model; on Azure the Foundry deployment `questions` (`gpt-6.1-sol`, `LOCAL_LLM_EFFORT=low`). Per role (questions, replay, follow planner) under `/dev/config/models` ([adapters §4](adapters.md#4-model-and-decision-clients-usage)). None configured → `/ready` 503 and questions refused (`model_unavailable`) |
+| **Decision model** | Follow offer: Microsoft-Decision-1 via `DECISION_*`, else the question model as a constrained yes/no ([services §10](services.md#10-clips-cross-game-and-follow-offers)) |
 | **Tests** | `test_agents.py`, `test_structured_agent.py`, `test_questions.py`, `test_compound_stats.py`, `test_question_golden.py`, `test_replay_golden.py`, `test_data_skill.py` |
 
 ## 1. Custom-stat workflow
@@ -69,7 +69,7 @@ A share, split, percentage, ratio or rate is never a plain count: the planner re
 | `semantics.py` | Metric mapping in SPADL terms (passes = pass family, shots = shot family, on target = `shot_outcomes [goal, saved]`, saves = the `shots_saved` stat or `save_kinds [save]`, touches = all actions) |
 | `lookup_spadl(term)` | Definition, Opta source, catalogue stats and a goal example per term (question and replay agents) |
 
-Tools never return raw action rows or the JSON schema; searches return filtered compact actions, values come from the engine. `AGENT_DATA_SKILL=feed` (off by default) gives the goal agent the SPADL dictionary via `skills/event-data/SKILL.md` instead of the fixed metric mapping. Token and accuracy figures: [benchmarks/results/spadl-golden.md](../../benchmarks/results/spadl-golden.md).
+Tools never return raw action rows or the JSON schema; searches return filtered compact actions, values come from the engine. `AGENT_DATA_SKILL=feed` (off by default) gives the goal agent the SPADL dictionary via `skills/event-data/SKILL.md` instead of the fixed metric mapping. Token and accuracy figures: [benchmarks §5](benchmarks.md#5-measured-results).
 
 ## 5. Limits and configuration
 
@@ -88,4 +88,4 @@ A retried request UUID returns its saved answer; another pending question is `40
 
 *In short: one structured call names what to follow; code resolves the ids.*
 
-`subscription_planner.py` renders the active `subscription-planner` prompt with the match's teams, players and storylines at the viewer's snapshot, the current follow and the last `limits.planner_context_turns` follow-chat turns, and returns a validated `PlannerDraft` (`follow`, `clarify`, `unfollow` or `none`). Planner v2 (042) and the question agent also get the live matches (teams, minute; `CrossMatch.listing`), so a request may name another match; a clarification carries up to four options, unknown ones dropped by code. The model never supplies ids: `services/subscriptions.resolve` maps its named subject to a team, player or storyline ([services §9](services.md#9-story-follows)).
+`subscription_planner.py` renders the active `subscription-planner` prompt with the match's teams, players and storylines at the viewer's snapshot, the current follow and the last `limits.planner_context_turns` follow-chat turns, and returns a validated `PlannerDraft` (`follow`, `clarify`, `unfollow` or `none`). The planner and the question agent also get the live matches (teams, minute; `CrossMatch.listing`), so a request may name another match; a clarification carries up to four options, unknown ones dropped by code. The model never supplies ids: `services/subscriptions.resolve` maps its named subject to a team, player or storyline ([services §9](services.md#9-story-follows)).

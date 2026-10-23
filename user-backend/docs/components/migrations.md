@@ -25,11 +25,11 @@
 | `021_spadl_prompts.py` | Adds the SPADL `narrative-author` and `minute-summary` seeds as each role's next version; activates them only where the role still runs an unedited seed |
 | `022_spadl_replay_timing.py` | Renames `replay-timing` keys to SPADL types (`save` → `keeper_save`, `corner` → `corner_crossed`/`corner_short`, …); keeps edited seconds; drops keys with no action (offside, foul_won, corner_awarded) |
 | `023_storyline_prompts.py` | Storylines: adds the `match-analyst` role (version 1) and makes `narrative-author` v5 active over any v4 or edit of it, since v5 adds `{storylines}` and `{match_trends}`; an existing edit of v5 stays; a fresh store is left to the startup seed |
-| `024_subscriptions.py` | Story follows: `subscription_topics`, `subscriptions` (one active per viewer, unique index), `subscription_revisions`, `subscription_narratives`; `question_turns.channel` (`questions`/`follow`) and `created_at`; config rows `subscriptions` and `key-moment-feed`; adds the roles `subscription-planner`, `subscription-decision`, `subscription-author` (version 1) to an existing store. All match-scoped and purged ([contracts §8b](../../../local/contracts.md#8b-story-follows)) |
+| `024_subscriptions.py` | Story follows: `subscription_topics`, `subscriptions` (one active per viewer, unique index), `subscription_revisions`, `subscription_narratives`; `question_turns.channel` (`questions`/`follow`) and `created_at`; config rows `subscriptions` and `key-moment-feed`; adds the roles `subscription-planner`, `subscription-decision`, `subscription-author` (version 1) to an existing store. All match-scoped and purged ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
 | `025_grounded_prompts.py` | Grounding: adds `match-analyst` v2 and `narrative-author` v6 (placeholders unchanged) as each role's next version; activates them only where the role still runs an unedited seed |
 | `026_storyline_policy.py` | Config row `storyline-policy` from `seeds/storyline-policy.json` (the engine's storyline tunables; the engine ships a byte copy for its tests); an edited row is kept |
 | `027_follow_triggers.py` | Adds `subscriptions.limits.pivotal_key_types` (key events that bypass a topic's minimum gap) and `storyline-policy.claims` (the engine's decision-model claim checks, from the seed) to existing rows; edited keys are kept |
-| `028_key_moment_labels.py` | `key-moment-feed` labels in the developer's wording (`Goal · {team} · {scorer}`, `Red card · {player}`, `Half time · {score}`) plus the `score` template; labels still equal to the 024 seed are rewritten, edited ones kept |
+| `028_key_moment_labels.py` | `key-moment-feed` labels (`Goal · {team} · {scorer}`, `Red card · {player}`, `Half time · {score}`) plus the `score` template; labels still equal to the 024 seed are rewritten, edited ones kept |
 | `029_policy_prompts.py` | Adds `storyline-policy.claims.result` (the result question that replaced the engine's phrase list), `subscriptions.limits.planner_context_turns` and `subscriptions.catch_up` where missing (edits kept); adds `match-analyst` v3 (limits as policy placeholders) and `subscription-decision` v2 (no `{follows}`), active even over an edit since their placeholders change |
 | `030_grounded_patterns.py` | Adds `subscriptions.limits.period_end_wrap_up`, each claim's `analyst` flag and the `comparison` claim to existing rows (edits kept), and analyst prompt v4 where the seed is unedited |
 | `031_policy_limits.py` | Adds `storyline-policy.storylines` `beats_shown`, `resolved_shown_minutes` and `author_match_indicators`, and `subscriptions.max_candidates`, to existing rows (edits kept) |
@@ -41,23 +41,38 @@
 | `037_replay_playback.py` | Adds `replay-timing.playback` where missing (edits kept): clip transitions (hold, sting asset and its start, cut, fades) and slow motion around marked events, each with `enabled`; served with every replay as `playback` |
 | `038_follow_clips.py` | Adds `subscription_clips` (a followed topic's moment clips, purged with the match) and `subscriptions.clips` (the clip question, clippable kinds and their replay-timing keys) where missing (edits kept) |
 | `039_follow_clip_step.py` | Renames `subscription_clips.narrative_id` to `step_id`: clips arrive as the engine's `FollowClip` message, not on a follow narrative |
-| `040_cross_match.py` | Config rows `cross-match` and `follow-offer` (edits kept); `subscriptions.bucket_id`, the bucket a follow of another match is written for (PLAN.md §10.2 D5, D5b) |
-| `041_capture_clips.py` | `narrative_clips` (key-event clips on the shared narratives, per bucket and moment; purged and seeded with the match); adds `subscriptions.clips.always_for` (clip-on topic kinds) and `.shared` where missing, keeping edits (PLAN.md §10.2 D6–D7) |
+| `040_cross_match.py` | Config rows `cross-match` and `follow-offer` (edits kept); `subscriptions.bucket_id`, the bucket a follow of another match is written for |
+| `041_capture_clips.py` | `narrative_clips` (key-event clips on the shared narratives, per bucket and moment; purged and seeded with the match); adds `subscriptions.clips.always_for` (clip-on topic kinds) and `.shared` where missing, keeping edits |
 | `042_shorter_author_planner_options.py` | `narrative-author` one or two short sentences (active over the unedited seed only); `subscription-planner` v2 with `{live_matches}` and up to four clarification `options` resolved by code |
 | `043_narrative_clips_match.sql` | `narrative_clips` rows belong to a received match (cascade on purge); orphans removed |
 | `044_clip_relevance.py` | the clip decision asks how relevant a moment is to the followed story (`clips.instructions` and `levels`), only where both are still 038's wording |
-| `045_viewer_sessions.sql` | each browser is its own viewer: conversations and sessions keyed by (`viewer_id`, profile, match); another browser on the same profile never takes a session over (PLAN.md §12 M1) |
-| `046_clip_lengths.py` | `replay-timing.min_clip_seconds` 8 s, and a goal keeps 5 s after (was 2 s), each only where unedited |
+| `045_viewer_sessions.sql` | each browser is its own viewer: conversations and sessions keyed by (`viewer_id`, profile, match); another browser on the same profile never takes a session over |
+| `046_clip_lengths.py` | `replay-timing.min_clip_seconds` 8 s, and a goal keeps 5 s after, each only where unedited |
 | `047_model_roles_length_layer.py` | `backend_config.models` (model per role, live; empty deployments keep each service's own setting) and an audience `length` layer (Standard, Brief) in every template and catalogue: existing buckets keep their ids and select Standard, Brief twins are added disabled |
+| `049_league_sting.py` | The clip transition becomes the league's CSS sting (`builtin:league`) where `replay-timing.playback.transitions.asset` still holds the 037 video path |
+| `050_neutral_prompt_examples.py` | `minute-summary` and `context-compression` examples name "Team A"/"Team B": an active template still naming a retired or demo club gets a new version with the seed's examples (the rest of an edit kept) |
 | `accounts/001_demo_profiles.sql` | `demo_profiles` with three demo accounts |
 | `accounts/002_profile_editor.sql` | Profile revision row for the `/dev/` editor; drops the hard-coded team/style CHECK constraints |
 | `accounts/003_profile_selections.sql` | `team`/`fan_style` columns become a `selections` map (layer id → option id) |
 | `accounts/004_fixture_neutral_profile_names.sql` | Unedited seeded names by side (`Home analyst`, `Away fan`), since profiles serve every fixture |
+| `accounts/005_fictional_league_profile.sql` | The home analyst's profile id becomes `riverton-analytical` |
 
-Configuration rows are inserted `ON CONFLICT DO NOTHING`, so edits made in `/dev/` survive restarts.
+There is no `048`. The runner keys the ledger by file name only. Configuration rows are inserted `ON CONFLICT DO NOTHING`, so edits made in `/dev/` survive restarts.
 
 ## 2. Prompt seeds
 
-*In short: byte-for-byte copies of the engine's shipped prompts.*
+*In short: byte-for-byte copies of the engine's shipped prompts, so the backend never reads another service's folder.*
 
-`migrations/prompts/` holds `minute-summary.txt` (engine v2), `context-compression.txt` (v1), `match-analyst.txt` (v3), `narrative-author.txt` (v6), `subscription-decision.txt` (v2), plus `narrative-author.v4.txt` (for `021`), `match-analyst.v1.txt` and `narrative-author.v5.txt` (for `023`), `subscription-decision.v1.txt` (for `024`), `match-analyst.v2.txt` (for `025`); v2 and v4 add a short SPADL glossary, v5 the storylines, analyst v2 confidence levels and the side-by-side trend table, author v6 trend units without an example excerpt. Copied from the narrative engine so the backend never reads another service's folder at runtime ([seed notes](../../migrations/prompts/README.md)). A fresh store gets them as version 1; `021`, `023`, `025` and `029` add them to an existing one. Each seed's `{name}` tokens fix that role's placeholder set (unchanged by SPADL; v5 adds two, so `023` activates it; analyst v3 and subscription-decision v2 change theirs, so `029` activates them).
+| Seed (`migrations/prompts/`) | Copy of (engine `agents/prompts/`) | Added to an existing store by |
+| --- | --- | --- |
+| `minute-summary.txt` | `minute-summary.v3` (neutral example teams) | `050` (examples only) |
+| `context-compression.txt` | `context-compression.v2` (neutral example teams) | `050` (examples only) |
+| `match-analyst.txt` | `match-analyst.v4` (labels in plain words) | `030` |
+| `match-analyst.v3.txt`, `.v2.txt`, `.v1.txt` | `match-analyst.v3`, `.v2`, `.v1` | `029`, `025`, `023` |
+| `narrative-author.txt` | `narrative-author.v7` (one or two short sentences) | `042` |
+| `narrative-author.v5.txt`, `.v4.txt` | `narrative-author.v5`, `.v4` | `023`, `021` |
+| `subscription-decision.txt`, `.v1.txt` | `subscription-decision.v2`, `.v1` | `029`, `024` |
+| `subscription-author.txt` | `subscription-author.v1` | `024` |
+| `subscription-planner.txt`, `.v1.txt` | This service's own role (the follow chat's planner), v2 and v1 | `042`, `024` |
+
+A fresh store gets each seed as version 1. Each seed's `{name}` tokens fix that role's placeholder set; saved versions must keep it. A migration whose version keeps the placeholders activates it only where the role still runs an unedited seed; one that changes them (`023` author v5, `029` analyst v3 and decision v2) activates it even over an edit, which stays as a version. `test_prompts.py` checks the copies against the engine's files.

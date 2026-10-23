@@ -1,6 +1,6 @@
 # Routes
 
-> **In short:** HTTP translation only. Viewer routes live under `/product/matches/{matchId}`; the engine reads `GET /matches/{matchId}/audience-config`, `GET /narrative-prompts` and `GET /storyline-policy`; developer routes (`/dev`, `/lab`) are mounted only when their flags are set. Every developer write is revision-checked (ETag or `expected_revision`, `409` on conflict).
+> **In short:** HTTP translation only. Viewer routes live under `/product/matches/{matchId}`; the engine reads `GET /matches/{matchId}/audience-config`, `GET /narrative-prompts`, `GET /storyline-policy` and `GET /model-roles`; developer routes (`/dev`, `/lab`) are mounted only when their flags are set. Every developer write is revision-checked (ETag or `expected_revision`, `409` on conflict).
 
 | | |
 | --- | --- |
@@ -12,7 +12,7 @@
 
 ## 1. Viewer API
 
-*In short: a session per (profile, match); one WebSocket per session.*
+*In short: a session per (viewer, profile, match); one WebSocket per session.*
 
 `M` = `/product/matches/{matchId}`. The frontend's `/viewer-api/` prefix maps to `/product/`.
 
@@ -21,7 +21,7 @@
 | `GET /product/matches` | Known matches with ETL status, seq, clock, teams (score, branding) and HLS URL: live, then scheduled by kickoff, then finished |
 | `GET /product/profiles` | Demo profiles |
 | `GET /product/prices` | Answer prices `{input, output}` (US$ per million tokens) with an ETag; receipts estimate cost from these, never from a provider |
-| `POST M/sessions` `{profile_id}` | New session; takes over (closes) the profile's previous socket for this match. Before the match's MA1: `404 match_not_started`; purged: `404 match_not_found` |
+| `POST M/sessions` `{profile_id, viewer_id}` | New session for this browser's `viewer_id`; takes over (closes) that viewer's previous socket for the profile and match, never another viewer's. Before the match's MA1: `404 match_not_started`; purged: `404 match_not_found` |
 | `GET M/sessions/{token}` | Session, chat turns, offers and the current snapshot |
 | `PUT M/sessions/{token}/audience` `{bucket_id}` | Choose one of the match's enabled buckets; `422 audience_unavailable` otherwise |
 | `POST M/sessions/{token}/messages` `{prompt, request_id, seq?}` | Ask; `seq` is the snapshot the viewer is showing, and the answer is computed at `min(latest, seq)` |
@@ -29,7 +29,7 @@
 | `POST M/sessions/{token}/offers/{offer}/track` | Pin an offered stat; `409 cards_full` past the card slots |
 | `DELETE M/sessions/{token}/pins/{calculation}` | Unpin |
 | `WS M/sessions/{token}/live` | Snapshots, then updates and 20 s heartbeats |
-| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`), unfollow ([contracts §8b](../../../local/contracts.md#8b-story-follows)) |
+| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`; may target another live match), unfollow ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
 | `GET M/sessions/{token}/follow/suggestions`, `POST …/follow/messages` | Rule-based follow suggestions; the follow chat (planner proposes, the viewer confirms) |
 | `GET /matches/{id}/subscription-targets` | Engine only: followed topics, their buckets and the follow tunables (ETag) |
 
@@ -58,7 +58,7 @@ Narrative engine ← GET /matches/{matchId}/audience-config (ETag, 304) ← gene
 | `schema_version` | `1` |
 | `match_id`, `revision` | The match and its catalogue revision |
 | `layers` | `[{id, description, options: [{id, description, label, team}]}]` |
-| `buckets` | `[{id, selections: {layer: option}, enabled}]` |
+| `buckets` | `[{id, selections: {layer: option}, enabled}]`; layers are team, style and length (Standard, Brief; Brief buckets ship disabled) |
 | `generation_targets` | The enabled buckets only: `[{bucket_id, selections, layers: [{id, description, option: {id, description, label?, team?}}]}]` (unset fields omitted) |
 
 Generation is driven only by this configuration; viewers never enable or disable a bucket. The engine passes each target's layer and option descriptions to its author as data (`narrative-engine/narrative_engine/audience/targets.py`). Empty `generation_targets` means write nothing. Keep the `ETag` and send `If-None-Match`; `304` means reuse. On an error keep the last valid revision; never treat an error as "generate everything". An unknown or purged match is `404`.
@@ -73,7 +73,7 @@ Developer routes (`ENABLE_DEV_FEED=1`):
 | `GET /dev/fixtures/{fixture}/audience-config` | `{fixture, inherited, revision, config}`; `inherited` until the fixture saves its own |
 | `PUT /dev/fixtures/{fixture}/audience-config` `{expected_revision, config}` | Replace layers, options, buckets and `enabled` flags; stale revision `409`; unknown option, missing layer selection, duplicate id or combination `422` |
 
-Bounds: 8 layers, 20 options per layer, 48 buckets. Buckets are explicit combinations (the `/dev/` editor generates them from the options). Pins and viewer presence no longer exist; migration 018 turned existing pins into `enabled` flags.
+Bounds: 8 layers, 20 options per layer, 48 buckets. Buckets are explicit combinations (the `/dev/` editor generates them from the options). An option with `in_label: false` (Standard length) is left out of the viewer's bucket name.
 
 ## 4. Narrative prompts
 
@@ -81,7 +81,7 @@ Bounds: 8 layers, 20 options per layer, 48 buckets. Buckets are explicit combina
 
 `GET /storyline-policy` → `{table, revision, value}` with an ETag: the `storyline-policy` config row (analysis limits and caps, storyline lifecycle and salience, repair turns), validated by `models/config.py` `StorylinePolicy` and edited under `/dev/config/storyline-policy`.
 
-`GET /narrative-prompts` → `{revision, prompts: [{role, version, template, placeholders}]}` (active versions only) with an ETag; `revision` grows on every save or activation. Roles: `minute-summary`, `context-compression`, `match-analyst`, `narrative-author`, seeded from the engine's shipped files ([migrations](migrations.md#2-prompt-seeds)). Fill `{name}` placeholders only. The engine pins each narrative step to the version it started with and ignores a template whose placeholders differ from its shipped file.
+`GET /narrative-prompts` → `{revision, prompts: [{role, version, template, placeholders}]}` (active versions only) with an ETag; `revision` grows on every save or activation. Roles: `minute-summary`, `context-compression`, `match-analyst`, `narrative-author`, `subscription-decision`, `subscription-author`, `subscription-planner`, seeded from the engine's shipped files ([migrations](migrations.md#2-prompt-seeds)). Fill `{name}` placeholders only. The engine pins each narrative step to the version it started with and ignores a template whose placeholders differ from its shipped file.
 
 | Route (`ENABLE_DEV_FEED=1`) | Result |
 | --- | --- |
@@ -118,8 +118,9 @@ Unsupported categories, body parts or distances are refused with the missing dat
 | `subscriptions` | Story follows: decision, novelty, prefilter, catch-up, limits, suggestions, `min_name_match`, `clips` (clip question, `key_types`, `always_for`, `shared`) (served to the engine in each match's `subscription-targets`) |
 | `key-moment-feed` | Pivotal key-moment kinds every feed shows and their labels |
 | `storyline-policy` | Storyline lifecycle, salience and focus rotation (engine read: `GET /storyline-policy`) |
-| `cross-match` | Questions, pins and follows about the demo's other live matches: `enabled`, `min_name_coverage`, `suggest_teams` (local/contracts.md §8c) |
+| `cross-match` | Questions, pins and follows about the other live matches: `enabled`, `min_name_coverage`, `suggest_teams` (local/contracts/README.md §8c) |
 | `follow-offer` | The "Follow this story?" decision on answers: question, `true`/`false` meanings, `min_probability`, `max_per_minute`, `timeout_seconds` |
+| `models` | Model per role: `deployments` offered, `engine` (summary, compression, analyst, author) and `backend` (questions, follow_planner, replay), each `{deployment, effort}`; an empty deployment keeps the service's own setting. The backend applies its roles within seconds; the engine reads `GET /model-roles` (ETag) |
 
 ## 7. Demo profiles
 
@@ -133,7 +134,7 @@ Unsupported categories, body parts or distances are refused with the missing dat
 
 | Route | Use |
 | --- | --- |
-| `POST /admin/matches/purge` `{match_id}` or `{all: true}` | Tombstone, then delete this service's match rows ([contracts §5](../../../local/contracts.md#5-purge)); internal, never proxied |
-| `POST /admin/matches/export` `{match_id}`, `POST /admin/matches/restore` `{match_id, max_seq, schema, tables}` | **Demo only** (`DEMO_SEEDS=1`; absent otherwise): seed export and restore for demo control ([services §11](services.md#11-demo-seeds)) |
+| `POST /admin/matches/purge` `{match_id}` or `{all: true}` | Tombstone, then delete this service's match rows ([contracts §5](../../../local/contracts/README.md#5-purge)); internal, never proxied |
+| `POST /admin/matches/export` `{match_id}`, `POST /admin/matches/restore` `{match_id, max_seq, schema, tables}` | **Demo only** (`DEMO_SEEDS=1`; absent otherwise): seed export and restore for demo control ([demo](demo.md)) |
 | `GET /health`, `GET /ready` | `200` when a model is configured and the database answers, else `503`; includes the match count and open `gaps` |
 | `GET /dev/pipeline` | This service (status `degraded` while a gap is open) plus upstream `/health` probes; `gaps` lists open gaps and the latest 50 filled ones (`recovered`/`skipped`) |

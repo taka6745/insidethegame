@@ -14,8 +14,8 @@
 
 | Module | Contract |
 | --- | --- |
-| `actions.py` | `SpadlAction`: one final SPADL action from ETL GraphQL `spadlActions` ([contracts §3](../../../local/contracts.md#3-etl-graphql-dab)). Enums come from the generated [`contracts/spadl-reference.json`](../../backend/contracts/spadl-reference.json). Coordinates are **team-relative** (the acting team attacks towards x = 105; y = 0 is its right touchline); `match_time_seconds` is ETL's broadcast `clockSeconds`, floored. Derived: `distance_metres` (start → end) and `shot_outcome` (`goal`, `saved`, `blocked`, `post`, `off_target`, as ETL's catalogue counts on target) and `save_kind` (keeper_save only: `save` as ETL's `shots_saved`, `wide_touch` from `fromShotOffTarget`, `block` from `defensiveBlock`). `MAX_MATCH_ACTIONS` = 20,000 |
-| `events.py` | `Event`: the `event` of MatchEvent v2 ([contracts §2](../../../local/contracts.md#2-matchevent-v2)). Used only for the snapshot clock, periods, the viewer/lab ticker and gap recovery. `minute_label` is the one broadcast-minute rule (51:18 → 52′, 45:30 in the first half → 45+1′) |
+| `actions.py` | `SpadlAction`: one final SPADL action from ETL GraphQL `spadlActions` ([contracts §3](../../../local/contracts/README.md#3-etl-graphql-dab)). Enums come from the generated [`contracts/spadl-reference.json`](../../backend/contracts/spadl-reference.json). Coordinates are **team-relative** (the acting team attacks towards x = 105; y = 0 is its right touchline); `match_time_seconds` is ETL's broadcast `clockSeconds`, floored. Derived: `distance_metres` (start → end) and `shot_outcome` (`goal`, `saved`, `blocked`, `post`, `off_target`, as ETL's catalogue counts on target) and `save_kind` (keeper_save only: `save` as ETL's `shots_saved`, `wide_touch` from `fromShotOffTarget`, `block` from `defensiveBlock`). `MAX_MATCH_ACTIONS` = 20,000 |
+| `events.py` | `Event`: the `event` of MatchEvent v2 ([contracts §2](../../../local/contracts/README.md#2-matchevent-v2)). Used only for the snapshot clock, periods, the viewer/lab ticker and gap recovery. `minute_label` is the one broadcast-minute rule (51:18 → 52′, 45:30 in the first half → 45+1′) |
 | `match_stream.py` | `MatchEventV2` (`event.match_id == matchId`, `event.sequence == seq`) and `MatchInfo` (MA1 identity only) |
 | `engine_narratives.py` | The engine's Service Bus messages: a narrative, a follow's moment clip (`FollowClip`) or a key event's clip for the shared narratives (`MomentClip`) |
 
@@ -74,4 +74,6 @@
 | `audiences.py` | `AudienceConfig`: ≤ 8 layers, each with ≤ 20 options `{id, description, label?}`; ≤ 48 buckets `{id, selections, enabled}`. Every bucket selects one existing option per layer; ids and combinations are unique. `targets()` = the enabled buckets with their layer and option descriptions expanded |
 | `viewer_audience.py` | The viewer's choice: `{bucket_id}` of one enabled bucket of the match |
 | `prompts.py` | Prompt templates: `{name}` placeholders, fixed per role by the seed, ≤ 20,000 characters |
-| `config.py` | One model per `backend_config` row: `presentation`, `replay-timing`, `key-moment-ranks`, `prices`, `stream` ([routes §6](routes.md#6-config-tables)) |
+| `config.py` | One model per `backend_config` row (`CONFIGS`): `presentation`, `replay-timing`, `key-moment-ranks`, `prices`, `stream`, `subscriptions`, `key-moment-feed`, `storyline-policy`, `cross-match`, `follow-offer`, `models` ([routes §6](routes.md#6-config-tables)) |
+| `profiles.py` | Demo profiles: `{id, display_name, selections}` |
+| `subscriptions.py`, `stat_offers.py` | Follow specs and drafts; pin ids |
