@@ -21,7 +21,7 @@ variable "daily_actual_percent" {
 variable "credit_amount" {
   type        = number
   default     = 285
-  description = "Spend from credit_start that uses up the trial credit (A$4.6 spent in October + about A$281 left on 22 Oct)."
+  description = "Spend from credit_start that uses up the trial credit."
 }
 
 variable "credit_start" {
@@ -32,7 +32,7 @@ variable "credit_start" {
 variable "credit_end" {
   type        = string
   default     = "2026-12-31T00:00:00Z"
-  description = "The credit expires 17 Nov; the budget runs to the quarter's end."
+  description = "The budget runs to the quarter's end, past the credit's expiry."
 }
 
 variable "credit_actual_percent" {

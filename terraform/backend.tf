@@ -10,7 +10,7 @@ locals {
     LOCAL_LLM_BASE_URL                = local.narrative.foundry_endpoint # Azure OpenAI v1 (OpenAI-compatible)
     LOCAL_LLM_MODEL                   = azurerm_cognitive_deployment.questions.name
     LOCAL_LLM_EFFORT                  = var.question_model.effort == null ? "" : var.question_model.effort
-    DECISION_BASE_URL                 = local.narrative.decision.base_url # "Follow this story?" (D5b): the engine's Decision-1
+    DECISION_BASE_URL                 = local.narrative.decision.base_url # "Follow this story?": the engine's Decision-1
     DECISION_MODEL                    = local.narrative.decision.model
     QUESTION_TIMEOUT_SECONDS          = "120"
     ENABLE_DEV_FEED                   = var.dev_admin ? "1" : "0" # internal ingress; nginx gates /dev-api/

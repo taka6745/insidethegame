@@ -1,7 +1,7 @@
 # User backend only. ETL SQL lives in etl/infra; narrative Cosmos DB in narrative-engine/infra.
 # Public endpoint limited to Azure services, TLS required: the shared Container Apps environment has
-# no VNet, so a private endpoint would be unreachable. LATER: VNet environment + private access.
-# The backend logs in as this server admin (deployment-readiness.md: Database logins).
+# no VNet, so a private endpoint would be unreachable. The backend logs in as this server admin
+# (terraform/docs/decisions.md: production gaps).
 resource "random_password" "database" {
   length      = 32
   special     = false

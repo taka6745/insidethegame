@@ -1,6 +1,6 @@
 # Spend guard and idle saver, applied first by `./dev azure up` and kept after `down` (budgets, action groups,
 # an Automation account and its alerts cost nothing idle).
-# - Budgets email only: judging must never be interrupted by a daily cap.
+# - Budgets email only: the live demo must never be interrupted by a daily cap.
 # - One last resort: when actual spend nears the remaining credit, stop what doesn't serve the viewer
 #   (Stream Analytics, the feed, the SPADL post-processor, the feed's database). Viewer and replays keep working.
 # - Stream Analytics runs only while matches play: the ETL's Event Hubs alerts call the runbook to start and
@@ -170,7 +170,7 @@ resource "azurerm_consumption_budget_subscription" "daily" {
 }
 
 # The credit: spend from the period start that would use it up. Emails early; the last resort fires on actual
-# spend only, because a forecast runs past judging (to the period end) and would stop the demo too soon.
+# spend only, because a forecast runs to the period end and would stop the demo too soon.
 resource "azurerm_consumption_budget_subscription" "credit" {
   name            = "budget-insidethegame-credit"
   subscription_id = local.subscription

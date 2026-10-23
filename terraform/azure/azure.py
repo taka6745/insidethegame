@@ -3,7 +3,7 @@
 Runs on the host with the standard library only. Terraform, the Azure CLI and sqlcmd run in the
 toolbox image (Dockerfile here) with the developer's `az login`; images are built here with Docker.
 State: .local/terraform/<stack>/terraform.tfstate (git-ignored). Secrets are never printed.
-Runbook and costs: terraform/runbook.md.
+Runbook and costs: terraform/docs/deployment.md.
 """
 import argparse
 import json
@@ -79,7 +79,7 @@ class Stack:
         s, upstream = self.settings, upstream or {}
         values = {"subscription_id": s["subscription"]}
         if self.name in ("etl", "narrative", "feed", "app"):
-            values["demo_seeds"] = "false" if s.get("release") else "true"  # the judge build has demo seeds
+            values["demo_seeds"] = "false" if s.get("release") else "true"  # the demo build has demo seeds
         if self.name == "guard":
             values["alert_email"] = s["email"]
             values["budget_start"] = time.strftime("%Y-%m-01T00:00:00Z", time.gmtime())
@@ -395,7 +395,7 @@ def status(settings):
             print(f"  {r['type'].split('/', 1)[1]:<38} {r['name']:<36} {str(state or ''):<28} "
                   f"{'' if cost is None else f'~${cost}/mo'}")
     print(f"\nEstimated while running as now: ~${total}/month (~${total / 30:.2f}/day) plus usage: "
-          "model tokens, egress beyond 100 GB, SQL beyond the free offer. Details: terraform/runbook.md")
+          "model tokens, egress beyond 100 GB, SQL beyond the free offer. Details: terraform/docs/deployment.md")
 
 
 PLACEHOLDERS = {  # Outputs a not-yet-applied upstream would have; `plan` only.
