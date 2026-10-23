@@ -94,7 +94,7 @@ def main():
             ],
             stdin=subprocess.PIPE,
         )
-    frames, halfway, last, started = 0, None, None, time.monotonic()
+    frames, halfway, last, started, video = 0, None, None, time.monotonic(), 0.0
     live_since, nudged, nudges, pressed, nudge = 0.0, 0.0, [], None, []
     completed = False
     try:
@@ -218,7 +218,7 @@ def main():
                 "Headed pass/shot classification requires an executed header with explicit native action intent.",
                 "Pass completion means first subsequent intentional teammate touch; event time is resolution.",
                 "Possession measures confirmed native ownership ticks; loose-ball and stoppage time excluded.",
-                "Referee decisions and taken restarts are native observations; tackles, interceptions, saves, shot outcomes, aerials, take-ons and recoveries are rule-derived from native tracking (docs/opta-events.md).",
+                "Referee decisions and taken restarts are native observations; tackles, interceptions, saves, shot outcomes, aerials, take-ons and recoveries are rule-derived from native tracking (data-generation/contracts/README.md).",
                 "No xG, substitutions, injuries or VAR.",
                 "Engine patched for realism (prepare_realism.py); knob values in provenance.realism.",
                 "Team tactics are scripted per fixture (tactics.json) through engine knobs (prepare_tactics.py); the built-in AIs still make every decision. Script and changes in provenance.tactics.",
