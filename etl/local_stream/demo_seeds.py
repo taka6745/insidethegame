@@ -108,6 +108,8 @@ class SqlSeeds:
     def _restore(self, conn, match_id, tables, max_seq):
         cur = conn.cursor()
         present = self._present(cur)
+        # A local seed restored on Azure: the stand-in's own tables do not exist there (not in the fingerprint).
+        tables = {t: rows for t, rows in tables.items() if t in present or t not in STAND_IN}
         unknown = set(tables) - set(present)
         if unknown:
             raise RestoreRefused(f"Unknown tables {sorted(unknown)}")

@@ -6,6 +6,7 @@ exported, and a purge removes it. Needs a disposable SQL Server (sql_server.py):
     ETL_TEST_SQL_PASSWORD=… [ETL_TEST_SQL_HOST=127.0.0.1 ETL_TEST_SQL_PORT=1433] pytest tests/test_sql_seeds.py
 """
 import json
+import threading
 
 import pytest
 
@@ -100,3 +101,26 @@ def test_a_seed_round_trips_through_sql_and_the_run_carries_on(connect, recorded
 
     worker.purge(new_id, repository)
     assert not any(rows(connect, new_id, new_run).values())
+
+
+def test_a_local_seed_restores_on_azure_without_the_stand_in_tables(connect):
+    source, new = (v2_stream.build(run) for run in ("0000aaaa", "0000eeee"))
+    (source_id, source_run), (new_id, new_run) = ((s[0]["matchId"], s[0]["runId"]) for s in (source, new))
+    clock = Clock()
+    repository = SqlRepository(connect)
+    worker = StreamWorker(repository, 60, clock=clock)
+    worker.load()
+    seeds = demo_seeds.SqlSeeds(repository)
+    feed(worker, source[:held(source)])
+    settle(worker, clock)
+    schema, tables = demo_seeds.export(worker, seeds, source_id)
+    assert tables["localStreamWindows"]
+    seed = json.loads(json.dumps(tables).replace(source_id, new_id).replace(source_run, new_run))
+    worker.purge(source_id, repository)
+    with connect() as conn:  # Azure: Stream Analytics in place of the stand-in, so no localStreamWindows
+        conn.cursor().execute("DROP TABLE dbo.localStreamWindows")
+        conn.commit()
+
+    azure = type("AzureWorker", (), {"lock": threading.Lock()})()  # no local worker state to reload
+    counts = demo_seeds.restore(azure, seeds, new_id, seed, SEQ, schema)
+    assert counts["canonicalEvents"] == SEQ and "localStreamWindows" not in counts
