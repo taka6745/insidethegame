@@ -1,65 +1,77 @@
-# Live match boundary
+# Architecture
 
-> **In short:** the browser talks only to the backend (`/viewer-api`) and, for Start/Cancel demo, to demo control (`/demo-api`). One WebSocket per viewer carries bounded snapshots.
+> **In short:** static modules served by nginx; the browser talks only to the backend (`/viewer-api/`) and, for the demo, to demo control (`/demo-api/`). One WebSocket per viewer carries bounded snapshots; questions and follows are HTTP.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · unit- and headless-tested against the mock · run on the local stack |
-| **Contracts** | [local/contracts.md](../../local/contracts.md) §7a, §8, §8b, §8c |
-
-**Implemented local contract.** The browser only talks to the user backend. The static app uses `/viewer-api` through nginx, which forwards to backend `/product`.
+| **Contracts** | [local/contracts](../../local/contracts/README.md) §6 (HLS), §7a (demo control), §8, §8b, §8c, §8d (backend product API) |
+| **Runtime dependency** | `hls.js` 1.7.3 (exact pin); no bundler or framework |
+| **Diagram** | [../architecture.svg](../architecture.svg) |
 
 ```mermaid
 flowchart LR
     CDN[Static frontend] --> B[Browser]
     E[ETL GraphQL] --> P[Shared match projection]
-    N[Narrative GraphQL] --> P
+    N[Narrative engine] --> P
     P --> G[Viewer delivery]
     G -->|One WebSocket| B
-    B -->|Questions / Track| API[Backend services]
-    API --> Q[Microsoft Agent Framework]
-    API --> DB[Profile / chat / pins]
+    B -->|Questions / Track / Follow| API[Backend services]
+    B -->|Start / Cancel / Skip| D[Demo control]
+    F[Feed HLS origin] -->|/media/hls/| B
 ```
 
-Multi-match routes ([contracts §8](../../local/contracts.md)); `M` = `/matches/{matchId}`. All live in `match/api.ts`.
+## 1. Routes the viewer calls
+
+*In short: all in `match/api.ts` and `match/demo.ts`; `M` = `/viewer-api/matches/{matchId}`, `S` = `M/sessions/{token}`.*
 
 | Action | Endpoint |
-|---|---|
-| List matches (picker) | `GET /matches` |
-| List demo identities | `GET /profiles` |
-| Answer prices (receipts) | `GET /prices` → `{input, output, revision}` US$ per million tokens |
-| Start / take over profile | `POST M/sessions` with `profile_id` |
-| Restore session and current state | `GET M/sessions/{token}` |
-| Receive state | WebSocket `M/sessions/{token}/live` (close `4404`: match gone) |
-| Change audience | `PUT M/sessions/{token}/audience` with `{bucket_id}`, one of the snapshot's `audience_buckets` (else 422) |
-| Ask question | `POST M/sessions/{token}/messages` with prompt, idempotency `request_id` and the shown snapshot's `seq` (answered at min(latest, seq)) |
-| Track offered custom stat | `POST M/sessions/{token}/offers/{offer_id}/track` |
-| Remove custom pin | `DELETE M/sessions/{token}/pins/{calculation_id}` |
-| Next replay page | `GET M/sessions/{token}/turns/{turn_id}/replay/{page}` |
-| Follow chat turns | `GET M/sessions/{token}/follows` → `{follow, follows, turns}` |
-| Follow suggestions | `GET M/sessions/{token}/follow/suggestions?seq=` → `{items: [{id, label, spec}]}` |
-| Follow chat message | `POST M/sessions/{token}/follow/messages` with prompt, `request_id`, `seq` → `proposal` / `clarify` / `unfollow` / `answer` / `unsupported`; `503 model_unavailable` without a model |
-| Follow a story | `POST M/sessions/{token}/follows` with `{spec, seq}` → `{follow, created, snapshot}`; another active follow is `409 follow_limit` |
-| Stop following | `DELETE M/sessions/{token}/follows/{subscription_id}` → `{follow: null, snapshot}` |
-| Demo state, progress | `GET /demo-api/state`, `GET /demo-api/status` (demo control, not the backend; [contracts §7a](../../local/contracts.md#7a-demo-control-public)) |
-| Start / cancel demo | `POST /demo-api/start {point}`, `POST /demo-api/cancel` |
+| --- | --- |
+| Picker, profiles, prices | `GET /viewer-api/matches`, `/profiles`, `/prices` |
+| Start or take over a session | `POST M/sessions` `{profile_id, viewer_id}` |
+| Restore; live state | `GET S`; WebSocket `S/live` (close `4404`: match gone) |
+| Audience | `PUT S/audience` `{bucket_id}` |
+| Question | `POST S/messages` `{prompt, request_id, seq}` |
+| Track, untrack | `POST S/offers/{id}/track`, `DELETE S/pins/{id}` |
+| Replay page | `GET S/turns/{id}/replay/{page}` |
+| Follows | `GET S/follows`, `GET S/follow/suggestions?seq=`, `POST S/follow/messages`, `POST S/follows`, `DELETE S/follows/{id}` |
+| Demo | `GET /demo-api/state`, `/status`; `POST /demo-api/start {point}`, `/cancel`, `/skip {target}` |
 
-The socket sends bounded snapshots with `projection_epoch`, monotonic `version`, match identity and `seq`, profile, `audience` (`{bucket_id, selections}` or null) and `audience_buckets` (the match's enabled buckets as `{id, label}`), five cards, recent events and narrative backlog. An epoch changes on server restart. Clients reject older/equal revisions within an epoch and ignore late responses from retired epochs. Heartbeats only refresh liveness, not the DOM. Reconnect restores an authoritative snapshot; no unbounded client delta queue is retained.
+## 2. Snapshots
 
-A new session for the same profile ends the previous connection. Closing a connection does not erase its chat or pins. Session tokens stay in tab-scoped storage. These are demo sessions, not real authentication or a production identity system.
+*In short: authoritative, versioned and bounded; reconnect restores, never replays deltas.*
 
-## Shared work and limits
+- Each snapshot carries `projection_epoch`, monotonic `version`, match identity and `seq`, profile, `audience` and `audience_buckets`, five cards, recent events, narrative backlog, `feed_mode`/`follow`/`key_moments`, `follow_playlist`/`moment_playlist`, `other_match`/`follow_match` and `match.media` (`{url, seconds}`).
+- Clients reject older or equal versions within an epoch and ignore late responses from retired epochs. Heartbeats refresh liveness only.
+- A new session for the same viewer and profile ends the previous connection; chat and pins stay. Session tokens live in tab storage.
+- Browser state is bounded: 60 events, 300 narratives, 50 rendered chat turns, five cards, 30 held states. Rendering coalesces to animation frames and keeps unchanged nodes.
 
-One committed replay change triggers one shared projection read, not a query for every viewer. Standard values come from ETL; narratives come already framed per bucket from the narrative engine; default card order comes from the backend's `presentation` config. Per-viewer composition only selects the audience and combines default cards with private pins. Questions run on demand, separately from live delivery.
+## 3. Live HLS and replay
 
-The local stack sends match events through Event Hubs (partition key `matchId`) and receives bucket narratives from the narrative engine through Service Bus. Standard stats/history and recap reads use GraphQL. The backend stores Event Hubs positions in Postgres. Production still needs distributed match-owner recovery, authenticated session ownership and managed fan-out. Azure Web PubSub is a possible delivery adapter; it is not currently deployed. [Backend scaling plan](../../user-backend/docs/architecture.md#6-scaling-boundary).
+*In short: the match's own playlist, data held to the picture, replays on a second stage player.*
 
-`match.media` carries `{url, seconds}`. With a `url` (`/media/hls/{matchId}/live.m3u8`, null when the match has no video), the browser plays that playlist and holds each state until the live playhead reaches `media.seconds` (at most 15 s; immediately without a playing live picture). Without it there is no footage (no fallback playlist, no MP4). Replay replies (`answer_kind: "replay"`) carry `replay` with clips, captions, paging and the match's published playlist (clip times are its video seconds); their playback stays in the browser and does not affect live delivery. Implemented, unit-tested and browser-verified against live HLS (20 October 2026).
+- With `match.media.url` (`.m3u8`) the viewer plays it with hls.js (`enableWorker: false`, live sync three segments). Catch-up: 1.1× when more than 1.5 s behind, or one seek after 3 s more than 6 s behind, then a 10 s cooldown; native HLS only where hls.js is unsupported. No url, no footage (no fallback playlist, no MP4).
+- Until the first segment plays the viewer shows "Starting the stream…" and retries; it shows unavailable when the match has no stream or a live or finished playlist stays unplayable (`match/video.ts`). Footage follows the live edge; no seeking.
+- States with `media.seconds` wait until the playhead reaches that time (at most 15 s; immediately without a playing picture).
+- Replay replies render a chat card (clips, captions, paging); Play loads the published playlist into a second stage player while live continues as a muted corner picture. **Back to live**, the picture or Esc returns.
+- Every replay carries `playback`: a hold, the `builtin:league` sting, a cut and fades between clips, and slow motion around marked events. Both off under `prefers-reduced-motion`.
+- hls.js (light ES build, Apache-2.0) is copied into the fingerprinted app and loaded on demand from the same origin.
 
-Browser state is bounded (60 received events, 300 narratives, 50 rendered chat turns, five cards, 30 held states). It coalesces rendering to animation frames and retains unchanged nodes. Server queues are bounded and slow peers reconnect. Limits bound work; they do not establish a viewer-capacity number.
+## 4. nginx
 
-**Story follows** ([contracts §8b](../../local/contracts.md#8b-story-follows); implemented, unit-tested and headless-checked against the mock). The Insights tab has a follow chat: suggestion chips follow in one tap; typed requests go to the planner, whose `proposal` shows a card with a Follow button, `clarify` reuses the clarification choices (picking a candidate follows it) and `unfollow` offers Stop following. A proposal is never a follow until the viewer confirms it. One follow per viewer per match. The snapshot's `feed_mode`, `follow` and `key_moments` drive the feed: following shows a "Following {label}" banner with Stop following, only `kind: "subscription"` narratives tagged with the follow's label, and an empty state until the first one; otherwise the bucket's insights. `key_moments` show for everyone as short, centred, grey lines interleaved by clock (overturned goals struck through). Follow changes apply at once to the shown and held states, never ahead of the picture. Without a model the chat says so and locks its composer; suggestions still work.
+*In short: same-origin proxy, gated developer routes, cache policy.*
 
-Clarification replies use `status: "clarification"` and optional `clarification: {question, options, allow_free_text}`. Suggested answers submit ordinary follow-up messages on the same session; the text composer remains available. Only the latest unanswered clarification is interactive, and pending requests or session takeover disable choices. Older replies without this object still render their question text. Composite offers use the existing Track contract and preserve server-provided units; missing values display `—`.
+| Path | Upstream |
+| --- | --- |
+| `/` and `/app/{fingerprint}/` | Viewer (`/app/{fingerprint}/match/`, `/app/{fingerprint}/shared/`); an old fingerprint falls back to `/app/current/` |
+| `/viewer-api/` | Backend `/product/` |
+| `/demo-api/{start,cancel,skip,state,status}` | Demo control, rate-limited ([deployment](deployment.md#2-public-demo-api)) |
+| `/media/hls/{matchId}/{file}.m3u8\|.ts` | Feed HLS origin; any other `/media/` is `404` |
+| `/lab/`, `/api/`, `/dev/`, `/dev-api/`, `/feed-api/`, `/purge-api/{owner}` | Only with `ENABLE_DEV_ADMIN=1` (basic auth when a password is set) |
 
-**Clips, cross-game and playback** (PLAN.md §10.2 D3–D7; implemented, unit- and headless-tested against the mock; live check pending on Azure). The snapshot carries `follow_playlist` (a follower's story clips) and `moment_playlist` (the bucket's key-event clips), both in the replay shape and bounded to the viewer's `seq`; each clip's `moments` feed its preview card. Every replay carries `playback` (`transitions`: hold, sting, cut, fades; `slow_motion`: rate, ramp, before/after), both off under `prefers-reduced-motion`. Content from another live match carries `other_match` (snapshot: `follow_match`) and is outlined with that match's header; an answer may carry `follow_offer` (Follow / No thanks), which opens the follow view and sends the question to the follow chat ([contracts §8c](../../local/contracts.md#8c-cross-match-reach-and-follow-offers)).
+HTML revalidates; fingerprinted modules are immutable; lab, dev and brand assets revalidate. HLS playlists are `no-cache`, segments immutable. CSP allows `blob:` only in `media-src` (hls.js Media Source); every request is same-origin. nginx re-resolves upstreams every five seconds so a replaced container is found again.
+
+## 5. Shared work
+
+*In short: one projection per match, not per viewer.*
+
+One committed change triggers one shared projection read. Standard values come from ETL, narratives come already framed per bucket, default card order from the backend's `presentation` config. Per-viewer work only picks the audience and adds private pins. Limits bound work; they do not establish a viewer-capacity number ([backend scaling boundary](../../user-backend/docs/architecture.md#6-scaling-boundary)).
