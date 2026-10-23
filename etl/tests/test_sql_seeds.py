@@ -1,4 +1,4 @@
-"""SQL Server: demo seeds (PLAN.md §10.6) through SqlSeeds, the admin routes' code path, on a real database.
+"""SQL Server: demo seeds through SqlSeeds, the admin routes' code path, on a real database.
 
 A run held at a seq is exported, sent as JSON, purged and restored under a new matchId; the restored rows equal
 the recorded ones, the run then carries on from the seed to the same rows as a run held there and never
@@ -15,8 +15,8 @@ import v2_stream
 from local_stream import demo_seeds
 from local_stream.repository import MATCH_TABLES, SqlRepository
 from local_stream.worker import StreamWorker
-from sql_server import query
-from test_sql_catalogue import SCRIPTS, Clock, convert, feed, settle, stats
+from sql_server import STREAM_SCRIPTS, convert, query, stats
+from support import Clock, feed, settle
 
 pytestmark = sql_server.enabled
 SEQ = 1500  # the hold point: events up to SEQ were sent
@@ -24,7 +24,7 @@ SEQ = 1500  # the hold point: events up to SEQ were sent
 
 @pytest.fixture
 def connect():
-    yield from sql_server.database("itg_seeds", SCRIPTS)
+    yield from sql_server.database("itg_seeds", STREAM_SCRIPTS)
 
 
 def held(stream):

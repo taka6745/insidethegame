@@ -1,4 +1,4 @@
-"""Test double of the feed's Event Hubs stream for one run of a checked-in recording (default Riverton Rovers–United).
+"""Test double of the feed's Event Hubs stream for one run of a checked-in recording (default Riverton Rovers–Forgeham United).
 
 MA1 (with fixture, runId, capabilities, branding), then per canonical event in seq order: POS
 samples up to its video time (POS first at equal times), MatchEvent v2, its MA3 rows (eventSeq).
@@ -12,7 +12,7 @@ from pathlib import Path
 RECORDINGS = Path(__file__).resolve().parents[2] / "data-generation" / "recordings"
 FIXTURES = ("riverton-forgeham", "redcastle-portalbion", "skybridge-whitmore")
 KICKOFF = datetime(2026, 10, 20, 15, 0, tzinfo=timezone.utc)
-# Riverton Rovers–United keeps the branding its tests were written against; other fixtures use their MA1's.
+# Riverton Rovers–Forgeham United keeps the branding its tests were written against; other fixtures use their MA1's.
 TEAMS = {"riverton": ("Riverton Rovers", "RVR", "#001c68", "#0743b7"), "forgeham": ("Forgeham", "FGU", "#c7142b", "#7b0015")}
 
 

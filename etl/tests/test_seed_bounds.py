@@ -1,4 +1,4 @@
-"""A demo seed may hold nothing from past its seq (PLAN.md §10.6), in any table it restores."""
+"""A demo seed may hold nothing from past its seq, in any table it restores."""
 from local_stream.demo_seeds import past_seq
 
 SEED = {

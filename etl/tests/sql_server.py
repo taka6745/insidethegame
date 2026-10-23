@@ -4,11 +4,14 @@
 import os
 import re
 import uuid
+from pathlib import Path
 
 import pytest
 
 pymssql = pytest.importorskip("pymssql")
 enabled = pytest.mark.skipif(not os.environ.get("ETL_TEST_SQL_PASSWORD"), reason="set ETL_TEST_SQL_PASSWORD")
+ETL = Path(__file__).resolve().parents[1]
+STREAM_SCRIPTS = [*sorted((ETL / "sql" / "migrations").glob("*.sql")), ETL / "local_stream" / "state.sql"]
 
 
 class Connector:
@@ -60,3 +63,15 @@ def query(connect, sql, *params):
     rows = cur.fetchall() if cur.description else []
     conn.commit()
     return rows
+
+
+def stats(connect, match_id, seq):
+    return query(connect, "EXEC dbo.statsAtSeq @matchId = %s, @seq = %s", match_id, seq)
+
+
+def convert(connect):
+    """One post-processor step (every lagging match to its watermark), on the test's post-processor connection."""
+    if not hasattr(connect, "spadl"):
+        from spadl.worker import SpadlRepository, SpadlWorker
+        connect.spadl = SpadlWorker(SpadlRepository(connect))
+    return connect.spadl.step()

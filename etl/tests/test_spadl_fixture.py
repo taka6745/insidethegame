@@ -1,4 +1,4 @@
-"""fixtures/spadl-riverton-forgeham.json: the spadlActions rows ETL GraphQL serves for one Riverton Rovers–United run (the
+"""fixtures/spadl-riverton-forgeham.json: the spadlActions rows ETL GraphQL serves for one Riverton Rovers–Forgeham United run (the
 hand-off for backend and engine tests). A snapshot (matchId, s) reads the rows with finalSeq <= s; `snapshots`
 lists sample seqs with their row counts. Regenerate after a deliberate conversion change:
     python tests/test_spadl_fixture.py --regenerate

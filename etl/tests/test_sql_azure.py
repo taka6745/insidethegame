@@ -13,7 +13,7 @@ from local_stream.repository import MATCH_TABLES, SqlRepository, sql_value
 from reference import pipeline
 from spadl.worker import SpadlRepository, SpadlWorker
 from sql_server import query
-from test_catalogue import outputs, reference
+from support import outputs, reference
 
 pytestmark = sql_server.enabled
 ETL = Path(__file__).resolve().parents[1]

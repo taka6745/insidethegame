@@ -1,4 +1,4 @@
-"""reference/trends.py: rules on small hand-built inputs, plus Riverton Rovers–United against fixtures/trends-golden.json.
+"""reference/trends.py: rules on small hand-built inputs, plus Riverton Rovers–Forgeham United against fixtures/trends-golden.json.
 
 The golden file holds full-time and half-time trends and spells (rounded) and the recording's hash. Regenerate after
 a deliberate rule or seed change, or after the recordings are re-rendered (the test names the cause):
@@ -17,7 +17,7 @@ import pytest  # noqa: E402
 
 from reference import trends  # noqa: E402
 import v2_stream  # noqa: E402
-from test_catalogue import outputs  # noqa: E402
+from support import outputs  # noqa: E402
 
 GOLDEN_PATH = Path(__file__).parent / "fixtures" / "trends-golden.json"
 RECORDING = v2_stream.RECORDINGS / "riverton-forgeham-grf.opta-stream.jsonl"

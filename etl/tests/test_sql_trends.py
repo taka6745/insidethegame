@@ -18,8 +18,7 @@ from reference import trends
 from spadl.worker import SpadlRepository
 from sql_server import query
 from local_stream.repository import sql_value
-from test_catalogue import outputs
-from test_sql_catalogue import var_row
+from support import outputs, var_row
 
 pytestmark = sql_server.enabled
 ETL = Path(__file__).resolve().parents[1]

@@ -13,7 +13,7 @@ import pytest
 import v2_stream
 from local_stream.worker import StreamWorker
 from reference import pipeline
-from test_local_stream import Clock, FakeRepository, bodies, canonical
+from support import Clock, FakeRepository, bodies, canonical
 
 UDFS = Path(__file__).resolve().parents[1] / "stream-analytics" / "udfs"
 QUERY = UDFS.parent / "query.asaql"

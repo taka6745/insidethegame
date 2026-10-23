@@ -1,8 +1,7 @@
-"""The SPADL stat catalogue reference on a whole Riverton Rovers–United run, against its recorded golden values.
+"""The SPADL stat catalogue reference on a whole Riverton Rovers–Forgeham United run, against its recorded golden values.
 
 fixtures/catalogue-golden.json holds the full rows at the final seq and (statId, value, available) at 20
-prefixes (catalogue moved to SPADL 2026-10-21; recording re-rendered 2026-10-22); local/contracts.md §4 lists
-the full-time values. Regenerate after a deliberate definition change or a re-rendered recording:
+prefixes; local/contracts/README.md §4 lists the full-time values. Regenerate after a deliberate definition change or a re-rendered recording:
     python tests/test_catalogue.py --regenerate
 """
 import json
@@ -12,10 +11,10 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from reference import catalogue, pipeline, spadl  # noqa: E402
+from reference import catalogue, spadl  # noqa: E402
 import v2_stream  # noqa: E402
+from support import GOLDEN_PATH, golden, outputs, reference  # noqa: E402
 
-GOLDEN_PATH = Path(__file__).parent / "fixtures" / "catalogue-golden.json"
 KINDS = ["goals", "shots", "passes", "corners", "cards", "tackles", "interceptions", "fouls", "fouls_won", "offsides",
          "throw_ins", "free_kicks", "goal_kicks", "kick_offs", "penalties", "keeper_claims", "clearances", "take_ons",
          "ball_recoveries", "headed_passes", "headed_shots", "headed_contacts", "saves", "shots_on_target",
@@ -26,20 +25,6 @@ KINDS = ["goals", "shots", "passes", "corners", "cards", "tackles", "interceptio
          "box_entries", "shots_saved"]
 RETIRED = {"kick_offs", "ball_recoveries", "aerials_won"}
 PREFIXES = [0, 1, 2, 50, 97, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000]
-
-
-def outputs(stream, live=False):
-    """ETL's rows for a run: the stream's tables plus its SPADL actions (live: only those final so far)."""
-    rows = pipeline.stream_outputs(stream, 60)
-    convert = spadl.final_actions if live else spadl.actions
-    rows["spadlActions"] = convert([m for m in stream if m.get("feed") == "MA3"], rows["matches"][0]["homeContestantId"])
-    return rows
-
-
-def reference(seq, rows, watermark):
-    return catalogue.stats_at_seq(rows["matches"][0], rows["matchTeams"], rows["canonicalEvents"],
-                                  rows["possessionSamples"], seq, watermark, actions=rows["spadlActions"],
-                                  raw=rows["rawEvents"])
 
 
 STREAM = v2_stream.build()
@@ -53,10 +38,6 @@ def values(stats):
 
 def by_id(stats):
     return {s["statId"]: s for s in stats}
-
-
-def golden():
-    return json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
 
 
 def test_definitions_keep_every_old_id_in_order():

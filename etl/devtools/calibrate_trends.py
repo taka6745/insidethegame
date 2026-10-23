@@ -15,7 +15,7 @@ sys.path[:0] = [str(ETL), str(ETL / "tests")]
 
 from reference import trends  # noqa: E402
 import v2_stream  # noqa: E402
-from test_catalogue import outputs  # noqa: E402
+from support import outputs  # noqa: E402
 
 TAILS = {"notableAt": 0.20, "highAt": 0.10}
 CHANGE_QUANTILE = 0.90

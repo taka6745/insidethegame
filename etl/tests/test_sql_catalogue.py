@@ -3,9 +3,7 @@
 Needs a disposable SQL Server (never a shared stack); each test creates and drops its own database (sql_server.py):
     ETL_TEST_SQL_PASSWORD=… [ETL_TEST_SQL_HOST=127.0.0.1 ETL_TEST_SQL_PORT=1433] pytest tests/test_sql_catalogue.py
 """
-import json
 from datetime import timedelta
-from pathlib import Path
 
 import pytest
 
@@ -14,51 +12,21 @@ import v2_stream
 from local_stream.repository import MATCH_TABLES, SqlRepository
 from local_stream.worker import StreamWorker
 from reference import spadl, trends
-from spadl.worker import SpadlRepository, SpadlWorker
-from sql_server import query
-from test_catalogue import golden, outputs, reference
+from spadl.worker import SpadlRepository
+from sql_server import STREAM_SCRIPTS, convert, query, stats
+from support import Clock, feed, golden, outputs, reference, settle, var_row
 
 pytestmark = sql_server.enabled
-ETL = Path(__file__).resolve().parents[1]
-SCRIPTS = [*sorted((ETL / "sql" / "migrations").glob("*.sql")), ETL / "local_stream" / "state.sql"]
 
 
 @pytest.fixture
 def connect():
     """A fresh database with every migration and the worker's state tables applied."""
-    yield from sql_server.database("itg_test", SCRIPTS)
-
-
-class Clock:
-    now = 0.0
-
-    def __call__(self):
-        return self.now
-
-
-def feed(worker, messages, batch=250, start=0):
-    for i in range(0, len(messages), batch):
-        worker.handle("0", [(start + i + j, json.dumps(m)) for j, m in enumerate(messages[i:i + batch])])
-
-
-def settle(worker, clock):
-    clock.now += 1000
-    worker.handle("0", [])
-
-
-def stats(connect, match_id, seq):
-    return query(connect, "EXEC dbo.statsAtSeq @matchId = %s, @seq = %s", match_id, seq)
+    yield from sql_server.database("itg_test", STREAM_SCRIPTS)
 
 
 def expected(stream, seq, watermark):
     return reference(seq, outputs(stream, live=True), watermark)
-
-
-def convert(connect):
-    """One post-processor step (every lagging match to its watermark), on the test's post-processor connection."""
-    if not hasattr(connect, "spadl"):
-        connect.spadl = SpadlWorker(SpadlRepository(connect))
-    return connect.spadl.step()
 
 
 def actions(connect, match_id, upto=None):
@@ -123,16 +91,6 @@ def test_stats_at_seq_equals_project_and_reference(connect):
     goals = lambda seq: tuple({s["statId"]: s["value"] for s in stats(connect, match_id, seq)}[f"{t}:goals"]
                               for t in ("riverton", "forgeham", "all"))
     assert (goals(1999), goals(2000), goals(8999), goals(final)) == ((0, 1, 1), (0, 0, 0), (1, 0, 1), (0, 0, 0))
-
-
-def var_row(match_id, n, seq, team, own_goal=False, outcome="goal-overturned"):
-    """A rawEvents row for an MA3 VAR decision (type 900, qualifier 901; 28 for an own goal)."""
-    qualifier = [{"qualifierId": 901, "value": outcome}] + ([{"qualifierId": 28}] if own_goal else [])
-    payload = {"feed": "MA3", "matchId": match_id, "id": 9_000_000 + n, "typeId": 900, "contestantId": team,
-               "eventSeq": seq, "qualifier": qualifier}
-    return {"matchId": match_id, "id": 9_000_000 + n, "seq": 90_000 + n, "eventId": 900 + n, "typeId": 900,
-            "periodId": 2, "timeMin": 80, "timeSec": 0, "contestantId": team, "playerId": None, "outcome": 1,
-            "x": None, "y": None, "eventTime": "2026-10-20 16:30:00", "payload": json.dumps(payload), "eventSeq": seq}
 
 
 def test_purge_removes_every_row_and_stays_purged_after_restart(connect):
