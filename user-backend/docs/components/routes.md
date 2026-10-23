@@ -29,8 +29,8 @@
 | `POST M/sessions/{token}/offers/{offer}/track` | Pin an offered stat; `409 cards_full` past the card slots |
 | `DELETE M/sessions/{token}/pins/{calculation}` | Unpin |
 | `WS M/sessions/{token}/live` | Snapshots, then updates and 20 s heartbeats |
-| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`; may target another live match), unfollow ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
-| `GET M/sessions/{token}/follow/suggestions`, `POST …/follow/messages` | Rule-based follow suggestions; the follow chat (planner proposes, the viewer confirms) |
+| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`, `429 rate_limited` past `subscriptions.limits.follow_changes_per_minute`; may target another live match), unfollow ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
+| `GET M/sessions/{token}/follow/suggestions`, `POST …/follow/messages` | Rule-based follow suggestions; the follow chat (planner proposes, the viewer confirms; `429 rate_limited` past `subscriptions.limits.planner_turns_per_minute`) |
 | `GET /matches/{id}/subscription-targets` | Engine only: followed topics, their buckets and the follow tunables (ETag) |
 
 A snapshot carries `version`, `projection_epoch`, `match` (status, scheduled_kickoff, seq, clock, teams, media), `events` (the latest received canonical events: the ticker), `cards` (an unavailable card carries `unavailable_reason`), `narratives` (the viewer's bucket only), `profile`, `audience` `{bucket_id, selections}` and `audience_buckets` `[{id, label}]` (the match's enabled buckets, labels resolved from option labels with `{home}`/`{away}` replaced by team names). A token belongs to one match: under another match it is `404`. WebSocket close codes: `4404` match unknown or purged, `4001` session replaced or rejected, `1013` overloaded or unavailable.
@@ -119,7 +119,7 @@ Unsupported categories, body parts or distances are refused with the missing dat
 | `key-moment-feed` | Pivotal key-moment kinds every feed shows and their labels |
 | `storyline-policy` | Storyline lifecycle, salience and focus rotation (engine read: `GET /storyline-policy`) |
 | `cross-match` | Questions, pins and follows about the other live matches: `enabled`, `min_name_coverage`, `suggest_teams` (local/contracts/README.md §8c) |
-| `follow-offer` | The "Follow this story?" decision on answers: question, `true`/`false` meanings, `min_probability`, `max_per_minute`, `timeout_seconds` |
+| `follow-offer` | The "Follow this story?" decision on answers: `enabled`, `instructions` (the question), `true`/`false` meanings, `min_probability`, `max_per_minute`, `timeout_seconds` |
 | `models` | Model per role: `deployments` offered, `engine` (summary, compression, analyst, author) and `backend` (questions, follow_planner, replay), each `{deployment, effort}`; an empty deployment keeps the service's own setting. The backend applies its roles within seconds; the engine reads `GET /model-roles` (ETag) |
 
 ## 7. Demo profiles

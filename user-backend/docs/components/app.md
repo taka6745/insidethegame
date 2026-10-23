@@ -20,7 +20,7 @@ Optional routers: `/dev/*` with `ENABLE_DEV_FEED=1`; `/lab/*` with `ENABLE_FILTE
 
 *In short: pooled connections; each migration file runs once.*
 
-`Store(accounts_dsn, match_dsn, schema='user_backend')` keeps one `psycopg_pool` per database (`POSTGRES_POOL_SIZE`, default 10). `connect()` is one Match App transaction with `search_path` set to the schema; `connect_accounts()` the Accounts one. `initialize()` takes an advisory lock and applies `migrations/*.sql` and `migrations/accounts/*.sql` in name order, recording each in `schema_migrations`.
+`Store(accounts_dsn, match_dsn, schema='user_backend')` keeps one `psycopg_pool` per database (`POSTGRES_POOL_SIZE`, default 10). `connect()` is one Match App transaction with `search_path` set to the schema; `connect_accounts()` the Accounts one. `initialize()` takes an advisory lock and applies `migrations/*.sql`, the data migrations `migrations/NNN_*.py` and `migrations/accounts/*.sql` in name order, recording each in `schema_migrations`.
 
 ## 3. Errors and the coding contract
 

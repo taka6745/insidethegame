@@ -45,7 +45,7 @@ flowchart LR
 
 ## Implement in this order
 
-### 1. Typed snapshot and read-only contracts
+### Typed snapshot and read-only contracts
 
 Add `backend/models/questions.py` and `backend/models/recaps.py`:
 
@@ -59,7 +59,7 @@ Add `backend/adapters/question_data.py` protocols (`MatchDataClient`, `Narrative
 
 **Local fixture bridge:** when a question starts, capture the current lab prefix and upload that immutable prefix + metadata to a dev-only snapshot endpoint on fake ETL; obtain a content-addressed ID. Fake ETL computes its supported standard stats and serves history for that ID. Publish the same prefix-derived ID/context to fake narrative through an explicit test bridge, or let the fake narrative read that snapshot from fake ETL. No full recording/future suffix is uploaded. The backend chat service must not calculate standard stats. Bound snapshot retention and payload size; mark the mechanism synthetic and local-only. This bridge is a replacement point for a real ETL snapshot/watermark contract.
 
-### 2. Fake neutral recap archive
+### Fake neutral recap archive
 
 Add `backend/fake_question_data.py` / `backend/fake_recaps.py` (or a small `backend/fake_services/` package) for the fake-service implementation, wired into `fakes.py`. Reuse canonical event models, not the legacy hardcoded RVR/FGU normaliser.
 
@@ -67,7 +67,7 @@ Build deterministic neutral recap fixtures from only the captured prefix. Apply 
 
 Resolve active blocks **as of the question cursor**, not by their eventual current supersession status. A future parent must not hide a child that was active when the question was asked. Keep archive pagination so the agent can retrieve older minutes or children. A compact interval with incomplete upstream coverage is flagged, not silently called complete.
 
-### 3. Question service and Microsoft Agent Framework agent
+### Question service and Microsoft Agent Framework agent
 
 Add `backend/agents/question.py`, `backend/agents/question_instructions.py`, `backend/services/questions.py`, and `backend/question_factory.py` as the composition root.
 
@@ -79,7 +79,7 @@ Add `backend/agents/question.py`, `backend/agents/question_instructions.py`, `ba
 - Suggested configurable limits: 2,000-character input; recent 12 chat turns; 6 tool calls plus the SDK function-tool iteration cap; 100 events per page; bounded total event/recap evidence; 60-second overall question timeout; existing `AGENT_MAX_REPAIRS=3` for custom planning. A broad custom aggregate must process complete relevant history deterministically or report unavailable, never count a truncated search page.
 - Fixture mode uses explicit agent doubles through the same service contracts. Local mode uses Microsoft Agent Framework and current ignored model settings. Report mode in UI; no silent fixture fallback on model failure.
 
-### 4. Persistence, routes and Track handoff
+### Persistence, routes and Track handoff
 
 Add `backend/repositories/questions.py`, `migrations/006_questions.sql`, `backend/routes/questions.py`; wire through `app.py` / `question_factory.py`.
 
@@ -91,7 +91,7 @@ Track is idempotent and ownership-checked. Under lab's event lock, register the 
 
 Reset/upload gives a new run ID. Old chat/offers must not appear in the new run or accept Track; do not globally erase another profile's history. Same-run restart restores saved conversation and cards. The current single-process replay/connection limit remains explicit.
 
-### 5. Lab UI
+### Lab UI
 
 Add `frontend/lab/chat-api.js`, `chat-controller.js`, `chat-view.js`; minimal HTML/CSS additions for a **Questions** tab alongside rule preparation. Show profile selection, short messages, as-of clock, clarification replies, stat offer + Track button, tracked state, and a small synthetic/model-mode label. Restore session and conversation on refresh; takeover shows a reconnect message. No rewind/video/web UI. Use DOM text nodes for every event/model string.
 
