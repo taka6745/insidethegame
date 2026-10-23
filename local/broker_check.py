@@ -16,9 +16,11 @@ import httpx
 from azure.eventhub import EventData
 from azure.eventhub.aio import EventHubProducerClient
 
-DAB = os.getenv('ETL_GRAPHQL_URL', 'http://etl-dab:5000/graphql')
-BACKEND = os.getenv('BACKEND_URL', 'http://backend:8000')
-OWNERS = ('http://etl-stream:8000', 'http://narrative-live:8000', BACKEND)
+from demo_control import CONSUMERS, OWNER
+from settings import ETL_GRAPHQL
+
+DAB = os.getenv('ETL_GRAPHQL_URL', ETL_GRAPHQL)
+BACKEND = OWNER['backend'].url
 KINDS = ['kick_off', 'pass', 'pass', 'shot', 'pass', 'goal', 'kick_off', 'pass', 'foul', 'pass']
 QUERY = '''query ($m: String!, $s: Int!) {
   matches(filter: {matchId: {eq: $m}}) { items { matchId status fixture teams { items { contestantId } } } }
@@ -118,8 +120,9 @@ async def main():
             await until('backend match list', listed)
             print('PASS backend lists the probe match from its MA1', flush=True)
         finally:
-            for owner in OWNERS:  # The probe's MA1 reached every consumer of the hub.
-                (await http.post(owner + '/admin/matches/purge', json={'match_id': match_id})).raise_for_status()
+            for owner in CONSUMERS:  # The probe's MA1 reached every consumer of the hub.
+                (await http.post(owner.url + '/admin/matches/purge', json={'match_id': match_id},
+                                 headers=owner.headers)).raise_for_status()
         data = await read(http, match_id, len(KINDS))
         left = {k: len(v['items']) for k, v in data.items() if k not in ('executeStatsAtSeq', 'statDefinitions')}
         assert not any(left.values()) and data['executeStatsAtSeq'] == [], left

@@ -19,8 +19,7 @@ from backend.models.events import Event
 from backend.repositories.matches import MatchRepository
 from backend.services.match_registry import MatchRegistry
 from backend.store import Store
-
-OWNERS = ('http://backend:8000', 'http://etl-stream:8000', 'http://narrative-live:8000')
+from demo_control import CONSUMERS
 
 
 def messages(match_id, count):
@@ -66,11 +65,12 @@ async def main():
     finally:
         consumer.cancel()
         async with httpx.AsyncClient(timeout=20) as client:
-            for owner in OWNERS:  # The probe's MA1 reached every consumer of the hub.
+            for owner in CONSUMERS:  # The probe's MA1 reached every consumer of the hub.
                 try:
-                    await client.post(owner + '/admin/matches/purge', json={'match_id': match_id})
+                    await client.post(owner.url + '/admin/matches/purge', json={'match_id': match_id},
+                                      headers=owner.headers)
                 except httpx.HTTPError:
-                    print(f'WARN could not purge the probe at {owner}', flush=True)
+                    print(f'WARN could not purge the probe at {owner.name}', flush=True)
         with store.connect() as conn:
             conn.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(store.schema)))
         store.close()

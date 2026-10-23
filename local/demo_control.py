@@ -2,25 +2,41 @@
 
 CLI (local): `purge` every match from every owner; `start [fixture…]` purges, then starts feed runs from 00:00.
 HTTP (`serve`, behind the frontend's public /demo-api/): start the configured demo, cancel it, read its state.
-Purge order follows local/contracts.md §5: feed, ETL, engine, backend. Configuration stays."""
+Purge order (local/contracts/README.md): feed, ETL, engine, backend. Configuration stays."""
 import argparse
 import json
 import os
 import threading
-from concurrent.futures import ThreadPoolExecutor
 import time
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
 import httpx
 
+
+@dataclass(frozen=True)
+class Owner:
+    """A service that keeps per-match rows: its base URL and optional admin token."""
+    name: str
+    url: str
+    token: str | None = None
+
+    @property
+    def headers(self):
+        return {'Authorization': f'Bearer {self.token}'} if self.token else {}
+
+
 FEED = os.environ.get('DEMO_FEED_URL', 'http://feed:8000')
-OWNERS = (('feed', FEED + '/admin/matches/purge', None),
-          ('etl', os.environ.get('ETL_ADMIN_URL', 'http://etl-stream:8000') + '/admin/matches/purge',
-           os.environ.get('ETL_ADMIN_TOKEN')),
-          ('engine', os.environ.get('ENGINE_ADMIN_URL', 'http://narrative-live:8000') + '/admin/matches/purge',
-           os.environ.get('ENGINE_ADMIN_TOKEN')),
-          ('backend', os.environ.get('BACKEND_URL', 'http://backend:8000') + '/admin/matches/purge', None))
+OWNERS = (Owner('feed', FEED),
+          Owner('etl', os.environ.get('ETL_ADMIN_URL', 'http://etl-stream:8000'), os.environ.get('ETL_ADMIN_TOKEN')),
+          Owner('engine', os.environ.get('ENGINE_ADMIN_URL', 'http://narrative-live:8000'),
+                os.environ.get('ENGINE_ADMIN_TOKEN')),
+          Owner('backend', os.environ.get('BACKEND_URL', 'http://backend:8000')))
+OWNER = {owner.name: owner for owner in OWNERS}
+CONSUMERS = OWNERS[1:]  # every owner but the feed: the Event Hubs consumers
+
 
 def _number(name, default):
     """An env override of the default's type (seconds are floats, so `0.5` works)."""
@@ -58,13 +74,8 @@ class SeedStale(RuntimeError):
     """A seed this pipeline cannot restore (another format or owner schema, or another start point)."""
 
 
-def owner_url(name, path):
-    url, token = next((u, t) for n, u, t in OWNERS if n == name)
-    return url.removesuffix('/admin/matches/purge') + path, ({'Authorization': f'Bearer {token}'} if token else {})
-
-
 def owner_call(http, name, path, body):
-    url, headers = owner_url(name, path)
+    url, headers = OWNER[name].url + path, OWNER[name].headers
     response = http.post(url, json=body, headers=headers) if name != 'etl' or path.endswith('restore') else \
         http.get(url + f"?match_id={body['match_id']}", headers=headers)
     if response.status_code >= 400:
@@ -305,16 +316,14 @@ def record(http, point, from_point=None, log=print):
 
 
 def purge_owner(http, owner, target, log=print):
-    name, url, token = owner
-    headers = {'Authorization': f'Bearer {token}'} if token else {}
     for _ in range(PURGE_RETRIES):
-        response = http.post(url, json=target, headers=headers)
+        response = http.post(owner.url + '/admin/matches/purge', json=target, headers=owner.headers)
         if response.status_code != 503:
             break
         time.sleep(PURGE_RETRY_SECONDS)
     response.raise_for_status()
     body = response.json()
-    log(f"Purged {name}: {len(body['match_ids'])} matches {body['purged']}")
+    log(f"Purged {owner.name}: {len(body['match_ids'])} matches {body['purged']}")
 
 
 def purge(http, target, owners=OWNERS, log=print):
@@ -483,7 +492,7 @@ def app(http=None, clock=time.monotonic):
             # finished runs when it starts the demo. Joined before the new runs are released, so viewers only ever
             # list the new three.
             stale = [r['match_id'] for r in finished if r['match_id'] not in swept]
-            cleanup = cleaner.submit(purge_matches, http, stale, OWNERS[1:], lambda _: None)
+            cleanup = cleaner.submit(purge_matches, http, stale, CONSUMERS, lambda _: None)
 
             def cleaned():
                 try:
@@ -519,11 +528,8 @@ def app(http=None, clock=time.monotonic):
         except httpx.HTTPError:
             return False
 
-    backend_url = OWNERS[3][1].removesuffix('/admin/matches/purge')
-    checks = {'feed': (FEED + '/health', None),
-              'etl': (OWNERS[1][1].removesuffix('/admin/matches/purge') + '/health', OWNERS[1][2]),
-              'engine': (OWNERS[2][1].removesuffix('/admin/matches/purge') + '/health', None),
-              'backend': (backend_url + '/health', None)}
+    backend_url = OWNER['backend'].url
+    checks = {o.name: (o.url + '/health', o.token) for o in OWNERS}
     pool = ThreadPoolExecutor(max_workers=len(checks))
 
     def wake():
@@ -589,7 +595,7 @@ def app(http=None, clock=time.monotonic):
         if not stale or work['pending']:
             return []
         try:
-            purge_matches(http, stale, OWNERS[1:], lambda _: None)
+            purge_matches(http, stale, CONSUMERS, lambda _: None)
         except Exception as exc:  # noqa: BLE001 - the next round or the next start retries
             print(f'Sweep failed: {type(exc).__name__}', flush=True)
             return []
@@ -661,10 +667,10 @@ def app(http=None, clock=time.monotonic):
         with serial:
             runs = feed('GET', '/runs')
             if runs:  # the feed first (nothing new reaches the others), then the others at once
-                purge_owner(http, OWNERS[0], {'all': True}, lambda _: None)
-                with ThreadPoolExecutor(max_workers=len(OWNERS) - 1) as others:
+                purge_owner(http, OWNER['feed'], {'all': True}, lambda _: None)
+                with ThreadPoolExecutor(max_workers=len(CONSUMERS)) as others:
                     for future in [others.submit(purge_owner, http, o, {'all': True}, lambda _: None)
-                                   for o in OWNERS[1:]]:
+                                   for o in CONSUMERS]:
                         future.result()
                 swept.clear()  # the feed no longer lists them either
             return {'cancelled': [r['match_id'] for r in runs]}

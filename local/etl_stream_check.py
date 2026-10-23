@@ -5,9 +5,8 @@ from urllib.request import Request, urlopen
 
 from azure.servicebus import ServiceBusClient
 
-GRAPHQL = 'http://etl-dab:5000/graphql'
-SERVICEBUS = ('Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;'
-              'SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;')
+from settings import ETL_GRAPHQL, SERVICEBUS_CONNECTION
+
 QUERY = '''{ matches(first: 1) { items { matchId } } rawEvents(first: 1) { items { id } }
   keyEvents(first: 1) { items { id } } minuteStats(first: 1) { items { timeMin } }
   matchStatsAsOfs(first: 1) { items { minuteLabel } }
@@ -20,7 +19,7 @@ QUERY = '''{ matches(first: 1) { items { matchId } } rawEvents(first: 1) { items
 
 
 def graphql():
-    request = Request(GRAPHQL, json.dumps({'query': QUERY}).encode(), {'Content-Type': 'application/json'})
+    request = Request(ETL_GRAPHQL, json.dumps({'query': QUERY}).encode(), {'Content-Type': 'application/json'})
     with urlopen(request, timeout=10) as response:
         body = json.load(response)
     assert not body.get('errors'), body['errors']
@@ -37,7 +36,7 @@ def main():
             if time.monotonic() > deadline:
                 raise
             time.sleep(3)
-    with ServiceBusClient.from_connection_string(SERVICEBUS) as client, \
+    with ServiceBusClient.from_connection_string(SERVICEBUS_CONNECTION) as client, \
             client.get_subscription_receiver('match-notifications', 'narrative-live') as receiver:
         print(f'PASS narrative-live subscription readable ({len(receiver.peek_messages(max_message_count=10))} peeked)')
 

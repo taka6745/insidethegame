@@ -104,7 +104,7 @@ services:
     env_file:
       - path: ../.local/backend-llm.env
         required: false
-      # DECISION_*: Microsoft-Decision-1 for "Follow this story?" offers (PLAN.md §10.2 D5b); without it the
+      # DECISION_*: Microsoft-Decision-1 for "Follow this story?" offers; without it the
       # local model answers the yes/no. Never printed.
       - path: ../.local/decision.env
         required: false
@@ -117,7 +117,7 @@ services:
       QUESTION_MAX_ACTIVE: ${QUESTION_MAX_ACTIVE:-4}
       ENABLE_DEV_FEED: "1"
       ENABLE_FILTER_LAB: "1"
-      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed adapter (PLAN.md §10.6); a production release leaves it off
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed adapter; a production release leaves it off
       ACCOUNTS_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/accounts
       MATCH_APP_DATABASE_URL: postgresql://itg:local-development-only@postgres:5432/matchapp
       # Everything the backend knows about a match: the stream, ETL GraphQL (DAB) and its own stores.
@@ -187,12 +187,12 @@ services:
       ETL_SERVICEBUS_CONNECTION_STRING: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
       ETL_NOTIFICATIONS_TOPIC: match-notifications
       ETL_ADMIN_PORT: "8000"  # Health and POST /admin/matches/purge; not published to the host.
-      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore (PLAN.md §10.6)
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore
     depends_on:
       etl-sql-init: {condition: service_completed_successfully}
       broker-ready: {condition: service_completed_successfully}
 
-  # Luke's narrative engine: ETL notifications (narrative-live) → the local model → one message per
+  # Narrative engine: ETL notifications (narrative-live) → the local model → one message per
   # narrative on `narratives`, for the backend's active audience buckets. History GraphQL on :18012.
   narrative-live:
     build: {context: ../narrative-engine}
@@ -215,7 +215,7 @@ services:
       ETL_GRAPHQL_URL: http://etl-dab:5000/graphql
       SERVICEBUS_NOTIFICATIONS: "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
       NOTIFICATIONS_SUBSCRIPTION: narrative-live
-      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore (PLAN.md §10.6)
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # demo-only seed export/restore
       # Model calls in flight across all matches. Kept below the shared local model's capacity so
       # viewer questions (same model) get a slot quickly; see local/README.md.
       MODEL_CONCURRENCY: ${NARRATIVE_MODEL_CONCURRENCY:-2}
@@ -273,7 +273,7 @@ services:
     build: {context: ../user-backend, target: runtime}
     profiles: [backend]
     command: [python, /checks/demo_control.py, serve]
-    # Seeds (PLAN.md §10.6) are recorded here locally; ignored like the rest of .local/.
+    # Seeds are recorded here locally; ignored like the rest of .local/.
     volumes: ["./demo_control.py:/checks/demo_control.py:ro", "../.local/seeds:/seeds"]
     depends_on:
       feed: {condition: service_healthy}
@@ -300,7 +300,7 @@ services:
       FEED_EVENTHUB_CONNECTION_STRING: "Endpoint=sb://eventhubs;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
       FEED_EVENTHUB_NAME: match-events
       FEED_ALLOW_SEEK: ${FEED_ALLOW_SEEK:-0}  # dev only
-      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # seed recording and seeded starts (PLAN.md §10.6)
+      DEMO_SEEDS: ${DEMO_SEEDS:-1}  # seed recording and seeded starts
     volumes:
       - ../data-generation/recordings:/recordings:ro
       # Optional packaged media, one root: {fixture}/hls/match.m3u8, found per recording; a fixture
