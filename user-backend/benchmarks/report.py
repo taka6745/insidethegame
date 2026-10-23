@@ -8,15 +8,15 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from .cases import cases
-from .correctness import FIXTURE, expected_trace
+from benchmarks.cases import cases
+from benchmarks.correctness import FIXTURE, expected_trace
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--performance', type=Path, default=Path('.local/benchmarks/performance'))
     parser.add_argument('--agents', type=Path, default=Path('.local/benchmarks/agents-initial/report.json'))
-    parser.add_argument('--output', type=Path, default=Path('user-backend/benchmarks/results'))
+    parser.add_argument('--output', type=Path, default=Path('.local/benchmarks/report'))
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     perf = json.loads((args.performance / 'report.json').read_text())

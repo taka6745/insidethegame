@@ -22,7 +22,7 @@ def main():
     parser.add_argument('--quality', type=Path, required=True)
     parser.add_argument('--conversations', type=Path)
     parser.add_argument('--serial', type=Path)
-    parser.add_argument('--output', type=Path, default=Path(__file__).parent / 'results')
+    parser.add_argument('--output', type=Path, default=Path('.local/benchmarks/agents-improved'))
     args = parser.parse_args()
     baseline, quality = [json.loads(path.read_text()) for path in (args.baseline, args.quality)]
     # The first quality process started before the missing-metrics fix. A failed

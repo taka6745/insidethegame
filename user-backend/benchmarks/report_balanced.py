@@ -6,7 +6,7 @@ import math
 import statistics
 from pathlib import Path
 
-from .balanced_cases import balanced_cases
+from benchmarks.balanced_cases import balanced_cases
 
 
 def percent(rows, key):
@@ -25,7 +25,7 @@ def p95(values):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', type=Path, required=True)
-    parser.add_argument('--output', type=Path, default=Path(__file__).parent / 'results')
+    parser.add_argument('--output', type=Path, default=Path('.local/benchmarks/balanced'))
     args = parser.parse_args()
     report = json.loads(args.input.read_text())
     cases = balanced_cases()
