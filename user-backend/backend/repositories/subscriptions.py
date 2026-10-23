@@ -57,7 +57,7 @@ class SubscriptionRepository:
 
     def follow(self, token, match_id, spec, topic_id, seq, audience, per_minute, bucket_id=None):
         """(follow, created). Following the active topic again returns it; another active follow is 409.
-        `match_id` is the followed match (another live match of the demo for a cross-match follow, written for
+        `match_id` is the followed match (another live match for a cross-match follow, written for
         `bucket_id` of that match's catalogue); the viewer's session may belong to another."""
         with self.store.connect() as conn:
             session = self._session(conn, token)

@@ -1,12 +1,6 @@
-"""Generate backend/contracts/spadl-reference.json from the ETL SPADL contract and converter.
-
-Enums, field meanings and zone rules come from etl/contracts/spadl-action.schema.json; the Opta
-source of each type, result and body part is found by probing etl/reference/spadl.py's own rules
-(names from etl/contracts/opta-codes.json, else the converter's constant names). Nothing is
-hand-copied; tests/test_spadl_reference.py fails when the file is stale.
-
-    python -m devtools.spadl_reference        (from user-backend/)
-"""
+"""Generate backend/contracts/spadl-reference.json from etl/contracts/spadl-action.schema.json and the Opta source
+of each type, result and body part probed from etl/reference/spadl.py. tests/test_spadl_contract.py fails when the
+file is stale. Run `python -m devtools.spadl_reference` from user-backend/."""
 import hashlib
 import json
 import re

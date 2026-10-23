@@ -1,8 +1,8 @@
-"""Story-follow triggers (engine stream F2): adds the tunables the engine's trigger pipeline reads to existing rows.
+"""Story-follow triggers: adds the tunables the engine's trigger pipeline reads to existing rows.
 
-- `subscriptions.limits.pivotal_key_types`: key event types that bypass a topic's minimum gap (decision D4).
+- `subscriptions.limits.pivotal_key_types`: key event types that bypass a topic's minimum gap.
 - `subscriptions.decision.min_confidence` 0.5 → 0.3 where still the seed: Decision-1 spreads a four-level score's
-  probability, so a clear move (a goal for the followed team: score 2.4) came with confidence 0.45 (live, 22 Oct).
+  probability, so a clear move (a goal for the followed team: score 2.4) came with confidence 0.45.
 - `storyline-policy.claims`: the decision-model questions and thresholds that replace the engine's causal phrase
   list, from migrations/seeds/storyline-policy.json (026 seeds a fresh store with them already).
 Keys already present (a /dev/ edit) are kept; a changed row gets a new revision.

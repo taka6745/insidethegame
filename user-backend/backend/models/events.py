@@ -1,6 +1,6 @@
 """Provider-independent event contract. Adapters own vendor key mappings.
 
-It is the `event` of MatchEvent v2 (local/contracts.md §2): strict, extra fields forbidden.
+It is the `event` of MatchEvent v2 (local/contracts/README.md §2): strict, extra fields forbidden.
 """
 from typing import Annotated, Literal
 

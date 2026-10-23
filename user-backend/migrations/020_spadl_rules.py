@@ -1,4 +1,4 @@
-"""Custom rules move from canonical events to SPADL actions (2026-10-21).
+"""Custom rules move from canonical events to SPADL actions.
 
 Old rules filtered MatchEvent v2 fields (event_type, outcome, body_part); new rules filter SPADL
 (action_type, result, bodypart, shot_outcome, zones). This migration

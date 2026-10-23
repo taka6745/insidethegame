@@ -3,7 +3,7 @@
 This is a transfer check across known football/filter semantics, not a fully
 held-out new-domain evaluation. Runtime prompts remain frozen while it runs.
 """
-from .cases import cases
+from benchmarks.cases import cases
 
 # Gold case number, independently written request, optional short clarification.
 REQUESTS = [

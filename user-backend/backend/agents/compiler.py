@@ -2,7 +2,7 @@
 from backend.adapters.llm import JsonModel
 from backend.models.rules import Rule
 from backend.models.actions import SpadlAction
-from .models import Goal
+from backend.agents.models import Goal
 
 
 class RuleCodingAgent:

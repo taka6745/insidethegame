@@ -1,9 +1,9 @@
 """Question contracts: a snapshot is one (matchId, seq) point, not just the football clock."""
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from .clarifications import FollowUpQuestion
-from .actions import MAX_MATCH_ACTIONS, SpadlAction
-from .events import MAX_MATCH_EVENTS, Event
+from backend.models.clarifications import FollowUpQuestion
+from backend.models.actions import MAX_MATCH_ACTIONS, SpadlAction
+from backend.models.events import MAX_MATCH_EVENTS, Event
 
 class Strict(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -51,7 +51,7 @@ class QuestionDraft(Strict):
     evidence_ids: list[str] = Field(default_factory=list, max_length=20)
     replay_items: list[ReplayItem] = Field(default_factory=list, max_length=36)  # replay_clips.MAX_ITEMS
     refine_offer: str | None = Field(default=None, max_length=200)
-    # A request about several live matches (PLAN.md §12 M8): the service answers it from each of these, in turn.
+    # A request about several live matches: the service answers it from each of these, in turn.
     per_match: list[str] = Field(default_factory=list, max_length=5)
 
     @model_validator(mode='after')
@@ -73,10 +73,10 @@ class QuestionReply(QuestionDraft):
     replay: dict | None = None
     # Token counts, model calls and seconds for this answer; no model or provider identity.
     usage: dict | None = None
-    # Set when the question named another live match of the demo: the answer comes from that match, at its own
+    # Set when the question named another live match: the answer comes from that match, at its own
     # position (services/cross_match.header).
     other_match: dict | None = None
-    # "Follow this story?" (PLAN.md §10.2 D5b): {prompt, other_match}; the viewer sets the follow up themselves.
+    # "Follow this story?": {prompt, other_match}; the viewer sets the follow up themselves.
     follow_offer: dict | None = None
     # One answer per match for a request about several (`per_match`), each marked with its match like any other.
     parts: list[dict] = Field(default_factory=list)

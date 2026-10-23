@@ -1,7 +1,7 @@
-"""Moment playlists (PLAN.md §10.2 D3, D6, D7): the key moments clipped for a followed topic (Decision-1, or clip-on
+"""Moment playlists: the key moments clipped for a followed topic (Decision-1, or clip-on
 from creation) or for a bucket's shared narratives (key-event clips), cut like replay clips (replay-timing) on the
 match's own stream and bounded to the viewer's snapshot. Each clip carries its moments' facts for its preview card."""
-from .replay_clips import plan_clips
+from backend.services.replay_clips import plan_clips
 
 CARD_FIELDS = ('id', 'kind', 'period', 'clock_seconds', 'minute_label', 'label', 'team_id', 'team_name',
                'player_name', 'score')
@@ -49,4 +49,4 @@ def moment_playlists(clips, facts, moments, periods, observed, timing, config, s
     return out
 
 
-follow_playlists = moment_playlists  # a followed topic's playlist (D3)
+follow_playlists = moment_playlists  # a followed topic's playlist

@@ -1,4 +1,4 @@
-"""Neutral example teams (23 Oct): `minute-summary` and `context-compression` examples name "Team A"/"Team B" and
+"""Neutral example teams: `minute-summary` and `context-compression` examples name "Team A"/"Team B" and
 no player, instead of real clubs (older seeds) or clubs that play in the demo. Where the active template's examples
 still name one of those, a new version swaps in the seed's examples (the rest of a /dev/ edit is kept, as is its
 source) and becomes active; the old one stays as a version. A fresh store gets the seeds at startup."""

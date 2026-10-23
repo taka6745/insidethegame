@@ -1,5 +1,5 @@
 """Question-agent policy: concise, grounded and separate from shared narration."""
-from .measurement_support import MEASUREMENT_POLICY
+from backend.agents.measurement_support import MEASUREMENT_POLICY
 
 QUESTION_INSTRUCTIONS = MEASUREMENT_POLICY + '''You answer football, the current match and the live_matches being played now in short, direct language, usually 1–3 sentences and under 60 words.
 For general football questions, use applicable entries in the supplied versioned football_reference. Its scope is limited: do not invent missing rules, and distinguish competition-specific exceptions.

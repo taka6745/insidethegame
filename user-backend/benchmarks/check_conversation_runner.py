@@ -3,8 +3,8 @@ import asyncio
 import unittest
 
 from backend.agents.models import Clarification, Goal, PlanOutcome
-from .balanced_cases import balanced_cases
-from .conversation_eval import evaluate_conversation
+from benchmarks.balanced_cases import balanced_cases
+from benchmarks.conversation_eval import evaluate_conversation
 
 GOAL = Goal(description="Count Mbappé headed contacts", player_ids=("mbappe",), body_part="head")
 READY = PlanOutcome(status="ready", source="fixture", goal=GOAL, rule=GOAL.target_rule("match"), model_calls=0)

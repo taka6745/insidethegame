@@ -15,12 +15,12 @@ from backend.models.events import DETAIL_FIELDS
 from backend.models.questions import MatchSnapshot
 from backend.models.stat_offers import split_pin_id, viewer_pin_id
 from backend.models.viewer_audience import bucket_label, supported_side
-from .live_viewers import LiveViewers
-from .locks import KeyedLocks
-from .cross_match import TEAM_FIELDS
-from .follow_clips import moment_playlists
-from .key_moments import feed_moments
-from .observed import observed
+from backend.services.live_viewers import LiveViewers
+from backend.services.locks import KeyedLocks
+from backend.services.cross_match import TEAM_FIELDS
+from backend.services.follow_clips import moment_playlists
+from backend.services.key_moments import feed_moments
+from backend.services.observed import observed
 
 log = logging.getLogger(__name__)
 STATUS_ORDER = {'live': 0, 'scheduled': 1, 'finished': 2}
@@ -164,10 +164,10 @@ class MatchProjection:
 
     async def _playlists(self, snapshot, facts, moments):
         """({topic_id: replay}, {bucket_id: replay}): each followed topic's moment clips and each bucket's key-event
-        clips at the snapshot (services/follow_clips; PLAN.md §10.2 D3, D6, D7)."""
+        clips at the snapshot (services/follow_clips)."""
         service, match = self.service, self.match
         config = (await service.config.get('subscriptions')).clips
-        follows = service.subscriptions  # bucket clips (D7) need no follows
+        follows = service.subscriptions  # bucket clips need no follows
         topics, buckets = await asyncio.gather(
             asyncio.to_thread(follows.clips, snapshot, config.max_items) if follows else asyncio.sleep(0, {}),
             asyncio.to_thread(service.engine_narratives.clips, snapshot, config.max_items))
@@ -201,7 +201,7 @@ class MatchProjection:
                 tracked.append({**shared['calculations'][identifier], 'kind': 'custom',
                                 'pinned': True, 'pin_id': identifier})
             elif offer.get('unsupported'):
-                # A rule with no SPADL equivalent (migrations/020): shown, never counted.
+                # A rule with no SPADL equivalent: shown, never counted.
                 tracked.append({'id': identifier, 'label': offer['label'], 'value': None, 'available': False,
                                 'complete': False, 'unavailable_reason': offer['unsupported'], 'kind': 'custom',
                                 'pinned': True, 'pin_id': identifier})
@@ -221,7 +221,7 @@ class MatchProjection:
         follow = viewer.get('follow')
         source, follow_match, origin = shared, None, self
         if follow and follow.get('match_id') not in (None, self.match.match_id):
-            # A follow of another live match (PLAN.md §10.2): its narratives and clips at that match's own position,
+            # A follow of another live match: its narratives and clips at that match's own position,
             # written for the follow's bucket of that match, marked with that match's header.
             other = self.service.projections.get(follow['match_id'])
             source, origin = (other and other.shared) or {}, other
@@ -242,9 +242,9 @@ class MatchProjection:
             'snapshot_id': shared['snapshot_id'], 'profile': profile, 'audience': viewer['audience'],
             'audience_buckets': self.buckets, 'bucket_id': bucket_id, 'cards': [c for c in shown if c['id'] in keep] + tracked,
             'feed_mode': 'following' if follow else 'insights', 'follow': follow, 'narratives': narratives,
-            # A follower's moment clips: one playlist for the followed topic (PLAN.md §10.2 D3).
+            # A follower's moment clips: one playlist for the followed topic.
             'follow_playlist': source.get('follow_playlists', {}).get(follow['topic_id']) if follow else None,
-            # Everyone else: the key-event clips of their bucket's shared narratives (PLAN.md §10.2 D7).
+            # Everyone else: the key-event clips of their bucket's shared narratives.
             'moment_playlist': None if follow else shared.get('moment_playlists', {}).get(bucket_id),
             'follow_match': follow_match,
             'key_moments': shared.get('key_moments', [])}

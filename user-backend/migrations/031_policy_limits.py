@@ -1,4 +1,4 @@
-"""Round 14: the engine's remaining prompt limits and the follow chat's candidate cap become config.
+"""The engine's remaining prompt limits and the follow chat's candidate cap become config.
 
 - `storyline-policy.storylines`: `beats_shown`, `resolved_shown_minutes` and `author_match_indicators`, from
   migrations/seeds/storyline-policy.json (the engine requires them).

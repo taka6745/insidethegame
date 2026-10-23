@@ -1,4 +1,4 @@
-"""Tunables out of code and no viewer text in the shared follow state (22 Oct).
+"""Tunables out of code and no viewer text in the shared follow state.
 
 - `storyline-policy.claims.result`: the decision-model question that replaces the engine's result phrase list
   (from migrations/seeds/storyline-policy.json; 026 seeds a fresh store with it already).

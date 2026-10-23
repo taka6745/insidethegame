@@ -1,5 +1,5 @@
 """Match-local viewer selection: one of the match's enabled buckets; separate from account defaults."""
-from .audiences import BucketId, StrictModel
+from backend.models.audiences import BucketId, StrictModel
 
 
 class ViewerAudience(StrictModel):

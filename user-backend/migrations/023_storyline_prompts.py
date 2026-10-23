@@ -1,4 +1,4 @@
-"""Storylines (engine stream S3): the match-analyst role and narrative-author v5.
+"""Storylines: the match-analyst role and narrative-author v5.
 
 The seeds in migrations/prompts/ were the engine's match-analyst.v1 and narrative-author.v5, byte for byte (kept as
 match-analyst.v1.txt and narrative-author.v5.txt since 025 moved the seeds on). A fresh store is seeded at startup

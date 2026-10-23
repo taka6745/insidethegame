@@ -4,7 +4,7 @@ from typing import get_args
 
 from backend.models.actions import ActionType, Bodypart, PASS_FAMILY, Result, SaveKind, SHOT_FAMILY, ShotOutcome, Zone
 from backend.models.events import minute_label
-from .replay_clips import ReplayPlanError, plan_clips
+from backend.services.replay_clips import ReplayPlanError, plan_clips
 
 MAX_LISTED = 60  # Evidence rows returned to the agent per search.
 MAX_SEQUENCE_SECONDS = 15

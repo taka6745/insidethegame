@@ -1,7 +1,7 @@
-"""Demo build D3/D4 (2026-10-22): replay playback settings, served with every replay.
+"""Replay playback settings, served with every replay.
 
 `replay-timing.playback` holds the clip transitions (hold the last frame, then the sting video fades in over
-the cut and fades out; the asset path is config, see frontend/assets/league/PROVENANCE.md) and
+the cut and fades out; the asset is config, and 049 replaces this video with `builtin:league`) and
 slow motion around each clip's marked events. Both have an `enabled` flag; the viewer skips both under
 prefers-reduced-motion. A `playback` key already present (a /dev/ edit) is kept.
 """

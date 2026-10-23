@@ -3,7 +3,7 @@ from fastapi import APIRouter, Header, Path, Response
 from fastapi.responses import JSONResponse
 from pydantic import Field
 
-from ..models.audiences import AudienceConfig, AudienceSnapshot, StrictModel
+from backend.models.audiences import AudienceConfig, AudienceSnapshot, StrictModel
 
 Fixture = Path(pattern=r'^[a-z0-9-]{1,55}$')
 

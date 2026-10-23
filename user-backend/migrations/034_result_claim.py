@@ -1,4 +1,4 @@
-"""Round 16 live check: the result claim reads a half-time score as where the match stands.
+"""The result claim reads a half-time score as where the match stands.
 
 At half time the decision model took "Redcastle Town lead 1-0 at half-time" for how the match ended, so every
 period-end wrap-up that gave the score was dropped. `storyline-policy.claims.result.claim` gets the seed's

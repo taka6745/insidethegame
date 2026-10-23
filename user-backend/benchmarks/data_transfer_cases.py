@@ -1,11 +1,7 @@
-"""Frozen wording/catalogue transfer cases; no runtime skill or agent dependency.
-
-Sixteen stats inherit independent event-revision ledgers from the original gold
-corpus. Four controls request unavailable data. Fictional names/IDs test supplied
-catalogue grounding; this is not an unseen-domain or new-match benchmark.
-Apply remap_fixture() before event adaptation and model-context construction.
+"""Frozen wording/catalogue transfer cases: sixteen gold stats with fictional names/IDs plus four unavailable-data
+controls. Apply remap_fixture() before event adaptation and model-context construction.
 """
-from .cases import cases
+from benchmarks.cases import cases
 
 
 # Exact JSON string values only: event IDs, clocks, revisions and weights stay fixed.

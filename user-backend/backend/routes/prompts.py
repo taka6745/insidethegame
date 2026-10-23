@@ -1,8 +1,8 @@
 """Engine-facing prompt reads; version editing only behind the local dev flag."""
 from fastapi import APIRouter, Header, Path
 
-from ..models.prompts import Role, SavePrompt
-from .audiences import cached_json
+from backend.models.prompts import Role, SavePrompt
+from backend.routes.audiences import cached_json
 
 
 def prompt_router(service, *, enable_dev_feed):

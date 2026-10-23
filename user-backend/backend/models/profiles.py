@@ -3,7 +3,7 @@ from typing import Annotated
 
 from pydantic import Field, model_validator
 
-from .audiences import Key, StrictModel
+from backend.models.audiences import Key, StrictModel
 
 
 class DemoProfile(StrictModel):

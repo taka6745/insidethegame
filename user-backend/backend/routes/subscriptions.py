@@ -5,8 +5,8 @@ from fastapi import APIRouter, Header, Query
 
 from backend.models.events import MAX_MATCH_EVENTS
 from backend.models.subscriptions import FollowRequest
-from .audiences import cached_json
-from .questions import MessageRequest
+from backend.routes.audiences import cached_json
+from backend.routes.questions import MessageRequest
 
 
 def subscription_router(service):
@@ -37,7 +37,7 @@ def subscription_router(service):
     @router.get('/matches/{match_id}/subscription-targets',
                 responses={304: {'description': 'Targets unchanged; reuse the cached revision'}})
     async def targets(match_id: str, if_none_match: str | None = Header(default=None)):
-        """Read-only, for the narrative engine (local/contracts.md §8b)."""
+        """Read-only, for the narrative engine (local/contracts/README.md §8b)."""
         return cached_json(*await service.targets(match_id), if_none_match)
 
     return router

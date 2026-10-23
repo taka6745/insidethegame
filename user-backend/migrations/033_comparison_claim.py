@@ -1,4 +1,4 @@
-"""Round 16: the comparison claim reads the evidence as the writer did.
+"""The comparison claim reads the evidence as the writer did.
 
 Live drops showed the 030 wording rejecting comparisons a storyline outcome stated in words ("faded"), a single
 value called high, and a lower-is-more indicator read the right way. `storyline-policy.claims.comparison` gets the

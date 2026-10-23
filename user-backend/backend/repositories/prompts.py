@@ -1,8 +1,8 @@
 """Append-only prompt versions with an optimistic active pointer per role."""
 from pathlib import Path
 
-from ..domain import RuleError
-from ..models.prompts import ROLES, placeholders
+from backend.domain import RuleError
+from backend.models.prompts import ROLES, placeholders
 
 SEEDS = Path(__file__).parents[2] / 'migrations/prompts'  # Version 1 of each role; shipped with the migrations.
 ACTIVE = ('SELECT p.role,p.version,p.template,p.placeholders FROM narrative_prompt_active a '

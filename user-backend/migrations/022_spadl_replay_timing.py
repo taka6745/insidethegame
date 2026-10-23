@@ -1,4 +1,4 @@
-"""Replay timing keys move to SPADL (2026-10-21): clips are cut around SPADL actions and MA3 cards.
+"""Replay timing keys move to SPADL: clips are cut around SPADL actions and MA3 cards.
 
 Each old canonical key's seconds go to the SPADL types it covers; `goal`, `shot`, `card` and `foul`
 keep their names; keys with no SPADL action (offside, foul_won, corner_awarded) are dropped.

@@ -5,7 +5,7 @@ from typing import Literal, get_args
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 
-from .actions import ActionType, Bodypart, FIELD_LENGTH, FIELD_WIDTH, Result, SaveKind, ShotOutcome, SpadlAction, Zone
+from backend.models.actions import ActionType, Bodypart, FIELD_LENGTH, FIELD_WIDTH, Result, SaveKind, ShotOutcome, SpadlAction, Zone
 
 INDEX_FIELDS = ("action_type", "team_id", "player_id", "bodypart", "period", "result")
 # field -> (low, high); x/y are team-relative metres (the acting team attacks towards x = 105).
@@ -102,7 +102,7 @@ class AggregateRule(BaseModel):
 
     @property
     def calculation_id(self) -> str:
-        """SPADL rules (2026-10-21) start a new id space; migrations/020 maps the old event ids."""
+        """SPADL rules have their own id space (`spadl-v1`)."""
         terms = sorted({json.dumps(p.canonical(), sort_keys=True, separators=(",", ":")) for p in self.predicates})
         parts = ["spadl-v1", self.match_id, self.operation, self.sum_field, terms]
         if self.coverage != 'complete':

@@ -1,4 +1,4 @@
-"""Round 15: a viewer's "story so far" dropped as ungrounded is tried again; analyst labels face the intent check.
+"""A viewer's "story so far" dropped as ungrounded is tried again; analyst labels face the intent check.
 
 - `subscriptions.catch_up.retries`, from 024's seed (the engine requires it).
 - `storyline-policy.claims.intent.analyst` becomes true where the intent claim is still as seeded (an edited

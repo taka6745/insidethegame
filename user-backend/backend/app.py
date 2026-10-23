@@ -7,35 +7,35 @@ from contextlib import asynccontextmanager, suppress
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from .adapters.engine_history import EngineHistoryData
-from .adapters.match_data import EtlDabMatchData
-from .agents.subscription_planner import SubscriptionPlanner
-from .domain import RuleError
-from .repositories.audiences import AudienceRepository
-from .repositories.config import ConfigRepository
-from .repositories.engine_narratives import EngineNarratives
-from .repositories.matches import MatchRepository
-from .repositories.profiles import ProfileRepository
-from .repositories.prompts import PromptRepository
-from .repositories.questions import QuestionRepository
-from .repositories.subscriptions import SubscriptionRepository
-from .routes.admin import admin_router
-from .routes.audiences import audience_router
-from .routes.product import product_router
-from .routes.config import policy_router
-from .routes.prompts import prompt_router
-from .routes.subscriptions import subscription_router
-from .services.audiences import AudienceService
-from .services.config import ConfigService
-from .services.cross_match import CrossMatch
-from .services.match_registry import MatchRegistry
-from .services.product import ProductService
-from .services.prompts import PromptService
-from .services.questions import QuestionService
-from .services.subscriptions import SubscriptionService
-from .services.replay import ReplayBuilder
-from .store import Store
-from .adapters.llm import set_role_models
+from backend.adapters.engine_history import EngineHistoryData
+from backend.adapters.match_data import EtlDabMatchData
+from backend.agents.subscription_planner import SubscriptionPlanner
+from backend.domain import RuleError
+from backend.repositories.audiences import AudienceRepository
+from backend.repositories.config import ConfigRepository
+from backend.repositories.engine_narratives import EngineNarratives
+from backend.repositories.matches import MatchRepository
+from backend.repositories.profiles import ProfileRepository
+from backend.repositories.prompts import PromptRepository
+from backend.repositories.questions import QuestionRepository
+from backend.repositories.subscriptions import SubscriptionRepository
+from backend.routes.admin import admin_router
+from backend.routes.audiences import audience_router
+from backend.routes.product import product_router
+from backend.routes.config import policy_router
+from backend.routes.prompts import prompt_router
+from backend.routes.subscriptions import subscription_router
+from backend.services.audiences import AudienceService
+from backend.services.config import ConfigService
+from backend.services.cross_match import CrossMatch
+from backend.services.match_registry import MatchRegistry
+from backend.services.product import ProductService
+from backend.services.prompts import PromptService
+from backend.services.questions import QuestionService
+from backend.services.subscriptions import SubscriptionService
+from backend.services.replay import ReplayBuilder
+from backend.store import Store
+from backend.adapters.llm import set_role_models
 
 
 async def watch_models(config, interval=2.0):
@@ -106,21 +106,21 @@ def create_app(store, dab, *, narratives=None, narrative_url=None, narrative_tra
     app.include_router(prompt_router(prompts, enable_dev_feed=enable_dev_feed))
     app.include_router(policy_router(config))
     app.include_router(admin_router(registry))
-    if enable_demo_seeds:  # demo-only adapter (PLAN.md §10.6); a production release leaves DEMO_SEEDS off
-        from .demo.seeds import SeedRepository, demo_seed_router
+    if enable_demo_seeds:  # demo-only adapter; a production release leaves DEMO_SEEDS off
+        from backend.demo.seeds import SeedRepository, demo_seed_router
         app.include_router(demo_seed_router(registry, SeedRepository(store)))
     if enable_dev_feed:
-        from .adapters.health import HealthProbe
-        from .routes.config import config_router
-        from .routes.pipeline import pipeline_router
-        from .routes.profiles import profile_router
-        from .services.profiles import ProfileService
+        from backend.adapters.health import HealthProbe
+        from backend.routes.config import config_router
+        from backend.routes.pipeline import pipeline_router
+        from backend.routes.profiles import profile_router
+        from backend.services.profiles import ProfileService
         app.include_router(config_router(config))
         app.include_router(profile_router(ProfileService(ProfileRepository(store), audiences.repository)))
         app.include_router(pipeline_router(upstream_health and HealthProbe(upstream_health), registry))
     if enable_lab:
-        from .routes.lab import lab_router
-        from .routes.questions import question_router
+        from backend.routes.lab import lab_router
+        from backend.routes.questions import question_router
         app.include_router(lab_router(registry, planner, product, match_data))
         app.include_router(question_router(questions))
 
@@ -146,20 +146,20 @@ def create_app(store, dab, *, narratives=None, narrative_url=None, narrative_tra
 
 
 def from_env():
-    from .adapters.etl_dab import EtlDab
-    from .adapters.hls_media import HlsMedia
-    from .adapters.llm import model_configured
-    from .adapters.match_reference import data_reference
-    from .adapters.match_stream import MatchStream, NarrativeStream
-    from .agents.workflow import workflow_from_env
+    from backend.adapters.etl_dab import EtlDab
+    from backend.adapters.hls_media import HlsMedia
+    from backend.adapters.llm import model_configured
+    from backend.adapters.match_reference import data_reference
+    from backend.adapters.match_stream import MatchStream, NarrativeStream
+    from backend.agents.workflow import workflow_from_env
 
     planner = workflow_from_env(data_reference=data_reference(None))
-    from .adapters.decision import yes_no_from_env
+    from backend.adapters.decision import yes_no_from_env
 
     agent = follow_model = None
     if model_configured():
-        from .adapters.llm import LocalJsonModel
-        from .agents.question import QuestionAgent
+        from backend.adapters.llm import LocalJsonModel
+        from backend.agents.question import QuestionAgent
         agent = QuestionAgent()
         follow_model = LocalJsonModel.from_env(name='subscription_planner')
     events, narratives = MatchStream.from_env(), NarrativeStream.from_env()

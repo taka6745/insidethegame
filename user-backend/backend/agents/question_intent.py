@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 
 from backend.adapters.llm import LocalJsonModel
 from backend.models.clarifications import FollowUpQuestion
-from .measurement_support import MEASUREMENT_POLICY, measurement_support
+from backend.agents.measurement_support import MEASUREMENT_POLICY, measurement_support
 
 
 class QuestionIntent(BaseModel):

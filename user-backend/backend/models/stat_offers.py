@@ -1,5 +1,5 @@
 """Stable pin identity for ETL stats and shared custom calculations."""
-from .rules import Rule
+from backend.models.rules import Rule
 
 
 def stat_answer(offer):
@@ -20,8 +20,8 @@ def pin_id(offer):
 
 
 def viewer_pin_id(offer, match_id):
-    """A pin's id in a viewer's cards: `pin_id`, suffixed with the source match when the offer came from another
-    match of the demo (two matches' possession stats are different pins)."""
+    """A pin's id in a viewer's cards: `pin_id`, suffixed with the source match when the offer came from another live
+    match (two matches' possession stats are different pins)."""
     source = offer.get('match_id')
     return pin_id(offer) if source in (None, match_id) else f'{pin_id(offer)}@{source}'
 

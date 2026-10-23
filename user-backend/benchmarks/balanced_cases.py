@@ -1,10 +1,7 @@
-"""A frozen, matched-complexity prompt-quality cohort with scripted user feedback.
-
-Each intent has one independently authored gold rule/revision ledger in cases.py.
-Its three wordings differ in clarity, not intended calculation complexity. Where
-initial wording lacks information, that information is supplied only if asked.
+"""Frozen prompt-quality cohort: each cases.py gold intent in three wordings of differing clarity; missing
+information is supplied only if the agent asks.
 """
-from .cases import cases
+from benchmarks.cases import cases
 
 # gold case number, clear wording, average wording, poor wording, must clarify poor
 INTENTS = [

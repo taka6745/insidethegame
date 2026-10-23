@@ -1,4 +1,4 @@
-"""Moment clips in follows (PLAN.md §10.2 D3): a followed topic's playlist of moments Decision-1 judged worth a clip.
+"""Moment clips in follows: a followed topic's playlist of moments Decision-1 judged worth a clip.
 
 - `subscription_clips`: one row per (topic, key moment) Decision-1 judged worth a clip (the engine's `FollowClip`
   message; 039 renames `narrative_id` to `step_id`); match-scoped and purged with the match (its topic cascades too).

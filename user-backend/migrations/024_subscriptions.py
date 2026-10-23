@@ -1,4 +1,4 @@
-"""Story follows (local/contracts.md §8b): topics, subscriptions, delivered narratives, follow chat, tunables, prompts.
+"""Story follows (local/contracts/README.md §8b): topics, subscriptions, delivered narratives, follow chat, tunables, prompts.
 
 - `subscription_topics`: one generation unit per identical follow per match (shared by its followers).
 - `subscriptions`: a viewer's (conversation's) follows; at most one active per viewer (one per profile and match).
@@ -75,7 +75,7 @@ CREATE TABLE subscription_narratives (
 CREATE INDEX subscription_narratives_feed ON subscription_narratives (match_id, topic_id, bucket_id, period, clock_seconds);
 '''
 
-# The developer's wording (22 Oct): "Goal · {team} · {scorer}", "Red card · {player}", "Half time · {score}".
+# Labels: "Goal · {team} · {scorer}", "Red card · {player}", "Half time · {score}".
 LABELS = {'goal': 'Goal · {team} · {scorer}', 'own_goal': 'Own goal · {subject}', 'red_card': 'Red card · {player}',
           'second_yellow': 'Second yellow · {player}', 'penalty': 'Penalty · {team}',
           'penalty_missed': 'Penalty missed · {subject}', 'var_overturn': 'VAR · goal ruled out · {team}',
@@ -119,7 +119,7 @@ CONFIG = {
                   'timing': {'goal': 'goal', 'own_goal': 'goal', 'penalty': 'foul', 'penalty_missed': 'shot_penalty',
                              'red_card': 'card', 'second_yellow': 'card', 'var_overturn': 'goal'},
                   'max_items': 12, 'always_for': [], 'shared': True}},
-    # Pivotal moments every feed shows (developer decision D4, 21 Oct): goals with the scorer, red cards and second
+    # Pivotal moments every feed shows: goals with the scorer, red cards and second
     # yellows, penalties, VAR overturns, kick-off, half-time and full-time.
     'key-moment-feed': {
         'kinds': ['goal', 'own_goal', 'red_card', 'second_yellow', 'penalty', 'penalty_missed', 'var_overturn',

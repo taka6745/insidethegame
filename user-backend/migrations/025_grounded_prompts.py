@@ -1,4 +1,4 @@
-"""Grounded storylines: match-analyst v2 and narrative-author v6 (engine stream S3).
+"""Grounded storylines: match-analyst v2 and narrative-author v6.
 
 The seeds in migrations/prompts/ are those templates (the analyst's kept as match-analyst.v2.txt since 029), byte for byte, with unchanged placeholders. The analyst reads a
 side-by-side trend table and gives confidence as a level ("low", "medium", "high"); the author's prompt describes

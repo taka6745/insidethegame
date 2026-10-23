@@ -74,7 +74,7 @@ class EngineFollowClip(BaseModel):
 
 
 class EngineMomentClip(BaseModel):
-    """A key event's clip on the shared bucket narratives (contracts Output 2, `MomentClip`; PLAN.md §10.2 D7): the
+    """A key event's clip on the shared bucket narratives (contracts Output 2, `MomentClip`): the
     engine sends it for a key event of `subscriptions.clips.key_types` with `clips.shared` on, apart from the
     narratives, so their grounding never decides whether the clip shows."""
     model_config = ConfigDict(extra='ignore')

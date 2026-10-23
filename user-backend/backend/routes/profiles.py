@@ -3,7 +3,7 @@ from fastapi import APIRouter, Header
 from pydantic import Field
 
 from backend.models.profiles import DemoProfiles
-from .audiences import cached_json
+from backend.routes.audiences import cached_json
 
 
 class ReplaceProfiles(DemoProfiles):

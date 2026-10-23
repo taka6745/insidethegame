@@ -1,6 +1,6 @@
 """One yes/no question to a decision model: Microsoft-Decision-1 on Azure AI Foundry (SystemOne API, the engine's
 decisions/systemone envelope), else the local JSON model constrained to yes/no. Used for the "Follow this story?"
-offer (PLAN.md §10.2 D5b). DECISION_BASE_URL, DECISION_API_KEY, DECISION_MODEL, DECISION_PATH, DECISION_AUTH and
+offer. DECISION_BASE_URL, DECISION_API_KEY, DECISION_MODEL, DECISION_PATH, DECISION_AUTH and
 DECISION_MODEL_FIELD as the engine reads them; values are never logged."""
 import asyncio
 import json

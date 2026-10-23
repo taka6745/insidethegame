@@ -1,4 +1,4 @@
-"""Fictional league (PLAN.md §12 M6): the clip transition becomes the league's own CSS sting (`builtin:league`)
+"""Fictional league: the clip transition becomes the league's own CSS sting (`builtin:league`)
 instead of the third-party video. Changed only where `replay-timing.playback.transitions.asset` still holds the
 037 path; a /dev/ edit is kept. A changed row gets a new revision."""
 from psycopg.types.json import Jsonb

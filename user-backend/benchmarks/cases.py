@@ -1,12 +1,7 @@
-"""Hand-authored gold cases. Expected hits are explicit event/revision IDs.
-
-Rules are written in the canonical event vocabulary they were authored in and translated to SPADL
-(spadl_corpus.translate); an intent SPADL cannot express is an expected refusal or catalogue reuse.
-
-Never derive gold answers from the agent or production filter evaluator.
-Use `python -m benchmarks.correctness` to check every delivery and gold rule.
+"""Hand-authored gold cases: expected hits are explicit event/revision IDs, never derived from the agent or the
+production filter evaluator. Rules are translated to SPADL by spadl_corpus.translate.
 """
-from .spadl_corpus import translate
+from benchmarks.spadl_corpus import translate
 
 MATCH = "filter-lab-match"
 
@@ -30,7 +25,7 @@ def case(prompt, hits, quality="clear", operation="count", **terms):
 
 # All identifiers below refer to fixtures/filter-lab.json, including superseded
 # revisions. A missing revision contributes zero; deletions remove old values.
-# SPADL (2026-10-21): "passes" are the pass family, so taken corners (corner_crossed) count as passes;
+# SPADL: "passes" are the pass family, so taken corners (corner_crossed) count as passes;
 # the five pass-count intents gained their corner events. Only latest revisions carry an action.
 CASES = [
     case("Count all recorded headed touches by Mbappé", "e1 e2 e7 e13 e18 e21@2 e26", player_id="mbappe", body_part="head"),

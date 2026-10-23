@@ -8,9 +8,9 @@ from pydantic import ValidationError
 
 from backend.adapters.llm import ModelError
 from backend.models.rules import Rule
-from .models import Goal, PlanOutcome
-from .clarification import unresolved_player
-from .measurement_support import measure_decision
+from backend.agents.models import Goal, PlanOutcome
+from backend.agents.clarification import unresolved_player
+from backend.agents.measurement_support import measure_decision
 
 
 @dataclass(frozen=True)

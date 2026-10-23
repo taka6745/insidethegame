@@ -1,10 +1,10 @@
-"""Messages this service reads from Event Hubs `match-events` (local/contracts.md §2, ETL contracts)."""
+"""Messages this service reads from Event Hubs `match-events` (local/contracts/README.md §2, ETL contracts)."""
 from datetime import datetime
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from .events import Event
+from backend.models.events import Event
 
 MatchId = Annotated[str, Field(min_length=1, max_length=64, pattern=r'^[A-Za-z0-9][A-Za-z0-9_.-]*$')]
 

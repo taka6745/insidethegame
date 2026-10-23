@@ -12,11 +12,11 @@ from backend.domain import RuleError
 from backend.models.questions import QuestionDraft, QuestionReply
 from backend.models.rules import Rule
 from backend.models.stat_offers import pin_id, stat_answer, viewer_pin_id
-from .cross_match import header
-from .question_answers import UNAVAILABLE, model_catalogue, resolve_answer
-from .question_tools import QuestionTools
-from .locks import KeyedLocks
-from .replay import ReplayBuilder, ReplayTools
+from backend.services.cross_match import header
+from backend.services.question_answers import UNAVAILABLE, model_catalogue, resolve_answer
+from backend.services.question_tools import QuestionTools
+from backend.services.locks import KeyedLocks
+from backend.services.replay import ReplayBuilder, ReplayTools
 
 NO_MODEL = 'Questions are unavailable: no model is configured for this service.'
 # ETL trend windows (etl/contracts output 4) in words, for evidence labels.
@@ -32,8 +32,8 @@ class QuestionService:
         self.repository, self.registry, self.match_data, self.narratives = repository, registry, match_data, narratives
         self.agent, self.planner, self.config, self.timeout = agent, planner, config, timeout
         self.replays = replays or ReplayBuilder()
-        self.cross = cross  # services/cross_match.CrossMatch: questions and pins about the demo's other matches
-        self.decide, self._offers = decide, Window()  # adapters/decision: "Follow this story?" offers (D5b)
+        self.cross = cross  # services/cross_match.CrossMatch: questions and pins about the other live matches
+        self.decide, self._offers = decide, Window()  # adapters/decision: "Follow this story?" offers
         self._locks = KeyedLocks()  # Session takeover fencing, per match.
         self.session_started = None  # async callback(match_id, profile_id, viewer_id): a takeover closes that viewer's old socket.
         # One application-wide admission limit, across matches, profiles and takeovers.
@@ -171,7 +171,7 @@ class QuestionService:
         replay_config = await self.config.get('replay-timing')
         toolkit = QuestionTools(payload, self.match_data, self.narratives, self.planner, stats['stats'], compact,
                                 history, replay_config)
-        # The demo's live matches (teams, minute played): askable, and answerable as a list.
+        # The live matches (teams, minute played): askable, and answerable as a list.
         live = await self.cross.listing(here, None if info else payload.snapshot) if self.cross else []
         for entry in live:
             toolkit.evidence['match:' + entry['match_id']] = {
@@ -277,7 +277,7 @@ class QuestionService:
             document = offer['document']
             here = match = self.registry.get(match_id)
             if document.get('match_id') != row['match_id']:
-                # A stat from another live match of the demo (a cross-match answer's offer) is pinned from it.
+                # A stat from another live match (a cross-match answer's offer) is pinned from it.
                 if self.cross is None:
                     raise RuleError('wrong_match', 'This offer belongs to another match.', 409)
                 match = await self.cross.other(match_id, document.get('match_id'))

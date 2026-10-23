@@ -2,12 +2,11 @@
 import json
 
 from backend.adapters.llm import JsonModel
-from .models import Clarification, GoalDecision
-from .semantics import (GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS,
-                        DATA_GOAL_INSTRUCTIONS, DATA_STRUCTURED_INSTRUCTIONS)
-from .contracts import decision_contract, strict_decision_contract, decision_envelope_model
-from .data_skill import EventDataSkill
-from .measurement_support import MEASUREMENT_POLICY, measurement_support
+from backend.agents.models import Clarification, GoalDecision
+from backend.agents.semantics import GOAL_INSTRUCTIONS, STRUCTURED_GOAL_INSTRUCTIONS, DATA_GOAL_INSTRUCTIONS, DATA_STRUCTURED_INSTRUCTIONS
+from backend.agents.contracts import decision_contract, strict_decision_contract, decision_envelope_model
+from backend.agents.data_skill import EventDataSkill
+from backend.agents.measurement_support import MEASUREMENT_POLICY, measurement_support
 
 
 class GoalAgent:

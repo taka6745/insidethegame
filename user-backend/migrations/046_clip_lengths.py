@@ -1,4 +1,4 @@
-"""Clip lengths (PLAN.md §12 M7): clips of different moments ran very unevenly, a quick shot with a short lead-in
+"""Clip lengths: clips of different moments ran very unevenly, a quick shot with a short lead-in
 lasting a few seconds while a goal's move ran past twenty. `replay-timing.min_clip_seconds` (8 s) widens any shorter
 cut, and a goal keeps 5 s after the ball goes in (was 2 s, cutting the reaction). A key is changed only where it still
 holds its 016 seed value; /dev/ edits are kept. A changed row gets a new revision."""

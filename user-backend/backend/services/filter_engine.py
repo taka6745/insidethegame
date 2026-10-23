@@ -1,11 +1,5 @@
-"""Shared in-memory indexed calculations over SPADL actions. No database, network or generated exec.
-
-Actions are final once ETL stores them (finalSeq), so each is ingested once and never revised.
-
-Rules with the same non-clock predicates share one predicate evaluation. A
-compound index selects those families, then a clock index selects their windows.
-Changed result materialization still costs O(changed rules). Caller serializes
-mutations; this engine does not route results to individual viewers.
+"""Shared in-memory indexed calculations over final SPADL actions (each ingested once). No database,
+network or generated exec. Callers serialize mutations; invariants and costs: docs/components/services.md §3.
 """
 from collections import defaultdict
 from decimal import Decimal

@@ -6,8 +6,8 @@ import anyio
 from fastapi import APIRouter, Header, WebSocket, WebSocketDisconnect
 from backend.domain import RuleError
 from backend.models.viewer_audience import ViewerAudience
-from .audiences import cached_json
-from .questions import ViewerSessionRequest, MessageRequest
+from backend.routes.audiences import cached_json
+from backend.routes.questions import ViewerSessionRequest, MessageRequest
 
 
 async def stream_product(ws, service, match_id, token):

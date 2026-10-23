@@ -1,4 +1,4 @@
-"""Round 16 live check: an excerpt keeps its supported sentences.
+"""An excerpt keeps its supported sentences.
 
 One unsupported sentence dropped a whole excerpt, so a follower missed the equaliser's narrative.
 `storyline-policy.repair.author_trim` (seed: true) removes only the sentences whose claims still fail after

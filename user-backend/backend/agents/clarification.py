@@ -2,7 +2,7 @@
 import re
 import unicodedata
 
-from .models import Clarification, GoalDecision
+from backend.agents.models import Clarification, GoalDecision
 
 
 def normalize(text: str) -> str:

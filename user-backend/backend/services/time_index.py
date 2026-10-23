@@ -1,8 +1,5 @@
-"""Integer match-clock interval index; no scans of registered time windows.
-
-An interval is stored in disjoint segment-tree nodes. A point probes fifteen
-nodes and returns each matching rule once. The event contract bounds the clock
-to 0..12000 seconds; fractional rule bounds retain strict/inclusive semantics.
+"""Integer match-clock segment tree over 0..12000 s: a point probes fifteen nodes and returns each matching
+rule once. Fractional rule bounds keep strict/inclusive semantics.
 """
 from collections import defaultdict
 from math import ceil, floor

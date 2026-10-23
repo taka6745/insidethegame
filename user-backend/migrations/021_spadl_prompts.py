@@ -1,4 +1,4 @@
-"""Narrative prompts gain the SPADL glossary (narrative-author v4, minute-summary v2; engine stream S3).
+"""Narrative prompts gain the SPADL glossary (narrative-author v4, minute-summary v2).
 
 The seeds in migrations/prompts/ were those templates, byte for byte, with unchanged placeholders (the author's
 is kept as narrative-author.v4.txt since 023 moved its seed to v5).

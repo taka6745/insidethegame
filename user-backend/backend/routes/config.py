@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from backend.domain import RuleError
 from backend.models.config import ConfigName
-from .audiences import cached_json
+from backend.routes.audiences import cached_json
 
 
 class ReplaceConfig(BaseModel):

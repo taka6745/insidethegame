@@ -1,12 +1,12 @@
-"""Story follows (local/contracts.md §8b): a viewer follows one story per match; identical follows share a topic."""
+"""Story follows (local/contracts/README.md §8b): a viewer follows one story per match; identical follows share a topic."""
 import hashlib
 import json
 from typing import Annotated, Literal
 
 from pydantic import Field, model_validator
 
-from .events import MAX_MATCH_EVENTS
-from .questions import Strict
+from backend.models.events import MAX_MATCH_EVENTS
+from backend.models.questions import Strict
 
 Kind = Literal['storyline', 'team', 'player', 'theme']
 Id = Annotated[str, Field(pattern=r'^[A-Za-z0-9][A-Za-z0-9_:.-]{0,99}$')]
@@ -39,7 +39,7 @@ class FollowSpec(Strict):
 class FollowRequest(Strict):
     spec: FollowSpec
     seq: int | None = Field(default=None, ge=0, le=MAX_MATCH_EVENTS)  # the snapshot the viewer sees
-    # Another live match of the demo whose story this is (a cross-match option's `match_id`); its own position
+    # Another live match whose story this is (a cross-match option's `match_id`); its own position
     # bounds it, not `seq`.
     match_id: Id | None = None
 

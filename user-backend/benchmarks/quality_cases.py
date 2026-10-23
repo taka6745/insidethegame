@@ -3,7 +3,7 @@
 The original cases and recorded baseline remain unchanged. These are a separate
 quality cohort, not a retroactive improvement to the old benchmark score.
 """
-from .cases import cases
+from benchmarks.cases import cases
 
 PROMPTS = [
     "Track every headed contact Mbappé makes this match, including passes and shots.",

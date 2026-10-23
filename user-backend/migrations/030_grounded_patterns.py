@@ -1,4 +1,4 @@
-"""Live-check fixes (22 Oct): period-end wrap-ups, analyst claim checks and plain-words labels.
+"""Period-end wrap-ups, analyst claim checks and plain-words labels.
 
 - `subscriptions.limits.period_end_wrap_up` (from 024's seed): half and full time give every follow a wrap-up.
 - `storyline-policy.claims`: each claim gains `analyst` (also asked of the analyst's observations and resolves) and

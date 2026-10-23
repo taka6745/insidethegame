@@ -1,8 +1,8 @@
-"""Capture clips (PLAN.md §10.2 D6–D7).
+"""Capture clips.
 
 - `narrative_clips`: a key event's clip on the shared bucket narratives (the engine's `MomentClip` message), one
   row per (bucket, key moment); match-scoped, purged and seeded with the match.
-- `subscriptions.clips.always_for` (topic kinds clip-on from creation) and `.shared` (D7 on), from 024's seed where
+- `subscriptions.clips.always_for` (topic kinds clip-on from creation) and `.shared` (on), from 024's seed where
   missing; a /dev/ edit of either is kept. A changed row gets a new revision.
 """
 import importlib.util

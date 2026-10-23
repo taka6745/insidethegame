@@ -1,4 +1,4 @@
-"""Clip decision (PLAN.md §10.2 D3/D6): the question asks how relevant a moment is to the followed story, neutrally,
+"""Clip decision: the question asks how relevant a moment is to the followed story, neutrally,
 instead of how much followers would want to watch it. Changed only where `subscriptions.clips` still holds the 038
 wording and levels; a /dev/ edit of either is kept. A changed row gets a new revision."""
 from psycopg.types.json import Jsonb

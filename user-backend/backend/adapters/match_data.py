@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 
 from backend.domain import RuleError
 from backend.models.questions import MatchSnapshot, SnapshotInput
-from . import ma3
-from .etl_dab import EtlUnavailable
+from backend.adapters import ma3
+from backend.adapters.etl_dab import EtlUnavailable
 
 UNAVAILABLE = 'Live match data is temporarily unavailable. Please try again.'
 

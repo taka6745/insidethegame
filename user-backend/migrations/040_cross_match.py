@@ -1,6 +1,6 @@
-"""Cross-match reach and follow offers (PLAN.md §10.2 D5, D5b).
+"""Cross-match reach and follow offers.
 
-- `backend_config` rows `cross-match` (questions, pins and follows about the demo's other live matches) and
+- `backend_config` rows `cross-match` (questions, pins and follows about the other live matches) and
   `follow-offer` (the "Follow this story?" offer on answers); an existing row, a /dev/ edit, is kept.
 - `subscriptions.bucket_id`: the bucket a follow of another match is written for (that match's own catalogue; the
   viewer's bucket names positions in their own match). Null: the follower's own bucket, as before.

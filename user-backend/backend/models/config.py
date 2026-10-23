@@ -1,4 +1,4 @@
-"""Tunables served and edited under /dev/config/{table}; seeded by migrations/016_config.sql."""
+"""Tunables served and edited under /dev/config/{table}."""
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -35,10 +35,10 @@ class Presentation(Strict):
 
 class Transitions(Strict):
     """Between clips of a reel: hold the last frame, then the sting video fades in over the paused picture, the
-    cut happens under it, and it fades out as the next clip plays (viewer, migrations/037)."""
+    cut happens under it, and it fades out as the next clip plays (in the viewer)."""
     enabled: bool
     hold_seconds: float = Field(ge=0, le=5)
-    # A video under /assets/, or `builtin:<name>` for a sting the viewer draws itself (migrations/049).
+    # A video under /assets/, or `builtin:<name>` for a sting the viewer draws itself.
     asset: Annotated[str, Field(pattern=r'^(/assets/[a-z0-9/_-]{1,120}\.(mp4|webm)|builtin:[a-z-]{1,40})$')]
     asset_start_seconds: float = Field(ge=0, le=10)  # where in the asset the sting starts
     sting_seconds: float = Field(gt=0, le=10)        # how long it shows, fades included
@@ -47,7 +47,6 @@ class Transitions(Strict):
 
     @model_validator(mode='after')
     def cut_inside(self):
-        # The cut happens once the sting has faded in, and before it starts fading out.
         if not self.fade_seconds <= self.cut_seconds <= self.sting_seconds - self.fade_seconds:
             raise ValueError('cut_seconds must fall between the fade in and the fade out of sting_seconds')
         return self
@@ -77,11 +76,11 @@ class Replay(Strict):
     max_clips: int = Field(ge=1, le=50)
     max_seconds: float = Field(gt=0, le=1800)
     max_move_seconds: float = Field(gt=0, le=120)
-    # The shortest clip: a short lead-in on a quick action still shows enough to follow (046).
+    # The shortest clip: a short lead-in on a quick action still shows enough to follow.
     min_clip_seconds: float = Field(default=0.0, ge=0, le=60)
     merge_gap: float = Field(ge=0, le=30)
     max_items: int = Field(ge=1, le=36)  # QuestionDraft.replay_items accepts at most 36.
-    playback: Playback  # 037
+    playback: Playback
 
     @model_validator(mode='after')
     def lead_ins(self):
@@ -151,7 +150,7 @@ class FollowLimits(Strict):
     planner_turns_per_minute: int = Field(ge=1, le=120)         # per viewer
     follow_changes_per_minute: int = Field(ge=1, le=120)        # follows plus unfollows, per viewer
     planner_context_turns: int = Field(ge=1, le=50)             # earlier follow-chat turns the planner sees
-    period_end_wrap_up: bool                                    # half and full time fire every follow (030)
+    period_end_wrap_up: bool                                    # half and full time fire every follow
 
 
 class FollowCatchUp(Strict):
@@ -173,7 +172,7 @@ CLIP_KINDS = ('goal', 'own_goal', 'red_card', 'second_yellow', 'penalty', 'penal
 
 
 class FollowClips(Strict):
-    """Moment clips in a follow's playlist (037). On a key event of `key_types` the engine asks Decision-1 this
+    """Moment clips in a follow's playlist. On a key event of `key_types` the engine asks Decision-1 this
     score question per followed topic (in the same batched call as `decision`); its nearest level at or above `min_level` with at
     least `min_confidence`, the moment's clip joins the topic's playlist. `timing` lists the key-moment kinds that
     can be clipped and the replay-timing key that cuts each one."""
@@ -185,10 +184,10 @@ class FollowClips(Strict):
     min_confidence: float = Field(ge=0, le=1)
     timing: dict[Literal[CLIP_KINDS], Annotated[str, Field(pattern=r'^[a-z_]{1,40}$')]]
     max_items: int = Field(ge=1, le=50)  # newest clips kept in a playlist
-    # Topic kinds whose follows are clip-on from creation (041): a key event of `key_types` that concerns the topic
+    # Topic kinds whose follows are clip-on from creation: a key event of `key_types` that concerns the topic
     # clips without the score question. Empty: Decision-1 judges every clip.
     always_for: list[Literal['storyline', 'team', 'player', 'theme']] = Field(max_length=4)
-    # Key-event clips on the shared bucket narratives (041, PLAN.md §10.2 D7): every viewer's Insights.
+    # Key-event clips on the shared bucket narratives: every viewer's Insights.
     shared: bool
 
     @model_validator(mode='after')
@@ -209,8 +208,8 @@ class Subscriptions(Strict):
     suggestions: FollowSuggestions
     # Planner entity resolution: the share of a name's words a reply must match (0.5: half of them).
     min_name_match: float = Field(gt=0, le=1)
-    max_candidates: int = Field(ge=1, le=12)  # entities offered back when a name is ambiguous (031)
-    clips: FollowClips  # moment clips in a follow's playlist (037)
+    max_candidates: int = Field(ge=1, le=12)  # entities offered back when a name is ambiguous
+    clips: FollowClips  # moment clips in a follow's playlist
 
 
 MOMENT_KINDS = ('goal', 'own_goal', 'red_card', 'second_yellow', 'penalty', 'penalty_missed', 'var_overturn',
@@ -272,11 +271,11 @@ class StorylinesPolicy(Strict):
     key_event_boost: dict[Literal[KEY_TYPES], Annotated[float, Field(ge=0, le=5)]]
     focus_repeat_penalty: float = Field(ge=0, le=5)  # per appearance in the last focus_recent_steps steps
     focus_recent_steps: Count
-    beats_shown: int = Field(ge=1, le=20)             # latest beats per storyline in prompts (031)
+    beats_shown: int = Field(ge=1, le=20)             # latest beats per storyline in prompts
     resolved_shown_minutes: int = Field(ge=0, le=130)  # a resolved storyline stays in authors' prompts this long
     # Whole-match trend indicators an author always sees, flagged or not (the rest only when flagged).
     author_match_indicators: list[Annotated[str, Field(pattern=r'^[a-z_]{1,40}$')]] = Field(max_length=30)
-    reopen_within: int = Field(ge=-1, le=130)  # minutes a resolved storyline of the same label reopens (-1: never) (036)
+    reopen_within: int = Field(ge=-1, le=130)  # minutes a resolved storyline of the same label reopens (-1: never)
 
 
 class RepairPolicy(Strict):
@@ -295,19 +294,19 @@ class ClaimCheck(Strict):
     min_claim_probability: Share
     min_support_probability: Share
     repair: Annotated[str, Field(min_length=1, max_length=300)]  # the rewrite request's reason
-    analyst: bool  # also asked of the analyst's observations and resolves, against its inputs (030)
+    analyst: bool  # also asked of the analyst's observations and resolves, against its inputs
 
 
 class ClaimsPolicy(Strict):
     causal: ClaimCheck
     intent: ClaimCheck
-    result: ClaimCheck  # the match's result before the evidence shows it has ended (029)
-    comparison: ClaimCheck  # a comparison the numbers shown do not support in that direction (030)
-    score: ClaimCheck  # a score, or what a goal did to it, the ledger does not show (036)
+    result: ClaimCheck  # the match's result before the evidence shows it has ended
+    comparison: ClaimCheck  # a comparison the numbers shown do not support in that direction
+    score: ClaimCheck  # a score, or what a goal did to it, the ledger does not show
 
 
 class StorylinePolicy(Strict):
-    """Served to the narrative engine at GET /storyline-policy; seeded by migrations/026 (claims: 027, 029)."""
+    """Served to the narrative engine at GET /storyline-policy."""
     analysis: AnalysisPolicy
     storylines: StorylinesPolicy
     repair: RepairPolicy
@@ -315,7 +314,7 @@ class StorylinePolicy(Strict):
 
 
 class CrossMatch(Strict):
-    """Reach into the demo's other live matches (PLAN.md §10.2, 040): a question that names another match's team or
+    """Reach into the other live matches: a question that names another match's team or
     player is answered from that match, a stat from it can be pinned, and its storylines, teams and players can be
     followed. Its data is bounded by that match's own position, never this viewer's."""
     enabled: bool
@@ -326,7 +325,7 @@ class CrossMatch(Strict):
 
 
 class FollowOffer(Strict):
-    """The "Follow this story?" offer on a question's answer (PLAN.md §10.2 D5b, 040): for an answered question
+    """The "Follow this story?" offer on a question's answer: for an answered question
     that is not a statistic, Decision-1 answers this yes/no question; at or above `min_probability` the answer card
     offers to set up a follow from the question. Offers are optional: none when the decision is unavailable,
     slow or over `max_per_minute` (requests from this service; the deployment's limit is shared with the engine)."""
@@ -361,7 +360,7 @@ class BackendModels(Strict):
 
 
 class ModelRoles(Strict):
-    """Model per role, switched live (PLAN.md §12 M10, 047): the backend applies `backend` within seconds; the
+    """Model per role, switched live: the backend applies `backend` within seconds; the
     engine reads `engine` at GET /model-roles. `deployments` lists what the model endpoint offers, for the editor."""
     deployments: list[str] = Field(max_length=20)
     engine: EngineModels

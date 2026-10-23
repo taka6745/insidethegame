@@ -5,8 +5,8 @@ flags alone choose generation targets. Every change to a match's document bumps 
 which the narrative engine polls."""
 from psycopg.types.json import Jsonb
 
-from ..domain import RuleError
-from ..models.audiences import AudienceConfig
+from backend.domain import RuleError
+from backend.models.audiences import AudienceConfig
 
 DEFAULT = 'default'
 

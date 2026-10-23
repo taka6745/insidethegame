@@ -1,4 +1,4 @@
-"""Model per role and a length layer (PLAN.md §12 M10, M12).
+"""Model per role and a length layer.
 
 - `backend_config` row `models`: the model per engine and backend role, switched live under /dev/config/models.
   Empty deployments keep each service's own setting; an existing row (a /dev/ edit) is kept.

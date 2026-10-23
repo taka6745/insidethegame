@@ -1,4 +1,4 @@
-"""Cross-match reach (PLAN.md §10.2): which of the demo's other live matches a viewer's words name, and the small
+"""Cross-match reach: which of the other live matches a viewer's words name, and the small
 header that marks content from it. Another match's data is read at that match's own position (its live snapshot),
 never at the viewer's seq; access is per request, so no match's own narratives ever mention another."""
 import asyncio
@@ -6,7 +6,7 @@ import logging
 
 from backend.domain import RuleError
 from backend.models.events import minute_label
-from .names import coverage, rarity
+from backend.services.names import coverage, rarity
 
 log = logging.getLogger(__name__)
 TEAM_FIELDS = ('id', 'position', 'name', 'short_name', 'code', 'branding')
@@ -32,7 +32,7 @@ class CrossMatch:
         return await self.config.get('cross-match')
 
     def others(self, match_id):
-        """The other matches this service tracks now (the current demo's; a purge removes a match)."""
+        """The other matches this service tracks now (a purge removes a match)."""
         return [m for m in self.registry.matches.values() if m.match_id != match_id and not m.purged]
 
     async def other(self, match_id, other_id):

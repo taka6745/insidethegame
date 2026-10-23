@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import Field
 
-from .audiences import StrictModel
+from backend.models.audiences import StrictModel
 
 # The engine's roles, plus subscription-planner (this service's follow chat).
 Role = Literal['minute-summary', 'context-compression', 'match-analyst', 'narrative-author', 'subscription-planner',

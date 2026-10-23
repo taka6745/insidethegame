@@ -1,10 +1,5 @@
-"""The agent corpora on SPADL (2026-10-21).
-
-Gold intents were authored against canonical events. Their rules are translated with the saved-rule
-migration's vocabulary map (migrations/020_spadl_rules.py), so the corpora and saved rules share one
-definition; an intent with no SPADL equivalent (cards, touches) becomes an expected refusal or reuse.
-Gold weights stay hand-written per event; an action carries the weight of its source event's latest
-revision (the SPADL double in doubles/spadl.py makes one action per surviving event)."""
+"""The agent corpora on SPADL: gold rules translated with the saved-rule vocabulary map (cards and touches become
+expected refusals or reuse); an action carries its source event's latest-revision weight."""
 import importlib.util
 from decimal import Decimal
 from functools import cache
@@ -33,7 +28,7 @@ def translate(rule):
 def fixture_actions(events, home):
     """Canonical fixture events -> SpadlAction list through the SPADL double."""
     from backend.models.actions import SpadlAction
-    from .doubles.spadl import actions_from_events
+    from benchmarks.doubles.spadl import actions_from_events
     return [SpadlAction.from_row(row, events[0].match_id, home) for row in actions_from_events(list(events), home)]
 
 

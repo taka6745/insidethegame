@@ -2,7 +2,7 @@
 declares (MA1 capabilities). No recording is read."""
 from backend.services.rule_availability import body_part_types
 
-from .feed_reference import reference
+from backend.adapters.feed_reference import reference
 
 CAPABILITIES = ('body_parts', 'body_part_event_types', 'shot_outcomes', 'coordinates', 'periods')
 

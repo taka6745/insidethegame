@@ -1,11 +1,5 @@
-"""Replay golden set, in-process: the real tools and clip builder over the recording's SPADL actions
-(ETL's converter) and its MA3 cards, with the fixture double or the configured model choosing evidence. Narrative
-fixtures are bound to the archived recording, so key-moment cases ("recording": "archive") run against it; the rest
-run against the shipped recording with no narratives.
-
-Hard failures (any one fails the run): future leakage, invented or unobserved IDs, a clip that
-does not contain its event, and broken caps. Quality: precision/recall for enumerable requests,
-key-moment coverage for summaries, honest refusals for absent players.
+"""Replay golden set, in process: the real tools and clip builder, with the fixture double or the configured model
+choosing evidence. Hard failures: future leakage, invented or unobserved IDs, a clip missing its event, broken caps.
 """
 import argparse
 import asyncio
@@ -25,7 +19,7 @@ from backend.services.replay import ReplayBuilder, ReplayTools, false_save
 from backend.services.replay_clips import ReplayPlanError
 from benchmarks.doubles.config import seeded
 
-REPLAY = seeded('replay-timing')  # The seeded configuration (migrations/016_config.sql).
+REPLAY = seeded('replay-timing')  # The seeded configuration.
 MAX_CLIPS, MAX_ITEMS, MAX_SECONDS = REPLAY.max_clips, REPLAY.max_items, REPLAY.max_seconds
 
 ROOT = Path(__file__).resolve().parents[2]

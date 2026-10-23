@@ -1,6 +1,6 @@
 """Story follows: the follow chat (planner + rule-based entity resolution), deterministic suggestions, follow and
 unfollow (one active follow per viewer), and the engine's subscription-targets document. Reads are bounded by the
-viewer's snapshot; a cross-match follow (PLAN.md §10.2) reads the followed match at its own position."""
+viewer's snapshot; a cross-match follow reads the followed match at its own position."""
 import asyncio
 import hashlib
 import json
@@ -11,9 +11,9 @@ from backend.adapters.usage import as_dict as usage_dict, start_usage
 from backend.domain import RuleError
 from backend.models.subscriptions import FollowSpec
 from backend.models.viewer_audience import supported_side
-from .cross_match import header
-from .key_moments import feed_moments
-from .names import match_score, rarity, words  # noqa: F401 (re-exported for tests)
+from backend.services.cross_match import header
+from backend.services.key_moments import feed_moments
+from backend.services.names import match_score, rarity, words  # noqa: F401 (re-exported for tests)
 
 log = logging.getLogger(__name__)
 NO_MODEL = 'The follow chat is unavailable: no model is configured for this service. Use a suggestion instead.'
@@ -45,7 +45,7 @@ class SubscriptionService:
     def __init__(self, repository, questions, registry, match_data, narratives, config, product, planner=None,
                  cross=None):
         self.repository, self.questions, self.registry = repository, questions, registry
-        self.cross = cross  # services/cross_match.CrossMatch: follows of the demo's other matches
+        self.cross = cross  # services/cross_match.CrossMatch: follows of the other live matches
         self.match_data, self.narratives, self.config, self.product = match_data, narratives, config, product
         self.planner = planner  # agents/subscription_planner.SubscriptionPlanner, None without a model
 
@@ -87,7 +87,7 @@ class SubscriptionService:
 
     async def follow(self, match_id, token, spec, seq=None, target=None):
         """Follow `spec` at the viewer's snapshot. One active follow per viewer: following the same topic again
-        returns it; a different one is 409 follow_limit (unfollow first). `target`: another live match of the demo
+        returns it; a different one is 409 follow_limit (unfollow first). `target`: another live match
         (a cross-match follow), validated and started at that match's own position, written for a bucket of its
         own catalogue."""
         viewer = await self.product.viewer(match_id, token)
@@ -250,14 +250,14 @@ class SubscriptionService:
         return {**found, 'focus': focus, 'label': label} if found else None
 
     async def _other_entities(self, match_id):
-        """(teams, players) of the demo's other live matches (their match info: names and squads)."""
+        """(teams, players) of the other live matches (their match info: names and squads)."""
         if self.cross is None or not (await self.cross.settings()).enabled:
             return [], []
         infos = [info for other in self.cross.others(match_id) if (info := await self.cross.info_of(other))]
         return [t for info in infos for t in info['teams']], [p for info in infos for p in info['players']]
 
     async def _elsewhere(self, match_id, draft, config):
-        """The draft's subject in another live match of the demo (at its own position), or None."""
+        """The draft's subject in another live match (at its own position), or None."""
         if self.cross is None or not (await self.cross.settings()).enabled:
             return None
         hits = []
@@ -280,7 +280,7 @@ class SubscriptionService:
 
     @staticmethod
     def _option(match_id, fields):
-        """A ready-to-follow option; `match_id` in `fields` names another live match of the demo."""
+        """A ready-to-follow option; `match_id` in `fields` names another live match."""
         target = fields.get('match_id') or match_id
         spec = FollowSpec.model_validate({k: v for k, v in fields.items() if k not in ('match_id', 'other_match')})
         option = {'id': spec.topic_id(target), 'label': spec.label, 'spec': spec.model_dump(mode='json')}

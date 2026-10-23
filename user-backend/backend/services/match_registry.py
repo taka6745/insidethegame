@@ -4,7 +4,7 @@ import logging
 import time
 
 from backend.domain import RuleError
-from .live_match import LiveMatch
+from backend.services.live_match import LiveMatch
 
 log = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-"""Round 17: a storyline label's score claim is checked, and a resolved storyline can reopen.
+"""A storyline label's score claim is checked, and a resolved storyline can reopen.
 
 Live, the label "Redcastle Town's late equalizer" passed every check though the goal made it 1-0, and a storyline
 resolved at 45' came back at 50' as a second one with the same label. `storyline-policy.claims.score` asks

@@ -1,4 +1,4 @@
-"""Internal admin API (not proxied publicly): per-match purge (local/contracts.md §5)."""
+"""Internal admin API (not proxied publicly): per-match purge (local/contracts/README.md §5)."""
 import logging
 
 from fastapi import APIRouter

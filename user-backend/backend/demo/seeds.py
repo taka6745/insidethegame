@@ -1,4 +1,4 @@
-"""Demo seeds (PLAN.md §10.6): export a match's backend rows, or load them under a new matchId.
+"""Demo seeds: export a match's backend rows, or load them under a new matchId.
 
 Restore writes rows in the shapes the stream consumer writes, then has the registry adopt the match as it
 does after a restart, so no core code knows a demo exists. Mounted only with DEMO_SEEDS=1."""

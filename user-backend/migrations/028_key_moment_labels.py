@@ -1,4 +1,4 @@
-"""Key-moment labels in the developer's wording (22 Oct): "Goal · {team} · {scorer}", "Red card · {player}",
+"""Key-moment labels: "Goal · {team} · {scorer}", "Red card · {player}",
 "Half time · {score}", plus the `score` template the {score} field uses. Rewrites `key-moment-feed` labels that
 still equal the 024 seed; edited labels (a /dev/ change) are kept. A changed row gets a new revision."""
 import importlib.util

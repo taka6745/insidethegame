@@ -20,10 +20,10 @@ from backend.agents.measurement_support import MEASUREMENT_POLICY
 from backend.agents.orchestrator import GoalAgent
 from backend.agents.settings import AgentSettings
 from backend.agents.workflow import RuleWorkflow
-from .conversation_eval import evaluate_conversation
-from .correctness import COHORTS, FIXTURE, evaluate_rule, gold_check
-from .data_transfer_cases import remap_fixture
-from .model_observer import ModelObserver, digest, pin_verification
+from benchmarks.conversation_eval import evaluate_conversation
+from benchmarks.correctness import COHORTS, FIXTURE, evaluate_rule, gold_check
+from benchmarks.data_transfer_cases import remap_fixture
+from benchmarks.model_observer import ModelObserver, digest, pin_verification
 
 BASELINE = Path(__file__).with_name('prompts') / 'goal-baseline.txt'
 BASELINE_SCHEMA = BASELINE.with_suffix('.schema.json')

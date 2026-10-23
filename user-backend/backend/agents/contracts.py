@@ -6,7 +6,7 @@ from typing import Literal, get_args
 from pydantic import BaseModel, ConfigDict, Field, create_model
 from pydantic_core import PydanticUndefined
 
-from .models import LocationBound, AggregateGoal, Clarification, Goal, GoalDecision
+from backend.agents.models import LocationBound, AggregateGoal, Clarification, Goal, GoalDecision
 
 
 def decision_contract() -> dict:

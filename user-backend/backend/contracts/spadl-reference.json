@@ -3,7 +3,7 @@
  "sources": {
   "etl/contracts/spadl-action.schema.json": "d76f77a2c43983a1ac2d6d6bee4bd4cc477f5430cf236d2848f16b24c98cef48",
   "etl/contracts/opta-codes.json": "45ccc4dadc1f756db1e90ba097cfb101843a1e6536b17dcafdca974971715ba4",
-  "etl/reference/spadl.py": "68cd4a5bbbf57bde04b668c2d95e14694e360e3ba1ee198d690f6c8d7fbafd25"
+  "etl/reference/spadl.py": "79ea35ad52674f5f6682af0389207028b4991f2f94aac20883a7b129f35e2de6"
  },
  "description": "One SPADL action as ETL GraphQL serves it (entity spadlActions, table dbo.spadlActions). Standard SPADL (socceraction 1.5.3) columns in camelCase, converted from MA3 by etl/reference/spadl.py, plus ETL extensions. A snapshot (matchId, s) reads rows with finalSeq <= s, for s <= matchWatermarks.spadlSeq.",
  "types": [

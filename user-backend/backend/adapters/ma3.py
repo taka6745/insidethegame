@@ -98,7 +98,7 @@ def score(rows, teams):
     return goals
 
 
-# Pivotal key moments (local/contracts.md §8): Opta types the feed shows everyone. 4 / 13–15 matter only with
+# Pivotal key moments (local/contracts/README.md §8): Opta types the feed shows everyone. 4 / 13–15 matter only with
 # qualifier 9 (penalty); 30 / 32 are period end / start (one row per team).
 FOUL, MISS, POST, ATTEMPT_SAVED, PERIOD_END, PERIOD_START = 4, 13, 14, 15, 30, 32
 PENALTY, RELATED = 9, 55

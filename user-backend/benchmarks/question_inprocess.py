@@ -1,10 +1,5 @@
-"""Opt-in in-process question check: no API, database or shared stack.
-
-Snapshots (matchId, seq) are cut from the shipped recording at each case's `at` clock. Standard
-stats come from ETL's reference stat catalogue (etl/reference/catalogue.py, the Python twin of
-statsAtSeq); recaps from the development narrative double. Mirrors
-the context built by QuestionService._ask. `--agent fixture` runs the doubles; the default uses
-the configured local model.
+"""Opt-in in-process question golden set (no API, database or stack): snapshots of the shipped recording, standard
+stats from ETL's reference catalogue, the context QuestionService._ask builds. `--agent fixture` runs the doubles.
 """
 import argparse
 import asyncio
@@ -30,7 +25,7 @@ from backend.services.observed import observed
 from backend.models.stat_offers import stat_answer
 from backend.services.question_answers import model_catalogue, resolve_answer
 from backend.services.question_tools import QuestionTools
-from .evaluate_questions import check
+from benchmarks.evaluate_questions import check
 
 ROOT = Path(__file__).resolve().parents[2]
 

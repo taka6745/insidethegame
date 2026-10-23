@@ -3,7 +3,7 @@ import re
 from typing import get_args
 
 from backend.models.rules import PredicateField
-from .models import GoalDecision
+from backend.agents.models import GoalDecision
 
 
 MEASUREMENT_POLICY = """Consult measurement_support and the SPADL data reference BEFORE interpreting a measure or offering

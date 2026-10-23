@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 
 from backend.services.filter_engine import FilterEngine
-from .performance import DEFAULT_RECORDING, generated_rule, load, peak_mb, templates
+from benchmarks.performance import DEFAULT_RECORDING, generated_rule, load, peak_mb, templates
 
 
 def main():

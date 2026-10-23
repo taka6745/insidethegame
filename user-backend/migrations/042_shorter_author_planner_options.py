@@ -1,4 +1,4 @@
-"""Developer review of the local demo (22 Oct): shorter insights, and follow-chat drill-in choices.
+"""Shorter insights, and follow-chat drill-in choices.
 
 - `narrative-author`: one or two short sentences citing at most the one or two numbers that carry the point
   (same placeholders). It becomes active only over the shipped seed; a /dev/ edit stays active.
