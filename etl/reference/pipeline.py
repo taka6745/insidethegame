@@ -1,10 +1,6 @@
-"""Reference implementation of the Stream Analytics outputs and the stats view.
+"""Expected Stream Analytics outputs, watermark and status, and the matchStatsAsOf view, for a replayed match.
 
-`stream_outputs` builds the rows and notifications the cloud job should write
-for a replayed match; `progress_marks`, `watermark` and `match_status` give the
-watermark and status (local_stream computes them in Python, Azure SQL from the
-job's marks). `stats_as_of` mirrors the matchStatsAsOf SQL view. The local
-loader and the end-to-end verifier both use these as the expected result.
+The local loader, the local stream and the end-to-end verifier compare against these.
 """
 import json
 import math

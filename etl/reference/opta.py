@@ -38,6 +38,12 @@ def q_value(event, qualifier_id):
     return next((q.get("value") for q in event.get("qualifier", []) if q["qualifierId"] == qualifier_id), None)
 
 
+def qualifiers(row):
+    """{qualifierId: value} of an MA3 row (its payload, or a `qualifier` list on test rows)."""
+    items = row["qualifier"] if "qualifier" in row else json.loads(row.get("payload") or "{}").get("qualifier") or []
+    return {int(q["qualifierId"]): q.get("value") for q in items}
+
+
 def key_event(event):
     """Return (keyType, detail) for a narrative key event, else None."""
     t = event["typeId"]
@@ -59,7 +65,6 @@ def key_event(event):
 
 
 def period_change(event):
-    """Return PeriodStarted/PeriodEnded for period boundary events, else None."""
     return {START: "PeriodStarted", END: "PeriodEnded"}.get(event["typeId"])
 
 
@@ -89,5 +94,5 @@ def stat_deltas(event):
 
 def minute_label(period_id, time_min):
     """Broadcast-style minute: 0:30 -> "1'", 45:30 in period 1 -> "45+1'"."""
-    shown, end = time_min + 1, PERIOD_END_MIN[period_id]
+    shown, end = time_min + 1, PERIOD_END_MIN.get(period_id, 120)
     return f"{end}+{shown - end}'" if shown > end else f"{shown}'"

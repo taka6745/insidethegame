@@ -21,7 +21,6 @@ actionId) can change. A shot is final at its own seq; other actions at the next 
 action or the deflection check); period_end finalises the rest of the period. Snapshot s may read actions with
 finalSeq <= s, and incremental conversion equals whole-match conversion (tests/test_spadl.py).
 """
-import json
 import math
 
 FIELD_LENGTH, FIELD_WIDTH = 105.0, 68.0
@@ -318,8 +317,3 @@ def final_actions(messages, home_team_id, first_action_id=0, first_final_seq=0):
     """The final prefix of a live conversion (the rows a snapshot at the input's last seq may read)."""
     out = convert(messages, home_team_id, closed=False, first_action_id=first_action_id, first_final_seq=first_final_seq)
     return out[:next((i for i, a in enumerate(out) if a["finalSeq"] is None), len(out))]
-
-
-def from_raw_events(raw_rows):
-    """MA3 messages from dbo.rawEvents rows (their `payload`), in MA3 seq order."""
-    return [json.loads(r["payload"]) for r in sorted(raw_rows, key=lambda r: r["seq"])]

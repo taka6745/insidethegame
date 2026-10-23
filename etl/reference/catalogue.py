@@ -1,13 +1,9 @@
-"""Reference implementation of the stat catalogue: statsAtSeq(matchId, seq) in Python.
-
-Mirrors dbo.statsAtSeq (sql/migrations/009_spadl_stats_staged.sql) over the definitions seeded by
-008_spadl_catalogue.sql (read from its seed, so the configuration has one source) and the rows ETL stores:
-matches, matchTeams, spadlActions, rawEvents (MA3 card and VAR rows),
-canonicalEvents (the snapshot's video time) and possessionSamples. Tests compare it with the SQL procedure.
-"""
+"""Python twin of dbo.statsAtSeq over the 008 seed (with 017's definition updates); tests compare them."""
 import json
 import re
 from pathlib import Path
+
+from reference.opta import qualifiers as _qualifiers
 
 MIGRATION = Path(__file__).resolve().parents[1] / "sql" / "migrations" / "008_spadl_catalogue.sql"
 UPDATES = MIGRATION.with_name("017_entry_definitions.sql")  # later definition texts, applied over the seed
@@ -117,9 +113,3 @@ def _event_seq(row):
     if "eventSeq" in row:
         return row["eventSeq"]
     return json.loads(row["payload"]).get("eventSeq")
-
-
-def _qualifiers(row):
-    """{qualifierId: value} of an MA3 row (its payload, or a `qualifier` list on test rows)."""
-    items = row["qualifier"] if "qualifier" in row else json.loads(row["payload"]).get("qualifier") or []
-    return {int(q["qualifierId"]): q.get("value") for q in items}

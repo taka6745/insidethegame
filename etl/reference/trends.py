@@ -1,11 +1,6 @@
-"""Reference implementation of the trend indicators: trendMinutesAtSeq, trendsAtSeq and trendSpellsAtSeq in Python.
+"""Python twin of dbo.trendMinuteRows, trendMinutesAtSeq, trendsAtSeq and trendSpellsAtSeq; tests compare them.
 
-Mirrors dbo.trendMinuteRows (sql/migrations/015_trend_parameters.sql) and the three procedures
-(014_trend_patterns.sql) over the trendDefinitions and trendParameters seeds (the newest `@trendDefinitions` and
-`@trendParameters` blocks in sql/migrations, so the configuration has one source) and the rows ETL stores: matches, canonicalEvents (the minutes and the snapshot's video time),
-possessionSamples, spadlActions (finalSeq <= seq) and rawEvents (MA3 defensive rows and cards, eventSeq <= seq).
-Formulas are the S1 storylines experiment's (local/contracts.md §4b); tests compare this module with SQL Server.
-
+Configuration comes from the newest `@trendDefinitions`/`@trendParameters` seed blocks in sql/migrations.
 Conventions: team frame (the team attacks towards x = 105); a minute is (periodId, floor(clock / 60)); shares
 carry a +1 prior; rates are per 5 minutes.
 """
@@ -14,6 +9,8 @@ import math
 import re
 from bisect import bisect_right
 from pathlib import Path
+
+from reference.opta import minute_label, qualifiers as _qualifiers
 
 MIGRATIONS = Path(__file__).resolve().parents[1] / "sql" / "migrations"
 SEED = re.compile(r"@trendDefinitions nvarchar\(max\) = N'(.*?)';", re.S)
@@ -29,7 +26,6 @@ SET_PIECES = {"throw_in", "freekick_crossed", "freekick_short", "corner_crossed"
 SHOTS = {"shot", "shot_penalty", "shot_freekick"}
 DEFENSIVE, DEF_EXTRA = {7, 8, 45}, {12, 49, 74}  # MA3: tackle, interception, challenge; clearance, recovery, block
 FOUL, CARD, TACKLE, CHALLENGE, AERIAL, TAKE_ON, PASS = 4, 17, 7, 45, 44, 3, 1
-PERIOD_END_MIN = {1: 45, 2: 90, 3: 105, 4: 120, 5: 120}
 WINDOWS = ["last5", "last15", "prev10", "half", "match"]  # served, in this order
 BASELINE = {"last5": "prev10", "last15": "pre15", "half": "prevHalf"}
 FULL = {"last5": 5, "prev10": 10, "last15": 15, "half": 5, "match": 5}  # minutes a window needs to flag
@@ -72,12 +68,6 @@ def parameters():
     blocks = [m.group(1) for path in sorted(MIGRATIONS.glob("*.sql"))
               for m in PARAMETERS.finditer(path.read_text(encoding="utf-8"))]
     return {row["name"]: float(row["value"]) for row in json.loads(blocks[-1].replace("''", "'"))}
-
-
-def minute_label(period, minute):
-    """Broadcast-style minute: (1, 0) -> "1'", (1, 46) -> "45+2'"."""
-    shown, end = minute + 1, PERIOD_END_MIN.get(period, 120)
-    return f"{end}+{shown - end}'" if shown > end else f"{shown}'"
 
 
 def _in_box(x, y):
@@ -254,11 +244,6 @@ def minute_rows(match, events, samples, seq, watermark, defs=None, *, actions, r
                         "pressureMinute": bool(press) and ball >= press["minBallSeconds"] and fin >= press["minuteAt"]
                         and cc["ftEntries"] + cc["boxEntries"] + cc["shots"] >= 1})
     return out
-
-
-def _qualifiers(row):
-    items = row["qualifier"] if "qualifier" in row else json.loads(row.get("payload") or "{}").get("qualifier") or []
-    return {int(q["qualifierId"]): q.get("value") for q in items}
 
 
 def trend_minutes_at_seq(match, events, samples, seq, watermark, defs=None, *, actions, raw, params=None):
