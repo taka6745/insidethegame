@@ -179,7 +179,7 @@ text('Master architecture',80,78,48)
 text('TARGET DESIGN 19 OCT  ·  DEMO BUILD 22 OCT 2026',790,94,22,MUTED)
 text('Shared match intelligence. Personal questions. One live experience.',80,146,25,MUTED)
 
-zone('grf',80,250,800,530,'GRF / data generation','Synthetic Riverton Rovers–United match · one aligned timeline',ROSE,'#fdf0f3')
+zone('grf',80,250,800,530,'GRF / data generation','Synthetic Riverton Rovers–Forgeham United match · one aligned timeline',ROSE,'#fdf0f3')
 zone('etl',80,1050,800,1390,'ETL / match facts','Service-owned storage',ORANGE,'#fff7e9')
 zone('backend',1120,250,1320,1020,'Main user backend','Python · Azure Container Apps · Microsoft Agent Framework',BLUE,'#eaf5ff')
 zone('narrative',1120,1370,1320,1070,'Narrative engine','Python · Azure Container Apps · Microsoft Agent Framework',PURPLE,'#f5efff')
@@ -350,7 +350,7 @@ text('No per-viewer narrative generation',2730,2360,21,GREEN)
 
 # Demo build: what the judge URL adds around the target design. Seed routes exist only with DEMO_SEEDS=1.
 DEMO = '#9a6500'
-zone('demo',80,2500,3280,300,'Demo build  ·  22 Oct','Judge URL · Start demo always runs three live matches · built and unit-tested, Azure acceptance pending',DEMO,'#fffaf0')
+zone('demo',80,2500,3280,300,'Demo build  ·  23 Oct','Judge URL · Start demo always runs three live matches · deployed on Azure, every start point checked as a viewer',DEMO,'#fffaf0')
 DW, DG, DY = 370, 36, 2610
 for i,(key,title,detail,ic,col) in enumerate([
         ('edge','Edge proxy','Cloudflare Worker · msft-hackathon.koda-software.com','send',INK),
