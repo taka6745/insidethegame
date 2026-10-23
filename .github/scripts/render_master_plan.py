@@ -348,8 +348,7 @@ for x,title,detail in [(2755,'Clip playlist','In chat · show more'),(3020,'Expa
 line([(3430,1005),(3430,2165),(3290,2165)],color=ROSE)  # VOD replays reuse live segments
 text('No per-viewer narrative generation',2730,2360,21,GREEN)
 
-# Demo build (22 Oct): what the judge URL adds around the target design. Built and unit-tested; applied on Azure
-# 22 Oct for the Azure test (acceptance pending). Seed routes exist only with DEMO_SEEDS=1.
+# Demo build: what the judge URL adds around the target design. Seed routes exist only with DEMO_SEEDS=1.
 DEMO = '#9a6500'
 zone('demo',80,2500,3280,300,'Demo build  ·  22 Oct','Judge URL · Start demo always runs three live matches · built and unit-tested, Azure acceptance pending',DEMO,'#fffaf0')
 DW, DG, DY = 370, 36, 2610

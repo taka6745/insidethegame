@@ -29,7 +29,7 @@
 <text x="50" y="355" font-size="19" style="fill:#17324d" font-weight="700">demo-control: Start demo · Cancel · status · record / capture seeds</text>
 <text x="50" y="383" font-size="16" style="fill:#5d7185" font-weight="400">.local/seeds/ → restore ETL, engine, backend → feed releases held runs</text>
 <rect x="30" y="420" width="1040" height="110" rx="12" fill="#eef0f4" stroke="#aeb9c6" stroke-dasharray="6 5"/>
-<text x="50" y="447" font-size="12" style="fill:#5d7185" font-weight="700">AZURE · ./dev azure up · applied 22 Oct, acceptance pending</text>
+<text x="50" y="447" font-size="12" style="fill:#5d7185" font-weight="700">AZURE · ./dev azure up · deployed 23 Oct</text>
 <text x="50" y="482" font-size="19" style="fill:#17324d" font-weight="700">Stream Analytics job · Foundry gpt-6.1-sol + Microsoft-Decision-1</text>
 <text x="50" y="510" font-size="16" style="fill:#5d7185" font-weight="400">Spend guard · edge proxy (msft-hackathon.koda-software.com) · identity, networking, scale</text>
 </svg>

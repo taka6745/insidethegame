@@ -47,12 +47,12 @@
 <text x="1197.0" y="464" font-size="19" fill="#17324d" font-weight="700" text-anchor="middle">Demo control</text>
 <text x="1197.0" y="491" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">/demo-api/</text>
 <text x="1197.0" y="514" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">start · cancel</text>
-<text x="1197.0" y="537" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">status</text>
-<text x="1197.0" y="596" font-size="12" fill="#168366" font-weight="700" text-anchor="middle">Deployed 22 Oct</text>
+<text x="1197.0" y="537" font-size="15" fill="#5d7185" font-weight="400" text-anchor="middle">skip · status</text>
+<text x="1197.0" y="596" font-size="12" fill="#168366" font-weight="700" text-anchor="middle">Deployed 23 Oct</text>
 <polyline points="1041,520 1110,520" fill="none" stroke="#5d7185" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
 <rect x="36" y="693" width="1248" height="84" rx="14" fill="#eef9f0" stroke="#69ad7d" stroke-width="1.5"/>
-<text x="58" y="725" font-size="13" fill="#168366" font-weight="700" text-anchor="start">BUILT 22 OCT · unit + headless tests</text>
+<text x="58" y="725" font-size="13" fill="#168366" font-weight="700" text-anchor="start">DEPLOYED 23 OCT · unit + headless tests · checked on Azure</text>
 <text x="58" y="752" font-size="17" fill="#17324d" font-weight="400" text-anchor="start">Start demo + start progress · main game · follow view · clip preview cards · sting + slow motion · other-match marking</text>
 <path d="M36,820 H1284" stroke="#d8e3ed"/>
-<text x="36" y="845" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">NOW · Solid: calls · Green: built and tested (unit, headless) · Demo control applied on Azure 22 Oct</text>
+<text x="36" y="845" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">NOW · Solid: calls · Green: deployed 23 Oct · tested (unit, headless)</text>
 </svg>

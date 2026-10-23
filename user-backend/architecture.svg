@@ -139,7 +139,7 @@
 <text x="642.5" y="1074" font-size="19" fill="#147ac1" font-weight="700" text-anchor="middle">Cross-match</text>
 <rect x="755" y="1040" width="175" height="70" rx="14" fill="white" stroke="#d8e3ed" stroke-width="1.5"/>
 <text x="842.5" y="1074" font-size="19" fill="#9a6500" font-weight="700" text-anchor="middle">Demo seeds</text>
-<text x="1075" y="1080" font-size="14" fill="#147ac1" font-weight="700" text-anchor="start">BUILT 22 OCT</text>
+<text x="1075" y="1080" font-size="14" fill="#147ac1" font-weight="700" text-anchor="start">DEPLOYED 23 OCT</text>
 <text x="36" y="1350" font-size="16" fill="#5d7185" font-weight="400" text-anchor="start">Standard stats: fetch → select → deliver. Custom requests: query history → test → run. Demo seeds exist only with DEMO_SEEDS=1.</text>
 <path d="M36,1370 H1644" stroke="#d8e3ed"/>
 <text x="36" y="1395" font-size="12" fill="#5d7185" font-weight="400" text-anchor="start">DESIGN + BUILT · Solid: data / calls · Isolated executor for arbitrary code still planned</text>
