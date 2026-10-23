@@ -100,9 +100,10 @@ class Stack:
         self.tf("apply", "-auto-approve", *self.variables(extra),
                 env={f"TF_VAR_{k}": v for k, v in (secrets or {}).items()})
 
-    def plan(self, upstream):
+    def plan(self, upstream, secrets=None):
         say(f"terraform plan {self.dir}")
-        self.tf("plan", "-lock=false", *self.variables(upstream=upstream))
+        self.tf("plan", "-lock=false", *self.variables(upstream=upstream),
+                env={f"TF_VAR_{k}": v for k, v in (secrets or {}).items()})
 
     def destroy(self):
         if not self.state.exists() or not json.loads(self.state.read_text()).get("resources"):
@@ -425,11 +426,13 @@ def plan(settings):
     guard = Stack("guard", settings)
     guard.init()
     guard.plan({})
+    # As `up` passes it, so the plan does not show the app's stream-start secret removed (never printed).
+    webhook = guard.outputs().get("stream_start_webhook_url") if guard.state.exists() else None
     upstream = {}
     for name in STACKS:
         stack = Stack(name, settings)
         stack.init()
-        stack.plan(upstream)
+        stack.plan(upstream, {"stream_start_url": webhook} if name == "app" and webhook else None)
         if not stack.state.exists() and name in PLACEHOLDERS:
             outputs = {k: {"value": v.replace("{s}", settings["subscription"]), "type": "string"}
                        for k, v in PLACEHOLDERS[name].items()}
