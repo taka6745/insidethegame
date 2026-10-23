@@ -30,7 +30,8 @@ class PromptRepository:
 
     def versions(self, limit=50):
         with self.store.connect() as conn:
-            active = {r['role']: r['version'] for r in conn.execute('SELECT role,version FROM narrative_prompt_active')}
+            active = {r['role']: r for r in conn.execute('SELECT a.role,a.version,p.placeholders FROM narrative_prompt_active a '
+                                                          'JOIN narrative_prompts p USING (role,version)')}
             rows = conn.execute('SELECT role,version,template,placeholders,source,created_at FROM ('
                                 'SELECT *, row_number() OVER (PARTITION BY role ORDER BY version DESC) AS n '
                                 'FROM narrative_prompts) v WHERE n<=%s ORDER BY role,version DESC', (limit,)).fetchall()

@@ -24,13 +24,11 @@ class PromptService:
 
     async def versions(self):
         active, rows = await asyncio.to_thread(self.repository.versions)
-        roles = {role: {'role': role, 'active_version': version, 'placeholders': [], 'versions': []}
-                 for role, version in active.items()}
+        # A save must keep the active version's placeholders, read from its own row (it may be older than the list).
+        roles = {role: {'role': role, 'active_version': a['version'], 'placeholders': a['placeholders'], 'versions': []}
+                 for role, a in active.items()}
         for row in rows:
-            role = roles[row.pop('role')]
-            if row['version'] == role['active_version']:  # a save must keep the active version's placeholders
-                role['placeholders'] = row['placeholders']
-            role['versions'].append({**row, 'created_at': row['created_at'].isoformat()})
+            roles[row.pop('role')]['versions'].append({**row, 'created_at': row['created_at'].isoformat()})
         return {'roles': sorted(roles.values(), key=lambda r: r['role'])}
 
     async def save(self, role, template, expected_version):

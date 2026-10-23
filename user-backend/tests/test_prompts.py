@@ -7,6 +7,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from backend.app import create_app
+from backend.repositories.prompts import PromptRepository
 from backend.services.prompts import PromptService
 from harness import Upstream
 
@@ -119,10 +120,22 @@ def test_the_editor_is_given_the_active_versions_placeholders_not_an_older_ones(
     class Versions:  # newest first, as the repository lists them; v1 had fewer placeholders than v2
         def versions(self):
             at = datetime(2026, 10, 22, tzinfo=timezone.utc)
-            return {'narrative-author': 2}, [
+            return {'narrative-author': {'version': 2, 'placeholders': ['a', 'b']}}, [
                 {'role': 'narrative-author', 'version': 2, 'template': '{a} {b}', 'placeholders': ['a', 'b'],
                  'source': 'seed', 'created_at': at},
                 {'role': 'narrative-author', 'version': 1, 'template': '{a}', 'placeholders': ['a'],
                  'source': 'seed', 'created_at': at}]
     role, = asyncio.run(PromptService(Versions()).versions())['roles']
     assert role['placeholders'] == ['a', 'b'] and [v['version'] for v in role['versions']] == [2, 1]
+
+
+def test_an_active_version_older_than_the_listed_ones_keeps_its_placeholders(client, store):
+    _, active = prompts(client)
+    assert save(client, 'minute-summary', active['minute-summary']['template'] + '!', 1).status_code == 200
+    client.post('/dev/narrative-prompts/minute-summary/versions/1/activate')
+    repository = PromptRepository(store)
+    newest = repository.versions
+    repository.versions = lambda: newest(limit=1)  # the list holds only v2, as after 50 newer saves
+    summary = next(r for r in asyncio.run(PromptService(repository).versions())['roles'] if r['role'] == 'minute-summary')
+    assert summary['active_version'] == 1 and [v['version'] for v in summary['versions']] == [2]
+    assert summary['placeholders'] == ['game_state_statistics', 'match_events']
