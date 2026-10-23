@@ -382,6 +382,14 @@ continue), backend (export, refusals, restore, the match tracked again).
   - **Deployed** cb24593 with `./dev azure up --yes` (judge build, image `v20261023103617`, clean tree; edge `UPSTREAM` unchanged). On Azure: compression and summary active v2 have no real or demo club names; /dev/ saved a narrative-author version (v4) without error and v2 was re-activated; a no-op save of the default audience kept `in_label`, layers and bucket ids (order only), then the earlier config was restored. Start demo from 20′ as an anonymous viewer opened Redcastle Town v Port Albion live from 20′ with insights (headless Chromium can't decode the HLS, so it showed footage unavailable; the playlist serves).
   - Left running: a demo seeded from 20′.
 
+- **Review fixes (23 Oct):**
+  - Start's stream-start webhook now has its own thread; it had queued on the 2-worker pool behind keep-warm wakes (60 s timeout) and seed preloads (`test_stream_start_does_not_wait_behind_slow_keep_warm_wakes`).
+  - `./dev azure plan` passes `stream_start_url` to the app as `up` does (TF_VAR, never printed), so the plan no longer shows the secret removed (`terraform/azure/test_azure.py`, in CI).
+  - A local seed restored on Azure drops stand-in tables the target lacks (`localStreamWindows`) instead of "Unknown tables" (`test_sql_seeds.py::test_a_local_seed_restores_on_azure_without_the_stand_in_tables`).
+  - The prompt editor reads the active version's placeholders from its own row, not the 50 newest (`test_prompts.py::test_an_active_version_older_than_the_listed_ones_keeps_its_placeholders`).
+  - Tests: demo control 29, ETL 105 (SQL Server on), backend 630, `./dev terraform check`. **Deployed** 5c377c6 (judge build, image `v20261023114741`, clean tree; edge `UPSTREAM` unchanged). An anonymous Start from 20′ through the edge opened Redcastle Town v Port Albion live from 20′ (ready in 4.4 s); demo control logged "Stream start requested: HTTP 202" 3 s after the request, before its 202.
+  - Left running: a demo seeded from 20′ (started 02:00 UTC).
+
 ## 12. Team review actions (22 Oct meeting)
 
 *In short: everything the team asked for after using the Azure demo; each row closes only with evidence. Decided: the simulated matches stay as they are (aggressive, weak keepers); the data is swappable, so the generator is not tuned further. Each finished batch of M-items is committed and pushed to `main` so a teammate can review and run it.*
