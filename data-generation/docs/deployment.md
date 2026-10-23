@@ -4,8 +4,8 @@
 
 | | |
 | --- | --- |
-| **Status** | Local Docker (`local/compose.yaml`, service `feed`); Azure Terraform implemented, mock-tested and applied 22 Oct (acceptance pending) |
-| **Demo seeds** | `demo_seeds` variable sets `DEMO_SEEDS` (on for the judge build; `./dev azure up --release` turns it off) |
+| **Status** | Local Docker (`local/compose.yaml`, service `feed`); Azure Terraform implemented, mock-tested and applied by `./dev azure up` |
+| **Demo seeds** | `demo_seeds` variable sets `DEMO_SEEDS` (on for the demo build; `./dev azure up --release` turns it off) |
 | **Image** | `data-generation/feed/Dockerfile`, target `runtime`; recordings and media are never baked in |
 | **Azure** | `rg-itg-feed-dev`: Container App (internal ingress, 1 replica), PostgreSQL Flexible B1ms, Storage account |
 | **Shares** | Only the ETL's Container Apps environment (trial: one per region) and registry; `seeder-send` key on `match-events` |

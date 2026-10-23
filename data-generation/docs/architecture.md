@@ -39,7 +39,7 @@ flowchart LR
 | --- | --- | --- |
 | [GRF demo](components/grf-demo.md) | `grf_demo/` | Render, derive events, export F24/MA1/MA3/POS, package video |
 | [Feed](components/feed.md) | `feed/` | Catalogue, runs, Event Hubs, HLS origin, purge |
-| [Recordings](../recordings/README.md) | `recordings/` | Shipped recordings and exports |
+| [Recordings](components/recordings.md) | `recordings/` | Shipped recordings and exports |
 
 ## 3. A run, end to end
 

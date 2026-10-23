@@ -4,11 +4,11 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested (virtual-clock unit tests; Postgres repository tests); runs in the local stack as Compose service `feed` (profile `backend`); Start demo, main game and seeded runs tested in units and on the local stack (22 Oct); Azure applied 22 Oct, acceptance pending |
+| **Status** | Implemented and tested (virtual-clock unit tests; Postgres repository tests); runs in the local stack as Compose service `feed` (profile `backend`); Start demo, main game and seeded runs tested in units, on the local stack and on Azure |
 | **Owns** | Its own Postgres server (locally `feed-postgres`, on a network only the feed joins), database `feed`: recordings catalogue, runs, purge tombstones, `demo_settings` ([migrations](../../feed/migrations/) 001–005) |
-| **Out** | Event Hubs `match-events`, partition key `matchId`: MA1, `MatchEvent` v2, MA3, POS ([local contracts](../../../local/contracts.md#2-matchevent-v2), [ETL contracts](../../../etl/contracts/README.md)) |
-| **Media** | `GET /hls/{matchId}/live.m3u8` and its segments: played footage only ([§6](../../../local/contracts.md#6-live-media-hls)) |
-| **Admin (dev only)** | `GET /recordings`, `POST /runs`, `GET /runs`, `POST /admin/matches/purge`, `GET`/`PUT /demo`, `POST /demo/start`, `GET /health`; with `DEMO_SEEDS=1` also `POST /runs/{matchId}/release` and `POST /demo/skip` ([§7](../../../local/contracts.md#7-feed-admin-api-dev-only)). Public `/demo-api/` goes through demo control, never straight here |
+| **Out** | Event Hubs `match-events`, partition key `matchId`: MA1, `MatchEvent` v2, MA3, POS ([local contracts](../../../local/contracts/README.md#2-matchevent-v2), [ETL contracts](../../../etl/contracts/README.md)) |
+| **Media** | `GET /hls/{matchId}/live.m3u8` and its segments: played footage only ([§6](../../../local/contracts/README.md#6-live-media-hls)) |
+| **Admin (dev only)** | `GET /recordings`, `POST /runs`, `GET /runs`, `POST /admin/matches/purge`, `GET`/`PUT /demo`, `POST /demo/start`, `GET /health`; with `DEMO_SEEDS=1` also `POST /runs/{matchId}/release` and `POST /demo/skip` ([§7](../../../local/contracts/README.md#7-feed-admin-api-dev-only)). Public `/demo-api/` goes through demo control, never straight here |
 | **Host port** | `ITG_FEED_PORT` (default 18030) |
 
 ## 1. Layout
@@ -57,7 +57,7 @@ feed DB (runs) ────┘                    └─▶ live-media/{matchId}
 | Held run (003, 006) | `POST /runs {hold_point}` sends nothing at or past the point's video second (HLS included): demo control records a seed from it; the run lists the point as `held_at`, which capture checks | Unit tests; four seeds recorded locally |
 | Waiting run (003, 004) | A seeded start (or `resume_point`) creates the run waiting (`awaiting_restore: true`): nothing sent; position and seq taken as delivered. `POST /runs/{id}/release {after_seconds}` starts its clock at the point, without MA1 or earlier events; idempotent. `start_point` is kept so the viewer says "live from N′" | Unit tests; local stack |
 
-Seed recording and seeded starts exist only with `DEMO_SEEDS=1` (local compose and the judge build): without it `hold_point`/`resume_point` are `403`, a seeded start `409` and `release` is absent. A point with no recorded seed is `409`. The seed layout and restore order live in demo control (`local/demo_control.py`, [PLAN.md §10.6](../../../PLAN.md)).
+Seed recording and seeded starts exist only with `DEMO_SEEDS=1` (local compose and the demo build): without it `hold_point`/`resume_point` are `403`, a seeded start `409` and `release` is absent. A point with no recorded seed is `409`. The seed layout and restore order live in demo control (`local/demo_control.py`, [PLAN.md §10.6](../../../PLAN.md)).
 
 ## 3. HLS
 
@@ -75,7 +75,7 @@ A packaged segment is hard-linked (or copied) into `live-media/{matchId}/` once 
 
 *In short: any recording whose teams match a roster fixture; media is optional.*
 
-Every `recordings/*.json` (not an `.opta-*` export) whose team ids match a [`roster.py`](../../grf_demo/roster.py) fixture is loaded; events and possession samples must be in video order. Media is `FEED_MEDIA_ROOT/{fixture}/hls/match.m3u8` (one read-only mount of `ITG_MEDIA_ROOT` in `local/compose.yaml`); without it the run has `capabilities.video: false`. Only this container mounts recordings and media.
+Every `recordings/*.json` (not an `.opta-*` export) whose team ids match a [`roster.py`](../../grf_demo/roster.py) fixture (built from [`league.json`](../../grf_demo/league.json)) is loaded; events and possession samples must be in video order. Media is `FEED_MEDIA_ROOT/{fixture}/hls/match.m3u8` (one read-only mount of `ITG_MEDIA_ROOT` in `local/compose.yaml`); without it the run has `capabilities.video: false`. Only this container mounts recordings and media.
 
 ## 6. Settings
 
@@ -90,7 +90,7 @@ Every `recordings/*.json` (not an `.opta-*` export) whose team ids match a [`ros
 | `FEED_MEDIA_ROOT` | unset | Packaged HLS per fixture (read-only) |
 | `FEED_LIVE_DIR` | `/live-media` | Played segments (feed-internal volume) |
 | `FEED_ALLOW_SEEK` | `0` | Dev only |
-| `DEMO_SEEDS` | `0` | `1`: held and released runs, seeded demo starts (judge build; off for a production release) |
+| `DEMO_SEEDS` | `0` | `1`: held and released runs, seeded demo starts (demo build; off for a production release) |
 | `FEED_SEND_MAX_ITEMS` | `200` | Items per Event Hubs send (ingress is about 1,000 events/s per throughput unit) |
 | `FEED_SEND_RETRY_FIRST_SECONDS` / `FEED_SEND_RETRY_MAX_SECONDS` | `2` / `60` | Back-off after a refused send, doubling while refusals get nothing through |
 | `FEED_SEND_THROTTLE_WAIT_SECONDS` | `10` | Minimum wait after a `server-busy` refusal |

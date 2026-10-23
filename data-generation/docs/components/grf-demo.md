@@ -4,10 +4,10 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested; three rendered, tactically scripted recordings shipped (2026-10-22) |
+| **Status** | Implemented and tested; three rendered, tactically scripted recordings shipped |
 | **Needs** | The instrumented native GRF runtime, NumPy, OpenCV, FFmpeg; capture targets macOS (VideoToolbox) |
 | **Writes** | `.local/grf-demo-<fixture>-90/` (ignored): `recording.json`, `recording.opta-f24.json`, `hls/`, raw telemetry |
-| **Shipped** | [`recordings/`](../../recordings/README.md) |
+| **Shipped** | [recordings](recordings.md) |
 | **Source** | [Google Research Football](https://github.com/google-research/football), Apache-2.0 (pinned `3d9e754720a95621bba6475c4d3b0d56fe919014`) |
 
 ```text
@@ -67,9 +67,9 @@ Existing source copies take the patch with `python -m grf_demo.prepare_tactics <
 
 *In short: real-time capture; the recording from the rendered run is authoritative.*
 
-- Equal built-in AI difficulty with the [realism patch](../opta-events.md#realism-patch) and [scripted tactics](#4-scripted-tactics). Two 45-minute halves of active play are captured in **real time**: `videoSeconds` equals capture seconds.
+- Equal built-in AI difficulty with the [realism patch](../../contracts/README.md#realism-patch) and [scripted tactics](#4-scripted-tactics). Two 45-minute halves of active play are captured in **real time**: `videoSeconds` equals capture seconds.
 - The broadcast clock follows the video and runs through dead play, so each half ends in stoppage time. The packaged score strip draws the same clock. The video-frame/native-clock mapping stays in ignored `frames.jsonl.gz`.
-- Events follow the [Opta-style contract](../opta-events.md) and are timestamped at resolution. Continuous same-player/function/type contact callbacks (gaps ≤ 300 ms) form one action.
+- Events follow the [Opta-style contract](../../contracts/README.md) and are timestamped at resolution. Continuous same-player/function/type contact callbacks (gaps ≤ 300 ms) form one action.
 - A successful attempt is represented once, as `goal`. A goal's team follows the score change. Without an attempt by the scoring team, the other team's last touch is that player's own goal (`ownGoal`); a deflected attempt keeps an unknown scorer.
 - `touch` records every executed contact, including those within passes and attempts. Never add touches to other action counts.
 - `possession_samples` contains seconds of **confirmed native ownership**, excluding loose balls and restarts. ETL calculates percentages; the backend never does.

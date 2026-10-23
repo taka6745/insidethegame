@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Needs** | Python 3.12; Docker for the stack; GRF runtime, OpenCV and FFmpeg only to render |
-| **Tests** | `python -m pytest -q` from `data-generation/` (about 136 pass and 8 skip without `FEED_TEST_DATABASE_URL` and `FEED_TEST_BLOB_CONNECTION_STRING` (Azurite); OpenCV and GRF-clone tests skip without them) |
+| **Tests** | `python -m pytest -q` from `data-generation/` (the repository and Blob tests skip without `FEED_TEST_DATABASE_URL` and `FEED_TEST_BLOB_CONNECTION_STRING` (Azurite); OpenCV and GRF-clone tests skip without them) |
 | **Whole product** | `ACCEPT_EULA=Y ./dev up backend`, then `./dev demo start` ([../../DEVELOPMENT.md](../../DEVELOPMENT.md)) |
 | **Logs** | `./dev logs feed` |
 
@@ -13,7 +13,7 @@
 
 *In short: the stack starts it; `./dev demo start` purges and starts runs.*
 
-`./dev demo start [fixture…]` purges every owner, then calls `POST /runs` for each fixture with `kickoff: "next-minute"`. The admin API is on `http://localhost:18030` (`/docs`) and, for `/dev/`, behind nginx at `/feed-api/`. The judge demo is started from the viewer's **Start demo** (demo control → `POST /demo/start`); seeds are recorded with `local/demo_control.py record|capture {point}` ([PLAN.md §10.6](../../PLAN.md)). `./dev` mounts each `.local/grf-demo-<fixture>-90/hls/` that exists ([feed §5](components/feed.md#5-recordings-and-media)).
+`./dev demo start [fixture…]` purges every owner, then calls `POST /runs` for each fixture with `kickoff: "next-minute"`. The admin API is on `http://localhost:18030` (`/docs`) and, for `/dev/`, behind nginx at `/feed-api/`. The demo is started from the viewer's **Start demo** (demo control → `POST /demo/start`); seeds are recorded with `local/demo_control.py record|capture {point}` ([feed §2a](components/feed.md#2a-demo-and-seeds)). `./dev` mounts each `.local/grf-demo-<fixture>-90/hls/` that exists ([feed §5](components/feed.md#5-recordings-and-media)).
 
 ## 2. Tests
 

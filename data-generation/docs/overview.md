@@ -1,10 +1,10 @@
 # Overview
 
-> **In short:** three rendered 90-minute matches with real-club illustrative lineups, and a feed service that plays any of them as a live match, several at once, into Event Hubs and HLS. It also starts the three-match judge demo, from kick-off or a seeded start point. Implemented and tested; runs in the local Docker stack; Azure applied 22 Oct (acceptance pending).
+> **In short:** three rendered 90-minute matches with invented fictional-league lineups, and a feed service that plays any of them as a live match, several at once, into Event Hubs and HLS. It also starts the three-match demo, from kick-off or a seeded start point. Implemented, tested and deployed.
 
 | | |
 | --- | --- |
-| **Status** | Generator implemented (offline, macOS); feed implemented, tested and run with three concurrent matches locally; Start demo, main game and seeded runs unit-tested and run on the local stack (22 Oct); Azure applied 22 Oct, acceptance pending |
+| **Status** | Generator implemented (offline, macOS); feed implemented, tested and deployed to Azure by `./dev azure up` (redeployed 23 Oct), running three concurrent matches locally and on Azure; Start demo, main game, Skip ahead and seeded starts run on Azure |
 | **Data** | Synthetic, simulated with Google Research Football (Apache-2.0); labelled `synthetic: true` everywhere; not Stats Perform data |
 | **Out** | Event Hubs `match-events` (MA1, `MatchEvent` v2, MA3, POS); HLS over HTTP |
 | **Consumers** | ETL (`etl-stream`), user backend; viewers through nginx (`/media/hls/`) |
@@ -23,11 +23,11 @@
 
 | Direction | What | Contract |
 | --- | --- | --- |
-| In | `recordings/<fixture>-grf.json` | [opta-events.md](opta-events.md), [recordings](../recordings/README.md) |
+| In | `recordings/<fixture>-grf.json` | [event contract](../contracts/README.md), [recordings](components/recordings.md) |
 | In | `.local/grf-demo-<fixture>-90/hls/` (optional, ignored) | [feed §5](components/feed.md#5-recordings-and-media) |
-| Out | Event Hubs `match-events`, partition key `matchId` | [local contracts §2](../../local/contracts.md#2-matchevent-v2), [ETL contracts](../../etl/contracts/README.md) |
-| Out | `/hls/{matchId}/live.m3u8` | [local contracts §6](../../local/contracts.md#6-live-media-hls) |
-| Admin | Recordings, runs, purge, demo settings and start (dev only; demo control calls it) | [local contracts §7](../../local/contracts.md#7-feed-admin-api-dev-only) |
+| Out | Event Hubs `match-events`, partition key `matchId` | [local contracts §2](../../local/contracts/README.md#2-matchevent-v2), [ETL contracts](../../etl/contracts/README.md) |
+| Out | `/hls/{matchId}/live.m3u8` | [local contracts §6](../../local/contracts/README.md#6-live-media-hls) |
+| Admin | Recordings, runs, purge, demo settings and start (dev only; demo control calls it) | [local contracts §7](../../local/contracts/README.md#7-feed-admin-api-dev-only) |
 
 ## 3. Glossary
 

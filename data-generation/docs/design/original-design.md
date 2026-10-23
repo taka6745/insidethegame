@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Board** | Synthetic Match Generator: GRF Engine → Azure Event Hubs |
-| **Superseded** | [event-coverage.md](event-coverage.md) (research, 19 October 2026) by [../opta-events.md](../opta-events.md) |
+| **Superseded** | [event-coverage.md](event-coverage.md) (research, 19 October 2026) by [../../contracts/README.md](../../contracts/README.md) |
 
 ---
 

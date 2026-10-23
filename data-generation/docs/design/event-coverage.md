@@ -1,6 +1,6 @@
 # Football event coverage
 
-**Research guide, 19 October 2026; superseded for implemented events by the [Opta-style v3 contract](../opta-events.md) (20 October).** This is our synthetic event contract, inspired by public football definitions; the F24-style export uses public type and qualifier IDs but is not Stats Perform data. A catalog entry does not mean the recording supports it; the recording's capabilities are authoritative.
+**Research guide, 19 October 2026; superseded for implemented events by the [Opta-style v3 contract](../../contracts/README.md) (20 October).** This is our synthetic event contract, inspired by public football definitions; the F24-style export uses public type and qualifier IDs but is not Stats Perform data. A catalog entry does not mean the recording supports it; the recording's capabilities are authoritative.
 
 ```text
 Native contact / referee decision → replaceable GRF adapter → event + qualifiers
