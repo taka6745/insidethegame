@@ -60,7 +60,7 @@ A seeded demo run skips step 2: it is created waiting at its start point, and de
 | Table | Holds |
 | --- | --- |
 | `recordings` | Catalogue, synced from `recordings/` at start-up |
-| `runs` | `run_id`, `match_id`, `fixture`, `kickoff`, `status`, `position` (items sent), `seq`; seeds: `hold_seconds`, `resume_seconds`, `start_point` |
-| `demo_settings` | One row: fixtures, `main_fixture`, stagger, run cap, start points, revision |
+| `runs` | `run_id`, `match_id`, `fixture`, `kickoff`, `status`, `position` (items sent), `seq`; seeds: `hold_seconds`, `hold_point`, `resume_seconds`, `start_point` |
+| `demo_settings` | One row: fixtures, `main_fixture`, stagger, run cap, start points, `skip_targets`, revision |
 | `purged_matches` | Permanent tombstones |
 | `purge_cutoff` | Latest `all` purge; older runs never resume |

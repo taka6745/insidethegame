@@ -6,4 +6,5 @@
 | --- | --- |
 | **Run** | `npm run build` in `frontend`, then `node frontend/benchmarks/client.ts` from the repository root |
 | **Output** | JSON: per-file sizes, totals, state-update timing |
-| **Status** | Opt-in; not part of `npm test` or CI. Budget: UI 230 KiB raw / 70 KiB gzip (unminified per-module output, no bundler; about 203 / 63 KiB on 23 Oct), all assets 250 KiB gzip; passes |
+| **Status** | Opt-in; not part of `npm test` or CI |
+| **Budget** | UI 230 KiB raw / 70 KiB gzip (unminified per-module output, no bundler; about 203 / 63 KiB measured), all assets 250 KiB gzip |

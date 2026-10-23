@@ -1,6 +1,6 @@
 # Local integration
 
-> **In short:** one Docker Compose project (`itg-local`) runs every service, the Microsoft emulators and the demo operator; `./dev` starts and checks it. The local stand-ins (feed aside) are never deployed; demo control is. [Docs](docs/README.md) · [Contracts](contracts/README.md).
+> **In short:** one Docker Compose project (`itg-local`) runs every service, the Microsoft emulators and the demo operator; `./dev` starts and checks it. The stream worker, emulators and local model are never deployed; the feed, `etl-stream`'s purge and SPADL roles and demo control are. [Docs](docs/README.md) · [Contracts](contracts/README.md).
 
 | | |
 | --- | --- |

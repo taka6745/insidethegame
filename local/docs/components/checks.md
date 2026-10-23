@@ -14,7 +14,7 @@
 | `check.py azure` | `./dev test azure` | Read-only ETL GraphQL (stat catalogue, matches), Event Hubs and Service Bus send/receive on dedicated integration consumers (`IntegrationProbe` messages may reach app consumers; they ignore that type) |
 | `broker_ready.py` | Compose `broker-ready` | Both messaging emulators healthy, bounded wait |
 | `etl_stream_check.py` | `./dev test backend` | Every ETL GraphQL entity answers; `narrative-live` is readable |
-| `broker_check.py` | `./dev test backend` | A synthetic probe match (fresh `broker-check-…` id: MA1, MatchEvent v2 with a duplicate, POS) flows Event Hubs → `etl-stream` → SQL → SPADL → DAB with one stat per enabled kind and scope, the backend lists it, and a purge from every consumer leaves nothing |
+| `broker_check.py` | `./dev test backend` | A synthetic probe match (fresh `broker-check-…` id: MA1, MatchEvent v2 with a duplicate, POS) flows Event Hubs → `etl-stream` → SQL → DAB with one stat per enabled kind and scope once the SPADL post-processor reaches the watermark (no MA3, so no SPADL actions: counts are 0), the backend lists it, and a purge from every consumer leaves nothing |
 | `backend_broker_check.py` | `./dev test backend` | Real Event Hubs → an isolated backend registry and schema: duplicate ignored, PostgreSQL restore agrees |
 
 No cloud throughput or distributed ownership is proved by these checks.

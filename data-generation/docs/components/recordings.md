@@ -8,7 +8,7 @@
 | **Code** | [`recordings/`](../../recordings/) |
 | **Contract** | [Opta-style event contract (v3)](../../contracts/README.md) |
 | **Made by** | [grf-demo](grf-demo.md) (`generate-grf.sh`, `prepare-grf-source.sh`) |
-| **Tests** | `tests/test_opta_stream.py`, `tests/test_fixture_recordings.py` (exports reproducible; scores, scorers and totals pinned, with the ETL reference totals) |
+| **Tests** | `tests/test_opta_stream.py`, `tests/test_fixture_recordings.py` (exports reproducible; Redcastle–Port Albion and Skybridge–Whitmore scores, scorers and totals pinned, with the ETL reference totals), `tests/test_recording.py` (Riverton–Forgeham) |
 
 | Fixture | Score | Seed | Shot threshold |
 | --- | --- | --- | --- |

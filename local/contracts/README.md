@@ -1,10 +1,10 @@
 # Integration boundaries
 
-> **In short:** each service owns its database and API; services meet only at the boundaries below: the multi-match contracts agreed 2026-10-20.
+> **In short:** each service owns its database and API; services meet only at the boundaries below.
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested on the local stack and on Azure ([status](../../README.md#what-works-today)) |
+| **Status** | Implemented and tested on the local stack ([status](../../README.md#what-works-today)) |
 | **Match identity** | `matchId = {fixture}-{run8}`, minted by the feed per run; never reused |
 | **Snapshot identity** | `(matchId, seq)`; `seq` = canonical `MatchEvent` sequence |
 | **Live input** | Event Hubs `match-events`, partition key `matchId`: MA1, MA3, POS ([ETL contracts](../../etl/contracts/README.md)) and `MatchEvent` v2 |
@@ -44,7 +44,7 @@ flowchart LR
 
 *In short: the canonical contact-level event; it clocks the backend's snapshots. Custom rules read SPADL (§3), not this.*
 
-The feed sends one per canonical event on `match-events` (partition key `matchId`), before that event's MA3 rows. It has no `feed` key, so MA consumers skip it. Consumers: the backend (group `user-backend`) for the snapshot clock and periods, the viewer and lab event ticker and gap recovery; ETL stores it (`canonicalEvents`). Since 2026-10-21 neither the catalogue (§4) nor backend custom rules count it; the ticker still shows its canonical `event_type` ([why](../../user-backend/docs/decisions.md#3-open-items)).
+The feed sends one per canonical event on `match-events` (partition key `matchId`), before that event's MA3 rows. It has no `feed` key, so MA consumers skip it. Consumers: the backend (group `user-backend`) for the snapshot clock and periods, the viewer and lab event ticker and gap recovery; ETL stores it (`canonicalEvents`). Neither the catalogue (§4) nor backend custom rules count it; the ticker still shows its canonical `event_type` ([why](../../user-backend/docs/decisions.md#3-open-items)).
 
 ```json
 {"type": "MatchEvent", "version": 2, "matchId": "riverton-forgeham-1a2b3c4d", "seq": 2,
@@ -170,7 +170,7 @@ query ($m: String!, $s: Int!) {
 
 Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`, `riverton:possession`). The backend's card defaults and fallbacks and saved pins (`standard_stat_id`) store these ids. A kind keeps its id when the concept is the same (definition and value may change, recorded below); a new stat gets a new kind; a retired one stays served with `available: false`.
 
-**Since 2026-10-21 the catalogue counts SPADL actions** (`spadlActions` with `finalSeq ≤ seq`, §3), converted from MA3, instead of canonical MatchEvent v2 events. Cards (MA3 card rows) and possession (POS samples) stay outside SPADL. MA3 has no revisions in this feed, so canonical corrections no longer change stats. Migrations `008_spadl_catalogue.sql` (definitions) and `009_spadl_stats_staged.sql` (staged procedure, VAR overturns) replace `004`'s table and procedure; Python twin [catalogue.py](../../etl/reference/catalogue.py); golden values `etl/tests/fixtures/catalogue-golden.json`.
+**The catalogue counts SPADL actions** (`spadlActions` with `finalSeq ≤ seq`, §3), converted from MA3, instead of canonical MatchEvent v2 events. Cards (MA3 card rows) and possession (POS samples) stay outside SPADL. MA3 has no revisions in this feed, so canonical corrections no longer change stats. Migrations `008_spadl_catalogue.sql` (definitions) and `009_spadl_stats_staged.sql` (staged procedure, VAR overturns) replace `004`'s table and procedure; Python twin [catalogue.py](../../etl/reference/catalogue.py); golden values `etl/tests/fixtures/catalogue-golden.json`.
 
 `statDefinitions` columns:
 
@@ -188,9 +188,9 @@ Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`
 | `displayOrder` | `int` | Order below. |
 | `enabled` | `bit` | Config; disabled kinds are not served. |
 
-**Old → new.** Values at full time, `all/home/away`, on the recordings re-rendered 2026-10-22; n/a unavailable. **Bold**: the move to SPADL (2026-10-21) changed the kind's value on that recording; "was A → B" are its canonical and SPADL values on the previous render (the before values belong to the previous renders), other kinds were equal there. "Pass family" = `pass cross throw_in freekick_crossed freekick_short corner_crossed corner_short goalkick`; "shot family" = `shot shot_freekick shot_penalty`.
+**Old → new.** Values at full time, `all/home/away`, on the shipped recordings; n/a unavailable. **Bold**: the move to SPADL changed the kind's value on that recording; "was A → B" are its canonical and SPADL values on the previous render (the before values belong to the previous renders), other kinds were equal there. "Pass family" = `pass cross throw_in freekick_crossed freekick_short corner_crossed corner_short goalkick`; "shot family" = `shot shot_freekick shot_penalty`.
 
-| # | Kind | Before (canonical events) | Now (SPADL) | Riverton–Forgeham | Redcastle Town–Port Albion | Skybridge–Whitmore |
+| # | Kind | Before (canonical events) | Now (SPADL) | Riverton Rovers–Forgeham United | Redcastle Town–Port Albion | Skybridge City–Whitmore Wanderers |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `goals` | goal | shot, shot_freekick, shot_penalty success + opponent's owngoal − VAR overturns | 2/1/1 | 1/1/0 | 2/1/1 |
 | 2 | `shots` | shot, goal | shot, shot_freekick, shot_penalty | 14/9/5 | 18/10/8 | 10/9/1 |
@@ -240,11 +240,11 @@ The backend serves unavailable rows (retired kinds, missing channels) as unavail
 Why values changed with SPADL (measured on the previous renders):
 - `interceptions`: SPADL's interception includes blocked passes (Opta 74), which the canonical catalogue did not count.
 - `offsides`: SPADL marks the offside pass (Opta 2), credited to the passing team. The MA3 export sends one per offside call, by the offside team (data-generation/contracts/README.md), so the values equalled the canonical ones.
-- `passes`, `pass_accuracy`: where no pass of the offside team was flagged (a deflection or loose touch put the player offside), its last touch becomes that offside pass: 4 more passes in Redcastle Town–Port Albion and 2 in Skybridge–Whitmore, all unsuccessful.
+- `passes`, `pass_accuracy`: where no pass of the offside team was flagged (a deflection or loose touch put the player offside), its last touch becomes that offside pass: 4 more passes in Redcastle Town–Port Albion and 2 in Skybridge City–Whitmore Wanderers, all unsuccessful.
 - `saves`: SPADL's keeper_save is every Opta save event, including outfield blocks and stops of off-target shots, which the canonical catalogue excluded. `spadlActions.defensiveBlock` and `fromShotOffTarget` mark those rows; `shots_saved` (42) counts only real goalkeeper saves and equalled the old `saves` values. The backend's question agent uses `shots_saved` for "saves" (custom rules: `save_kind` `save`).
 - `kick_offs`, `ball_recoveries`, `aerials_won`: no SPADL action (a kick-off is a pass; a ball recovery becomes a dribble or is dropped; aerial duels are not actions), so retired. Old values above.
 - Every other old kind had the same values on all three previous renders.
-- Skybridge–Whitmore's 47′ goal is a Joaquín Esteller own goal (a City `bad_touch`, result `owngoal`; counted for Whitmore), not a Whitmore attempt.
+- In Skybridge City–Whitmore Wanderers, the 47′ goal is a Joaquín Esteller own goal (a City `bad_touch`, result `owngoal`; counted for Whitmore), not a Whitmore attempt.
 
 ## 4b. Trend definitions
 
@@ -351,7 +351,7 @@ Internal `feed:8000`; nginx proxies `/feed-api/` only for the developer screen.
 | `POST /admin/matches/purge` | §5. |
 | `GET /demo`, `PUT /demo` | Demo settings: `fixtures` (main first), `main_fixture` (default `redcastle-portalbion`; starts first, the viewer opens it), `stagger_seconds`, `max_active_runs`, `start_points` (`id`, `label`, `period`, `minute`, `seed`); `PUT` adds `expected_revision` (`409` when stale). |
 | `POST /demo/start` | `{"point": "kickoff"}` → `201 {"started": true, "point", "runs"}`; while any run is scheduled or live `200 {"started": false, "runs"}` (one demo under concurrent calls). Purges the feed's finished runs first. A point after kick-off without a `seed` is `409`. |
-| `POST /demo/skip` (`DEMO_SEEDS=1` only) | `{"target": "20"}` → `200 {"skipped_seconds", "target", "runs"}`: every unfinished demo run's clock moves on by the same whole minutes (a `skip_targets` entry: `minutes`, or a start `point` read on the main game's clock); each run then sends what became due at once in capped sends and publishes video up to its new clock; matchIds stay. `409` with no playing demo, while a seed is recorded or when already past the target; `404` unknown target; `403` without `DEMO_SEEDS`. |
+| `POST /demo/skip` (`DEMO_SEEDS=1` only) | `{"target": "20"}` → `200 {"skipped_seconds", "target", "runs"}`: every unfinished demo run's clock moves on by the same whole minutes (a `skip_targets` entry: `minutes`, or a start `point` read on the main game's clock); each run then sends what became due at once in capped sends and publishes video up to its new clock; matchIds stay. `409` with no playing demo, while a seed is recorded or when already past the target; `404` unknown target; absent (404) without `DEMO_SEEDS`. |
 | `POST /runs/{match_id}/release` | `{"after_seconds": 5}` → the run that waited for its seed starts, its clock reading the start point `after_seconds` from now; idempotent. |
 | `GET /health` | Readiness. |
 
@@ -373,7 +373,7 @@ Seeds ([demo control](../docs/components/demo-control.md)): `POST /runs` also ta
 
 Start, cancel and skip are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop); `429` over the limit.
 
-A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the demo build); a production release leaves it off and they answer 404 (feed: 403/409).
+A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the demo build); a production release leaves it off and they answer 404 (feed: `hold_point`/`resume_point` 403, a seeded demo start 409).
 
 ## 8. Backend product API
 
@@ -401,7 +401,7 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 - `POST M/sessions/{token}/messages` takes `{prompt, request_id, seq?}`; `seq` is the snapshot the viewer is showing and the answer is computed at `min(latest, seq)`, so it never cites a later event.
 - `GET /product/prices` returns `{input, output}` (US$ per million tokens, ETag) for answer receipts; edited as the `prices` config table.
 
-## 8b. Story follows
+### 8b. Story follows
 
 *In short: a viewer follows one story per match; the feed then shows only that story, plus pivotal key moments for everyone.*
 

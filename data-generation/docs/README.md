@@ -37,5 +37,6 @@ docs/
 | `grf_demo/` | Capture, telemetry, Opta-style exports, roster, source patches | [grf-demo](components/grf-demo.md) |
 | `recordings/` | Shipped recordings and their exports | [recordings](components/recordings.md) |
 | `contracts/` | The Opta-style event contract of every recording | [contracts](../contracts/README.md) |
+| `infra/` | Terraform for the feed on Azure, with its tests | [deployment](deployment.md#2-azure) |
 | `tests/` | Generator, recording and export tests | [development](development.md#2-tests) |
 | `generate-grf.sh`, `prepare-grf-source.sh` | Render one fixture | [grf-demo](components/grf-demo.md#1-run) |

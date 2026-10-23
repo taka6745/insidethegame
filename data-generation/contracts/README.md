@@ -57,7 +57,7 @@ The F24 export adds team set-up (34: 4-3-3, positions, shirt numbers), per-team 
 
 Substitutions, injuries, VAR and xG are not available, and shirt numbers do not change. Absent evidence stays unknown rather than zero. Tackle, take-on, aerial and recovery thresholds are rules over simulated tracking, not human annotation.
 
-Simulated football turns the ball over far more often than top-flight football, and the adapter reports what happened rather than rescaling it. Expect per-match counts of ball recoveries, clearances and passes well above Opta norms (several hundred recoveries against about 100; about 1,300–1,500 passes at 75–78% against about 950 at about 83%). GRF also restarts less often, with roughly a third of a real match's throw-ins and corners, and rarely blocks shots. The [recordings page](../docs/components/recordings.md) gives each shipped match's score; `tests/test_fixture_recordings.py` pins their totals.
+Simulated football turns the ball over far more often than top-flight football, and the adapter reports what happened rather than rescaling it. Expect per-match counts of ball recoveries, clearances and passes well above Opta norms (several hundred recoveries against about 100; about 1,300–1,500 passes at 75–78% against about 950 at about 83%). GRF also restarts less often, with roughly a third of a real match's throw-ins and corners, and rarely blocks shots. The [recordings page](../docs/components/recordings.md) gives each shipped match's score; `tests/test_fixture_recordings.py` pins two of them (`riverton-forgeham` is pinned in `tests/test_recording.py`).
 
 ## Realism patch
 
