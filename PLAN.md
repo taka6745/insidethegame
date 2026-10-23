@@ -196,10 +196,10 @@ Passed: seeded 20′ start, questions, cross-match follow, Skip ahead, capture c
 
 *In short: deployed at the azurecontainerapps.io URL and msft-hackathon.koda-software.com; redeployed 23 Oct with the fictional league; all agents on `gpt-6.1-sol`; all four seeds recorded; checked as an anonymous viewer.*
 
-- **Deployed:** 5e11159 (demo build, image `v20261023125814`); edge `UPSTREAM` unchanged.
-- **Fixed while deploying:** Stream Analytics compile and memory limits (10-minute lookback, 4 h sessions); the guard's Automation account in East US (Free Trial); serverless SQL resume retries; media upload with azcopy; details in git history.
+- **Deployed:** 0903854 (demo build, image `v20261023140034`); edge `UPSTREAM` unchanged.
+- **Fixed while deploying:** Stream Analytics compile and memory limits (10-minute lookback, 4 h sessions); the guard's Automation account in East US (Free Trial); serverless SQL resume retries; media upload with azcopy; the feed opened a Postgres connection per progress write, which held its B1ms server at 99 % CPU with no credits so seeded starts took 31–37 s (now pooled: 10 % CPU); purge deletes played HLS blobs concurrently; details in git history.
 - **Verified as an anonymous viewer:** three matches, main game first, video and seeded insights; questions in about 6 s; cross-match answers with a follow offer; cross-match follow with catch-up in about 10 s; a capture card played as a replay; Skip ahead +10′/+20′; Cancel; a 69′ equaliser now firing a follow narrative.
-- **Measured:** seeded 60′ start 8.1 s (restore 5.2–5.8 s); 23 Oct starts settled in 2 s (kickoff, every stage ready by 52 s), 37 s (85′) and 31 s (20′), Cancel 30–99 s; engine lag about 0.5 minutes; about US$2 of tokens per session of three matches to half time; idle about A$6–7/day plus the warm demo control.
+- **Measured (23 Oct, viewer end to end):** seeded 60′ start 7.1 s (demo control 5.8 s, restore 4.6–5.4 s), 20′ start 3.4 s (2.1 s), kickoff 2 s (every stage ready by 52 s); before the feed fix 29–37 s; Cancel 36–45 s (the feed deletes about 5,400 played HLS blobs after a 60′ start), was 30–99 s; engine lag about 0.5 minutes; about US$2 of tokens per session of three matches to half time; idle about A$6–7/day plus the warm demo control.
 - **Open:** grounding not sampled on Azure; the 12 h idle check.
 
 ## 12. Team review actions (22 Oct meeting)
