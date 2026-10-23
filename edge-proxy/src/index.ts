@@ -1,4 +1,4 @@
-// Cloudflare Worker: serves the judge build at a custom hostname by proxying to the Azure web app.
+// Cloudflare Worker: serves the demo at a custom hostname by proxying to the Azure web app.
 export interface Env { UPSTREAM: string }
 
 export default {
