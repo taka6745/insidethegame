@@ -1,10 +1,10 @@
 # Deployment
 
-> **In short:** the feed simulates a third-party provider, so on Azure it gets its own resource group, PostgreSQL and Blob Storage, and only a send-only key for our Event Hubs. Terraform in [`infra/`](../infra/); **applied 22 Oct for the Azure test, acceptance pending** (`./dev azure up`, [runbook](../../terraform/runbook.md)).
+> **In short:** the feed simulates a third-party provider, so on Azure it gets its own resource group, PostgreSQL and Blob Storage, and only a send-only key for our Event Hubs. Terraform in [`infra/`](../infra/); deployed by `./dev azure up` ([deployment](../../terraform/docs/deployment.md)).
 
 | | |
 | --- | --- |
-| **Status** | Local Docker (`local/compose.yaml`, service `feed`); Azure Terraform implemented, mock-tested and applied by `./dev azure up` |
+| **Status** | Deployed ([status](../../PLAN.md#11-azure-judge-build)); local Docker (`local/compose.yaml`, service `feed`); Terraform mock-tested |
 | **Demo seeds** | `demo_seeds` variable sets `DEMO_SEEDS` (on for the demo build; `./dev azure up --release` turns it off) |
 | **Image** | `data-generation/feed/Dockerfile`, target `runtime`; recordings and media are never baked in |
 | **Azure** | `rg-itg-feed-dev`: Container App (internal ingress, 1 replica), PostgreSQL Flexible B1ms, Storage account |

@@ -1,5 +1,11 @@
 # Football event coverage
 
+> **In short:** the 19 Oct research guide to which football events to capture; historical, not updated. The implemented contract is [contracts/README.md](../../contracts/README.md).
+
+| | |
+| --- | --- |
+| **Status** | Historical design (19 Oct 2026), superseded by the Opta-style v3 contract |
+
 **Research guide, 19 October 2026; superseded for implemented events by the [Opta-style v3 contract](../../contracts/README.md) (20 October).** This is our synthetic event contract, inspired by public football definitions; the F24-style export uses public type and qualifier IDs but is not Stats Perform data. A catalog entry does not mean the recording supports it; the recording's capabilities are authoritative.
 
 ```text

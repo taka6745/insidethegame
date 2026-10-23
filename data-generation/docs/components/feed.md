@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Status** | Implemented and tested (virtual-clock unit tests; Postgres repository tests); runs in the local stack as Compose service `feed` (profile `backend`); Start demo, main game and seeded runs tested in units, on the local stack and on Azure |
-| **Owns** | Its own Postgres server (locally `feed-postgres`, on a network only the feed joins), database `feed`: recordings catalogue, runs, purge tombstones, `demo_settings` ([migrations](../../feed/migrations/) 001–005) |
+| **Owns** | Its own Postgres server (locally `feed-postgres`, on a network only the feed joins), database `feed`: recordings catalogue, runs, purge tombstones, `demo_settings` ([migrations](../../feed/migrations/) 001–008) |
 | **Out** | Event Hubs `match-events`, partition key `matchId`: MA1, `MatchEvent` v2, MA3, POS ([local contracts](../../../local/contracts/README.md#2-matchevent-v2), [ETL contracts](../../../etl/contracts/README.md)) |
 | **Media** | `GET /hls/{matchId}/live.m3u8` and its segments: played footage only ([§6](../../../local/contracts/README.md#6-live-media-hls)) |
 | **Admin (dev only)** | `GET /recordings`, `POST /runs`, `GET /runs`, `POST /admin/matches/purge`, `GET`/`PUT /demo`, `POST /demo/start`, `GET /health`; with `DEMO_SEEDS=1` also `POST /runs/{matchId}/release` and `POST /demo/skip` ([§7](../../../local/contracts/README.md#7-feed-admin-api-dev-only)). Public `/demo-api/` goes through demo control, never straight here |
@@ -57,7 +57,7 @@ feed DB (runs) ────┘                    └─▶ live-media/{matchId}
 | Held run (003, 006) | `POST /runs {hold_point}` sends nothing at or past the point's video second (HLS included): demo control records a seed from it; the run lists the point as `held_at`, which capture checks | Unit tests; four seeds recorded locally |
 | Waiting run (003, 004) | A seeded start (or `resume_point`) creates the run waiting (`awaiting_restore: true`): nothing sent; position and seq taken as delivered. `POST /runs/{id}/release {after_seconds}` starts its clock at the point, without MA1 or earlier events; idempotent. `start_point` is kept so the viewer says "live from N′" | Unit tests; local stack |
 
-Seed recording and seeded starts exist only with `DEMO_SEEDS=1` (local compose and the demo build): without it `hold_point`/`resume_point` are `403`, a seeded start `409` and `release` is absent. A point with no recorded seed is `409`. The seed layout and restore order live in demo control (`local/demo_control.py`, [PLAN.md §10.6](../../../PLAN.md)).
+Seed recording and seeded starts exist only with `DEMO_SEEDS=1` (local compose and the demo build): without it `hold_point`/`resume_point` are `403`, a seeded start `409` and `release` is absent. A point with no recorded seed is `409`. The seed layout and restore order live in demo control (`local/demo_control.py`, [seeds](../../../local/docs/components/demo-control.md#2-seeds)).
 
 ## 3. HLS
 

@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Needs** | Python 3.12; Docker for the stack; GRF runtime, OpenCV and FFmpeg only to render |
-| **Tests** | `python -m pytest -q` from `data-generation/` (the repository and Blob tests skip without `FEED_TEST_DATABASE_URL` and `FEED_TEST_BLOB_CONNECTION_STRING` (Azurite); OpenCV and GRF-clone tests skip without them) |
+| **Tests** | `python -m pytest -q` from `data-generation/`. Repository and Blob tests skip without `FEED_TEST_DATABASE_URL` and `FEED_TEST_BLOB_CONNECTION_STRING` (Azurite). OpenCV and GRF-clone tests skip without those installed |
 | **Whole product** | `ACCEPT_EULA=Y ./dev up backend`, then `./dev demo start` ([../../DEVELOPMENT.md](../../DEVELOPMENT.md)) |
 | **Logs** | `./dev logs feed` |
 
@@ -35,6 +35,7 @@ FEED_TEST_DATABASE_URL=postgresql://user:pass@localhost:5432/feed_test python -m
 | `tests/test_opta_events.py`, `test_telemetry_v2.py`, `test_grf_demo.py` | Event derivation rules; the feed's event types and qualifiers equal the backend `Event` contract |
 | `tests/test_fixtures.py` | Rosters, kits, exports follow the recording |
 | `tests/test_tactics.py` | Tactic phases, the shipped scripts, and the engine patch on the pinned source |
+| `tests/test_presentation.py`, `test_realism_patch.py`, `test_recording.py` | Roster numbers and kit textures repeatable; realism patch idempotent on the pinned engine; shipped recording integrity |
 
 ## 3. Make a recording
 

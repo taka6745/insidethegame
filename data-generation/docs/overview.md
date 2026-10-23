@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Generator implemented (offline, macOS); feed implemented, tested and deployed to Azure by `./dev azure up` (redeployed 23 Oct), running three concurrent matches locally and on Azure; Start demo, main game, Skip ahead and seeded starts run on Azure |
+| **Status** | Generator implemented (offline, macOS); feed implemented, tested and deployed to Azure by `./dev azure up` ([status](../../PLAN.md#11-azure-judge-build)), running three concurrent matches locally and on Azure; Start demo, main game, Skip ahead and seeded starts run on Azure |
 | **Data** | Synthetic, simulated with Google Research Football (Apache-2.0); labelled `synthetic: true` everywhere; not Stats Perform data |
 | **Out** | Event Hubs `match-events` (MA1, `MatchEvent` v2, MA3, POS); HLS over HTTP |
 | **Consumers** | ETL (`etl-stream`), user backend; viewers through nginx (`/media/hls/`) |

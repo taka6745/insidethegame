@@ -1,10 +1,12 @@
 # Data generation
 
+> **In short:** renders synthetic fictional-league matches with Google Research Football and replays them through the feed, a simulated external provider, as live matches. Implemented, tested and deployed ([status](docs/overview.md)).
+
 [Documentation](docs/README.md) · [Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
 
 ![Recordings and media go into the feed, which publishes to Event Hubs and serves played HLS](architecture.svg)
 
-**Implemented, tested and deployed** ([status](docs/overview.md)). Renders synthetic fictional-league matches with Google Research Football and replays them through the [feed](docs/components/feed.md), a simulated external provider, as live matches: several at once, each with its own `matchId`. The feed also runs the demo: **Start demo** kicks off exactly three fixtures (main game Redcastle Town–Port Albion first), from kick-off or from a recorded seed ([feed §2a](docs/components/feed.md#2a-demo-and-seeds)).
+The [feed](docs/components/feed.md) plays several matches at once, each with its own `matchId`. The feed also runs the demo: **Start demo** kicks off exactly three fixtures (main game Redcastle Town–Port Albion first), from kick-off or from a recorded seed ([feed §2a](docs/components/feed.md#2a-demo-and-seeds)).
 
 | Part | Role |
 | --- | --- |
