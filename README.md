@@ -8,7 +8,7 @@ Live football, shared match narratives and a personal match companion.
 
 ## What works today
 
-> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Deployed on Azure (demo build, redeployed 23 Oct 2026) and tested on the local stack; open checks are in [PLAN.md §10.4](PLAN.md#104-azure-demo-acceptance-before-submission).
+> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Deployed on Azure ([status](PLAN.md#11-azure-judge-build)) and tested on the local stack; open checks are in [PLAN.md §10.4](PLAN.md#104-azure-demo-acceptance-before-submission).
 
 | | |
 | --- | --- |
@@ -17,9 +17,9 @@ Live football, shared match narratives and a personal match companion.
 | **Models on Azure** | Foundry `gpt-6.1-sol` (deployments `writer`, `questions`; effort low) for every agent · `Microsoft-Decision-1` for claim checks, follow triggers, clips and follow offers |
 | **Spend** | Budgets email only; Stream Analytics runs only while match events flow; one last resort at 90 % of the credit ([guard](terraform/docs/components/guard.md)) |
 
-Every feature below is implemented, unit-tested, run on the local Docker stack and checked on Azure as an anonymous viewer.
+Every feature below is implemented, unit-tested and run on the local Docker stack. On Azure, as an anonymous viewer, we verified 20′, HT and 60′ starts, Skip ahead, Cancel, questions, follows and capture cards; the 85′ seed is recorded, but kickoff and 85′ starts are not yet exercised through the edge.
 
-- **Start demo.** Always exactly three matches; the main game (Redcastle Town–Port Albion) starts first and opens by default. Start points kickoff, 20′, HT, 60′, 85′; a second click joins the live demo; **Skip ahead** jumps +10′ or +20′; **Cancel demo** purges everything. A seven-stage progress screen lights each stage from a real readiness check.
+- **Start demo.** Always exactly three matches; the main game (Redcastle Town–Port Albion) starts first and opens by default. Start points kickoff, 20′, HT, 60′, 85′; a second click joins the live demo; **Skip ahead** jumps +10′, +20′ or to the second half; **Cancel demo** purges everything. A seven-stage progress screen lights each stage from a real readiness check.
 - **Seeds.** Mid-match starts restore a snapshot recorded on this pipeline, then the feed continues live: "story so far generated earlier on this pipeline; live from N′". Restore runs through a **demo-only adapter** in each owner, mounted only with `DEMO_SEEDS=1` (demo build; off in a release).
 - **Three live matches.** Tactically scripted 90-minute simulations stream as HLS while their Opta-style events flow through Event Hubs; each run is its own `matchId`, purged on its own.
 - **One ETL pipeline.** Stream Analytics writes events, SPADL actions, stats and trends to Azure SQL; Data API builder serves GraphQL; Service Bus carries notifications.

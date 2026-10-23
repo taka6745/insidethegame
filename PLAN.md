@@ -4,9 +4,9 @@
 
 | | |
 | --- | --- |
-| **Branch** | `integration/luke-services`, merged to `main` |
+| **Branch** | `integration/luke-services`, pushed to `main` |
 | **Last updated** | 23 Oct 2026 |
-| **Now** | Demo build deployed on Azure (fictional league, every agent on `gpt-6.1-sol`, all four seeds recorded); repo cleanup |
+| **Now** | Demo build on Azure ([§11](#11-azure-judge-build)); repo cleanup |
 | **Next** | Remaining acceptance checks (§10.4), then the submission items (§8) |
 
 ## 1. Goal
@@ -71,7 +71,7 @@ The feed is an external provider (Event Hubs + HLS over HTTP); the ETL is the on
 
 - **Trends (ETL):** possession, field tilt, territory, pressing, entries, shots, fouls, momentum and more over the last 5, last 15, half and match, with thresholds in `trendDefinitions`; SQL and a Python reference in parity ([trends](etl/docs/components/trends.md)).
 - **Analyst** (every 5 minutes, shared, neutral) finds patterns in its own words, each citing the numbers behind it; a validator checks those numbers. **Storylines** open, develop and resolve per match; the author advances them in each bucket's framing.
-- **Honesty check (21 Oct):** on GRF data, minute-to-minute play behaves like independent draws; half- and match-level control is real. So spells, momentum and fast breaks are seeded `enabled = false` and storylines come from half/match control plus key events.
+- **Honesty check (21 Oct):** on GRF data, minute-to-minute play behaves like independent draws; half- and match-level control is real. So momentum, fast breaks and contests stay off; territory spells are on and pressure spells serve only alongside territory. Storylines come from half/match control, spells and key events.
 
 ## 6. Story follows
 
@@ -94,6 +94,8 @@ The feed is an external provider (Event Hubs + HLS over HTTP); the ETL is the on
 
 ## 8. Needs the developer
 
+*In short: submission items only the developer can do.*
+
 - Confirm hackathon registration and team eligibility (registration closed 20 Oct).
 - Demo video under 2 minutes (public YouTube or Vimeo), the project pitch naming the Microsoft technologies and the description; check every submission requirement. Judge access must stay free and working until 10 Nov, 11:59 pm PT.
 - Make the repo public; choose a licence.
@@ -102,6 +104,8 @@ The feed is an external provider (Event Hubs + HLS over HTTP); the ETL is the on
 - Create the `BUNDLE_DENYLIST` CI secret.
 
 ## 9. Known limits
+
+*In short: accepted limits of the demo, local and Azure.*
 
 - On the shared local model, three concurrent matches put narratives minutes behind; Azure capacity or fewer enabled buckets fixes it.
 - Momentum and fast breaks stay off as claims (too few shots per GRF match to test them); pressure spells are a weak signal, served only alongside territory.
@@ -125,7 +129,7 @@ The feed is an external provider (Event Hubs + HLS over HTTP); the ETL is the on
 | Phase | Feature | Status |
 | --- | --- | --- |
 | D1 | **Start demo**: three matches (main game `redcastle-portalbion` first), start-point picker, joins a live demo, one demo under concurrent clicks, **Cancel demo**, seven-stage start progress | Deployed; checked on Azure |
-| D2 | **Seeds**: each start point recorded on the pipeline and restored through each owner's demo adapter, then live; "story so far generated earlier on this pipeline; live from N′" | Deployed; 20′, HT, 60′, 85′ recorded on `gpt-6.1-sol` |
+| D2 | **Seeds**: each start point recorded on the pipeline and restored through each owner's demo adapter, then live; "story so far generated earlier on this pipeline; live from N′" | Deployed; 20′, HT, 60′, 85′ recorded |
 | D3 | **Moment clips in follows**: Decision-1 picks rare, relevant moments (goal, penalty, red card, VAR) for a follow's playlist | Deployed; checked on Azure (48′ own goal as a capture card) |
 | D3 | **Clip transitions**: hold, sting (`builtin:league`), cut, fade between clips | Deployed; reduced motion holds and cuts |
 | D4 | **Slow motion** into and out of the key moment | Deployed |
@@ -164,7 +168,7 @@ Stays up from submission until judging ends (11 Nov, 5:59 pm AEST): free, no IP 
 
 *In short: built and deployed; the design lives in [local/docs/components/demo-control.md](local/docs/components/demo-control.md).*
 
-Demo control is the operator between the provider and our services (start, cancel, skip, status, seed record and restore); seeding lives in one demo adapter per owner, mounted only with `DEMO_SEEDS=1`. Open: one viewer's Cancel stops the demo for every viewer (as asked); an in-page dialog guards it.
+Open: one viewer's Cancel stops the demo for every viewer (as asked); an in-page dialog guards it.
 
 ### 10.7 Local integration check (22 Oct)
 
@@ -183,7 +187,7 @@ Passed: seeded 20′ start, questions, cross-match follow, Skip ahead, capture c
 *In short: deployed at the azurecontainerapps.io URL and msft-hackathon.koda-software.com; redeployed 23 Oct with the fictional league; all agents on `gpt-6.1-sol`; all four seeds recorded; checked as an anonymous viewer.*
 
 - **Deployed:** 5c377c6 (demo build, image `v20261023114741`); edge `UPSTREAM` unchanged.
-- **Fixed while deploying:** Stream Analytics query compile error and output casts; Stream Analytics out of memory (10-minute lookback, 4 h sessions); resource-group budgets left behind by `down`; the guard's Automation account in East US (Free Trial); serverless SQL resume retries; media upload with azcopy and re-encoded secondary matches; Responses API for reasoning models with tools; the backend's follow check on Decision-1; Skip ahead hidden after connect; follow planner without the other match's score; a goal against a followed team not firing (score before and after in the update); "footage unavailable" after a seeded start; native `confirm()` on Cancel; stream-start webhook on Start; `./dev azure plan` parity with `up`.
+- **Fixed while deploying:** Stream Analytics compile and memory limits (10-minute lookback, 4 h sessions); the guard's Automation account in East US (Free Trial); serverless SQL resume retries; media upload with azcopy; details in git history.
 - **Verified as an anonymous viewer:** three matches, main game first, video and seeded insights; questions in about 6 s; cross-match answers with a follow offer; cross-match follow with catch-up in about 10 s; a capture card played as a replay; Skip ahead +10′/+20′; Cancel; a 69′ equaliser now firing a follow narrative.
 - **Measured:** seeded 60′ start 8.1 s (restore 5.2–5.8 s); engine lag about 0.5 minutes; about US$2 of tokens per session of three matches to half time; idle about A$6–7/day plus the warm demo control.
 - **Open:** grounding not sampled on Azure; the 12 h idle check; kickoff and 85′ starts from a fresh browser.

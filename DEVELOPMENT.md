@@ -19,7 +19,7 @@
 
 `up` waits for the integration checks to pass. Use `./dev test` to rerun them later.
 
-For the **runnable user-backend harness**, use:
+For the **whole product**, use:
 
 ```sh
 ACCEPT_EULA=Y ./dev up backend  # feed + ETL + engine + API + viewer + messaging, then tests
@@ -37,9 +37,9 @@ docker compose -p itg-local exec demo-control python /checks/demo_control.py cap
 
 HT, 60′ and 85′ are recorded as a chain (`record ht --from 20`). See [demo control](local/docs/components/demo-control.md).
 
-[Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Developer config](http://localhost:18020/dev/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a match, then a preset or a typed request. Questions, custom stats and narratives need the [local model](user-backend/docs/components/agents.md); without one the backend reports not ready and refuses questions. Review the [Microsoft emulator licences](local/README.md#licences) before starting. No Azure login is needed. `./dev test backend` reruns isolated backend tests and real broker probes without touching running matches.
+[Match viewer](http://localhost:18020) · [Event filter lab](http://localhost:18020/lab/) · [Developer config](http://localhost:18020/dev/) · [Backend API explorer](http://localhost:18000/docs) · [Short walkthrough](user-backend/docs/development.md). Pick a match, then a preset or a typed request. Questions, custom stats and narratives need the [local model](user-backend/docs/components/agents.md); without one the backend reports not ready and refuses questions. Review the [Microsoft emulator licences](local/docs/development.md#3-licences) before starting. No Azure login is needed. `./dev test backend` reruns isolated backend tests and real broker probes without touching running matches.
 
-For the emulators, SQL and ETL GraphQL alone (no feed or services), first review the [Microsoft licence links](local/README.md#licences), then:
+For the emulators, SQL and ETL GraphQL alone (no feed or services), first review the [Microsoft licence links](local/docs/development.md#3-licences), then:
 
 ```sh
 ACCEPT_EULA=Y ./dev up azure
@@ -57,8 +57,6 @@ ACCEPT_EULA=Y ./dev up azure
 | Viewer experience | [backend guide](user-backend/docs/development.md) | Profile → bucket → current stats and narrative backlog. |
 | UI | [frontend guide](frontend/docs/development.md) | Match picker, live match, cards and chat. |
 
-The stack includes a **working match viewer, structured-filter lab and developer config screen**. Live insights come from the narrative engine (`narrative-live`), fed by a local stand-in for the Stream Analytics job; stat cards and questions read its GraphQL (`executeStatsAtSeq`). The whole stack deploys to Azure with `./dev azure up` ([deployment](terraform/docs/deployment.md)); there the real Stream Analytics job replaces the local stand-in. Custom rules are typed rules, never generated Python.
-
 ## Work independently
 
 Follow [development practices](DEVELOPMENT-PRACTICES.md): views call services; services use models, repositories and adapters. Keep logic, migrations and application tests inside the owning service. Shared wiring and dependency checks live in [local/](local/README.md). Azure resource definitions live in each service's `infra/`; [terraform/](terraform/README.md) holds the backend, demo control, frontend, seeds share, Key Vault and the `questions` deployment, plus the spend guard (`terraform/guard`).
@@ -69,19 +67,8 @@ Use the documented API/message boundary, never another service's database. Start
 ./dev terraform check
 ```
 
-This validates and mock-tests Terraform in Docker, with no accounts or cloud deployment. Real Azure integration remains a separate check: **Stream Analytics belongs to the ETL service**, Foundry needs an actual model endpoint, and managed identity/networking/scale need Azure validation.
-
+This validates and mock-tests Terraform in Docker, with no accounts or cloud deployment. **Stream Analytics belongs to the ETL service.** Identity, networking and scale gaps: [terraform decisions §2](terraform/docs/decisions.md#2-before-a-production-release).
 
 ## Recorded match demo
 
-```text
-feed (recordings, N runs at once) → Event Hubs match-events (MA1, MA3, POS, MatchEvent v2; key matchId)
-  │                                 └→ played HLS → nginx /media/hls/{matchId}/
-  ├→ backend event consumer ─────────────────────────────── clock, ticker, gap recovery
-  └→ etl-stream (Stream Analytics stand-in + SPADL) → SQL + etl-dab GraphQL :15001 ── stat cards, custom stats, questions
-       └→ Service Bus match-notifications / narrative-live
-            → narrative engine ← active audience targets + prompts ← backend ← /dev/ config
-            → Service Bus narratives → backend → viewer (released at its video clock)
-```
-
-The checked-in recordings are fictional Elephant League simulations (Riverton Rovers–Forgeham United, Redcastle Town–Port Albion, Skybridge City–Whitmore Wanderers). Large footage stays ignored; `./dev` mounts each `.local/grf-demo-{fixture}-90/hls/` that exists into the feed only, and a fixture without media plays without video ([generation](data-generation/docs/components/grf-demo.md)). Nothing reaches a viewer before it has been streamed: only the feed holds recordings and media. Replays: [backend services](user-backend/docs/components/services.md). Logs: `./dev logs feed`, `./dev logs etl-stream`, `./dev logs narrative-live`.
+Flow: [local architecture §1](local/docs/architecture.md#1-flow). The checked-in recordings are fictional Elephant League simulations (Riverton Rovers–Forgeham United, Redcastle Town–Port Albion, Skybridge City–Whitmore Wanderers). Large footage stays ignored; `./dev` mounts each `.local/grf-demo-{fixture}-90/hls/` that exists into the feed only, and a fixture without media plays without video ([generation](data-generation/docs/components/grf-demo.md)). Nothing reaches a viewer before it has been streamed: only the feed holds recordings and media. Replays: [backend services](user-backend/docs/components/services.md). Logs: `./dev logs feed`, `./dev logs etl-stream`, `./dev logs narrative-live`.
