@@ -27,7 +27,8 @@ def from_env():
         streams = discover(os.environ.get("FEED_RECORDINGS_DIR", "/recordings"), os.environ.get("FEED_MEDIA_ROOT"))
     sink = EventHubsSink(os.environ["FEED_EVENTHUB_CONNECTION_STRING"],
                          os.environ.get("FEED_EVENTHUB_NAME", "match-events"))
-    service = FeedService(FeedRepository(os.environ["FEED_DATABASE_URL"]), streams, sink=sink,
+    repository = FeedRepository(os.environ["FEED_DATABASE_URL"])
+    service = FeedService(repository, streams, sink=sink,
                           clock=SystemClock(), live_root=live_root,
                           allow_seek=os.environ.get("FEED_ALLOW_SEEK", "0") == "1",
                           policy=SendPolicy.from_env(), seeds=os.environ.get("DEMO_SEEDS") == "1")
@@ -41,5 +42,6 @@ def from_env():
         finally:
             await service.close()
             await sink.close()
+            repository.close()
 
     return create_app(service, live_root, lifespan)

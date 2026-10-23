@@ -1,4 +1,5 @@
 """The feed's own Postgres database: recordings catalogue, runs and purge tombstones."""
+import threading
 from pathlib import Path
 
 import psycopg
@@ -6,6 +7,7 @@ from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
+from psycopg_pool import ConnectionPool
 
 MIGRATIONS = Path(__file__).resolve().parents[1] / "migrations"
 RUN_COLUMNS = ("run_id::text AS run_id, match_id, fixture, kickoff, created_at, status, position, seq, hold_seconds, "
@@ -14,11 +16,25 @@ DEMO_COLUMNS = "fixtures, main_fixture, stagger_seconds, max_active_runs, start_
 
 
 class FeedRepository:
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, url, pool_size=5):
+        self.url, self.pool_size = url, pool_size
+        self._pool, self._lock = None, threading.Lock()
 
     def _connect(self):
-        return psycopg.connect(self.url, row_factory=dict_row)
+        """One transaction on a pooled connection. A new connection per call (TLS and authentication) for each run's
+        progress, several a second, used up the small Azure server's CPU and every feed call took seconds."""
+        with self._lock:
+            if self._pool is None:  # opened on first use: migrate creates the database first
+                self._pool = ConnectionPool(self.url, min_size=1, max_size=self.pool_size, timeout=30, open=True,
+                                            check=ConnectionPool.check_connection,
+                                            kwargs={"row_factory": dict_row, "connect_timeout": 10})
+        return self._pool.connection()
+
+    def close(self):
+        with self._lock:
+            pool, self._pool = self._pool, None
+        if pool:
+            pool.close()
 
     def migrate(self):
         """Create the database if needed, then apply new migrations in order."""

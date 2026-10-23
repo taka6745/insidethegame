@@ -14,6 +14,7 @@ class FeedRepositoryTests(unittest.TestCase):
         self.repository = FeedRepository(URL)
         self.repository.migrate()
         self.repository.migrate()  # idempotent
+        self.addCleanup(self.repository.close)
 
     def test_runs_progress_and_purge(self):
         repo, run_id = self.repository, str(uuid.uuid4())
@@ -41,6 +42,15 @@ class FeedRepositoryTests(unittest.TestCase):
         self.assertIsNone(repo.shift_kickoff(match_id, 60))  # a finished run stays put
         repo.tombstone([match_id])
         repo.delete_runs([match_id])
+
+    def test_calls_reuse_their_connection(self):
+        from feed.repositories.feed_db import FeedRepository
+        repo, pids = FeedRepository(URL, pool_size=1), set()
+        self.addCleanup(repo.close)
+        for _ in range(3):
+            with repo._connect() as db:
+                pids.add(db.execute("SELECT pg_backend_pid() AS pid").fetchone()["pid"])
+        self.assertEqual(len(pids), 1)
 
     def test_catalogue_sync(self):
         entry = {"fixture": "test-fixture", "source_match_id": "m", "description": "d",
