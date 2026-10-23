@@ -38,4 +38,4 @@ The three example prompt files remain unchanged. The board requests structured J
 
 The backend stores audience layers, options, semantic descriptions and available combinations, and exposes a [read-only API](../../../user-backend/docs/components/routes.md#3-audience-configuration). The narrative engine fetches the catalogue before framing. Generate only enabled `generation_targets`; the backend maintains their union from connected viewer selections. The backend does not supply viewer prompts to this workflow, and receives already-framed bucket versions.
 
-The original 12 buckets are seeds. A retained [prototype](../../prototypes/bucket_framing/README.md) preserves the authoring code; API consumption, batching and generation still need integration into this engine. The backend serves configuration but never invokes a narrative framing model.
+The original 12 buckets are seeds. An early authoring prototype was later removed (it remains in git history). The backend serves configuration but never invokes a narrative framing model.

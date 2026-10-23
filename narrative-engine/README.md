@@ -29,4 +29,4 @@ PYTHONUTF8=1 .venv/Scripts/python -m pytest tests
 | `infra/` | Terraform for Azure dev |
 | `tests/` | Pytest suite and synthetic fixtures |
 | `docs/` | Documentation; original design material in `docs/design/` |
-| `fixtures/`, `tools/`, `prototypes/` | [Authored commentary fixtures](fixtures/README.md) for backend tests and the replay benchmark; not part of the service |
+| `fixtures/`, `tools/` | [Authored commentary fixtures](fixtures/README.md) for backend tests and the replay benchmark; not part of the service |

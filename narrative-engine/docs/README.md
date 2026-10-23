@@ -69,7 +69,7 @@ docs/
 | `narrative_engine/api.py` | History GraphQL API | [api](components/api.md) |
 | `narrative_engine/demo/` | Demo-only seed export/restore, mounted only with `DEMO_SEEDS=1` | [service §5](components/service.md#5-demo-seeds-demo_seeds) |
 | `narrative_engine/devtools/` | Developer commands (not deployed) | [devtools](components/devtools.md) |
-| `fixtures/`, `tools/`, `prototypes/` | Authored commentary fixtures (backend tests and the replay benchmark), their binder and schema; not part of the service | [fixtures](../fixtures/README.md) |
+| `fixtures/`, `tools/` | Authored commentary fixtures (backend tests and the replay benchmark), their binder and schema; not part of the service | [fixtures](../fixtures/README.md) |
 | `contracts/` | What consumers can rely on | [contracts](../contracts/README.md) |
 | `infra/` | Terraform for Azure dev | [deployment](deployment.md) |
 | `tests/` | Pytest suite and fixtures | [development](development.md#4-tests) |
