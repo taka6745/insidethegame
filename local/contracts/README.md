@@ -1,13 +1,13 @@
 # Integration boundaries
 
-> **In short:** each service owns its database and API; services meet only at the boundaries below. Sections 1–8 are the **multi-match contracts agreed 2026-10-20**, implemented and run locally (three concurrent matches, 2026-10-21). Section 9 records the single-run demo they replaced.
+> **In short:** each service owns its database and API; services meet only at the boundaries below: the multi-match contracts agreed 2026-10-20.
 
 | | |
 | --- | --- |
-| **Status** | 1–8 implemented and tested locally; applied on Azure 22 Oct for the Azure test (acceptance pending) · 7/7a demo control and seeds (D1, D2) tested on the local stack · 8b–8d follows, clips, cross-match, follow offers and playback (D3–D7) built and unit-tested, checked on the local stack (PLAN.md §10.7) · 4b (trends, 2026-10-21; patterns and recalibration 2026-10-22) implemented and tested against SQL Server and on the shared stack · 8b (story follows, 2026-10-21) backend and frontend implemented and tested, engine trigger pipeline implemented and unit-tested · 9 retired |
+| **Status** | Implemented and tested on the local stack and on Azure ([status](../../README.md#what-works-today)) |
 | **Match identity** | `matchId = {fixture}-{run8}`, minted by the feed per run; never reused |
 | **Snapshot identity** | `(matchId, seq)`; `seq` = canonical `MatchEvent` sequence |
-| **Live input** | Event Hubs `match-events`, partition key `matchId`: MA1, MA3, POS ([ETL contracts](../etl/contracts/README.md)) and `MatchEvent` v2 |
+| **Live input** | Event Hubs `match-events`, partition key `matchId`: MA1, MA3, POS ([ETL contracts](../../etl/contracts/README.md)) and `MatchEvent` v2 |
 | **Read path** | ETL GraphQL (DAB) only; never another service's database |
 | **Reset** | Per match: every owner's `POST /admin/matches/purge` |
 
@@ -36,7 +36,7 @@ flowchart LR
 
 - **`matchId`** = `{fixture}-{first 8 hex of runId}`, ≤ 64 chars, e.g. `riverton-forgeham-1a2b3c4d`. Only the feed mints it (`POST /runs`). Owners learn about a match from its MA1 on the stream.
 - **Contestant ids** are stable club slugs (`riverton`, `forgeham`) across fixtures and runs, so stat ids and saved pins stay valid.
-- **`seq`** counts canonical events 1, 2, 3… per match with no gaps, in send order. `seq 0` means MA1 only. MA3 `seq` and POS `sampleId` also count 1, 2, 3… per match in send order; the Azure watermark relies on all three ([Stream Analytics](../etl/docs/components/stream-analytics.md#5-watermarks)).
+- **`seq`** counts canonical events 1, 2, 3… per match with no gaps, in send order. `seq 0` means MA1 only. MA3 `seq` and POS `sampleId` also count 1, 2, 3… per match in send order; the Azure watermark relies on all three ([Stream Analytics](../../etl/docs/components/stream-analytics.md#5-watermarks)).
 - **Snapshot** = `(matchId, seq)`; its string id is `{matchId}:{seq}`. It replaces `run_id`, `recording_hash` and `cursor`. Everything derived cites it: `statsAtSeq` rows, backend cards and projections, and question answers. Engine narratives add `eventSeq` (the watermark they were written from); their own `seq` stays the per-bucket narrative sequence.
 - Data at `(matchId, s)` is immutable once `matchWatermarks.seq ≥ s` (SPADL actions and stats: once `spadlSeq ≥ s`). Read at `s` only when `s ≤` the watermark. Data past the watermark is unreachable.
 
@@ -44,7 +44,7 @@ flowchart LR
 
 *In short: the canonical contact-level event; it clocks the backend's snapshots. Custom rules read SPADL (§3), not this.*
 
-The feed sends one per canonical event on `match-events` (partition key `matchId`), before that event's MA3 rows. It has no `feed` key, so MA consumers skip it. Consumers: the backend (group `user-backend`) for the snapshot clock and periods, the viewer and lab event ticker and gap recovery; ETL stores it (`canonicalEvents`). Since 2026-10-21 neither the catalogue (§4) nor backend custom rules count it; the ticker still shows its canonical `event_type` ([why](../user-backend/docs/decisions.md#3-open-items)).
+The feed sends one per canonical event on `match-events` (partition key `matchId`), before that event's MA3 rows. It has no `feed` key, so MA consumers skip it. Consumers: the backend (group `user-backend`) for the snapshot clock and periods, the viewer and lab event ticker and gap recovery; ETL stores it (`canonicalEvents`). Since 2026-10-21 neither the catalogue (§4) nor backend custom rules count it; the ticker still shows its canonical `event_type` ([why](../../user-backend/docs/decisions.md#3-open-items)).
 
 ```json
 {"type": "MatchEvent", "version": 2, "matchId": "riverton-forgeham-1a2b3c4d", "seq": 2,
@@ -56,7 +56,7 @@ The feed sends one per canonical event on `match-events` (partition key `matchId
    "qualifiers": {"bodyPart": "left_foot"}}}
 ```
 
-`event` is today's backend `Event` model ([events.py](../user-backend/backend/models/events.py), strict, extra fields forbidden):
+`event` is today's backend `Event` model ([events.py](../../user-backend/backend/models/events.py), strict, extra fields forbidden):
 
 | Field | Meaning |
 | --- | --- |
@@ -91,7 +91,7 @@ Served by `etl-dab` (`http://etl-dab:5000/graphql` in Docker, `localhost:15001` 
 
 **canonicalEvents.** The stored MatchEvent v2 per `(matchId, seq)`, columns of `dbo.canonicalEvents` (`seq eventId revision eventType teamId playerId bodyPart periodId matchTimeSeconds outcome distanceMetres deleted videoSeconds x y possessionId qualifiers eventTime`; `qualifiers` is a JSON string). The backend reads it only to recover a seq gap (an invalid or lost MatchEvent): `canonicalEvents(filter: {matchId: {eq: $m}, seq: {eq: $s}})`.
 
-**spadlActions.** Standard SPADL actions converted from MA3 by ETL ([ETL contracts](../etl/contracts/README.md#output-3-spadl-actions), [schema](../etl/contracts/spadl-action.schema.json)): `actionId originalEventId periodId timeSeconds teamId playerId startX startY endX endY typeId typeName resultId resultName bodypartId bodypartName` plus `seq finalSeq sourceEventId sourceTypeId clockSeconds videoSeconds possessionId bodypartObserved startZone endZone fromShotOffTarget defensiveBlock` (the last two: Opta qualifiers 190 and 94 on the source row, marking a `keeper_save` that is a touch of an off-target shot or an outfield block, not a goalkeeper save). Only final rows are stored; snapshot `s` (≤ `spadlSeq`) reads `finalSeq ≤ s`. The backend's custom rules, questions and replays and the engine's context read these (one converter, in ETL). The backend reads only new rows, `finalSeq: {gt: from, lte: s}` in 1,000-row pages, at its snapshot `s = min(received seq, seq, spadlSeq)`, and un-mirrors coordinates to the acting team's frame. It reads MA3 `rawEvents` with `typeId: {in: [16, 17, 900]}, eventSeq: {lte: s}` (goals, cards, VAR decisions) for cards and scores; `rawEvents.eventSeq` (migration `010`, indexed) is the canonical seq each MA3 row derives from, so the bound runs in the database.
+**spadlActions.** Standard SPADL actions converted from MA3 by ETL ([ETL contracts](../../etl/contracts/README.md#output-3-spadl-actions), [schema](../../etl/contracts/spadl-action.schema.json)): `actionId originalEventId periodId timeSeconds teamId playerId startX startY endX endY typeId typeName resultId resultName bodypartId bodypartName` plus `seq finalSeq sourceEventId sourceTypeId clockSeconds videoSeconds possessionId bodypartObserved startZone endZone fromShotOffTarget defensiveBlock` (the last two: Opta qualifiers 190 and 94 on the source row, marking a `keeper_save` that is a touch of an off-target shot or an outfield block, not a goalkeeper save). Only final rows are stored; snapshot `s` (≤ `spadlSeq`) reads `finalSeq ≤ s`. The backend's custom rules, questions and replays and the engine's context read these (one converter, in ETL). The backend reads only new rows, `finalSeq: {gt: from, lte: s}` in 1,000-row pages, at its snapshot `s = min(received seq, seq, spadlSeq)`, and un-mirrors coordinates to the acting team's frame. It reads MA3 `rawEvents` with `typeId: {in: [16, 17, 900]}, eventSeq: {lte: s}` (goals, cards, VAR decisions) for cards and scores; `rawEvents.eventSeq` (migration `010`, indexed) is the canonical seq each MA3 row derives from, so the bound runs in the database.
 
 ```graphql
 query ($m: String!, $s: Int!) {
@@ -162,7 +162,7 @@ query ($m: String!, $s: Int!) {
    "value": 53.1, "available": true, "unit": "%", "definition": "Share of measured …", "eventTypes": "[]", "complete": true}]}}
 ```
 
-**Trends.** `trendsAtSeq`, `trendSpellsAtSeq` and `trendMinutesAtSeq` (§4b) as of one snapshot, from the same rows as `statsAtSeq`, with the same bounds: empty for an unknown match or `seq` above the watermark or `spadlSeq` (retry). DAB returns plain lists. Shapes, windows and flags: [ETL contracts, output 4](../etl/contracts/README.md#output-4-trend-indicators). The narrative engine's analyst reads them; a claim needs a `flagged` row of an `enabled` trend.
+**Trends.** `trendsAtSeq`, `trendSpellsAtSeq` and `trendMinutesAtSeq` (§4b) as of one snapshot, from the same rows as `statsAtSeq`, with the same bounds: empty for an unknown match or `seq` above the watermark or `spadlSeq` (retry). DAB returns plain lists. Shapes, windows and flags: [ETL contracts, output 4](../../etl/contracts/README.md#output-4-trend-indicators). The narrative engine's analyst reads them; a claim needs a `flagged` row of an `enabled` trend.
 
 ## 4. Stat catalogue
 
@@ -170,7 +170,7 @@ query ($m: String!, $s: Int!) {
 
 Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`, `riverton:possession`). The backend's card defaults and fallbacks and saved pins (`standard_stat_id`) store these ids. A kind keeps its id when the concept is the same (definition and value may change, recorded below); a new stat gets a new kind; a retired one stays served with `available: false`.
 
-**Since 2026-10-21 the catalogue counts SPADL actions** (`spadlActions` with `finalSeq ≤ seq`, §3), converted from MA3, instead of canonical MatchEvent v2 events. Cards (MA3 card rows) and possession (POS samples) stay outside SPADL. MA3 has no revisions in this feed, so canonical corrections no longer change stats. Migrations `008_spadl_catalogue.sql` (definitions) and `009_spadl_stats_staged.sql` (staged procedure, VAR overturns) replace `004`'s table and procedure; Python twin [catalogue.py](../etl/reference/catalogue.py); golden values `etl/tests/fixtures/catalogue-golden.json`.
+**Since 2026-10-21 the catalogue counts SPADL actions** (`spadlActions` with `finalSeq ≤ seq`, §3), converted from MA3, instead of canonical MatchEvent v2 events. Cards (MA3 card rows) and possession (POS samples) stay outside SPADL. MA3 has no revisions in this feed, so canonical corrections no longer change stats. Migrations `008_spadl_catalogue.sql` (definitions) and `009_spadl_stats_staged.sql` (staged procedure, VAR overturns) replace `004`'s table and procedure; Python twin [catalogue.py](../../etl/reference/catalogue.py); golden values `etl/tests/fixtures/catalogue-golden.json`.
 
 `statDefinitions` columns:
 
@@ -250,7 +250,7 @@ Why values changed with SPADL (measured on the previous renders):
 
 *In short: 26 trends computed at read time from SPADL, MA3 and POS rows; formulas fixed, thresholds, direction and `enabled` in `trendDefinitions`.*
 
-Migration `011_trend_definitions.sql` creates the table and `seedTrendDefinitions`; `014_trend_patterns.sql` (replacing `012`'s procedures) adds flanks, the late fade and territory by game state, the `direction`, `requires` and `meaning` columns, and the seed recalibrated on the scripted-tactics recordings (S1 v2; `python -m devtools.calibrate_trends` prints the thresholds: the outer 20% / 10% of served values in the trend's direction, and the 90th percentile of |change|). `015_trend_parameters.sql` moves the formulas' constants (ball-time cap, long-pass length, fast-break limits, momentum alpha, build-up and pressing lines, flank lanes, threat weights) into `trendParameters`, seeded with the values `014` had inline. Python twin [trends.py](../etl/reference/trends.py) (reads the newest seed blocks); tests compare it with SQL Server on every recording at 10 seqs. A re-seed replaces the whole block in a new migration ([how](../etl/docs/components/trends.md#5-re-seeding)).
+Migration `011_trend_definitions.sql` creates the table and `seedTrendDefinitions`; `014_trend_patterns.sql` (replacing `012`'s procedures) adds flanks, the late fade and territory by game state, the `direction`, `requires` and `meaning` columns, and the seed recalibrated on the scripted-tactics recordings (S1 v2; `python -m devtools.calibrate_trends` prints the thresholds: the outer 20% / 10% of served values in the trend's direction, and the 90th percentile of |change|). `015_trend_parameters.sql` moves the formulas' constants (ball-time cap, long-pass length, fast-break limits, momentum alpha, build-up and pressing lines, flank lanes, threat weights) into `trendParameters`, seeded with the values `014` had inline. Python twin [trends.py](../../etl/reference/trends.py) (reads the newest seed blocks); tests compare it with SQL Server on every recording at 10 seqs. A re-seed replaces the whole block in a new migration ([how](../../etl/docs/components/trends.md#5-re-seeding)).
 
 `trendDefinitions` columns: `trendId` (PK), `family` (`indicator`, `composite`, `momentum`, `spell`), `label`, `meaning` (plain words, for writers), `unit`, `definition` (served verbatim), `enabled`, `direction` (`high`: levels at or above `notableAt`/`highAt`; `low`: at or below), `changeAt` (`|delta|` for a change flag; null: none), `minuteAt`/`minMinutes`/`minBallSeconds` (spells; `minMinutes` also the minutes a game-state value needs), `requires` (a spell served enabled only while it overlaps a spell of that kind of the same team), `evidence` (why enabled or not), `displayOrder`.
 
@@ -355,19 +355,19 @@ Internal `feed:8000`; nginx proxies `/feed-api/` only for the developer screen.
 | `POST /runs/{match_id}/release` | `{"after_seconds": 5}` → the run that waited for its seed starts, its clock reading the start point `after_seconds` from now; idempotent. |
 | `GET /health` | Readiness. |
 
-Seeds (PLAN.md §10.6): `POST /runs` also takes `hold_point` (a recording run sends nothing at or past that point) and `resume_point` (the run waits, `awaiting_restore`, until `release`, then plays on from the point without MA1 or anything earlier). A seeded `/demo/start` creates its runs waiting. Runs list `awaiting_restore`, `hold_seconds`, `held_at` (the hold point's id) and `started_from`. Owners' seed routes (internal, purge auth): ETL `GET /admin/matches/export?match_id=` and `POST /admin/matches/restore {match_id, max_seq, schema, tables}`; engine `POST /admin/matches/export {match_id}` and `POST /admin/matches/restore {match_id, max_seq, schema, containers}`; backend `POST /admin/matches/export {match_id}` and `POST /admin/matches/restore {match_id, max_seq, schema, tables}`. Each export returns its `schema` (a fingerprint of the seeded tables' or documents' shapes). Each restore refuses (`409`) another `schema`, a known or tombstoned match, rows of another match and rows past `max_seq`.
+Seeds ([demo control](../docs/components/demo-control.md)): `POST /runs` also takes `hold_point` (a recording run sends nothing at or past that point) and `resume_point` (the run waits, `awaiting_restore`, until `release`, then plays on from the point without MA1 or anything earlier). A seeded `/demo/start` creates its runs waiting. Runs list `awaiting_restore`, `hold_seconds`, `held_at` (the hold point's id) and `started_from`. Owners' seed routes (internal, purge auth): ETL `GET /admin/matches/export?match_id=` and `POST /admin/matches/restore {match_id, max_seq, schema, tables}`; engine `POST /admin/matches/export {match_id}` and `POST /admin/matches/restore {match_id, max_seq, schema, containers}`; backend `POST /admin/matches/export {match_id}` and `POST /admin/matches/restore {match_id, max_seq, schema, tables}`. Each export returns its `schema` (a fingerprint of the seeded tables' or documents' shapes). Each restore refuses (`409`) another `schema`, a known or tombstoned match, rows of another match and rows past `max_seq`.
 
 `POST /runs` is `409` while `max_active_runs` runs are scheduled or live. Runs list `position` (items sent; 1 = MA1).
 
 ### 7a. Demo control (public)
 
-`local/demo_control.py serve` (Compose `demo-control`); nginx exposes `/demo-api/{start,cancel,skip,state,status}` with no login. `skip {target}` forwards to the feed's `/demo/skip` (answers directly; `409` while a start or cancel runs); `state.skips` lists the targets while a demo plays. `start` purges finished matches from ETL, engine and backend, then calls the feed's `/demo/start`; `cancel` purges every match (`all`) from every owner (§5 order) when the feed lists any run; start and cancel answer at once (`202 {"accepted": true, "pending"}`; `200` when a demo is already on or nothing is there to cancel; `409` at once for a recording or a stale seed) and then run one after another; `state` → `{"points": [{"id", "label", "ready"}], "live", "runs", "live_from", "main_fixture", "main_match_id", "pending", "last"}` (`pending`: queued actions; `last`: how the last start or cancel ended, `{"action", "ok", …}` or `{"ok": false, "status", "detail"}`, which the viewer polls for) (`live_from`: the start point's label when the demo began from a seed; `main_match_id`: the live demo's main game, which the viewer opens by default, while `/?choose` keeps the picker for switching); a seeded `start` restores ETL, engine and backend for each waiting run, then releases them staggered (main game first), or purges them and answers `503` (`409` for a seed of another format, schema or seq: record it again); while a seed is recorded `start` is `409` and `state` omits its held runs from `runs` and lists them as `recording` (`[{"match_id"}]`), which the viewer never lists (they stop at their hold point); `status` → `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer (PLAN.md §10.6). Start and cancel are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop, which the ingress appends; behind `edge-proxy/` a Cloudflare edge node); `429` over the limit. Capture refuses held runs that stop at another start point (`held_at` on feed runs). Overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`.
+`local/demo_control.py serve` (Compose `demo-control`); nginx exposes `/demo-api/{start,cancel,skip,state,status}` with no login. `skip {target}` forwards to the feed's `/demo/skip` (answers directly; `409` while a start or cancel runs); `state.skips` lists the targets while a demo plays. `start` purges finished matches from ETL, engine and backend, then calls the feed's `/demo/start`; `cancel` purges every match (`all`) from every owner (§5 order) when the feed lists any run; start and cancel answer at once (`202 {"accepted": true, "pending"}`; `200` when a demo is already on or nothing is there to cancel; `409` at once for a recording or a stale seed) and then run one after another; `state` → `{"points": [{"id", "label", "ready"}], "live", "runs", "live_from", "main_fixture", "main_match_id", "pending", "last"}` (`pending`: queued actions; `last`: how the last start or cancel ended, `{"action", "ok", …}` or `{"ok": false, "status", "detail"}`, which the viewer polls for) (`live_from`: the start point's label when the demo began from a seed; `main_match_id`: the live demo's main game, which the viewer opens by default, while `/?choose` keeps the picker for switching); a seeded `start` restores ETL, engine and backend for each waiting run, then releases them staggered (main game first), or purges them and answers `503` (`409` for a seed of another format, schema or seq: record it again); while a seed is recorded `start` is `409` and `state` omits its held runs from `runs` and lists them as `recording` (`[{"match_id"}]`), which the viewer never lists (they stop at their hold point); `status` → `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer. Start and cancel are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop, which the ingress appends; behind `edge-proxy/` a Cloudflare edge node); `429` over the limit. Capture refuses held runs that stop at another start point (`held_at` on feed runs). Overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`.
 
-A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the judge build); a production release leaves it off and they answer 404 (feed: 403/409).
+A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the demo build); a production release leaves it off and they answer 404 (feed: 403/409).
 
 ## 8. Backend product API
 
-*In short: everything under `/product/matches/{matchId}`, a session per (profile, match).*
+*In short: everything under `/product/matches/{matchId}`, a session per (viewer, profile, match).*
 
 `GET /product/matches` lists `live` matches first, then `scheduled` (by kickoff), then `finished`:
 
@@ -407,7 +407,7 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 
 *In short: a viewer follows one story per match; the feed then shows only that story, plus pivotal key moments for everyone.*
 
-**Backend implemented and tested (21 Oct, migrations `024_subscriptions.py`, `027_follow_triggers.py`, `028_key_moment_labels.py`, `029_policy_prompts.py`, `030_grounded_patterns.py`); frontend (F4) implemented and tested against the contract mock; engine trigger pipeline (F2) implemented and unit-tested; all three run together on the local stack with Decision-1 (22 Oct, PLAN.md §10.7).** `S` = `/product/matches/{matchId}/sessions/{token}`.
+Migrations `024`, `027`–`030`. `S` = `/product/matches/{matchId}/sessions/{token}`.
 
 | Route | Body → result |
 | --- | --- |
@@ -416,7 +416,7 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
 | `DELETE S/follows/{subscription_id}` | → `{"follow": null, "ended": Follow, "snapshot": …}`; not this viewer's active follow: `404 follow_not_found` |
 | `GET S/follow/suggestions?seq=` | `{"snapshot_id", "items": [{"id": topic_id, "label", "spec": FollowSpec}]}`, by rule: open storylines by salience, players in the key moments (newest first), teams (the viewer's first); the current follow left out |
 | `POST S/follow/messages` | `{prompt, request_id, seq?}` (as questions) → a follow-chat turn (below); `503 model_unavailable` without a model; `429 rate_limited` |
-| `GET /matches/{matchId}/subscription-targets` | Engine only (ETag): [engine contracts](../narrative-engine/contracts/README.md#subscription-targets) |
+| `GET /matches/{matchId}/subscription-targets` | Engine only (ETag): [engine contracts](../../narrative-engine/contracts/README.md#subscription-targets) |
 
 ```json
 FollowSpec {"kind": "storyline" | "team" | "player" | "theme", "storyline_id": null, "team_id": "riverton",
@@ -450,37 +450,14 @@ Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "sp
 
 ### 8d. Replay playback (sting and slow motion)
 
-*In short: every replay and clip playlist carries `playback`, from `replay-timing.playback` (migration `037`; PLAN.md §10.2 D3, D4).*
+*In short: every replay and clip playlist carries `playback`, from `replay-timing.playback` (migrations `037`, `049`; PLAN.md §10.2 D3, D4).*
 
 ```json
-"playback": {"transitions": {"enabled": true, "hold_seconds": 0.6, "asset": "/assets/league/sting/replay-sting.mp4",
+"playback": {"transitions": {"enabled": true, "hold_seconds": 0.6, "asset": "builtin:league",
                              "asset_start_seconds": 0.3, "sting_seconds": 2.4, "cut_seconds": 0.5, "fade_seconds": 0.3},
              "slow_motion": {"enabled": true, "rate": 0.5, "ramp_seconds": 0.6, "before_seconds": 1.0, "after_seconds": 1.5}}
 ```
 
-- **Transitions:** hold the clip's last frame, fade the sting in, cut under it, fade it out as the next clip plays (chat replays, `follow_playlist`, `moment_playlist`).
+- **Transitions:** hold the clip's last frame, fade the sting in (`builtin:league`: the league's own CSS sting; any other value is a video URL), cut under it, fade it out as the next clip plays (chat replays, `follow_playlist`, `moment_playlist`).
 - **Slow motion:** the rate eases to `rate` over `ramp_seconds`, holds from `before_seconds` ahead of each marked event to `after_seconds` past it, then eases back.
 - `prefers-reduced-motion`: hold and cut, no sting, no slow motion. Edited in `/dev/`; an existing edit is kept by the migration.
-
-## 9. Retired single-run demo
-
-*In short: the boundaries before the multi-match cut-over; kept for history. Its demo ETL, narrative stub and backend replay publisher are deleted.*
-
-| Boundary | Producer → consumer | Contract |
-| --- | --- | --- |
-| `match-events` | Replay → ETL / backend | Match-partitioned events; separate `etl` and `user-backend` consumer groups. |
-| Match GraphQL | ETL → narrative / backend | ETL-computed stats from its Cosmos DB; historical/key events from its Azure SQL store. No direct backend database access or standard-stat recalculation. Real DAB serves only a raw-event infrastructure fixture; the viewer uses the standalone demo ETL GraphQL. |
-| `match-notifications` | ETL → narrative | Demo `MatchSnapshotReady` metadata after committed projections; production key-event/minute policies remain to agree. |
-| `narratives` | Narrative → backend | Versioned `BucketNarratives` delivery: snapshot watermark, bucket items, stat-selection events and audience revision. |
-| Narrative GraphQL | Narrative → backend | Match/bucket history and neutral recap tiers. The standalone stub implements GraphQL; never substitute direct backend Cosmos access. |
-| Viewer API/live connection | Backend → frontend | The product harness implements HTTP + WebSocket for profile sessions, takeover, five stat slots, narrative backlog and saved questions/Track offers. `/product` uses the same match run as the filter engine and question agent; the older viewer probe endpoints remain separate test contracts. |
-
-Its three-event fixture, `./dev replay`, and the Azure-profile `matchdata` SQL + DAB check are deleted; `./dev test azure` queries the ETL's own DAB (§3).
-
-Before real integration, agree corrections/versioning, ordering/watermarks, and history-to-live handoff. Consumers must tolerate redelivery using event IDs; test out-of-order and corrected events. Do not use a live-only consumer to reconstruct complete history.
-
-Its replacement: the demo ETL's PostgreSQL history/projection databases and recording-validated snapshots are gone. `etl-stream` writes history and standard stats to SQL (Azure SQL in the cloud) and DAB serves them (§3); the feed is the only producer (§1, §7); the engine keeps per-match state in Cosmos DB.
-
-### Product viewer projection
-
-`/product` keeps one process-local projection per match, refreshed from ETL GraphQL watermarks and already-framed Service Bus narratives, then composes each viewer's five cards and audience feed. WebSocket delivery is bounded; slow peers reconnect to a fresh snapshot. It retains routing/pin IDs, not chat transcripts, per connection. Adding API replicas does not share projections; see [scaling](../user-backend/docs/architecture.md#6-scaling-boundary).
