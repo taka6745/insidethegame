@@ -1,10 +1,8 @@
 import importlib.util
 from pathlib import Path
-import sys
 from tempfile import TemporaryDirectory
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.prepare_presentation import numbered_kit, prepare, replace_once
 from grf_demo.roster import NAMES, SHIRT_NUMBERS
 

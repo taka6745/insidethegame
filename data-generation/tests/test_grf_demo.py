@@ -1,8 +1,5 @@
-import sys
-from pathlib import Path
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.telemetry import TelemetryAdapter
 from grf_demo.package import broadcast_clock
 

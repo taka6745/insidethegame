@@ -5,11 +5,9 @@ Needs the ignored local clone of google-research/football (skipped without it).
 """
 from pathlib import Path
 import subprocess
-import sys
 import tempfile
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo import prepare_realism
 from grf_demo.scenario import REALISM
 

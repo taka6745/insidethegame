@@ -4,11 +4,9 @@ The patch test needs the ignored local clone of google-research/football (skippe
 """
 from pathlib import Path
 import subprocess
-import sys
 import tempfile
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo import prepare_realism, prepare_tactics, tactics
 from grf_demo.roster import FIXTURES
 

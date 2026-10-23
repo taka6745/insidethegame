@@ -8,7 +8,7 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(ROOT / "data-generation"), str(ROOT / "etl")]
+sys.path.insert(0, str(ROOT / "etl"))
 from grf_demo.opta_stream import SPADL_PASS_FAMILY, body_part_action_types, pos_rows, stream
 from reference import pipeline
 

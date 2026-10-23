@@ -1,10 +1,8 @@
 """Derived Opta-style events from synthetic native rows. Rare cases never enter the viewer's match."""
 
 from pathlib import Path
-import sys
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.opta import credit_offsides, export, type_id
 from grf_demo.telemetry import TelemetryAdapter, opta_xy
 

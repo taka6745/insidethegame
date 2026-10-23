@@ -8,7 +8,7 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(ROOT / "data-generation"), str(ROOT / "etl")]
+sys.path.insert(0, str(ROOT / "etl"))
 from grf_demo.opta import export
 from grf_demo.opta_stream import stream
 from reference import pipeline

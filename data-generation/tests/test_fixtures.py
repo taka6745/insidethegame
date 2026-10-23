@@ -1,11 +1,8 @@
 """Fixture rosters: fictional league lineups, distinct kits and exports derived from the recording."""
 
 import importlib.util
-from pathlib import Path
-import sys
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.opta import export
 from grf_demo.opta_stream import ma1
 from grf_demo.roster import FIXTURES, fixture_for, players

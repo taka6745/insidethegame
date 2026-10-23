@@ -1,10 +1,7 @@
 """Rare native facts are synthetic test inputs, never injected into recorded matches."""
 
-from pathlib import Path
-import sys
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from grf_demo.telemetry import TelemetryAdapter
 
 
