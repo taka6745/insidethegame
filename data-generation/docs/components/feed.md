@@ -25,6 +25,7 @@
 | `adapters/blob.py` | The same directories in Azure Blob Storage |
 | `services/feed.py` | Catalogue, runs (capped by `demo_settings.max_active_runs`), the demo start, purge |
 | `services/run.py` | One run on the wall clock |
+| `services/clock.py` | Wall clock; tests substitute a fake |
 | `services/render.py` | Stamps a run's `matchId`, `runId` and wall-clock times onto the stream |
 | `repositories/feed_db.py` | The `feed` database |
 | `routes/http.py` | Admin API and HLS origin |

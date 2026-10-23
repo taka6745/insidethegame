@@ -24,4 +24,4 @@ The `azure` profile has no stream processor, so nothing writes match data; match
 
 *In short: start and purge from the CLI or the viewer.*
 
-`./dev demo start [fixture…]` purges every match from every owner (feed, ETL, engine, backend), then starts one feed run per fixture (default `riverton-forgeham`) at the next whole minute, from 00:00; `./dev demo purge` only purges. Configuration stays: profiles, audience templates, prompts, backend config, `statDefinitions` and the recordings catalogue. The viewer's Start demo runs through [demo control](components/demo-control.md).
+`./dev demo start [fixture…]` purges every match from every owner (feed, ETL, engine, backend), then starts one feed run per fixture (default `riverton-forgeham`) at the next whole minute, from 00:00; `./dev demo purge` only purges. Configuration stays: profiles, audience templates, prompts, backend config, `statDefinitions`, `trendDefinitions` and the recordings catalogue. The viewer's Start demo runs through [demo control](components/demo-control.md).

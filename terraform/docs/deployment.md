@@ -9,7 +9,7 @@
 | **Needs** | Docker, `az login` (Owner: the spend guard assigns its own role), host `ffmpeg` (secondary video), about 5.5 GB upload for the match video |
 | **State** | `.local/terraform/<stack>/terraform.tfstate` (git-ignored, local only) |
 | **Region** | Australia East (the guard's Automation account: East US) |
-| **Cost** | About A$7–8/day idle ([§6](#6-cost)); nothing after `down` except the guard |
+| **Cost** | About A$7–8/day idle with demo control kept warm ([§6](#6-cost)); nothing after `down` except the guard |
 
 ## 1. Commands
 
