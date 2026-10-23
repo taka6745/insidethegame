@@ -24,7 +24,7 @@ def build():
     final = sum(m.get("type") == "MatchEvent" for m in stream)
     snapshots = [{"seq": s, "actions": sum(r["finalSeq"] <= s for r in rows)} for s in [*SEQS, final]]
     return {"description": "SYNTHETIC: SPADL actions converted by etl/reference/spadl.py from the checked-in "
-                           "Riverton Rovers-United GRF recording (tests/v2_stream.py run 1a2b3c4d). Rows as ETL GraphQL "
+                           "Riverton Rovers–Forgeham United GRF recording (tests/v2_stream.py run 1a2b3c4d). Rows as ETL GraphQL "
                            "spadlActions serves them; read rows with finalSeq <= seq.",
             "matchId": match_id, "homeContestantId": home, "finalSeq": final, "snapshots": snapshots, "actions": rows}
 
