@@ -24,7 +24,7 @@
 
 ## 2. Before a production release
 
-*In short: production gaps and the LATER notes from the infra code.*
+*In short: production gaps.*
 
 | Gap | Required change / evidence |
 | --- | --- |

@@ -10,8 +10,8 @@
 ```
 docs/
 ├── README.md            this index
-├── overview.md          the five stacks, status
-├── architecture.md      request and data paths, resource groups
+├── overview.md          the five stacks, resource groups, status
+├── architecture.md      request and data paths
 ├── components/
 │   ├── guard.md         spend guard: budgets, last resort, Stream Analytics schedule
 │   └── azure.md         ./dev azure: toolbox image, media upload, tests
