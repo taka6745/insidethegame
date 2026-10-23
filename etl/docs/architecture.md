@@ -70,7 +70,7 @@ Half time has no events, so no windows close and no `MinuteClosed` fires.
 | `minuteStats` | team, match minute, window | `(matchId, contestantId, periodId, timeMin, windowEnd)` |
 | `matchStatsAsOf` (view) | team, match minute | running totals as of that minute |
 
-The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `possessionSamples`, `matchProgress`) sit behind `matchWatermarks`; `statsAtSeq` reads `spadlActions`, MA3 card and VAR rows and `possessionSamples` ([sql](components/sql.md#3-multi-match-read-models-003)). The [trend procedures](components/trends.md) read the same rows at a snapshot, with thresholds from `trendDefinitions`. The local stream writes them; the job's outputs for them, its watermark marks and the Azure SQL triggers run on Azure with three concurrent matches ([Stream Analytics](components/stream-analytics.md#5-watermarks)). All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
+The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `possessionSamples`, `matchProgress`) sit behind `matchWatermarks`; `statsAtSeq` reads `spadlActions`, MA3 card and VAR rows and `possessionSamples` ([sql](components/sql.md#3-multi-match-read-models-003)). The [trend procedures](components/trends.md) read the same rows at a snapshot, with thresholds from `trendDefinitions`. The local stream writes them; on Azure the job's outputs, its watermark marks and the Azure SQL triggers do ([Stream Analytics](components/stream-analytics.md#5-watermarks)). All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
 
 ## 5. Azure resources
 

@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · deployed |
+| **Status** | Implemented · tested ([overview](../docs/overview.md)) |
 | **Outputs** | GraphQL history · Service Bus `narratives` (bucket narratives, follow narratives, `FollowClip`, `MomentClip`) |
 | **Inputs** | ETL notifications and GraphQL · backend audience targets, prompts, policy, subscription targets |
 | **Admin** | `POST /admin/matches/purge` always; `POST /admin/matches/export` and `/restore` only with `DEMO_SEEDS=1` |

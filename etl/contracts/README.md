@@ -10,8 +10,8 @@
 | **Snapshot identity** | `(matchId, seq)`; `seq` = canonical `MatchEvent` sequence |
 | **Admin** | `POST /admin/matches/purge` ([purge contract](../../local/contracts/README.md#5-purge)); with `DEMO_SEEDS=1` only, [seed export and restore](#admin-demo-seeds-demo_seeds-only) |
 | **Executable rules** | [reference pipeline](../reference/pipeline.py) |
-| **SPADL** | [spadlActions](#output-3-spadl-actions) from MA3 ([schema](spadl-action.schema.json), [rules](../reference/spadl.py)); **implemented, tested and deployed** |
-| **Trends** | [Output 4](#output-4-trend-indicators): indicators, spells and momentum at a snapshot ([rules](../reference/trends.py), [definitions](../../local/contracts/README.md#4b-trend-definitions)); **implemented, tested and deployed** |
+| **SPADL** | [spadlActions](#output-3-spadl-actions) from MA3 ([schema](spadl-action.schema.json), [rules](../reference/spadl.py)); **implemented and tested** |
+| **Trends** | [Output 4](#output-4-trend-indicators): indicators, spells and momentum at a snapshot ([rules](../reference/trends.py), [definitions](../../local/contracts/README.md#4b-trend-definitions)); **implemented and tested** |
 
 ## Input: Event Hubs `match-events`
 
@@ -82,7 +82,7 @@ Measured ball ownership, one message per sample, sent only once its video time h
 | `periodId` | Period at `videoSeconds`. |
 | `eventSeq` | Latest canonical seq sent before this sample (informational). |
 
-**Possession at seq s** = per-contestant sum of `durationSeconds` over samples with `videoSeconds ≤ videoSeconds(event s)`, as a percentage of all samples counted (1 dp). The final `period_end` carries the media duration, so the final seq counts every sample. This equals the retired demo ETL's `possession(cursor)`.
+**Possession at seq s** = per-contestant sum of `durationSeconds` over samples with `videoSeconds ≤ videoSeconds(event s)`, as a percentage of all samples counted (1 dp). The final `period_end` carries the media duration, so the final seq counts every sample.
 
 ## Output 1: GraphQL (Data API builder, anonymous read)
 
@@ -148,7 +148,7 @@ JSON body; application property `notificationType` (same value as `messageType`)
 - `MinuteClosed` and the SQL write for that minute happen together. If `matchStatsAsOfs` has no row for that minute yet, retry briefly.
 - Replays can run faster than real time (`--speed 10` gives 6-second minutes), so don't assume 60 seconds per minute.
 
-**Status:** verified against the reference pipeline on Azure. Subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. In the shared Docker stack, `local_stream/` sends the same bodies, properties and MessageIds to the Service Bus emulator (subscription `narrative-live`). Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. On Azure, messages only flow while the Stream Analytics job is running (the stream schedule starts it when match events arrive and stops it after 30 quiet minutes) and the feed (or a seeder replay) is sending.
+Subscriptions: `narrative-engine` on Azure, `narrative-live` in the shared Docker stack (`local_stream/` sends the same bodies, properties and MessageIds). On Azure, messages flow only while the Stream Analytics job runs ([stream schedule](../docs/components/stream-analytics.md#6-run-only-while-matches-play)).
 
 ## Output 3: SPADL actions
 

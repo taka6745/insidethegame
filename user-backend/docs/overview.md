@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested against real Postgres and contract doubles · deployed on Azure ([status](../../PLAN.md#11-azure-judge-build)) |
+| **Status** | Implemented · tested against real Postgres and contract doubles · Azure: [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | **Runs on** | Python 3.12, FastAPI, Microsoft Agent Framework, PostgreSQL (Accounts and Match App databases) |
 | **Target** | Azure Container Apps, Azure Database for PostgreSQL Flexible Server, Azure AI Foundry models ([deployment](deployment.md)) |
 | **Reads** | Event Hubs `match-events` (group `user-backend`), ETL GraphQL (Data API builder), narrative GraphQL, Service Bus `narratives`, feed HLS |
@@ -40,7 +40,7 @@ Questions never trigger narrative generation. Audience definitions belong to thi
 
 ## 3. Status by area
 
-*In short: everything below runs locally and on Azure; multi-replica delivery is not built.*
+*In short: everything below is implemented and tested; multi-replica delivery is not built.*
 
 | Area | Status |
 | --- | --- |
@@ -54,7 +54,6 @@ Questions never trigger narrative generation. Audience definitions belong to thi
 | Story follows, follow clips, capture cards, key-event clips | Implemented, tested on Postgres |
 | Cross-game, follow offer | Implemented, tested |
 | Demo seeds (`DEMO_SEEDS=1` only) | Implemented, tested (export, refusals, restore, adopt) |
-| Azure deployment | Deployed with Terraform ([deployment](deployment.md)) |
 | Multi-replica delivery | Not built: one process per deployment ([architecture §6](architecture.md#6-scaling-boundary)) |
 | Isolated arbitrary-code executor | Not built; custom stats compile to a bounded rule DSL instead |
 

@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented, tested and deployed ([overview](overview.md)) |
+| **Status** | [overview](overview.md) |
 | **Pages** | `/` viewer, `/lab/` filter lab, `/dev/` console |
 | **Runtime dependency** | Backend (`/viewer-api/`), demo control (`/demo-api/`), feed HLS (`/media/hls/`) |
 

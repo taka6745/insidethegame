@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed with Terraform (mock-tested in CI) · the demo build sets `DEMO_SEEDS=1`, `--release` leaves it off |
+| **Status** | Applied by Terraform (mock-tested in CI); Azure status: [PLAN §11](../../PLAN.md#11-azure-judge-build) · the demo build sets `DEMO_SEEDS=1`, `--release` leaves it off |
 | **Terraform** | [`terraform/`](../../terraform/) (`backend.tf`, `databases.tf`, `keyvault.tf`, `foundry.tf`) |
 | **Image** | `user-backend/Dockerfile`, target `runtime`, pushed to the shared (ETL) registry as `user-backend:<tag>` |
 | **Ingress** | Internal only; the frontend's nginx (`/viewer-api/`) and the engine call it |

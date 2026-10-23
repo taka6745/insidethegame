@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Design** | [design/original-design.md](design/original-design.md) |
-| **Plan** | Multi-match plan of 2026-10-20 ([local contracts](../../local/contracts/README.md)) |
+| **Plan** | Multi-match plan ([local contracts](../../local/contracts/README.md)) |
 
 ## 1. Kept from the design
 

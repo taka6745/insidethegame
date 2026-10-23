@@ -1,11 +1,11 @@
 # Decisions
 
-> **In short:** where the built backend follows the [agreed architecture](design/agreed-architecture.md) of 18 October 2026, where it differs and why, and what is left. When a design page and [local/contracts/README.md](../../local/contracts/README.md) disagree, the contracts win.
+> **In short:** where the built backend follows the [agreed architecture](design/agreed-architecture.md), where it differs and why, and what is left. When a design page and [local/contracts/README.md](../../local/contracts/README.md) disagree, the contracts win.
 
 | | |
 | --- | --- |
 | **Design** | [design/agreed-architecture.md](design/agreed-architecture.md), [design/question-agent-plan.md](design/question-agent-plan.md), [design/replay-plan.md](design/replay-plan.md), [design/custom-calculations.md](design/custom-calculations.md) |
-| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) (multi-match, agreed 20 October 2026) |
+| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) (multi-match) |
 
 ## 1. Kept from the design
 

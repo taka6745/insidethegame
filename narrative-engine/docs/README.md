@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · deployed ([overview](overview.md)) |
+| **Status** | [overview](overview.md) |
 | **Models (Azure)** | `gpt-6.1-sol` (deployment `writer`, every agent at effort low) · Microsoft-Decision-1 (`decision-1`) |
 
 Every page follows the same layout: an **In short** summary and a facts table at the top, then numbered sections that each open with a one-line *In short*.

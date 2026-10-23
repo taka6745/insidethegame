@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · unit-tested · headless-checked against the contract mock · run on the local stack · deployed on Azure (demo build; [status](../../PLAN.md#11-azure-judge-build)) |
+| **Status** | Implemented · unit-tested · headless-checked against the contract mock · run on the local stack · Azure: [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | **Public URL** | `https://msft-hackathon.koda-software.com` ([edge proxy](../../edge-proxy/README.md) → the Azure frontend) |
 | **Pages** | `/` viewer, `/lab/` filter lab, `/dev/` developer console (both gated) |
 | **Talks to** | `/viewer-api/` (backend), `/demo-api/` (demo control), `/media/hls/` (feed's HLS origin) |

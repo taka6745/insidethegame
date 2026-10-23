@@ -1,10 +1,10 @@
 # Overview
 
-> **In short:** match events stream into Event Hubs; one Stream Analytics job writes raw events, key events and per-minute statistics to serverless Azure SQL and sends notifications to Service Bus; Data API builder serves the tables over GraphQL. Implemented, tested and deployed to Azure.
+> **In short:** match events stream into Event Hubs; one Stream Analytics job writes raw events, key events and per-minute statistics to serverless Azure SQL and sends notifications to Service Bus; Data API builder serves the tables over GraphQL. Implemented and tested.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · deployed to Azure by `./dev azure up` ([status](../../PLAN.md#11-azure-judge-build)) and run there with three concurrent matches |
+| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · Azure: [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | **Demo** | Seed export/restore on the admin API, only with `DEMO_SEEDS=1` (implemented, SQL-tested) |
 | **Event format** | Opta MA1 (match info) and MA3 (events), labelled `synthetic: true` |
 | **Runs on** | Event Hubs, Stream Analytics, Azure SQL serverless, Data API builder on Container Apps, Service Bus |
@@ -34,16 +34,16 @@
 
 ## 3. Status by area
 
-*In short: built, verified against a Python reference and running on Azure.*
+*In short: built and verified against a Python reference; Azure status in [PLAN §11](../../PLAN.md#11-azure-judge-build).*
 
 | Area | Status |
 | --- | --- |
 | Event contract, Opta codes | Implemented |
 | Seeder (synthetic match, replay) | Implemented, tested; developer tool for synthetic replays and `devtools verify` (the feed produces the stack's matches) |
 | SQL tables and view | Tested locally and in Azure against the reference |
-| Stream Analytics query | Deployed; real-time (`window_seconds = 60`) match runs on Azure with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
-| Data API builder | Deployed (internal ingress, scales to zero) |
-| Stream schedule (spend guard) | Deployed: match events (or demo Start) start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
+| Stream Analytics query | Implemented; real-time (`window_seconds = 60`) match runs on Azure with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
+| Data API builder | Implemented (internal ingress, scales to zero) |
+| Stream schedule (spend guard) | Implemented: match events (or demo Start) start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
 | Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested; restored by seeded starts on Azure |
 | Local stream stand-in (`local_stream/`) | Implemented, unit- and SQL-tested, runs 1x replays in the local Docker stack; not deployed as a worker. Also MatchEvent v2, POS, watermarks, the stat catalogue, per-match purge and demo seeds (`DEMO_SEEDS=1`) ([local-stream](components/local-stream.md)) |
 

@@ -1,6 +1,6 @@
 # Data generation
 
-> **In short:** renders synthetic fictional-league matches with Google Research Football and replays them through the feed, a simulated external provider, as live matches. Implemented, tested and deployed ([status](docs/overview.md)).
+> **In short:** renders synthetic fictional-league matches with Google Research Football and replays them through the feed, a simulated external provider, as live matches. Implemented and tested ([status](docs/overview.md)).
 
 [Documentation](docs/README.md) · [Development guide](docs/development.md) · [Shared local setup](../DEVELOPMENT.md)
 

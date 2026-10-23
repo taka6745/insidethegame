@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Shipped and tested; the feed serves all three locally and on Azure |
+| **Status** | Shipped and tested; the feed serves all three |
 | **Code** | [`recordings/`](../../recordings/) |
 | **Contract** | [Opta-style event contract (v3)](../../contracts/README.md) |
 | **Made by** | [grf-demo](grf-demo.md) (`generate-grf.sh`, `prepare-grf-source.sh`) |

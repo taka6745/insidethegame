@@ -40,10 +40,10 @@ The SystemOne body is `{"model", "state", "questions": {key: {"type": "noul"|"ch
 
 ## 3. Users
 
-*In short: three callers, all batched. The viewer's "Follow this story?" offer (D5b) is the user backend's own Decision-1 call, not the engine's.*
+*In short: three callers, all batched. The viewer's "Follow this story?" offer is the user backend's own Decision-1 call, not the engine's.*
 
 | Caller | Questions |
 | --- | --- |
-| Story follows ([follows](follows.md)) | Per update: a `Score` per candidate topic, plus a novelty `Noul` for each with a last narrative; on a key event of `clips.key_types`, also a clip `Score` per candidate that is not clip-on (D3/D6); one call. The clip counts at its nearest level (Decision-1 returns the expected level) |
+| Story follows ([follows](follows.md)) | Per update: a `Score` per candidate topic, plus a novelty `Noul` for each with a last narrative; on a key event of `clips.key_types`, also a clip `Score` per candidate that is not clip-on; one call. The clip counts at its nearest level (Decision-1 returns the expected level) |
 | The authors' grounding check (`analysis/validator.claim_reasons_many`) | Per sentence of each excerpt: does it claim a cause / an intent / the result / a comparison, and does the evidence (storyline beats, ledger, trends, statistics, recaps, latest events, trigger) support it? One call per step's drafts. Questions and thresholds: the storyline policy's `claims` section |
 | The analyst's grounding check (`analysis/validator.analyst_claim_rejections`) | The same questions for the claims marked `analyst` (seed: `intent`, `result`, `comparison`), per accepted observation and resolve, against the analyst's inputs; one call per check |

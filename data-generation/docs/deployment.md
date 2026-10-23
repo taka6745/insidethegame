@@ -4,8 +4,8 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed ([status](../../PLAN.md#11-azure-judge-build)); local Docker (`local/compose.yaml`, service `feed`); Terraform mock-tested |
-| **Demo seeds** | `demo_seeds` variable sets `DEMO_SEEDS` (on for the demo build; `./dev azure up --release` turns it off) |
+| **Status** | Azure: [PLAN §11](../../PLAN.md#11-azure-judge-build); local Docker (`local/compose.yaml`, service `feed`); Terraform mock-tested |
+| **Demo seeds** | `demo_seeds` variable sets `DEMO_SEEDS` (Terraform default off; `./dev azure up` turns it on, `--release` leaves it off) |
 | **Image** | `data-generation/feed/Dockerfile`, target `runtime`; recordings and media are never baked in |
 | **Azure** | `rg-itg-feed-dev`: Container App (internal ingress, 1 replica), PostgreSQL Flexible B1ms, Storage account |
 | **Shares** | Only the ETL's Container Apps environment (trial: one per region) and registry; `seeder-send` key on `match-events` |

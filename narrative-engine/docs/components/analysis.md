@@ -51,4 +51,4 @@ Failing items get `analyst_turns` (1) repair turns: the analyst is shown each wi
 
 *In short: why every excerpt gets one repair turn.*
 
-A live sample passed 61% of observations, and an author quoted a possession figure nobody served (21 Oct). The checks stayed; the analyst's confidence became a level, its trend table shows both teams per line, and a mismatch says what the table has. Local model, kickoff to 18′: 80% first pass, 100% after repair (15 observations); to 34′ before the table fix: 57% / 71%.
+A live sample passed 61% of observations, and an author quoted a possession figure nobody served. The checks stayed; the analyst's confidence became a level, its trend table shows both teams per line, and a mismatch says what the table has. Local model, kickoff to 18′: 80% first pass, 100% after repair (15 observations); to 34′ before the table fix: 57% / 71%.

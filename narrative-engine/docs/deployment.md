@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed with every service by `./dev azure up` ([runbook](../../terraform/docs/deployment.md)) |
+| **Status** | Applied with every service by `./dev azure up` ([runbook](../../terraform/docs/deployment.md)); Azure status: [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | **Models** | `writer` = Azure OpenAI `gpt-6.1-sol` (GlobalStandard, 120K TPM; every agent at effort `low`, its lowest) · `decision-1` = Microsoft-Decision-1 (DataZoneStandard, 50 requests/minute) |
 | **Demo build** | `demo_seeds` sets `DEMO_SEEDS=1`; `./dev azure up` turns it on for the demo build, `./dev azure up --release` turns it off ([demo](components/demo.md)) |
 | **Terraform** | [`infra/`](../infra/), local state, reads the ETL's state for its Service Bus namespace and Container Apps environment |

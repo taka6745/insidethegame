@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented and tested (virtual-clock unit tests; Postgres repository tests); runs in the local stack as Compose service `feed` (profile `backend`); Start demo, main game and seeded runs tested in units, on the local stack and on Azure |
+| **Status** | Implemented and tested (virtual-clock unit tests; Postgres repository tests); runs in the local stack as Compose service `feed` (profile `backend`); Start demo, main game and seeded runs tested in units and on the local stack |
 | **Owns** | Its own Postgres server (locally `feed-postgres`, on a network only the feed joins), database `feed`: recordings catalogue, runs, purge tombstones, `demo_settings` ([migrations](../../feed/migrations/) 001–008) |
 | **Out** | Event Hubs `match-events`, partition key `matchId`: MA1, `MatchEvent` v2, MA3, POS ([local contracts](../../../local/contracts/README.md#2-matchevent-v2), [ETL contracts](../../../etl/contracts/README.md)) |
 | **Media** | `GET /hls/{matchId}/live.m3u8` and its segments: played footage only ([§6](../../../local/contracts/README.md#6-live-media-hls)) |

@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Deployed ([status](../PLAN.md#11-azure-judge-build)) |
+| **Status** | [PLAN §11](../PLAN.md#11-azure-judge-build) |
 | **Upstream** | `UPSTREAM` in `wrangler.toml` (the Azure web app FQDN; update after a redeploy changes it) |
 | **Code** | [`src/index.ts`](src/index.ts): path and query passed through unchanged, so `/`, `/viewer-api/`, `/demo-api/` and `/media/hls/` all reach the frontend's nginx |
 | **Tested** | Type-checked by the frontend's `npm test`; no unit tests (one pass-through `fetch`) |

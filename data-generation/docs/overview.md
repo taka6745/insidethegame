@@ -1,10 +1,10 @@
 # Overview
 
-> **In short:** three rendered 90-minute matches with invented fictional-league lineups, and a feed service that plays any of them as a live match, several at once, into Event Hubs and HLS. It also starts the three-match demo, from kick-off or a seeded start point. Implemented, tested and deployed.
+> **In short:** three rendered 90-minute matches with invented fictional-league lineups, and a feed service that plays any of them as a live match, several at once, into Event Hubs and HLS. It also starts the three-match demo, from kick-off or a seeded start point. Implemented and tested.
 
 | | |
 | --- | --- |
-| **Status** | Generator implemented (offline, macOS); feed implemented, tested and deployed to Azure by `./dev azure up` ([status](../../PLAN.md#11-azure-judge-build)), running three concurrent matches locally and on Azure; Start demo, main game, Skip ahead and seeded starts run on Azure |
+| **Status** | Generator implemented (offline, macOS); feed implemented and tested, three concurrent matches on the local stack; Azure: [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | **Data** | Synthetic, simulated with Google Research Football (Apache-2.0); labelled `synthetic: true` everywhere; not Stats Perform data |
 | **Out** | Event Hubs `match-events` (MA1, `MatchEvent` v2, MA3, POS); HLS over HTTP |
 | **Consumers** | ETL (`etl-stream`), user backend; viewers through nginx (`/media/hls/`) |

@@ -6,7 +6,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented, tested on real Postgres with contract doubles, deployed on Azure ([overview](docs/overview.md#3-status-by-area)) |
+| **Status** | [overview](docs/overview.md#3-status-by-area) |
 | **Reads** | Event Hubs `match-events`, ETL GraphQL (DAB), narrative GraphQL + Service Bus `narratives`, feed HLS |
 | **Serves** | `/product` viewer API + WebSocket, audience, prompt, policy and model-role APIs for the engine, `/dev` and `/lab` |
 | **Models** | Azure: `gpt-6.1-sol` deployment `questions` (effort low), switchable per role under `/dev/config/models`; follow offers on Microsoft-Decision-1 (`DECISION_*`) |
