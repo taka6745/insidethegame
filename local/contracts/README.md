@@ -239,7 +239,7 @@ The backend serves unavailable rows (retired kinds, missing channels) as unavail
 
 Why values changed with SPADL (measured on the previous renders):
 - `interceptions`: SPADL's interception includes blocked passes (Opta 74), which the canonical catalogue did not count.
-- `offsides`: SPADL marks the offside pass (Opta 2), credited to the passing team. The MA3 export sends one per offside call, by the offside team (data-generation/docs/opta-events.md), so the values equalled the canonical ones.
+- `offsides`: SPADL marks the offside pass (Opta 2), credited to the passing team. The MA3 export sends one per offside call, by the offside team (data-generation/contracts/README.md), so the values equalled the canonical ones.
 - `passes`, `pass_accuracy`: where no pass of the offside team was flagged (a deflection or loose touch put the player offside), its last touch becomes that offside pass: 4 more passes in Redcastle Town–Port Albion and 2 in Skybridge–Whitmore, all unsuccessful.
 - `saves`: SPADL's keeper_save is every Opta save event, including outfield blocks and stops of off-target shots, which the canonical catalogue excluded. `spadlActions.defensiveBlock` and `fromShotOffTarget` mark those rows; `shots_saved` (42) counts only real goalkeeper saves and equalled the old `saves` values. The backend's question agent uses `shots_saved` for "saves" (custom rules: `save_kind` `save`).
 - `kick_offs`, `ball_recoveries`, `aerials_won`: no SPADL action (a kick-off is a pass; a ball recovery becomes a dribble or is dropped; aerial duels are not actions), so retired. Old values above.

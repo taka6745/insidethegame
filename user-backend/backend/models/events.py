@@ -10,7 +10,7 @@ EventType = Literal["pass", "shot", "goal", "corner", "card", "save", "tackle",
                     "clearance", "interception", "foul", "touch", "throw_in",
                     "free_kick", "goal_kick", "kick_off", "penalty", "offside",
                     "foul_won", "keeper_claim", "period_start", "period_end",
-                    # Opta-style v3 derived events (data-generation/docs/opta-events.md).
+                    # Opta-style v3 derived events (data-generation/contracts/README.md).
                     "dispossessed", "blocked_pass", "aerial", "take_on", "challenge",
                     "ball_recovery", "out", "corner_awarded", "keeper_pickup", "punch",
                     "offside_provoked", "error", "ball_touch"]
