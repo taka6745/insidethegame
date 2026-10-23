@@ -1,5 +1,11 @@
 # Narrative Generation Engine: Design and Implementation Plan
 
+> **In short:** historical original design of the engine, no longer updated. Current behaviour: [overview](../overview.md) and [architecture](../architecture.md).
+
+| | |
+| --- | --- |
+| **Status** | Historical design; superseded by the docs above |
+
 Inside the Game hackathon (Microsoft). This document describes the narrative generation engine: what it does, how it fits with the other services, how match context is built, the agents and their prompts, storage, triggers, and the Azure infrastructure it runs on.
 
 Scope: this document covers the narrative generation engine only. The ETL service and the user service are described only at the level of the interfaces the engine uses.

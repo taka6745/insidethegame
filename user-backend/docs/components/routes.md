@@ -6,7 +6,7 @@
 | --- | --- |
 | **Code** | [`backend/routes/`](../../backend/routes/) |
 | **Explorer** | [localhost:18000/docs](http://localhost:18000/docs) |
-| **Flags** | `ENABLE_DEV_FEED=1` mounts `/dev/*`; `ENABLE_FILTER_LAB=1` mounts `/lab/*` (both local only, unauthenticated) |
+| **Flags** | `ENABLE_DEV_FEED=1` mounts `/dev/*`; `ENABLE_FILTER_LAB=1` mounts `/lab/*` (local, and on Azure with `dev_admin`: internal ingress, nginx basic auth) |
 | **Errors** | `{"code", "detail"}` with the status of the `RuleError` |
 | **Tests** | `test_multi_match.py`, `test_product.py`, `test_product_audiences.py`, `test_audiences.py`, `test_prompts.py`, `test_questions.py`, `test_viewer_playhead.py`, `test_dev_editors.py`, `test_stream_gaps.py` |
 

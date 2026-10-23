@@ -51,6 +51,6 @@ Every read and write stays in one partition except `live_match_ids`, `match_ids`
 
 ## 3. In memory (`memory.py`)
 
-*In short: dictionaries with the same behaviour, so tests and local runs need no Azure.*
+*In short: dictionaries with the same behaviour, so unit tests and devtools need no Cosmos.*
 
-There is no Cosmos emulator in the setup; the contract test is what keeps the two stores equivalent.
+Unit tests and devtools use the memory store; the local stack runs the Cosmos emulator, and the contract test also runs against it when `COSMOS_ENDPOINT` is set.

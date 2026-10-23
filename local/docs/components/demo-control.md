@@ -28,7 +28,7 @@ viewer ─ /demo-api/{start,cancel,skip,state,status} ─▶ demo-control ─┬
 | State | Start points (`ready` only when kickoff or a fitting seed), live runs, `live_from`, the main game, recording runs, skip targets, `pending` and `last` |
 | Status | Seven stages from real checks (feed, Event Hubs, ETL, Service Bus, engine, backend, viewer); also wakes apps scaled to zero |
 
-Start and cancel answer `202` at once and run one after another under one lock (one replica); the viewer polls `/state`. Start and cancel share one rate limit (10/min, burst 5); state and status are limited per client (40/s, burst 200).
+Start and cancel answer `202` at once and run one after another under one lock (one replica); the viewer polls `/state`. Start, cancel and skip share one rate limit (10/min, burst 5); state and status are limited per client (40/s, burst 200).
 
 ## 2. Seeds
 

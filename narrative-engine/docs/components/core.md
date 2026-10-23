@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Status** | Implemented · tested |
-| **Code** | [`narrative_engine/core/`](../../narrative_engine/core/): `models.py`, `config.py`, `orchestrator.py` |
+| **Code** | [`narrative_engine/core/`](../../narrative_engine/core/): `models.py`, `config.py`, `orchestrator.py`, `gate.py` (`ModelGate`: one cap on model calls across matches) |
 | **Depends on** | [context](context.md), [agents](agents.md), [match data](match-data.md), [store](store.md), a publisher from [transport](transport.md) |
 | **Tests** | `test_models.py`, `test_orchestrator.py` |
 
@@ -24,6 +24,7 @@
 | `MinuteClosed` | ETL | `matchId`, `clock`, `windowEnd` |
 | `KeyEventDetected` | ETL | `keyEvents` row: `id`, `keyType`, `detail`, `contestantId`, `playerId`, clock, `timeSec`, `relatedEventId` |
 | `PeriodChanged` | ETL `PeriodStarted` / `PeriodEnded` | `periodId`, `started`, and the Start/End event's `clock`, `timeSec` when the body has them |
+
 `parse_notification(body, messageType)` switches on `messageType` and returns `None` for any other type before reading a field (the topic is shared). Every ETL body carries every key, unused ones `null`.
 
 Buckets are not messages: the orchestrator reads the user backend's current targets ([audience](#4-audience-targets)).

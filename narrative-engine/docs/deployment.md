@@ -9,7 +9,7 @@
 | **Demo build** | `demo_seeds` sets `DEMO_SEEDS=1`; `./dev azure up` turns it on for the demo build, `./dev azure up --release` turns it off ([demo](components/demo.md)) |
 | **Terraform** | [`infra/`](../infra/), local state, reads the ETL's state for its Service Bus namespace and Container Apps environment |
 | **Region** | Australia East |
-| **Cost when idle** | About US$10–20/month (Container App always on, registry); models and Cosmos are pay per use |
+| **Cost when idle** | About 10–20/month, billing currency (Container App always on, registry); models and Cosmos are pay per use |
 
 ## 1. Infrastructure
 
@@ -31,7 +31,7 @@
 | Container App | `itg-narrative-dev-engine` | 0.5 vCPU, 1 GiB, 1 replica, internal ingress on 8000 (only the backend, the frontend's dev purge proxy and demo control call it); `DEMO_SEEDS=1` on the demo build; in the ETL's environment (one per region on the trial) |
 | Container Registry | `itgnarrativedevdhcyoacr` | Basic; images built locally and pushed |
 | Cosmos DB | `itg-narrative-dev-dhcyo-cosmos` | Serverless; engine uses managed identity |
-| Azure AI Foundry (AI Services) | `itg-narrative-dev-dhcyo-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low) and `decision-1` (Microsoft-Decision-1, 50 requests/minute); the user backend adds its own `questions` deployment here |
+| Azure AI Foundry (AI Services) | `itg-narrative-dev-dhcyo-foundry` | Deployments in Terraform `models`: `writer` (`gpt-6.1-sol`, every agent at effort low) and `decision-1` (Microsoft-Decision-1, 50 requests/minute), plus the switchable alternatives `gpt-6-luna` and `gpt-5-mini` (100K TPM each); the user backend adds its own `questions` deployment here |
 | Service Bus topic | `narratives` | In the ETL namespace; subscriptions `user-backend`, `narrative-check`. The engine reads `match-notifications` through the ETL's `narrative-engine` subscription |
 | Application Insights | `itg-narrative-dev-dhcyo-appi` | Own Log Analytics workspace (0.2 GB/day cap); workbook "Narrative engine" |
 

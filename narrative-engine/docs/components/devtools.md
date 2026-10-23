@@ -22,6 +22,7 @@ python -m devtools.local NOTIFICATIONS.jsonl [options]
 | `--agents fake\|llm` | Fake agents (default) or real models from `.env` |
 | `--data fixture\|graphql` | Replay file (default) or the ETL's GraphQL (`--graphql-url`) |
 | `--match`, `--match-id` | Replay file and match ID override |
+| `--actions` | SPADL actions JSON for `--data fixture` (`devtools/spadl_fixture.py` writes one) |
 | `--pace N` | 0 = sequential and fast; N = N times the recorded timing, concurrent |
 | `--buckets home:casual,away:analyst` | Buckets to write for (default all 12) |
 | `--serve PORT` | Serve the history API during and after the run |
@@ -37,6 +38,7 @@ python -m devtools.local NOTIFICATIONS.jsonl [options]
 | `build --tag X [--local]` | Build the image from a minimal context; `--local` uses Docker and pushes (ACR Tasks are blocked on the trial) |
 | `check-narratives --match-id X` | Drain the `narrative-check` subscription: count a match's narratives by step and bucket, check each `MessageId` equals the narrative `id`, list one bucket's text |
 | `report --match-id X [--no-open]` | Write `.local/report-<id>.html` from Cosmos and open it |
+
 ## 3. Report (`report.py`)
 
 *In short: one HTML page showing how the engine thought about a match.*

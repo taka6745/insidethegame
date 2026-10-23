@@ -33,12 +33,12 @@ docs/
 ├── deployment.md             Azure resources and what a production release still needs
 ├── decisions.md              design versus implementation, open items
 ├── narrative-framing.svg     service-boundary diagram (rendered by .github/scripts/render_architecture.py)
-├── custom-calculations.svg   historical rule-worker diagram (same script)
 └── design/                   original plans, kept for history (not updated)
     ├── agreed-architecture.md      the 18 October 2026 architecture agreement
     ├── question-agent-plan.md      the question-agent build plan
     ├── replay-plan.md              the chat-replay plan
-    └── custom-calculations.md      the proposed rule-worker design (+ ../custom-calculations.svg)
+    ├── custom-calculations.md      the proposed rule-worker design
+    └── custom-calculations.svg     its diagram (rendered by the same script)
 ```
 
 ## Where to start

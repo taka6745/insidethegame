@@ -6,7 +6,7 @@
 | --- | --- |
 | **Status** | Tested: every service on one stack, three concurrent matches, kickoff and seeded starts, follows, clips, cross-game |
 | **Profiles** | base (Postgres, Cosmos), `azure` (+ messaging, SQL, DAB), `backend` (+ every service) |
-| **Not deployed** | `etl-stream` (Stream Analytics stand-in), emulators, local model |
+| **Not deployed** | `etl-stream`'s stream worker (Stream Analytics stand-in; its image runs on Azure only as the purge API and SPADL post-processor), emulators, local model |
 
 ## 1. Profiles
 

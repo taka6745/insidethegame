@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Process** | One FastAPI app (`backend.app:from_env`), background tasks for the two broker consumers and gap recovery |
+| **Process** | One FastAPI app (`backend.app:from_env`), background tasks for the two broker consumers, gap recovery and the model-role watcher |
 | **Databases** | Accounts (demo profiles) and Match App (everything else, schema `user_backend`) on one Postgres server |
 | **Snapshot** | `(matchId, seq)`; nothing past ETL's watermark, its SPADL watermark `spadlSeq` or what this service received is reachable |
 | **Locks** | Per match: the match lock (events, calculations, purge fence) and per-match session locks (one viewer's takeover) |
@@ -88,6 +88,7 @@ flowchart LR
 | `subscription_topics`, `subscriptions`, `subscription_revisions`, `subscription_narratives`, `subscription_clips` | Story follows, their targets revision and delivered follow narratives | Per match |
 | `match_tombstones`, `match_purge_cutoff`, `stream_checkpoints` | Purge fences and broker positions | Never |
 | `audience_templates`, `narrative_prompts`, `narrative_prompt_active`, `backend_config` | Configuration edited in `/dev/` | Never |
+| `rule_vocabulary_map` | Old rule vocabulary → SPADL ([migration 020](components/migrations.md)) | Never |
 | Accounts `demo_profiles` (+ revision row) | Demo accounts | Never |
 
 [Migrations](components/migrations.md) lists each file.

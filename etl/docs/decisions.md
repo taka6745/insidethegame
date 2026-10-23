@@ -43,5 +43,4 @@
 | Item | Notes |
 | --- | --- |
 | Late, duplicate and out-of-order injection | The seeder cannot inject them yet |
-| Subscription backlog | Consider a TTL on `narrative-engine`, or purging before a match |
 | Managed identity for messaging | Stream Analytics' Event Hubs input and Service Bus output, the seeder and consumers use scoped keys because Contributor cannot create role assignments; the registry uses admin credentials (no AcrPull grant) |

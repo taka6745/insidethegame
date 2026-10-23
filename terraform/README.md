@@ -11,7 +11,7 @@
 | `terraform/` (this folder) | User backend, demo control, frontend, seeds share (demo build), backend PostgreSQL, Key Vault, the backend's Foundry deployment (`questions`) |
 
 ```sh
-./dev terraform check   # fmt, validate, mock tests for all five; no Azure calls
+./dev terraform check   # fmt, validate, fmt and validate all five; mock tests for app, guard and feed; no Azure calls
 ./dev azure plan        # real plan against your subscription (az login); applies nothing
 ./dev azure up          # deploy everything (asks first); see docs/deployment.md
 ```

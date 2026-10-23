@@ -9,7 +9,7 @@
 | **Inputs** | ETL notifications and GraphQL · backend audience targets, prompts, policy, subscription targets |
 | **Admin** | `POST /admin/matches/purge` always; `POST /admin/matches/export` and `/restore` only with `DEMO_SEEDS=1` |
 
-What the user backend can rely on. Live narratives arrive on Service Bus; this GraphQL API serves history for joins and reconnects. Inputs come from the [ETL contracts](../../etl/contracts/README.md): SPADL actions (Output 3), the SPADL stat catalogue (`executeStatsAtSeq`) and the trend indicators (`executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, [local contracts §4b](../../local/contracts/README.md)), read at the step's canonical seq, plus key events, MA1 and MA3.
+What the user backend can rely on. Live narratives arrive on Service Bus; this GraphQL API serves history for joins and reconnects. Inputs come from the [ETL contracts](../../etl/contracts/README.md): SPADL actions (Output 3), the SPADL stat catalogue (`executeStatsAtSeq`) and the trend indicators (`executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, [local contracts §4b](../../local/contracts/README.md#4b-trend-definitions)), read at the step's canonical seq, plus key events, MA1 and MA3.
 
 ## Output 1: GraphQL (narrative history, read-only)
 
@@ -39,8 +39,8 @@ query ($m: String!, $u: String!, $after: Int!) {
 - **`stepId`** is shared by every bucket's version of one narrative step (a goal, half time, a scheduled update). `id` is unique and stable: `narr:{matchId}:{userType}:{seq}`.
 - **`matchTime`** uses the ETL's Opta clock (`periodId`, 0-based `timeMin`) and its broadcast `label` (`45+2'`). A bucket only gets narratives while it is in `activeUserTypes` (enabled in the backend's config; steps already queued when it is disabled still finish). A bucket enabled mid-match, or re-enabled, gets a `catchUp` narrative, then continues with the rest.
 - **`storylineIds`** lists the storyline the narrative advances (its step's focus, the same for every bucket; empty when the match has none yet) and **`analysisId`** the match analysis it read (`null` before the first). A `storylineTurn` step is written when an analysis opens or resolves a storyline.
-- `text` is plain text, one to three sentences. Stat-selection instructions are not produced yet.
-- **`timeSec`** is the second of `matchTime` the step's data reaches (59 for scheduled steps; a half-time or full-time step uses the End event's own clock and second, and is written as soon as `PeriodEnded` arrives); **`audienceRevision`** is the backend audience revision the bucket came from; **`promptVersion`** is `{role}@{version}` from the prompts API (tests and devtools: the shipped file name, `narrative-author.v6`). **`model`** is the Azure AI Foundry deployment that answered, or `local-model` on the local stack.
+- `text` is plain text, one or two sentences. Stat selection belongs to the user backend.
+- **`timeSec`** is the second of `matchTime` the step's data reaches (59 for scheduled steps; a half-time or full-time step uses the End event's own clock and second, and is written as soon as `PeriodEnded` arrives); **`audienceRevision`** is the backend audience revision the bucket came from; **`promptVersion`** is `{role}@{version}` from the prompts API (tests and devtools: the shipped file name, `narrative-author.v7`). **`model`** is the Azure AI Foundry deployment that answered, or `local-model` on the local stack.
 
 ## Output 2: Service Bus (live narratives)
 
@@ -110,7 +110,7 @@ Delivery is at least once; deduplicate on `id`. If a `seq` is skipped, fill the 
 | Request | Used for |
 | --- | --- |
 | `GET /matches/{matchId}/audience-config` | `generation_targets` for this run-scoped matchId (the backend resolves its fixture's audience template): the active buckets and their layer/option descriptions. Empty = write nothing; a newly active bucket gets a `catchUp` narrative |
-| `GET /storyline-policy` | `{table, revision, value: {analysis, storylines, repair}}` (ETag): every storyline tunable ([analysis](../docs/components/analysis.md)); unavailable pauses the work |
+| `GET /storyline-policy` | `{table, revision, value: {analysis, storylines, repair, claims}}` (ETag): every storyline tunable ([analysis](../docs/components/analysis.md)); unavailable pauses the work |
 | `GET /narrative-prompts` | Global active template per role (`minute-summary`, `context-compression`, `match-analyst`, `narrative-author`, `subscription-decision`, `subscription-author`; the list also has the backend's own `subscription-planner`); used only if its placeholders equal the shipped file's |
 | `GET /matches/{matchId}/subscription-targets` | Followed topics and the follow tunables (below); poll like the audience targets. Empty `topics` = no follow work |
 

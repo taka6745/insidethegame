@@ -14,14 +14,14 @@
 
 *In short: three shared, neutral agents and one per-bucket author.*
 
-| Agent | Runs | Prompt | Returns | Default effort |
-| --- | --- | --- | --- | --- |
-| `minute-summariser` | Once per closed minute with events | `minute-summary.v3` | JSON `{"summary": ...}` | minimal |
-| `context-compressor` | When a compression rule fires | `context-compression.v2` | JSON `{"summary": ...}` | minimal |
-| `match-analyst` | Every 5 match minutes, half and full time ([analysis](analysis.md)) | `match-analyst.v4` | JSON observations citing trend numbers, checked by `analysis/validator.py` | (role default) |
-| `narrative-author` | Once per bucket per step | `narrative-author.v7` | Plain text, one to three sentences | low |
+| Agent | Runs | Prompt | Returns |
+| --- | --- | --- | --- |
+| `minute-summariser` | Once per closed minute with events | `minute-summary.v3` | JSON `{"summary": ...}` |
+| `context-compressor` | When a compression rule fires | `context-compression.v2` | JSON `{"summary": ...}` |
+| `match-analyst` | Every 5 match minutes, half and full time ([analysis](analysis.md)) | `match-analyst.v4` | JSON observations citing trend numbers, checked by `analysis/validator.py` |
+| `narrative-author` | Once per bucket per step | `narrative-author.v7` | Plain text, one or two sentences |
 
-Default effort is the local stack's; on Azure every role runs `gpt-6.1-sol` at `low`, its lowest effort (`infra/variables.tf` `agents`). Follow narratives use the `narrative-author` role with the `subscription-author` prompt ([follows](follows.md#4-authoring)).
+Reasoning effort is sent only when `OPENAI_EFFORT` (or `OPENAI_EFFORT_{ROLE}`) is set; on Azure every role runs `gpt-6.1-sol` at `low`, its lowest effort (`infra/variables.tf` `agents`). Follow narratives use the `narrative-author` role with the `subscription-author` prompt ([follows](follows.md#4-authoring)).
 
 Calls are stateless: each run gets a freshly built prompt and no conversation history (design principle 4). A summary reply that is not valid JSON gets one follow-up asking for the JSON only; an empty author reply is retried once; an analyst reply with no JSON object gets one follow-up, then goes to the validator as it is. The grounding checks ([analysis](analysis.md)) allow one repair turn per analysis and per excerpt: `analyse` and `author` take `feedback` (the earlier reply and the reasons) and continue that conversation.
 
@@ -66,4 +66,4 @@ The service takes each role's active template from the backend's prompts API (`p
 
 *In short: deterministic text with no model calls, for tests and offline runs.*
 
-`FakeAgents` returns predictable summaries and narratives, records every call and its variables, and can delay the author to test concurrency. Tests use it directly; devtools select it with `--agents fake`. It lives in `devtools/`, which the service image excludes.
+`FakeAgents` returns predictable summaries and narratives, records every call and its variables, and can delay the author to test concurrency. Tests use it directly; devtools select it with `--agents fake`. It lives in `tests/doubles/`; the image contains only `narrative_engine/`.

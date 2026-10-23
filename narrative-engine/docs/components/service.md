@@ -32,8 +32,8 @@
 | `SERVICEBUS_NOTIFICATIONS` | Listen connection string for `match-notifications` (ETL) |
 | `NOTIFICATIONS_SUBSCRIPTION` | Its subscription (default `narrative-engine`; local stack `narrative-live`) |
 | `USER_BACKEND_URL` | Required: audience targets and followed topics (per matchId), prompts and the storyline policy |
-| `DECISION_*` | Required: the decision model ([decisions](decisions.md)); Microsoft-Decision-1 when `DECISION_BASE_URL` is set, else the constrained-LLM fallback on the agents' model |
-| `MODEL_CONCURRENCY`, `AUTHOR_CONCURRENCY`, `FALLBACK_MINUTES`, `FINAL_PERIOD`, `TARGETS_POLL_SECONDS`, `BACKEND_CACHE_SECONDS`, `RETRY_SECONDS`, `RETRY_MAX_SECONDS`, `LAST_N_NARRATIVES` | [Settings](core.md#2-settings-configpy) (local stack: `NARRATIVE_MODEL_CONCURRENCY`) |
+| `DECISION_*` | Optional: the decision model ([decisions](decisions.md)); Microsoft-Decision-1 when `DECISION_BASE_URL` is set, else the constrained-LLM fallback on the agents' model |
+| `MODEL_CONCURRENCY`, `AUTHOR_CONCURRENCY`, `FALLBACK_MINUTES`, `FINAL_PERIOD`, `TARGETS_POLL_SECONDS`, `BACKEND_CACHE_SECONDS`, `RETRY_SECONDS`, `RETRY_MAX_SECONDS`, `LAST_N_NARRATIVES`, `ANALYSIS_MINUTES`, `STORYLINE_TURNS` | [Settings](core.md#2-settings-configpy) (local stack: `NARRATIVE_MODEL_CONCURRENCY`) |
 | `SERVICEBUS_NARRATIVES` | Send connection string for `narratives` |
 | `COSMOS_ENDPOINT` | Required: Cosmos DB account (Entra ID auth) |
 | `COSMOS_KEY` | Key auth for the local emulator; the store then creates its database and containers |
@@ -53,7 +53,7 @@
 | --- | --- |
 | `handle(body, messageType)` | Parse the message; drop it if the match is tombstoned or `admit` refuses it; else `accept` it on the match's orchestrator |
 | `admit(message)` | For a match not seen since start-up: refuse (and tombstone) it if its MA1 `timeStamp` (or, with no MA1 in the ETL, the notification's time) is before the purge-all cut-off |
-| `purge(matchId)` / `purge(everything=True)` | `POST /admin/matches/purge` ([contract](../../../local/contracts/README.md#5-purge)): write tombstones (and, for `all`, the cut-off) first, then stop the workers and delete checkpoints, blocks and narratives. Returns `{"match_ids", "purged": {"checkpoints", "contextBlocks", "narratives"}}`. Other matches are untouched |
+| `purge(matchId)` / `purge(everything=True)` | `POST /admin/matches/purge` ([contract](../../../local/contracts/README.md#5-purge)): write tombstones (and, for `all`, the cut-off) first, then stop the workers and delete the match from all seven containers (checkpoints, contextBlocks, narratives, analyses, storylines, subscriptionDecisions, subscriptionNarratives). Returns `{"match_ids", "purged": {<container>: count}}`. Other matches are untouched |
 | `poll_targets()` | Every `TARGETS_POLL_SECONDS`: let go of finished matches, re-read targets for the rest |
 | `start()` | Load tombstones and the cut-off, kick the workers of every live match not tombstoned |
 | `health()` | The prompt source's problems (empty when healthy) |

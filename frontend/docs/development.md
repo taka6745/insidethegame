@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Viewer** | `http://localhost:18020/` (picker, Start demo), `/lab/`, `/dev/` |
-| **Source** | TypeScript in `match/`, `lab/`, `dev/`, `shared/`, `tests/`, `tools/`, `devtools/`, `benchmarks/`; plain `.js` only in ignored `dist/` |
+| **Source** | TypeScript in `match/`, `lab/`, `dev/`, `shared/`, `tests/`, `devtools/`, `benchmarks/`; shell in `tools/`; the icon harness in `devtools/` is Python; plain `.js` only in ignored `dist/` |
 | **Node** | 22.18+ (runs `.ts` tests and tools directly by type stripping) |
 
 ## 1. Run locally

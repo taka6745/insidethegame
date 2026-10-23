@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Applied by** | `./dev azure up` ([deployment](../../terraform/docs/deployment.md)): the whole pipeline with the multi-match outputs, `match-progress` input, purge API, SPADL app, `sql/azure` triggers and the stream schedule |
-| **Demo seeds** | `demo_seeds` (default on, demo build) sets `DEMO_SEEDS=1` on the admin app; `./dev azure up --release` turns it off |
+| **Demo seeds** | `demo_seeds` sets `DEMO_SEEDS=1` on the admin app; Terraform default off, `./dev azure up` turns it on, `--release` leaves it off |
 | **Terraform** | [`infra/`](../infra/), local state (`./dev azure` keeps it in `.local/terraform/etl/`); also hosts the shared Container Apps environment and registry |
 | **Region** | Australia East |
 | **Cost when idle** | Low: SQL auto-pauses (free offer), DAB scales to zero, the job runs only while match events flow (stream schedule); Event Hubs and Service Bus Standard bill hourly |
@@ -85,4 +85,4 @@ At ⅓ streaming unit the job runs about two minutes behind a 10x replay. `./dev
 | No notifications | Is the job running (`asa status`)? The schedule starts it a minute or two after events arrive. Is a replay sending? Did the guard's last resort stop it (`./dev azure up` restores)? |
 | First query slow | DAB scaled to zero or SQL paused; wait about 30 s |
 | Missing rows | Run `verify`; output errors are dropped, not retried |
-| Subscription backlog | `narrative-engine` has no message TTL; old replays stay until read |
+| Subscription backlog | Unread notifications expire after one day (topic TTL) |

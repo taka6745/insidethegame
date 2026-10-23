@@ -32,7 +32,7 @@ Invalid buckets or topic ids and `first` outside 1–200 are GraphQL errors.
 *In short: same style as the ETL's API, testable without Azure, and it can answer questions Cosmos alone can't.*
 
 - Consumers already use GraphQL for the ETL, so the user backend has one query style.
-- It runs in-process over either store, so tests and local runs need no Cosmos emulator.
+- It runs in-process over either store, so unit tests and devtools need no Cosmos.
 - `activeUserTypes` is the last audience targets read from the user backend.
 
 ## 3. Running it locally

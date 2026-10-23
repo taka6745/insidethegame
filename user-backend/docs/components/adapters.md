@@ -47,7 +47,7 @@ Positions: the last committed Event Hubs sequence number per partition is stored
 | `rawEvents(filter: {matchId, typeId: {in: [16, 17, 900]}, eventSeq: {lte: s}})` | MA3 goals, cards and VAR decisions (outside SPADL), bounded in the database by the indexed `eventSeq` column |
 | `canonicalEvents(filter: {matchId, seq})` | Gap recovery only; when ETL has no valid row or errors, the gap is recorded |
 
-Errors raise `EtlUnavailable`; callers turn it into `503 snapshot_unavailable` or retry. `ma3.py` maps MA1/DAB names to the backend's (capabilities, teams, branding, players, stat rows with `action_types` and `unavailable_reason` = ETL's definition when unavailable), MA3 card rows (`card:{id}`, colour from qualifiers 31/32/33) and `score()`: goals per team from MA3 goals and VAR overturns, used for scores because the catalogue's `goals` do not subtract overturns yet.
+Errors raise `EtlUnavailable`; callers turn it into `503 snapshot_unavailable` or retry. `ma3.py` maps MA1/DAB names to the backend's (capabilities, teams, branding, players, stat rows with `action_types` and `unavailable_reason` = ETL's definition when unavailable), MA3 card rows (`card:{id}`, colour from qualifiers 31/32/33) and `score()`: goals per team from MA3 goals and VAR overturns, kept for scores (built before the catalogue subtracted overturns).
 
 `match_data.py` is the match-data port, with small per-snapshot caches:
 

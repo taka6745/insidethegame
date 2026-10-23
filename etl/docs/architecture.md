@@ -1,6 +1,6 @@
 # Architecture
 
-> **In short:** a managed streaming pipeline with little custom server code. Stream Analytics does the stream processing in SQL-like queries, Azure SQL stores the results, a small Python post-processor converts MA3 into SPADL actions, Data API builder exposes them as GraphQL, and Service Bus carries notifications. Python exists only for the seeder, the reference implementation, developer tools, the SPADL post-processor (`spadl/worker.py`) and the small purge API (`local_stream/admin.py`).
+> **In short:** a managed streaming pipeline with little custom server code. Stream Analytics does the stream processing in SQL-like queries, Azure SQL stores the results, a small Python post-processor converts MA3 into SPADL actions, Data API builder exposes them as GraphQL, and Service Bus carries notifications. Python exists only for the seeder, the reference implementation, developer tools, the SPADL post-processor (`spadl/worker.py`) the small purge API (`local_stream/admin.py`) and, locally, the Stream Analytics stand-in (`local_stream/`).
 
 | | |
 | --- | --- |

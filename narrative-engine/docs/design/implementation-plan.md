@@ -1,5 +1,11 @@
 # Narrative engine: implementation plan
 
+> **In short:** historical implementation plan (18 October 2026), no longer updated. Current behaviour: [architecture](../architecture.md) and [decisions](../decisions.md).
+
+| | |
+| --- | --- |
+| **Status** | Historical plan; implemented |
+
 Agreed 18 October 2026. Reconciles [narrative-generation-engine.md](narrative-generation-engine.md) with the [ETL contracts](../../../etl/contracts/README.md) as built. Where they differ, the ETL contracts and this plan win.
 
 ## Decisions

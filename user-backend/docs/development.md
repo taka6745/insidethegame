@@ -20,7 +20,7 @@ ACCEPT_EULA=Y ./dev up backend   # Microsoft emulator licences need each develop
 ./dev test backend               # isolated pytest + broker probes, without touching running matches
 ```
 
-The image has two targets: `runtime` (backend + migrations, no tests or fixtures) and `test` (adds `tests/`, `benchmarks/`, `fixtures/`). Run one backend process per deployment ([architecture §6](architecture.md#6-scaling-boundary)).
+The image has two targets: `runtime` (backend + migrations, no tests or fixtures) and `test` (adds `tests/`, `benchmarks/`, `fixtures/`, `devtools/`, `pytest.ini`). Run one backend process per deployment ([architecture §6](architecture.md#6-scaling-boundary)).
 
 ## 2. Configuration
 
@@ -36,7 +36,7 @@ The image has two targets: `runtime` (backend + migrations, no tests or fixtures
 | `LOCAL_LLM_BASE_URL`, `LOCAL_LLM_MODEL`, `LOCAL_LLM_API_KEY`, `LOCAL_LLM_TIMEOUT_SECONDS` | Model endpoint; without the first two the service is not ready |
 | `LOCAL_LLM_EFFORT`, `LOCAL_LLM_REASONING_TOKENS` | A reasoning effort sends agents over the Responses API with no temperature, plus extra output tokens (default 8000) |
 | `AGENT_*`, `QUESTION_*`, `FILTER_MAX_CALCULATIONS` | Agent and question limits ([agents §5](components/agents.md#5-limits-and-configuration)) |
-| `ENABLE_DEV_FEED`, `ENABLE_FILTER_LAB` | Mount `/dev/*` and `/lab/*` (local only) |
+| `ENABLE_DEV_FEED`, `ENABLE_FILTER_LAB` | Mount `/dev/*` and `/lab/*` (local, and on Azure with `dev_admin` behind nginx basic auth) |
 | `DEMO_SEEDS` | `1` mounts the demo seed routes (local compose, demo build); unset in a production release |
 | `DECISION_*` | Microsoft-Decision-1 for the follow offer (`.local/decision.env`, never printed); without it the question model answers |
 

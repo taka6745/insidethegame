@@ -76,7 +76,7 @@ Look at the results with the history API (`python -m narrative_engine.api .local
 | `test_api.py` | History GraphQL queries and errors |
 | `test_servicebus.py` | Router: concurrent matches, model limit across matches, model gate order, purge (one, all, restart), final period from MA1, `eventSeq`, health without the backend; settling, publisher |
 | `test_backend_sources.py` | Audience targets and prompts from the user backend (mocked HTTP): ETag, framing, placeholder validation, no fallback, pinning, health problems |
-| `test_shipped_fixtures.py` | The authored commentary fixtures bind to the shipped recording |
+| `test_shipped_fixtures.py` | The authored commentary fixtures bind byte for byte to their archived recording (`fixtures/archive/`) |
 | `test_follows.py`, `test_decisions.py`, `test_storylines*.py`, `test_recording_run.py`, `test_model_roles.py` | Story follows, decision models, storylines over the recording, backlog equals live, model per role |
 
 Test doubles live in `tests/doubles/` (fake agents and decisions, `FixtureMatchData`, fixed targets and topics); helpers shared by several test modules (a mocked user backend, `EtlAsOf`, ETL trend rows) in `tests/support.py`; the Riverton Rovers–Forgeham United recording as test data in `tests/riverton_forgeham.py`.

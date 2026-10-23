@@ -24,7 +24,9 @@
 | `Match` relationships | `teams` → `MatchTeam` (`dbo.matchTeams`), `players` → `MatchPlayer` (`dbo.matchPlayers`) | `matches { items { teams { items … } players { items … } } }` |
 | `MatchWatermark` | view `dbo.matchWatermarks` | `matchWatermarks` |
 | `StatDefinition` | `dbo.statDefinitions` | `statDefinitions` |
+| `CanonicalEvent` | `dbo.canonicalEvents` | `canonicalEvents` |
 | `PossessionSample` | `dbo.possessionSamples` | `possessionSamples` |
+| `SpadlAction` | `dbo.spadlActions` | `spadlActions` ([SPADL](spadl.md)) |
 | `StatsAtSeq` | procedure `dbo.statsAtSeq` | `executeStatsAtSeq(matchId, seq)` (plain list) |
 | `TrendDefinition` | `dbo.trendDefinitions` | `trendDefinitions` |
 | `TrendsAtSeq`, `TrendSpellsAtSeq`, `TrendMinutesAtSeq` | procedures `dbo.trendsAtSeq`, `dbo.trendSpellsAtSeq`, `dbo.trendMinutesAtSeq` | `executeTrendsAtSeq(matchId, seq)` etc. (plain lists; [trends](trends.md)) |

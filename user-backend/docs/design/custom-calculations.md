@@ -8,7 +8,7 @@
 
 **Execution design, partly implemented.** The [filter lab](../components/routes.md#5-filter-lab) now implements typed rules, a shared index, incremental corrections and a Postgres-backed development registry. Broker consumers, production history/live coordination and viewer subscription fan-out below remain planned. Standard ETL-provided statistics bypass this path.
 
-![Rule storage, activation and live updates](../custom-calculations.svg)
+![Rule storage, activation and live updates](custom-calculations.svg)
 
 ## Stored rule, running worker
 

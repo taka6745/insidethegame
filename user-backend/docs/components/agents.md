@@ -45,7 +45,7 @@ flowchart LR
 | Snapshot | `min(latest snapshot, the viewer's shown seq)`; stats, actions, cards, recaps and key moments are bounded to it |
 | Router (`question_intent.py`) | Sees catalogue meanings and recent dialogue, never values, actions or recaps |
 | Statistics | Reuse ETL rows (per team for "each team", "split", "score"; on-target % and similar computed in code) or plan a custom rule; a Track card is offered, never started. "Which player has the most X" is a goal with `rank_by: player`: code ranks every player over the snapshot's SPADL actions, names all tied leaders and offers up to three |
-| Answer agent (`question.py`) | Tools `read_standard_stats`, `search_actions` (SPADL, 100/page, no raw coordinates), `read_cards`, `read_recaps`, `prepare_stat`, `lookup_spadl`; at most six calls each (two for `prepare_stat` and `read_cards`, four for `lookup_spadl`) |
+| Answer agent (`question.py`) | Tools `read_standard_stats`, `search_actions` (SPADL, 100/page, no raw coordinates), `read_cards`, `read_recaps`, `prepare_stat`, `lookup_spadl`; six tool calls per answer in total; per tool at most two for `prepare_stat` and `read_cards`, four for `lookup_spadl` |
 | Evidence | Every cited ID must come from context or a tool (`action:a{id}`, `card:{id}`); labels use the broadcast minute (51:18 is 52′) |
 | Usage | Each reply carries input/output tokens, calls and seconds; never the model or provider |
 

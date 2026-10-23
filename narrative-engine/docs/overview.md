@@ -76,6 +76,6 @@ The engine reads the backend's `generation_targets` (for example team × fan sty
 | **Horizon** | The latest `(clock, second)` an ETL notification has announced. The engine never reads ETL data past it. |
 | **Context block** | A summary covering a span of the match: a minute, five minutes, or an earlier stretch. Replaced blocks are kept but marked `supersededBy`. |
 | **Narrative step** | One trigger's worth of narratives, one per active bucket, sharing a `stepId`. |
-| **Trigger** | Why a step runs: `keyEvent`, `scheduled`, `halfTime`, `fullTime`, `catchUp`. |
+| **Trigger** | Why a step runs: `keyEvent`, `scheduled`, `halfTime`, `fullTime`, `catchUp`, `storylineTurn`. |
 | **seq** | Per match and bucket narrative counter (1, 2, 3…) with no gaps, used for reconnects. |
 | **Checkpoint** | The per-match Cosmos document holding progress, the last targets and the queue of pending steps. |

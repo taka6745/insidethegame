@@ -97,7 +97,7 @@ Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhos
 | `keyEvents` | key event | Authoritative narrative ledger (see types below). |
 | `minuteStats` | contestant, minute, window | Per-minute deltas. Usually prefer `matchStatsAsOfs`. |
 | `matchStatsAsOfs` | contestant, match minute | Running totals as of the end of that minute. |
-| `matches` (extended), `matchWatermarks`, `statDefinitions`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts/README.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); on Azure from Stream Analytics. |
+| `matches` (extended), `matchWatermarks`, `statDefinitions`, `canonicalEvents`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts/README.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); on Azure from Stream Analytics. |
 | `spadlActions` | action ([below](#output-3-spadl-actions)) | SPADL actions converted from MA3; the stat catalogue counts these. |
 | `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` | definition; indicator × team × window; spell; minute × team ([below](#output-4-trend-indicators)) | Trend indicators for the narrative engine's analyst. |
 

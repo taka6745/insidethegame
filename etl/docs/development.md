@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Needs** | Python 3.11, Docker Desktop, `sqlcmd`, Node (UDF tests); Azure CLI and Terraform for Azure work |
+| **Needs** | Python 3.12, Docker Desktop, `sqlcmd`, Node (UDF tests); Azure CLI and Terraform for Azure work |
 | **Settings** | Ignored `etl/.env` (local SA password, generated) |
 | **Tests** | `pytest tests` (the SQL Server tests skip without `ETL_TEST_SQL_PASSWORD`, the UDF tests without Node; several minutes with them on an emulated SQL Server) plus `devtools verify` end to end |
 | **Whole product locally** | `ACCEPT_EULA=Y ./dev up backend` runs this pipeline's SQL schema and DAB config with the [local stream](components/local-stream.md) worker in place of Stream Analytics (`etl-stream`, GraphQL `http://localhost:15001/graphql`), read by the backend and the narrative engine: [../../DEVELOPMENT.md](../../DEVELOPMENT.md) |
@@ -34,7 +34,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements-test.txt   # requ
 
 **Test:** install `requirements-test.txt`, then `python -m pytest tests`. For the SQL tests, point `ETL_TEST_SQL_PASSWORD` (and `ETL_TEST_SQL_HOST`/`PORT`) at a throwaway SQL Server; unit tests use repository doubles (`tests/support.py`, shared with `devtools.calibrate_trends`) and do not claim database coverage; `tests/sql_server.py` holds the SQL helpers. The `Dockerfile` builds the local stream image (`--target stream`), which Azure also runs as the purge API (`ETL_ROLE=admin`).
 
-Use the SQL Server 2025-CU9 image (the 2022 image failed on an Apple-silicon host). Docker Desktop hangs when its disk fills, so check free space first.
+`etl/docker-compose.yml` runs SQL Server 2025-CU9; the shared stack runs 2022 under x86 emulation; the tests pass on both. Docker Desktop hangs when its disk fills, so check free space first.
 
 ## 3. The offline loop
 

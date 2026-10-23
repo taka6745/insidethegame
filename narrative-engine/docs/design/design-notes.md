@@ -1,5 +1,11 @@
 # Context and trigger rules
 
+> **In short:** historical design notes (context and trigger rules) transcribed from the original board, no longer updated. Current behaviour: [overview](../overview.md) and [core](../components/core.md).
+
+| | |
+| --- | --- |
+| **Status** | Historical design; implemented and since changed |
+
 Design notes transcribed from the [original board](../../../legacy/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
 
 ## Shared memory

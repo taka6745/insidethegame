@@ -265,7 +265,7 @@ d.note('Standard stats: fetch → select → deliver. Custom requests: query his
 d.save()
 
 # Proposed custom-rule ownership and execution lifecycle, separate from standard ETL stats.
-d=Diagram('user-backend/docs/custom-calculations.svg','Where custom rules live and run','Proposed design: Match App stores rules, results and subscriptions. Registration activates a worker; history seeds the result and live events update it.',1680,1040)
+d=Diagram('user-backend/docs/design/custom-calculations.svg','Where custom rules live and run','Proposed design: Match App stores rules, results and subscriptions. Registration activates a worker; history seeds the result and live events update it.',1680,1040)
 d.rect(300,150,1080,770,'#e8f4ff',BLUE)
 d.icon('containers',320,170,34)
 d.text('USER BACKEND SYSTEM',370,195,20,BLUE,True)
