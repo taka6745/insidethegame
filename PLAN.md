@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Branch** | `integration/luke-services`, merged to `main` on each push |
+| **Branch** | `main` (the integration branch is merged and retired) |
 | **Last updated** | 23 Oct 2026 |
 | **Now** | Demo build on Azure ([§11](#11-azure-judge-build)); repo cleanup |
 | **Next** | Remaining acceptance checks (§10.4), then the submission items (§8) |
