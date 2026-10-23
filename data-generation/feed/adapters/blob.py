@@ -6,6 +6,7 @@ once played, so footage is never downloaded by the feed and `live` never holds i
 /hls route streams from `live`.
 """
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from azure.core.exceptions import ResourceNotFoundError
@@ -13,6 +14,9 @@ from azure.storage.blob import BlobServiceClient, ContentSettings
 
 PLAYLIST = ContentSettings(content_type="application/vnd.apple.mpegurl", cache_control="no-cache")
 COPY_TIMEOUT = 60.0
+
+
+DELETE_WORKERS = 16
 
 
 class BlobDir:
@@ -51,8 +55,8 @@ class BlobDir:
 
     def remove(self):
         names = [b.name for b in self.container.list_blobs(name_starts_with=self.prefix)]
-        for name in names:
-            self.container.delete_blob(name)
+        with ThreadPoolExecutor(max_workers=DELETE_WORKERS) as pool:  # one by one, a played match took over a minute
+            list(pool.map(self.container.delete_blob, names))
         return len(names)
 
 

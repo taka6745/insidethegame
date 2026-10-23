@@ -2,6 +2,7 @@
 import dataclasses
 import os
 import tempfile
+import time
 import unittest
 import uuid
 from pathlib import Path
@@ -12,6 +13,28 @@ from feed.adapters.hls import LIVE, LivePlaylist
 from feed.tests.support import riverton, media
 
 CONNECTION = os.environ.get("FEED_TEST_BLOB_CONNECTION_STRING")
+
+
+class RemoveTests(unittest.TestCase):
+    def test_remove_deletes_concurrently(self):
+        import threading
+        from types import SimpleNamespace
+        from feed.adapters.blob import BlobDir
+
+        class Container:
+            deleted, threads = [], set()
+
+            def list_blobs(self, name_starts_with):
+                return [SimpleNamespace(name=f"{name_starts_with}{i:05}.ts") for i in range(300)]
+
+            def delete_blob(self, name):
+                time.sleep(0.001)
+                self.threads.add(threading.get_ident())
+                self.deleted.append(name)
+
+        self.assertEqual(BlobDir(Container(), "m").remove(), 300)
+        self.assertEqual(len(set(Container.deleted)), 300)
+        self.assertGreater(len(Container.threads), 1)
 
 
 @unittest.skipUnless(CONNECTION, "FEED_TEST_BLOB_CONNECTION_STRING not set")
