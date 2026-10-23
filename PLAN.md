@@ -376,6 +376,12 @@ continue), backend (export, refusals, restore, the match tracked again).
   - **Verified live (equaliser follow):** an anonymous viewer of the main game followed Whitmore Wanderers in Skybridge City v Whitmore through the edge at 56′. Skybridge's 69′ equaliser (`key:1999`) now scored 2.03 with confidence 0.65 (was 1.95 / 0.17) and fired. The follow narrative ("Whitmore's lead has gone: … makes it 1-1 at 70′ …") reached that viewer's session, after the catch-up and a 56′ update.
   - Left running: a demo seeded from 20′ (started 21:54 UTC).
 
+- **Neutral prompt examples and editor fixes (23 Oct):**
+  - Azure's and the local stack's active `minute-summary` and `context-compression` still had the old real-club examples (Liverpool, Manchester United, Lammens): the seed files had been edited in place, which existing stores never see. `minute-summary.v3` and `context-compression.v2` name "Team A"/"Team B" and no player (demo clubs would leak into other matches); backend migration `050` swaps those examples into the active version, keeping the rest of an edit. No other active seed names a real club or player.
+  - **Fixed: an audience save renamed buckets.** The editor rebuilt every bucket id from all layers, so `home:analytical` (kept by `047`) became `home:analytical:standard`, losing profiles' and viewers' ids. A combination still selected now keeps its id (`dev.test.ts`).
+  - **Deployed** cb24593 with `./dev azure up --yes` (judge build, image `v20261023103617`, clean tree; edge `UPSTREAM` unchanged). On Azure: compression and summary active v2 have no real or demo club names; /dev/ saved a narrative-author version (v4) without error and v2 was re-activated; a no-op save of the default audience kept `in_label`, layers and bucket ids (order only), then the earlier config was restored. Start demo from 20′ as an anonymous viewer opened Redcastle Town v Port Albion live from 20′ with insights (headless Chromium can't decode the HLS, so it showed footage unavailable; the playlist serves).
+  - Left running: a demo seeded from 20′.
+
 ## 12. Team review actions (22 Oct meeting)
 
 *In short: everything the team asked for after using the Azure demo; each row closes only with evidence. Decided: the simulated matches stay as they are (aggressive, weak keepers); the data is swappable, so the generator is not tuned further. Each finished batch of M-items is committed and pushed to `main` so a teammate can review and run it.*
