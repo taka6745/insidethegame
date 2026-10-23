@@ -2,6 +2,11 @@
 
 > **In short:** helpers imported by `match/`, `lab/` and `dev/`. Shipped twice: inside the viewer's fingerprint (`/app/{hash}/shared/`) and at `/shared/` for the lab and console.
 
+| | |
+| --- | --- |
+| **Status** | Implemented · unit-tested (`match-dom.test.ts`, `build.test.ts`) |
+| **Code** | [`frontend/shared/`](../../shared/) |
+
 | File | Exports |
 | --- | --- |
 | `dom.ts` | `node()` (element with text and class), `keyedList()` (reuse unchanged children by key) |

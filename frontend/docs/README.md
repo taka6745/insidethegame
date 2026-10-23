@@ -2,6 +2,12 @@
 
 > **In short:** the viewer (match picker, live match, questions, follows, clips), the filter lab and the `/dev/` console: static TypeScript modules behind one nginx. Start with the overview, then the architecture; each component page maps to one folder.
 
+| | |
+| --- | --- |
+| **Status** | Implemented, tested and deployed ([overview](overview.md)) |
+| **Pages** | `/` viewer, `/lab/` filter lab, `/dev/` console |
+| **Runtime dependency** | Backend (`/viewer-api/`), demo control (`/demo-api/`), feed HLS (`/media/hls/`) |
+
 Every page follows the same layout: an **In short** summary and a facts table at the top, then numbered sections that each open with a one-line *In short*.
 
 ## Contents

@@ -36,5 +36,4 @@
 *In short: small, known gaps.*
 
 - The UI exceeds the [benchmark](components/benchmarks.md) gzip budget.
-- The contract mock lacks `/demo-api/state` and `/feed-api/demo`.
 - Per-viewer rewind of live footage is not built.

@@ -2,6 +2,11 @@
 
 > **In short:** the three scripts the image uses at build and start time. Developer checks live in [`devtools/`](devtools.md).
 
+| | |
+| --- | --- |
+| **Status** | Implemented · tested (`build.test.ts`, `devtools/test-proxy.ts`) |
+| **Code** | [`frontend/tools/`](../../tools/) |
+
 | File | Used by | Does |
 | --- | --- | --- |
 | `build.sh` | `Dockerfile` | Copies `dist/match/` and `dist/shared/` under one content fingerprint (`/app/{hash}/`), rewrites `index.html` to it and links `app/current` for old tabs |
