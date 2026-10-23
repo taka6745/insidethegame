@@ -8,7 +8,7 @@ Live football, shared match narratives and a personal match companion.
 
 ## What works today
 
-> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Deployed on Azure ([status](PLAN.md#11-azure-judge-build)) and tested on the local stack; open checks are in [PLAN.md §10.4](PLAN.md#104-azure-demo-acceptance-before-submission).
+> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Tested on the local stack; Azure status: [PLAN §11](PLAN.md#11-azure-judge-build); open checks: [PLAN §10.4](PLAN.md#104-azure-demo-acceptance-before-submission).
 
 | | |
 | --- | --- |
@@ -22,7 +22,7 @@ Every feature below is implemented, unit-tested and run on the local Docker stac
 - **Start demo.** Always exactly three matches; the main game (Redcastle Town–Port Albion) starts first and opens by default. Start points kickoff, 20′, HT, 60′, 85′; a second click joins the live demo; **Skip ahead** jumps +10′, +20′ or to the second half; **Cancel demo** purges everything. A seven-stage progress screen lights each stage from a real readiness check.
 - **Seeds.** Mid-match starts restore a snapshot recorded on this pipeline, then the feed continues live: "story so far generated earlier on this pipeline; live from N′". Restore runs through a **demo-only adapter** in each owner, mounted only with `DEMO_SEEDS=1` (demo build; off in a release).
 - **Three live matches.** Tactically scripted 90-minute simulations stream as HLS while their Opta-style events flow through Event Hubs; each run is its own `matchId`, purged on its own.
-- **One ETL pipeline.** Stream Analytics writes events, SPADL actions, stats and trends to Azure SQL; Data API builder serves GraphQL; Service Bus carries notifications.
+- **One ETL pipeline.** Stream Analytics writes events, key events and minute stats to Azure SQL; a post-processor adds SPADL actions; SQL procedures serve stats and trends; Data API builder serves GraphQL; Service Bus carries notifications.
 - **Storylines.** Agent Framework agents keep shared memory in Cosmos DB; an analyst finds grounded trends and the author develops storylines per enabled audience bucket (team × style × length). Decision-1 checks claims.
 - **Follows and clips.** Viewers follow a story in the follow view; Decision-1 decides when it moves and which moments earn a clip. Key-event clips also reach shared Insights. Every clip gets a preview card, slow motion into the moment and the league sting between clips.
 - **Cross-game.** Ask about, pin from or follow another live match from the same chat; its cards carry a yellow outline and that match's header. "Follow this story?" offers a follow after a story answer.

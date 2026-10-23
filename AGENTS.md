@@ -1,10 +1,10 @@
 # Working in InsideTheGame
 
-This hackathon application has a runnable user backend and frontend, plus a simulated match feed and a local Stream Analytics stand-in for the local stack. The Azure ETL pipeline (`etl/`) and the narrative engine (`narrative-engine/narrative_engine/`) are implemented and deployed to Azure with `./dev azure up` (demo build; open checks in PLAN.md §10.4). The judge demo (PLAN.md §10: Start demo, seeds, clips, cross-game) runs through `local/demo_control.py`; the judge URL is served by `edge-proxy/`. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`, `local/`, `edge-proxy/`. Read each service's README before changing it.
+This hackathon application has a runnable user backend and frontend, plus a simulated match feed and a local Stream Analytics stand-in for the local stack. The Azure ETL pipeline (`etl/`) and the narrative engine (`narrative-engine/narrative_engine/`) are implemented and deployed to Azure with `./dev azure up` (status: PLAN.md §11). The judge demo (PLAN.md §10: Start demo, seeds, clips, cross-game) runs through `local/demo_control.py`; the judge URL is served by `edge-proxy/`. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`, `local/`, `edge-proxy/`. Read each service's README before changing it.
 
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
-- Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work.
+- Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work. Deployed status lives only in PLAN.md (§11 is the record) and `terraform/docs/overview.md`; other pages state implemented/tested status and link there.
 - The detailed sections of `legacy/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
 - Preserve original example prompts in `narrative-engine/docs/design/example-prompts/`. Resolve their output contracts before implementation.
 - The user backend owns audience definitions and exposes a read-only configuration API. The narrative engine reads those definitions and owns bucket framing. The user backend receives already-bucketed narratives and routes them without rewriting.

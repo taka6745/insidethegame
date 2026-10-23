@@ -76,7 +76,7 @@ usage() {
 ./dev terraform check    Format-check and validate terraform/, terraform/guard, etl/infra,
                          narrative-engine/infra, data-generation/infra; mock-test those with tests/ (no cloud calls)
 
-./dev azure up|down|status|plan [--yes]
+./dev azure up|down|status|plan [--yes] [--release]
                          Deploy, destroy, inspect or plan the whole stack on Azure (your az login;
                          asks first). See terraform/docs/deployment.md.
 

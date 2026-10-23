@@ -1,4 +1,4 @@
-"""`./dev azure up|down|status|plan [--yes]`: the whole stack on Azure, from and back to nothing.
+"""`./dev azure up|down|status|plan [--yes] [--release]`: the whole stack on Azure, from and back to nothing.
 
 Runs on the host with the standard library only. Terraform, the Azure CLI and sqlcmd run in the
 toolbox image (Dockerfile here) with the developer's `az login`; images are built here with Docker.
