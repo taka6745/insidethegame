@@ -170,7 +170,7 @@ def stat(identifier, label, team, value):
             'available': True, 'complete': True}
 
 
-# Shipped Riverton Rovers–United values: ETL possession is a share, not a count of events.
+# Shipped Riverton Rovers–Forgeham United values: ETL possession is a share, not a count of events.
 CATALOGUE = [stat('all:possession', 'Both teams possession', None, 100.0),
              stat('riverton:possession', 'Riverton Rovers possession', 'riverton', 53.2),
              stat('forgeham:possession', 'Forgeham United possession', 'forgeham', 46.8),

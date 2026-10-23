@@ -190,7 +190,7 @@ Stat id = `{scope}:{kind}`, where scope is `all` or a contestant id (`all:goals`
 
 **Old → new.** Values at full time, `all/home/away`, on the recordings re-rendered 2026-10-22; n/a unavailable. **Bold**: the move to SPADL (2026-10-21) changed the kind's value on that recording; "was A → B" are its canonical and SPADL values on the previous render (the before values belong to the previous renders), other kinds were equal there. "Pass family" = `pass cross throw_in freekick_crossed freekick_short corner_crossed corner_short goalkick`; "shot family" = `shot shot_freekick shot_penalty`.
 
-| # | Kind | Before (canonical events) | Now (SPADL) | Riverton Rovers–United | Redcastle Town–Port Albion | Skybridge–Whitmore |
+| # | Kind | Before (canonical events) | Now (SPADL) | Riverton–Forgeham | Redcastle Town–Port Albion | Skybridge–Whitmore |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `goals` | goal | shot, shot_freekick, shot_penalty success + opponent's owngoal − VAR overturns | 2/1/1 | 1/1/0 | 2/1/1 |
 | 2 | `shots` | shot, goal | shot, shot_freekick, shot_penalty | 14/9/5 | 18/10/8 | 10/9/1 |
