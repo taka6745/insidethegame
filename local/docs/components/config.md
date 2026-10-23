@@ -10,7 +10,7 @@
 | File | Holds |
 | --- | --- |
 | `compose.yaml` | Every service, its profile, health check and loopback port; read with `--env-file local/env.defaults` so no root `.env` leaks in |
-| `env.defaults` | Defaults: EULA `N`, agent timeouts (`QUESTION_TIMEOUT_SECONDS` 240 because custom-stat questions chain several model calls), model concurrency, ports |
+| `env.defaults` | EULA `N`, agent and question limits (`QUESTION_TIMEOUT_SECONDS` 240 because custom-stat questions chain several model calls); ports and model concurrency default in `compose.yaml` |
 | `config/eventhubs.json`, `config/servicebus.json` | Emulator hubs, consumer groups, topics and subscriptions (Terraform keeps the same names) |
 | `sql/postgres.sql` | Creates `accounts` and `matchapp` on a fresh volume; schemas come from backend migrations |
 | `settings.py` | Docker-network endpoints and the emulators' public keys for the checks |

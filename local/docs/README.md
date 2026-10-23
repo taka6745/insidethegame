@@ -20,3 +20,5 @@ docs/
 ├── deployment.md           demo control on Azure
 └── decisions.md            why the stack looks like this
 ```
+
+Component pages are by concern, not one per folder: `sql/` and `no-media/` are covered in config.md. No `design/` material exists.

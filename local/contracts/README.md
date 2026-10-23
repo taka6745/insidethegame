@@ -37,7 +37,7 @@ flowchart LR
 - **`matchId`** = `{fixture}-{first 8 hex of runId}`, ≤ 64 chars, e.g. `riverton-forgeham-1a2b3c4d`. Only the feed mints it (`POST /runs`). Owners learn about a match from its MA1 on the stream.
 - **Contestant ids** are stable club slugs (`riverton`, `forgeham`) across fixtures and runs, so stat ids and saved pins stay valid.
 - **`seq`** counts canonical events 1, 2, 3… per match with no gaps, in send order. `seq 0` means MA1 only. MA3 `seq` and POS `sampleId` also count 1, 2, 3… per match in send order; the Azure watermark relies on all three ([Stream Analytics](../../etl/docs/components/stream-analytics.md#5-watermarks)).
-- **Snapshot** = `(matchId, seq)`; its string id is `{matchId}:{seq}`. It replaces `run_id`, `recording_hash` and `cursor`. Everything derived cites it: `statsAtSeq` rows, backend cards and projections, and question answers. Engine narratives add `eventSeq` (the watermark they were written from); their own `seq` stays the per-bucket narrative sequence.
+- **Snapshot** = `(matchId, seq)`; its string id is `{matchId}:{seq}`. Everything derived cites it: `statsAtSeq` rows, backend cards and projections, and question answers. Engine narratives add `eventSeq` (the watermark they were written from); their own `seq` stays the per-bucket narrative sequence.
 - Data at `(matchId, s)` is immutable once `matchWatermarks.seq ≥ s` (SPADL actions and stats: once `spadlSeq ≥ s`). Read at `s` only when `s ≤` the watermark. Data past the watermark is unreachable.
 
 ## 2. MatchEvent v2
@@ -71,7 +71,7 @@ Invariants: `event.match_id == matchId`, `event.sequence == seq`. There are no s
 
 ## 3. ETL GraphQL (DAB)
 
-*In short: new read models beside Luke's tables, all keyed by `matchId`, including SPADL actions and trend indicators.*
+*In short: new read models beside the v1 ETL tables, all keyed by `matchId`, including SPADL actions and trend indicators.*
 
 Served by `etl-dab` (`http://etl-dab:5000/graphql` in Docker, `localhost:15001` on the host). Anonymous read. Existing entities (`rawEvents`, `keyEvents`, `minuteStats`, `matchStatsAsOfs`) are unchanged.
 
@@ -108,7 +108,7 @@ query ($m: String!, $s: Int!) {
   "hasNextPage": true, "endCursor": "…"}}}
 ```
 
-**matches.** Luke's existing columns stay (`homeContestantId`, `homeName`, `payload`, …). Added: `fixture sourceMatchId runId status capabilities` (`capabilities` is MA1 JSON). `status`: `scheduled` (MA1 only), `live`, `finished` (final `period_end`). Purged matches have no rows.
+**matches.** The v1 columns stay (`homeContestantId`, `homeName`, `payload`, …). Added: `fixture sourceMatchId runId status capabilities` (`capabilities` is MA1 JSON). `status`: `scheduled` (MA1 only), `live`, `finished` (final `period_end`). Purged matches have no rows.
 
 ```graphql
 query ($m: String!) {
@@ -325,8 +325,8 @@ POST /admin/matches/purge
 - **`all`** tombstones every matchId the owner knows and records a cut-off time. An MA1 stamped before it is dropped. Owners accept MA3, POS and `MatchEvent` only for matches whose MA1 they stored, so in-flight messages can't revive a match.
 - Unknown `match_id`: `200`, zero counts, tombstone written.
 - Only match data goes. Configuration stays: profiles, audience templates (with their enabled buckets), prompts, backend config tables (presentation, replay timing, key-moment ranks, prices, stream, subscriptions, key-moment feed), `statDefinitions`, `trendDefinitions` and the recordings catalogue.
-- Callers (`./dev demo start`, `/dev/` Matches panel, demo control §7a) purge in this order: feed, ETL, engine, backend. It replaces `POST /admin/runs/purge`. Not exposed through the public proxy.
-- On Azure every owner has internal ingress, and the ETL purge API and the engine also need `Authorization: Bearer <token>` (Terraform `admin_token` outputs). The frontend's `/purge-api/{etl,engine}` (developer consoles, basic auth) adds it; the browser never holds a token.
+- Callers (`./dev demo start`, `/dev/` Matches panel, demo control §7a) purge in this order: feed, ETL, engine, backend. For `/dev/`, nginx proxies them as `/feed-api/` and `/purge-api/{etl,engine,backend}` behind basic auth; never on the public routes.
+- On Azure every owner has internal ingress, and the ETL purge API and the engine also need `Authorization: Bearer <token>` (Terraform `admin_token` outputs). The frontend's `/purge-api/{etl,engine}` adds it; the browser never holds a token.
 
 ## 6. Live media (HLS)
 
@@ -361,7 +361,17 @@ Seeds ([demo control](../docs/components/demo-control.md)): `POST /runs` also ta
 
 ### 7a. Demo control (public)
 
-`local/demo_control.py serve` (Compose `demo-control`); nginx exposes `/demo-api/{start,cancel,skip,state,status}` with no login. `skip {target}` forwards to the feed's `/demo/skip` (answers directly; `409` while a start or cancel runs); `state.skips` lists the targets while a demo plays. `start` purges finished matches from ETL, engine and backend, then calls the feed's `/demo/start`; `cancel` purges every match (`all`) from every owner (§5 order) when the feed lists any run; start and cancel answer at once (`202 {"accepted": true, "pending"}`; `200` when a demo is already on or nothing is there to cancel; `409` at once for a recording or a stale seed) and then run one after another; `state` → `{"points": [{"id", "label", "ready"}], "live", "runs", "live_from", "main_fixture", "main_match_id", "pending", "last"}` (`pending`: queued actions; `last`: how the last start or cancel ended, `{"action", "ok", …}` or `{"ok": false, "status", "detail"}`, which the viewer polls for) (`live_from`: the start point's label when the demo began from a seed; `main_match_id`: the live demo's main game, which the viewer opens by default, while `/?choose` keeps the picker for switching); a seeded `start` restores ETL, engine and backend for each waiting run, then releases them staggered (main game first), or purges them and answers `503` (`409` for a seed of another format, schema or seq: record it again); while a seed is recorded `start` is `409` and `state` omits its held runs from `runs` and lists them as `recording` (`[{"match_id"}]`), which the viewer never lists (they stop at their hold point); `status` → `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer. Start and cancel are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop, which the ingress appends; behind `edge-proxy/` a Cloudflare edge node); `429` over the limit. Capture refuses held runs that stop at another start point (`held_at` on feed runs). Overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`.
+*In short: `/demo-api/` through nginx, no login; behaviour and settings in [demo control](../docs/components/demo-control.md).*
+
+| Route | Request → reply |
+| --- | --- |
+| `POST /demo-api/start` | `{"point": "kickoff" \| "20" \| "ht" \| "60" \| "85"}` → `202 {"accepted": true, "pending"}`; `200` when a demo is already on; `409` while a seed is recorded or for a stale seed (other format, schema or seq); a failed restore purges and ends `503` in `state.last` |
+| `POST /demo-api/cancel` | → `202 {"accepted": true, "pending"}`; `200 {"cancelled": []}` when nothing is there to cancel |
+| `POST /demo-api/skip` | `{"target": "20"}` → the feed's `/demo/skip` reply (§7); `409` while a start or cancel runs |
+| `GET /demo-api/state` | `{"points": [{"id", "label", "ready"}], "live", "runs", "recording": [{"match_id"}], "skips", "live_from", "main_fixture", "main_match_id", "pending", "last"}`; `last` is `{"action", "ok", …}` or `{"ok": false, "status", "detail"}` |
+| `GET /demo-api/status` | `{"live", "matches", "stages": [{"id", "ready"}]}` for feed, event-hubs, etl, service-bus, engine, backend, viewer |
+
+Start, cancel and skip are POST only under one shared rate limit; state and status are GET only, limited per client (the last `X-Forwarded-For` hop); `429` over the limit.
 
 A kick-off demo starts at 00:00; a seeded one starts at its point with every owner restored to it. `FEED_ALLOW_SEEK` is dev-only and off by default. Seed export/restore on each owner (`/admin/matches/export|restore`, the feed's `/runs/{id}/release` and `hold_point`/`resume_point`) exist only with `DEMO_SEEDS=1` (local compose and the demo build); a production release leaves it off and they answer 404 (feed: 403/409).
 
@@ -379,24 +389,12 @@ A kick-off demo starts at 00:00; a seeded one starts at its point with every own
   "video": {"hls": "/media/hls/riverton-forgeham-1a2b3c4d/live.m3u8"}}]
 ```
 
-| Today | Multi-match (`M` = `/product/matches/{matchId}`) |
-| --- | --- |
-| `POST /product/demo/reset` | Removed; use `./dev demo start` (purge, then feed `POST /runs`). |
-| `GET /product/profiles` | Unchanged (global). |
-| (none) | `GET /product/matches` |
-| `POST /product/sessions` `{profile_id}` | `POST M/sessions` `{profile_id, viewer_id}` (`viewer_id`: the browser's random v4 UUID; anything else `422`) |
-| `GET /product/{token}` | `GET M/sessions/{token}` |
-| `PUT /product/{token}/audience` | `PUT M/sessions/{token}/audience` |
-| `POST /product/{token}/messages` | `POST M/sessions/{token}/messages` |
-| `GET /product/{token}/turns/{turn}/replay/{page}` | `GET M/sessions/{token}/turns/{turn}/replay/{page}` |
-| `POST /product/{token}/offers/{offer}/track` | `POST M/sessions/{token}/offers/{offer}/track` |
-| `DELETE /product/{token}/pins/{calculation}` | `DELETE M/sessions/{token}/pins/{calculation}` |
-| `WS /product/{token}/live` | `WS M/sessions/{token}/live` |
+`M` = `/product/matches/{matchId}`: `GET /product/profiles` (global); `POST M/sessions` `{profile_id, viewer_id}` (`viewer_id`: the browser's random v4 UUID; anything else `422`); `GET M/sessions/{token}`; `PUT …/audience`; `POST …/messages`; `GET …/turns/{turn}/replay/{page}`; `POST …/offers/{offer}/track`; `DELETE …/pins/{calculation}`; `WS …/live`. Full list: [backend routes §1](../../user-backend/docs/components/routes.md#1-viewer-api).
 
 - `description` is the MA1 `description` (via ETL `matches`; null if absent). `video` is null when MA1 `capabilities.video` is false.
 - `seq`, `period` and `clock_seconds` are ETL's watermark; `teams[].score` is ETL's goals at the newest snapshot both ETL and the backend have committed (≤ `seq`; null before ETL has it).
 - A token belongs to one match; under another `matchId` it is `404`. An unknown or purged match is `404`, and its WebSockets close with code `4404`. `POST M/sessions` for a match whose MA1 has not arrived (and was never purged) is `404 match_not_started`; the viewer waits and retries. A `scheduled` match's snapshot carries `match.scheduled_kickoff`.
-- The frontend's `/viewer-api/` prefix maps to `/product/` as today. The engine keeps `GET /matches/{matchId}/audience-config`; prompts stay global (`GET /narrative-prompts`), and so does the storyline policy (`GET /storyline-policy`).
+- The frontend's `/viewer-api/` prefix maps to `/product/`. The engine keeps `GET /matches/{matchId}/audience-config`; prompts stay global (`GET /narrative-prompts`), and so does the storyline policy (`GET /storyline-policy`).
 - **Audiences are configuration only.** Each fixture's template (or `default`) defines layers, their options (`id`, viewer `label` with `{home}`/`{away}` placeholders, model-facing `description`, optional `team`: `home`/`away`) and buckets (option combinations) with an `enabled` flag, edited in `/dev/` with revision checks. `generation_targets` = the enabled buckets: `[{bucket_id, selections, layers: [{id, description, option: {id, description, label?, team?}}]}]` (unset fields omitted). Viewers never enable buckets; there is no presence.
 - **Team support is data, not a layer name.** The engine says "This audience supports X" when any option of the bucket has `team`, or else a `label` naming exactly one of `{home}`/`{away}` (the default template's `team` layer). Layer and option ids carry no meaning.
 - The viewer chooses one enabled bucket: `PUT M/sessions/{token}/audience` `{"bucket_id": "home:analytical"}` (`422 audience_unavailable` otherwise). Snapshots carry `audience` `{bucket_id, selections}` and `audience_buckets` `[{id, label}]`; narratives are filtered to the chosen bucket.
@@ -431,15 +429,15 @@ Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "sp
   `{"status": "proposal" | "clarify" | "unfollow" | "answer" | "unsupported", "text", "proposal": {"id", "label", "spec"} | null, "candidates": [{"id", "label", "spec"}], "snapshot", "usage"}`. A proposal is never a follow: the viewer confirms with `POST S/follows` and the proposal's `spec`. `unfollow` means the viewer asked to stop; the UI confirms with `DELETE`.
 - **Snapshot (WebSocket and bootstrap) adds** `feed_mode` (`following` | `insights`), `follow` (Follow or null) and `key_moments`. `narratives` follows the feed rules: following → only the followed topic's narratives for the viewer's bucket (`kind: "subscription"`, `topic_id`, `storyline_ids`); not following → the bucket's insights. Unfollowing restores the insights.
 - **`key_moments`** (everyone, followed or not): pivotal facts from ETL's MA3 `rawEvents` (`eventSeq ≤` the snapshot), never authored text: `[{"id": "km:{rawId}", "kind", "label", "period", "clock_seconds", "minute_label", "event_seq", "team_id", "player_id", "overturned"}]` in match order. Kinds: `goal`, `own_goal`, `red_card`, `second_yellow`, `penalty` (awarded; `team_id` = the team that won it), `penalty_missed`, `var_overturn`, `kick_off`, `half_time`, `second_half`, `full_time`, `period_start`, `period_end`. Which kinds show and each `label` template (`Goal · {team} · {scorer}` → "Goal · Riverton Rovers · Kai Ashworth"; `Half time · {score}` → "Half time · Riverton Rovers 1–0 Forgeham") are the `key-moment-feed` config table; the seed shows goals, red cards, second yellows, penalties, VAR overturns, kick-off, half-time and full-time. Show them as short, centred, greyed lines; strike through `overturned` goals.
-- **`follow_playlist`** (followers only, else null; migration `038_follow_clips.py`, PLAN.md §10.2 D3): the followed topic's moment clips in the chat replay's shape (`clips` with `start`/`end`/`playlist_start`/`playlist_end` on the match's own stream, `captions` from the key-moment labels, `marks`), one page, chronological. A moment joins when the engine sends a `FollowClip` for it (Decision-1's clip `Score` on a key event of `subscriptions.clips.key_types`; apart from the follow narrative, so it does not depend on the narrative's grounding; migration `039_follow_clip_step.py`); only kinds in `clips.timing` clip, cut with that `replay-timing` key; at most the newest `clips.max_items` (and, past the reel's `max_clips`/`max_seconds`, the newest kept); bounded to the viewer's snapshot (`event_seq ≤ seq`, footage the snapshot has reached) and purged with the match. Each clip also carries `moments` (its key moments' preview-card facts: `id`, `kind`, `period`, `clock_seconds`, `minute_label`, `label`, `team_id`, `team_name`, `player_name`, `score` after the moment; PLAN.md §10.2 D6). A topic whose kind `subscriptions.clips.always_for` names clips without Decision-1's clip question (migration `041_capture_clips.py`).
-- **`moment_playlist`** (Insights viewers only, else null; migration `041_capture_clips.py`, PLAN.md §10.2 D7): the key-event clips of the viewer's bucket's shared narratives, in the same shape as `follow_playlist`. A moment joins when the engine sends a `MomentClip` for its key event (`clips.key_types` with `subscriptions.clips.shared` on), apart from the narratives; same kinds, timing, `max_items`, snapshot bound and purge; seeded with the match (`narrative_clips`).
+- **`follow_playlist`** (followers only, else null; migration `038_follow_clips.py`): the followed topic's moment clips in the chat replay's shape (`clips` with `start`/`end`/`playlist_start`/`playlist_end` on the match's own stream, `captions` from the key-moment labels, `marks`), one page, chronological. A moment joins when the engine sends a `FollowClip` for it (Decision-1's clip `Score` on a key event of `subscriptions.clips.key_types`; apart from the follow narrative, so it does not depend on the narrative's grounding; migration `039_follow_clip_step.py`); only kinds in `clips.timing` clip, cut with that `replay-timing` key; at most the newest `clips.max_items` (and, past the reel's `max_clips`/`max_seconds`, the newest kept); bounded to the viewer's snapshot (`event_seq ≤ seq`, footage the snapshot has reached) and purged with the match. Each clip also carries `moments` (its key moments' preview-card facts: `id`, `kind`, `period`, `clock_seconds`, `minute_label`, `label`, `team_id`, `team_name`, `player_name`, `score` after the moment). A topic whose kind `subscriptions.clips.always_for` names clips without Decision-1's clip question (migration `041_capture_clips.py`).
+- **`moment_playlist`** (Insights viewers only, else null; migration `041_capture_clips.py`): the key-event clips of the viewer's bucket's shared narratives, in the same shape as `follow_playlist`. A moment joins when the engine sends a `MomentClip` for its key event (`clips.key_types` with `subscriptions.clips.shared` on), apart from the narratives; same kinds, timing, `max_items`, snapshot bound and purge; seeded with the match (`narrative_clips`).
 - **Tunables** (`/dev/config/{table}`, ETag + `expected_revision`): `subscriptions` (decision question, clip question and clippable kinds (`clips`), novelty check, prefilter, limits incl. the minimum gap between a topic's narratives and the follow-chat turns the planner sees, the catch-up step's trigger reason, suggestions, `min_name_match` for the planner's name resolution; permissive defaults) and `key-moment-feed`.
 - **Follow anything:** no breadth limit; the planner asks only when it cannot resolve what the viewer means.
 - **Purge** removes `subscription_narratives`, `subscriptions`, `subscription_topics`, `subscription_revisions` and the follow-chat turns with the match.
 
 ### 8c. Cross-match reach and follow offers
 
-*In short: from any demo match a viewer asks about, pins from and follows the demo's other live matches; that content is marked with the other match's header. Migration `040_cross_match.py`; PLAN.md §10.2 D5, D5b.*
+*In short: from any demo match a viewer asks about, pins from and follows the demo's other live matches; that content is marked with the other match's header. Migration `040_cross_match.py`.*
 
 - **Which match.** Only the other matches the backend tracks now (the current demo; purge removes a match). `services/cross_match.CrossMatch.named(match, text)` returns `(other match, its info)` when the text names one of its teams (name, short name, code, known names) or players with at least `cross-match.min_name_coverage` of that name's rarity-weighted words (weights across every live match's names, `services/names.coverage`) and more than any name of the viewer's own match; else `None`. `CrossMatch.other(match_id, other_id)` admits an explicit id (404 when off or unknown).
 - **Bounds.** Another match is read at its own live position (its `capture()` without the viewer's `seq`), never past it. No match's own narratives mention another; cross content is per request.
@@ -450,7 +448,7 @@ Follow     {"subscription_id": "uuid", "topic_id": "topic:3fa2c1d0e4b5a697", "sp
 
 ### 8d. Replay playback (sting and slow motion)
 
-*In short: every replay and clip playlist carries `playback`, from `replay-timing.playback` (migrations `037`, `049`; PLAN.md §10.2 D3, D4).*
+*In short: every replay and clip playlist carries `playback`, from `replay-timing.playback` (migrations `037`, `049`).*
 
 ```json
 "playback": {"transitions": {"enabled": true, "hold_seconds": 0.6, "asset": "builtin:league",

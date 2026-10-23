@@ -67,7 +67,16 @@ Seed routes exist only with `DEMO_SEEDS=1`, in one demo adapter per owner; witho
 | Sweep | Once no demo or recording is live and a run has been finished long enough, its matches are purged from ETL, engine and backend, outside the start/cancel lock; Start purges any leftovers itself, in parallel, before releasing the new runs | `DEMO_SWEEP_GRACE_SECONDS` (900) |
 | Stream start | Azure only: Start calls the spend guard's stream-start webhook on its own thread, so Stream Analytics need not wait for the traffic alert (a secret URL, never logged) | `DEMO_STREAM_START_URL` |
 
-Other overrides: `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS`, `DEMO_STATUS_CACHE_SECONDS`, `DEMO_RELEASE_LEAD`, `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT`, `DEMO_SEED_ROOT`.
+Other settings (defaults in seconds unless noted):
+
+| Setting | Default |
+| --- | --- |
+| `DEMO_FEED_URL`, `ETL_ADMIN_URL`, `ENGINE_ADMIN_URL`, `BACKEND_URL` | Compose service URLs; `ETL_ADMIN_TOKEN`, `ENGINE_ADMIN_TOKEN` on Azure |
+| `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS` | 300, 10 tries, 2 |
+| `DEMO_STATUS_CACHE_SECONDS` | 1 |
+| `DEMO_RELEASE_LEAD` | 5 (last restore to the first run reading the point) |
+| `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT` | 5, 1800 |
+| `DEMO_SEED_ROOT` | `/seeds` |
 
 ## 4. Tests
 
