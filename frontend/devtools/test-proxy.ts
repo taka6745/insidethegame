@@ -1,5 +1,5 @@
 // Opt-in Docker check: render the shipped entrypoint template and validate nginx.
-// Build first: docker build -t itg-frontend-proxy-test frontend; run: node frontend/tools/test-proxy.ts
+// Build first: docker build -t itg-frontend-proxy-test frontend; run: node frontend/devtools/test-proxy.ts
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 
@@ -43,8 +43,8 @@ assert.ok(azure.includes('proxy_set_header Authorization "Bearer t-etl";'));
 assert.ok(azure.includes('proxy_set_header Authorization "Bearer t-engine";'));
 const local = execFileSync('docker', ['run', '--rm', '--network', 'none', image, 'nginx', '-T'], {encoding: 'utf8', timeout: 60000});
 assert.ok(!local.includes('auth_basic "'), 'no auth without DEV_ADMIN_PASSWORD');
-// Locally no owner has a token: the purge, lab, config and feed routes all drop the browser's header.
-assert.equal(local.match(/proxy_set_header Authorization "";/g)?.length, 6, 'no token locally; header dropped');
-assert.equal(azure.match(/proxy_set_header Authorization "";/g)?.length, 4, 'basic auth never reaches an upstream');
+// Locally no owner has a token: the purge, lab, config, feed and demo routes all drop the browser's header.
+assert.equal(local.match(/proxy_set_header Authorization "";/g)?.length, 8, 'no token locally; header dropped');
+assert.equal(azure.match(/proxy_set_header Authorization "";/g)?.length, 6, 'basic auth never reaches an upstream');
 assert.equal(local.match(/if \(\$dev_admin != "1"\) \{ return 404; \}/g)?.length, 8, 'every developer route is gated');
 console.log('Default and configured proxy templates passed nginx validation.');

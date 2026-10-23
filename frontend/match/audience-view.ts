@@ -1,4 +1,4 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import type { Audience, Snapshot } from "./types.ts";
 
 /** One dropdown of the match's enabled audience buckets, straight from the snapshot. */

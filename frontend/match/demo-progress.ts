@@ -1,4 +1,4 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 
 export interface Stage { id: string; ready: boolean }
 export interface DemoStatus { live: boolean; matches: number; stages: Stage[] }

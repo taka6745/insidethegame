@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { findTerms, loadTerms, parseTerms, scan } from "../tools/check-bundle.ts";
+import { findTerms, loadTerms, parseTerms, scan } from "../devtools/check-bundle.ts";
 
 test("deny-list terms come from the environment or an ignored file, never the repository", () => {
   assert.deepEqual(parseTerms("# comment\nAcme-Model-7, acme\n\nacme"), ["acme-model-7", "acme"]);

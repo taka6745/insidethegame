@@ -1,9 +1,9 @@
 // Headless Chrome check: each page at 1440/390/360 px for horizontal overflow, console errors and
-// CSP violations. Start tools/mock-server.ts (or a real stack) first.
-// Usage: node tools/headless-check.ts http://127.0.0.1:18099 [path…] [--shots DIR] [--flow follow|unavailable|sting|capture]
-// --flow drives the Insights follow chat on match pages (against tools/mock-server.ts; `unavailable` with MOCK_NO_MODEL=1),
+// CSP violations. Start devtools/mock-server.ts (or a real stack) first.
+// Usage: node devtools/headless-check.ts http://127.0.0.1:18099 [path…] [--shots DIR] [--flow follow|unavailable|sting|capture]
+// --flow drives the Insights follow chat on match pages (against devtools/mock-server.ts; `unavailable` with MOCK_NO_MODEL=1),
 // or `sting`: the league's built-in between-clip sting fades in over the stage, drawn in CSS, and out again;
-// or `capture`: captured clips show as preview cards in Insights and in the followed story (PLAN.md §10.2 D6–D7).
+// or `capture`: captured clips show as preview cards in Insights and in the followed story.
 import { spawn } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";

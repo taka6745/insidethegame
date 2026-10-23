@@ -1,4 +1,4 @@
-import { node } from "../match/dom.ts";
+import { node } from "../shared/dom.ts";
 import { CONFIG_TABLES, ConflictError } from "./api.ts";
 import type { ConfigDocument, DevApi } from "./api.ts";
 

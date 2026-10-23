@@ -1,5 +1,5 @@
 import { clubBrand, monogram } from "./branding.ts";
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import type { OtherMatch } from "./types.ts";
 
 /** The class that outlines content from another live match of the demo (companion.css `.cross-match`). */

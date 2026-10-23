@@ -1,4 +1,4 @@
-import { node } from "../match/dom.ts";
+import { node } from "../shared/dom.ts";
 import type { DevApi, PromptRole } from "./api.ts";
 
 const PLACEHOLDER = /\{([a-z_]+)\}/g;

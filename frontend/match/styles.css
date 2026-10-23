@@ -1298,7 +1298,7 @@ footer a {
   }
 }
 
-/* Captured clips (PLAN.md §10.2 D6–D7): a preview card per clip in the feed; Play opens the playlist from it. */
+/* Captured clips: a preview card per clip in the feed; Play opens the playlist from it. */
 .capture { margin: 0 0 12px; }
 .capture-play { display: block; width: 100%; padding: 0; border: 0; border-radius: 10px; background: none;
   color: inherit; font: inherit; text-align: left; cursor: pointer; }

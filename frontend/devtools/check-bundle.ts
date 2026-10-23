@@ -1,7 +1,7 @@
 // Fails when a built file names any deny-listed term (e.g. a model provider or model id).
 // The terms never live in the repository: BUNDLE_DENYLIST (comma or newline separated), or the file
 // at BUNDLE_DENYLIST_FILE, default <repo>/.local/bundle-denylist.txt (ignored). Lines starting # are comments.
-// Usage: node tools/check-bundle.ts [dist]
+// Usage: node devtools/check-bundle.ts [dist]
 import { readdir, readFile } from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";

@@ -1,10 +1,10 @@
 import { clubBrand } from "./branding.ts";
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import { markOtherMatch } from "./other-match.ts";
 import { playableClips } from "./replay.ts";
 import type { ClipMoment, OtherMatch, Replay, Team } from "./types.ts";
 
-/** Captured clips in the feed (PLAN.md §10.2 D6–D7): one row per clip of a moment playlist, at its moment's clock,
+/** Captured clips in the feed: one row per clip of a moment playlist, at its moment's clock,
  * each with a preview card. Playing one plays the playlist from that clip on, on the main stage (slow motion and
  * the sting come with the replay's `playback`). */
 export interface CaptureRow {

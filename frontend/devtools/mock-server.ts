@@ -1,6 +1,6 @@
-// Developer mock of the multi-match contracts (local/contracts.md §5, §7, §8, §8b) for headless UI checks.
+// Developer mock of the multi-match contracts (local/contracts/README.md §5, §7, §8, §8b) for headless UI checks.
 // Serves the built dist/ with the production CSP. Not a backend: data is synthetic and in memory.
-// Usage: npm run build && node tools/mock-server.ts [port]
+// Usage: npm run build && node devtools/mock-server.ts [port]
 import { createServer } from "node:http";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createHash } from "node:crypto";
@@ -124,7 +124,7 @@ function plan(match: string, prompt: string, active: Follow | null) {
   const focus = prompt.trim().slice(0, 300);
   return { status: "proposal", text: `Follow "${focus}"? I'll post when it comes up.`, proposal: option(match, { kind: "theme", focus, label: focus.slice(0, 40) }), candidates: [] };
 }
-// Captured clips (PLAN.md §10.2 D6–D7): the clocked goals and the red card as a playlist; no footage in the mock.
+// Captured clips: the clocked goals and the red card as a playlist; no footage in the mock.
 const clipsOf = (id: string) => {
   const [home, away] = matches.get(id)!.teams;
   const clips = keyMoments(id).filter((m) => ["goal", "red_card"].includes(m.kind) && !m.overturned).map((m) => {

@@ -1,4 +1,4 @@
-import { node } from "../match/dom.ts";
+import { node } from "../shared/dom.ts";
 import type { DemoSettings, DevApi, PurgeTarget, Recording, Run } from "./api.ts";
 
 export function clock(seconds: number | null | undefined) {

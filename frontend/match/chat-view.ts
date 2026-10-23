@@ -1,4 +1,4 @@
-import { node, keyedList } from "./dom.ts";
+import { node, keyedList } from "../shared/dom.ts";
 import { clock, statValue } from "./format.ts";
 import { ClarificationView } from "./clarification-view.ts";
 import { markOtherMatch } from "./other-match.ts";

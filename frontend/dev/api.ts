@@ -1,4 +1,4 @@
-import { LabApi } from "../lab/api.ts";
+import { parseResponse } from "../shared/http.ts";
 
 export interface PromptVersion { version: number; template: string; placeholders: string[]; source: string; created_at: string }
 export interface PromptRole { role: string; active_version: number; placeholders: string[]; versions: PromptVersion[] }
@@ -81,8 +81,6 @@ export class ConflictError extends Error {
   status = 409;
 }
 
-const errors = new LabApi();
-
 /** Purge order from contracts §5: the producer first so nothing re-creates rows downstream. */
 export const PURGE_OWNERS = [
   { owner: "feed", path: "/feed-api/admin/matches/purge" },
@@ -108,7 +106,7 @@ export class DevApi {
       headers: { "Content-Type": "application/json", ...headers },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
-    return errors.parse<T>(response);
+    return parseResponse<T>(response);
   }
   private send<T>(path: string, method = "GET", body?: unknown) { return this.call<T>(`${this.base}${path}`, method, body); }
 
@@ -130,7 +128,7 @@ export class DevApi {
     });
     if (response.status === 409)
       throw new ConflictError("Someone else saved this template first. Reload to see their version; your draft is kept.");
-    return errors.parse(response);
+    return parseResponse(response);
   }
   pipeline() { return this.send<Pipeline>("/pipeline"); }
 
@@ -141,7 +139,7 @@ export class DevApi {
       headers: etag ? { "If-None-Match": etag } : {},
     });
     if (response.status === 304) return null;
-    const document = await errors.parse<ProfilesDocument>(response);
+    const document = await parseResponse<ProfilesDocument>(response);
     return { document, etag: response.headers.get("ETag") ?? "" };
   }
   async saveProfiles(profiles: DemoProfile[], expected_revision: number): Promise<ProfilesDocument> {
@@ -153,7 +151,7 @@ export class DevApi {
     });
     if (response.status === 409)
       throw new ConflictError("Someone else saved the profiles first. Reload to see their version; your draft is kept.");
-    return errors.parse(response);
+    return parseResponse(response);
   }
 
   /** `null` when the ETag still matches (304): the editor keeps what it shows. */
@@ -163,7 +161,7 @@ export class DevApi {
       headers: etag ? { "If-None-Match": etag } : {},
     });
     if (response.status === 304) return null;
-    const document = await errors.parse<ConfigDocument>(response);
+    const document = await parseResponse<ConfigDocument>(response);
     return { document, etag: response.headers.get("ETag") ?? "" };
   }
   async saveTable(table: string, value: unknown, expected_revision: number, etag = ""): Promise<{ revision: number }> {
@@ -175,7 +173,7 @@ export class DevApi {
     });
     if (response.status === 409 || response.status === 412)
       throw new ConflictError("Someone else saved this table first. Reload to see their version; your draft is kept.");
-    return errors.parse(response);
+    return parseResponse(response);
   }
 
   recordings() { return this.call<Recording[]>(`${this.feed}/recordings`); }

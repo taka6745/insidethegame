@@ -582,7 +582,7 @@ button.answer-receipt-line:focus-visible {
   display: none;
 }
 
-/* The follow view (PLAN.md §10.2 D5): Customise opens it; its chat replaces Insights until Cancel or a follow. */
+/* The follow view: Customise opens it; its chat replaces Insights until Cancel or a follow. */
 .follow-open {
   flex-shrink: 0;
   align-self: flex-start;

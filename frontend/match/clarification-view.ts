@@ -1,4 +1,4 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import type { Clarification } from "./types.ts";
 
 /** Suggested replies use the same conversation as a typed follow-up. */

@@ -1,5 +1,5 @@
 import { clubBrand, monogram } from "./branding.ts";
-import { keyedList, node } from "./dom.ts";
+import { keyedList, node } from "../shared/dom.ts";
 import { isFinished, isLive, matchStatus, number } from "./format.ts";
 import { validMatchId } from "./api.ts";
 import type { MatchSummary, Team } from "./types.ts";

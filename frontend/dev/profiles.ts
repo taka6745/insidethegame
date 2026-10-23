@@ -1,4 +1,4 @@
-import { node } from "../match/dom.ts";
+import { node } from "../shared/dom.ts";
 import { ConflictError } from "./api.ts";
 import type { DemoProfile, DevApi, ProfilesDocument } from "./api.ts";
 

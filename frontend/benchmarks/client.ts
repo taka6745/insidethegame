@@ -13,9 +13,15 @@ interface Size {
 
 const root = new URL("../", import.meta.url);
 // Measure the shipped bundle: compiled modules plus copied HTML/CSS.
-const files = (await readdir(new URL("dist/match/", root))).filter((name) =>
-  /\.(js|css|html)$/.test(name),
-);
+const files = (
+  await Promise.all(
+    ["match", "shared"].map(async (dir) =>
+      (await readdir(new URL(`dist/${dir}/`, root)))
+        .filter((name) => /\.(js|css|html)$/.test(name))
+        .map((name) => `dist/${dir}/${name}`),
+    ),
+  )
+).flat();
 const icons = ["pitch", "insight", "track"].map(
   (name) => `assets/icons/${name}.svg`,
 );
@@ -27,7 +33,7 @@ const brandAssets = [
   "assets/league/clubs/forgeham.svg",
 ];
 const sizes = await Promise.all(
-  [...files.map((name) => `dist/match/${name}`), ...icons, ...brandAssets].map(
+  [...files, ...icons, ...brandAssets].map(
     async (file): Promise<Size> => {
       const bytes = await readFile(new URL(file, root));
       return { file, bytes: bytes.length, gzip: gzipSync(bytes).length };

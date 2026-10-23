@@ -1,6 +1,6 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import { DemoProgress, follow, type DemoStatus } from "./demo-progress.ts";
-import { friendly } from "./api.ts";
+import { friendly, type Fetcher } from "./api.ts";
 
 /** Our own sentence for the viewer (status-tagged, so `friendly()` shows it; any other error stays hidden). */
 const said = (message: string, status = 0) => Object.assign(new Error(message), { status });
@@ -26,8 +26,6 @@ interface DemoResult {
   accepted?: boolean;
 }
 interface DemoOutcome extends DemoResult { action: string; ok: boolean; detail?: string }
-
-type Fetcher = (input: string, init: RequestInit) => Promise<Pick<Response, "ok" | "status" | "json">>;
 
 /** The public demo controls (`/demo-api/`): one demo of three matches at a time, from a chosen start point. */
 export class DemoApi {

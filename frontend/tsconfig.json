@@ -15,5 +15,5 @@
     "rootDir": ".",
     "outDir": "dist"
   },
-  "include": ["match/**/*.ts", "lab/**/*.ts", "dev/**/*.ts"]
+  "include": ["shared/**/*.ts", "match/**/*.ts", "lab/**/*.ts", "dev/**/*.ts"]
 }

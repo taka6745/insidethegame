@@ -1,6 +1,6 @@
 import { applyBrand, clubBrand, monogram, teamBranding } from "./branding.ts";
 import { AudienceView } from "./audience-view.ts";
-import { node, keyedList } from "./dom.ts";
+import { node, keyedList } from "../shared/dom.ts";
 import { markOtherMatch } from "./other-match.ts";
 import { captureCard, captureRows } from "./capture.ts";
 import type { CaptureRow } from "./capture.ts";
@@ -162,7 +162,7 @@ export class MatchView {
     const other = follow ? snapshot.follow_match ?? null : null;
     const at = (item: { period?: number | null; clock_seconds?: number | null }) =>
       [item.period || 0, Number(item.clock_seconds) || 0] as const;
-    // Captured clips (PLAN.md §10.2 D6–D7): the followed story's, or else the bucket's key-event clips.
+    // Captured clips: the followed story's, or else the bucket's key-event clips.
     const captures = captureRows(follow ? snapshot.follow_playlist : snapshot.moment_playlist);
     // A clip's card shows its moment's line (minute, event, player, score), so this match's line is not repeated.
     const captured = new Set(other ? [] : captures.flatMap((row) =>

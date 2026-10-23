@@ -1,4 +1,4 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import { attachStream, captureFrame } from "./media.ts";
 import type { Stream, StreamOptions } from "./media.ts";
 import { playableClips, reelProgress, reelTimeline, ReplayPlayer } from "./replay.ts";

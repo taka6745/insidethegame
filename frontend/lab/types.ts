@@ -90,7 +90,7 @@ export interface ChatProfile {
 }
 
 /** Errors raised by the API adapter carry the HTTP status and backend code. */
-export type ServiceError = Error & { code?: unknown; status?: number };
+export type { ServiceError } from '../shared/http.ts';
 
 declare global {
   interface Window {

@@ -1,4 +1,4 @@
-import { node } from "../match/dom.ts";
+import { node } from "../shared/dom.ts";
 import { DevApi } from "./api.ts";
 import { AudiencesView } from "./audiences.ts";
 import { ConfigView } from "./config.ts";

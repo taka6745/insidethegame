@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": { "noEmit": true, "types": ["node"] },
-  "include": ["match/**/*.ts", "lab/**/*.ts", "dev/**/*.ts", "tests/**/*.ts", "tools/**/*.ts", "benchmarks/**/*.ts"]
+  "compilerOptions": { "noEmit": true, "rootDir": "..", "types": ["node"] },
+  "include": ["shared/**/*.ts", "match/**/*.ts", "lab/**/*.ts", "dev/**/*.ts", "tests/**/*.ts", "devtools/**/*.ts", "benchmarks/**/*.ts", "../edge-proxy/src/**/*.ts"]
 }

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { keyedList } from "../match/dom.ts";
+import { keyedList } from "../shared/dom.ts";
 import { QuestionView } from "../match/chat-view.ts";
 import { MatchView } from "../match/view.ts";
 import { AudienceView } from "../match/audience-view.ts";

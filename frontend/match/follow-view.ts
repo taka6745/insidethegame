@@ -1,4 +1,4 @@
-import { node } from "./dom.ts";
+import { node } from "../shared/dom.ts";
 import { ClarificationView } from "./clarification-view.ts";
 import { CROSS_MATCH, markOtherMatch } from "./other-match.ts";
 import type { FollowOption, FollowTurn } from "./types.ts";

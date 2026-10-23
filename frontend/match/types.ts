@@ -16,7 +16,7 @@ export interface Team {
   score?: StatNumber;
   branding?: TeamBranding | null;
 }
-/** Another live match of the demo that content came from (PLAN.md §10.2 D5): teams without the score. */
+/** Another live match of the demo that content came from: teams without the score. */
 export interface OtherMatch {
   id: string;
   fixture?: string;
@@ -95,7 +95,7 @@ export interface KeyMoment {
   /** A goal a VAR review overturned. */
   overturned?: boolean;
 }
-/** What a follow is about (local/contracts.md §8b). */
+/** What a follow is about (local/contracts/README.md §8b). */
 export interface FollowSpec {
   kind: "storyline" | "team" | "player" | "theme";
   storyline_id?: string | null;
@@ -165,9 +165,9 @@ export interface Snapshot {
   /** `following`: narratives are only the followed story's; `insights`: the bucket's insights. */
   feed_mode?: "following" | "insights";
   follow?: Follow | null;
-  /** A follower's captured clips (PLAN.md §10.2 D3, D6): one playlist for the followed story, or null. */
+  /** A follower's captured clips: one playlist for the followed story, or null. */
   follow_playlist?: Replay | null;
-  /** Everyone else: the key-event clips of their bucket's shared narratives (PLAN.md §10.2 D7), or null. */
+  /** Everyone else: the key-event clips of their bucket's shared narratives, or null. */
   moment_playlist?: Replay | null;
   /** The followed story's match when it is another live match of the demo. */
   follow_match?: OtherMatch | null;
@@ -197,7 +197,7 @@ export interface ReplayClip {
   /** In/out points on the replay playlist timeline; absent without footage. */
   playlist_start?: number;
   playlist_end?: number;
-  /** The key moments a captured clip shows (PLAN.md §10.2 D6–D7): its preview card's facts. */
+  /** The key moments a captured clip shows: its preview card's facts. */
   moments?: ClipMoment[];
 }
 /** A key moment as a captured clip's preview card shows it (backend services/follow_clips CARD_FIELDS). */
@@ -215,7 +215,7 @@ export interface ClipMoment {
   /** The score after the moment, as the key-moment feed writes it. */
   score?: string | null;
 }
-/** Served with each replay (backend replay-timing.playback, migrations/037). */
+/** Served with each replay (backend `replay-timing.playback` config). */
 export interface Playback {
   transitions: {
     enabled: boolean;
@@ -326,7 +326,7 @@ export type ConnectionState =
   | "gone";
 
 /** Errors raised by the API adapter carry the HTTP status and backend code. */
-export type ServiceError = Error & { code?: unknown; status?: number };
+export type { ServiceError } from "../shared/http.ts";
 
 /** Opaque timer handle: a number in browsers, an object in Node. */
 export type TimerId = unknown;
