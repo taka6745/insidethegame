@@ -1,4 +1,4 @@
--- Fictional league (PLAN.md §12 M6): fixture keys no longer name real clubs. Seeds recorded under the old keys
+-- Fictional league: fixture keys no longer name real clubs. Seeds recorded under the old keys
 -- belong to recordings that no longer ship, so their start points are cleared and recorded again.
 ALTER TABLE demo_settings DROP CONSTRAINT IF EXISTS demo_main_fixture_listed;
 UPDATE demo_settings SET

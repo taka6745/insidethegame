@@ -1,11 +1,6 @@
 """Scripted team tactics: a policy layer that steers the built-in AIs through engine knobs.
 
-Each fixture's script in tactics.json gives every team a base style and a list of phases.
-A phase applies in a broadcast-minute window [from, to) and optionally only in a game state
-(`when`: leading, trailing or level, from that team's view). `set` steers the phase's team and
-`opponent` the other team. Later phases override earlier ones; `ramp` moves linearly from the
-value before the phase to the target across the window.
-Knobs and their ranges are documented in prepare_tactics.py.
+Script format (tactics.json) and knobs: docs/components/grf-demo.md §4.
 """
 
 import json

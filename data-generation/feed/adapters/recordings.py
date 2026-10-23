@@ -1,9 +1,7 @@
 """Discovers recordings and builds each fixture's provider stream.
 
-A recording is any `*.json` in the recordings directory (not an `.opta-*` export) whose teams match
-a roster fixture. MA1/MA3/POS come from grf_demo.opta_stream; MatchEvent v2 bodies are the
-canonical events in the contract's field names (local/contracts.md §2). Media is optional:
-`{media_root}/{fixture}/hls/match.m3u8`.
+A recording is any `*.json` (not an `.opta-*` export) whose teams match a roster fixture; MatchEvent v2 bodies use
+the contract's field names (local/contracts/README.md §2). Media is optional: `{media_root}/{fixture}/hls/match.m3u8`.
 """
 import hashlib
 import json

@@ -33,5 +33,5 @@ variable "min_replicas" {
 variable "demo_seeds" {
   type        = bool
   default     = false
-  description = "Demo seed export/restore routes (DEMO_SEEDS=1; PLAN.md §10.6). On for the judge build (`./dev azure up`), off for a production release."
+  description = "Demo seed export/restore routes (DEMO_SEEDS=1). On for the demo build (`./dev azure up`), off for a production release."
 }

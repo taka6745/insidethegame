@@ -1,5 +1,5 @@
 {
-  "_about": "Source of truth for the fictional league the demo shows (PLAN.md §12 M6). Keyed by the previous real club id (for migration); `fixtures` maps old fixture keys to new ones. Invented names, colours, crests and players (in the simulator's slot order: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM); none are real people.",
+  "_about": "Source of truth for the fictional league the demo shows. Keyed by the previous real club id (for migration); `fixtures` maps old fixture keys to new ones. Invented names, colours, crests and players (in the simulator's slot order: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM); none are real people.",
   "league": {
     "name": "Elephant League",
     "short": "EL",

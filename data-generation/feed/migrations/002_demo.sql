@@ -1,5 +1,5 @@
 -- The demo: which fixtures one "Start demo" kicks off, how far apart, the cap on concurrent runs, and the
--- points it may start from (match clock; each fixture maps it to its own video second). A point after kick-off needs a recorded seed (PLAN.md §10.6); `seed` names it.
+-- points it may start from (match clock; each fixture maps it to its own video second). A point after kick-off needs a recorded seed; `seed` names it.
 CREATE TABLE demo_settings (
     singleton boolean PRIMARY KEY DEFAULT true CHECK (singleton),
     fixtures text[] NOT NULL CHECK (cardinality(fixtures) >= 1),

@@ -53,7 +53,7 @@ def translate(source):
     recording["provenance"]["scoring_attempts"] = (
         "A linked scored shot is represented once as goal; raw native shot remains in capture."
     )
-    # The adapter attributes own goals since 22 Oct; older captures' limitation text says it does not.
+    # The adapter attributes own goals; older captures' limitation text says it does not.
     recording["provenance"]["limitations"] = [
         "No xG, substitutions, injuries or VAR." if line == "No xG, substitutions, injuries, VAR or own-goal attribution."
         else line for line in recording["provenance"].get("limitations", [])]

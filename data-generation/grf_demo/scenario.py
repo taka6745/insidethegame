@@ -5,13 +5,13 @@ import os
 
 # Runtime knobs read by the prepare_realism engine patch. Tuned headless over full matches
 # towards top-flight norms (about 26 shots, 3 goals, 21 fouls and 4 offsides per match).
-# Each rendered match reports its own totals (data-generation/recordings/README.md).
+# Each rendered match reports its own totals (data-generation/docs/components/recordings.md).
 REALISM = {
     "GRF_SKILL": 0.4,  # Lift every outfield stat 40% of the way to 1.0.
     "GRF_KEEPER_SKILL": 1.0,
     "GRF_KEEPER_REACH": 2.5,  # Save animations reach 2.5 times as far.
     "GRF_KEEPER_RUSH": 0.25,  # Keepers hold their line instead of rushing the shooter.
-    "GRF_SHOT_THRESHOLD": 1.33,  # Shoot only from good chances (1.31 before scripted tactics).
+    "GRF_SHOT_THRESHOLD": 1.33,  # Shoot only from good chances.
     "GRF_PANIC_SHOT": 0,  # Clearances under pressure are not attempts.
     "GRF_SHOT_SCATTER": 8,  # Aim error in metres at 20 m, scaled by shooting skill.
     "GRF_SHOT_POWER": 0.4,  # Upstream strikes are too fast for any save animation.

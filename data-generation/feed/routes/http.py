@@ -1,4 +1,4 @@
-"""Provider admin API (dev only, local/contracts.md §7) and the HLS origin (§6)."""
+"""Provider admin API (dev only, local/contracts/README.md §7) and the HLS origin (§6)."""
 import asyncio
 import re
 from pathlib import Path
@@ -100,7 +100,7 @@ def router(service, live_root):
         return await service.create_run(body.fixture, body.kickoff, body.start_seconds, body.hold_point,
                                         body.resume_point)
 
-    if service.seeds:  # demo seeds only (PLAN.md §10.6); a production release leaves DEMO_SEEDS off
+    if service.seeds:  # demo seeds only; a production release leaves DEMO_SEEDS off
         @api.post("/runs/{match_id}/release")
         async def release(match_id: str, body: Release | None = None):
             return await service.release(match_id, (body or Release()).after_seconds)

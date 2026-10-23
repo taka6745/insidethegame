@@ -21,7 +21,7 @@ class FeedRepositoryTests(unittest.TestCase):
         kickoff = datetime(2026, 10, 20, 15, tzinfo=timezone.utc)
         row = repo.create_run(run_id, match_id, "riverton-forgeham", kickoff, hold_seconds=1200.0, hold_point="20")
         self.assertEqual((row["run_id"], row["status"], row["position"], row["hold_point"]),
-                         (run_id, "scheduled", 0, "20"))  # a recording run keeps its point (006)
+                         (run_id, "scheduled", 0, "20"))  # a recording run keeps its point
         repo.progress(run_id, 12, 7, "live")
         mine = next(r for r in repo.runs() if r["match_id"] == match_id)
         self.assertEqual((mine["position"], mine["seq"], mine["status"]), (12, 7, "live"))
@@ -71,5 +71,5 @@ class DemoSettingsTests(unittest.TestCase):
         saved = repo.save_demo_settings({**settings, "stagger_seconds": 60}, current["revision"])
         self.assertEqual((saved["stagger_seconds"], saved["revision"]), (60, current["revision"] + 1))
         self.assertIsNone(repo.save_demo_settings(settings, current["revision"]))  # stale
-        self.assertEqual([t["id"] for t in saved["skip_targets"]], ["10", "20", "ht"])  # kept when left out (007)
+        self.assertEqual([t["id"] for t in saved["skip_targets"]], ["10", "20", "ht"])  # kept when left out
         repo.save_demo_settings(settings, saved["revision"])

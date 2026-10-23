@@ -1,4 +1,4 @@
-"""Provider-side control: the catalogue, runs (N at once) and per-match purge (local/contracts.md §5, §7)."""
+"""Provider-side control: the catalogue, runs (N at once) and per-match purge (local/contracts/README.md §5, §7)."""
 import asyncio
 import logging
 import math
@@ -33,7 +33,7 @@ class FeedService:
                  seeds=False):
         self.repository, self.streams, self.sink, self.clock, self.policy = repository, streams, sink, clock, policy
         self.live, self.allow_seek = live_store(live_root), allow_seek  # LocalLive, or BlobLive on Azure
-        self.seeds = seeds  # DEMO_SEEDS=1: seed recording and seeded starts (PLAN.md §10.6); off in production
+        self.seeds = seeds  # DEMO_SEEDS=1: seed recording and seeded starts; off in production
         self.tasks = {}  # match_id -> (RunTask, asyncio.Task)
         self._lock = asyncio.Lock()
         self.ready = False

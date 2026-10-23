@@ -1,9 +1,7 @@
-"""Fictional Elephant League lineups (PLAN.md §12 M6), not real people or clubs.
+"""Fictional Elephant League lineups, not real people or clubs.
 
-GRF_FIXTURE selects the fixture for a capture (default riverton-forgeham); exports derive the
-fixture from a recording's teams. Club names, codes, colours and players come from `league.json`,
-the single source the viewer's crests also follow. Presentation shirt numbers are illustrative.
-Slot order matches the scenario: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM. Abilities stay generic.
+GRF_FIXTURE selects a capture's fixture (default riverton-forgeham); exports derive it from a recording's teams.
+Names, codes, colours and players come from `league.json`. Slot order: GK, RM, CF, LB, CB, CB, RB, CM, CM, CM, LM.
 """
 
 import json

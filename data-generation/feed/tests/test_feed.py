@@ -357,7 +357,7 @@ class DemoTests(FeedTestCase):
         await super().asyncSetUp()
         other = dataclasses.replace(self.stream, fixture="redcastle-portalbion")
         self.service.streams[other.fixture] = other
-        self.service.seeds = True  # DEMO_SEEDS=1, as local compose and the judge build run it
+        self.service.seeds = True  # DEMO_SEEDS=1
         self.points = self.repository.demo["start_points"]
         await self.service.save_demo_settings(self.settings(["riverton-forgeham", "redcastle-portalbion"], 120, 2), 1)
 
