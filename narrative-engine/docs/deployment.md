@@ -49,7 +49,7 @@
 
 *In short: switch live under `/dev/config/models` ([agents §3](components/agents.md#3-model-settings)), or add a deployment, point an agent at it and apply.*
 
-The alternates `gpt-6-luna` and `gpt-5-mini` are already deployed. To make a role's model permanent:
+The alternates `gpt-6-luna` and `gpt-5-mini` are defined in Terraform beside `writer`. To make a role's model permanent:
 
 ```hcl
 # infra/local.auto.tfvars (Terraform loads it on the next ./dev azure up)

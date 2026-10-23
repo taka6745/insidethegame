@@ -160,7 +160,7 @@ With `DEMO_SEEDS=1`, demo control exports a held run's documents at a start poin
 | `targets` | Last audience targets read (revision, buckets) |
 | `pending`, `done` | Queued narrative steps and analyses (trigger, clock, horizon, buckets, gate; on the first attempt the prompt, the canonical `seq` it reads to and, for a narrative step, the analysis and focus storyline are pinned) and finished refs |
 | `analysis`, `focusLog` | The latest analysis run (`id`, `horizon`); the last ten focus storylines (rotation) |
-| `follows`, `followPairs`, `followFired` | Last followed topics and tunables read; (topic, bucket) pairs seen; each topic's last fire (gap) 
+| `follows`, `followPairs`, `followFired` | Last followed topics and tunables read; (topic, bucket) pairs seen; each topic's last fire (gap) |
 | `followRetries`, `clips` | "Story so far" steps dropped as ungrounded, waiting to be queued again at a later horizon (`catch_up.retries`); the last served `clips` settings (for `MomentClip`) |
 
 ### 4.2 `contextBlocks`

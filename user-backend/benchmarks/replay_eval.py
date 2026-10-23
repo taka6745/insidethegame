@@ -229,7 +229,7 @@ async def main(argv=None):
     parser.add_argument("--cases", type=Path, default=Path(__file__).with_name("replay_cases.json"))
     parser.add_argument("--agent", choices=("fixture", "local"), default="fixture")
     parser.add_argument("--case-id", action="append")
-    parser.add_argument("--output", type=Path)
+    parser.add_argument("--output", type=Path, default=Path(".local/benchmarks/replay/report.json"))
     args = parser.parse_args(argv)
     cases = [c for c in json.loads(args.cases.read_text())["cases"] if not args.case_id or c["id"] in args.case_id]
     recording = json.loads(args.recording.read_text())
@@ -254,9 +254,8 @@ async def main(argv=None):
     passed = sum(bool(r["quality"].get("pass")) and not r["hard_failures"] for r in results)
     report = {"agent": args.agent, "cases": len(results), "passed": passed, "hard_failures": hard,
               "results": results}
-    if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(report, indent=1, ensure_ascii=False))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(report, indent=1, ensure_ascii=False))
     for r in results:
         flag = "HARD" if r["hard_failures"] else ("pass" if r["quality"].get("pass") else "FAIL")
         print(f"{flag:4} {r['id']:28} {json.dumps(r['quality'])} {r.get('error', '')}")

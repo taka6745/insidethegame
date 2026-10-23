@@ -6,9 +6,9 @@
 | --- | --- |
 | **Status** | Historical design; superseded where it differs |
 
-Recorded **18 October 2026, Australia/Brisbane**, from the architecture discussion; updated during the repository-structure review to use Event Hubs for live events and Service Bus for new narratives. This is a planning record, not an implementation or deployment claim. Later decisions in the discussion supersede the initial diagrams.
+Recorded from the architecture discussion; later updated to use Event Hubs for live events and Service Bus for new narratives. This is a planning record, not an implementation or deployment claim. Later decisions in the discussion supersede the initial diagrams.
 
-**Implementation update — 19 October 2026:** the local backend uses Microsoft Agent Framework for goal interpretation and questions, then compiles validated goals into a bounded rule DSL. Canonical rules share indexed calculations; generated Python is never executed. The arbitrary-code executor and Foundry deployment described below remain planned. Live demo replay uses an ETL-owned recording with actual Event Hubs and Service Bus emulator adapters. Durable cloud partition ownership/checkpoints and Azure deployment remain planned. [Current service guide](../README.md) · [Scaling limits](../architecture.md#6-scaling-boundary).
+**Implementation update:** the local backend uses Microsoft Agent Framework for goal interpretation and questions, then compiles validated goals into a bounded rule DSL. Canonical rules share indexed calculations; generated Python is never executed. The arbitrary-code executor and Foundry deployment described below remain planned. Live demo replay uses an ETL-owned recording with actual Event Hubs and Service Bus emulator adapters. Durable cloud partition ownership/checkpoints and Azure deployment remain planned. [Current service guide](../README.md) · [Scaling limits](../architecture.md#6-scaling-boundary).
 
 The user backend connects the frontend to match intelligence. It answers viewer questions, manages profiles and viewing sessions, routes bucket narratives, selects default stat cards and builds custom statistics. The neutral match analysis and narrative engines remain outside this backend.
 

@@ -45,21 +45,23 @@ Open the [match viewer](http://localhost:18020) and press **Start demo**, or use
 | UX and presentation | Start demo with live start progress, HLS viewer, cards, chat with replays and receipts, follow view with clip preview cards, slow motion and the sting, cross-game cards ([frontend](frontend/README.md)). |
 | Hackathon category | Azure AI Foundry and Agent Framework agents on an Azure event-driven data platform. |
 
-| Microsoft / Azure technology | Used for | Status |
-| --- | --- | --- |
-| **Azure AI Foundry** (Azure OpenAI `gpt-6.1-sol`) | Narrative agents (`writer`), question, replay and follow-planner agents (`questions`); effort low; `gpt-6-luna` and `gpt-5-mini` selectable per role | Deployed ([engine](narrative-engine/infra/variables.tf), [app](terraform/variables.tf)) |
-| **Microsoft-Decision-1** (Foundry) | Claim checks, story-follow triggers, clip choice, follow offers | Deployed ([engine infra](narrative-engine/infra/variables.tf)); dev deployment used locally |
-| **Microsoft Agent Framework** | Narrative agents; question, replay and custom-stat agents | Deployed; tested locally |
-| **Azure Event Hubs** | `match-events` stream, partitioned by `matchId` | Deployed; emulator locally |
-| **Azure Stream Analytics** | ETL job: events → key events, stats, notifications; runs only while events flow | Deployed; local Python stand-in with the same rules |
-| **Azure SQL** | Event history, stats and trends (`statsAtSeq`, `trendsAtSeq`) | Deployed; SQL Server locally |
-| **Data API builder** | ETL GraphQL | Deployed (internal ingress); container locally |
-| **Azure Service Bus** | `match-notifications`, `narratives` (narratives and clips) | Deployed; emulator locally |
-| **Azure Cosmos DB** | Narrative memory, narratives, storylines, checkpoints | Deployed; emulator locally |
-| **Azure Container Apps** | Every service plus demo control; only the frontend is public | Deployed (`./dev azure up`) |
-| **Azure Files** | Demo seeds, mounted into demo control (demo build only) | Deployed; `.local/seeds/` locally |
-| Azure Monitor budgets + Automation | Spend guard: budget emails, Stream Analytics schedule, last resort | Deployed ([guard](terraform/guard/)) |
-| Azure Database for PostgreSQL | Profiles, sessions, config, follows, clips, custom stats; the feed's runs | Deployed; PostgreSQL 16 locally |
+| Microsoft / Azure technology | Used for |
+| --- | --- |
+| **Azure AI Foundry** (Azure OpenAI `gpt-6.1-sol`) | Narrative agents (`writer`), question, replay and follow-planner agents (`questions`); effort low; `gpt-6-luna` and `gpt-5-mini` selectable per role |
+| **Microsoft-Decision-1** (Foundry) | Claim checks, story-follow triggers, clip choice, follow offers |
+| **Microsoft Agent Framework** | Narrative agents; question, replay and custom-stat agents |
+| **Azure Event Hubs** | `match-events` stream, partitioned by `matchId` |
+| **Azure Stream Analytics** | ETL job: events → key events, stats, notifications; runs only while events flow |
+| **Azure SQL** | Event history, stats and trends (`statsAtSeq`, `trendsAtSeq`) |
+| **Data API builder** | ETL GraphQL |
+| **Azure Service Bus** | `match-notifications`, `narratives` (narratives and clips) |
+| **Azure Cosmos DB** | Narrative memory, narratives, storylines, checkpoints |
+| **Azure Container Apps** | Every service plus demo control; only the frontend is public |
+| **Azure Files** | Demo seeds, mounted into demo control (demo build only) |
+| Azure Monitor budgets + Automation | Spend guard: budget emails, Stream Analytics schedule, last resort ([guard](terraform/guard/)) |
+| Azure Database for PostgreSQL | Profiles, sessions, config, follows, clips, custom stats; the feed's runs |
+
+Deployed status: [PLAN §11](PLAN.md#11-azure-judge-build).
 
 ## Disclosure
 
@@ -81,6 +83,6 @@ Open the [match viewer](http://localhost:18020) and press **Start demo**, or use
 
 **Boundaries.** Our services see the feed only through Event Hubs and HLS over HTTP. The backend reads match data only through ETL GraphQL. The backend owns audience definitions and prompts. The engine frames each narrative for its bucket, and the backend routes it unchanged. Viewer questions never trigger the shared narrative workflow. [Contracts](local/contracts/README.md).
 
-[Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md) · [Plan and open items](PLAN.md) · [Target plan (Excalidraw)](master-plan.excalidraw) · [Archived research](legacy/README.md) ([competitor refresh, 21 Oct](legacy/research/competitors/2026-10-21/README.md))
+[Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md) · [Plan and open items](PLAN.md) · [Target plan (Excalidraw)](master-plan.excalidraw) · [Archived research](legacy/README.md) ([competitor refresh](legacy/research/competitors/2026-10-21/README.md))
 
 Render the diagrams with `python3 .github/scripts/render_architecture.py`, `render_development.py` and `render_master_plan.py` (then export the Excalidraw scene to `master-plan.svg`). The icons are local renders (`.github/diagram-assets/`) from the preserved [engineering library](legacy/docs/icon-libraries/README.md); its [sources](legacy/docs/icon-libraries/sources.json) and [licence](legacy/docs/icon-libraries/EXCALIDRAW-LIBRARIES-LICENSE) hold the provenance. They identify technologies, not endorsement.

@@ -31,7 +31,7 @@
 | Answers at the newest data | Answers at `min(latest, viewer seq)` | The viewer's picture is held behind live data; answers must not run ahead of it |
 | One active session per profile, one global session lock | One session per (viewer, profile, match), per-match session locks | Two browsers on one demo profile must not share a conversation or take each other over; matches must not serialize each other |
 | Custom rules over received canonical events (MatchEvent v2) | Custom rules and agents on SPADL actions from ETL (DAB `spadlActions`); MatchEvent v2 kept only for the clock, periods, ticker and gap recovery | One converter (ETL) and one vocabulary across stats, rules, prompts and agents; dropping MatchEvent v2 entirely needs watermark polling and a frontend ticker change |
-| Score from the catalogue's goals | Score from MA3 goals and VAR decisions (`rawEvents`) | Built from MA3 before the catalogue subtracted VAR overturns (`009` now does); kept |
+| Score from the catalogue's goals | Score from MA3 goals and VAR decisions (`rawEvents`) | Built from MA3 before the catalogue subtracted VAR overturns (ETL migration `009` now does); kept |
 | A seq gap waits forever | Buffer, then recover from ETL `canonicalEvents` or record and skip after `stream.gap_timeout_seconds` | One invalid message must not stall a match |
 | Prices in each browser | `prices` config table, read by the viewer (`GET /product/prices`) | One edited value for every viewer |
 | Chat replay in Phase 2 | Implemented: replay agent + deterministic clip cuts from the feed's HLS | Moved into scope |

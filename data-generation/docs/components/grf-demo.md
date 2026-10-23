@@ -47,7 +47,7 @@ The presentation patch (`python -m grf_demo.prepare_presentation <copy>`, repeat
 
 ## 4. Scripted tactics
 
-*In short: per-fixture scripts steer the built-in AIs through five engine knobs, so multi-minute patterns are real.*
+*In short: per-fixture scripts steer the built-in AIs through six engine knobs, so multi-minute patterns are real.*
 
 Unscripted GRF minutes behave like independent draws: no spells, momentum or game-state behaviour. `prepare_tactics.py` adds per-team runtime knobs to the engine (`set_tactic(team, knob, value)`); the defaults keep upstream behaviour. The built-in AIs still make every decision; the knobs bias them:
 
@@ -58,6 +58,7 @@ Unscripted GRF minutes behave like independent draws: no spells, momentum or gam
 | `flank` | −1–1 (0) | In possession, shifts shape and pass choice to the right (+) or left (−) wing |
 | `direct` | 0–1 (0) | Pass choice favours forward progress |
 | `energy` | 0–1 (1) | Off-ball running speed and pressing range (fatigue) |
+| `form` | 0–1 (1) | Scales outfield players' abilities, like the native fatigue factor; keepers unchanged |
 
 [`tactics.json`](../../grf_demo/tactics.json) holds each fixture's script: a style per team and phases in broadcast minutes. A phase steers its team (`set`) and optionally the opponent (`opponent`), can ramp, and can apply only when its team is `leading`, `trailing` or `level`. [`tactics.py`](../../grf_demo/tactics.py) evaluates the script once per video second and sets changed knobs. The script and every change (time, score, active phases, values) are in `provenance.tactics`; `capture.py --no-tactics` renders the built-in AIs alone.
 

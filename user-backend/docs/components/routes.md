@@ -29,7 +29,7 @@
 | `POST M/sessions/{token}/offers/{offer}/track` | Pin an offered stat; `409 cards_full` past the card slots |
 | `DELETE M/sessions/{token}/pins/{calculation}` | Unpin |
 | `WS M/sessions/{token}/live` | Snapshots, then updates and 20 s heartbeats |
-| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`, `429 rate_limited` past `subscriptions.limits.follow_changes_per_minute`; may target another live match), unfollow ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
+| `GET/POST M/sessions/{token}/follows`, `DELETE …/follows/{id}` | Story follows: list, follow (one per viewer, `409 follow_limit`; may target another live match), unfollow; follows plus unfollows past `subscriptions.limits.follow_changes_per_minute` get `429 rate_limited` ([contracts §8b](../../../local/contracts/README.md#8b-story-follows)) |
 | `GET M/sessions/{token}/follow/suggestions`, `POST …/follow/messages` | Rule-based follow suggestions; the follow chat (planner proposes, the viewer confirms; `429 rate_limited` past `subscriptions.limits.planner_turns_per_minute`) |
 | `GET /matches/{id}/subscription-targets` | Engine only: followed topics, their buckets and the follow tunables (ETag) |
 

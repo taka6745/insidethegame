@@ -50,7 +50,7 @@ Unset `OPENAI_*` settings fall back to the local model's `LOCAL_LLM_BASE_URL`, `
 
 Example, a different author only: `OPENAI_MODEL_AUTHOR=gpt-6-luna OPENAI_EFFORT_AUTHOR=medium`. In Azure the same is done in Terraform ([deployment §3](../deployment.md#3-changing-a-model)).
 
-**Live switch per role.** The service also reads the user backend's `GET /model-roles` (ETag-cached; edited under `/dev/config/models`). A role with a deployment there runs on that deployment at the same endpoint with its effort; an empty one, or an unreachable backend, keeps the environment's settings. On Azure the alternates `gpt-6-luna` and `gpt-5-mini` are deployed beside `writer` for this.
+**Live switch per role.** The service also reads the user backend's `GET /model-roles` (ETag-cached; edited under `/dev/config/models`). A role with a deployment there runs on that deployment at the same endpoint with its effort; an empty one, or an unreachable backend, keeps the environment's settings. Terraform defines the alternates `gpt-6-luna` and `gpt-5-mini` beside `writer` for this.
 
 Check the connection for all four roles: `python -m narrative_engine.agents.llm`.
 

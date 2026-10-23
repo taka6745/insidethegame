@@ -18,7 +18,7 @@
 | `local-up` | Write a random SA password to `.env`, start SQL Server and DAB (`docker-compose.yml`), apply migrations |
 | `local-down [--wipe]` | Stop the stack (and delete its data) |
 | `migrate [--azure SERVER]` | Apply `sql/migrations` locally, or to Azure with your `az login` |
-| `load-local REPLAY.jsonl --window N` | Insert the rows the job would write and write notifications to `.local/notifications.jsonl` |
+| `load-local REPLAY.jsonl [--window N]` | Insert the rows the job would write and write notifications to `.local/notifications.jsonl` |
 | `verify REPLAY.jsonl [--window N] [--graphql URL]` | Compare every GraphQL table and the view with the reference |
 | `check-notifications REPLAY.jsonl [--window N]` | Peek the `narrative-engine` subscription and compare with the reference notifications |
 | `azure-setup` | Run by `./dev azure up` after each ETL apply: migrations, `sql/azure` triggers, then database users and roles for the job, DAB (also `EXECUTE` on `statsAtSeq` and the trend procedures) and, once deployed, the purge API |

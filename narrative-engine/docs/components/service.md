@@ -20,7 +20,7 @@
 - Lifecycle per matchId: it starts with its first notification, ends with its final period (MA1 `capabilities.periods`, else `FINAL_PERIOD`) or a purge. Tombstoned matches, and matches whose MA1 predates the purge-all cut-off, are completed without work.
 - Run the Service Bus listener, the target poll and the GraphQL server side by side.
 - On start-up, load the tombstones, then restart the workers of matches the store marks `live` (`Router.start`).
-- `GET /health`: `200 {"status": "ok"}`, or `503 {"status": "unhealthy", "problems": [...]}` while the user backend's prompts are unreachable or invalid. There is no fallback to fixed buckets or shipped prompts: authoring waits.
+- `GET /health`: `200 {"status": "ok"}`, or `503 {"status": "unhealthy", "problems": [...]}` while the user backend's prompts or storyline policy are unreachable or invalid. There is no fallback to fixed buckets or shipped prompts: authoring waits.
 
 ## 2. Settings
 

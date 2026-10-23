@@ -37,4 +37,4 @@ Teams, player ids, 35 canonical deliveries (revisions and a duplicate included) 
 
 *In short: informed by public definitions, nothing copied.*
 
-The semantic distinctions (headed passes, body-part attribution, corners awarded versus taken, VAR amendments) follow [Stats Perform's Opta Event Definitions](https://www.statsperform.com/opta-event-definitions/), checked 18 October 2026. Public definitions are not a delivery schema; a real feed needs its agreed contract and its own adapter. No vendor samples were copied.
+The semantic distinctions (headed passes, body-part attribution, corners awarded versus taken, VAR amendments) follow [Stats Perform's Opta Event Definitions](https://www.statsperform.com/opta-event-definitions/). Public definitions are not a delivery schema; a real feed needs its agreed contract and its own adapter. No vendor samples were copied.

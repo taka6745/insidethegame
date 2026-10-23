@@ -9,4 +9,4 @@
 | Clip transition (`builtin:league`) | Original CSS animation in `match/styles.css` (diagonal sweep, streaks, league mark), no media file |
 | `microsoft.svg` | Microsoft logo, used only for the "Built with Microsoft Agent Framework" attribution |
 
-The Premier League fonts, logos, club crests and the third-party sting video were removed on 23 October 2026; the recordings were re-rendered with the fictional clubs and players.
+The Premier League fonts, logos, club crests and the third-party sting video were removed; the recordings were re-rendered with the fictional clubs and players.

@@ -1,6 +1,6 @@
 # The demo operator behind the frontend's public /demo-api/ (local/demo_control.py serve): starts the
 # configured demo, cancels it, reports each stage's readiness from real checks. Internal ingress only;
-# scales to zero (a /demo-api/status call wakes it, and it wakes the apps it checks).
+# one replica kept warm; a /demo-api/status call wakes the apps it checks.
 locals {
   demo_host = "${var.prefix}-demo.internal.${local.domain}"
   demo_env = {

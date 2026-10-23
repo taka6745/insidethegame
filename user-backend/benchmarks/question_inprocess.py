@@ -233,7 +233,7 @@ def main():
     parser.add_argument('--case-id', action='append')
     parser.add_argument('--case-timeout', type=float, default=90)
     parser.add_argument('--reference', choices=('full', 'compact'), default='full')
-    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--output', type=Path, default=Path('.local/benchmarks/questions/report.json'))
     args = parser.parse_args()
     if args.env_file:
         from dotenv import load_dotenv

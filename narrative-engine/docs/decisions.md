@@ -40,7 +40,7 @@
 | One Foundry writing model | One deployment `writer` (`gpt-6.1-sol`), reasoning effort per agent; models swappable per agent | `gpt-6.1-sol` has no `minimal` effort, so every role runs at `low` |
 | Narratives react to the latest minute | A match analyst every 5 minutes (and at half and full time) keeps storylines; each step advances one focus storyline chosen in Python and shared by every bucket | Narratives are storylines through the game, not last-minute commentary |
 | Patterns from a fixed list | The analyst names patterns in its own words; the validator checks only grounding (cited values equal the ETL's trend rows, cover the team, and the text uses only their numbers and names) | Don't hard-code or lead the witness |
-| Ungrounded claims dropped silently | One repair turn with the check's reasons per rejected analyst item and author excerpt, then drop and log; the author's numbers, names and causal claims are checked (claims by Microsoft-Decision-1, thresholds in the policy's `claims`) | Ungrounded text reached viewers; one repair recovers most of it ([evidence](components/analysis.md#4-grounding-evidence)) |
+| Ungrounded claims dropped silently | One repair turn with the check's reasons per rejected analyst item and author excerpt, then drop and log; the author's numbers, names and claims (causal, intent, result, comparison, score) are checked (claims by Microsoft-Decision-1, thresholds in the policy's `claims`) | Ungrounded text reached viewers; one repair recovers most of it ([evidence](components/analysis.md#4-grounding-evidence)) |
 | Storyline constants in code | The backend's `storyline-policy` config (`GET /storyline-policy`, ETag, `/dev/config`), read like the prompts with no fallback; code keeps only the reply schema, the language checks and the trend windows' minute marks | No magic numbers; every tunable editable per deployment |
 | Grounding rules in the prompts | Prompts describe inputs and outputs only; the validators enforce grounding and their reasons drive the repair turn | don't hard-code rules, phrase lists or example conclusions into prompts |
 | Analysis offset per match | Every match analyses at its own minutes 5, 10, 15 … | Matches stay unaware of each other; the demo staggers kickoffs |
@@ -63,7 +63,7 @@
 | Item | Owner | Notes |
 | --- | --- | --- |
 | Throughput under several matches | Engine | One shared model: see [architecture §6](architecture.md#6-guarantees-and-limits). Backlogs drain without loss; raise `MODEL_CONCURRENCY` or use a faster author model on Azure AI Foundry |
-| Grounding on Azure | Engine | Not yet sampled on Azure with `gpt-6.1-sol` |
+| Grounding on Azure | Engine | Grounding rate with `gpt-6.1-sol`; status in [PLAN §11](../../PLAN.md#11-azure-judge-build) |
 | Odd phrasing ("Half an hour? Sorry—20 minutes") | Engine | Prompt or model; try with a stronger author model |
 | ETL subscription backlog | ETL + engine | Unread notifications expire after a day (topic TTL); purge old matches (`POST /admin/matches/purge`, `{"all": true}` sets a cut-off) before a demo |
 

@@ -6,7 +6,7 @@
 | --- | --- |
 | **Code** | [`benchmarks/`](../../benchmarks/) (doubles in [`benchmarks/doubles/`](../../benchmarks/doubles/)) |
 | **In pytest** | `test_question_golden.py`, `test_replay_golden.py` (scripted decisions), runner mechanics with mock HTTP; never a live model |
-| **Output** | `.local/benchmarks/` (every generator's default); committed evidence in `benchmarks/results/*.json` |
+| **Output** | `.local/benchmarks/` relative to where you run it (every generator's default; `./dev benchmark` uses the repo root); committed evidence in `benchmarks/results/*.json` |
 | **Status** | Implemented; live-model figures are single development runs, not production accuracy or capacity claims |
 
 ## 1. Golden sets
@@ -44,7 +44,7 @@ Snapshots are cut from the shipped Riverton Rovers–Forgeham United recording; 
 ```sh
 ./dev benchmark agents --cohort balanced --concurrency 2 --case-timeout 60 --suite-timeout 1200
 PYTHONPATH=user-backend python -m benchmarks.correctness   # gold rules and oracle, no model
-PYTHONPATH=user-backend python -m benchmarks.report_balanced --input .local/benchmarks/agents-balanced/report.json
+PYTHONPATH=user-backend python -m benchmarks.report_balanced   # reads .local/benchmarks/agents/report.json
 ```
 
 Defaults: 4 concurrent cases, 60 s per case, 15 min per suite, `AGENT_MAX_REPAIRS` repairs. Compiler validation proves the rule keeps the interpreted goal; the gold evaluation checks the interpretation.
@@ -86,17 +86,17 @@ Each tier runs in a fresh subprocess with build, replay, memory and suite limits
 
 All on a development Mac (arm64, Python 3.12), synthetic data, one run each. Model labels are anonymised (open model A, small models B and C, reference model D).
 
-| Study (date) | Result | Evidence |
+| Study | Result | Evidence |
 | --- | --- | --- |
-| Filter tiers, canonical events (18 Oct) | 100k selective rules: p95 5.5 ms/event, 256 events/s; 100k overlapping: p95 361 ms, 3.1/s; 1m tiers hit the 1 GiB limit (251k / 387k registered). 1m cached reads at 1.7 μs each. 100/100 generated rules matched independent totals over 14,018 deliveries | [performance.json](../../benchmarks/results/performance.json), [spread.json](../../benchmarks/results/spread.json), [value-reads.json](../../benchmarks/results/value-reads.json), [full-match.json](../../benchmarks/results/full-match.json), [latency.svg](../../benchmarks/results/latency.svg) |
-| Shared predicates + clock index (18 Oct) | 100k rules: selective p95 6.2 → 3.7 ms (184 → 376/s), overlapping 594 → 242 ms (2.1 → 7.4/s); 1 family evaluation and 15 time-index probes per event; memory +10 % | [before](../../benchmarks/results/optimization-before.json), [after](../../benchmarks/results/optimization-after.json) |
-| First agent run (18 Oct) | Gold 100/100. Agents 78/112 strict (stat prompts 68/100, negatives 10/12) | [agents.json](../../benchmarks/results/agents.json), [cases.json](../../benchmarks/results/cases.json) |
-| Goal agent + compiler (18 Oct) | Same 100 prompts 94/100 (median 8.7 s); quality cohort 96/100; clarifications 10/12, then 12/12 after the unresolved-player guard | [baseline](../../benchmarks/results/agents-improved-baseline.json), [quality](../../benchmarks/results/agents-improved-quality.json), [conversations](../../benchmarks/results/agents-conversations-final.json), [serial](../../benchmarks/results/agents-serial-smoke.json) |
-| Balanced wording (18 Oct) | 88/90 final (clear 30, average 30, poor 28); controls 10/10; both misses guessed instead of clarifying | [results](../../benchmarks/results/agents-balanced.json), [cases](../../benchmarks/results/agents-balanced-cases.json) |
-| Model strength (18 Oct) | Open model A 94–97/100 on balanced, 11/12 transfer; reference D 96/100; small B/C 0–5/12 on the screen. Compact prompt cut request size 16 %; its accuracy gain did not repeat | [model-strength/](../../benchmarks/results/model-strength/) |
-| Structured output (18 Oct) | A 17/19 with prompt or schema; B 2–3/19. Schema fixes shape, not meaning; some routes return 429 for schema requests | [schema-study/](../../benchmarks/results/schema-study/) |
-| Event-data skill (18 Oct) | A 95 → 97/100 with the skill; fresh wording 17/20 either way; D 19 → 20/20 additive. Kept optional | [data-skill/](../../benchmarks/results/data-skill/) |
-| SPADL golden sets (21 Oct) | Questions 23/25 → 25/25 on the local model, replays 34/40 → 41/42; full and compact SPADL dictionaries tie (the runtime keeps the full one plus `lookup_spadl`). SPADL changed some expected values: saves include off-target touches, touches count every action except carries, interceptions include blocked passes | [spadl/](../../benchmarks/results/spadl/) |
+| Filter tiers, canonical events | 100k selective rules: p95 5.5 ms/event, 256 events/s; 100k overlapping: p95 361 ms, 3.1/s; 1m tiers hit the 1 GiB limit (251k / 387k registered). 1m cached reads at 1.7 μs each. 100/100 generated rules matched independent totals over 14,018 deliveries | [performance.json](../../benchmarks/results/performance.json), [spread.json](../../benchmarks/results/spread.json), [value-reads.json](../../benchmarks/results/value-reads.json), [full-match.json](../../benchmarks/results/full-match.json), [latency.svg](../../benchmarks/results/latency.svg) |
+| Shared predicates + clock index | 100k rules: selective p95 6.2 → 3.7 ms (184 → 376/s), overlapping 594 → 242 ms (2.1 → 7.4/s); 1 family evaluation and 15 time-index probes per event; memory +10 % | [before](../../benchmarks/results/optimization-before.json), [after](../../benchmarks/results/optimization-after.json) |
+| First agent run | Gold 100/100. Agents 78/112 strict (stat prompts 68/100, negatives 10/12) | [agents.json](../../benchmarks/results/agents.json), [cases.json](../../benchmarks/results/cases.json) |
+| Goal agent + compiler | Same 100 prompts 94/100 (median 8.7 s); quality cohort 96/100; clarifications 10/12, then 12/12 after the unresolved-player guard | [baseline](../../benchmarks/results/agents-improved-baseline.json), [quality](../../benchmarks/results/agents-improved-quality.json), [conversations](../../benchmarks/results/agents-conversations-final.json), [serial](../../benchmarks/results/agents-serial-smoke.json) |
+| Balanced wording | 88/90 final (clear 30, average 30, poor 28); controls 10/10; both misses guessed instead of clarifying | [results](../../benchmarks/results/agents-balanced.json), [cases](../../benchmarks/results/agents-balanced-cases.json) |
+| Model strength | Open model A 94–97/100 on balanced, 11/12 transfer; reference D 96/100; small B/C 0–5/12 on the screen. Compact prompt cut request size 16 %; its accuracy gain did not repeat | [model-strength/](../../benchmarks/results/model-strength/) |
+| Structured output | A 17/19 with prompt or schema; B 2–3/19. Schema fixes shape, not meaning; some routes return 429 for schema requests | [schema-study/](../../benchmarks/results/schema-study/) |
+| Event-data skill | A 95 → 97/100 with the skill; fresh wording 17/20 either way; D 19 → 20/20 additive. Kept optional | [data-skill/](../../benchmarks/results/data-skill/) |
+| SPADL golden sets | Questions 23/25 → 25/25 on the local model, replays 34/40 → 41/42; full and compact SPADL dictionaries tie (the runtime keeps the full one plus `lookup_spadl`). SPADL changed some expected values: saves include off-target touches, touches count every action except carries, interceptions include blocked passes | [spadl/](../../benchmarks/results/spadl/) |
 
 The filter tiers predate SPADL (canonical events); `./dev benchmark filters` now replays SPADL actions. The agent cohorts were translated to SPADL and their gold rechecked, but not re-run on a model.
 

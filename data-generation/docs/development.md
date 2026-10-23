@@ -13,7 +13,7 @@
 
 *In short: the stack starts it; `./dev demo start` purges and starts runs.*
 
-`./dev demo start [fixture…]` purges every owner, then calls `POST /runs` for each fixture with `kickoff: "next-minute"`. The admin API is on `http://localhost:18030` (`/docs`) and, for `/dev/`, behind nginx at `/feed-api/`. The demo is started from the viewer's **Start demo** (demo control → `POST /demo/start`); seeds are recorded with `local/demo_control.py record|capture {point}` ([feed §2a](components/feed.md#2a-demo-and-seeds)). `./dev` mounts each `.local/grf-demo-<fixture>-90/hls/` that exists ([feed §5](components/feed.md#5-recordings-and-media)).
+`./dev demo start [fixture…]` purges every owner, then calls `POST /runs` for each fixture with `kickoff: "next-minute"`. The admin API is on `http://localhost:18030` (`/docs`) and, for `/dev/`, behind nginx at `/feed-api/`. The demo is started from the viewer's **Start demo** (demo control → `POST /demo/start`); seeds are recorded with `local/demo_control.py record|capture {point}` ([feed §2a](components/feed.md#2a-demo-and-seeds)). `./dev` hard-links each `.local/grf-demo-<fixture>-90/hls/` into `.local/media/<fixture>/hls/` and mounts that one root (`ITG_MEDIA_ROOT`) ([feed §5](components/feed.md#5-recordings-and-media)).
 
 ## 2. Tests
 

@@ -72,7 +72,7 @@ cd edge-proxy && npx wrangler@4.151.3 deploy   # Cloudflare creates the DNS reco
 
 *In short: idle costs a few dollars a day; each demo session adds model tokens.*
 
-| Item | Estimate (22 Oct) |
+| Item | Estimate |
 | --- | --- |
 | Idle, Stream Analytics stopped, SQL paused | About A$6–7/day: container apps at the idle rate 2.1, PostgreSQL B1ms × 2 1.9, Event Hubs 1.1, Service Bus 0.5, registries 0.5 |
 | Demo control kept warm (min 1 replica) | About A$0.6–1.2/day |

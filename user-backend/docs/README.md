@@ -34,7 +34,7 @@ docs/
 ├── decisions.md              design versus implementation, open items
 ├── narrative-framing.svg     service-boundary diagram (rendered by .github/scripts/render_architecture.py)
 └── design/                   original plans, kept for history (not updated)
-    ├── agreed-architecture.md      the 18 October 2026 architecture agreement
+    ├── agreed-architecture.md      the original architecture agreement
     ├── question-agent-plan.md      the question-agent build plan
     ├── replay-plan.md              the chat-replay plan
     ├── custom-calculations.md      the proposed rule-worker design
