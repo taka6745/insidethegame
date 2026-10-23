@@ -9,7 +9,7 @@ import pytest
 from narrative_engine.core.gate import ModelGate
 from narrative_engine.core.orchestrator import MatchOrchestrator
 from narrative_engine.decisions import (Choice, DecisionError, DecisionSettings, Noul, Score, from_settings)
-from narrative_engine.devtools.fake_decisions import FakeDecisions
+from doubles.fake_decisions import FakeDecisions
 
 AZURE = "https://example.cognitiveservices.azure.com/"
 QUESTIONS = {"moved": Noul("Did the followed story move?", true="It changed", false="Nothing new"),

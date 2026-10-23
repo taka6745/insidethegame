@@ -1,6 +1,6 @@
 """Write the SPADL test fixture for a replay file with the ETL's converter (etl/reference/spadl.py).
 
-    python tools/spadl_fixture.py tests/fixtures/itg-syn-0001.jsonl tests/fixtures/itg-syn-0001-spadl.json
+    python devtools/spadl_fixture.py tests/fixtures/itg-syn-0001.jsonl tests/fixtures/itg-syn-0001-spadl.json
 
 Rows hold the `spadlActions` fields the engine reads (`render.ACTION_FIELDS`). A replay without
 canonical seqs (the seeder's itg-syn-0001) uses its MA3 `seq` as `eventSeq`, as `FixtureMatchData`
@@ -25,7 +25,7 @@ def main(replay, out):
     actions = [{k: a[k] for k in ACTION_FIELDS.split()} for a in spadl.actions(ma3, home)]
     Path(out).write_text(json.dumps({
         "description": f"SYNTHETIC: SPADL actions converted by etl/reference/spadl.py from {Path(replay).name} "
-                       "(narrative-engine/tools/spadl_fixture.py). Read rows with finalSeq <= seq.",
+                       "(narrative-engine/devtools/spadl_fixture.py). Read rows with finalSeq <= seq.",
         "matchId": ma1["matchId"], "homeContestantId": home, "actions": actions}, separators=(",", ":")) + "\n",
         encoding="utf-8")
     print(f"{len(actions)} actions -> {out}")

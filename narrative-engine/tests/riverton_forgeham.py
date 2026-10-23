@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from narrative_engine.core.models import parse_notification
-from narrative_engine.devtools.fixture_data import FixtureMatchData
+from doubles.fixture_data import FixtureMatchData
 
 ROOT = Path(__file__).resolve().parents[2]
 REPLAY = ROOT / "data-generation" / "recordings" / "riverton-forgeham-grf.opta-stream.jsonl"

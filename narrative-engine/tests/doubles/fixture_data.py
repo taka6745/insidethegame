@@ -2,7 +2,7 @@
 served from memory, for tests and offline runs. Never used by the service.
 
 A replay without canonical seqs (the seeder's itg-syn-0001) uses each MA3 row's `seq` as its
-`eventSeq`; tools/spadl_fixture.py converts such a replay the same way."""
+`eventSeq`; devtools/spadl_fixture.py converts such a replay the same way."""
 import json
 from bisect import bisect_right
 from itertools import accumulate

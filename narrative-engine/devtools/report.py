@@ -1,13 +1,13 @@
 """One match's engine output as a single HTML page, in the order it was produced: minute
 summaries, compressions (with the blocks they replaced) and narrative steps for each bucket.
 
-    python -m narrative_engine.devtools.azure report --match-id itg-syn-0001-az2   # from Cosmos DB
+    python -m devtools.azure report --match-id itg-syn-0001-az2   # from Cosmos DB
 """
 from collections import defaultdict
 from html import escape
 
 from narrative_engine.context.compression import EARLIER, FIVE_MINUTE, MINUTE
-from narrative_engine.devtools.targets import DEFAULT_BUCKETS
+from doubles.targets import DEFAULT_BUCKETS
 
 LEVELS = {MINUTE: "Minute summary", FIVE_MINUTE: "5-minute compression", EARLIER: "Period compression"}
 

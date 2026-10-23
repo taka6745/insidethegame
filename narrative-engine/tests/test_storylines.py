@@ -8,7 +8,7 @@ from narrative_engine.analysis.validator import (claim_reasons, claim_reasons_ma
                                                  narrative_reasons, parse, prompt_limits, repair_request, validate)
 from narrative_engine.context.render import MatchInfo, render_storylines, render_trend_table, render_trends
 from narrative_engine.core.models import MatchClock
-from narrative_engine.devtools.fake_decisions import FakeDecisions
+from doubles.fake_decisions import FakeDecisions
 
 INFO = MatchInfo.from_ma1({"matchId": "m", "contestant": [
     {"id": "riv", "name": "Riverside FC", "code": "RIV", "position": "home",

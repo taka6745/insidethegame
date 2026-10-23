@@ -8,7 +8,7 @@ import sys
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'narrative-engine/tools'))
+sys.path.insert(0, str(ROOT / 'narrative-engine/devtools'))
 from commentary_schema import NarrativeFixture  # noqa: E402
 # Test-only archive of an earlier render; data-generation/recordings ships a newer match.
 RECORDING = ROOT / 'narrative-engine/fixtures/archive/riverton-forgeham-grf.json'

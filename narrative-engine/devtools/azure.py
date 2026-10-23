@@ -1,9 +1,9 @@
 """Dev helpers for the Azure environment. Never prints secrets.
 
-    python -m narrative_engine.devtools.azure env                          # write Azure settings into .env
-    python -m narrative_engine.devtools.azure build --tag v1 [--local]     # build in ACR, or with local Docker and push
-    python -m narrative_engine.devtools.azure check-narratives --match-id demo   # read the narrative-check subscription
-    python -m narrative_engine.devtools.azure report --match-id demo       # summaries, compressions, narratives -> HTML
+    python -m devtools.azure env                          # write Azure settings into .env
+    python -m devtools.azure build --tag v1 [--local]     # build in ACR, or with local Docker and push
+    python -m devtools.azure check-narratives --match-id demo   # read the narrative-check subscription
+    python -m devtools.azure report --match-id demo       # summaries, compressions, narratives -> HTML
 """
 import argparse
 import asyncio
@@ -15,7 +15,7 @@ from pathlib import Path
 
 from narrative_engine.agents.llm import ENV_FILE, load_env
 
-HERE = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parents[1]
 INFRA, ETL_INFRA = HERE / "infra", HERE.parent / "etl" / "infra"
 
 
@@ -50,7 +50,7 @@ def build(tag, local=False):
         for name in ("Dockerfile", ".dockerignore", "requirements.txt"):
             shutil.copy(HERE / name, context / name)
         shutil.copytree(HERE / "narrative_engine", context / "narrative_engine",
-                        ignore=shutil.ignore_patterns("__pycache__", "devtools"))
+                        ignore=shutil.ignore_patterns("__pycache__"))
         print("context:", sorted(str(p.relative_to(context)) for p in context.rglob("*") if p.is_file()))
         az = shutil.which("az") or shutil.which("az.cmd")
         image = f"{registry}.azurecr.io/narrative-engine:{tag}"
@@ -95,7 +95,7 @@ async def report(match_id, open_browser):
     """Write .local/report-<matchId>.html from Cosmos DB."""
     import webbrowser
 
-    from narrative_engine.devtools.report import render
+    from devtools.report import render
     from narrative_engine.store.cosmos import CosmosStore
 
     load_env()

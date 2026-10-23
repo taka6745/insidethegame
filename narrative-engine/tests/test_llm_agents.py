@@ -6,13 +6,13 @@ from pathlib import Path
 import httpx
 import pytest
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.agents.llm import (LLMAgents, LLMError, LLMSettings, ModelSettings, load_env, parse_summary,
                                          render_template)
 from narrative_engine.agents.prompt_source import PLACEHOLDER, PROMPTS, Prompt, shipped
-from narrative_engine.devtools.fixture_data import FixtureMatchData
+from doubles.fixture_data import FixtureMatchData
 from narrative_engine.core.orchestrator import MatchOrchestrator
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink, read_notifications
 

@@ -3,53 +3,19 @@ the trend procedures (etl/reference/trends.py) serving the trends. Live (the ETL
 and as a backlog (it holds the whole match), the analyst and author get the same prompts, and the analyses
 and storylines are the same. Expectations come from the recording, so a re-rendered one needs no edit."""
 import asyncio
-import sys
 from functools import cache
 
 import riverton_forgeham
-from test_recording_run import EtlAsOf
+from support import EtlAsOf, spells_at, trends_at
 from narrative_engine.agents.prompt_source import PLACEHOLDER, shipped
 from narrative_engine.api import schema
 from narrative_engine.core.models import MatchClock, parse_notification
 from narrative_engine.core.orchestrator import MatchOrchestrator, stoppage
-from narrative_engine.devtools.fake_agents import FakeAgents
-from narrative_engine.devtools.targets import StaticTargets, default_targets
-from narrative_engine.match_data.etl_graphql import spell_rows, trend_rows
+from doubles.fake_agents import FakeAgents
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.service import Router
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink
-
-ETL = riverton_forgeham.ROOT / "etl"
-sys.path[:0] = [str(ETL), str(ETL / "tests")]
-import v2_stream  # noqa: E402  (ETL's test stream of the same recording)
-from reference import pipeline, spadl, trends as reference  # noqa: E402
-
-
-@cache
-def etl_rows():
-    stream = v2_stream.build()
-    rows = pipeline.stream_outputs(stream, 60)
-    rows["spadlActions"] = spadl.actions([m for m in stream if m.get("feed") == "MA3"],
-                                         rows["matches"][0]["homeContestantId"])
-    return rows
-
-
-def served(procedure, seq):
-    rows = etl_rows()
-    final = len(rows["canonicalEvents"])
-    return procedure(rows["matches"][0], rows["canonicalEvents"], rows["possessionSamples"], seq, final,
-                     actions=rows["spadlActions"], raw=rows["rawEvents"])
-
-
-@cache
-def trends_at(seq):
-    return trend_rows(served(reference.trends_at_seq, seq))
-
-
-@cache
-def spells_at(seq):
-    return spell_rows(served(reference.spells_at_seq, seq))
-
 
 def run(backlog):
     data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,

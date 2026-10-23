@@ -250,7 +250,7 @@ def main():
     from narrative_engine.transport.files import read_narratives
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("narratives", nargs="+", help="narrative JSONL files written by narrative_engine.devtools.local")
+    parser.add_argument("narratives", nargs="+", help="narrative JSONL files written by devtools.local")
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
     store = MemoryStore()

@@ -1,4 +1,4 @@
-# The engine service. Build with `python -m narrative_engine.devtools.azure build`, which sends only
+# The engine service. Build with `python -m devtools.azure build`, which sends only
 # narrative_engine/, requirements.txt and this file to ACR (never .env or the LLM setup notes).
 FROM python:3.11-slim
 

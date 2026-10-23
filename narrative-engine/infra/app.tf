@@ -1,5 +1,5 @@
 # The engine on Container Apps. Two-step deploy: apply (registry, environment, Foundry), then
-# `python -m narrative_engine.devtools.azure build --tag X`, then apply with -var engine_image_tag=X.
+# `python -m devtools.azure build --tag X`, then apply with -var engine_image_tag=X.
 
 # Basic registry; the app pulls with the admin credentials because this account cannot grant
 # AcrPull.

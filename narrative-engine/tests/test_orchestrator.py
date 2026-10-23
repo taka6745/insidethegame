@@ -12,12 +12,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import ANY
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.context.compression import EARLIER, Span, tiles
 from narrative_engine.core.config import Settings
-from narrative_engine.devtools.fixture_data import FixtureMatchData
+from doubles.fixture_data import FixtureMatchData
 from narrative_engine.audience.targets import Targets
-from narrative_engine.devtools.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
+from doubles.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
 from narrative_engine.core.models import KeyEventDetected, MatchClock, MinuteClosed, PeriodChanged
 from narrative_engine.core.orchestrator import EMPTY_MINUTE, EMPTY_SPAN, MatchOrchestrator, stoppage
 from narrative_engine.store.memory import MemoryStore
@@ -367,7 +367,7 @@ def test_a_failed_publish_is_sent_on_retry_not_lost():
 
 
 def test_report_shows_every_block_and_step():
-    from narrative_engine.devtools.report import render
+    from devtools.report import render
     h = Harness().run(MESSAGES)
     blocks, narratives = list(h.store.blocks.values()), h.narratives()
     page = render(MATCH, blocks, narratives)
@@ -454,7 +454,7 @@ def test_an_excerpt_keeps_its_supported_sentences_when_one_claim_still_fails():
     """repair.author_trim: a sentence whose cause claim fails after the rewrite is removed, the rest is written;
     with author_trim off the whole excerpt is dropped as before."""
     from narrative_engine.analysis.policy import ShippedPolicy
-    from narrative_engine.devtools.fake_decisions import FakeDecisions
+    from doubles.fake_decisions import FakeDecisions
 
     def run(trim):
         h = Harness(targets=StaticTargets(default_targets()[:1]))
@@ -484,7 +484,7 @@ def test_a_trimmed_excerpt_is_checked_again_as_a_whole():
     """After a trim a kept sentence follows a different one ("they" may now mean someone else); it is asked again
     with its new neighbour, and the excerpt is dropped when it no longer passes."""
     from narrative_engine.analysis.policy import ShippedPolicy
-    from narrative_engine.devtools.fake_decisions import FakeDecisions
+    from doubles.fake_decisions import FakeDecisions
 
     def fails(question):
         first = question.instructions.split("\n")[0]

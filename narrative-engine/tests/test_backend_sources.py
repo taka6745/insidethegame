@@ -7,33 +7,9 @@ import pytest
 
 from narrative_engine.agents.prompt_source import ROLES, HttpPromptSource, PromptUnavailable, shipped
 from narrative_engine.audience.targets import HttpTargetSource, framing
-from narrative_engine.devtools.targets import default_targets
+from doubles.targets import default_targets
 from narrative_engine.context.render import MatchInfo, Team
-
-BASE = "http://backend.test"
-
-
-class Backend:
-    """GET with ETag/If-None-Match, like the user backend's read APIs."""
-    def __init__(self, documents):
-        self.documents, self.requests, self.down = documents, [], False
-
-    def __call__(self, request):
-        self.requests.append((request.url.path, request.headers.get("if-none-match")))
-        if self.down:
-            return httpx.Response(503)
-        body = self.documents.get(request.url.path)
-        if body is None:
-            return httpx.Response(404)
-        etag = f'"{body["revision"]}"'
-        if request.headers.get("if-none-match") == etag:
-            return httpx.Response(304, headers={"ETag": etag})
-        return httpx.Response(200, json=body, headers={"ETag": etag})
-
-
-def client(backend):
-    return httpx.AsyncClient(transport=httpx.MockTransport(backend))
-
+from support import BASE, Backend, client
 
 def prompts_doc(revision, author):
     return {"revision": revision, "prompts": [
@@ -165,7 +141,7 @@ def test_the_storyline_policy_comes_from_the_api_with_no_fallback():
 
 
 def test_the_runtime_has_no_built_in_buckets():
-    from narrative_engine.devtools.fake_agents import FakeAgents
+    from doubles.fake_agents import FakeAgents
     from narrative_engine.core.orchestrator import MatchOrchestrator
     from narrative_engine.service import Router
     from narrative_engine.store.memory import MemoryStore
@@ -179,17 +155,16 @@ def test_the_runtime_has_no_built_in_buckets():
 
 
 def test_test_doubles_stay_out_of_the_runtime():
-    """Doubles live in devtools/, which no runtime module imports and the image excludes."""
+    """Doubles live in tests/doubles/ and developer code in devtools/: no runtime module imports either, and the
+    image holds only the package."""
     import ast
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     package = root / "narrative_engine"
     for path in package.rglob("*.py"):
-        if "devtools" in path.relative_to(package).parts:
-            continue
         for node in ast.walk(ast.parse(path.read_text())):
             names = [a.name for a in node.names] if isinstance(node, ast.Import) else \
                 [node.module or ""] if isinstance(node, ast.ImportFrom) else []
-            assert not any("devtools" in n or n.endswith(".fake") for n in names), path
-    assert not (package / "agents" / "fake.py").exists()
-    assert "narrative_engine/devtools/" in (root / ".dockerignore").read_text().splitlines()
+            assert not any(n.split(".")[0] in ("devtools", "doubles", "tests") or n.endswith(".fake") for n in names), path
+    assert not (package / "devtools").exists() and not (package / "agents" / "fake.py").exists()
+    assert "!narrative_engine/" in (root / ".dockerignore").read_text().splitlines()

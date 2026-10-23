@@ -1,9 +1,9 @@
 """Run the engine locally over an ETL notifications file.
 
-    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --pace 5
-    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --data graphql
-    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --agents llm --buckets home:casual
-    python -m narrative_engine.devtools.local ../etl/.local/notifications.jsonl --pace 5 --serve 8000
+    python -m devtools.local ../etl/.local/notifications.jsonl --pace 5
+    python -m devtools.local ../etl/.local/notifications.jsonl --data graphql
+    python -m devtools.local ../etl/.local/notifications.jsonl --agents llm --buckets home:casual
+    python -m devtools.local ../etl/.local/notifications.jsonl --pace 5 --serve 8000
 
 Data comes from a replay file (default) or the ETL's GraphQL API. Agents are fakes unless
 `--agents llm` (settings in .env). Narratives go to .local/narratives.jsonl, context blocks
@@ -20,18 +20,18 @@ from pathlib import Path
 
 import httpx
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.agents.llm import LLMAgents, LLMError, LLMSettings
 from narrative_engine.api import NarrativeApi
 from narrative_engine.core.config import Settings
 from narrative_engine.match_data.etl_graphql import GraphQLMatchData
-from narrative_engine.devtools.fixture_data import FixtureMatchData
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.fixture_data import FixtureMatchData
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.core.orchestrator import MatchOrchestrator
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import JsonlSink, read_notifications, replay
 
-HERE = Path(__file__).resolve().parents[2]
+HERE = Path(__file__).resolve().parents[1]
 DEFAULT_MATCH = HERE.parent / "etl" / "seeder" / "matches" / "itg-syn-0001.jsonl"
 DEFAULT_ACTIONS = HERE / "tests" / "fixtures" / "itg-syn-0001-spadl.json"
 
@@ -81,7 +81,7 @@ def main():
     parser.add_argument("--graphql-url", default=os.environ.get("ETL_GRAPHQL_URL", "http://localhost:5000/graphql"))
     parser.add_argument("--match", default=str(DEFAULT_MATCH), help="replay/match JSONL for --data fixture")
     parser.add_argument("--actions", default=str(DEFAULT_ACTIONS),
-                        help="SPADL actions JSON for --data fixture (tools/spadl_fixture.py writes one)")
+                        help="SPADL actions JSON for --data fixture (devtools/spadl_fixture.py writes one)")
     parser.add_argument("--match-id", help="defaults to the notifications' matchId")
     parser.add_argument("--pace", type=float, default=0.0,
                         help="0 = sequential and as fast as possible; N = N times the recorded timing, concurrent")

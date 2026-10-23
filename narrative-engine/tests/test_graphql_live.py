@@ -12,11 +12,11 @@ import httpx
 import pytest
 
 import riverton_forgeham
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.context.render import ACTION_FIELDS
 from narrative_engine.core.models import MatchClock, parse_notification
 from narrative_engine.core.orchestrator import MatchOrchestrator
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.match_data.etl_graphql import GraphQLMatchData
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink

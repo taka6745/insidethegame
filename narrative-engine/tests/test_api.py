@@ -5,10 +5,10 @@ from pathlib import Path
 import httpx
 import pytest
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.api import NarrativeApi, schema
-from narrative_engine.devtools.fixture_data import FixtureMatchData
-from narrative_engine.devtools.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
+from doubles.fixture_data import FixtureMatchData
+from doubles.targets import DEFAULT_BUCKETS as USER_TYPES, StaticTargets, default_targets
 from narrative_engine.core.models import MinuteClosed
 from narrative_engine.core.orchestrator import MatchOrchestrator, utcnow
 from narrative_engine.store.memory import MemoryStore

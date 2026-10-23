@@ -11,19 +11,17 @@ from pathlib import Path
 import pytest
 
 import riverton_forgeham
-from test_backend_sources import BASE, Backend, client
-from test_recording_run import EtlAsOf
-from test_storylines_run import spells_at, trends_at
+from support import BASE, Backend, EtlAsOf, client, spells_at, trends_at
 from narrative_engine.agents.prompt_source import PLACEHOLDER, PROMPTS, ROLES, shipped
 from narrative_engine.api import schema
 from narrative_engine.context.render import MatchInfo
 from narrative_engine.core.models import parse_notification
 from narrative_engine.core.orchestrator import MatchOrchestrator
 from narrative_engine.decisions import Answer, DecisionError, Noul, Score
-from narrative_engine.devtools.fake_agents import FakeAgents
-from narrative_engine.devtools.fake_decisions import FakeDecisions
-from narrative_engine.devtools.follows import CONFIG, StaticTopics, topic
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.fake_agents import FakeAgents
+from doubles.fake_decisions import FakeDecisions
+from doubles.follows import CONFIG, StaticTopics, topic
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.follows import pipeline
 from narrative_engine.follows.topics import HttpTopicSource
 from narrative_engine.service import Router

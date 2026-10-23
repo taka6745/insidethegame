@@ -13,13 +13,13 @@ from pathlib import Path
 import httpx
 import pytest
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.match_data import EtlBehind
 from narrative_engine.match_data.etl_graphql import GraphQLError, GraphQLMatchData, spell_rows, trend_rows
-from narrative_engine.devtools.fixture_data import FixtureMatchData
+from doubles.fixture_data import FixtureMatchData
 from narrative_engine.core.models import MatchClock
 from narrative_engine.core.orchestrator import MatchOrchestrator
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.store.memory import MemoryStore
 from narrative_engine.transport.files import MemorySink, read_notifications
 

@@ -5,15 +5,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
-from narrative_engine.devtools.fake_agents import FakeAgents
+from doubles.fake_agents import FakeAgents
 from narrative_engine.core.config import Settings
 from narrative_engine.core.gate import ModelGate
-from narrative_engine.devtools.fixture_data import FixtureMatchData
+from doubles.fixture_data import FixtureMatchData
 from narrative_engine.store.memory import MemoryStore
 import functools
 
 from narrative_engine import service
-from narrative_engine.devtools.targets import StaticTargets, default_targets
+from doubles.targets import StaticTargets, default_targets
 from narrative_engine.transport.files import MemorySink, narrative_doc, read_notifications
 from azure.servicebus.exceptions import MessageLockLostError
 
