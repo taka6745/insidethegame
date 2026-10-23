@@ -1,4 +1,4 @@
--- Plain trend labels (22 Oct): writers copied two analytics terms into fan-facing text. Writers see each
+-- Plain trend labels: writers copied two analytics terms into fan-facing text. Writers see each
 -- trend's label and meaning, never its id, so the labels themselves are plain football words; the measures are
 -- unchanged. reference/trends.py applies these after the newest @trendDefinitions seed.
 

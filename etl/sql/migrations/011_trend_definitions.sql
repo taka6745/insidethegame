@@ -1,4 +1,4 @@
--- Trend definitions (local/contracts.md §4b): configuration for trendsAtSeq, trendSpellsAtSeq and
+-- Trend definitions (local/contracts/README.md §4b): configuration for trendsAtSeq, trendSpellsAtSeq and
 -- trendMinutesAtSeq (012_trends_at_seq.sql). Formulas are fixed in the procedures (and reference/trends.py);
 -- this table holds what is tunable: whether a trend may be claimed (enabled) and its thresholds.
 --
@@ -29,7 +29,7 @@ CREATE TABLE dbo.trendDefinitions (
     minuteAt        float         NULL,
     minMinutes      int           NULL,
     minBallSeconds  float         NULL,
-    evidence        nvarchar(300) NOT NULL,  -- why it is enabled or not (S1 experiment, 2026-10-21)
+    evidence        nvarchar(300) NOT NULL,  -- why it is enabled or not
     displayOrder    int           NOT NULL
 );
 GO
@@ -58,7 +58,7 @@ WHEN NOT MATCHED BY SOURCE THEN DELETE;
 COMMIT;
 GO
 
--- Seed: the S1 experiment's decision table (storylines report, 2026-10-21). One block; edit it as a whole.
+-- Seed: the decision table. One block; edit it as a whole.
 DECLARE @trendDefinitions nvarchar(max) = N'[
 {"trendId": "possession", "family": "indicator", "label": "possession", "unit": "share", "enabled": true, "notableAt": 0.60, "highAt": 0.66, "changeAt": 0.21, "minuteAt": null, "minMinutes": null, "minBallSeconds": null, "evidence": "Separates teams: eta2 0.16, p 0.005.", "definition": "Share of measured ball-ownership seconds (POS samples, each in the minute it ends in), (own + 1) / (own + opponent + 2)."},
 {"trendId": "field_tilt", "family": "indicator", "label": "field tilt", "unit": "share", "enabled": true, "notableAt": 0.70, "highAt": 0.77, "changeAt": 0.35, "minuteAt": null, "minMinutes": null, "minBallSeconds": null, "evidence": "Separates teams: eta2 0.31, p 0.005.", "definition": "Share of on-ball SPADL actions (fouls excluded) starting in the final third (team frame, x >= 70 m), (own + 1) / (own + opponent + 2)."},

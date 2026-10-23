@@ -1,4 +1,4 @@
--- SPADL actions (local/contracts.md §3, etl/contracts/spadl-action.schema.json), converted from MA3 rawEvents
+-- SPADL actions (local/contracts/README.md §3, etl/contracts/spadl-action.schema.json), converted from MA3 rawEvents
 -- by the SPADL post-processor (spadl/worker.py; a task in etl-stream locally, ETL_ROLE=spadl on Azure).
 -- Only final actions are stored: a snapshot (matchId, s) reads actions with finalSeq <= s, for s <= spadlSeq.
 

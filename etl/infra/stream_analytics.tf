@@ -27,10 +27,9 @@ resource "azurerm_stream_analytics_stream_input_eventhub_v2" "match_events" {
   servicebus_namespace         = azurerm_eventhub_namespace.etl.name
   eventhub_consumer_group_name = azurerm_eventhub_consumer_group.consumers["stream-analytics"].name
   partition_key                = "matchId"
-  # LATER: switch to "Msi" (+ asa_eventhub_receiver role) once we can create role assignments.
-  authentication_mode       = "ConnectionString"
-  shared_access_policy_name = azurerm_eventhub_authorization_rule.asa_listen.name
-  shared_access_policy_key  = azurerm_eventhub_authorization_rule.asa_listen.primary_key
+  authentication_mode          = "ConnectionString"
+  shared_access_policy_name    = azurerm_eventhub_authorization_rule.asa_listen.name
+  shared_access_policy_key     = azurerm_eventhub_authorization_rule.asa_listen.primary_key
 
   serialization {
     type     = "Json"
@@ -75,7 +74,6 @@ resource "azurerm_stream_analytics_output_servicebus_topic" "notifications" {
   resource_group_name       = azurerm_resource_group.etl.name
   topic_name                = azurerm_servicebus_topic.notifications.name
   servicebus_namespace      = azurerm_servicebus_namespace.etl.name
-  # LATER: switch to "Msi" (+ asa_servicebus_sender role) once we can create role assignments.
   authentication_mode       = "ConnectionString"
   shared_access_policy_name = azurerm_servicebus_topic_authorization_rule.asa_send.name
   shared_access_policy_key  = azurerm_servicebus_topic_authorization_rule.asa_send.primary_key
@@ -120,7 +118,3 @@ resource "azurerm_stream_analytics_function_javascript_udf" "udfs" {
     type = each.value.output
   }
 }
-
-# LATER: managed-identity roles, restored when the account can create role assignments (Contributor cannot).
-# resource "azurerm_role_assignment" "asa_eventhub_receiver"  -> "Azure Event Hubs Data Receiver" on the hub
-# resource "azurerm_role_assignment" "asa_servicebus_sender"  -> "Azure Service Bus Data Sender" on the topic

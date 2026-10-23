@@ -1,4 +1,4 @@
--- Multi-match read models (local/contracts.md §1–5): match identity from MA1, teams and players,
+-- Multi-match read models (local/contracts/README.md §1–5): match identity from MA1, teams and players,
 -- canonical MatchEvent v2 storage, POS possession samples, the per-match watermark and purge tombstones.
 
 ALTER TABLE dbo.matches ADD

@@ -1,4 +1,4 @@
--- Trend patterns (S1 storylines experiment v2, 22 Oct; local/contracts.md §4b). Replaces 012's procedures:
+-- Trend patterns (local/contracts/README.md §4b). Replaces 012's procedures:
 -- - flanks (right_flank_share, left_flank_share), the late fade (territory_fade) and territory by game state
 --   (att_half_leading, att_half_trailing), with their minute components (attActions, rightActions, leftActions,
 --   goalsFor, leadAtStart);
@@ -529,7 +529,7 @@ GROUP BY s.trendId, s.displayOrder, s.enabled, s.isHome, s.periodId, s.fromRn, s
 ORDER BY s.fromRn, s.isHome DESC, s.displayOrder;
 GO
 
--- Seed: the S1 v2 decision table, thresholds from devtools/calibrate_trends.py. One block; edit it as a whole.
+-- Seed: the decision table, thresholds from devtools/calibrate_trends.py. One block; edit it as a whole.
 DECLARE @trendDefinitions nvarchar(max) = N'[{"trendId": "possession", "family": "indicator", "label": "possession", "unit": "share", "enabled": true, "direction": "high", "notableAt": 0.704, "highAt": 0.774, "changeAt": 0.358, "minuteAt": null, "minMinutes": null, "minBallSeconds": null, "requires": null, "meaning": "their share of the time on the ball", "evidence": "Separates teams: eta2 0.31-0.36, p 0.005 (S1 v2).", "definition": "Share of measured ball-ownership seconds (POS samples, each in the minute it ends in), (own + 1) / (own + opponent + 2)."},
 {"trendId": "field_tilt", "family": "indicator", "label": "field tilt", "unit": "share", "enabled": true, "direction": "high", "notableAt": 0.881, "highAt": 0.936, "changeAt": 0.599, "minuteAt": null, "minMinutes": null, "minBallSeconds": null, "requires": null, "meaning": "their share of the play in the two final thirds", "evidence": "Separates teams: p 0.005 (S1 v2).", "definition": "Share of on-ball SPADL actions (fouls excluded) starting in the final third (team frame, x >= 70 m), (own + 1) / (own + opponent + 2)."},
 {"trendId": "att_half_share", "family": "indicator", "label": "attacking-half share", "unit": "share", "enabled": true, "direction": "high", "notableAt": 0.734, "highAt": 0.804, "changeAt": 0.425, "minuteAt": null, "minMinutes": null, "minBallSeconds": null, "requires": null, "meaning": "how much of the ball''s time is in their attacking half", "evidence": "Separates teams: p 0.005; minute-to-minute persistence lag-1 r +0.13 to +0.43 (S1 v2).", "definition": "Share of ball time in the team''s attacking half: each SPADL action''s start holds until the next action (at most 8 s; 1 s after a period''s last), (seconds + 1) / (ball seconds + 2)."},

@@ -1,4 +1,4 @@
--- Trend parameters guard (round 16): dbo.trendMinuteRows reads 13 named parameters, and a missing one turned into
+-- Trend parameters guard: dbo.trendMinuteRows reads 13 named parameters, and a missing one turned into
 -- NULL and silently emptied its components. A function cannot raise, so the seed procedure refuses any block that
 -- does not hold exactly the names the function reads, each with a value, and leaves the table unchanged.
 

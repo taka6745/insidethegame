@@ -1,4 +1,4 @@
-"""Owner admin API: health and the per-match purge (local/contracts.md §5). Locally it runs inside the
+"""Owner admin API: health and the per-match purge (local/contracts/README.md §5). Locally it runs inside the
 worker; on Azure (ETL_ROLE=admin) alone, against Azure SQL, behind a bearer token (ETL_ADMIN_TOKEN)."""
 import hmac
 import json
@@ -98,7 +98,7 @@ def serve(worker, repository, port=8000, token=None, routes=()):
 
 
 def demo_routes(worker, repository):
-    """The demo seed routes when DEMO_SEEDS=1 (PLAN.md §10.6); a production release leaves it off."""
+    """The demo seed routes when DEMO_SEEDS=1; a production release leaves it off."""
     if os.environ.get("DEMO_SEEDS") != "1":
         return ()
     from local_stream import demo_seeds

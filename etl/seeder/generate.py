@@ -1,7 +1,6 @@
 """Generate a synthetic Opta MA1/MA3-style match for ETL development.
 
 SYNTHETIC DATA: invented teams, players and events, labelled `synthetic: true`.
-Temporary until data-generation/ supplies matches.
 
 The scripted moments cover every key event: goal, missed penalty, VAR goal
 overturn, second-yellow red card, scored penalty and own goal. Final score 1-2.
@@ -101,8 +100,6 @@ class MatchBuilder:
         self.pass_(side, taker, 50, 50, 38, self.rng.uniform(30, 70), extra=[(opta.Q_KICK_OFF, None)], dt=dt)
         return side, 38.0
 
-    # ---- open play -------------------------------------------------------
-
     def possession(self, side, x):
         rng = self.rng
         y = rng.uniform(10, 90)
@@ -182,8 +179,6 @@ class MatchBuilder:
                    extra=[(opta.Q_FREE_KICK, None)], dt=rng.uniform(10, 25))
         return side, nx
 
-    # ---- scripted key moments ------------------------------------------
-
     def scripted_moments(self):
         return [
             (22 * 60 + 40, self.goal, "home"),
@@ -259,8 +254,6 @@ class MatchBuilder:
         self.build_up(attacker, to_x=88)
         self.emit(side, opta.GOAL, self.player(side, 5), 1, 4, 52, [(opta.Q_OWN_GOAL, None)], dt=self.rng.uniform(1, 2))
         return self.kick_off(side, dt=self.rng.uniform(50, 70))
-
-    # ---- match ---------------------------------------------------------
 
     def play_period(self, period, kicking_side):
         self.period = period

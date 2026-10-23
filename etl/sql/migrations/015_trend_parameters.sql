@@ -1,4 +1,4 @@
--- Trend parameters (round 14): the constants inside the trend formulas become configuration, beside
+-- Trend parameters: the constants inside the trend formulas become configuration, beside
 -- trendDefinitions. dbo.trendMinuteRows (014) is recreated to read them; the seed holds the values 014 had
 -- inline, so every served value is unchanged. Changing a value changes what the trends measure (the definitions'
 -- text names them): recalibrate the thresholds (python -m devtools.calibrate_trends) after any change.

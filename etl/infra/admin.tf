@@ -4,7 +4,6 @@
 # -var admin_image_tag=TAG, then `python -m devtools azure-setup` to grant the app's database user.
 
 # Basic registry; the app pulls with the admin credentials because this account cannot grant AcrPull.
-# LATER: managed identity with AcrPull, admin_enabled = false.
 resource "azurerm_container_registry" "etl" {
   name                = replace("${local.name}acr", "-", "")
   location            = azurerm_resource_group.etl.location

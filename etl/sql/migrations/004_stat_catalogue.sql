@@ -1,4 +1,4 @@
--- Stat catalogue (local/contracts.md §4): 29 kinds × 3 scopes = 87 frozen stat ids, served by
+-- Stat catalogue (local/contracts/README.md §4): 29 kinds × 3 scopes = 87 frozen stat ids, served by
 -- statsAtSeq(@matchId, @seq) from canonical events and possession samples. Definitions are
 -- configuration; reference/catalogue.py reads the seed below and is the executable expectation.
 --

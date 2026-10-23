@@ -1,4 +1,4 @@
-"""Demo seeds (PLAN.md §10.6): export one match's ETL rows, or load them under a new matchId.
+"""Demo seeds: export one match's ETL rows, or load them under a new matchId.
 
 Restore writes rows in the shapes the stream writes, then has the worker reload its state from SQL as after a
 restart, so the run carries on from the seed's seq; no core code knows a demo exists. Mounted on the admin

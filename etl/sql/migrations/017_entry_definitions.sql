@@ -1,4 +1,4 @@
--- Entry definitions (round 17): writers compared box entries (77) with final-third entries (45) as if one were
+-- Entry definitions: writers compared box entries (77) with final-third entries (45) as if one were
 -- inside the other. The counters are not nested: a final-third entry starts before the final third, a box entry
 -- starts anywhere outside the box, including inside the final third. The definitions now say so; the counting is
 -- unchanged. reference/catalogue.py applies these after the 008 seed.

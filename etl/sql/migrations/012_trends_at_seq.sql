@@ -1,8 +1,8 @@
--- Trend indicators at a snapshot (local/contracts.md §3, §4b): trendMinutesAtSeq (per minute and team),
+-- Trend indicators at a snapshot (local/contracts/README.md §3, §4b): trendMinutesAtSeq (per minute and team),
 -- trendsAtSeq (indicator × team × window) and trendSpellsAtSeq (territory and pressure spells). Read-time: each
 -- call recomputes from the rows final at (matchId, seq), so a backlog read equals the live one. Empty for an
 -- unknown or purged match, or for a seq above the watermark or above spadlSeq (retry), never a partial set.
--- Formulas (the S1 storylines experiment) are documented in §4b; thresholds come from dbo.trendDefinitions (011).
+-- Formulas are documented in §4b; thresholds come from dbo.trendDefinitions (011).
 -- reference/trends.py is the executable twin; tests compare them on every recording.
 
 -- One row per minute (match order) and team: the components every trend reads.

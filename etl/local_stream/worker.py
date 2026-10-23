@@ -134,7 +134,7 @@ class StreamWorker:
                 return False
             if message["seq"] != state.seq + 1:
                 # Lost events (e.g. the Event Hubs emulator restarted): the watermark stays before
-                # the gap rather than count a partial history (local/contracts.md §1).
+                # the gap rather than count a partial history (local/contracts/README.md §1).
                 if match_id not in self.gapped:
                     log.warning("MatchEvent %s:%s after seq %s: events were lost; the match stays at seq %s",
                                 match_id, message["seq"], state.seq, state.seq)

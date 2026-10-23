@@ -49,8 +49,7 @@ resource "azurerm_servicebus_subscription" "narrative_engine" {
 }
 
 # Shared access keys, scoped to one right each, because this account (Contributor) cannot create role
-# assignments. LATER: replace with managed identity / Entra roles and remove these rules:
-#   you  -> "Azure Event Hubs Data Sender" on the hub, "Azure Service Bus Data Receiver" on the topic.
+# assignments.
 resource "azurerm_eventhub_authorization_rule" "asa_listen" {
   name                = "stream-analytics-listen"
   namespace_name      = azurerm_eventhub_namespace.etl.name

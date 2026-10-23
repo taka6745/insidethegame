@@ -63,7 +63,7 @@ def send_to_eventhub(messages, namespace, hub):
         return datetime.fromisoformat(message["timeStamp"].replace("Z", "+00:00"))
 
     connection_string = os.environ.get("ETL_EVENTHUB_CONNECTION_STRING")
-    if connection_string:  # LATER: drop once Entra roles can be assigned
+    if connection_string:
         producer = EventHubProducerClient.from_connection_string(connection_string, eventhub_name=hub)
     else:
         from azure.identity import DefaultAzureCredential
