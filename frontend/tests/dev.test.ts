@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { check, placeholders } from "../dev/prompts.ts";
-import { draftIssue, expandBuckets, MAX_BUCKETS } from "../dev/audiences.ts";
+import { draftIssue, expandBuckets, MAX_BUCKETS, templateConfig } from "../dev/audiences.ts";
 import { formatSelections, parseSelections, profilesIssue } from "../dev/profiles.ts";
 
 test("prompt placeholders follow the backend rule and ignore JSON braces", () => {
@@ -53,6 +53,19 @@ test("renaming a layer or option keeps its buckets' enabled flags", () => {
     { ...before[1]!, id: "style" }];
   assert.deepEqual(expandBuckets(after, previous, before).filter((b) => b.enabled),
     [{ id: "visitors:simple", selections: { team: "visitors", style: "simple" }, enabled: true }]);
+});
+
+test("saving a template keeps each option's team and in_label", () => {
+  const saved = templateConfig({
+    layers: [{ id: "length", description: " How long. ", options: [
+      { id: "standard", label: "Standard", in_label: false, description: "Usual. " },
+      { id: "brief", label: " ", team: null, in_label: null, description: "Short." }] },
+    { id: "team", description: "Side.", options: [{ id: "home", label: "{home}", team: "home", description: "Home." }] }],
+    buckets: [],
+  });
+  assert.deepEqual(saved.layers.map((layer) => layer.options), [
+    [{ id: "standard", label: "Standard", in_label: false, description: "Usual." }, { id: "brief", description: "Short." }],
+    [{ id: "home", label: "{home}", team: "home", description: "Home." }]]);
 });
 
 test("profile drafts need unique ids, a name and option ids", () => {

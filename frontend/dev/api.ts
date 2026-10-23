@@ -3,7 +3,7 @@ import { LabApi } from "../lab/api.ts";
 export interface PromptVersion { version: number; template: string; placeholders: string[]; source: string; created_at: string }
 export interface PromptRole { role: string; active_version: number; placeholders: string[]; versions: PromptVersion[] }
 /** `label` is viewer-facing (may use `{home}`/`{away}`); `description` goes to the narrative author. */
-export interface AudienceOption { id: string; label?: string | null; team?: "home" | "away" | null; in_label?: boolean; description: string }
+export interface AudienceOption { id: string; label?: string | null; team?: "home" | "away" | null; in_label?: boolean | null; description: string }
 export interface AudienceLayer { id: string; description: string; options: AudienceOption[] }
 export interface AudienceBucket { id: string; selections: Record<string, string>; enabled: boolean }
 export interface AudienceConfig { layers: AudienceLayer[]; buckets: AudienceBucket[] }

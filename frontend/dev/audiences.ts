@@ -6,6 +6,20 @@ export const MAX_BUCKETS = 48;
 const KEY = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 
 export const MAX_LAYERS = 8;
+
+/** The draft as saved: trimmed text; an option's `team` and `in_label` (not edited here) are kept. */
+export function templateConfig(draft: AudienceConfig): AudienceConfig {
+  return {
+    layers: draft.layers.map((layer) => ({
+      id: layer.id, description: layer.description.trim(),
+      options: layer.options.map(({ id, label, description, team, in_label }) => ({
+        id, description: description.trim(), ...(label?.trim() ? { label: label.trim() } : {}),
+        ...(team ? { team } : {}), ...(typeof in_label === "boolean" ? { in_label } : {}),
+      })),
+    })),
+    buckets: draft.buckets,
+  };
+}
 export const MAX_OPTIONS = 20;
 
 /** Every combination of one option per layer, in layer order. `enabled` is kept by selections, or,
@@ -267,17 +281,8 @@ export class AudiencesView {
     this.read();
     const issue = draftIssue(draft);
     if (issue) return this.notify(issue, true);
-    const config: AudienceConfig = {
-      layers: draft.layers.map((layer) => ({
-        id: layer.id, description: layer.description.trim(),
-        options: layer.options.map(({ id, label, description }) => ({
-          id, description: description.trim(), ...(label?.trim() ? { label: label.trim() } : {}),
-        })),
-      })),
-      buckets: draft.buckets,
-    };
     try {
-      const { revision } = await this.api.saveTemplate(this.fixture, config, template.revision);
+      const { revision } = await this.api.saveTemplate(this.fixture, templateConfig(draft), template.revision);
       this.setDirty(false);
       this.notify(`Saved ${this.fixture} revision ${revision}; its matches follow the template.`);
       await this.load(true);
