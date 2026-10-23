@@ -1,9 +1,5 @@
-"""Deterministic stand-in decision model for tests and offline runs. No model calls.
-
-`answers` maps a question key to a fixed probability (noul), option (choice) or level index (score); a key
-not listed gets `rule(key, question, state)` when given (None: fall through), else `default` (a probability or
-level; a choice falls back to its first option). Every call is kept in `calls` as (state, questions).
-"""
+"""Deterministic stand-in decision model for tests and offline runs. `answers` maps a question key to a fixed
+answer; others get `rule(key, question, state)` when given, else `default`. Calls are kept in `calls`."""
 from narrative_engine.decisions import Answer, Choice, Decisions, Noul
 
 

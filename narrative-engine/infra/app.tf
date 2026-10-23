@@ -2,7 +2,7 @@
 # `python -m narrative_engine.devtools.azure build --tag X`, then apply with -var engine_image_tag=X.
 
 # Basic registry; the app pulls with the admin credentials because this account cannot grant
-# AcrPull. LATER: managed identity with AcrPull, admin_enabled = false.
+# AcrPull.
 resource "azurerm_container_registry" "engine" {
   name                = replace("${local.name}acr", "-", "")
   location            = azurerm_resource_group.narrative.location

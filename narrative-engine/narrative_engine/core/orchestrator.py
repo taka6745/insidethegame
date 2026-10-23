@@ -1,47 +1,5 @@
-"""Decides what runs when for one match (docs/design/narrative-generation-engine.md §6, §10).
-
-- MinuteClosed: summarise every unsummarised minute up to it, in order, then compress.
-  Empty minutes, and merges of only empty blocks, get a fixed block without a model call.
-  Each finished period collapses into one block and gets a half-time or full-time narrative
-  step; its last minute skips the regular compression and scheduled step, which that redoes.
-  Nor is a scheduled step queued in stoppage time: the half-time or full-time step is minutes away.
-- KeyEventDetected: an author step for the active buckets (no debounce), with the key event's `MomentClip`
-  when the follow config clips its type (PLAN.md §10.2 D7).
-- Ten summarised minutes without a step: a scheduled author step.
-- At minutes 5, 10, 15 … (`analysis_minutes`) of each match, and at half and full time: a match analysis.
-  The analyst reads the ETL's trends and names patterns in its own words, citing the numbers; the
-  validator drops ungrounded observations and the reducer moves the storylines (analysis.storylines); the
-  analysis is stored as an immutable snapshot and the storylines as its projection. A storyline it opens
-  or resolves gets a `storylineTurn` author step (setting `storyline_turns`). Every author step advances
-  one focus storyline, chosen here from the latest analysis and shared by all its buckets.
-- Targets: the user backend's enabled buckets for this matchId (audience.targets), re-read on every
-  message and by the router's poll; a newly enabled bucket gets a catch-up step, and a disabled one
-  gets nothing after its in-flight steps. An empty list: nothing is written. Never read yet (backend
-  down): steps wait for them.
-- The match is complete once its final period (MA1 capabilities.periods) has ended and been summarised.
-
-Each message is first *recorded* in the match checkpoint (closed minutes, the horizon and
-a queue of pending narrative steps), then the *work* runs from the checkpoint in match-time
-order: a step waits for the minutes that were closed when it was recorded (a key event,
-a catch-up) or for its own minute (scheduled, half and full time), runs before any later
-minute is summarised, and reads only up to the horizon recorded with it. So a backlog
-gives the same output as live processing. `accept` records and wakes a
-background worker, so a Service Bus message can be completed in milliseconds however slow
-the models are; after a restart the worker resumes from the checkpoint. `handle` records
-and waits for the work (tests and local runs). Recording is idempotent: block IDs and step
-IDs are deterministic, and a step that is done or queued is not queued again. A match runs one
-step at a time; a step's author calls run together (capped by `author_concurrency`), and each one
-that fails leaves the others' narratives stored, so a retry redoes only the missing ones. Every
-agent model call also takes a slot of the router's global `ModelGate`; decision calls do too unless
-the decision model has its own capacity (`decision_slot`).
-- Story follows (follows/): with the backend's followed topics and a decision model, each key event,
-  minute recap, storyline update and period end also queues a `subscriptionEval` step that asks the
-  decision model which followed topics moved and writes their narratives; a (topic, bucket) pair that
-  appears mid-match gets a `subscriptionStart` step ("the story so far").
-- Grounding: every excerpt is checked by analysis.validator (numbers, names, wording) and by the
-  decision model's claim questions (the policy's `claims`: cause, intent, result, comparison), one call
-  per step's drafts, with the policy's rewrites.
-"""
+"""Decides what runs when for one match: record each message in its checkpoint, then work through the
+checkpoint in match-time order, so a backlog gives the same output as live. See docs/components/core.md §3."""
 import asyncio
 import hashlib
 import json
@@ -127,8 +85,6 @@ class MatchOrchestrator:
         self.worker, self.wake = None, asyncio.Event()
         self.closed = False
 
-    # --- state -----------------------------------------------------------------
-
     async def _load(self):
         if self.cp is None:
             self.cp = await self.store.get_checkpoint(self.match_id) or new_checkpoint()
@@ -204,8 +160,6 @@ class MatchOrchestrator:
                                    "keyRow": key_row, **extra})
         return True
 
-    # --- recording ---------------------------------------------------------------
-
     async def handle(self, message):
         """Record the message, then do the work it makes due."""
         await self.record(message)
@@ -260,8 +214,6 @@ class MatchOrchestrator:
         if closed is None or clock > closed:
             self.cp["closedThrough"] = clock.key
 
-    # --- background worker -------------------------------------------------------
-
     def decision_slot(self):
         """A model-gate slot for a decision call, unless the decision model has its own capacity (Decision-1:
         its own deployment and request pacing), so waiting for it never holds back the agents' calls."""
@@ -292,8 +244,6 @@ class MatchOrchestrator:
                 self.wake.set()
                 await asyncio.sleep(delay)
                 delay = min(delay * 2, self.settings.retry_max_seconds)
-
-    # --- work ----------------------------------------------------------------------
 
     async def work(self):
         """Steps and minute summaries in match-time order, until nothing is due."""
@@ -375,7 +325,7 @@ class MatchOrchestrator:
                  p, m, s, len(pending["buckets"]), self.cp["closedThrough"])
 
     async def _publish_moment_clip(self, pending):
-        """A key event's clip on the shared narratives of the step's buckets (`MomentClip`, PLAN.md §10.2 D7), when
+        """A key event's clip on the shared narratives of the step's buckets (`MomentClip`), when
         the served clip settings (`clips.enabled`, `clips.shared`; read with the follow targets but kept apart, so no
         follow or decision model is needed) clip its `keyType`. Sent apart from the narratives, so their grounding
         never decides it; again on a retry (the backend keeps one per bucket and moment)."""
@@ -405,8 +355,6 @@ class MatchOrchestrator:
             **pending["keyRow"], "id": pending["eventIds"][0]}, turned=pending.get("turned"),
             analysis_id=pending["analysisId"], recent=self.cp["focusLog"])
         pending["focus"] = chosen and chosen["id"]
-
-    # --- match analysis ----------------------------------------------------------------
 
     def _queue_analysis(self, ref, reason, clock, horizon):
         self._queue(Trigger("analysis", ref, reason), clock, horizon, [], clock.key)
@@ -630,8 +578,6 @@ class MatchOrchestrator:
                 self.cp["status"] = "complete"
             closed = True
         return closed
-
-    # --- narrative steps ----------------------------------------------------------
 
     async def _step(self, trigger, clock, buckets, horizon, prompt, event_seq, analysis_id=None, focus=None):
         if trigger.type != "catchUp":

@@ -2,7 +2,6 @@
 # them and a reasoning effort in var.agents, so moving the author to a stronger model is: add it to
 # var.models, point agents.author at it, apply.
 # Key auth because this account (Contributor) cannot grant the app a Cognitive Services role.
-# LATER: managed identity with "Cognitive Services OpenAI User", then local_auth_enabled = false.
 resource "azurerm_cognitive_account" "foundry" {
   name                  = "${local.name}-foundry"
   location              = azurerm_resource_group.narrative.location

@@ -106,7 +106,7 @@ def test_action_lines_use_spadl_names_and_team_relative_places():
 
 
 def test_keeper_saves_that_are_not_goalkeeper_saves_say_so():
-    # No Riverton Rovers–United keeper_save is an outfield block since the 2026-10-22 re-render: mark a save as one.
+    # No Riverton Rovers–United keeper_save is an outfield block in the current render: mark a save as one.
     block = {**next(a for a in DATA.actions_rows if a["typeName"] == "keeper_save"), "defensiveBlock": True}
     assert describe_action(block, CU).startswith("keeper_save, success, outfield block, not a goalkeeper save")
     wide = next(a for a in DATA.actions_rows if a["fromShotOffTarget"])

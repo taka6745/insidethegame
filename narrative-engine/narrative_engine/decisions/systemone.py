@@ -1,12 +1,5 @@
-"""Microsoft-Decision-1 on Azure AI Foundry over the SystemOne API (TypeSafe-compatible).
-
-POST {DECISION_BASE_URL}{DECISION_PATH} with {"model", "state", "questions": {key: {"type": "noul"|"choice"|"score",
-"instructions", "criteria"}}}; the reply is {"model", "answers": {key: {...}}, "usage": {"input_tokens",
-"output_tokens"}}. noul criteria are {"true", "false"} descriptions, choice criteria map each option to its
-description, score criteria list the levels lowest first. Batches larger than DECISION_MAX_QUESTIONS are split.
-The deployment's limit is in requests per minute (one capacity unit each; a request may hold well over a hundred
-questions), so DECISION_REQUESTS_PER_MINUTE paces every request of the process, and a 429 waits for its
-retry-after.
+"""Microsoft-Decision-1 on Azure AI Foundry over the SystemOne API (docs/components/decisions.md). The limit is
+requests per minute, so DECISION_REQUESTS_PER_MINUTE paces every request of the process and a 429 waits.
 
     python -m narrative_engine.decisions.systemone   # one smoke call; never prints the key
 """

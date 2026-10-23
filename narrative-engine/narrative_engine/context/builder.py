@@ -1,13 +1,6 @@
-"""Builds each agent's prompt variables from the store and the ETL.
-
-Reads never go past the horizon: the latest (clock, second) announced by an ETL
-notification. MA3 rows and key events are read by clock; SPADL actions and catalogue stats
-by `seq`, the canonical seq of the latest MA3 row up to that clock. A window of play from
-minute `start` to the horizon holds the actions settled in it (finalSeq after the seq at the
-end of the minute before `start`, up to the horizon's), so every action is shown exactly once,
-in the window in which it became final. Statistics come from the last summarised minute,
-because a minute is only complete once its MinuteClosed has arrived.
-"""
+"""Builds each agent's prompt variables from the store and the ETL. Reads never go past the horizon (the latest
+clock announced by an ETL notification); a window shows each SPADL action once, in the window where it became
+final; statistics come from the last summarised minute, since a minute is complete only once it has closed."""
 from narrative_engine.analysis.policy import ShippedPolicy
 from narrative_engine.analysis.validator import ledger_facts
 from narrative_engine.context.compression import HALF

@@ -1,15 +1,6 @@
-"""Prompt templates per role, from the user backend's prompts API (the service) or the shipped files
-(tests and devtools only).
-
-Roles: minute-summary, context-compression, match-analyst, narrative-author, subscription-decision (the story-follow
-decision state) and subscription-author (a followed story's narrative). `GET {USER_BACKEND}/narrative-prompts`
-returns `{"revision", "prompts": [{"role", "version", "template", "placeholders"}]}` with an ETag.
-A template is used only if its `{placeholder}` set equals the shipped file's. There is no fallback:
-when the API is unreachable (and nothing is cached), a role is missing or its placeholders are
-wrong, `PromptUnavailable` pauses the work and /health reports it. Labels: `{role}@{version}` from
-the API, the file name (`narrative-author.v3`) for shipped files. Every prompt seen is kept by
-label, so a narrative step pinned to one keeps it on retries.
-"""
+"""Prompt templates per role, from the user backend's prompts API (the service) or the shipped files (tests and
+devtools only). A template is used only if its placeholders equal the shipped file's; there is no fallback
+(`PromptUnavailable`). Every prompt seen is kept by label, so a step pinned to one keeps it on retries."""
 import logging
 import re
 from dataclasses import dataclass

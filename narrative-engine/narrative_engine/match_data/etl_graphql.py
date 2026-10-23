@@ -1,14 +1,6 @@
-"""ETL GraphQL client (Data API builder). Implements `match_data.MatchData`.
-
-Filters are passed as GraphQL variables of DAB's generated `{Entity}FilterInput` types.
-Clock bounds compare (periodId, timeMin, timeSec) lexicographically, because timeMin
-repeats across periods (first-half added time and the second half both use 45+).
-SPADL reads (`spadlActions`, `executeStatsAtSeq`) are bounded by a canonical seq and wait
-until `matchWatermarks.spadlSeq` has reached it, so they never see a partial conversion.
-MA3 reads (`rawEvents`) are bounded by seq as well as clock: `eventSeq <= matchWatermarks.seq`, the
-ETL's committed canonical seq, so rows SQL holds past it are unreachable. A clock range that already
-holds rows past the watermark is not complete yet: `events` and `event_seq` raise EtlBehind for it.
-"""
+"""ETL GraphQL client (Data API builder); implements `match_data.MatchData`. Clock bounds compare
+(periodId, timeMin, timeSec) because timeMin repeats across periods. SPADL reads wait for `spadlSeq`; MA3 reads
+stop at the committed seq, and a clock range holding rows past it raises EtlBehind."""
 import asyncio
 import json
 
@@ -167,7 +159,7 @@ class GraphQLMatchData:
         return await self._at_seq("executeStatsAtSeq", STAT_FIELDS, match_id, seq)
 
     async def trends_at(self, match_id, seq):
-        """Trend indicators at `seq` (local/contracts.md §4b), normalised (`trend_rows`)."""
+        """Trend indicators at `seq` (local/contracts/README.md §4b), normalised (`trend_rows`)."""
         return trend_rows(await self._at_seq("executeTrendsAtSeq", TREND_FIELDS, match_id, seq))
 
     async def spells_at(self, match_id, seq):

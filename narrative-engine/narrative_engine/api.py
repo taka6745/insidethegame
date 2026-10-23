@@ -1,7 +1,5 @@
-"""Narrative history GraphQL API (read-only), served from the engine's store.
-
-Live narratives go out on Service Bus; this API is for joins and reconnects: a bucket's
-backlog after a known `seq`, and the match's current state. See contracts/README.md.
+"""Narrative history GraphQL API (read-only), served from the engine's store: a bucket's backlog after a known
+`seq` and the match's current state, for joins and reconnects. See contracts/README.md.
 
     python -m narrative_engine.api .local/narratives.jsonl --port 8000   # serve a local run's output
 """

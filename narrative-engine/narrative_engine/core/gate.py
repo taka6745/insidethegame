@@ -1,9 +1,5 @@
-"""One cap on model calls in flight across every match.
-
-Waiting calls are granted in order of: kind (minute summaries and compressions, then match analyses,
-then story-follow decisions, then author calls, so every match's context and storylines keep advancing), then the match served least recently (so one
-busy match cannot starve the others), then arrival.
-"""
+"""One cap on model calls in flight across every match. Waiting calls go by kind (summaries and compressions,
+analyses, follow decisions, then authors), then the match served least recently (no starvation), then arrival."""
 import asyncio
 import itertools
 from contextlib import asynccontextmanager

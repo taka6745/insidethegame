@@ -3,7 +3,7 @@
 Inputs are the ETL shapes: the MA1 payload from `matches`, `spadlActions` rows (SPADL actions,
 etl/contracts/README.md Output 3), MA3 payloads from `rawEvents` for the facts SPADL leaves out
 (period start and end, yellow cards, substitutions), `keyEvents` rows (goals, red cards,
-penalties, VAR) and `executeStatsAtSeq` rows (the SPADL stat catalogue, local/contracts.md §4).
+penalties, VAR) and `executeStatsAtSeq` rows (the SPADL stat catalogue, local/contracts/README.md §4).
 Action types and results keep their SPADL names. Passes and carries are counted per team rather
 than listed, which keeps a minute to a few lines.
 """
@@ -312,7 +312,7 @@ def trend_note(row):
 
 
 def render_trends(rows, info, flagged_only=False, always=()):
-    """ETL trend rows (local/contracts.md §4b) per window and team: `label value (level, rising from previous)`,
+    """ETL trend rows (local/contracts/README.md §4b) per window and team: `label value (level, rising from previous)`,
     then what each label measures (the definitions' plain-words `meaning`). `flagged_only` keeps rows with a level
     or trend, plus the whole-match `always` indicators (the policy's `author_match_indicators`), so the author sees
     the shape of the game without every number."""

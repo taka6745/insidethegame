@@ -1,13 +1,5 @@
-"""Which buckets to write for, and how to describe each one to the author.
-
-The user backend owns audience definitions (AGENTS.md). Its read-only
-`GET /matches/{matchId}/audience-config` lists `generation_targets`: the buckets enabled in its
-configuration (toggled in /dev/; there is no viewer presence), each with its layer and option
-descriptions. The engine writes only for those; an empty list means write nothing.
-The engine asks by its run-scoped matchId; the backend resolves the fixture's audience template.
-There is no fallback: with no answer from the backend, authoring waits.
-Fixed buckets for tests and devtools live in `devtools/targets.py`; the service never uses them.
-"""
+"""Which buckets to write for, and how to describe each one to the author: the user backend's
+`generation_targets` for this matchId. An empty list means write nothing; with no answer, authoring waits."""
 from dataclasses import dataclass
 from typing import Protocol
 

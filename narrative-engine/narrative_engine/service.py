@@ -1,26 +1,6 @@
 """The engine as a service: Service Bus in, Cosmos DB state, Service Bus out, GraphQL history.
 
-    python -m narrative_engine.service      # settings from the environment or .env
-
-| Setting | Meaning |
-| --- | --- |
-| ETL_GRAPHQL_URL | ETL Data API builder GraphQL endpoint |
-| SERVICEBUS_NOTIFICATIONS | listen connection string for match-notifications (ETL output) |
-| NOTIFICATIONS_SUBSCRIPTION | its subscription (default narrative-engine; the local stack uses narrative-live) |
-| SERVICEBUS_NARRATIVES | send connection string for the narratives topic |
-| USER_BACKEND_URL | required: the user backend's audience targets and followed topics (per matchId), prompts and storyline policy. No fallback: while it cannot answer, authoring waits and /health is 503 |
-| COSMOS_ENDPOINT | required: Cosmos DB account (Entra ID auth, or COSMOS_KEY for the emulator) |
-| OPENAI_*, LOCAL_LLM_* | required: the agents' model settings (agents.llm); fake agents (devtools/, not in the image) and the memory store are for tests and devtools only |
-| DECISION_* | required: the decision model (decisions/; Microsoft-Decision-1, or the constrained-LLM fallback when DECISION_BASE_URL is unset): story-follow triggers and the analyst's and authors' claim checks (the storyline policy's `claims`) |
-| MODEL_CONCURRENCY, AUTHOR_CONCURRENCY, FALLBACK_MINUTES, FINAL_PERIOD, TARGETS_POLL_SECONDS, ... | `core.config.Settings` |
-| PORT | GraphQL port (default 8000); also serves `GET /health` and `POST /admin/matches/purge` |
-| ADMIN_TOKEN | optional (set on Azure): the purge then needs `Authorization: Bearer <token>` |
-| APPLICATIONINSIGHTS_CONNECTION_STRING | optional: Agent Framework traces (agent runs, model calls, tokens) and logs to Application Insights; ENABLE_SENSITIVE_DATA=true (off by default) adds prompts and replies |
-
-Every matchId gets its own orchestrator on its first notification. A match ends with its final
-period (MA1 capabilities.periods) or a purge. Purges write tombstones first (in the store, so they
-survive restarts); a tombstoned match's late notifications are dropped, as are those of a match
-whose MA1 predates the latest purge-all cut-off.
+    python -m narrative_engine.service      # settings from the environment or .env (docs/components/service.md §2)
 """
 import asyncio
 import contextlib

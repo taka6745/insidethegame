@@ -1,16 +1,6 @@
-"""Decision models: bounded classifiers that answer typed questions about a state, with no free text.
-
-A question is `Noul` (yes/no → probability of yes), `Choice` (one of fixed options) or `Score` (a level on a
-scale, low → high). Story follows ask them on each minute recap, key event and storyline update to decide
-whether a followed story moved (follows/; the state is the rendered subscription-decision prompt), and the
-author grounding check asks whether a sentence claims a cause or an intent the evidence does not support
-(analysis/validator.claim_reasons).
-
-Adapters behind one protocol, chosen by DECISION_PROVIDER:
-- `systemone`: Microsoft-Decision-1 on Azure AI Foundry (SystemOne API; TypeSafe-compatible envelope).
-- `llm`: a chat model constrained to a JSON schema of enums, with one repair turn (the local fallback).
-Test doubles: devtools/fake_decisions.py.
-"""
+"""Decision models: bounded classifiers that answer typed questions (`Noul`, `Choice`, `Score`) about a state,
+with no free text. Adapters behind one protocol, chosen by DECISION_PROVIDER: `systemone` (Microsoft-Decision-1)
+or `llm` (a chat model constrained to a JSON schema of enums). See docs/components/decisions.md."""
 import os
 from dataclasses import dataclass, field
 from typing import Mapping, Optional, Protocol, Union

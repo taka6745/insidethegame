@@ -1,4 +1,4 @@
-"""Model per role from the user backend (PLAN.md §12 M10): a set deployment swaps that role's agent live at the same
+"""Model per role from the user backend: a set deployment swaps that role's agent live at the same
 endpoint; an empty one or an unreachable backend keeps the environment's model."""
 import asyncio
 

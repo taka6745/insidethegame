@@ -19,7 +19,7 @@ from azure.servicebus.exceptions import MessageLockLostError
 
 from narrative_engine.transport.servicebus import ServiceBusPublisher, settle
 
-Router = functools.partial(service.Router, targets=StaticTargets(default_targets()))  # tests: Luke's 12 buckets
+Router = functools.partial(service.Router, targets=StaticTargets(default_targets()))  # tests: the original 12 buckets
 
 FIXTURES = Path(__file__).parent / "fixtures"
 NOTIFICATIONS = FIXTURES / "itg-syn-0001-notifications.jsonl"
@@ -492,7 +492,7 @@ def test_a_busy_or_unreachable_broker_is_a_pause_not_a_fault():
 
 
 def test_a_seed_restores_under_a_new_match_id_and_the_match_carries_on_from_it():
-    """PLAN.md §10.6: export one match, load it as another; nothing is redone, later minutes continue."""
+    """Export one match, load it as another; nothing is redone, later minutes continue."""
     import httpx
     from narrative_engine.api import NarrativeApi
     from narrative_engine.demo.seeds import SEED_STORES, seed_app

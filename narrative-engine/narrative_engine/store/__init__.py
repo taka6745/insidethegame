@@ -1,9 +1,5 @@
-"""Narrative Store: match checkpoints, context blocks, narratives, match analyses (immutable snapshots),
-storylines (their current projection), story-follow decisions (immutable) and follow narratives, all scoped
-by matchId, plus the purge tombstones that keep a purged match from coming back.
-
-The memory store backs tests and local runs; Cosmos DB (the service) implements the same methods.
-"""
+"""Narrative Store: every match-scoped document the engine keeps, plus purge tombstones.
+The memory store backs tests and local runs; Cosmos DB (the service) implements the same methods."""
 from typing import Optional, Protocol
 
 from narrative_engine.core.models import ContextBlock, Narrative

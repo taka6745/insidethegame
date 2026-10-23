@@ -1,16 +1,6 @@
-"""Story follows inside a match's orchestrator: read the followed topics, queue and run their steps.
-
-- `subscriptionEval` (a minute recap, a key event, a storyline update, half or full time): queued like the
-  bucket steps, with the topics, tunables and audience buckets of its time, and run in the same match-time
-  order. On its first run it pins the prompts, the seq and the analysis; then it asks the decision model once
-  (pipeline.py) and stores the decision in `subscriptionDecisions` before pinning the fired topics on the
-  step, so a restart or a backlog never asks again. Each fired topic gets one narrative per bucket of its
-  followers; a topic whose verdict carries `clip` also gets a `FollowClip` message, sent before and apart from
-  the narratives so prose grounding never decides whether the moment's clip reaches the playlist.
-- `subscriptionStart`: "the story so far" for a (topic, bucket) pair that appears in the targets after the
-  first read, at the horizon of that moment.
-The decision state and the follow author get the bucket author's inputs (context.builder.follow_variables).
-"""
+"""Story follows inside a match's orchestrator: read the followed topics, queue and run `subscriptionEval` and
+`subscriptionStart` steps (docs/components/follows.md). A decision is stored before its fired topics are pinned,
+so a restart or backlog never asks again; a `FollowClip` is sent apart from the narratives."""
 import copy
 import logging
 
@@ -41,12 +31,10 @@ class FollowSteps:
     def cp(self):
         return self.e.cp
 
-    # --- targets ----------------------------------------------------------------------------------------
-
     async def sync(self):
         """Read the followed topics; True if they changed. A (topic, bucket) pair new since the last read
         gets a "story so far" step. The served `clips` settings are kept apart (`cp["clips"]`): the shared key-event
-        clips (orchestrator `MomentClip`, D7) read them without a decision model or any follow."""
+        clips (orchestrator `MomentClip`) read them without a decision model or any follow."""
         if self.topics is None:
             return False
         try:
@@ -115,8 +103,6 @@ class FollowSteps:
                       self.e.active_buckets(), after, key_row, triggerType=trigger_type, triggerRef=trigger_ref,
                       topics=copy.deepcopy(follows["topics"]), follow=copy.deepcopy(follows["config"]),
                       followRevision=follows["configRevision"])
-
-    # --- steps ---------------------------------------------------------------------------------------------
 
     async def run(self, pending):
         e = self.e
@@ -287,8 +273,6 @@ class FollowSteps:
         if errors := [r for r in results if isinstance(r, BaseException)]:
             raise errors[0]
         return written, dropped
-
-    # --- inputs --------------------------------------------------------------------------------------------
 
     async def _update(self, pending, info):
         """The update being judged, in words: the key event, the minute's recap, what the analysis moved, or

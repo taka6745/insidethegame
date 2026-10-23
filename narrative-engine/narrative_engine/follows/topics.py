@@ -31,7 +31,7 @@ class FollowTargets:
         config["clips"] = dict(config["clips"])
         for key in ("enabled", "key_types", "instructions", "levels", "min_level", "min_confidence"):
             config["clips"][key]
-        # Added by backend migration 041; a backend not yet migrated serves neither (both off), so the engine may
+        # A backend not yet migrated serves neither (both off), so the engine may
         # deploy first without stopping follows.
         config["clips"]["always_for"] = list(config["clips"].get("always_for", ()))
         config["clips"]["shared"] = bool(config["clips"].get("shared", False))

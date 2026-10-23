@@ -1,14 +1,5 @@
-"""The four agents on Microsoft Agent Framework, over an OpenAI-compatible chat completions API
-(Foundry's /openai/v1 when deployed, the dev router locally).
-
-Settings come from the environment, or from narrative-engine/.env (ignored by Git). Each role
-(SUMMARY, COMPRESSION, ANALYST, AUTHOR) reads OPENAI_<SETTING>_<ROLE> and falls back to OPENAI_<SETTING>,
-so one role can move to another model, effort or endpoint on its own:
-OPENAI_BASE_URL (includes /v1), OPENAI_API_KEY, OPENAI_MODEL, OPENAI_EFFORT (reasoning_effort,
-sent only when set). For example OPENAI_MODEL_AUTHOR=gpt-5 OPENAI_EFFORT_AUTHOR=medium.
-Without OPENAI_* settings the local model's LOCAL_LLM_BASE_URL, LOCAL_LLM_MODEL and
-LOCAL_LLM_API_KEY are used (the same ignored env file as the user backend; a dummy key if unset).
-Prompt templates come from a `prompt_source.Prompt` per call.
+"""The four agents on Microsoft Agent Framework, over an OpenAI-compatible chat completions API.
+Each role reads OPENAI_<SETTING>_<ROLE>, then OPENAI_<SETTING>, then LOCAL_LLM_* (docs/components/agents.md §3).
 
     python -m narrative_engine.agents.llm     # connection check per role; never prints the key
 """

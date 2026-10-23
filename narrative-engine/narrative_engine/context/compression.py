@@ -1,11 +1,5 @@
 """Decaying-resolution context rules (docs/design/narrative-generation-engine.md §5.3). Pure, no I/O.
-
-Levels: 0 = one-minute summary, 1 = five-minute block, 2 = earlier block.
-1. At 11 minute summaries, compress the oldest 5 into a five-minute block.
-2. At 4 five-minute blocks, merge the oldest 2 and any earlier block into one earlier block.
-Blocks never span periods: both rules count only the current period's spans, and when a
-period ends `close_period` merges all of its spans into one earlier block for that period.
-"""
+Levels: 0 = one-minute summary, 1 = five-minute block, 2 = earlier block. Blocks never span periods."""
 from dataclasses import dataclass
 
 from narrative_engine.core.models import MatchClock

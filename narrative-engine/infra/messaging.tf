@@ -19,7 +19,7 @@ resource "azurerm_servicebus_subscription" "narratives" {
 }
 
 # Shared access keys, one right each, because this account (Contributor) cannot create role
-# assignments. LATER: replace with managed identity / Entra roles, as in etl/infra.
+# assignments.
 resource "azurerm_servicebus_topic_authorization_rule" "narratives_send" {
   name     = "narrative-engine-send"
   topic_id = azurerm_servicebus_topic.narratives.id

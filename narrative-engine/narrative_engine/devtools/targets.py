@@ -1,4 +1,4 @@
-"""Fixed audience targets for tests and devtools only: Luke's original 12 buckets. The service always
+"""Fixed audience targets for tests and devtools only: the original 12 buckets. The service always
 reads the user backend's (audience.targets.HttpTargetSource) and never falls back to these."""
 from narrative_engine.audience.targets import Targets
 
@@ -17,7 +17,7 @@ LEVELS = {"simple": "Plain language, no jargon.", "casual": "The main storylines
 
 
 def default_targets():
-    """Luke's original 12 buckets, for tests and devtools only (never the service)."""
+    """The original 12 buckets, for tests and devtools only (never the service)."""
     return [{"bucket_id": f"{s}:{level}", "selections": {"team": s, "fan_style": level}, "layers": [
         {"id": "team", "description": "Team support.",
          "option": {"id": s, "description": SUPPORT[s], "label": "{%s}" % s if s != "neutral" else "Neutral"}},

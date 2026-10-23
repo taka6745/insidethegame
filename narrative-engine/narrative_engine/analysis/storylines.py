@@ -1,12 +1,5 @@
 """Storyline reducer and focus choice: pure functions of the previous storylines and one validated analysis.
-
-A storyline is a thread the analyst names in its own words (`label`, optionally about one team). It
-opens when an observation opens it (or reuses an open one with the same label, or reopens one resolved within
-`reopen_within` minutes), develops when a later
-observation moves it, goes dormant after `dormant_after` analyses without one, resolves when the
-analyst resolves it, after `resolve_after` quiet analyses, or at full time. At most `max_active` are
-active, by salience. Key events are linked by rule (`_link`), never by the model.
-"""
+Key events are linked by rule (`_link`), never by the model. Lifecycle: docs/components/analysis.md §2."""
 import copy
 
 FADED = "Closed: no later analysis developed it."  # says nothing about the match, so no excerpt cites it as a trend

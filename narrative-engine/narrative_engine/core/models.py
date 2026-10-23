@@ -1,9 +1,6 @@
-"""Match clock, audience buckets and the ETL notification messages.
-
-The clock follows the ETL's Opta convention (see etl/contracts/README.md): `timeMin` is
-0-based, first-half added time keeps counting (46 = 45+2') and the second half restarts
-at 45, so a minute is only unique together with its period.
-"""
+"""Match clock, audience buckets and the ETL notification messages. The clock follows the ETL's Opta convention:
+`timeMin` is 0-based, first-half added time keeps counting (46 = 45+2') and the second half restarts at 45,
+so a minute is only unique together with its period."""
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional

@@ -1,25 +1,5 @@
-"""The follow trigger rules: pure functions of the update, the pinned topics and the served tunables.
-
-1. Prefilter by entities: a topic is a candidate when the update involves its subject and it existed by
-   the update's seq. A key event involves both teams, its player and every open storyline (a goal, penalty or
-   card for one side is one against the other; the decision model judges the rest); a minute involves the
-   teams and players in its events (an empty minute nothing); an analysis involves the storylines it opened,
-   moved or resolved and their teams (both for a storyline about both); a theme and a period end involve all.
-2. The light firing guard's gap: a candidate fired less than `limits.min_minutes_between_narratives` of match
-   time ago is dropped before any question, unless the update is pivotal for it (`limits.pivotal_key_types`,
-   or a period end).
-3. At half and full time with `limits.period_end_wrap_up`, every candidate fires without a question (its
-   followers get the period's wrap-up). Otherwise one batched decision call: a `Score` per candidate, plus the novelty `Noul` for each candidate that has a
-   last narrative (shown in that question). Viewer text (a topic's focus) goes only in that topic's questions.
-4. Fire when the score's nearest level ≥ trigger_level, confidence ≥ min_confidence and, with novelty enabled and a last
-   narrative, P(new) ≥ min_probability. A declined answer is a no.
-5. Moment clips (`clips`, PLAN.md §10.2 D3): on a key event of `clips.key_types`, the same call also asks each
-   candidate the clip `Score`; at or above `clips.min_level` with `clips.min_confidence` the verdict carries
-   `clip` and the topic fires. The clip goes to the backend as its own `FollowClip` message (steps.py), which adds
-   the moment to the topic's playlist even when the narrative is dropped as ungrounded. Such a key event also
-   bypasses the gap guard, so a clip moment is always asked. A topic whose kind `clips.always_for` names is clip-on
-   from creation: it is not asked the clip score, and every clip moment it is a candidate for clips.
-"""
+"""The follow trigger rules: pure functions of the update, the pinned topics and the served tunables
+(prefilter, gap guard, one batched decision call, fire rule, clips; docs/components/follows.md §3)."""
 import json
 
 from narrative_engine.decisions import Noul, Score

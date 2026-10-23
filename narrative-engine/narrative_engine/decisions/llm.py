@@ -1,10 +1,6 @@
-"""The local fallback decision model: a chat model constrained to a JSON schema of enums.
-
-Every question becomes one required property whose `answer` is an enum (yes/no, the options, or the level
-texts) with a `confidence` in 0..1, so the reply has no free text. An invalid reply gets one repair turn
-naming the problem; a second invalid reply raises DecisionError. Probabilities: the answer gets its
-confidence and the other values share the rest.
-"""
+"""The local fallback decision model: a chat model constrained to a JSON schema of enums (an answer plus a
+confidence per question, no free text). One repair turn, then DecisionError. The answer gets its confidence
+and the other values share the rest."""
 import json
 import re
 

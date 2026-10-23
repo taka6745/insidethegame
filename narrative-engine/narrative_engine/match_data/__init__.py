@@ -1,11 +1,5 @@
-"""What the engine reads from the ETL. Every read is bounded so the engine never sees events the
-ETL has not announced or committed (SQL may already hold more): MA3 rows by clock and by the committed
-canonical seq (`eventSeq <= matchWatermarks.seq`), key events by clock, SPADL actions and catalogue
-stats and trends by the canonical seq of the latest MA3 row up to that clock (`event_seq`).
-
-`etl_graphql.GraphQLMatchData` implements `MatchData` against DAB; the in-memory test double
-lives in `narrative_engine.devtools.fixture_data` (devtools, not in the service image).
-"""
+"""What the engine reads from the ETL, every read bounded so it never sees events the ETL has not announced
+or committed (docs/components/match-data.md). `etl_graphql.GraphQLMatchData` implements it against DAB."""
 from typing import Optional, Protocol
 
 from narrative_engine.core.models import MatchClock
@@ -32,7 +26,7 @@ class MatchData(Protocol):
         Raises EtlBehind while they are not available."""
 
     async def trends_at(self, match_id, seq: int) -> list:
-        """Enabled trend rows (indicator x team x window, local/contracts.md §4b) at canonical `seq`, in the
+        """Enabled trend rows (indicator x team x window, local/contracts/README.md §4b) at canonical `seq`, in the
         engine's shape (etl_graphql.trend_rows); [] for no seq. Raises EtlBehind while behind."""
 
     async def spells_at(self, match_id, seq: int) -> list:

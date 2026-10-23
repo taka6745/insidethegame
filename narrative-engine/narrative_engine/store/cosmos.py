@@ -1,11 +1,6 @@
-"""Cosmos DB store: containers checkpoints, contextBlocks, narratives, analyses, storylines,
-subscriptionDecisions, subscriptionNarratives and tombstones, all partitioned
-by /matchId, so every read and write stays inside one match's partition (except the startup and
-purge-all reads). The purge-all cut-off is the tombstone document `ALL`.
-
-Auth is Entra ID (DefaultAzureCredential: `az login` locally, managed identity in Azure), or a
-key for the local emulator, which `open` also provisions (database and containers).
-"""
+"""Cosmos DB store. Every container is partitioned by /matchId, so reads and writes stay in one match's
+partition (except start-up and purge-all reads); the purge-all cut-off is the tombstone document `ALL`.
+Entra ID auth, or a key for the local emulator, which `open` also provisions."""
 import contextlib
 from dataclasses import asdict
 

@@ -1,11 +1,6 @@
-"""Service Bus: receive ETL notifications, publish narratives.
-
-A message is completed once its handler returns: the handler only records it in the match's
-Cosmos checkpoint, and the model work runs later in that match's worker. It is abandoned on
-failure so Service Bus redelivers it (dead-lettering after the subscription's max delivery
-count), and dead-lettered at once if it is not JSON. Locks are still auto-renewed as a safety
-net for slow handlers.
-"""
+"""Service Bus: receive ETL notifications, publish narratives. A message is completed once its handler has
+recorded it in the checkpoint (the model work runs later), abandoned on failure so it is redelivered, and
+dead-lettered at once if it is not JSON."""
 import asyncio
 import contextlib
 import json

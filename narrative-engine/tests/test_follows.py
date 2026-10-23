@@ -36,8 +36,6 @@ INFO = MatchInfo.from_ma1({"matchId": "m", "contestant": [
     {"id": "mun", "name": "Forgeham United", "code": "FGU", "position": "away"}]})
 
 
-# --- the topic source ---------------------------------------------------------------------------------------
-
 def targets_doc(revision, topics):
     return {"schema_version": 1, "match_id": "demo", "revision": revision, "config_revision": 1,
             **copy.deepcopy(CONFIG), "topics": topics}
@@ -67,8 +65,6 @@ def test_the_follow_prompts_are_engine_roles_and_byte_copies_of_the_backend_seed
         for role in ("subscription-decision", "subscription-author"):
             assert (seeds / f"{role}.txt").read_bytes() == (PROMPTS / f"{shipped(role).label}.txt").read_bytes()
 
-
-# --- the trigger rules ----------------------------------------------------------------------------------------
 
 def line(n, team=None, status="active"):
     return {"id": f"sl:m:{n}", "label": f"Line {n}", "team": team, "status": status}
@@ -183,8 +179,6 @@ def test_a_clip_on_topic_clips_without_the_clip_question():
     assert not pipeline.verdicts(cands, answers, pipeline.questions(cands, config, {}, INFO, LINES)[1], config)[
         "t-team"]["clip"]  # not a clip moment: nothing clips
 
-
-# --- the pipeline over the recording ----------------------------------------------------------------------
 
 def rule(key, question, state):
     """A deterministic stand-in: answers are a hash of the whole state and question, so equal answers mean
@@ -381,7 +375,7 @@ def test_a_clip_reaches_the_backend_even_when_its_follow_narrative_is_dropped_as
 
 
 def test_each_clipped_key_event_sends_one_moment_clip_for_the_shared_narratives(runs):
-    """PLAN.md §10.2 D7: a key event of `clips.key_types` sends a `MomentClip` naming its step's buckets, apart from
+    """A key event of `clips.key_types` sends a `MomentClip` naming its step's buckets, apart from
     the narratives; none with `clips.shared` off."""
     live, backlog = runs
     clipped = {str(k["id"]) for k in riverton_forgeham.key_rows() if k["keyType"] in CONFIG["clips"]["key_types"]}
@@ -397,7 +391,7 @@ def test_each_clipped_key_event_sends_one_moment_clip_for_the_shared_narratives(
 
 
 def test_moment_clips_need_no_follow_nor_decision_model():
-    """D7 reads the served clip settings itself: no topics and no decision model still clip each key event."""
+    """Shared clips read the served clip settings: no topics and no decision model still clip each key event."""
     data = EtlAsOf(riverton_forgeham.REPLAY, stats=riverton_forgeham.golden_stats(), actions_path=riverton_forgeham.ACTIONS,
                    keys=riverton_forgeham.key_rows(), trends=trends_at, spells=spells_at)
     store = MemoryStore()
@@ -451,8 +445,8 @@ def test_the_decision_state_and_the_follow_author_get_the_authors_inputs(runs):
 
 
 def test_a_goal_reaches_the_decision_with_the_score_before_and_after_it(runs):
-    """PLAN.md §11: an equaliser against a followed team fired nothing; the update itself now carries the score it
-    changed (from the ETL ledger), and a team follow is asked as everything about that team."""
+    """The update carries the score it changed (from the ETL ledger), and a team follow is asked as everything
+    about that team."""
     live, _ = runs
     updates = [s.split("The update being judged:\n", 1)[1].split("\n", 1)[0] for s, _ in live["calls"]
                if "The update being judged:" in s]

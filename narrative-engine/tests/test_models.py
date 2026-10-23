@@ -66,7 +66,7 @@ def test_minutes_between_crosses_half_time_once_the_period_end_is_known():
 
 
 def test_bodies_with_every_key_and_nulls_parse():
-    """Since 18 Oct the ETL sends every notification key on every message, unused ones null."""
+    """The ETL sends every notification key on every message, unused ones null."""
     keys = ("messageType messageId matchId periodId timeMin timeSec eventTime windowEnd id keyType detail typeId "
             "contestantId playerId relatedEventId").split()
     blank = dict.fromkeys(keys)

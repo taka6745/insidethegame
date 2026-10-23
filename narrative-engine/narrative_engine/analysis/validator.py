@@ -1,21 +1,6 @@
-"""Grounding checks for the analyst's reply (prompts/match-analyst.v4.txt) and the author's excerpt.
-
-The analyst names patterns in its own words; this module never checks them against a pattern list.
-It checks only that each observation is grounded: every cited value exists among the numbers served
-(ETL trend rows and the key-event facts below) and matches them; the evidence covers the team the
-observation is about; the confidence stays under a cap set by how long the evidence windows are; the
-text uses only numbers from its evidence or the clock and names only teams in its evidence and players
-in the ledger (a team by its name, code, or MA1 short or known names); and its storyline move refers to an
-open storyline. The analyst prompt's limits are filled from the same rules (`prompt_limits`). Failing items get the storyline policy's repair turns (`repair_request`, `merge`); what
-still fails is dropped with its reasons; the rest of the reply stands. Limits, caps and tolerances come from the policy (analysis.policy).
-
-An author excerpt (`narrative_reasons`) may use only numbers and names shown to the author. Whether a
-sentence claims a cause, an intent, the match's result or a comparison that the evidence does not support is a
-bounded question for the decision model (`claim_reasons`; questions and thresholds in the policy's `claims`
-section), never a phrase list. A failing excerpt gets the policy's rewrites, then is dropped. The analyst's
-accepted observations and resolves get the claims marked `analyst` (`analyst_claim_rejections`), against the
-analyst's own inputs, and failures go to its repair turn like any other rejection.
-"""
+"""Grounding checks for the analyst's reply and the author's excerpt (docs/components/analysis.md §1, §3).
+Never a pattern or phrase list: cited values must match served rows, text may use only numbers and names shown,
+and unsupported claims are bounded questions for the decision model. Limits come from the storyline policy."""
 import json
 import re
 
@@ -269,8 +254,6 @@ def _confidence(value, rules):
     return None
 
 
-# --- one repair turn per analysis -------------------------------------------------------------------------
-
 def repairable(rejected):
     """Rejections worth one repair turn: all but observations beyond the limit."""
     return [r for r in rejected if not any(x.startswith("more than") for x in r["reasons"])]
@@ -309,8 +292,6 @@ def merge(reply, rejected, repair, rules):
             + listed(repair, "observations")[:sum(map(failed, first))],
             "resolve": [i for i in resolve if not failed(i)] + listed(repair, "resolve")[:sum(map(failed, resolve))]}
 
-
-# --- the author's narrative -------------------------------------------------------------------------------
 
 SERVED = ("game_state_statistics", "match_trends", "storylines", "key_event_ledger", "match_events", "trigger_reason",
           "story_so_far")

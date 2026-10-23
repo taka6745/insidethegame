@@ -1,10 +1,6 @@
-"""The storyline policy: every tunable of the analysis, the storylines, the repair turns and the author's
-claim checks (decision-model questions and thresholds), from the user
-backend's `GET {USER_BACKEND_URL}/storyline-policy` (ETag; edited under /dev/config/storyline-policy,
-seeded by its migration 026). The service has no fallback: while the backend cannot answer (and nothing
-is cached) `PolicyUnavailable` pauses the work and /health reports it. `storyline-policy.json` here is a
-byte copy of the backend seed, for tests and devtools only (`ShippedPolicy`), like the shipped prompts.
-"""
+"""The storyline policy (every tunable of the analysis, storylines, repairs and claim checks) from the user
+backend's `GET /storyline-policy`, with no fallback. `storyline-policy.json` is a byte copy of the backend seed
+for tests and devtools only (`ShippedPolicy`)."""
 import json
 import logging
 from dataclasses import dataclass
