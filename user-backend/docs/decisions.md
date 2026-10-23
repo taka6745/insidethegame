@@ -49,5 +49,4 @@
 - Optionally switch scores back to the catalogue's `goals` (it now subtracts VAR overturns).
 - Multi-replica ownership, shared delivery and job leases ([architecture §6](architecture.md#6-scaling-boundary)).
 - Authentication for `/dev`, `/lab`, `/admin` and per-account question quotas.
-- Phase 2: per-viewer pause/rewind.
 - An arbitrary-code isolated executor, only if the rule DSL proves insufficient.

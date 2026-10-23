@@ -1,6 +1,10 @@
 # Main user backend: agreed architecture
 
-> **Historical (18–19 October 2026), no longer updated.** The agreed architecture before multi-match. Superseded where it differs: ETL serves stats from Azure SQL (`statsAtSeq`), not Cosmos DB; audiences are config-only (no presence); chat replay is implemented. Current design: [architecture](../architecture.md) · [decisions](../decisions.md).
+> **In short:** historical (18–19 October 2026), no longer updated. The agreed architecture before multi-match. Superseded where it differs: ETL serves stats from Azure SQL (`statsAtSeq`), not Cosmos DB; audiences are config-only (no presence); chat replay is implemented. Current design: [architecture](../architecture.md) · [decisions](../decisions.md).
+
+| | |
+| --- | --- |
+| **Status** | Historical design; superseded where it differs |
 
 Recorded **18 October 2026, Australia/Brisbane**, from the architecture discussion; updated during the repository-structure review to use Event Hubs for live events and Service Bus for new narratives. This is a planning record, not an implementation or deployment claim. Later decisions in the discussion supersede the initial diagrams.
 
@@ -11,6 +15,8 @@ The user backend connects the frontend to match intelligence. It answers viewer 
 **Latest boundary decision:** ETL calculates standard statistics and stores their current state in its Cosmos DB. Historical events remain in ETL-owned event storage (Azure SQL in the current plan). Both are accessed through ETL GraphQL. The user backend selects and delivers standard values; it does not rebuild them from events. Only a genuinely custom request may require backend calculation.
 
 ## 1. Scope and phases
+
+*In short: what Phase 1 (hackathon) covered and what was left for later.*
 
 | Phase 1: hackathon | Phase 2: later version |
 | --- | --- |
@@ -26,6 +32,8 @@ The user backend connects the frontend to match intelligence. It answers viewer 
 Phase 2 is shown in **grey or dashed styling** in service diagrams. It is not part of the first-version implementation. Chat replay moved into Phase 1 on 20 October 2026.
 
 ## 2. System boundaries
+
+*In short: which component owned what.*
 
 | Component | Responsibility |
 | --- | --- |
@@ -44,6 +52,8 @@ Narrative deduplication is explicitly outside this backend. Do not add a parent-
 
 ## 3. Demo profiles and viewing sessions
 
+*In short: demo profiles stand in for accounts; one viewing session per profile.*
+
 - Build selectable demo profiles containing a supported team and fan style. These simulate the account/profile data; there is no existing PL account service to integrate with for the demo.
 - Read profiles directly from the Accounts database in the main backend. No separate account API/service is needed for Phase 1.
 - Default the match experience from the selected profile. If their team is not playing, the viewer may be asked which team they support for this match.
@@ -53,6 +63,8 @@ Narrative deduplication is explicitly outside this backend. Do not add a parent-
 - Work already started on an answer/calculation continues after disconnect and saves its result. Do not implement cancellation merely because the connection closed.
 
 ## 4. The twelve buckets
+
+*In short: three team stances times four styles.*
 
 `Team A / Team B / neutral` × `Analytical / Simple / Casual / Experienced`.
 
@@ -77,6 +89,8 @@ Mid-match joins and reconnects can retrieve the narrative backlog and current bu
 - These instructions have effective match timestamps. In Phase 2, rewinding restores the targeted stat selection appropriate to that point, as well as its values.
 
 ## 5. Agent responsibilities
+
+*In short: what each agent was to do, and what was built instead.*
 
 **Microsoft Agent Framework is implemented; Microsoft Foundry remains the deployment target.** Local model mode uses an OpenAI-compatible development endpoint. Default fixture mode uses deterministic doubles. The current custom-stat workflow uses a goal agent and deterministic compiler, rather than a second model writing executable Python. [Modes and validation](../components/agents.md).
 
@@ -107,6 +121,8 @@ The viewer waits for the result; the chat does not proceed concurrently with ano
 Validate before use and then trust the function. **There is no ongoing semantic rechecking of successful functions.** Execution errors are still detectable and can enter the repair path; plausible but incorrect later results will not automatically be identified. The exact test fixtures, semantic assertions and runtime failure presentation remain implementation details.
 
 ## 6. Custom stat functions
+
+*In short: generated code was the target; bounded typed rules were built.*
 
 **Original target, still deferred:** an agent could generate Python, regex and other extraction logic in an isolated runtime. The implemented path instead compiles typed goals into bounded rules; it supports combinations of entities, event fields, operations and time constraints without executing arbitrary code. The isolation requirements below apply only if arbitrary-code execution is added.
 
@@ -139,6 +155,8 @@ History-to-live handoff, reconnects and shared calculation state must avoid miss
 
 ## 7. Pinning and card replacement
 
+*In short: pinned stats are live cards, not alerts.*
+
 Custom stat subscriptions are **continuously updated cards**, not threshold alerts. For example, subscribing to the number of headers keeps that count on screen.
 
 | Viewer action | Behaviour |
@@ -152,6 +170,8 @@ Custom stat subscriptions are **continuously updated cards**, not threshold aler
 Active custom subscriptions are scoped to the current match and end at match end for the live-only demo. Generated functions are not retained as a cross-match library. The current viewer has five visible stat slots.
 
 ## 8. Frontend communication and persistence
+
+*In short: API requests for actions, one live connection per session.*
 
 Use individual API requests for chat and actions such as pinning, plus **one live connection per active viewer session** for narratives and stat updates. Chat replies may stream. Both interfaces belong to the same main backend container; separate communication paths do not imply separate services.
 
@@ -170,6 +190,8 @@ For Phase 1, database state lets us restore viewer configuration and completed a
 
 ## 9. Phase 2: semantic subscriptions with Jev
 
+*In short: semantic subscriptions, deferred to Phase 2.*
+
 Jev refers to **TypeSafe's decision model**, not a model gateway. This feature is deferred to Phase 2.
 
 - A viewer explicitly asks to follow an interpretive interest. An ordinary question does not silently create a subscription.
@@ -181,6 +203,8 @@ Jev refers to **TypeSafe's decision model**, not a model gateway. This feature i
 - Subscriptions are match-scoped. Choice among multiple matching bucket versions and the delayed-viewing expiry behaviour remain Phase 2 details.
 
 ## 10. Phase 2: replay and playback-aware behaviour
+
+*In short: chat replay built; per-viewer pause and rewind deferred.*
 
 **Superseded for clip requests:** chat replay is implemented per the [replay plan](replay-plan.md) (VOD playlists of existing HLS segments, deterministic cuts). Per-viewer pause, rewind and delayed viewing below remain Phase 2.
 
@@ -201,6 +225,8 @@ All of this moved to Phase 2 when the hackathon scope was narrowed to live-only 
 
 ## 11. Azure service plan and remaining choices
 
+*In short: the Azure services planned at the time.*
+
 | Area | Current decision/status |
 | --- | --- |
 | Agent orchestration | **Locked:** Microsoft Agent Framework. |
@@ -216,6 +242,8 @@ The match view has five stat slots. Other production implementation details rema
 Service references used during planning: [Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview), [Azure PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/overview), [PostgreSQL JSON types](https://www.postgresql.org/docs/current/datatype-json.html), [GraphQL subscriptions](https://graphql.org/learn/subscriptions/), [TypeSafe Jev](https://docs.typesafe.ai/introduction).
 
 ## 12. Review scenarios for implementation
+
+*In short: scenarios the implementation had to pass.*
 
 1. Select a demo profile mid-match: load its bucket, narrative backlog, latest ranked stat selection and ETL-computed values, without fetching raw history or recalculating standard stats.
 2. Ask an ordinary football question: answer without invoking or changing the neutral narrative workflow.

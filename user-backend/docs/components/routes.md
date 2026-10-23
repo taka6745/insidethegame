@@ -134,7 +134,7 @@ Unsupported categories, body parts or distances are refused with the missing dat
 
 | Route | Use |
 | --- | --- |
-| `POST /admin/matches/purge` `{match_id}` or `{all: true}` | Tombstone, then delete this service's match rows ([contracts §5](../../../local/contracts/README.md#5-purge)); internal, never proxied |
+| `POST /admin/matches/purge` `{match_id}` or `{all: true}` | Tombstone, then delete this service's match rows ([contracts §5](../../../local/contracts/README.md#5-purge)); internal; for `/dev/` via nginx `/purge-api/backend` (basic auth) |
 | `POST /admin/matches/export` `{match_id}`, `POST /admin/matches/restore` `{match_id, max_seq, schema, tables}` | **Demo only** (`DEMO_SEEDS=1`; absent otherwise): seed export and restore for demo control ([demo](demo.md)) |
 | `GET /health`, `GET /ready` | `200` when a model is configured and the database answers, else `503`; includes the match count and open `gaps` |
 | `GET /dev/pipeline` | This service (status `degraded` while a gap is open) plus upstream `/health` probes; `gaps` lists open gaps and the latest 50 filled ones (`recovered`/`skipped`) |

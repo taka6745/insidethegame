@@ -1,6 +1,10 @@
 # Replay plan
 
-> **Historical plan (20 October 2026), no longer updated.** Implemented; current behaviour is in [services](../components/services.md#5-replays) and [agents](../components/agents.md#3-replay-agent).
+> **In short:** historical plan (20 October 2026), no longer updated. Implemented; current behaviour is in [services](../components/services.md#5-replays) and [agents](../components/agents.md#3-replay-agent).
+
+| | |
+| --- | --- |
+| **Status** | Historical plan; implemented |
 
 **Status: implemented and unit-tested locally, 20 October 2026** (backend, clip planner, golden set 18/18 against the local model, chat card and PiP; browser-verified against live HLS: card, stage, clip jump, back to live, paging, refine offer, saved-in-chat restore). Differences from the plan are marked. Replay moved forward from Phase 2. A viewer asks in chat ("how did the first half go", "all shots on goal so far", "headers by Ashworth"). They receive a short answer and a playlist of clips. Expanding the playlist plays it on the main stage while live continues in a corner.
 

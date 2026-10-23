@@ -8,7 +8,7 @@
 | **Start** | `ACCEPT_EULA=Y ./dev up backend`, then `./dev demo start [fixture…]` |
 | **Ports** | API `localhost:18000` ([explorer](http://localhost:18000/docs)); viewer, lab and `/dev/` on `localhost:18020` |
 | **Model** | `.local/backend-llm.env` (`LOCAL_LLM_*`, mode `600`, never committed or printed) |
-| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) §1–8 |
+| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) §1–8d |
 
 ## 1. Run it
 

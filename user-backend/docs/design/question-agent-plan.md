@@ -1,6 +1,10 @@
 # Question agent implementation plan
 
-> **Historical (18 October 2026), no longer updated.** The fake ETL/narrative snapshot bridge, uploads and single-run lab described here are retired; see [Match questions](../components/agents.md#2-question-agent) for what runs now.
+> **In short:** historical plan (18 October 2026), no longer updated. The fake ETL/narrative snapshot bridge, uploads and single-run lab described here are retired; see [Match questions](../components/agents.md#2-question-agent) for what runs now.
+
+| | |
+| --- | --- |
+| **Status** | Historical plan; built, then superseded |
 
 **Status: local implementation built, 18 October 2026; live model/browser verification tracked separately.** Build a working question tab in the current event lab. Preserve the current custom-filter lab and the separate profile harness. This is a local implementation with replaceable upstream adapters, not deployment of the narrative engine.
 

@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Status** | Implemented, tested, deployed on Azure ([overview](overview.md#3-status-by-area)) |
-| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) §1–8c |
+| **Contracts** | [local/contracts/README.md](../../local/contracts/README.md) §1–8d |
 
 Every page opens with an **In short** summary and a facts table, then numbered sections that each open with a one-line *In short*.
 

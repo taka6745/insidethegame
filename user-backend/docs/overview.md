@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested against real Postgres and contract doubles · deployed on Azure (redeployed 23 Oct 2026) |
+| **Status** | Implemented · tested against real Postgres and contract doubles · deployed on Azure ([status](../../PLAN.md#11-azure-judge-build)) |
 | **Runs on** | Python 3.12, FastAPI, Microsoft Agent Framework, PostgreSQL (Accounts and Match App databases) |
 | **Target** | Azure Container Apps, Azure Database for PostgreSQL Flexible Server, Azure AI Foundry models ([deployment](deployment.md)) |
 | **Reads** | Event Hubs `match-events` (group `user-backend`), ETL GraphQL (Data API builder), narrative GraphQL, Service Bus `narratives`, feed HLS |

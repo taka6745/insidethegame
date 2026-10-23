@@ -1,6 +1,10 @@
 # Where custom rules live and run
 
-> **Historical design (October 2026), no longer updated.** Custom rules now run in-process per match (`LiveMatch`); see [services](../components/services.md#2-live-matches-and-custom-rules).
+> **In short:** historical design (October 2026), no longer updated. Custom rules now run in-process per match (`LiveMatch`); see [services](../components/services.md#2-live-matches-and-custom-rules).
+
+| | |
+| --- | --- |
+| **Status** | Historical design; partly implemented |
 
 **Execution design, partly implemented.** The [filter lab](../components/routes.md#5-filter-lab) now implements typed rules, a shared index, incremental corrections and a Postgres-backed development registry. Broker consumers, production history/live coordination and viewer subscription fan-out below remain planned. Standard ETL-provided statistics bypass this path.
 
