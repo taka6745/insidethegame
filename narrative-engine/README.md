@@ -1,10 +1,10 @@
 # Narrative engine
 
+> **In short:** turns the ETL's live match data into short narratives for the user backend's active audience buckets, using Microsoft Agent Framework agents on Azure AI Foundry and Microsoft-Decision-1 for claim checks, story-follow triggers and moment clips. Narratives go to Cosmos DB, Service Bus and a history GraphQL API. Implemented, tested and deployed ([status](docs/overview.md)).
+
 [Documentation](docs/README.md) · [Shared local setup](../DEVELOPMENT.md)
 
 ![Shared match context becomes narratives for active audience buckets](architecture.svg)
-
-Turns the ETL's live match data into short narratives for the user backend's active audience buckets, using Microsoft Agent Framework agents on Azure AI Foundry and Microsoft-Decision-1 for claim checks, story-follow triggers and moment clips. Narratives go to Cosmos DB, Service Bus and a history GraphQL API. Status: [overview](docs/overview.md).
 
 Locally it runs as **`narrative-live`** in the shared Docker stack (`./dev up backend`): any number of matches under one model-call limit, each purged on its own. Without the user backend it pauses and reports unhealthy rather than falling back.
 

@@ -51,7 +51,7 @@ query ($m: String!, $u: String!, $after: Int!) {
  "stepId": "demo:key:2700000390",
  "trigger": {"type": "keyEvent", "ref": "key:2700000390", "reason": "Key event at 24' (23:09): Goal for Riverside FC, Mensah", "eventIds": []},
  "matchTime": {"periodId": 1, "timeMin": 23, "label": "24'"},
- "text": "...", "model": "gpt-6.1-sol", "promptVersion": "narrative-author@5", "tokens": {...}, "createdAt": "2026-10-18T21:07:02+00:00",
+ "text": "...", "model": "gpt-6.1-sol", "promptVersion": "narrative-author@7", "tokens": {...}, "createdAt": "2026-10-18T21:07:02+00:00",
  "analysisId": "analysis:demo:1-019", "storylineIds": ["sl:demo:2"]}
 ```
 

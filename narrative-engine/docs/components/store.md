@@ -1,17 +1,17 @@
 # Store
 
-> **In short:** where the engine keeps its state: checkpoints, context blocks and narratives. `cosmos.py` uses Cosmos DB in Azure; `memory.py` keeps the same data in dictionaries for tests and local runs. A shared contract test runs against both.
+> **In short:** where the engine keeps its state in eight containers: checkpoints, context blocks, narratives, analyses, storylines, follow decisions and narratives, tombstones. `cosmos.py` uses Cosmos DB in Azure; `memory.py` keeps the same data in dictionaries for tests and local runs. A shared contract test runs against both.
 
 | | |
 | --- | --- |
 | **Status** | Implemented · tested (Cosmos DB serverless on Azure) |
 | **Code** | [`narrative_engine/store/`](../../narrative_engine/store/): `__init__.py` (interface), `cosmos.py`, `memory.py` |
-| **Auth** | Entra ID only (`DefaultAzureCredential`: `az login` locally, managed identity in Azure) |
+| **Auth** | Entra ID (`DefaultAzureCredential`, managed identity) in Azure; key (`COSMOS_KEY`) for the local emulator |
 | **Tests** | `test_store_contract.py` (memory always; real Cosmos when `COSMOS_ENDPOINT` is set) |
 
 ## 1. Interface (`Store`)
 
-*In short: nine async methods, all scoped to one match.*
+*In short: async methods, scoped to one match except `match_ids` and `tombstones`.*
 
 | Method | Purpose |
 | --- | --- |

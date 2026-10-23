@@ -1,10 +1,10 @@
 # Overview
 
-> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one to three sentence narratives for each active audience bucket when something happens. It is implemented, tested and deployed to Azure.
+> **In short:** a Python service that listens for the ETL's match notifications, keeps a compact shared memory of the match, and writes one- or two-sentence narratives for each active audience bucket when something happens. It is implemented, tested and deployed to Azure.
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested · deployed: Container App `itg-narrative-dev-engine`, redeployed 23 Oct with the fictional league; all four demo seeds recorded on Azure |
+| **Status** | Implemented · tested · deployed: Container App `itg-narrative-dev-engine` ([status](../../PLAN.md#11-azure-judge-build)) |
 | **Language** | Python 3.11, asyncio |
 | **Runs on** | Azure Container Apps (one replica); Microsoft Agent Framework on Azure AI Foundry: `gpt-6.1-sol` (`writer`, every agent at effort low) and Microsoft-Decision-1 (`decision-1`) |
 | **Reads** | ETL GraphQL (SPADL actions, key events, the SPADL stat catalogue, MA3 facts outside SPADL); Service Bus `match-notifications`; user-backend audience targets and prompts |

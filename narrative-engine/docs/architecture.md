@@ -166,7 +166,7 @@ Immutable follow decisions (`subdec:{matchId}:{trigger ref}`) and follow narrati
 
 *In short: the engine owns its resource group; it borrows the ETL's Service Bus namespace and Container Apps environment.*
 
-One Container App (internal ingress, one replica), a container registry, serverless Cosmos DB, an Azure AI Foundry account (`writer`, `decision-1`), the `narratives` topic in the ETL's namespace and Application Insights. Files and settings: [deployment §1](deployment.md#1-infrastructure).
+One Container App (internal ingress, one replica), a container registry, serverless Cosmos DB, an Azure AI Foundry account (`writer`, `gpt-6-luna`, `gpt-5-mini`, `decision-1`), the `narratives` topic in the ETL's namespace and Application Insights. Files and settings: [deployment §1](deployment.md#1-infrastructure).
 
 ## 6. Guarantees and limits
 

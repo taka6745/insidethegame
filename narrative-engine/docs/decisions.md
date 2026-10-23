@@ -40,7 +40,7 @@
 | One Foundry writing model | One deployment `writer` (`gpt-6.1-sol` since 22 Oct), reasoning effort per agent; models swappable per agent | `gpt-6.1-sol` has no `minimal` effort, so every role runs at `low` |
 | Narratives react to the latest minute | A match analyst every 5 minutes (and at half and full time) keeps storylines; each step advances one focus storyline chosen in Python and shared by every bucket | Narratives are storylines through the game, not last-minute commentary (21 Oct) |
 | Patterns from a fixed list | The analyst names patterns in its own words; the validator checks only grounding (cited values equal the ETL's trend rows, cover the team, and the text uses only their numbers and names) | don't hard-code or lead the witness (21 Oct) |
-| Ungrounded claims dropped silently | One repair turn with the check's reasons, for each rejected analyst item and each author excerpt; an excerpt that still fails is dropped and logged. The author is checked too: numbers only as shown to it, names only from the roster and its inputs, and (22 Oct) no causal or intent claim the evidence does not state, asked of Microsoft-Decision-1 per sentence (two bounded questions each, thresholds in the policy's `claims`), replacing a phrase list | A live sample passed 61% of observations and an author quoted a possession figure nobody served (21 Oct). Checks unchanged; the analyst's confidence became a level, its trend table shows both teams per line, and a mismatch says what the table has. Local model, kickoff to 18': 80% first pass, 100% after repair (15 observations); to 34' before the table fix: 57% / 71% |
+| Ungrounded claims dropped silently | One repair turn with the check's reasons, for each rejected analyst item and each author excerpt; an excerpt that still fails is dropped and logged. The author is checked too: numbers only as shown to it, names only from the roster and its inputs, and (22 Oct) no causal or intent claim the evidence does not state, asked of Microsoft-Decision-1 per sentence (two bounded questions each, thresholds in the policy's `claims`), replacing a phrase list | Ungrounded text reached viewers; one repair recovers most of it ([evidence](components/analysis.md#4-grounding-evidence)) |
 | Storyline constants in code | The backend's `storyline-policy` config (`GET /storyline-policy`, ETag, `/dev/config`), read like the prompts with no fallback; code keeps only the reply schema, the language checks and the trend windows' minute marks | no magic numbers; every tunable editable per deployment (21 Oct) |
 | Grounding rules in the prompts | Prompts describe inputs and outputs only; the validators enforce grounding and their reasons drive the repair turn | don't hard-code rules, phrase lists or example conclusions into prompts (21 Oct) |
 | Analysis offset per match | Every match analyses at its own minutes 5, 10, 15 … | Matches stay unaware of each other; the demo staggers kickoffs (21 Oct) |
@@ -62,11 +62,8 @@
 
 | Item | Owner | Notes |
 | --- | --- | --- |
-| Stand-in retired | Engine (done); user backend | `narrative_demo/` and `demo.Dockerfile` are deleted; the local stack runs only `narrative-live`. The backend's side of the removal belongs to its own stream |
-| Presence | Engine (done) | Replaced by the backend's `generation_targets` (polled, ETag); the Azure `presence` topic, its keys and `devtools.azure send-presence` are removed |
 | Throughput under several matches | Engine | One shared model: see [architecture §6](architecture.md#6-guarantees-and-limits). Backlogs drain without loss; raise `MODEL_CONCURRENCY` or use a faster author model on Azure AI Foundry |
 | Grounding on Azure | Engine | Not yet sampled on Azure with `gpt-6.1-sol` |
-| Second-half live check on Agent Framework | Engine | The 20 Oct run stopped at half time (local memory) |
 | Odd phrasing ("Half an hour? Sorry—20 minutes") | Engine | Prompt or model; try with a stronger author model |
 | ETL subscription backlog | ETL + engine | No TTL on `narrative-engine`; purge old matches (`POST /admin/matches/purge`, `{"all": true}` sets a cut-off) before a demo |
 

@@ -20,14 +20,14 @@
 | `main.tf` | Resource group, budget alert, naming |
 | `cosmos.tf` | Serverless Cosmos DB, database `narrative`, eight containers (checkpoints, contextBlocks, narratives, analyses, storylines, subscriptionDecisions, subscriptionNarratives, tombstones), your data role |
 | `messaging.tf` | Topic `narratives` (subscriptions `user-backend`, `narrative-check`), scoped keys |
-| `foundry.tf` | Azure AI Foundry account and one deployment per entry in `models`: `writer` (Azure OpenAI `gpt-6.1-sol`) for the agents and `decision-1` (Microsoft-Decision-1, DataZoneStandard, 50 requests/minute) for story follows and claim checks (`var.decision`; the app gets `DECISION_*` on the same account) |
+| `foundry.tf` | Azure AI Foundry account and one deployment per entry in `models`: `writer` (Azure OpenAI `gpt-6.1-sol`) for the agents, the alternates `gpt-6-luna` and `gpt-5-mini`, and `decision-1` (Microsoft-Decision-1, DataZoneStandard, 50 requests/minute) for story follows and claim checks (`var.decision`; the app gets `DECISION_*` on the same account) |
 | `app.tf` | Container registry, Container App (secrets, settings including `DEMO_SEEDS` from `demo_seeds`, identity), Cosmos role for the app |
 | `monitoring.tf` | Log Analytics workspace, Application Insights, the "Narrative engine" workbook |
 | `variables.tf`, `outputs.tf`, `versions.tf` | Inputs, outputs (secrets marked sensitive), providers |
 
 | Resource | Name (dev) | Notes |
 | --- | --- | --- |
-| Resource group | `rg-itg-narrative-dev` | Budget alert at US$20/month |
+| Resource group | `rg-itg-narrative-dev` | Budget alert at 20/month (billing currency, A$) |
 | Container App | `itg-narrative-dev-engine` | 0.5 vCPU, 1 GiB, 1 replica, internal ingress on 8000 (only the backend, the frontend's dev purge proxy and demo control call it); `DEMO_SEEDS=1` on the demo build; in the ETL's environment (one per region on the trial) |
 | Container Registry | `itgnarrativedevdhcyoacr` | Basic; images built locally and pushed |
 | Cosmos DB | `itg-narrative-dev-dhcyo-cosmos` | Serverless; engine uses managed identity |
