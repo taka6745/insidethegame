@@ -24,19 +24,21 @@ export const MAX_OPTIONS = 20;
 
 /** Every combination of one option per layer, in layer order. `enabled` is kept by selections, or,
  * when `before` (the layers `previous` was built from) is given, by option position, so renaming
- * a layer or option keeps its buckets' flags. */
+ * a layer or option keeps its buckets' flags. A combination still selected keeps its id (one from
+ * before a layer was added, as in migration 047, stays what viewers and profiles use). */
 export function expandBuckets(layers: AudienceLayer[], previous: AudienceBucket[] = [], before?: AudienceLayer[]): AudienceBucket[] {
   const key = (selections: Record<string, string>) => layers.map((layer) => `${layer.id}=${selections[layer.id]}`).join("|");
   const position = (selections: Record<string, string>) =>
     before!.map((layer) => layer.options.findIndex((option) => option.id === selections[layer.id])).join();
   const enabled = new Set(previous.filter((bucket) => bucket.enabled).map((bucket) => (before ? position : key)(bucket.selections)));
+  const ids = new Map(previous.map((bucket) => [key(bucket.selections), bucket.id]));
   let combinations: number[][] = layers.length ? [[]] : [];
   for (const layer of layers)
     combinations = combinations.flatMap((partial) => layer.options.map((_, index) => [...partial, index]));
   return combinations.map((indexes) => {
     const selections = Object.fromEntries(layers.map((layer, l) => [layer.id, layer.options[indexes[l]!]!.id]));
     return {
-      id: layers.map((layer) => selections[layer.id]).join(":"),
+      id: ids.get(key(selections)) ?? layers.map((layer) => selections[layer.id]).join(":"),
       selections,
       enabled: enabled.has(before ? indexes.join() : key(selections)),
     };

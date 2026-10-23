@@ -55,6 +55,17 @@ test("renaming a layer or option keeps its buckets' enabled flags", () => {
     [{ id: "visitors:simple", selections: { team: "visitors", style: "simple" }, enabled: true }]);
 });
 
+test("a combination still selected keeps its bucket id through edits", () => {
+  const layers = [
+    { id: "team", description: "Side", options: [{ id: "home", description: "Home" }] },
+    { id: "length", description: "How long", options: [{ id: "standard", description: "Usual", in_label: false }, { id: "brief", description: "Short" }] },
+  ];
+  const previous = [{ id: "home", selections: { team: "home", length: "standard" }, enabled: true },
+    { id: "home:brief", selections: { team: "home", length: "brief" }, enabled: false }];
+  assert.deepEqual(expandBuckets(layers, previous).map((b) => b.id), ["home", "home:brief"]);
+  assert.deepEqual(expandBuckets(layers, previous, layers).map((b) => [b.id, b.enabled]), [["home", true], ["home:brief", false]]);
+});
+
 test("saving a template keeps each option's team and in_label", () => {
   const saved = templateConfig({
     layers: [{ id: "length", description: " How long. ", options: [
