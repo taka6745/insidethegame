@@ -1,19 +1,17 @@
 # Match data / ETL
 
+> **In short:** turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind GraphQL), and announces closed minutes and key events on Service Bus. Implemented, tested and deployed ([status](docs/overview.md#3-status-by-area)).
+
 [Documentation](docs/README.md) · [Shared local setup](../DEVELOPMENT.md)
 
 ![ETL owns standard statistics and historical events](architecture.svg)
 
-**Implemented, tested and deployed to Azure** ([status](docs/overview.md#3-status-by-area)). Turns a stream of Opta-style match events into queryable history, a key-event ledger and running match statistics (Azure SQL behind a GraphQL API), and announces closed minutes and key events on Service Bus. Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus.
-
-**Local pipeline stand-in (`local_stream/`): implemented and tested locally; not deployed as a worker (on Azure the same image serves only the purge and demo-seed API).** `./dev up backend` also runs this pipeline's SQL schema and Data API builder 2.1.5 config on the stack's SQL Server (database `insidethegame`, GraphQL `http://localhost:15001/graphql`, `http://etl-dab:5000/graphql` inside Docker). A Python worker replaces Stream Analytics: it reads MA1, MA3, POS and `MatchEvent` v2 from Event Hubs (consumer group `stream-analytics`), applies `reference/` one message at a time, writes `matches`/`rawEvents`/`keyEvents`/`minuteStats` plus the multi-match read models (teams, players, canonical events, possession samples, watermarks; [contracts](../local/contracts/README.md#3-etl-graphql-dab)), serves the 126-stat SPADL catalogue (42 kinds × 3 scopes) through `executeStatsAtSeq`, purges per match (`POST /admin/matches/purge`), and sends the [notifications](contracts/README.md#output-2-service-bus-topic-match-notifications) to `match-notifications` (subscription `narrative-live`, filtered on `notificationType`). Each feed run is its own match: `{fixture}-{first 8 hex of run id}`. The earlier recorded-match stand-in (`demo_etl/`) is deleted; its stat catalogue lives here (`statDefinitions`, `executeStatsAtSeq`).
+Azure: Event Hubs → Stream Analytics → Azure SQL serverless → Data API builder, plus Service Bus. Locally, `local_stream/` stands in for Stream Analytics in `./dev up backend` (GraphQL `http://localhost:15001/graphql`); on Azure the same image serves only the purge and demo-seed API ([local-stream](docs/components/local-stream.md)).
 
 ```text
 feed ─ MA1/MA3/POS/MatchEvent v2 ─→ Event Hubs ─→ local_stream ─→ SQL Server ─→ etl-dab GraphQL
                                               └─ outbox ─→ Service Bus match-notifications → narrative-live
 ```
-
-Windows are 60-second event-time tumbling windows; a minute closes when the next minute's first event arrives, or after 75 s without messages (paused feed or full time). Rows, closed windows, the Event Hubs checkpoint and outgoing notifications commit in one transaction, so a restart neither loses nor double-counts (unit-tested, and checked against `devtools verify` after a hard kill mid-match). Limits: one worker process; an event that arrives after its window closed joins the next window, like Stream Analytics' adjust policy.
 
 | | |
 | --- | --- |

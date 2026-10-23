@@ -1,6 +1,6 @@
 # Decisions
 
-> **In short:** the built ETL follows the [original design](design/original-design.md) service for service; it adds an event format, a match table, period notifications and the tooling to prove the cloud output correct, and it is tuned for 10x replays.
+> **In short:** the built ETL follows the [original design](design/original-design.md) service for service; it adds an event format, a match table, period notifications and the tooling to prove the cloud output correct; it runs real time on Azure (Terraform defaults suit 10x replays).
 
 | | |
 | --- | --- |
@@ -26,7 +26,7 @@
 | Two notification types | Plus `PeriodStarted` / `PeriodEnded` | The narrative engine needs half and full time |
 | Replay from data generation | `seeder/` kept as a developer tool; the feed (`data-generation/feed/`) produces every match | Synthetic replays and `devtools verify` need no feed |
 | — | Python `reference/` and `devtools verify` | Stream Analytics has no local emulator; the reference proves the cloud output |
-| Late arrivals "allowed" | 2 s out of order, 5 s late, 6 s windows | Sized for 10x replays |
+| Late arrivals "allowed" | 2 s out of order, 5 s late; windows 6 s by default, 60 s from `./dev azure up` | Fits replays and real time |
 | Managed identity | Managed identity to SQL; scoped keys for Event Hubs and Service Bus | Contributor cannot create role assignments |
 | — | DAB anonymous read | Internal ingress only: reachable from the backend and engine in the same environment |
 | — | Watermark marks from a second, arrival-ordered read of the hub; Azure SQL `INSTEAD OF INSERT` triggers turn them into `matchProgress` | Stream Analytics writes each output separately and append-only, so only SQL can tell when everything a watermark promises is committed |

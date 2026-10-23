@@ -60,7 +60,7 @@ Half time has no events, so no windows close and no `MinuteClosed` fires.
 
 ## 4. Data model
 
-*In short: four tables written by the job, one view for consumers.*
+*In short: four core tables and a view, plus read models, SPADL and trends.*
 
 | Table / view | One row per | Key |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ Half time has no events, so no windows close and no `MinuteClosed` fires.
 | `minuteStats` | team, match minute, window | `(matchId, contestantId, periodId, timeMin, windowEnd)` |
 | `matchStatsAsOf` (view) | team, match minute | running totals as of that minute |
 
-The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `possessionSamples`, `matchProgress`) sit behind `matchWatermarks`; `statsAtSeq` reads `spadlActions`, MA3 card and VAR rows and `possessionSamples` ([sql](components/sql.md#3-multi-match-read-models-003)). The [trend procedures](components/trends.md) read the same rows at a snapshot, with thresholds from `trendDefinitions`. The local stream writes them; the job's outputs for them, its watermark marks and the Azure SQL triggers are implemented and applied 22 Oct (Azure match run pending) ([Stream Analytics](components/stream-analytics.md#5-watermarks)). All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
+The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `possessionSamples`, `matchProgress`) sit behind `matchWatermarks`; `statsAtSeq` reads `spadlActions`, MA3 card and VAR rows and `possessionSamples` ([sql](components/sql.md#3-multi-match-read-models-003)). The [trend procedures](components/trends.md) read the same rows at a snapshot, with thresholds from `trendDefinitions`. The local stream writes them; the job's outputs for them, its watermark marks and the Azure SQL triggers run on Azure with three concurrent matches ([Stream Analytics](components/stream-analytics.md#5-watermarks)). All keys use `IGNORE_DUP_KEY`, so a replayed insert is a no-op. Column lists: [sql](components/sql.md).
 
 ## 5. Azure resources
 
@@ -78,7 +78,7 @@ The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `p
 
 | Resource | Name (example suffix; `./dev azure up` mints its own) | Size and notes |
 | --- | --- | --- |
-| Resource group | `rg-itg-etl-dev` | Budget alert at US$50/month |
+| Resource group | `rg-itg-etl-dev` | Budget alert at 50/month (billing currency, A$) |
 | Event Hubs | namespace `itg-etl-dev-0zvxh-ehns`, hub `match-events` | Standard, 1 TU, 2 partitions, 1-day retention; consumer groups `stream-analytics`, `stream-analytics-progress`, `user-backend` |
 | Stream Analytics | `itg-etl-dev-0zvxh-asa` | StandardV2, ⅓ streaming unit; created stopped, bills only while running |
 | Azure SQL | server `itg-etl-dev-0zvxh-sql`, database `insidethegame` | General Purpose serverless, free offer, auto-pause after 60 min; Entra-only auth |
@@ -95,6 +95,6 @@ The multi-match read models (`matchTeams`, `matchPlayers`, `canonicalEvents`, `p
 
 - **Idempotent writes and messages:** primary keys ignore duplicates; Service Bus `MessageId`s are deterministic.
 - **Minute and data together:** `MinuteClosed` and the SQL write for that minute leave the job together; a consumer may need to retry briefly if the row is not visible yet.
-- **Late data:** up to 5 s late and 2 s out of order. Sized for 6-second replay minutes.
+- **Late data:** up to 5 s late and 2 s out of order.
 - **Window tied to speed:** `window_seconds` must equal 60 / replay speed; changing it means stopping the job and applying Terraform.
 - **Cold start:** DAB scales to zero and SQL auto-pauses, so the first query can take about 30 s.

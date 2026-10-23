@@ -15,6 +15,8 @@
 
 ## Input: Event Hubs `match-events`
 
+*In short: one ordered JSON stream per match, keyed by `matchId`.*
+
 One JSON message per item, partition key `matchId`, so one match is strictly ordered. Every message carries `synthetic: true` for generated data and a wall-clock UTC `timeStamp` (rebased by the feed; Stream Analytics uses it for `TIMESTAMP BY`). `timeMin`/`timeSec` is the Opta match clock (continues through added time; period 2 starts at 45:00). Consumers ignore message kinds they don't use (`feed` absent, or a `type` they don't own).
 
 ```text
@@ -84,6 +86,8 @@ Measured ball ownership, one message per sample, sent only once its video time h
 
 ## Output 1: GraphQL (Data API builder, anonymous read)
 
+*In short: read-only GraphQL over the ETL tables, views and procedures.*
+
 Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhost:15001/graphql` (shared stack, `./dev up backend`). Azure: internal ingress only (`terraform -chdir=etl/infra output graphql_url`), reachable from apps in the shared Container Apps environment; it scales to zero, so the first request can take ~30 s (the database may also be resuming from auto-pause). All queries support `filter`, `orderBy`, `first`, `after`.
 
 | Query | One row per | Use |
@@ -93,7 +97,7 @@ Local: `http://localhost:5000/graphql` (`devtools local-up`) or `http://localhos
 | `keyEvents` | key event | Authoritative narrative ledger (see types below). |
 | `minuteStats` | contestant, minute, window | Per-minute deltas. Usually prefer `matchStatsAsOfs`. |
 | `matchStatsAsOfs` | contestant, match minute | Running totals as of the end of that minute. |
-| `matches` (extended), `matchWatermarks`, `statDefinitions`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts/README.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); in Azure from Stream Analytics once deployed. |
+| `matches` (extended), `matchWatermarks`, `statDefinitions`, `possessionSamples`, `executeStatsAtSeq` | see [local contracts](../../local/contracts/README.md#3-etl-graphql-dab) | Multi-match viewer data and the stat catalogue. Run locally (`etl-stream` + `etl-dab`); on Azure from Stream Analytics. |
 | `spadlActions` | action ([below](#output-3-spadl-actions)) | SPADL actions converted from MA3; the stat catalogue counts these. |
 | `trendDefinitions`, `executeTrendsAtSeq`, `executeTrendSpellsAtSeq`, `executeTrendMinutesAtSeq` | definition; indicator × team × window; spell; minute × team ([below](#output-4-trend-indicators)) | Trend indicators for the narrative engine's analyst. |
 
@@ -127,6 +131,24 @@ query ($m: String!) {
 | `PenaltyMissed` | null | type 13/14/15 + qualifier 9 | taking team |
 | `RedCard` | `second-yellow` or null | type 17 + qualifier 32/33 | sent-off player's team |
 | `VarOverturn` | `goal-overturned`, `own-goal-overturned` | type 900 + qualifier 901 | team of the overturned goal; `relatedEventId` = its `eventId` |
+
+## Output 2: Service Bus topic `match-notifications`
+
+*In short: one topic of minute, key-event and period notifications, at least once.*
+
+JSON body; application property `notificationType` (same value as `messageType`) for subscription filters; `MessageId` set for duplicate detection (delivery is at least once, so consumers should still be idempotent). Every message carries the same keys (`messageType messageId matchId periodId timeMin timeSec eventTime windowEnd id keyType detail typeId contestantId playerId relatedEventId`); keys a type does not use are `null`. Switch on `messageType`.
+
+| messageType | Body fields | MessageId |
+| --- | --- | --- |
+| `KeyEventDetected` | the `keyEvents` row fields | `{matchId}:key:{id}` |
+| `MinuteClosed` | `matchId periodId timeMin windowEnd` | `{matchId}:minute:{periodId}:{timeMin}` |
+| `PeriodStarted` / `PeriodEnded` | `matchId periodId eventTime` | `{matchId}:{messageType}:{periodId}` |
+
+- `MinuteClosed` fires when a match minute's window closes (after the late-arrival tolerance). No events, no window: nothing fires during half time.
+- `MinuteClosed` and the SQL write for that minute happen together. If `matchStatsAsOfs` has no row for that minute yet, retry briefly.
+- Replays can run faster than real time (`--speed 10` gives 6-second minutes), so don't assume 60 seconds per minute.
+
+**Status:** verified against the reference pipeline on Azure. Subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. In the shared Docker stack, `local_stream/` sends the same bodies, properties and MessageIds to the Service Bus emulator (subscription `narrative-live`). Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. On Azure, messages only flow while the Stream Analytics job is running (the stream schedule starts it when match events arrive and stops it after 30 quiet minutes) and the feed (or a seeder replay) is sending.
 
 ## Output 3: SPADL actions
 
@@ -215,23 +237,9 @@ query ($m: String!, $s: Int!) {
 
 (Riverton Rovers–Forgeham United at full time, values rounded here.) `executeTrendMinutesAtSeq` also has `attHalfSeconds finalThirdSeconds ftActions boxShots buildPasses pressActions defActions tackles challenges aerials takeOns fastBreaks passes forwardMetres passMetres longPasses`.
 
-## Output 2: Service Bus topic `match-notifications`
-
-JSON body; application property `notificationType` (same value as `messageType`) for subscription filters; `MessageId` set for duplicate detection (delivery is at least once, so consumers should still be idempotent). Every message carries the same keys (`messageType messageId matchId periodId timeMin timeSec eventTime windowEnd id keyType detail typeId contestantId playerId relatedEventId`); keys a type does not use are `null`. Switch on `messageType`.
-
-| messageType | Body fields | MessageId |
-| --- | --- | --- |
-| `KeyEventDetected` | the `keyEvents` row fields | `{matchId}:key:{id}` |
-| `MinuteClosed` | `matchId periodId timeMin windowEnd` | `{matchId}:minute:{periodId}:{timeMin}` |
-| `PeriodStarted` / `PeriodEnded` | `matchId periodId eventTime` | `{matchId}:{messageType}:{periodId}` |
-
-- `MinuteClosed` fires when a match minute's window closes (after the late-arrival tolerance). No events, no window: nothing fires during half time.
-- `MinuteClosed` and the SQL write for that minute happen together. If `matchStatsAsOfs` has no row for that minute yet, retry briefly.
-- Replays can run faster than real time (`--speed 10` gives 6-second minutes), so don't assume 60 seconds per minute.
-
-**Status:** verified against the reference pipeline on Azure. Subscription `narrative-engine`; for now consumers authenticate with the listen-only key (`terraform -chdir=etl/infra output -raw servicebus_listen_connection_string`), to be replaced by Entra roles later. In the shared Docker stack, `local_stream/` sends the same bodies, properties and MessageIds to the Service Bus emulator (subscription `narrative-live`). Offline, `python -m devtools load-local` writes the same message bodies to `etl/.local/notifications.jsonl`. On Azure, messages only flow while the Stream Analytics job is running (the stream schedule starts it when match events arrive and stops it after 30 quiet minutes) and the feed (or a seeder replay) is sending.
-
 ## Admin: demo seeds (`DEMO_SEEDS` only)
+
+*In short: export and restore one match, demo build only.*
 
 Demo-only routes on the ETL admin API (bearer token like the purge), present only with `DEMO_SEEDS=1` (local compose and the demo build); a production release has none. Implemented and SQL-tested ([component page](../docs/components/local-stream.md#4-demo-seeds-demo_seeds-only)).
 
@@ -240,5 +248,4 @@ Demo-only routes on the ETL admin API (bearer token like the purge), present onl
 | `GET /admin/matches/export?match_id=` | `{match_id, schema, tables: {table: [rows]}}` | `422` bad id, `503` retry |
 | `POST /admin/matches/restore` | `{match_id, max_seq, schema, tables}` → `{match_id, restored: {table: count}}` | `409` other schema, known or tombstoned match, rows of another match or past `max_seq`; `413` over 512 MB |
 
-Demo control is the only caller ([PLAN.md §10.6](../../PLAN.md)): it rewrites the seed to the new run's matchId, restores ETL before the engine and backend, then releases the feed run.
-
+Demo control is the only caller ([demo control](../../local/docs/components/demo-control.md#2-seeds)): it rewrites the seed to the new run's matchId, restores the ETL alongside the backend, then the engine, then releases the feed run.

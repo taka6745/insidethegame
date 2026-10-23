@@ -4,11 +4,11 @@
 
 | | |
 | --- | --- |
-| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · deployed to Azure by `./dev azure up` (redeployed 23 Oct) and run there with three concurrent matches |
-| **Demo** | Seed export/restore on the admin API, only with `DEMO_SEEDS=1` (implemented, SQL-tested; all four seeds recorded on Azure) |
+| **Status** | Implemented · tested (unit, SQL on a disposable SQL Server, end-to-end verification, the shared local stack) · deployed to Azure by `./dev azure up` ([status](../../PLAN.md#11-azure-judge-build)) and run there with three concurrent matches |
+| **Demo** | Seed export/restore on the admin API, only with `DEMO_SEEDS=1` (implemented, SQL-tested) |
 | **Event format** | Opta MA1 (match info) and MA3 (events), labelled `synthetic: true` |
 | **Runs on** | Event Hubs, Stream Analytics, Azure SQL serverless, Data API builder on Container Apps, Service Bus |
-| **Writes** | SQL tables `matches`, `rawEvents`, `keyEvents`, `minuteStats`; Service Bus `match-notifications` |
+| **Writes** | SQL tables `matches`, `rawEvents`, `keyEvents`, `minuteStats`, plus read models, SPADL and trends ([sql](components/sql.md)); Service Bus `match-notifications` |
 | **Serves** | GraphQL (anonymous read; internal ingress only) |
 | **Consumers** | Narrative engine, user backend |
 
@@ -28,7 +28,7 @@
 | Direction | What | Contract |
 | --- | --- | --- |
 | In | Event Hubs `match-events`: MA1 first, then MA3 events, partition key `matchId` | [contracts](../contracts/README.md#input-event-hubs-match-events) |
-| Out | GraphQL: `matches`, `rawEvents`, `keyEvents`, `minuteStats`, `matchStatsAsOfs` | [contracts](../contracts/README.md#output-1-graphql-data-api-builder-anonymous-read) |
+| Out | GraphQL: `matches`, `rawEvents`, `keyEvents`, `minuteStats`, `matchStatsAsOfs`, plus read models, SPADL and trends | [contracts](../contracts/README.md#output-1-graphql-data-api-builder-anonymous-read) |
 | Out | Service Bus topic `match-notifications` | [contracts](../contracts/README.md#output-2-service-bus-topic-match-notifications) |
 | Side | Event Hubs consumer group `user-backend` for live events | User backend reads the stream directly |
 
@@ -44,7 +44,7 @@
 | Stream Analytics query | Deployed; real-time (`window_seconds = 60`) match runs on Azure with the multi-match outputs (POS, teams, players, canonical events, watermark marks), Azure SQL triggers and the purge API; tested against the reference and the local stream |
 | Data API builder | Deployed (internal ingress, scales to zero) |
 | Stream schedule (spend guard) | Deployed: match events (or demo Start) start the job, 30 quiet minutes stop it ([stream-analytics §6](components/stream-analytics.md#6-run-only-while-matches-play)) |
-| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested; 20′, HT, 60′ and 85′ recorded on Azure and restored by seeded starts |
+| Demo seeds (`DEMO_SEEDS=1`) | Implemented, SQL-tested; restored by seeded starts on Azure |
 | Local stream stand-in (`local_stream/`) | Implemented, unit- and SQL-tested, runs 1x replays in the local Docker stack; not deployed as a worker. Also MatchEvent v2, POS, watermarks, the stat catalogue, per-match purge and demo seeds (`DEMO_SEEDS=1`) ([local-stream](components/local-stream.md)) |
 
 ## 4. Glossary

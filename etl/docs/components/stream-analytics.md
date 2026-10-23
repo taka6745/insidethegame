@@ -54,17 +54,17 @@
 
 ## 3. Timing settings
 
-*In short: tuned for 10x replays.*
+*In short: Terraform defaults suit 10x replays; `./dev azure up` sets real time.*
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| Tumbling window | `window_seconds` = 6 (Terraform variable, rendered into the query) | One match minute at 10x |
+| Tumbling window | `window_seconds`: Terraform default 6 (10x replays); `./dev azure up` sets 60 (real time) | One match minute |
 | Quiet spell | `watermark_idle_seconds` = 3 (rendered as `idle_seconds`) | Completes a match's last event, like the local worker's `ETL_WATERMARK_IDLE_SECONDS` |
 | Out of order | Adjust, 2 s | Small reorderings within a minute |
-| Late arrival | 5 s | Less than one replay minute |
+| Late arrival | 5 s | Less than one match minute at either speed |
 | Output errors | Drop | One bad row must not stall every output; verification catches gaps |
 
-For a real-time match set `window_seconds = 60` (and consider larger late-arrival tolerance), stop the job and apply Terraform.
+Changing `window_seconds` means stopping the job and applying Terraform.
 
 ## 4. UDFs
 
