@@ -4,7 +4,7 @@ import pytest
 from harness import MATCH, Running, Upstream
 from starlette.websockets import WebSocketDisconnect
 
-from test_product import OTHER, ask, deliver, narrative, path, refresh, start, until
+from support import OTHER, ask, deliver, narrative, path, refresh, start, until
 
 TEMPLATE = '/dev/fixtures/riverton-madrid/audience-config'
 DEMO_BUCKETS = {'home:analytical', 'away:casual', 'neutral:simple'}
@@ -18,7 +18,7 @@ def select(client, token, bucket_id='away:casual', match_id=MATCH):
 
 def enabled(client, match_id=MATCH):
     body = client.get(f'/matches/{match_id}/audience-config').json()
-    assert len(body['buckets']) == 24  # 12 audiences, each Standard and (disabled) Brief length (047)
+    assert len(body['buckets']) == 24  # 12 audiences, each Standard and (disabled) Brief length
     assert {b['id'] for b in body['buckets'] if b['enabled']} == {t['bucket_id'] for t in body['generation_targets']}
     return {t['bucket_id'] for t in body['generation_targets']}
 

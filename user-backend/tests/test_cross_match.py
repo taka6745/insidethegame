@@ -1,4 +1,4 @@
-"""Cross-match reach (PLAN.md §10.2 D5, D5b): questions, pins and follows about the demo's other live matches, each at
+"""Cross-match reach: questions, pins and follows about the other live matches, each at
 that match's own position and marked with its header; and the "Follow this story?" offer on answers."""
 import asyncio
 from pathlib import Path
@@ -16,7 +16,7 @@ from backend.services.questions import QuestionService
 from benchmarks.doubles.config import SeededConfig, migration
 from benchmarks.doubles.recording import FixtureEventSource
 from harness import MATCH, Running, Upstream
-from test_subscriptions import deliver, follow, narrative, path, start, view
+from support import deliver, follow_narrative, path, start, view
 
 OTHER = 'redcastle-portalbion-0badc0de'
 # The second match: the same recording under other names (team ids stay; names are what viewers type).
@@ -104,7 +104,7 @@ def test_questions_see_the_live_matches_and_can_answer_what_else_is_on(store):
 
 
 def test_a_request_about_both_games_is_answered_from_each_at_its_own_position(store):
-    """'Show me the goals from both games' (PLAN.md §12 M8): one answer per match, each at that match's position, the
+    """'Show me the goals from both games': one answer per match, each at that match's position, the
     other marked with its header; never narrowed to one match."""
     from backend.models.questions import QuestionDraft
 
@@ -130,7 +130,7 @@ def test_a_request_about_both_games_is_answered_from_each_at_its_own_position(st
 
 
 def test_a_trend_question_sees_etls_served_value_and_can_cite_it(store):
-    """PLAN.md §12 M15: field tilt is a served trend; the answer gets ETL's value as evidence, never its own sum."""
+    """Field tilt is a served trend; the answer gets ETL's value as evidence, never its own sum."""
     from backend.models.questions import QuestionDraft
     seen = []
 
@@ -191,8 +191,8 @@ def test_another_matchs_story_reaches_the_follow_view_marked_and_bounded_by_that
         assert targets['topics'][0]['buckets'] == [followed['bucket_id']]  # that match's catalogue, not the viewer's
         assert run.client.get(f'/matches/{MATCH}/subscription-targets').json()['topics'] == []
         bucket = followed['bucket_id']
-        assert deliver(run, narrative(OTHER, bucket, 1, 'Port Albion press.', followed['topic_id'], event_seq=8))
-        assert deliver(run, narrative(OTHER, bucket, 2, 'Not played yet.', followed['topic_id'], event_seq=12))
+        assert deliver(run, follow_narrative(OTHER, bucket, 1, 'Port Albion press.', followed['topic_id'], event_seq=8))
+        assert deliver(run, follow_narrative(OTHER, bucket, 2, 'Not played yet.', followed['topic_id'], event_seq=12))
         refresh(run, OTHER)
         snapshot = view(run, token)
         assert snapshot['feed_mode'] == 'following' and snapshot['follow_match']['id'] == OTHER
@@ -434,7 +434,7 @@ def test_another_match_stands_where_etl_has_it_with_stoppage_minutes_and_its_sco
 
 
 def test_the_follow_planner_is_told_each_live_matchs_score_and_minute():
-    """PLAN.md §11: the planner said it had no score for the other match; the listing's score is in its prompt."""
+    """The live-match listing in the planner's prompt carries each match's score."""
     from backend.agents.subscription_planner import SubscriptionPlanner
     seen = {}
 

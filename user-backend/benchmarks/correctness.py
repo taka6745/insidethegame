@@ -5,7 +5,6 @@ import hashlib
 import json
 import logging
 import os
-from decimal import Decimal
 from pathlib import Path
 
 from benchmarks.doubles.events import OptaInspiredAdapter
@@ -13,13 +12,13 @@ from backend.adapters.match_reference import data_reference
 from backend.agents.workflow import workflow_from_env
 from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
-from .cases import cases
-from .quality_cases import quality_cases
-from .balanced_cases import balanced_cases
-from .conversation_eval import evaluate_conversation
-from .transfer_cases import transfer_cases
-from .data_transfer_cases import data_transfer_cases, remap_fixture
-from .spadl_corpus import expected_trace, fixture_actions
+from benchmarks.cases import cases
+from benchmarks.quality_cases import quality_cases
+from benchmarks.balanced_cases import balanced_cases
+from benchmarks.conversation_eval import evaluate_conversation
+from benchmarks.transfer_cases import transfer_cases
+from benchmarks.data_transfer_cases import data_transfer_cases, remap_fixture
+from benchmarks.spadl_corpus import expected_trace, fixture_actions
 
 COHORTS = {"baseline": cases, "quality": quality_cases, "balanced": balanced_cases,
            "transfer": transfer_cases, "data-transfer": data_transfer_cases}

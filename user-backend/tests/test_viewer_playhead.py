@@ -5,7 +5,7 @@ import pytest
 
 from backend.models.questions import QuestionDraft
 from harness import MATCH, Running
-from test_product import path, start
+from support import path, start
 
 
 class Citing:

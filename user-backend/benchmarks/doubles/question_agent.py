@@ -1,7 +1,7 @@
 """Explicit development double. Does not masquerade as a general language model."""
 from backend.models.questions import QuestionDraft
 from backend.agents.question import replay_draft
-from .replay_agent import FixtureReplayAgent, is_replay
+from benchmarks.doubles.replay_agent import FixtureReplayAgent, is_replay
 
 class FixtureQuestionAgent:
     mode = 'fixture'

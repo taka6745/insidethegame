@@ -14,7 +14,7 @@ from backend.models.rules import Rule
 from backend.services.filter_engine import FilterEngine
 from benchmarks.doubles.recording import FixtureEventSource
 from harness import MATCH, Running, Upstream, ask as lab_ask, session, timed
-from test_product import OTHER, ask, deliver, narrative, path, refresh, start, until
+from support import OTHER, ask, deliver, narrative, path, refresh, start, until
 
 BACKEND = Path(__file__).resolve().parents[1] / 'backend'
 
@@ -52,7 +52,7 @@ class Recorder:
         self.contexts, self.found = [], []
 
     async def answer(self, prompt, context, tools):
-        # The live-match list (names and minute only, PLAN.md §10.2 D5) is the one deliberate cross-match field.
+        # The live-match list (names and minute only) is the one deliberate cross-match field.
         self.contexts.append(json.dumps({k: v for k, v in context.items() if k != 'live_matches'}))
         self.live = context.get('live_matches')
         found = await tools.replay.find_events(action_types=['shot', 'shot_penalty', 'shot_freekick'])
@@ -260,7 +260,7 @@ def test_no_runtime_module_opens_recordings_or_fixtures():
 
 
 def test_a_seed_restores_under_a_new_match_id_and_carries_on(store):
-    """PLAN.md §10.6: export one match, purge everything, load it as another; it serves the same story and
+    """Demo seeds: export one match, purge everything, load it as another; it serves the same story and
     takes the next events from its stream."""
     with Running(store, upstream=two_matches(), matches=(MATCH, OTHER), enable_demo_seeds=True) as run:
         run.send(20)

@@ -515,7 +515,7 @@ def test_prompt_examples_become_neutral_and_an_edit_keeps_its_own_lines(store):
 
 
 def test_clip_lengths_tune_only_seeded_values():
-    """046 (PLAN.md §12 M7): an 8 s minimum and 5 s after a goal, unless /dev/ already changed them."""
+    """046: an 8 s minimum and 5 s after a goal, unless /dev/ already changed them."""
     import importlib.util
     from backend.store import MIGRATIONS
     spec = importlib.util.spec_from_file_location('m046', MIGRATIONS / '046_clip_lengths.py')

@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from fastapi.testclient import TestClient
 
 from backend.app import create_app
-from harness import MATCH, Upstream, build
+from harness import MATCH, build
 
 PATH = f'/matches/{MATCH}/audience-config'
 TEMPLATE = '/dev/fixtures/riverton-madrid/audience-config'

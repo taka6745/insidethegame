@@ -9,8 +9,8 @@ from backend.models.config import KeyMomentFeed
 from backend.models.engine_narratives import EngineFollowClip, EngineMomentClip, EngineNarrative
 from backend.services.key_moments import feed_moments
 from harness import MATCH, Running, Upstream, timed
+from support import OTHER, deliver, follow, follow_narrative, path, start, view
 
-OTHER = 'north-south-0badc0de'
 STORYLINE = {'id': f'sl:{MATCH}:1', 'label': 'Madrid control the midfield', 'team': 'madrid', 'status': 'active',
              'salienceHistory': [{'at': {'periodId': 1, 'timeMin': 4}, 'salience': 0.9}], 'outcome': None,
              'keyEventIds': [], 'openedAt': {'periodId': 1, 'timeMin': 4},
@@ -20,51 +20,17 @@ TEAM = {'kind': 'team', 'team_id': 'riverton', 'label': 'Riverton Rovers'}
 PLAYER = {'kind': 'player', 'player_id': 'mbappe', 'label': 'Kylian Mbappé'}
 
 
-def start(client, profile='riverton-analytical', match_id=MATCH):
-    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile, 'viewer_id': '00000000-0000-4000-8000-000000000001'})
-    assert response.status_code == 200, response.text
-    return response.json()
-
-
-def path(token, match_id=MATCH):
-    return f'/product/matches/{match_id}/sessions/{token}'
-
-
-def follow(client, token, spec, match_id=MATCH):
-    return client.post(path(token, match_id) + '/follows', json={'spec': spec})
-
-
-def narrative(match_id=MATCH, bucket='home:analytical', seq=1, text='Insight.', topic=None, event_seq=1):
-    kind = {'kind': 'subscription', 'topicId': topic} if topic else {}
-    return EngineNarrative.model_validate({
-        'id': f"{'sub' if topic else 'narr'}:{match_id}:{topic or ''}:{bucket}:{seq}", 'matchId': match_id,
-        'userType': bucket, 'seq': seq, 'stepId': f'{match_id}:step:{seq}',
-        'trigger': {'type': 'scheduled', 'ref': 'r', 'reason': 'r'}, 'matchTime': {'periodId': 1, 'timeMin': 0},
-        'text': text, 'createdAt': f'2026-10-20T00:00:{seq:02d}Z', 'timeSec': 30, 'eventSeq': event_seq, **kind})
-
-
-def deliver(run, item):
-    return run.client.portal.call(run.app.state.product.narrative, item)
-
-
-def view(run, token, match_id=MATCH):
-    async def go():
-        await run.app.state.product.projection(match_id).refresh()
-    run.client.portal.call(go)
-    return run.client.get(path(token, match_id)).json()['snapshot']
-
-
 def test_feed_rules_follow_replaces_insights_and_key_moments_show_for_everyone(store):
     with Running(store) as run:
         run.narratives.storylines[MATCH] = [STORYLINE]
         token = start(run.client)['session_token']
         run.send(25)
         topic = follow(run.client, token, TEAM).json()['follow']['topic_id']
-        follow(run.client, start(run.client, 'united-casual')['session_token'], TEAM)
-        assert deliver(run, narrative(text='Bucket insight.'))
-        assert deliver(run, narrative(topic=topic, text='Riverton Rovers story.'))
-        assert deliver(run, narrative(topic=topic, bucket='away:casual', text='Other bucket.'))
-        assert not deliver(run, narrative(topic='topic:' + '0' * 16, text='Unknown topic.'))
+        follow(run.client, start(run.client, profile='united-casual')['session_token'], TEAM)
+        assert deliver(run, follow_narrative(text='Bucket insight.'))
+        assert deliver(run, follow_narrative(topic=topic, text='Riverton Rovers story.'))
+        assert deliver(run, follow_narrative(topic=topic, bucket='away:casual', text='Other bucket.'))
+        assert not deliver(run, follow_narrative(topic='topic:' + '0' * 16, text='Unknown topic.'))
         snapshot = view(run, token)
         assert snapshot['feed_mode'] == 'following' and snapshot['follow']['topic_id'] == topic
         assert [n['text'] for n in snapshot['narratives']] == ['Riverton Rovers story.']
@@ -118,7 +84,7 @@ def timed_run(store):
 
 def test_a_moment_judged_worth_a_clip_joins_the_follow_playlist_at_its_seq(store):
     with timed_run(store) as run:
-        token, other = start(run.client)['session_token'], start(run.client, 'united-casual')['session_token']
+        token, other = start(run.client)['session_token'], start(run.client, profile='united-casual')['session_token']
         run.send(25)
         goal = next(m for m in view(run, token)['key_moments'] if m['kind'] == 'goal')
         topic = follow(run.client, token, TEAM).json()['follow']['topic_id']
@@ -133,7 +99,7 @@ def test_a_moment_judged_worth_a_clip_joins_the_follow_playlist_at_its_seq(store
         clip = playlist['clips'][0]
         assert clip['start'] < clip['marks'][0] <= clip['end'] and playlist['total_items'] == 1
         assert playlist['playlist'] and clip['playlist_start'] == clip['start']  # the match's own stream
-        assert set(playlist['playback']) == {'transitions', 'slow_motion'}  # the reel's playback, as replies (037)
+        assert set(playlist['playback']) == {'transitions', 'slow_motion'}  # the reel's playback, as replies
         assert 'observed_until' not in playlist  # steady between snapshots: the card is not rebuilt each tick
         assert view(run, other)['follow_playlist'] is None  # not following: no playlist
         purged = run.client.post('/admin/matches/purge', json={'match_id': MATCH}).json()['purged']
@@ -194,7 +160,7 @@ def test_a_follow_clip_never_passes_the_snapshot(store):
 
 
 def moment_clip(moment_id, event_seq, buckets=('home:analytical',), match_id=MATCH):
-    """The engine's `MomentClip`: a key event's clip on the shared narratives of its buckets (PLAN.md §10.2 D7)."""
+    """The engine's `MomentClip`: a key event's clip on the shared narratives of its buckets."""
     event = moment_id[3:]
     return EngineMomentClip.model_validate({
         'type': 'MomentClip', 'id': f'mclip:{match_id}:{event}', 'matchId': match_id, 'buckets': list(buckets),
@@ -203,7 +169,7 @@ def moment_clip(moment_id, event_seq, buckets=('home:analytical',), match_id=MAT
 
 def test_key_event_clips_reach_every_insights_viewer_of_their_bucket(store):
     with timed_run(store) as run:
-        token, other = start(run.client)['session_token'], start(run.client, 'united-casual')['session_token']
+        token, other = start(run.client)['session_token'], start(run.client, profile='united-casual')['session_token']
         run.send(25)
         goal = next(m for m in view(run, token)['key_moments'] if m['kind'] == 'goal')
         bucket = view(run, token)['bucket_id']
@@ -238,7 +204,7 @@ def test_a_key_event_clip_never_passes_the_snapshot(store):
 def test_one_follow_per_viewer_and_ownership(store):
     with Running(store, matches=(MATCH, OTHER)) as run:
         run.send(5)
-        mine, theirs = start(run.client)['session_token'], start(run.client, 'neutral-simple')['session_token']
+        mine, theirs = start(run.client)['session_token'], start(run.client, profile='neutral-simple')['session_token']
         first = follow(run.client, mine, TEAM)
         assert first.status_code == 200 and first.json()['created']
         again = follow(run.client, mine, {**TEAM, 'label': 'The Blues'})
@@ -285,7 +251,7 @@ def test_engine_targets_share_topics_carry_buckets_and_revalidate(store):
         assert 'Goal' in empty.json()['limits']['pivotal_key_types']
         # The engine refuses a document without its clip question (narrative-engine follows/topics.py).
         assert empty.json()['clips']['key_types'] and empty.json()['clips']['min_level'] == 3
-        a, b = start(run.client)['session_token'], start(run.client, 'united-casual')['session_token']
+        a, b = start(run.client)['session_token'], start(run.client, profile='united-casual')['session_token']
         follow(run.client, a, TEAM)
         follow(run.client, b, {**TEAM, 'label': 'Blues'})
         body = run.client.get(url)
@@ -309,7 +275,7 @@ def test_purge_removes_follows_topics_narratives_and_follow_chat(store):
         topic = follow(run.client, token, TEAM).json()['follow']['topic_id']
         follow(run.client, other, TEAM, OTHER)
         assert chat(run.client, token, 'hi')['status'] == 'answer'
-        assert deliver(run, narrative(topic=topic))
+        assert deliver(run, follow_narrative(topic=topic))
         purged = run.client.post('/admin/matches/purge', json={'match_id': MATCH}).json()['purged']
         assert purged['subscriptions'] == 1 and purged['subscription_topics'] == 1
         assert purged['subscription_narratives'] == 1 and purged['subscription_revisions'] == 1
@@ -399,7 +365,7 @@ def test_follow_chat_needs_a_model_and_suggestions_do_not(store):
         run.narratives.storylines[MATCH] = [STORYLINE, {**STORYLINE, 'id': f'sl:{MATCH}:2', 'label': 'Quiet one',
                                                         'salienceHistory': rise}]
         run.send(25)
-        token = start(run.client, 'united-casual')['session_token']
+        token = start(run.client, profile='united-casual')['session_token']
         response = run.client.post(path(token) + '/follow/messages', json={'prompt': 'hi', 'request_id': str(uuid4())})
         assert response.status_code == 503 and response.json()['code'] == 'model_unavailable'
         items = run.client.get(path(token) + '/follow/suggestions').json()['items']

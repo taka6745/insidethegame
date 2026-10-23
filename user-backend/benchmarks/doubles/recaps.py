@@ -1,5 +1,5 @@
 """Deterministic synthetic recap archive, never an LLM narrative implementation."""
-from .recap_model import ContextBlock
+from benchmarks.doubles.recap_model import ContextBlock
 
 
 def build_recaps(payload, events, cards=()):

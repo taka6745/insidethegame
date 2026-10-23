@@ -1,4 +1,4 @@
-"""Model per role (PLAN.md §12 M10) and the length layer (M12), migration 047."""
+"""Model per role and the length layer."""
 import importlib.util
 from pathlib import Path
 

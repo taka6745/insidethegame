@@ -5,7 +5,7 @@ from pathlib import Path
 
 from benchmarks.doubles.events import OptaInspiredAdapter
 from backend.adapters.match_reference import data_reference
-from .recording_model import Recording, MAX_RECORDING_BYTES
+from benchmarks.doubles.recording_model import Recording, MAX_RECORDING_BYTES
 
 
 # Hand-authored fixtures without MA1 capabilities stand for a complete feed; the runtime never assumes it.
@@ -80,22 +80,6 @@ class FixtureEventSource:
     @property
     def playback_duration(self):
         return self.spec.get('playback', {}).get('duration_seconds', self.playback_seconds(len(self.events)))
-
-    def replay_delay(self, position, fallback):
-        if not self.timed or position >= len(self.events):
-            return fallback
-        return max(0.0, self.video_times[position] - self.playback_seconds(position))
-
-    def next_event(self, position):
-        return self.events[position] if position < len(self.events) else None
-
-    def inspect(self, delivery_index):
-        return {"delivery_index": delivery_index, "raw": self.spec["events"][delivery_index],
-                "canonical": self.events[delivery_index].model_dump(mode="json")}
-
-    def display_delivery(self, index):
-        return {**self.display(self.events[index]), "delivery_index": index,
-                "key_moment": self.spec["events"][index].get("keyMoment")}
 
     def display(self, event):
         return {"id": event.event_id, "type": event.event_type,

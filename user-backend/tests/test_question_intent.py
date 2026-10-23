@@ -29,7 +29,7 @@ def test_routing_context_excludes_values_and_keeps_immediate_stat_clarification(
     routed = routing_context(context)
     assert "987" not in json.dumps(routed)
     assert "654" not in json.dumps(routed) and "0.321" not in json.dumps(routed)
-    assert routed["trends"] == [{"label": "field tilt", "meaning": "share of final-third play"}]  # M15: routed as match
+    assert routed["trends"] == [{"label": "field tilt", "meaning": "share of final-third play"}]  # routed as match
     assert routed["dialogue"][-1]["intent"]["clarification"] == "Headed passes, shots or all recorded contacts?"
     assert routed["dialogue"][0]["intent"]["standard_stat"] == {"id": "shots", "label": "Team shots", "definition": "Recorded shot attempts"}
 

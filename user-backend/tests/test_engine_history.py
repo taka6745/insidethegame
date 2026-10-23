@@ -92,7 +92,7 @@ def test_key_moments_are_received_facts_ranked_by_configured_importance():
     assert {m['id']: m['rank'] for m in moments} == {'moment:a4': 1, 'moment:a1': 2, 'moment:card:9': 3, 'moment:card:7': 4}
     titles = {m['id']: m['title'] for m in moments}
     assert titles['moment:a4'].endswith('own goal') and titles['moment:card:9'].endswith('second yellow card')
-    assert all(m['end_video_seconds'] <= 505 for m in moments)  # a goal keeps 5 s after (046)
+    assert all(m['end_video_seconds'] <= 505 for m in moments)  # a goal keeps 5 s after
     compact = asyncio.run(data.compact(SNAPSHOT))
     assert [e['id'] for e in compact['key_events']] == ['card:7', 'card:9', 'a4', 'a1']
     assert asyncio.run(data.read(SNAPSHOT, 'key_moments', period=2))['items'] == []

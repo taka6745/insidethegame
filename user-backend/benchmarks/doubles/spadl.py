@@ -1,10 +1,6 @@
-"""Test double: SPADL rows (DAB spadlActions shape) and MA3 card rows from a canonical recording.
-
-The runtime reads SPADL only from ETL, which converts MA3 with etl/reference/spadl.py. Small
-hand-authored fixtures have no MA3, so this double maps their canonical events with a simple table:
-an action is final at the seq of its event's last revision, a deleted event has no action, and a
-touch (no SPADL equivalent) is dropped. Shipped recordings use the real converter instead
-(`recording_actions`)."""
+"""Test double: SPADL rows (DAB spadlActions shape) and MA3 card rows. Hand-authored fixtures map through a simple
+table (final at the event's last revision; deleted events and touches have no action); shipped recordings use
+ETL's real converter (`recording_actions`)."""
 import json
 from pathlib import Path
 

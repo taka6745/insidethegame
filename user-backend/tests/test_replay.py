@@ -6,7 +6,7 @@ import pytest
 from backend.agents.question import replay_draft
 from backend.agents.replay import ReplayDecision, fallback, finish, json_object
 from benchmarks.doubles.replay_agent import FixtureReplayAgent, is_replay
-from backend.adapters.hls_media import HlsMedia, parse_segments
+from backend.adapters.hls_media import HlsMedia
 from backend.services.replay import ReplayBuilder, ReplayTools
 from backend.services.replay_clips import ReplayPlanError
 from benchmarks.doubles.config import seeded
@@ -206,7 +206,7 @@ def test_builder_never_cuts_past_published_segments_and_requires_history():
     assert built["playlist"] == "/media/hls/m/live.m3u8"
     assert (built["clips"][0]["playlist_start"], built["clips"][0]["playlist_end"]) == (890.0, 900.0)
     assert built["clips"][0]["marks"] == [900.0]
-    # Every replay carries the reel's playback settings (replay-timing.playback, migrations/037).
+    # Every replay carries the reel's playback settings (replay-timing.playback).
     assert built["playback"] == toolkit.config.playback.model_dump()
     assert built["playback"]["transitions"]["asset"].startswith("/assets/")
     unloaded = tools()
@@ -327,7 +327,7 @@ def test_the_sting_cut_happens_while_it_fully_covers_the_picture():
 
 
 def test_events_behind_a_location_stat_can_be_found_for_a_replay():
-    """PLAN.md §12 M14: 'show me those take-ons in their own half' searches with the stat's location bound."""
+    """'Show me those take-ons in their own half' searches with the stat's location bound."""
     rows = [{**row("t1", "take_on", 100), "start_x": 30.0}, {**row("t2", "take_on", 200), "start_x": 70.0},
             {**row("p1", "keeper_punch", 300, team="forgeham", player="forgeham-7"), "start_x": 5.0}]
     toolkit = tools(rows)

@@ -3,7 +3,7 @@ import pytest
 from psycopg.types.json import Jsonb
 
 from harness import Running
-from test_product import path, start
+from support import path, start
 
 ORIGINAL_PROFILES = [
     {'id': 'neutral-simple', 'display_name': 'New viewer', 'selections': {'team': 'neutral', 'fan_style': 'simple'}},

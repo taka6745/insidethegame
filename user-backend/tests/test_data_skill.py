@@ -1,7 +1,6 @@
 """Data knowledge must match the SPADL action model, without evaluation answers."""
 import asyncio
 import json
-from pathlib import Path
 
 import pytest
 from pydantic import Field

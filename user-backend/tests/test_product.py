@@ -1,60 +1,12 @@
-"""Viewer product per match: shared projection, durable private pins, sessions per (profile, match)."""
-import asyncio
+"""Viewer product per match: shared projection, durable private pins, sessions per (viewer, profile, match)."""
 from uuid import uuid4
 
 import pytest
 from starlette.websockets import WebSocketDisconnect
 
-from backend.models.engine_narratives import EngineNarrative
 from backend.models.rules import Rule
 from harness import MATCH, Running, Upstream
-
-OTHER = 'north-south-0badc0de'
-VIEWER = '00000000-0000-4000-8000-000000000001'  # one browser's random viewer id
-
-
-def start(client, match_id=MATCH, profile='riverton-analytical'):
-    response = client.post(f'/product/matches/{match_id}/sessions', json={'profile_id': profile, 'viewer_id': VIEWER})
-    assert response.status_code == 200, response.text
-    return response.json()
-
-
-def path(token, match_id=MATCH):
-    return f'/product/matches/{match_id}/sessions/{token}'
-
-
-def ask(client, token, text, match_id=MATCH):
-    response = client.post(path(token, match_id) + '/messages', json={'prompt': text, 'request_id': str(uuid4())})
-    assert response.status_code == 200, response.text
-    return response.json()
-
-
-def narrative(match_id, bucket='home:analytical', seq=1, minute=0, second=30, event_seq=None, text='Kick-off.', period=1):
-    return EngineNarrative.model_validate({
-        'id': f'narr:{match_id}:{bucket}:{seq}', 'matchId': match_id, 'userType': bucket, 'seq': seq,
-        'stepId': f'{match_id}:step:{seq}', 'trigger': {'type': 'keyEvent', 'ref': 'k', 'reason': 'r'},
-        'matchTime': {'periodId': period, 'timeMin': minute}, 'text': text, 'createdAt': f'2026-10-20T00:00:{seq:02d}Z',
-        'timeSec': second, 'eventSeq': event_seq, 'model': 'never-stored'})
-
-
-def deliver(run, item):
-    return run.client.portal.call(run.app.state.product.narrative, item)
-
-
-def until(ws, check, limit=20):
-    """The first pushed snapshot satisfying check; earlier queued updates may arrive first."""
-    for _ in range(limit):
-        message = ws.receive_json()
-        if check(message):
-            return message
-    raise AssertionError('No matching update')
-
-
-def refresh(run, match_id=MATCH):
-    async def go():
-        await run.app.state.product.projection(match_id).refresh()
-    run.client.portal.call(go)
-
+from support import OTHER, VIEWER, ask, deliver, narrative, path, refresh, start, until
 
 def test_product_maps_relative_profile_and_cites_the_snapshot(store):
     with Running(store) as run:
@@ -145,8 +97,6 @@ def test_socket_push_takeover_and_unknown_session_codes(store):
 
 
 def test_two_browsers_on_one_profile_are_two_viewers_and_never_take_each_other_over(store):
-    """M1: two people on the same demo profile shared one conversation, so questions crossed and each session
-    replaced the other (sockets closed, answers 'interrupted by a new session'). Each browser is now its own viewer."""
     ALICE, BOB = str(uuid4()), str(uuid4())
 
     def begin(viewer):

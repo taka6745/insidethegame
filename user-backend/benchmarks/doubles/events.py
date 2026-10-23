@@ -1,10 +1,6 @@
 """Test double: synthetic recordings' canonical keys → `Event`, for tests and benchmarks only (the runtime
-receives MatchEvent v2 via adapters/match_stream.py). Agents and custom rules read SPADL actions instead.
-
-It is not a licensed Opta schema implementation. No vendor numeric codes are
-assumed. Real feed mappings belong in another implementation of EventAdapter.
-"""
-from typing import Protocol, get_args
+receives MatchEvent v2 via adapters/match_stream.py). Not a licensed Opta schema; no vendor numeric codes."""
+from typing import get_args
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -12,10 +8,6 @@ from backend.models.events import Coordinate, Event, EventType, QualifierType, Q
 
 
 _KNOWN_QUALIFIERS = frozenset(get_args(QualifierType))
-
-
-class EventAdapter(Protocol):
-    def adapt(self, payload: dict) -> Event: ...
 
 
 class _Qualifier(BaseModel):

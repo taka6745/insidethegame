@@ -1,4 +1,4 @@
-"""Test doubles for the backend's upstreams, following local/contracts.md exactly.
+"""Test doubles for the backend's upstreams, following local/contracts/README.md exactly.
 
 `Upstream` plays the external feed (Event Hubs messages through the real parsing path) and
 ETL's Data API builder GraphQL (an httpx transport answering the contract's queries from

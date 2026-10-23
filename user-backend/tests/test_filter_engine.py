@@ -261,7 +261,7 @@ def test_restore_delivery_version_without_replaying_old_versions():
 
 
 def test_formula_stats_from_the_team_review_evaluate_exactly():
-    """PLAN.md §12 M9: 'take-ons in their own half' (a location bound) and 'pass success rate' (a percentage of two
+    """'Take-ons in their own half' (a location bound) and 'pass success rate' (a percentage of two
     counts) compile to rules whose values match an independent scan of the same SPADL actions."""
     from backend.agents.models import Goal, LocationBound
 
