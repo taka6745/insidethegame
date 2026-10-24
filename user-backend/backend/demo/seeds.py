@@ -14,6 +14,7 @@ from psycopg.types.json import Jsonb
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from backend.domain import RuleError
+from backend.repositories.audiences import AudienceRepository
 
 # Parents first: the match, what arrived on its stream, its audience catalogue and the engine's narratives.
 # Viewers' sessions, follows, questions and calculations are theirs and are never seeded.
@@ -94,6 +95,11 @@ class SeedRepository:
                                     copy.write_row(tuple(Jsonb(row[c]) if (table, c) in jsonb else row[c]
                                                          for c in columns))
                     counts[table] = len(rows)
+            # The catalogue follows today's template, not the one recorded with the seed: the template's enabled
+            # flags alone choose generation targets (repositories/audiences), so a bucket enabled since then exists.
+            fixture = tables['received_matches'][0].get('fixture')
+            template, _ = AudienceRepository._template(conn, fixture)
+            AudienceRepository._apply(conn, match_id, template)
             return counts
 
 

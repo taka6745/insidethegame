@@ -7,7 +7,7 @@ from starlette.websockets import WebSocketDisconnect
 from support import OTHER, ask, deliver, narrative, path, refresh, start, until
 
 TEMPLATE = '/dev/fixtures/riverton-madrid/audience-config'
-DEMO_BUCKETS = {'home:analytical', 'away:casual', 'neutral:simple'}
+DEMO_BUCKETS = {'home:analytical', 'away:casual', 'neutral:simple', 'neutral:simple:brief'}
 
 
 def select(client, token, bucket_id='away:casual', match_id=MATCH):
@@ -121,7 +121,7 @@ def test_a_template_edit_reaches_connected_viewers(store):
         with run.client.websocket_connect(path(token) + '/live') as ws:
             ws.receive_json()
             configure(run.client, DEMO_BUCKETS | {'home:simple'})  # New choice: pushed without any event.
-            pushed = until(ws, lambda m: len(m['audience_buckets']) == 4)
+            pushed = until(ws, lambda m: len(m['audience_buckets']) == len(DEMO_BUCKETS) + 1)
             assert pushed['audience']['bucket_id'] == 'home:analytical'
             configure(run.client, {'home:simple', 'neutral:simple'})  # The viewer's bucket went: reconnect.
             with pytest.raises(WebSocketDisconnect) as exc:

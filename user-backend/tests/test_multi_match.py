@@ -266,6 +266,12 @@ def test_a_seed_restores_under_a_new_match_id_and_carries_on(store):
         run.send(20)
         deliver(run, narrative(MATCH, event_seq=20, text='Riverton Rovers story.'))
         exported = run.client.post('/admin/matches/export', json={'match_id': MATCH}).json()
+        # A bucket enabled after the recording: the restored match's catalogue follows today's template.
+        template = run.client.get('/dev/fixtures/riverton-madrid/audience-config').json()
+        for bucket in template['config']['buckets']:
+            bucket['enabled'] = bucket['enabled'] or bucket['id'] == 'home:simple'
+        assert run.client.put('/dev/fixtures/riverton-madrid/audience-config',
+                              json={'expected_revision': template['revision'], 'config': template['config']}).status_code == 200
         seed, schema = exported['tables'], exported['schema']
         assert len(seed['received_events']) == 20 and len(seed['engine_narratives']) == 1
         assert not set(seed) & {'subscriptions', 'question_sessions', 'match_calculations'}  # viewers' own
@@ -284,7 +290,10 @@ def test_a_seed_restores_under_a_new_match_id_and_carries_on(store):
         assert restore(new, moved).status_code == 409  # known now
         assert run.registry.matches[new].seq == 20
         again = run.client.post('/admin/matches/export', json={'match_id': new}).json()
-        assert again == {'match_id': new, 'schema': schema, 'tables': moved}  # the recorded state, row for row
+        recorded = {table: rows for table, rows in moved.items() if table != 'audience_catalog'}
+        assert {t: r for t, r in again['tables'].items() if t != 'audience_catalog'} == recorded  # row for row
+        targets = run.client.get(f'/matches/{new}/audience-config').json()['generation_targets']
+        assert 'home:simple' in {t['bucket_id'] for t in targets}  # today's template, not the seed's catalogue
         assert not run.registry.matches[new].purged
         run.client.post('/admin/matches/purge', json={'match_id': new})
         assert new not in run.registry.matches

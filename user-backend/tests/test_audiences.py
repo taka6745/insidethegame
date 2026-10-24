@@ -24,7 +24,7 @@ def template(client, fixture='riverton-madrid'):
     return {'expected_revision': body['revision'], 'config': body['config']}
 
 
-DEMO_BUCKETS = ['home:analytical', 'away:casual', 'neutral:simple']
+DEMO_BUCKETS = ['home:analytical', 'away:casual', 'neutral:simple', 'neutral:simple:brief']
 
 
 def enabled(update, bucket_ids):

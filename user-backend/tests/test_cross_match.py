@@ -133,6 +133,31 @@ def test_a_request_about_both_games_is_answered_from_each_at_its_own_position(st
         assert here['usage'] is None and other['usage'] is None and reply['usage'] is not None
 
 
+def test_a_part_that_fails_leaves_the_other_matches_answers_standing(store):
+    """A model error (e.g. a 429) on one match's part marks that part unavailable; the others still answer."""
+    from backend.models.questions import QuestionDraft
+
+    class Agent:
+        mode = 'fixture'
+
+        async def answer(self, prompt, context, tools):
+            if not context.get('single_match'):
+                return QuestionDraft(answer_kind='match', status='answer', text='From each match.',
+                                     per_match=[m['match_id'] for m in context['live_matches']])
+            if context['snapshot']['match_id'] == OTHER:
+                raise RuntimeError('rate limited')
+            return QuestionDraft(answer_kind='match', status='answer', text='Here.')
+    with two_matches(store, agent=Agent()) as run:
+        run.send(20)
+        run.send(9, match_id=OTHER)
+        token = start(run.client)['session_token']
+        reply = ask(run, token, 'show me the goals from both games', seq=3)
+        here, other = reply['parts']
+        assert here['status'] == 'answer' and here['text'] == 'Here.'
+        assert other['status'] == 'unsupported' and other['other_match']['id'] == OTHER
+        assert 'unavailable right now' in other['text'] and reply['status'] == 'answer'
+
+
 def test_a_trend_question_sees_etls_served_value_and_can_cite_it(store):
     """Field tilt is a served trend; the answer gets ETL's value as evidence, never its own sum."""
     from backend.models.questions import QuestionDraft

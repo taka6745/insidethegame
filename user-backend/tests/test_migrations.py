@@ -39,7 +39,7 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
                              '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
                              '043_narrative_clips_match.sql', '044_clip_relevance.py',
                              '045_viewer_sessions.sql', '046_clip_lengths.py', '047_model_roles_length_layer.py',
-                             '049_league_sting.py', '050_neutral_prompt_examples.py']
+                             '049_league_sting.py', '050_neutral_prompt_examples.py', '051_brief_bucket.py']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:
@@ -64,12 +64,14 @@ def test_pins_become_enabled_flags_and_presence_columns_go(store):
         rows = {r['fixture']: r for r in conn.execute('SELECT * FROM audience_templates')}
         catalog = conn.execute('SELECT * FROM audience_catalog').fetchone()
     on = lambda document: {b['id'] for b in document['buckets'] if b['enabled']}
-    # 018 makes revision 5; 047 adds the length layer (revision 6) and keeps every enabled bucket.
-    assert on(rows['riverton-forgeham']['document']) == {'away:simple'} and rows['riverton-forgeham']['revision'] == 6
-    # The unedited default enables the demo profiles' buckets.
-    assert on(rows['default']['document']) == {'home:analytical', 'away:casual', 'neutral:simple'}
+    # 018 makes revision 5; 047 adds the length layer (revision 6) and keeps every enabled bucket; 051 enables the
+    # Brief neutral bucket (revision 7).
+    assert on(rows['riverton-forgeham']['document']) == {'away:simple', 'neutral:simple:brief'}
+    assert rows['riverton-forgeham']['revision'] == 7
+    # The unedited default enables the demo profiles' buckets and the Brief one.
+    assert on(rows['default']['document']) == {'home:analytical', 'away:casual', 'neutral:simple', 'neutral:simple:brief'}
     assert 'pinned_buckets' not in rows['default'] and 'viewer_counts' not in catalog
-    assert catalog['document'] == rows['riverton-forgeham']['document'] and catalog['revision'] == 3  # 018, 047
+    assert catalog['document'] == rows['riverton-forgeham']['document'] and catalog['revision'] == 4  # 018, 047, 051
     labels = [[o['label'] for o in layer['options']] for layer in rows['default']['document']['layers']]
     assert labels == [['{home}', '{away}', 'Neutral'], ['Simple', 'Casual', 'Experienced', 'Analytical'],
                       ['Standard', 'Brief']]

@@ -14,6 +14,7 @@ from backend.models.rules import Rule
 from backend.models.stat_offers import pin_id, stat_answer, viewer_pin_id
 from backend.services.cross_match import header
 from backend.services.question_answers import UNAVAILABLE, model_catalogue, resolve_answer
+PART_UNAVAILABLE = "Sorry, this match's answer is unavailable right now. Please try again."
 from backend.services.question_tools import QuestionTools
 from backend.services.locks import KeyedLocks
 from backend.services.replay import ReplayBuilder, ReplayTools
@@ -112,19 +113,30 @@ class QuestionService:
                 reply, draft, offers = await self._answer(prompt, row, here, match, info, payload, usage, started)
                 if draft.per_match and self.cross:
                     # A request about several live matches: one answer from each, at each one's own position.
-                    async def part_of(part_id):
+                    # One match at a time: three agent runs at once exceeded the model deployment's token rate
+                    # (429 on Azure). A part that fails leaves the others standing, marked unavailable.
+                    parts = []
+                    for part_id in draft.per_match:
                         part_match, part_info = here, None
                         if part_id != here.match_id:
                             part_match = await self.cross.other(here.match_id, part_id)
                             part_info = await self.cross.info_of(part_match)
                             if part_info is None:
-                                return None  # unmarked, it would read as this match's answer
+                                continue  # unmarked, it would read as this match's answer
                         part_payload = await self.match_data.capture(part_match, seq if part_match is here else None)
-                        part, _, _ = await self._answer(prompt, row, here, part_match, part_info, part_payload, usage,
-                                                        started, single=True)
-                        return {**part, 'usage': None}  # the whole answer's usage is receipted once, below
-                    # Every match at once (each part is its own agent run): the parts keep the asked order.
-                    parts = [part for part in await asyncio.gather(*map(part_of, draft.per_match)) if part]
+                        try:
+                            part, _, _ = await self._answer(prompt, row, here, part_match, part_info, part_payload,
+                                                            usage, started, single=True)
+                        except (RuleError, asyncio.CancelledError, TimeoutError, httpx.TimeoutException):
+                            raise
+                        except Exception as exc:  # noqa: BLE001 - this part only; the others still answer
+                            logging.getLogger(__name__).warning('Question %s: part %s failed: %s %s', turn['id'],
+                                                                part_match.match_id, type(exc).__name__, str(exc)[:300])
+                            part = {'status': 'unsupported', 'answer_kind': 'match', 'text': PART_UNAVAILABLE,
+                                    'snapshot': part_payload.snapshot.model_dump(mode='json'), 'mode': self.agent.mode,
+                                    'offers': [], 'evidence': [],
+                                    'other_match': header(part_match, part_info) if part_info else None}
+                        parts.append({**part, 'usage': None})  # the whole answer's usage is receipted once, below
                     # The parts carry their own match headers; the answer as a whole belongs to no one match.
                     reply = {**reply, 'parts': parts, 'other_match': None,
                              'usage': usage_dict(usage, time.perf_counter() - started)}
