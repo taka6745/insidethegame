@@ -1,4 +1,4 @@
-"""`./dev azure up|down|status|plan [--yes] [--release]`: the whole stack on Azure, from and back to nothing.
+"""`./dev azure up|down|status|plan|guard [--yes] [--release]`: the whole stack on Azure, from and back to nothing.
 
 Runs on the host with the standard library only. Terraform, the Azure CLI and sqlcmd run in the
 toolbox image (Dockerfile here) with the developer's `az login`; images are built here with Docker.
@@ -460,10 +460,18 @@ def plan(settings):
             print(f"(downstream plans use placeholder outputs for {name}: it is not applied)")
 
 
+def guard(settings, yes):
+    """Applies the spend guard alone (budgets, last resort, hard stop)."""
+    confirm("Apply terraform/guard?", yes)
+    stack = Stack("guard", settings)
+    stack.init()
+    stack.apply()
+
+
 def main():
     parser = argparse.ArgumentParser(prog="./dev azure", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", choices=["up", "down", "status", "plan"])
+    parser.add_argument("command", choices=["up", "down", "status", "plan", "guard"])
     parser.add_argument("--yes", action="store_true", help="do not ask for confirmation")
     parser.add_argument("--release", action="store_true", help="production release: no demo seed routes")
     args = parser.parse_args()
@@ -475,6 +483,8 @@ def main():
         down(settings, args.yes)
     elif args.command == "status":
         status(settings)
+    elif args.command == "guard":
+        guard(settings, args.yes)
     else:
         plan(settings)
 

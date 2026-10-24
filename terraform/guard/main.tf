@@ -3,6 +3,7 @@
 # - Budgets email only: the live demo must never be interrupted by a daily cap.
 # - One last resort: when actual spend nears the remaining credit, stop what doesn't serve the viewer
 #   (Stream Analytics, the feed, the SPADL post-processor, the feed's database). Viewer and replays keep working.
+# - One hard stop: at the credit itself, stop every container app and database too. Nothing serves until `up`.
 # - Stream Analytics runs only while matches play: the ETL's Event Hubs alerts call the runbook to start and
 #   stop it (etl/infra stream_schedule.tf).
 # The runbook stops and starts; it never deletes.
@@ -25,7 +26,7 @@ locals {
   subscription = "/subscriptions/${var.subscription_id}"
   monthly      = var.daily_cap * 30                  # Azure budgets have no daily grain
   tags         = { project = "insidethegame-guard" } # not the app's tag: `down` leaves the guard alone
-  modes        = toset(["last-resort", "stream-start", "stream-stop"])
+  modes        = toset(["last-resort", "hard-stop", "stream-start", "stream-stop"])
 }
 
 resource "azurerm_resource_group" "guard" {
@@ -73,7 +74,8 @@ resource "azurerm_automation_webhook" "mode" {
   expiry_time             = var.webhook_expiry
   parameters              = { mode = each.key }
   lifecycle {
-    ignore_changes = [expiry_time]
+    ignore_changes       = [expiry_time]
+    replace_triggered_by = [azurerm_automation_runbook.guard] # Azure drops a runbook's webhooks with it
   }
 }
 
@@ -122,7 +124,7 @@ resource "azurerm_monitor_action_group" "mode" {
   short_name          = substr(replace("itg${each.key}", "-", ""), 0, 12)
   tags                = local.tags
   dynamic "email_receiver" {
-    for_each = each.key == "last-resort" ? [1] : []
+    for_each = contains(["last-resort", "hard-stop"], each.key) ? [1] : []
     content {
       name                    = "owner"
       email_address           = var.alert_email
@@ -169,8 +171,8 @@ resource "azurerm_consumption_budget_subscription" "daily" {
   }
 }
 
-# The credit: spend from the period start that would use it up. Emails early; the last resort fires on actual
-# spend only, because a forecast runs to the period end and would stop the demo too soon.
+# The credit: spend from the period start that would use it up. Emails early; the last resort and the hard stop
+# fire on actual spend only, because a forecast runs to the period end and would stop the demo too soon.
 resource "azurerm_consumption_budget_subscription" "credit" {
   name            = "budget-insidethegame-credit"
   subscription_id = local.subscription
@@ -200,6 +202,12 @@ resource "azurerm_consumption_budget_subscription" "credit" {
     threshold_type = "Actual"
     operator       = "GreaterThanOrEqualTo"
     contact_groups = [azurerm_monitor_action_group.mode["last-resort"].id]
+  }
+  notification {
+    threshold      = var.hard_stop_percent
+    threshold_type = "Actual"
+    operator       = "GreaterThanOrEqualTo"
+    contact_groups = [azurerm_monitor_action_group.mode["hard-stop"].id]
   }
 }
 

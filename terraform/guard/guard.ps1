@@ -1,6 +1,7 @@
 param([object]$WebhookData, [string]$Mode = 'last-resort')
 # stream-start / stream-stop: Stream Analytics follows play (Event Hubs alerts). last-resort: stop what
-# doesn't serve the viewer. Starts and stops only; never deletes. `./dev azure up` restores everything.
+# doesn't serve the viewer. hard-stop: stop every container app and database in our groups.
+# Starts and stops only; never deletes. `./dev azure up` restores everything.
 $ErrorActionPreference = 'Continue'
 Connect-AzAccount -Identity | Out-Null
 $groups = @(${groups})
@@ -28,13 +29,16 @@ foreach ($job in $jobs) {
   }
 }
 
-if ($Mode -eq 'last-resort') {
+$everything = $Mode -eq 'hard-stop'
+if ($Mode -eq 'last-resort' -or $everything) {
   foreach ($group in $groups) {
     foreach ($app in (Get-AzResource -ResourceGroupName $group -ResourceType 'Microsoft.App/containerApps' -ErrorAction SilentlyContinue)) {
-      if ($apps | Where-Object { $app.Name -like "*$_" }) { Invoke-Action $app 'stop?api-version=2024-03-01' $null | Out-Null }
+      if ($everything -or ($apps | Where-Object { $app.Name -like "*$_" })) { Invoke-Action $app 'stop?api-version=2024-03-01' $null | Out-Null }
     }
-  }
-  foreach ($server in (Get-AzResource -ResourceGroupName '${servers}' -ResourceType 'Microsoft.DBforPostgreSQL/flexibleServers' -ErrorAction SilentlyContinue)) {
-    Invoke-Action $server 'stop?api-version=2022-12-01' $null | Out-Null
+    $serverGroups = if ($everything) { $groups } else { @('${servers}') }
+    if ($group -notin $serverGroups) { continue }
+    foreach ($server in (Get-AzResource -ResourceGroupName $group -ResourceType 'Microsoft.DBforPostgreSQL/flexibleServers' -ErrorAction SilentlyContinue)) {
+      Invoke-Action $server 'stop?api-version=2022-12-01' $null | Out-Null
+    }
   }
 }

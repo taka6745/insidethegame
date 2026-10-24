@@ -46,6 +46,14 @@ run "the_guard_only_reads_starts_and_stops" {
     error_message = "The last resort keeps the viewer serving."
   }
   assert {
+    condition     = length([for n in azurerm_consumption_budget_subscription.credit.notification : n if n.threshold_type == "Actual" && n.threshold == 100 && tolist(n.contact_groups) == tolist([azurerm_monitor_action_group.mode["hard-stop"].id])]) == 1
+    error_message = "The whole credit, actually spent, runs the hard stop."
+  }
+  assert {
+    condition     = var.hard_stop_percent > var.last_resort_percent
+    error_message = "The last resort comes before the hard stop."
+  }
+  assert {
     condition     = azurerm_resource_group.guard.tags.project != "insidethegame"
     error_message = "The guard must not carry the app's tag, or `down` would delete it."
   }

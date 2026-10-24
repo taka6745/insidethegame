@@ -29,7 +29,7 @@ Terraform, the Azure CLI and sqlcmd run in the toolbox image ([components/azure]
 *In short: guard, ETL, the engine, the provider, our app, then Stream Analytics.*
 
 ```text
-0 terraform/guard        apply (budgets, last resort, Stream Analytics schedule; kept by down)
+0 terraform/guard        apply (budgets, last resort, hard stop, Stream Analytics schedule; kept by down)
 1 etl/infra              apply → devtools azure-setup (migrations, triggers)
 2 images                 build + push etl-stream, feed, user-backend, demo-control, frontend → ETL registry (shared)
 3 etl/infra              apply with admin_image_tag → azure-setup (grants for the new apps) → restart DAB

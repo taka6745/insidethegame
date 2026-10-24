@@ -46,6 +46,12 @@ variable "last_resort_percent" {
   description = "Actual share of the credit at which the non-serving parts stop (about A$28, several idle days, left)."
 }
 
+variable "hard_stop_percent" {
+  type        = number
+  default     = 100
+  description = "Actual share of the credit at which every container app and database stops (budgets evaluate a few times a day, so up to a day's spend can land after it)."
+}
+
 variable "last_resort_apps" {
   type        = list(string)
   default     = ["-feed", "-spadl"]
