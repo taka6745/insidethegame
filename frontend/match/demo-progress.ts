@@ -15,6 +15,10 @@ const STAGES: Record<string, { label: string; waiting: (matches: number) => stri
 };
 const SVG = "http://www.w3.org/2000/svg";
 
+/** Every stage still waking: shown the moment a demo starts, before the operator has answered. */
+export const pending = (matches = 0): DemoStatus =>
+  ({ live: true, matches, stages: Object.keys(STAGES).map((id) => ({ id, ready: false })) });
+
 /** Live readiness of every stage while a demo starts or wakes from zero; fades out when all are ready. */
 export class DemoProgress {
   document: Document;
@@ -68,10 +72,12 @@ export class DemoProgress {
   }
 }
 
-/** Poll `status` until every stage is ready (true) or `limit` ms pass (false). */
+/** Poll `status` until every stage is ready (true) or `limit` ms pass (false). The pending picture shows at once
+ * (before the first answer), so a click never looks ignored while the operator wakes. */
 export async function follow(status: () => Promise<DemoStatus>, view: Pick<DemoProgress, "render" | "hide">,
   { every = 1000, limit = 120_000, sleep = (ms: number) => new Promise((done) => setTimeout(done, ms)) } = {}) {
   const until = Date.now() + limit;
+  view.render(pending());
   while (Date.now() < until) {
     try {
       if (view.render(await status())) {

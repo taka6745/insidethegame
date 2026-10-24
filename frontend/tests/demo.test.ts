@@ -172,7 +172,18 @@ test("follow polls until every stage is ready, then hides", async () => {
     { render: (status) => { seen.push(status.stages[0]!.ready); return status.stages[0]!.ready; }, hide: () => seen.push(false) },
     { sleep: async () => {} });
   assert.equal(ok, true);
-  assert.deepEqual(seen, [false, false, true, false]);
+  assert.deepEqual(seen, [false, false, false, true, false]);  // the pending picture first
+});
+
+test("the start-up picture shows every stage waking before the operator has answered", async () => {
+  const seen: string[] = [];
+  let asked = 0;
+  await follow(async () => { asked += 1; throw new Error("operator still waking"); },
+    { render: (status) => { seen.push(status.stages.map((s) => `${s.id}:${s.ready}`).join(",")); return false; }, hide: () => seen.push("hidden") },
+    { sleep: async () => {}, limit: 1 });
+  assert.equal(seen[0], "feed:false,event-hubs:false,etl:false,service-bus:false,engine:false,backend:false,viewer:false");
+  assert.ok(asked >= 1);
+  assert.equal(seen.at(-1), "hidden");
 });
 
 test("Start demo says when a kick-off demo starts, and that a seeded one resumes from its point", async () => {

@@ -112,18 +112,19 @@ class QuestionService:
                 reply, draft, offers = await self._answer(prompt, row, here, match, info, payload, usage, started)
                 if draft.per_match and self.cross:
                     # A request about several live matches: one answer from each, at each one's own position.
-                    parts = []
-                    for part_id in draft.per_match:
+                    async def part_of(part_id):
                         part_match, part_info = here, None
                         if part_id != here.match_id:
                             part_match = await self.cross.other(here.match_id, part_id)
                             part_info = await self.cross.info_of(part_match)
                             if part_info is None:
-                                continue  # unmarked, it would read as this match's answer
+                                return None  # unmarked, it would read as this match's answer
                         part_payload = await self.match_data.capture(part_match, seq if part_match is here else None)
                         part, _, _ = await self._answer(prompt, row, here, part_match, part_info, part_payload, usage,
                                                         started, single=True)
-                        parts.append({**part, 'usage': None})  # the whole answer's usage is receipted once, below
+                        return {**part, 'usage': None}  # the whole answer's usage is receipted once, below
+                    # Every match at once (each part is its own agent run): the parts keep the asked order.
+                    parts = [part for part in await asyncio.gather(*map(part_of, draft.per_match)) if part]
                     # The parts carry their own match headers; the answer as a whole belongs to no one match.
                     reply = {**reply, 'parts': parts, 'other_match': None,
                              'usage': usage_dict(usage, time.perf_counter() - started)}
@@ -173,6 +174,8 @@ class QuestionService:
                                 history, replay_config)
         # The live matches (teams, minute played): askable, and answerable as a list.
         live = await self.cross.listing(here, None if info else payload.snapshot) if self.cross else []
+        if single:  # this part answers for its match alone; the other matches get their own parts
+            live = [entry for entry in live if entry['match_id'] == match.match_id]
         for entry in live:
             toolkit.evidence['match:' + entry['match_id']] = {
                 'id': 'match:' + entry['match_id'], 'kind': 'match', 'label': ' v '.join(entry['teams'])}

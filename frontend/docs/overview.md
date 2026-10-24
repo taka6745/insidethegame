@@ -14,7 +14,7 @@
 *In short: one demo of three matches at a time, started and advanced from the viewer.*
 
 - `/` lists matches (live, then scheduled, then finished) with status, score and clock; each tab holds one match at `/?match={matchId}`.
-- **Start demo** (with a start point: kickoff, or a recorded seed at 20′, HT, 60′, 85′; unrecorded points are disabled) and **Cancel demo** call demo control. A seven-stage pipeline (Feed → Event Hubs → ETL → Service Bus → Narrative engine → Backend → Viewer) lights each stage from real readiness checks.
+- **Start demo** (with a start point: kickoff, or a recorded seed at 20′, HT, 60′, 85′; unrecorded points are disabled) and **Cancel demo** call demo control. A seven-stage pipeline (Feed → Event Hubs → ETL → Service Bus → Narrative engine → Backend → Viewer) lights each stage from real readiness checks; it appears at the click with every stage waking, before demo control has answered.
 - After Start demo, or on landing on `/` while a demo is live, the viewer opens the **main game** (Redcastle Town–Port Albion by default); "← All matches" (`/?choose`) keeps the picker. While a demo is on only its matches are listed.
 - **Skip ahead** moves every demo match on by the same whole minutes; sessions and follows carry on.
 - A seeded start says "The story so far was generated earlier on this pipeline; live from N′."

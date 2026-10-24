@@ -285,6 +285,19 @@ test("standard stat gains tracking controls and removes them after unpin", () =>
   assert.equal(fromElement(view.stat(card, asElement(element))).querySelector("button"), null);
 });
 
+test("a default card shows both teams' values in one slot, home left, and updates in place", () => {
+  const view = new MatchView(asDocument(documentStub()));
+  const sides = [{ team_id: "riverton", name: "Riverton Rovers", value: 12 }, { team_id: "forgeham", name: "Forgeham United", value: null }];
+  const card: StatCard = { id: "riverton:passes", kind: "standard", label: "Passes", value: 12, sides };
+  const element = fromElement(view.stat(card));
+  const value = element.querySelector(".stat-value")!;
+  assert.deepEqual(value.children.map((side) => side.textContent), ["12", "—"]);
+  assert.equal(value.title, "Riverton Rovers 12 · Forgeham United —");
+  const again = fromElement(view.stat({ ...card, sides: [{ ...sides[0]!, value: 13 }, { ...sides[1]!, value: 9 }] }, asElement(element)));
+  assert.equal(again, element);
+  assert.deepEqual(element.querySelector(".stat-value")!.children.map((side) => side.textContent), ["13", "9"]);
+});
+
 test("club colours and crests come from the match data, never a club table", () => {
   const document = documentStub(),
     view = new MatchView(asDocument(document));

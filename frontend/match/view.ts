@@ -222,7 +222,7 @@ export class MatchView {
       const label = existing.querySelector<HTMLElement>(".stat-label")!;
       label.textContent = card.label ?? null;
       label.title = String(card.label);
-      existing.querySelector(".stat-value")!.textContent = statValue(card);
+      existing.querySelector(".stat-value")!.replaceWith(this.statValue(card));
       const button = existing.querySelector("button");
       if (button)
         button.setAttribute("aria-label", `Stop tracking ${card.label}`);
@@ -234,10 +234,7 @@ export class MatchView {
       "",
       className,
     );
-    element.append(
-      node(this.document, "span", card.label, "stat-label"),
-      node(this.document, "strong", statValue(card), "stat-value"),
-    );
+    element.append(node(this.document, "span", card.label, "stat-label"), this.statValue(card));
     element.querySelector<HTMLElement>(".stat-label")!.title = String(card.label);
     if (pinned) {
       element.append(node(this.document, "span", "TRACKING", "stat-tag"));
@@ -247,6 +244,14 @@ export class MatchView {
       element.append(remove);
     }
     return markOtherMatch(this.document, element, card.other_match);
+  }
+  /** One value, or a default card's two: home left and away right, as the scoreboard above. */
+  statValue(card: StatCard): HTMLElement {
+    if (!card.sides?.length) return node(this.document, "strong", statValue(card), "stat-value");
+    const value = node(this.document, "strong", "", "stat-value sides");
+    value.title = card.sides.map((side) => `${side.name || side.team_id} ${statValue({ ...card, value: side.value })}`).join(" · ");
+    value.append(...card.sides.map((side) => node(this.document, "span", statValue({ ...card, value: side.value }), "stat-side")));
+    return value;
   }
   narrative(item: Narrative, tag?: string): HTMLElement {
     const article = node(this.document, "article", "", "narrative");

@@ -150,7 +150,8 @@ export class DemoControls {
         if (!status.stages.every((stage) => stage.ready)) void this.watch();
       }
     } catch {
-      this.get("demo-controls").hidden = true;  // No operator (e.g. a deployment without demo controls).
+      // No operator (e.g. a deployment without demo controls); one still waking after this viewer's Start stays.
+      if (!this.started) this.get("demo-controls").hidden = true;
     }
   }
   private async act(work: () => Promise<string>) {

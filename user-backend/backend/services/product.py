@@ -209,7 +209,7 @@ class MatchProjection:
         pinned_standard = {card['id'] for card in tracked if card['kind'] == 'standard'}
         if any(i in available and not available[i].get('available', True) for i in stat_ids):
             stat_ids = [*stat_ids, *config.fallback_stats.resolve(support)]
-        defaults = [{**available[i], 'kind': 'standard'} for i in dict.fromkeys(stat_ids)
+        defaults = [paired(available[i], available, teams) for i in dict.fromkeys(stat_ids)
                     if i in available and available[i].get('available', True) and i not in pinned_standard
                     and i not in config.excluded_stats]
         # Tracked stats displace the lowest-priority defaults, never a protected kind.
@@ -248,6 +248,22 @@ class MatchProjection:
             'moment_playlist': None if follow else shared.get('moment_playlists', {}).get(bucket_id),
             'follow_match': follow_match,
             'key_moments': shared.get('key_moments', [])}
+
+
+def paired(stat, available, teams):
+    """A default card shows its kind for both teams (home, then away) in one slot: `sides` carries each team's value
+    from the catalogue (None when that team's row is missing or incomplete); `value` stays the resolved stat's own."""
+    kind = stat['id'].split(':', 1)[-1]
+    sides = []
+    for team in teams:
+        row = available.get(f"{team['id']}:{kind}")
+        shown = row if row and row.get('available', True) and row.get('complete', True) else None
+        sides.append({'team_id': team['id'], 'name': team.get('name'), 'value': shown['value'] if shown else None})
+    label = stat['label'].removeprefix('Both teams ')
+    for team in teams:
+        if team.get('name'):
+            label = label.removeprefix(team['name'] + ' ')
+    return {**stat, 'label': label[:1].upper() + label[1:], 'kind': 'standard', 'sides': sides}
 
 
 class ProductService:

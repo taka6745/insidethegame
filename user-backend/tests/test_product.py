@@ -330,6 +330,38 @@ def test_tracking_a_stat_never_displaces_the_goals_card():
         'riverton:possession', 'riverton:pass_accuracy', 'riverton:shots', 'riverton:goals', 'riverton:tackles']
 
 
+def test_default_cards_show_both_teams_in_one_slot():
+    """A default card is one slot showing its kind for home and away; a team row that is missing or incomplete
+    shows nothing for that side; the label loses its team prefix."""
+    from backend.services.product import MatchProjection
+    from benchmarks.doubles.config import seeded
+    projection = MatchProjection.__new__(MatchProjection)
+    projection.presentation = seeded('presentation').model_copy(update={'card_slots': 2})
+    projection.buckets = []
+    stats = [{'id': 'all:goals', 'label': 'Both teams goals', 'value': 3},
+             {'id': 'riverton:goals', 'label': 'Riverton Rovers goals', 'value': 2},
+             {'id': 'forgeham:goals', 'label': 'Forgeham United goals', 'value': 1},
+             {'id': 'all:shots', 'label': 'Both teams shots', 'value': 9},
+             {'id': 'riverton:shots', 'label': 'Riverton Rovers shots', 'value': 9},
+             {'id': 'forgeham:shots', 'label': 'Forgeham United shots', 'value': 4, 'complete': False}]
+    teams = [{'id': 'riverton', 'name': 'Riverton Rovers'}, {'id': 'forgeham', 'name': 'Forgeham United'}]
+    projection.shared = {'type': 'snapshot', 'version': 1, 'projection_epoch': 'e', 'synthetic': True, 'mode': 'local',
+                         'snapshot_id': 'm:1', 'match': {'teams': teams}, 'events': [],
+                         'stats': stats, 'calculations': {}, 'narratives': []}
+    viewer = {'profile': {'team': 'riverton', 'selections': {}}, 'audience': {'bucket_id': 'home:analytical'}, 'offers': []}
+    cards = projection.compose(viewer)['cards']
+    assert [c['id'] for c in cards] == ['riverton:goals', 'riverton:shots']
+    assert [c['label'] for c in cards] == ['Goals', 'Shots']
+    assert [[s['value'] for s in c['sides']] for c in cards] == [[2, 1], [9, None]]
+    assert [s['team_id'] for s in cards[0]['sides']] == ['riverton', 'forgeham']
+    neutral = projection.compose({**viewer, 'profile': {'team': None, 'selections': {}}})['cards']
+    assert [(c['id'], c['label'], c['value']) for c in neutral] == [('all:goals', 'Goals', 3), ('all:shots', 'Shots', 9)]
+    assert [s['value'] for s in neutral[0]['sides']] == [2, 1]
+    # A tracked standard stat stays a single value.
+    viewer['offers'] = [{'calculation_id': 'pin', 'kind': 'standard', 'standard_stat_id': 'forgeham:shots', 'label': 'Shots'}]
+    assert 'sides' not in projection.compose(viewer)['cards'][-1]
+
+
 def test_a_match_link_opens_before_kickoff_and_goes_live(store):
     """Before MA1 a link is `match_not_started` (purged stays `match_not_found`); after MA1 the
     viewer gets a scheduled pre-match snapshot with the kickoff, then live play on the socket."""

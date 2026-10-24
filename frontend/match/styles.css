@@ -448,6 +448,15 @@ option {
   font-variant-numeric: tabular-nums;
   margin-top: 7px;
 }
+.stat-value.sides {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.stat-side:last-child {
+  color: #e0cfe8;
+}
 .stat-card.tracked .stat-value {
   color: var(--mint);
 }

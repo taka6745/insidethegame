@@ -231,3 +231,6 @@ Rechecked on a42d8d9 with every image rebuilt: all suites and `./dev test backen
 | M17 | No pipeline stage drops out mid-demo | Fixed: keep-warm loop; demo control min 1 replica |
 | M18 | A follow's half-time wrap-up posts once | Checked |
 | M19 | Seeded Start demo took about 101 s on Azure | Fixed: 8.1 s (seeds in memory, sweep between demos, parallel purge) |
+| M20 | Default stat cards show one team or both teams combined; each should show both teams in one slot (24 Oct) | Fixed: each default card carries `sides` (home, away); tracked stats stay single values |
+| M21 | Start demo looked ignored until the operator answered (24 Oct) | Fixed: the pipeline picture shows at the click, every stage waking, and follows the operator from there |
+| M22 | A question about all matches came back per match saying the other games were out of reach (24 Oct) | Fixed: each per-match part sees only its match and is told so; parts run at once |

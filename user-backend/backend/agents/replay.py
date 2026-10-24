@@ -115,6 +115,9 @@ Rules:
   Never add clips the viewer did not ask for, even as context. 'Show the whole match' is not a
   replay: offer highlights instead, no items.
 - Clarify only when the request cannot be resolved at all.
+- single_match true: the viewer asked about several live matches and each gets its own reply; this one covers
+  the match in context alone. Choose its footage as if asked about this match only; never say other matches
+  are unavailable or out of reach.
 """
 
 
