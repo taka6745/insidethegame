@@ -235,7 +235,7 @@ async def serve():
     router = Router(data, agents, store, publisher, settings, targets=targets, prompts=prompts, policy=policy,
                     follows=follows, decisions=decisions)
 
-    tasks = [SubscriptionListener(env["SERVICEBUS_NOTIFICATIONS"], "match-notifications",
+    tasks = [SubscriptionListener(env["SERVICEBUS_NOTIFICATIONS"], env.get("NOTIFICATIONS_TOPIC", "match-notifications"),
                                   env.get("NOTIFICATIONS_SUBSCRIPTION", "narrative-engine"), router.handle).run(),
              router.poll_targets()]
     port = int(env.get("PORT", 8000))

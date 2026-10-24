@@ -38,7 +38,7 @@ class CrossMatch:
     async def other(self, match_id, other_id):
         """Another live match by id, or 404 when cross-match reach is off or the match is unknown or cleared."""
         if other_id == match_id or not (await self.settings()).enabled:
-            raise RuleError('match_not_found', 'That match is not part of this demo.', 404)
+            raise RuleError('match_not_found', 'That match is not live here.', 404)
         return self.registry.get(other_id)
 
     async def named(self, match, text):

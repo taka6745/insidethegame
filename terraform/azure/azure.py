@@ -80,6 +80,7 @@ class Stack:
         values = {"subscription_id": s["subscription"]}
         if self.name in ("etl", "narrative", "feed", "app"):
             values["demo_seeds"] = "false" if s.get("release") else "true"  # the demo build has demo seeds
+            values["demo_control"] = values["demo_seeds"]  # and the public Start demo; a release has neither
         if self.name == "guard":
             values["alert_email"] = s["email"]
             values["budget_start"] = time.strftime("%Y-%m-01T00:00:00Z", time.gmtime())

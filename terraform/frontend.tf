@@ -8,14 +8,16 @@ resource "random_password" "dev_admin" {
 
 locals {
   frontend_env = {
-    BACKEND_UPSTREAM      = local.backend_host
-    MEDIA_ORIGIN          = local.feed.hls_origin_host
-    FEED_ADMIN_UPSTREAM   = local.feed.hls_origin_host
-    DEMO_CONTROL_UPSTREAM = local.demo_host
-    ETL_ADMIN_UPSTREAM    = local.etl.admin_host
-    ENGINE_ADMIN_UPSTREAM = local.engine_host
-    NGINX_RESOLVER        = "auto" # the environment's DNS, from /etc/resolv.conf
-    ENABLE_DEV_ADMIN      = var.dev_admin ? "1" : "0"
+    BACKEND_UPSTREAM       = local.backend_host
+    MEDIA_ORIGIN           = local.feed.hls_origin_host
+    FEED_ADMIN_UPSTREAM    = local.feed.hls_origin_host
+    DEMO_CONTROL_UPSTREAM  = local.demo_host
+    ETL_ADMIN_UPSTREAM     = local.etl.admin_host
+    ENGINE_ADMIN_UPSTREAM  = local.engine_host
+    NGINX_RESOLVER         = "auto" # the environment's DNS, from /etc/resolv.conf
+    ENABLE_DEV_ADMIN       = var.dev_admin ? "1" : "0"
+    ENABLE_DEMO_CONTROL    = var.demo_control ? "1" : "0"
+    QUESTION_PROXY_TIMEOUT = tostring(var.question_timeout_seconds + 10)
   }
   # Dev consoles only: Container Apps secret -> env. nginx adds each owner's bearer token to its
   # /purge-api/ call (tools/nginx-setup.envsh); the browser never sees them.

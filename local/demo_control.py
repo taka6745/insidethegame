@@ -45,12 +45,13 @@ def _number(name, default):
 
 PURGE_TIMEOUT = _number('DEMO_PURGE_TIMEOUT', 300.0)  # Seconds; a purge waits for the stream's current batch.
 PURGE_RETRIES = _number('DEMO_PURGE_RETRIES', 10)  # 503 means retry; purge is idempotent.
+RESTORE_RETRIES = _number('DEMO_RESTORE_RETRIES', 3)  # an owner's 503 (a dropped SQL connection) is transient; a restore rolls back
 PURGE_RETRY_SECONDS = _number('DEMO_PURGE_RETRY_SECONDS', 2.0)
-CHECK_TIMEOUT = 3  # Seconds per readiness probe.
+CHECK_TIMEOUT = _number('DEMO_CHECK_TIMEOUT', 3.0)  # Seconds per readiness probe.
 # /status fans out to every owner; callers within this many seconds (or while a check runs) share one answer, so
 # its public per-client limit (nginx) never multiplies into probe load on the owners.
 STATUS_CACHE_SECONDS = _number('DEMO_STATUS_CACHE_SECONDS', 1.0)
-WAKE_TIMEOUT = 60  # Seconds a wake-up call waits for an app scaled to zero.
+WAKE_TIMEOUT = _number('DEMO_WAKE_TIMEOUT', 60.0)  # Seconds a wake-up call waits for an app scaled to zero (nginx waits 90).
 # While a demo is live, every app it needs is pinged this often so none scales to zero mid-match (Container Apps
 # scale down after a 300 s quiet cooldown); with no demo the pings stop and the apps idle back to zero.
 KEEP_WARM_SECONDS = _number('DEMO_KEEP_WARM_SECONDS', 60.0)
@@ -76,8 +77,12 @@ class SeedStale(RuntimeError):
 
 def owner_call(http, name, path, body):
     url, headers = OWNER[name].url + path, OWNER[name].headers
-    response = http.post(url, json=body, headers=headers) if name != 'etl' or path.endswith('restore') else \
-        http.get(url + f"?match_id={body['match_id']}", headers=headers)
+    for attempt in range(RESTORE_RETRIES + 1):
+        response = http.post(url, json=body, headers=headers) if name != 'etl' or path.endswith('restore') else \
+            http.get(url + f"?match_id={body['match_id']}", headers=headers)
+        if response.status_code != 503 or not path.endswith('restore') or attempt == RESTORE_RETRIES:
+            break
+        time.sleep(0.5 * (attempt + 1))
     if response.status_code >= 400:
         error = SeedStale if response.status_code == 409 and path.endswith('restore') else RuntimeError
         raise error(f'{name} {path}: {response.status_code} {response.text[:300]}')
@@ -362,7 +367,7 @@ def app(http=None, clock=time.monotonic):
 
     class Start(BaseModel):
         model_config = ConfigDict(extra='forbid')
-        point: str = Field(default='kickoff', max_length=20)
+        point: str | None = Field(default=None, max_length=20)  # None: the feed's first configured start point
 
     class Skip(BaseModel):
         model_config = ConfigDict(extra='forbid')
@@ -468,7 +473,7 @@ def app(http=None, clock=time.monotonic):
 
     @api.post('/start')
     def start_demo(body: Start | None = None):
-        point = (body or Start()).point
+        point = (body or Start()).point or feed('GET', '/demo')['start_points'][0]['id']  # the first configured point
         if STREAM_START_URL:  # its own thread: wakes and seed preloads on `background` must not delay it
             threading.Thread(target=start_stream, daemon=True).start()
         wake()

@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | **Models** | Foundry GlobalStandard: `writer` (`gpt-6.1-sol`, engine, 120K TPM), `questions` (`gpt-6.1-sol`, backend, 130K TPM), effort low; alternates `gpt-6-luna` and `gpt-5-mini` (100K TPM each), selectable per role in `/dev/` → Models · `Microsoft-Decision-1` DataZoneStandard 50 RPM |
-| **Build** | Demo build by default (`demo_seeds` on); `--release` turns the seed routes off |
+| **Build** | Demo build by default (`demo_seeds` and `demo_control` on); `--release` turns the seed routes, demo control and the viewer's public `/demo-api/` off |
 | **Needs** | Docker, `az login` (Owner: the spend guard assigns its own role), host `ffmpeg` (secondary video), about 5.5 GB upload for the match video |
 | **State** | `.local/terraform/<stack>/terraform.tfstate` (git-ignored, local only) |
 | **Region** | Australia East (the guard's Automation account: East US) |

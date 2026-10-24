@@ -73,6 +73,8 @@ Other settings (defaults in seconds unless noted):
 | --- | --- |
 | `DEMO_FEED_URL`, `ETL_ADMIN_URL`, `ENGINE_ADMIN_URL`, `BACKEND_URL` | Compose service URLs; `ETL_ADMIN_TOKEN`, `ENGINE_ADMIN_TOKEN` on Azure |
 | `DEMO_PURGE_TIMEOUT`, `DEMO_PURGE_RETRIES`, `DEMO_PURGE_RETRY_SECONDS` | 300, 10 tries, 2 |
+| `DEMO_RESTORE_RETRIES` (an owner's 503 on a seed restore, e.g. a dropped SQL connection) | 3 |
+| `DEMO_CHECK_TIMEOUT`, `DEMO_WAKE_TIMEOUT` (readiness probe; waking an app from zero) | 3, 60 |
 | `DEMO_STATUS_CACHE_SECONDS` | 1 |
 | `DEMO_RELEASE_LEAD` | 5 (last restore to the first run reading the point) |
 | `DEMO_CAPTURE_POLL`, `DEMO_CAPTURE_TIMEOUT` | 5, 1800 |

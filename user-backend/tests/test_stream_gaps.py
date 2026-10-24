@@ -57,6 +57,22 @@ def test_a_timed_out_gap_is_recovered_from_etl_canonical_events(store):
         assert (row['match_id'], row['seq'], row['state']) == (MATCH, 4, 'recovered') and row['blocked_seconds'] >= 31
 
 
+def test_a_run_of_missing_seqs_is_filled_in_one_pass_once_the_first_has_timed_out(store):
+    """A stream outage loses many seqs at once: the whole run before the first held event fills in one pass,
+    not one seq per timeout."""
+    upstream = Upstream()
+    upstream.canonical = True
+    with Running(store, upstream=upstream) as run:
+        run.send(3)
+        deliver(run, 9, 10)
+        recover(run, aged=31)
+        match = run.match()
+        assert match.seq == 10 and not match.pending
+        assert [e.sequence for e in match.events[3:8]] == [4, 5, 6, 7, 8]
+        rows = run.client.get('/dev/pipeline').json()['gaps']
+        assert sorted(row['seq'] for row in rows) == [4, 5, 6, 7, 8] and {row['state'] for row in rows} == {'recovered'}
+
+
 def test_without_etl_canonical_events_the_gap_is_skipped_and_survives_restart(store):
     upstream = Upstream()
     with Running(store, upstream=upstream) as run:

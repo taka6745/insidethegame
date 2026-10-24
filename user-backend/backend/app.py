@@ -175,5 +175,5 @@ def from_env():
         upstream_health={name: url.removesuffix('/graphql') + '/health' for name, url in
                          (('etl', os.environ['ETL_GRAPHQL_URL']), ('narrative', os.environ['NARRATIVE_GRAPHQL_URL']))},
         max_calculations=int(os.getenv('FILTER_MAX_CALCULATIONS', '10000')),
-        question_timeout=float(os.getenv('QUESTION_TIMEOUT_SECONDS', '90')),
+        question_timeout=float(os.getenv('QUESTION_TIMEOUT_SECONDS', '240')),
         max_active=int(os.getenv('QUESTION_MAX_ACTIVE', '4')))

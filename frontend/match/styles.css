@@ -1116,14 +1116,50 @@ footer a {
   font-size: 12px;
 }
 /* Demo fast-forward: a small select and button; wraps on narrow screens. */
+#match-live-from {
+  flex: 1 1 auto;  /* one row with Skip ahead when both fit */
+}
 .demo-skip {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+  margin-left: auto;
 }
+.demo-skip-label, .demo-skip-targets { flex: none; }
 .demo-skip[hidden] { display: none; }
-.demo-skip p:empty { display: none; }
+.demo-skip-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted, #8ea3b8);
+}
+.demo-skip-targets {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.demo-skip-target {
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 0;
+}
+.demo-skip-target + .demo-skip-target {
+  border-left: 1px solid var(--line);
+}
+.demo-skip-target:hover:not(:disabled) {
+  background: var(--surface);
+}
+.demo-skip-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted, #8ea3b8);
+}
+.demo-skip-note:empty { display: none; }
 /* Demo start: the pipeline, each stage lit by a real readiness check. */
 .demo-progress {
   margin: 0 0 18px;
@@ -1204,6 +1240,13 @@ footer a {
   font-size: 11px;
   color: #4aa3ff;
   text-align: center;
+}
+.pipeline-stop {
+  margin-top: 10px;
+  font-size: 12px;
+}
+.demo-progress[data-done="yes"] .pipeline-stop {
+  visibility: hidden;
 }
 .pipeline-caption {
   margin: 10px 0 0;

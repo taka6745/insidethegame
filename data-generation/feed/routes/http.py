@@ -67,7 +67,7 @@ class DemoSkip(BaseModel):
 
 class DemoStart(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    point: str = Field(default="kickoff", max_length=20)
+    point: str | None = Field(default=None, max_length=20)  # None: the first configured start point
 
 
 class PurgeRequest(BaseModel):

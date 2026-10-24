@@ -9,6 +9,9 @@ from backend.services.live_match import LiveMatch
 log = logging.getLogger(__name__)
 
 
+GAP_BATCH = 500  # missing seqs filled per recovery pass once the first has timed out
+
+
 class MatchRegistry:
     def __init__(self, repository, *, max_calculations=10_000, dab=None):
         if isinstance(max_calculations, bool) or not isinstance(max_calculations, int) or not 1 <= max_calculations <= 1_000_000:
@@ -76,22 +79,29 @@ class MatchRegistry:
         now = time.monotonic()
         return [gap for match in self.matches.values() if (gap := match.gap(now))]
 
-    async def recover_gaps(self, fetch, timeout):
+    async def recover_gaps(self, fetch, timeout, batch=GAP_BATCH):
         """Fill each seq missing for `timeout` seconds: ETL's canonical event when `fetch` finds it,
-        else a placeholder. An unreachable ETL gets one more `timeout` before the seq is skipped."""
+        else a placeholder. An unreachable ETL gets one more `timeout` before the seq is skipped. Once the first
+        missing seq has timed out, the whole run of missing seqs before the first held event is filled in this
+        pass (up to `batch`): a stream outage loses hundreds at once, and one per timeout would take hours."""
         for gap in self.gaps():
             if gap['age_seconds'] < timeout:
                 continue
             match = self.matches.get(gap['match_id'])
-            try:
-                event = await fetch(gap['match_id'], gap['seq'])
-            except Exception:
-                if gap['age_seconds'] < 2 * timeout:
-                    continue
-                event = None
-            if match is not None and not match.purged:
-                await match.fill_gap(gap['seq'], event or match.placeholder(gap['seq']),
-                                     'recovered' if event else 'skipped', gap['age_seconds'])
+            if match is None or match.purged:
+                continue
+            end = min(match.pending, default=gap['seq']) - 1 if match.pending else gap['seq']
+            for seq in range(gap['seq'], min(end, gap['seq'] + batch - 1) + 1):
+                if match.purged or match.seq + 1 != seq:
+                    break  # purged, or it arrived meanwhile
+                try:
+                    event = await fetch(gap['match_id'], seq)
+                except Exception:
+                    if gap['age_seconds'] < 2 * timeout:
+                        break
+                    event = None
+                await match.fill_gap(seq, event or match.placeholder(seq), 'recovered' if event else 'skipped',
+                                     gap['age_seconds'])
 
     async def watch_gaps(self, fetch, config, interval=1.0):
         """Background loop: recover gaps older than the `stream` config's timeout."""

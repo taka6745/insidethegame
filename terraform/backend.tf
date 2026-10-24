@@ -12,7 +12,7 @@ locals {
     LOCAL_LLM_EFFORT                  = var.question_model.effort == null ? "" : var.question_model.effort
     DECISION_BASE_URL                 = local.narrative.decision.base_url # "Follow this story?": the engine's Decision-1
     DECISION_MODEL                    = local.narrative.decision.model
-    QUESTION_TIMEOUT_SECONDS          = "120"
+    QUESTION_TIMEOUT_SECONDS          = tostring(var.question_timeout_seconds)
     ENABLE_DEV_FEED                   = var.dev_admin ? "1" : "0" # internal ingress; nginx gates /dev-api/
     ENABLE_FILTER_LAB                 = var.dev_admin ? "1" : "0"
     DEMO_SEEDS                        = var.demo_seeds ? "1" : "0"

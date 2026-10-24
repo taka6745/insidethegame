@@ -301,7 +301,7 @@ class ProductService:
         projection = self.projections.get(source)
         shared = projection and projection.shared
         card = {'id': identifier, 'label': offer['label'], 'value': None, 'available': False, 'complete': False,
-                'unavailable_reason': 'That match is no longer live in this demo.'}
+                'unavailable_reason': 'That match is no longer live.'}
         if shared:
             if offer.get('kind') == 'standard':
                 stat = next((s for s in shared['stats'] if s['id'] == offer['standard_stat_id']), None)

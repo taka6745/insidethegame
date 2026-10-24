@@ -173,8 +173,9 @@ class FeedService:
     async def _active(self):
         return [r for r in await self.runs() if r["status"] != "finished"]
 
-    async def start_demo(self, point_id="kickoff"):
-        """One demo at a time: the configured fixtures, staggered, from a configured start point. While any
+    async def start_demo(self, point_id=None):
+        """One demo at a time: the configured fixtures, staggered, from a configured start point (the first when none
+        is named). While any
         run is scheduled or live this starts nothing and returns those runs, so repeated clicks are safe.
         Finished runs are purged first (here; the caller purges the other owners)."""
         async with self._lock:
@@ -182,7 +183,8 @@ class FeedService:
             if active:
                 return {"started": False, "runs": active}
             settings = await asyncio.to_thread(self.repository.demo_settings)
-            point = next((p for p in settings["start_points"] if p["id"] == point_id), None)
+            points = settings["start_points"]
+            point = points[0] if point_id is None and points else next((p for p in points if p["id"] == point_id), None)
             if point is None:
                 raise FeedError(404, "Unknown start point.")
             missing = [f for f in settings["fixtures"] if f not in self.streams]

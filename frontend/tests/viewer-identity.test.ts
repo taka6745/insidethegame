@@ -61,6 +61,6 @@ test("a viewer never sees raw exception text", async () => {
   await assert.rejects(api.matches(), (error: Error & { status?: number }) =>
     error.status === 0 && !/NetworkError/.test(error.message) && /Can't reach the match service/.test(error.message));
   assert.equal(friendly(new TypeError("Cannot read properties of undefined (reading 'x')")), "Something went wrong. Please try again.");
-  const service = Object.assign(new Error("Choose a demo profile."), { status: 404 });
-  assert.equal(friendly(service), "Choose a demo profile.");
+  const service = Object.assign(new Error("Choose a profile."), { status: 404 });
+  assert.equal(friendly(service), "Choose a profile.");
 });

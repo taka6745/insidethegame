@@ -25,7 +25,7 @@ WINDOWS = {'last5': 'last 5 minutes', 'prev10': 'the 10 minutes before the last 
 
 
 class QuestionService:
-    def __init__(self, repository, registry, match_data, narratives, agent, planner, config, *, timeout=60,
+    def __init__(self, repository, registry, match_data, narratives, agent, planner, config, *, timeout=240,
                  max_active=4, replays=None, cross=None, decide=None):
         if isinstance(max_active, bool) or not isinstance(max_active, int) or not 1 <= max_active <= 32:
             raise ValueError('QUESTION_MAX_ACTIVE must be an integer between 1 and 32')
@@ -59,7 +59,7 @@ class QuestionService:
         """A session's demo account; it may have been removed in the profile editor since."""
         profile = next((p for p in await asyncio.to_thread(self.repository.profiles) if p['id'] == profile_id), None)
         if profile is None:
-            raise RuleError('profile_not_found', 'This demo profile was removed. Choose another profile.', 409)
+            raise RuleError('profile_not_found', 'That profile was removed. Choose another.', 409)
         return profile
 
     async def start(self, match_id, profile_id, viewer_id=''):

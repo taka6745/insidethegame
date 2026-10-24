@@ -134,6 +134,7 @@ export class DemoControls {
   /** Show each stage waking until all are ready (after Start demo, or a cold load of a live demo). */
   async watch() {
     if (this.watching || !this.progress) return;
+    this.progress.onStop = () => void this.stop();
     this.watching = true;
     try {
       await follow(() => this.api.status(), this.progress);
@@ -172,8 +173,9 @@ export class DemoControls {
     const point = this.get<HTMLSelectElement>("demo-point").value || "kickoff";
     return this.act(async () => {
       this.started = true;
+      if (this.progress) this.progress.awaitLive = true;  // warm stages alone are not a running demo
       void this.watch();  // the stages wake while the start runs
-      const result = await this.api.start(point);
+      const result = await this.api.start(point).finally(() => { if (this.progress) this.progress.awaitLive = false; });
       if (!result.started) return "A demo is already on: pick one of its matches below.";
       // A seeded start's kickoff lies in the past (its clock starts at the point): say where it resumes instead.
       if (result.live_from) return `Demo resumes from ${result.live_from} in a few seconds.`;
@@ -186,6 +188,19 @@ export class DemoControls {
       await this.api.cancel();
       return "Demo cancelled.";
     });
+  }
+  /** Stop from the spin-up picture: cancels whatever the start is doing (the operator runs start, then cancel). */
+  async stop() {
+    this.progress?.hide();
+    this.started = false;
+    try {
+      await this.api.cancel();
+      this.notice("Demo stopped.");
+    } catch (error) {
+      this.notice(friendly(error, "The demo could not be stopped. Try again shortly."));
+    }
+    await this.refresh();
+    this.onChange();
   }
 }
 
@@ -214,32 +229,37 @@ export function mainToOpen(controls: Pick<DemoControls, "live" | "main" | "start
  * (liveCatchUp); the story fills in as the pipeline works through the skipped minutes. */
 export async function showSkip(document: Document, matchId: string, api = new DemoApi()) {
   const box = document.getElementById("match-skip");
-  const select = document.getElementById("match-skip-target") as HTMLSelectElement | null;
-  const go = document.getElementById("match-skip-go") as HTMLButtonElement | null;
+  const targets = document.getElementById("match-skip-targets");
   const note = document.getElementById("match-skip-note");
-  if (!box || !select || !go || !note) return;
+  if (!box || !targets || !note) return;
+  let busy = false;
+  const skip = async (id: string, label: string) => {
+    if (busy) return;
+    busy = true;
+    for (const button of targets.querySelectorAll("button")) button.disabled = true;
+    note.textContent = `Skipping ahead ${label}…`;
+    try {
+      const result = await api.skip(id);
+      note.textContent = `Skipped ${Math.round(result.skipped_seconds / 60)} minutes in every demo match; the story catches up over the next minutes.`;
+    } catch (error) {
+      note.textContent = friendly(error, "Couldn't skip ahead. Try again shortly.");
+    } finally {
+      busy = false;
+      await render();
+    }
+  };
   const render = async () => {
     const state = await api.state().catch(() => null);
     const ours = !!state?.live && (state.runs ?? []).some((run) => run.match_id === matchId);
     const skips = ours ? state?.skips ?? [] : [];
-    select.replaceChildren(...skips.map(({ id, label }) => Object.assign(node(document, "option", label), { value: id })));
+    targets.replaceChildren(...skips.map(({ id, label }) => {
+      const button = node(document, "button", label, "demo-skip-target");
+      button.type = "button";
+      button.addEventListener("click", () => void skip(id, label));
+      return button;
+    }));
     box.hidden = !skips.length;
   };
-  go.addEventListener("click", async () => {
-    go.disabled = true;
-    const label = select.selectedOptions[0]?.textContent ?? "";
-    note.textContent = `Skipping ahead (${label})…`;
-    try {
-      const result = await api.skip(select.value);
-      note.textContent = `Skipped ${Math.round(result.skipped_seconds / 60)} minutes for every demo match. ` +
-        "The picture jumps ahead now; the story catches up over the next minutes.";
-    } catch (error) {
-      note.textContent = friendly(error, "Couldn't skip ahead. Try again shortly.");
-    } finally {
-      go.disabled = false;
-      await render();
-    }
-  });
   await render();
 }
 
@@ -254,7 +274,7 @@ export async function showLiveFrom(document: Document, matchId: string, api = ne
     const recording = (state.recording ?? []).some((run) => run.match_id === matchId);
     from.textContent = recording
       ? "This match is being recorded as a demo start point and pauses there. Start the demo or choose another match."
-      : ours ? `The story so far was generated earlier on this pipeline; live from ${state.live_from}.` : "";
+      : ours ? `Live from ${state.live_from} · the story so far was generated earlier on this pipeline.` : "";
   } catch {
     from.textContent = "";  // No operator: not a demo.
   }

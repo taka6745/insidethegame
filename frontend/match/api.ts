@@ -132,7 +132,8 @@ export class MatchApi {
   }
   /** `seq` is the snapshot the viewer's picture shows: the answer never cites anything after it. */
   ask(token: string, prompt: string, requestId: string, seq?: number) {
-    // Above the backend's question budget (240 s) and nginx's 250 s, so the server answers first.
+    // Above the backend's question budget (QUESTION_TIMEOUT_SECONDS, at most 240 s) and nginx's budget + 10 s, so the
+    // server answers first.
     return this.request(`${this.sessions(token)}/messages`, {
       body: { prompt, request_id: requestId, ...(Number.isInteger(seq) ? { seq } : {}) },
       timeout: QUESTION_TIMEOUT_MS,

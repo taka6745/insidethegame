@@ -170,8 +170,11 @@ test("developer consoles are gated in nginx; media proxies only per-match playli
   // The public demo API: only these five routes (start, cancel, skip; state, status), method- and rate-limited.
   assert.deepEqual([...nginx.matchAll(/location[^{]*demo-api[^{]*\{/g)].map(([found]) => found),
     ['location ~ "^/demo-api/(?<demo_write_op>start|cancel|skip)$" {', 'location ~ "^/demo-api/(?<demo_read_op>state|status)$" {']);
-  assert.match(nginx, /start\|cancel\|skip\)\$" \{\s+limit_except POST \{ deny all; \}\s+limit_req zone=demo_write /);
-  assert.match(nginx, /state\|status\)\$" \{\s+limit_except GET \{ deny all; \}\s+limit_req zone=demo_read /);
+  // Each is 404 unless ENABLE_DEMO_CONTROL=1 (a production release has no demo), then method- and rate-limited.
+  const gate = 'if \\(\\$demo_control != "1"\\) \\{ return 404; \\}\\s+';
+  assert.match(nginx, new RegExp(`start\\|cancel\\|skip\\)\\$" \\{\\s+${gate}limit_except POST \\{ deny all; \\}\\s+limit_req zone=demo_write `));
+  assert.match(nginx, new RegExp(`state\\|status\\)\\$" \\{\\s+${gate}limit_except GET \\{ deny all; \\}\\s+limit_req zone=demo_read `));
+  assert.match(nginx, /map "\$\{ENABLE_DEMO_CONTROL\}" \$demo_control \{\s+default 0;/);
   // limit_req evaluates the key map's regex, which resets numbered captures: rate-limited routes use named ones.
   for (const [, block] of nginx.matchAll(/location[^{]*demo-api[^{]*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}/g))
     assert.doesNotMatch(block!, /\$\d/);

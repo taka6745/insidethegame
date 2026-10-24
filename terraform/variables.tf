@@ -58,6 +58,22 @@ variable "question_model" {
   description = "Azure OpenAI deployment (GlobalStandard) for the backend's question, replay and follow-planner agents."
 }
 
+variable "demo_control" {
+  type        = bool
+  default     = true
+  description = "Deploy demo control and the viewer's public /demo-api/ (Start demo). Off for a production release: the viewer then shows no demo controls."
+}
+
+variable "question_timeout_seconds" {
+  type        = number
+  default     = 120
+  description = "The backend's budget for one question (QUESTION_TIMEOUT_SECONDS); nginx waits 10 s longer. The viewer gives up at 255 s, so keep this at most 240."
+  validation {
+    condition     = var.question_timeout_seconds >= 10 && var.question_timeout_seconds <= 240
+    error_message = "Between 10 and 240 seconds."
+  }
+}
+
 variable "demo_seeds" {
   type        = bool
   default     = false

@@ -94,7 +94,7 @@ class SubscriptionService:
         bucket_id = None
         if target not in (None, match_id):
             if self.cross is None:
-                raise RuleError('match_not_found', 'That match is not part of this demo.', 404)
+                raise RuleError('match_not_found', 'That match is not live here.', 404)
             await self.cross.other(match_id, target)
             snapshot, teams, players, storylines = await self._context(target)
             bucket_id = await self._bucket(target, viewer)

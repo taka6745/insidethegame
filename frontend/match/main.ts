@@ -32,7 +32,10 @@ function showPicker(gone: string | null) {
   const picker = new MatchPicker(document);
   const demo = new DemoControls(document);
   demo.progress = new DemoProgress(document);
-  demo.notice = (message) => picker.notice(message);
+  // The demo's own notices (a refused start, "Demo cancelled.") stay until the next action; the picker only
+  // clears its start-up/retry notice.
+  let startup = false;
+  demo.notice = (message) => { startup = false; picker.notice(message); };
   if (gone !== null) picker.notice("That match has finished or was removed. Choose another match.");
   // A live demo opens on its main game; "All matches" (?choose) keeps the picker for switching games.
   const choosing = params.has("choose") || gone !== null;
@@ -46,12 +49,13 @@ function showPicker(gone: string | null) {
     try {
       const [, list] = await Promise.all([demo.refresh(), api.matches(MATCHES_TIMEOUT_MS)]);
       loaded = true;
-      picker.notice("");
+      if (startup) { startup = false; picker.notice(""); }
       const matches = demoMatches(list, demo.live, demo.main, demo.runs, demo.recording);
       const main = mainToOpen(demo, matches, choosing);
       if (main) return location.assign(`/?match=${encodeURIComponent(main)}`);
       picker.render(matches);
     } catch (error) {
+      startup = true;
       picker.notice(loaded ? friendly(error) : "Still starting up. Retrying…");
     } finally {
       loading = false;

@@ -20,7 +20,7 @@ class QuestionRepository:
         Another browser (another viewer_id) gets its own conversation and never takes this one over."""
         profile = next((p for p in self.profiles() if p['id'] == profile_id), None)
         if profile is None:
-            raise RuleError('profile_not_found', 'Choose a demo profile.', 404)
+            raise RuleError('profile_not_found', 'Choose a profile.', 404)
         token = uuid4()
         with self.store.connect() as conn:
             row = conn.execute('INSERT INTO question_conversations(id,viewer_id,profile_id,match_id) VALUES(%s,%s,%s,%s) '

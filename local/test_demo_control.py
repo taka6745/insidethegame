@@ -16,6 +16,7 @@ class DemoControlTests(unittest.TestCase):
     def setUp(self):
         self.runs, self.calls, self.down, self.listed = [], [], set(), []
         self.refuse_restore, self.resume_seq, self.refuse_status, self.refuse_purge = set(), 7, 409, set()
+        self.restore_failures = {}
         self.gate = threading.Event()
         self.gate.set()
         self.slow_purge, self.owner_gate, self.purging = set(), threading.Event(), threading.Event()
@@ -53,6 +54,9 @@ class DemoControlTests(unittest.TestCase):
                 run.update(awaiting_restore=False, after=body["after_seconds"])
                 return httpx.Response(200, json=run)
             if path == "/admin/matches/restore":
+                if self.restore_failures.get(request.url.host):  # transient 503s, so many per owner
+                    self.restore_failures[request.url.host] -= 1
+                    return httpx.Response(503, json={"detail": "Restore failed; retry"})
                 if request.url.host in self.refuse_restore:
                     return httpx.Response(self.refuse_status, json={"detail": "refused"})
                 return httpx.Response(200, json={"match_id": body["match_id"], "restored": {}})
@@ -289,6 +293,14 @@ class DemoControlTests(unittest.TestCase):
         self.assertEqual(state["recording"], [{"match_id": "rec-a"}])  # the viewer hides it: it stops at 20′
         self.assertEqual(self.client.post("/start").status_code, 409)
         self.assertFalse(self.purged())  # the recording is untouched
+
+    def test_a_transient_restore_failure_is_retried_so_the_start_still_succeeds(self):
+        self.seed()
+        self.restore_failures = {"etl-stream": 2}  # a dropped SQL connection: 503 twice, then fine
+        self.client.post("/start", json={"point": "20"})
+        self.assertTrue(self.settle()["ok"])
+        self.assertTrue([c for c in self.calls if c[1].endswith("/release")])
+        self.assertFalse(self.purged())
 
     def test_a_failed_restore_purges_the_waiting_runs_everywhere(self):
         self.seed()

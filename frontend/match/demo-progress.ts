@@ -24,6 +24,10 @@ export class DemoProgress {
   document: Document;
   root: HTMLElement;
   nodes = new Map<string, HTMLElement>();
+  /** Stop: the viewer gives up on this start (wired by the demo controls to Cancel). */
+  onStop: () => void = () => {};
+  /** While a start runs: warm stages alone are not "ready"; the viewer stage waits for the demo to be live. */
+  awaitLive = false;
   constructor(document: Document) {
     this.document = document;
     this.root = document.getElementById("demo-progress") as HTMLElement;
@@ -51,10 +55,16 @@ export class DemoProgress {
     const video = node(this.document, "p", "video · HLS", "pipeline-video");
     const caption = node(this.document, "p", "", "pipeline-caption");
     caption.id = "demo-progress-caption";
-    this.root.replaceChildren(list, video, caption);
+    const stop = node(this.document, "button", "Stop", "text-button pipeline-stop");
+    stop.id = "demo-progress-stop";
+    stop.type = "button";
+    stop.addEventListener("click", () => this.onStop());
+    this.root.replaceChildren(list, video, caption, stop);
   }
   /** Returns true when every stage is ready. */
   render(status: DemoStatus): boolean {
+    if (this.awaitLive && !status.live)
+      status = { ...status, stages: status.stages.map((s) => s.id === "viewer" ? { ...s, ready: false } : s) };
     if (this.nodes.size !== status.stages.length) this.build(status.stages);
     for (const stage of status.stages) {
       const item = this.nodes.get(stage.id);

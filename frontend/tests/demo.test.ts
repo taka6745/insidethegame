@@ -165,6 +165,18 @@ test("pipeline progress lights each stage from the status and captions the first
   assert.equal(nodes.get("demo-progress-caption")?.textContent, "Waking the ETL");
 });
 
+test("while a start runs, warm stages alone do not finish the picture: the viewer stage waits for a live demo", () => {
+  const { nodes, document } = doc();
+  const progress = new DemoProgress(document);
+  progress.awaitLive = true;
+  const warm = { live: false, matches: 0, stages: ["feed", "viewer"].map((id) => ({ id, ready: true })) };
+  assert.equal(progress.render(warm), false);
+  assert.equal(nodes.get("demo-progress-caption")?.textContent, "Starting the matches");
+  assert.equal(progress.render({ ...warm, live: true, matches: 3 }), true);
+  progress.awaitLive = false;
+  assert.equal(progress.render(warm), true);
+});
+
 test("follow polls until every stage is ready, then hides", async () => {
   const seen: boolean[] = [];
   let calls = 0;
@@ -206,7 +218,7 @@ test("a match of a seeded demo says the story so far was generated earlier; othe
   const from = document.getElementById("match-live-from")!;
   const state = { live: true, points: [], live_from: "20′", runs: [{ match_id: "m1" }] };
   await showLiveFrom(document, "m1", stub<DemoApi>({ state: async () => state }));
-  assert.match(from.textContent ?? "", /generated earlier on this pipeline; live from 20′/);
+  assert.match(from.textContent ?? "", /Live from 20′ · the story so far was generated earlier/);
   assert.equal(from.hidden, false);
   await showLiveFrom(document, "other", stub<DemoApi>({ state: async () => state }));
   assert.equal(from.hidden, true);
@@ -240,10 +252,8 @@ test("a demo control the browser cannot reach shows a plain sentence, never the 
 
 test("Skip ahead shows in a playing demo's match, posts the target and says the story catches up", async () => {
   const { nodes, document } = doc();
-  let click: (() => Promise<void>) | undefined;
-  const go = nodes.set("match-skip-go", new El()).get("match-skip-go")!;
-  Object.assign(go, { addEventListener: (_: string, listener: () => Promise<void>) => { click = listener; } });
-  const select = nodes.set("match-skip-target", new El()).get("match-skip-target")!;
+  const targets = nodes.set("match-skip-targets", new El()).get("match-skip-targets")!;
+  targets.querySelectorAll = () => targets.children;
   const posted: unknown[] = [];
   const state = { points: [], live: true, runs: [{ match_id: "m1" }], skips: [{ id: "20", label: "+20′" }] };
   const api = new DemoApi(async (url, init) => {
@@ -255,10 +265,9 @@ test("Skip ahead shows in a playing demo's match, posts the target and says the 
   });
   await showSkip(document, "m1", api);
   assert.equal(nodes.get("match-skip")!.hidden, false);
-  assert.deepEqual(select.children.map((option) => [option.value, option.textContent]), [["20", "+20′"]]);
-  select.value = "20";
-  select.selectedOptions = [select.children[0]];
-  await click!();
+  assert.deepEqual(targets.children.map((button) => button.textContent), ["+20′"]);  // one button per target
+  targets.children[0]!.listeners.click!();
+  await new Promise((done) => setTimeout(done, 0));
   assert.deepEqual(posted, [{ target: "20" }]);
   assert.match(nodes.get("match-skip-note")!.textContent, /Skipped 20 minutes/);
   await showSkip(document, "other", api);  // not one of the demo's matches: no control

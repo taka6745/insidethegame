@@ -51,7 +51,7 @@ resource "azurerm_container_app_environment_storage" "seeds" {
 }
 
 resource "azurerm_container_app" "demo_control" {
-  count                        = var.image_tag == null ? 0 : 1
+  count                        = var.image_tag == null || !var.demo_control ? 0 : 1
   name                         = "${var.prefix}-demo"
   container_app_environment_id = local.etl.container_app_environment_id
   resource_group_name          = azurerm_resource_group.app.name
