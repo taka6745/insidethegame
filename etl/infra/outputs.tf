@@ -117,3 +117,12 @@ output "eventhub_listen_connection_string" {
   value       = azurerm_eventhub_authorization_rule.user_backend_listen.primary_connection_string
   sensitive   = true
 }
+
+output "match_eventhub_name" {
+  description = "The match events hub; the user backend reads it through its own consumer group."
+  value       = azurerm_eventhub.match_events.name
+}
+
+output "user_backend_consumer_group" {
+  value = azurerm_eventhub_consumer_group.consumers["user-backend"].name
+}

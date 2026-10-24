@@ -1,12 +1,13 @@
 locals {
   backend_env = {
-    ETL_GRAPHQL_URL                   = local.etl.graphql_url
-    NARRATIVE_GRAPHQL_URL             = local.narrative_url
-    FEED_HLS_BASE                     = local.feed.hls_base_url
-    MATCH_EVENTHUB_NAME               = "match-events"
-    MATCH_EVENTHUB_CONSUMER_GROUP     = "user-backend"
-    NARRATIVE_SERVICEBUS_TOPIC        = "narratives"
-    NARRATIVE_SERVICEBUS_SUBSCRIPTION = "user-backend"
+    ETL_GRAPHQL_URL       = local.etl.graphql_url
+    NARRATIVE_GRAPHQL_URL = local.narrative_url
+    FEED_HLS_BASE         = local.feed.hls_base_url
+    # From the ETL and narrative stacks' outputs (the literals cover a state written before those outputs existed).
+    MATCH_EVENTHUB_NAME               = lookup(local.etl, "match_eventhub_name", "match-events")
+    MATCH_EVENTHUB_CONSUMER_GROUP     = lookup(local.etl, "user_backend_consumer_group", "user-backend")
+    NARRATIVE_SERVICEBUS_TOPIC        = lookup(local.narrative, "narratives_topic", "narratives")
+    NARRATIVE_SERVICEBUS_SUBSCRIPTION = lookup(local.narrative, "user_backend_subscription", "user-backend")
     LOCAL_LLM_BASE_URL                = local.narrative.foundry_endpoint # Azure OpenAI v1 (OpenAI-compatible)
     LOCAL_LLM_MODEL                   = azurerm_cognitive_deployment.questions.name
     LOCAL_LLM_EFFORT                  = var.question_model.effort == null ? "" : var.question_model.effort

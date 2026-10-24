@@ -203,9 +203,13 @@ class QuestionService:
             'compact': {**compact, 'tail': [toolkit._event_reference(e) for e in compact.get('tail', [])[:100]],
                         'tail_truncated': len(compact.get('tail', [])) > 100,
                         'key_events': [toolkit._event_reference(e) for e in compact.get('key_events', [])[-100:]]}}
+        asked = prompt
         if single:
+            # One part of a several-match answer: the models see the request scoped to this match, so "all games"
+            # never reads as a request they cannot meet from here.
             context['single_match'] = True
-        draft = QuestionDraft.model_validate(await self.agent.answer(prompt, context, toolkit))
+            asked = f"{prompt}\n(For {' v '.join(t['name'] for t in payload.teams)} only; the other matches are answered separately.)"
+        draft = QuestionDraft.model_validate(await self.agent.answer(asked, context, toolkit))
         draft = await resolve_answer(draft, toolkit)
         if any(identifier not in toolkit.evidence for identifier in draft.evidence_ids):
             raise ValueError('Unverified evidence reference')

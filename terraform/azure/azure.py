@@ -80,7 +80,8 @@ class Stack:
         values = {"subscription_id": s["subscription"]}
         if self.name in ("etl", "narrative", "feed", "app"):
             values["demo_seeds"] = "false" if s.get("release") else "true"  # the demo build has demo seeds
-            values["demo_control"] = values["demo_seeds"]  # and the public Start demo; a release has neither
+        if self.name == "app":
+            values["demo_control"] = "false" if s.get("release") else "true"  # and the public Start demo
         if self.name == "guard":
             values["alert_email"] = s["email"]
             values["budget_start"] = time.strftime("%Y-%m-01T00:00:00Z", time.gmtime())
@@ -283,12 +284,27 @@ def up(settings, yes):
     etl_devtools("asa", "start")  # a no-op when already running
     TAG_FILE.write_text(tag + "\n")
     say("Up")
+    if point_edge_proxy(result["public_url"]):
+        print(f"Edge proxy: UPSTREAM in {EDGE_CONFIG.relative_to(REPO)} now points at the new web app; "
+              "redeploy it with `npx wrangler@4.151.3 deploy` from edge-proxy/ (needs your Cloudflare login).")
     print(f"Viewer:     {result['public_url']}")
     print(f"Developer:  {result['public_url']}/dev/  (user `dev`, password in {password.relative_to(REPO)})")
     print("Start a match from /dev/ (Matches). Stop everything with `./dev azure down`.")
 
 
 PROJECT_TAGS = ("insidethegame", "InsideTheGame")
+EDGE_CONFIG = REPO / "edge-proxy" / "wrangler.toml"
+
+
+def point_edge_proxy(public_url, config=EDGE_CONFIG):
+    """Write the web app's URL as the edge proxy's UPSTREAM (a redeploy can change the FQDN). Returns whether it
+    changed; the Worker itself is redeployed by hand (`npx wrangler deploy` needs the developer's Cloudflare login)."""
+    lines = config.read_text().splitlines(keepends=True)
+    new = [f'UPSTREAM = "{public_url.rstrip("/")}"\n' if line.startswith("UPSTREAM = ") else line for line in lines]
+    if new == lines:
+        return False
+    config.write_text("".join(new))
+    return True
 
 
 def leftovers():

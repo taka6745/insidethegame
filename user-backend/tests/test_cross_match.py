@@ -115,8 +115,10 @@ def test_a_request_about_both_games_is_answered_from_each_at_its_own_position(st
             if not context.get('single_match'):
                 return QuestionDraft(answer_kind='match', status='answer', text='From each match.',
                                      per_match=[m['match_id'] for m in context['live_matches']])
-            # A part answers for its match alone: the other matches are not in its sight.
+            # A part answers for its match alone: the other matches are not in its sight, and the request it sees
+            # is scoped to its match.
             assert [m['match_id'] for m in context['live_matches']] == [context['snapshot']['match_id']]
+            assert prompt.startswith('show me the goals from both games\n(For ') and prompt.endswith(' only; the other matches are answered separately.)')
             return QuestionDraft(answer_kind='match', status='answer', text=f"At {context['snapshot']['seq']}.")
     with two_matches(store, agent=Agent()) as run:
         run.send(20)

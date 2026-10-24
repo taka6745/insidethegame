@@ -68,3 +68,12 @@ output "decision" {
     model    = azurerm_cognitive_deployment.model[var.decision.deployment].name
   }
 }
+
+output "narratives_topic" {
+  description = "Live narratives for the user backend, read through its subscription."
+  value       = azurerm_servicebus_topic.narratives.name
+}
+
+output "user_backend_subscription" {
+  value = azurerm_servicebus_subscription.narratives["user-backend"].name
+}
