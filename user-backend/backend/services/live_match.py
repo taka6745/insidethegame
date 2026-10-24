@@ -62,6 +62,9 @@ class LiveMatch:
         for seq, event in enumerate(events, 1):
             self._observe(seq, event)
         self.values = {r.calculation_id: [(0, r.value)] for r in engine.calculations}
+        # Held events the database already has are no longer pending; a gap that remains keeps (or gets) its clock.
+        self.pending = {seq: e for seq, e in self.pending.items() if seq > self.seq}
+        self.gap_since = None if not self.pending else self.gap_since or time.monotonic()
         self._stale = False
         self._loaded += 1
 
@@ -182,6 +185,8 @@ class LiveMatch:
                     for seq, event in accepted:  # Drained events wait again until the retry.
                         if seq > (gap[0] if gap else 0):
                             self.pending.setdefault(seq, event)
+                    if self.pending and self.gap_since is None:
+                        self.gap_since = time.monotonic()  # gap() must never fail: it gates every stream checkpoint
                     raise
                 for seq, event in accepted:
                     self._observe(seq, event)
@@ -196,6 +201,8 @@ class LiveMatch:
         """The missing seq blocking delivery, or None."""
         if not self.pending:
             return None
+        if self.gap_since is None:  # a gap noticed on a failed commit: its clock starts now
+            self.gap_since = now or time.monotonic()
         return {'match_id': self.match_id, 'seq': self.seq + 1, 'pending': len(self.pending), 'state': 'open',
                 'age_seconds': round((now or time.monotonic()) - self.gap_since, 1)}
 

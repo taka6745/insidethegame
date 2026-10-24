@@ -73,6 +73,36 @@ def test_a_run_of_missing_seqs_is_filled_in_one_pass_once_the_first_has_timed_ou
         assert sorted(row['seq'] for row in rows) == [4, 5, 6, 7, 8] and {row['state'] for row in rows} == {'recovered'}
 
 
+def test_a_failed_commit_with_a_gap_never_breaks_the_gap_report_and_the_retry_catches_up(store):
+    """Seen on Azure: a commit that failed while later events were held left the gap without a clock, and every
+    stream checkpoint then failed on it (TypeError), freezing every match. The report must never raise, and the
+    rebuild after the failure drops held events the database already has."""
+    with Running(store) as run:
+        run.send(3)
+        match, repository = run.match(), run.registry.repository
+        original = repository.append
+        calls = {'n': 0}
+
+        def failing(*args, **kwargs):
+            calls['n'] += 1
+            if calls['n'] == 1:
+                original(*args, **kwargs)  # the rows went in...
+                raise RuntimeError('connection lost on commit')  # ...but the commit looked like a failure
+            return original(*args, **kwargs)
+        repository.append = failing
+        try:
+            run.client.portal.call(handle_match_message, envelope(run, 4), ('0', 104), run.registry)
+        except RuntimeError:
+            pass
+        deliver(run, 6)  # held: 5 is missing
+        assert match.gap_since is not None or match.pending
+        gap = run.registry.gaps()  # must not raise, whatever happened before
+        assert gap and gap[0]['seq'] == 5 and gap[0]['age_seconds'] >= 0
+        repository.append = original
+        deliver(run, 5)  # the late event drains the held one; seq 4 is in the database already
+        assert match.seq == 6 and not match.pending and run.registry.gaps() == []
+
+
 def test_without_etl_canonical_events_the_gap_is_skipped_and_survives_restart(store):
     upstream = Upstream()
     with Running(store, upstream=upstream) as run:
