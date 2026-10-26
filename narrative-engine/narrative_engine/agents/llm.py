@@ -175,7 +175,10 @@ class LLMAgents:
         usage = response.usage_details
         tokens = {"prompt_tokens": usage.get("input_token_count") or 0,
                   "completion_tokens": usage.get("output_token_count") or 0,
-                  "total_tokens": usage.get("total_token_count") or 0} if usage else None
+                  "total_tokens": usage.get("total_token_count") or 0,
+                  # prompt tokens served from the API's prompt cache (docs/components/agents.md §5)
+                  "cached_tokens": usage.get("cache_read_input_token_count")
+                  or usage.get("prompt/cached_tokens") or 0} if usage else None
         model = self.models[role].recorded(getattr(response.raw_representation, "model", None))
         return response.text or "", model, tokens
 

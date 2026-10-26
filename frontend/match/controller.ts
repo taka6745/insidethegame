@@ -100,6 +100,8 @@ export class MatchController {
   onRetryPrompt?: (prompt: string) => void;
   /** A session opened (also after waiting for kick-off). */
   onOpened?: () => void;
+  /** A live state reached the page (its clock drives the Skip ahead picture). */
+  onShown?: (snapshot: Snapshot) => void;
   /** The follow chat: reset on every connect, opened with each new session. */
   follows?: { open(session: ChatSession): void; reset(): void };
   onGone: () => void;
@@ -299,7 +301,10 @@ export class MatchController {
     this.schedule(() => {
       this.framePending = false;
       const ready = this.held.release(this.playhead(), this.now());
-      if (ready) this.view.render(this.shown = ready);
+      if (ready) {
+        this.view.render(this.shown = ready);
+        this.onShown?.(ready);
+      }
       this.timers.clearTimeout(this.holdTimer);
       if (this.held.size)
         this.holdTimer = this.timers.setTimeout(() => this.release(), 250);

@@ -644,7 +644,10 @@ class MatchOrchestrator:
                     reasons[i] += found
             return reasons
 
-        out = list(await asyncio.gather(*(write(v) for v in variables_list), return_exceptions=True))
+        # The first bucket's call runs alone so its shared prefix (everything before the audience) is in the API's
+        # prompt cache when the siblings fire together: one call's latency per step for cache hits on the rest.
+        out = list(await asyncio.gather(*(write(v) for v in variables_list[:1]), return_exceptions=True))
+        out += list(await asyncio.gather(*(write(v) for v in variables_list[1:]), return_exceptions=True))
         tokens = [[r.tokens] if isinstance(r, AgentResult) else [] for r in out]
         reasons = await check([(i, r.text) for i, r in enumerate(out) if isinstance(r, AgentResult)])
         for _ in range(policy.repair["author_rewrites"]):

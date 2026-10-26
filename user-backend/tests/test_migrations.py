@@ -39,7 +39,8 @@ def test_orphaned_narrative_tables_are_dropped_once_and_nothing_else(store):
                              '040_cross_match.py', '041_capture_clips.py', '042_shorter_author_planner_options.py',
                              '043_narrative_clips_match.sql', '044_clip_relevance.py',
                              '045_viewer_sessions.sql', '046_clip_lengths.py', '047_model_roles_length_layer.py',
-                             '049_league_sting.py', '050_neutral_prompt_examples.py', '051_brief_bucket.py']
+                             '049_league_sting.py', '050_neutral_prompt_examples.py', '051_brief_bucket.py',
+                             '052_author_prompt_order.py']
     store.initialize()  # Applied once: a restart changes nothing.
     assert tables(store) == found
     with store.connect() as conn:

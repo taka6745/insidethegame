@@ -200,6 +200,9 @@ export interface ReplayClip {
   /** In/out points on the replay playlist timeline; absent without footage. */
   playlist_start?: number;
   playlist_end?: number;
+  /** A reel across matches: this clip's own stream and match, when the replay has no single `playlist`. */
+  playlist?: string | null;
+  other_match?: OtherMatch | null;
   /** The key moments a captured clip shows: its preview card's facts. */
   moments?: ClipMoment[];
 }

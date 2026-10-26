@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { DemoApi, DemoControls, demoMatches, mainToOpen, showLiveFrom, showSkip } from "../match/demo.ts";
+import { DemoApi, DemoControls, SkipOverlay, demoMatches, labelSeconds, mainToOpen, showLiveFrom, showSkip, withRunClocks }
+  from "../match/demo.ts";
 import { AudienceView } from "../match/audience-view.ts";
 import { stub } from "./support.ts";
 
@@ -250,7 +251,7 @@ test("a demo control the browser cannot reach shows a plain sentence, never the 
   assert.deepEqual(notices, ["The demo could not be changed. Try again shortly.", "Pick another start point."]);
 });
 
-test("Skip ahead shows in a playing demo's match, posts the target and says the story catches up", async () => {
+test("Skip ahead shows in a playing demo's match, posts the target and says where every match now is", async () => {
   const { nodes, document } = doc();
   const targets = nodes.set("match-skip-targets", new El()).get("match-skip-targets")!;
   targets.querySelectorAll = () => targets.children;
@@ -263,13 +264,107 @@ test("Skip ahead shows in a playing demo's match, posts the target and says the 
     }
     return { ok: true, status: 200, json: async () => state };
   });
-  await showSkip(document, "m1", api);
+  await showSkip(document, "m1", api, { clock: () => 2700 });
   assert.equal(nodes.get("match-skip")!.hidden, false);
   assert.deepEqual(targets.children.map((button) => button.textContent), ["+20′"]);  // one button per target
   targets.children[0]!.listeners.click!();
   await new Promise((done) => setTimeout(done, 0));
   assert.deepEqual(posted, [{ target: "20" }]);
-  assert.match(nodes.get("match-skip-note")!.textContent, /Skipped 20 minutes/);
+  assert.equal(nodes.get("match-skip-note")!.textContent, "Skipped to 65′ in every demo match.");
   await showSkip(document, "other", api);  // not one of the demo's matches: no control
   assert.equal(nodes.get("match-skip")!.hidden, true);
+});
+
+/** Timers run by hand: `fire()` runs the timeout, `tick()` one interval. */
+function timers() {
+  let due: (() => void) | null = null, interval: (() => void) | null = null;
+  return {
+    setTimeout: (fn: () => void) => { due = fn; return 1; }, clearTimeout: () => { due = null; },
+    setInterval: (fn: () => void) => { interval = fn; return 2; }, clearInterval: () => { interval = null; },
+    fire: () => due?.(), tick: () => interval?.(), get armed() { return due !== null; }, get ticking() { return interval !== null; },
+  };
+}
+
+test("the skip overlay runs the clock from the click to the target, blocking everything, and dismisses near it", async () => {
+  const { nodes, document } = doc();
+  const clock = timers();
+  const overlay = new SkipOverlay(document, clock);
+  const frozen: boolean[] = [];
+  overlay.onFreeze = (on) => frozen.push(on);
+  const shown = overlay.show(2700, 1200, "+20′");  // 45:00 → 65:00, the label's own guess
+  assert.deepEqual([nodes.get("match-skip-overlay")!.hidden, frozen, overlay.up], [false, [true], true]);
+  assert.equal(nodes.get("match-skip-title")!.textContent, "Skipping ahead to 65′");
+  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, nodes.get("match-skip-range")!.textContent], ["45:00", "45:00 → 65:00"]);
+  overlay.retarget(1800);  // the operator rounded up to 75′
+  assert.equal(nodes.get("match-skip-title")!.textContent, "Skipping ahead to 75′");
+  overlay.clock(3000);
+  clock.tick();
+  assert.equal(nodes.get("match-skip-clock")!.textContent, "45:15");  // runs towards the latest clock, never a jump
+  overlay.clock(2900);  // an older state never runs the clock back
+  overlay.clock(4000);
+  for (let i = 0; i < 500 && overlay.shown < 4000; i += 1) clock.tick();
+  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, overlay.up], ["66:40", true]);  // 4000 is not within 30 s of 4500
+  overlay.clock(4470);
+  for (let i = 0; i < 500 && overlay.up; i += 1) clock.tick();
+  assert.equal(await shown, "reached");
+  assert.deepEqual([nodes.get("match-skip-overlay")!.hidden, frozen, clock.armed, clock.ticking], [true, [true, false], false, false]);
+});
+
+test("the skip overlay never traps a viewer: it times out with a note, and a failed request takes it down", async () => {
+  const { nodes, document } = doc();
+  const clock = timers();
+  const overlay = new SkipOverlay(document, clock);
+  const shown = overlay.show(0, null, "to half-time");  // a label that says no minutes: no target until the response
+  assert.deepEqual([nodes.get("match-skip-title")!.textContent, nodes.get("match-skip-range")!.textContent, clock.armed],
+    ["Skipping ahead to half-time…", "from 0:00", true]);
+  clock.fire();
+  assert.equal(await shown, "timeout");
+  assert.equal(nodes.get("match-skip-overlay")!.hidden, true);
+  const frozen: boolean[] = [];
+  overlay.onFreeze = (on) => frozen.push(on);
+  void overlay.show(600, 600, "+10′");
+  overlay.fail();
+  assert.deepEqual([overlay.up, nodes.get("match-skip-overlay")!.hidden, frozen], [false, true, [true, false]]);
+  // Through Skip ahead: the response retargets the picture; a timeout leaves the catching-up note, an error the reason.
+  const targets = nodes.set("match-skip-targets", new El()).get("match-skip-targets")!;
+  targets.querySelectorAll = () => targets.children;
+  let fail = false;
+  const api = new DemoApi(async (url) => url.endsWith("skip")
+    ? fail ? { ok: false, status: 409, json: async () => ({ detail: "The demo is already past 65′." }) }
+      : { ok: true, status: 200, json: async () => ({ skipped_seconds: 1200, target: { label: "+20′" } }) }
+    : { ok: true, status: 200, json: async () => ({ points: [], live: true, runs: [{ match_id: "m1" }], skips: [{ id: "20", label: "+20′" }] }) });
+  await showSkip(document, "m1", api, { overlay, clock: () => 2700 });
+  targets.children[0]!.listeners.click!();
+  await new Promise((done) => setTimeout(done, 0));
+  assert.deepEqual([overlay.up, overlay.target, nodes.get("match-skip-title")!.textContent], [true, 3900, "Skipping ahead to 65′"]);
+  clock.fire();
+  await new Promise((done) => setTimeout(done, 0));
+  assert.equal(nodes.get("match-skip-note")!.textContent, "Still catching up; the clock will settle shortly.");
+  fail = true;
+  targets.children[0]!.listeners.click!();
+  await new Promise((done) => setTimeout(done, 0));
+  assert.deepEqual([overlay.up, nodes.get("match-skip-note")!.textContent], [false, "The demo is already past 65′."]);
+});
+
+test("a target's label guesses the seconds ahead until the operator answers", () => {
+  assert.equal(labelSeconds("+20′", 2700), 1200);  // relative
+  assert.equal(labelSeconds("65′", 2700), 1200);  // a point on the clock
+  assert.equal(labelSeconds("65′", 4000), null);  // already past it
+  assert.equal(labelSeconds("Half-time", 0), null);
+});
+
+test("the picker shows a live demo match's clock from its feed run, not the lagging backend watermark", () => {
+  const now = Date.parse("2026-10-26T15:10:00Z");
+  const matches = [{ match_id: "a", status: "live", clock_seconds: 100 }, { match_id: "b", status: "live", clock_seconds: 200 },
+    { match_id: "c", status: "scheduled", clock_seconds: null }, { match_id: "d", status: "live", clock_seconds: 300 }];
+  const runs = [{ match_id: "a", kickoff: "2026-10-26T15:00:00Z" }, { match_id: "c", kickoff: "2026-10-26T15:20:00Z" },
+    { match_id: "d", kickoff: "not a date" }];
+  assert.deepEqual(withRunClocks(matches, runs, now).map((m) => m.clock_seconds), [600, 200, null, 300]);
+  assert.deepEqual(withRunClocks([{ match_id: "c", status: "live", clock_seconds: 5 }], runs, now)[0]!.clock_seconds, 0);  // clamped
+  const { document } = doc();
+  const controls = new DemoControls(document, stub<DemoApi>({}));
+  controls.render({ live: true, points: [], runs: [{ match_id: "a", kickoff: "2026-10-26T15:00:00Z" }] });
+  assert.deepEqual(controls.feedRuns, [{ match_id: "a", kickoff: "2026-10-26T15:00:00Z" }]);
+  controls.render({ live: false, points: [], runs: [{ match_id: "a" }] });
+  assert.deepEqual(controls.feedRuns, []);
 });

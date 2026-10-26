@@ -13,7 +13,7 @@ This hackathon application has a runnable user backend and frontend, plus a simu
 - ETL owns standard stat calculations; event history, stats and the stat catalogue live in its Azure SQL. The backend accesses them through ETL GraphQL, never direct DB connections. Reuse existing stats before generating custom calculations; ordinary cards must not fetch raw history or recalculate standard stats.
 - User-specific code/calculations belong to `user-backend/` (bounded rule DSL; an isolated executor is not built), not ETL.
 - Test changed behaviour and inspect actual outputs. Design diagrams are not tested infrastructure.
-- Label synthetic data and preserve provenance/licences. Do not execute archived competitor code.
+- Label synthetic data and preserve provenance/licences.
 - `legacy/` preserves research, scraping scripts, simulator code, earlier docs and outputs. It is inactive; do not revive its automation or overwrite it during application work.
 - Preserve ignored `.local/` runtime environments and assets; do not upload them.
 

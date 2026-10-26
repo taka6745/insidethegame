@@ -100,6 +100,17 @@ button:focus-visible, a:focus-visible, select:focus-visible, textarea:focus-visi
 .league-nav span {
   opacity: .6;
 }
+.league-nav span[aria-disabled]::after {
+  content: "demo";
+  margin-left: 5px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+}
 .league-nav a.active::after {
   content: "";
   height: 3px;
@@ -1160,6 +1171,43 @@ footer a {
   color: var(--muted, #8ea3b8);
 }
 .demo-skip-note:empty { display: none; }
+/* Skip ahead: the match clock running to the target, over everything, until the pipeline has caught up. */
+.skip-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 16px;
+  text-align: center;
+  background: rgba(16, 11, 20, 0.94);
+  cursor: progress;
+}
+.skip-overlay[hidden] { display: none; }
+.skip-overlay-title {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #8ea3b8);
+}
+.skip-overlay-clock {
+  margin: 0;
+  font-size: clamp(64px, 18vw, 140px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--mint);
+}
+.skip-overlay-range,
+.skip-overlay-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted, #8ea3b8);
+}
 /* Demo start: the pipeline, each stage lit by a real readiness check. */
 .demo-progress {
   margin: 0 0 18px;

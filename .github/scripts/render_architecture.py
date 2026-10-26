@@ -11,7 +11,7 @@ PALE, LINE, GREY = '#f4f7fb', '#d8e3ed', '#82909e'
 class Diagram:
     def __init__(self, path, title, subtitle, width=1320, height=750, legend='PLANNED · Solid: data / calls · Dashed: messages / Phase 2'):
         self.path, self.w, self.h, self.legend = path, width, height, legend
-        kind = 'Planned design, not deployed infrastructure' if legend.startswith('PLANNED') else 'What exists now, with its status'
+        kind = 'Planned design, not deployed infrastructure' if (legend or '').startswith('PLANNED') else 'What exists now, with its status'
         self.parts = [f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {width} {height}" role="img" aria-labelledby="title desc">',
             f'<title id="title">{escape(title)}</title><desc id="desc">{escape(subtitle)}. {kind}.</desc>',
             '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="#5d7185"/></marker></defs>',
@@ -43,12 +43,12 @@ class Diagram:
                 self.rect(x+5,y,40,50,'white',BLUE)
                 for yy in (14,25,36):
                     self.parts.append(f'<path d="M{x+13},{y+yy} h24" stroke="{BLUE}" stroke-width="2"/>')
-    def card(self,x,y,w,h,title,notes=(),icon=None,color=BLUE,dash=False,status=None):
+    def card(self,x,y,w,h,title,notes=(),icon=None,color=BLUE,dash=False,status=None,size=19):
         self.rect(x,y,w,h,'#f7f9fc' if dash else 'white',GREY if dash else LINE,dash)
         if icon:self.icon(icon,x+(w-48)/2,y+18,48)
         ty=y+(92 if icon else 34)
-        self.text(title,x+w/2,ty,19,GREY if dash else color,True,'middle')
-        for i,s in enumerate(notes):self.text(s,x+w/2,ty+27+i*23,15,MUTED,anchor='middle')
+        self.text(title,x+w/2,ty,size,GREY if dash else color,True,'middle')
+        for i,s in enumerate(notes):self.text(s,x+w/2,ty+27+i*23,size-4,MUTED,anchor='middle')
         # Status badge: green = deployed to Azure dev, blue = tested locally only.
         if status:self.text(status,x+w/2,y+h-14,12,GREEN if status.startswith('Deployed') else BLUE,True,'middle')
     def arrow(self,points,label=None,lx=None,ly=None,dash=False,both=False):
@@ -67,8 +67,9 @@ class Diagram:
         self.text(s,cx,cy+4,12,'#9a6500',True,'middle')
     def note(self,s,y,color=MUTED):self.text(s,36,y,16,color)
     def save(self):
-        self.parts.append(f'<path d="M36,{self.h-50} H{self.w-36}" stroke="{LINE}"/>')
-        self.text(self.legend,36,self.h-25,12,MUTED)
+        if self.legend:  # None: no divider or legend line (the overview)
+            self.parts.append(f'<path d="M36,{self.h-50} H{self.w-36}" stroke="{LINE}"/>')
+            self.text(self.legend,36,self.h-25,12,MUTED)
         self.parts.append('</svg>')
         p=ROOT/self.path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('\n'.join(self.parts)+'\n')
 
@@ -120,6 +121,25 @@ d.arrow([(580,955),(640,955)])
 d.card(1140,875,504,160,'Clips and cross-game',['Decision-1 picks clip moments · preview cards','Follow or ask about another live match'],None,PURPLE,status='Deployed 23 Oct · checked on Azure')
 d.text('Every run is its own matchId and is purged per match. Nothing reaches a viewer before the feed has streamed it; a seed holds nothing past its start point.',36,1090,16,INK,True)
 d.text('Locally: Microsoft emulators, SQL Server + DAB, a Python stand-in for Stream Analytics and a local model. Azure: ./dev azure up (Foundry gpt-6.1-sol + Microsoft-Decision-1, spend guard).',36,1118,15,MUTED)
+d.save()
+
+# README overview: the data flow in one picture, no status or dates (the detailed one above carries those).
+d=Diagram('architecture-overview.svg','How the data flows','A simulated provider streams events and video; ETL computes the facts; one narrative pass per audience; a personal companion per viewer',1300,580,None)
+X=[30,290,550,810,1070];W=215;Y1,Y2,H=110,370,160
+d.card(X[0],Y1,W,H,'Match feed',['Simulated provider','Opta-style events + HLS'],'python',size=20)
+d.card(X[1],Y1,W,H,'Event Hubs',['match-events','partitioned by matchId'],'events',size=20)
+d.card(X[2],Y1,W,H,'Stream Analytics',['Events → key events,','minute stats'],'stream',size=20)
+d.card(X[3],Y1,W,H,'Azure SQL + DAB',['Facts, SPADL actions,','trends · GraphQL'],'sql',size=20)
+d.card(X[4],Y1,W,H,'Narrative engine',['Foundry gpt + Decision-1','Agent Framework · Cosmos DB'],'foundry',PURPLE,size=20)
+d.card(X[4],Y2,W,H,'Service Bus',['Narratives · clips','per audience bucket'],'bus',size=20)
+d.card(X[2],Y2,475,H,'User backend',['Question, replay and follow agents · custom-stat DSL','Postgres · follows · cross-game'],'containers',size=20)
+d.card(X[0],Y2,475,H,'Frontend + Cloudflare edge',['Viewer · chat · follow view · clips','Container Apps behind a Worker'],'screen',GREEN,size=20)
+for a,b in zip(X,X[1:]):d.arrow([(a+W,Y1+H/2),(b,Y1+H/2)])
+d.arrow([(X[4]+W/2,Y1+H),(X[4]+W/2,Y2)],'Narratives · clips',X[4]+W/2,Y1+H+56,dash=True)
+d.arrow([(X[4],Y2+H/2),(X[2]+475,Y2+H/2)],dash=True)
+d.arrow([(X[2]+200,Y2),(X[2]+200,Y1+H+50),(X[3]+W/2,Y1+H+50),(X[3]+W/2,Y1+H)],'Stats · GraphQL',X[3]-20,Y1+H+44)
+d.arrow([(X[2],Y2+H/2),(X[0]+475,Y2+H/2)],'REST + WebSocket',X[2]-22,Y2+H/2-14,both=True)
+d.arrow([(X[0]+W/2,Y1+H),(X[0]+W/2,Y2)],'HLS video',X[0]+W/2,Y1+H+56)
 d.save()
 
 # The feed simulates an external data and broadcast provider, and owns the demo runs (start points, held runs).
@@ -323,7 +343,7 @@ d.rect(36,693,1248,84,'#eef9f0','#69ad7d')
 d.text('DEPLOYED 23 OCT · unit + headless tests · checked on Azure',58,725,13,GREEN,True)
 d.text('Start demo + start progress · main game · follow view · clip preview cards · sting + slow motion · other-match marking',58,752,17,INK)
 d.save()
-print('Rendered overview, five service SVGs and custom-calculation detail.')
+print('Rendered the README overview, the detailed overview, five service SVGs and custom-calculation detail.')
 
 # Explicit ownership: the backend never authors or reframes a shared narrative.
 d=Diagram('user-backend/docs/narrative-framing.svg','Bucketed before it reaches the backend','Backend stores audience definitions and exposes an API. The narrative engine frames; the backend routes supplied versions without model calls.',1440,750)

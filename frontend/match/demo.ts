@@ -1,6 +1,8 @@
 import { node } from "../shared/dom.ts";
 import { DemoProgress, follow, type DemoStatus } from "./demo-progress.ts";
 import { friendly, type Fetcher } from "./api.ts";
+import { clock, isLive } from "./format.ts";
+import type { TimerId, Timers } from "./types.ts";
 
 /** Our own sentence for the viewer (status-tagged, so `friendly()` shows it; any other error stays hidden). */
 const said = (message: string, status = 0) => Object.assign(new Error(message), { status });
@@ -11,7 +13,8 @@ export interface DemoPoint { id: string; label: string; ready: boolean }
  * main_match_id: the live demo's main game, which the viewer opens by default. */
 export interface DemoState {
   points: DemoPoint[]; live: boolean; live_from?: string | null; main_match_id?: string | null;
-  runs?: { match_id: string }[];
+  /** The feed's runs: `kickoff` moves on a skip, so (now − kickoff) is the true clock while the backend catches up. */
+  runs?: DemoRun[];
   /** Seed-recording runs: they stop at their hold point, so viewers are never shown them. */
   recording?: { match_id: string }[];
   /** Start and cancel answer at once and run in turn: what is still queued, and how the last one ended. */
@@ -19,6 +22,7 @@ export interface DemoState {
   /** Skip ahead targets, offered while a demo plays (demo fast-forward). */
   skips?: { id: string; label: string }[];
 }
+export interface DemoRun { match_id: string; kickoff?: string }
 /** A skip moves every demo run on by the same whole minutes; matchIds, follows and sessions carry on. */
 export interface SkipResult { skipped_seconds: number; target: { label: string } }
 interface DemoResult {
@@ -81,6 +85,7 @@ export class DemoControls {
   main: string | null = null;
   /** The live demo's matches, and the seed-recording runs to hide. */
   runs = new Set<string>();
+  feedRuns: DemoRun[] = [];
   recording = new Set<string>();
   started = false;
   progress?: DemoProgress;
@@ -107,7 +112,8 @@ export class DemoControls {
   render(state: DemoState) {
     this.live = state.live;
     this.main = state.live ? state.main_match_id ?? null : null;
-    this.runs = new Set(state.live ? (state.runs ?? []).map((run) => run.match_id) : []);
+    this.feedRuns = state.live ? state.runs ?? [] : [];
+    this.runs = new Set(this.feedRuns.map((run) => run.match_id));
     this.recording = new Set((state.recording ?? []).map((run) => run.match_id));
     const select = this.get<HTMLSelectElement>("demo-point");
     const chosen = select.value;
@@ -225,9 +231,130 @@ export function mainToOpen(controls: Pick<DemoControls, "live" | "main" | "start
   return listed.some((match) => match.match_id === main) ? main : null;
 }
 
-/** In a demo match: Skip ahead to one of the operator's targets. The video catches up to the new live edge by itself
- * (liveCatchUp); the story fills in as the pipeline works through the skipped minutes. */
-export async function showSkip(document: Document, matchId: string, api = new DemoApi()) {
+/** The picker's clocks from the feed's runs ((now − kickoff), the true clock after a skip) while the backend's
+ * watermark catches up; a match without a run keeps the backend's clock. */
+export function withRunClocks<T extends { match_id: string; status?: string; clock_seconds?: number | null }>(
+  matches: readonly T[], runs: readonly DemoRun[], now = Date.now()): T[] {
+  const kickoffs = new Map(runs.map((run) => [run.match_id, Date.parse(run.kickoff ?? "")]));
+  return matches.map((match) => {
+    const at = kickoffs.get(match.match_id);
+    return at === undefined || !Number.isFinite(at) || !isLive(match.status) ? match
+      : { ...match, clock_seconds: Math.max(0, Math.floor((now - at) / 1000)) };
+  });
+}
+
+export type SkipOutcome = "reached" | "timeout";
+export interface SkipTimers extends Timers {
+  setInterval(callback: () => void, delay: number): TimerId;
+  clearInterval(id: TimerId): void;
+}
+/** Dismiss this close to the target: the last snapshots arrive as the pipeline settles. */
+const SKIP_NEAR_SECONDS = 30;
+const SKIP_MIN_TIMEOUT_MS = 90_000;
+
+/** Skip ahead: a blocking picture of the match clock running from the clock at the click to the skip's target,
+ * driven by the clocks of the states reaching the page. Everything else is frozen (`onFreeze`) while it is up;
+ * it dismisses near the target, or after a timeout so no viewer is ever stuck behind it. */
+export class SkipOverlay {
+  document: Document;
+  timers: SkipTimers;
+  from = 0;
+  target: number | null = null;
+  latest = 0;
+  shown = 0;
+  onFreeze: (on: boolean) => void = () => {};
+  private settle: ((outcome: SkipOutcome) => void) | null = null;
+  private timeout: TimerId = null;
+  private ticker: TimerId = null;
+  constructor(document: Document, timers: SkipTimers = globalThis) {
+    this.document = document;
+    this.timers = timers;
+  }
+  get up() { return this.settle !== null; }
+  private get<T extends HTMLElement = HTMLElement>(id: string) { return this.document.getElementById(id) as T | null; }
+  private text(id: string, value: string) {
+    const element = this.get(id);
+    if (element) element.textContent = value;
+  }
+  /** Show at once, before the operator answers: `seconds` is the target's own guess (null when its label says
+   * nothing); `retarget` corrects it from the response. Resolves when dismissed. */
+  show(from: number, seconds: number | null, label: string): Promise<SkipOutcome> {
+    this.fail();
+    this.from = this.latest = this.shown = from;
+    this.target = null;
+    this.text("match-skip-title", `Skipping ahead ${label}…`);
+    if (seconds !== null) this.retarget(seconds);
+    else this.arm(SKIP_MIN_TIMEOUT_MS);
+    this.render();
+    const root = this.get("match-skip-overlay");
+    if (root) root.hidden = false;
+    this.onFreeze(true);
+    this.ticker = this.timers.setInterval(() => this.tick(), 100);
+    return new Promise((resolve) => { this.settle = resolve; });
+  }
+  retarget(seconds: number) {
+    this.target = this.from + seconds;
+    this.text("match-skip-title", `Skipping ahead to ${Math.round(this.target / 60)}′`);
+    this.arm(Math.max(SKIP_MIN_TIMEOUT_MS, seconds * 100));
+    this.render();
+  }
+  private arm(ms: number) {
+    this.timers.clearTimeout(this.timeout);
+    this.timeout = this.timers.setTimeout(() => this.finish("timeout"), ms);
+  }
+  /** A state's clock reached the page. */
+  clock(seconds: number | null | undefined) {
+    if (!this.up || !Number.isFinite(Number(seconds))) return;
+    this.latest = Math.max(this.latest, Number(seconds));
+  }
+  /** Run the readout towards the latest clock, fast when far behind; dismiss once it is near the target. */
+  tick() {
+    if (!this.up) return;
+    if (this.shown < this.latest)
+      this.shown = Math.min(this.latest, this.shown + Math.max(1, Math.ceil((this.latest - this.shown) / 20)));
+    this.render();
+    if (this.target !== null && this.shown >= this.target - SKIP_NEAR_SECONDS) this.finish("reached");
+  }
+  private render() {
+    this.text("match-skip-clock", clock(this.shown));
+    this.text("match-skip-range", this.target === null ? `from ${clock(this.from)}`
+      : `${clock(this.from)} → ${clock(this.target)}`);
+  }
+  /** The request failed: take the picture down without a result. */
+  fail() {
+    if (this.up) this.finish(null);
+  }
+  private finish(outcome: SkipOutcome | null) {
+    const settle = this.settle;
+    this.settle = null;
+    this.timers.clearTimeout(this.timeout);
+    this.timers.clearInterval(this.ticker);
+    const root = this.get("match-skip-overlay");
+    if (root) root.hidden = true;
+    this.onFreeze(false);
+    if (outcome && settle) settle(outcome);
+  }
+}
+
+/** The seconds a target's label promises: "+20′" is relative, "65′" a point on the clock; else unknown. */
+export function labelSeconds(label: string, from: number): number | null {
+  const match = /(\+?)\s*(\d+)/.exec(label);
+  if (!match) return null;
+  const seconds = Number(match[2]) * 60;
+  const ahead = match[1] ? seconds : seconds - from;
+  return ahead > 0 ? ahead : null;
+}
+
+export interface SkipOptions {
+  overlay?: SkipOverlay;
+  /** The match clock shown now (null before kick-off). */
+  clock?: () => number | null | undefined;
+}
+
+/** In a demo match: Skip ahead to one of the operator's targets. The overlay blocks the page while the clock runs
+ * from the clock at the click to the target; the video catches up to the new live edge by itself (liveCatchUp). */
+export async function showSkip(document: Document, matchId: string, api = new DemoApi(),
+  { overlay, clock: shownClock = () => null }: SkipOptions = {}) {
   const box = document.getElementById("match-skip");
   const targets = document.getElementById("match-skip-targets");
   const note = document.getElementById("match-skip-note");
@@ -238,10 +365,16 @@ export async function showSkip(document: Document, matchId: string, api = new De
     busy = true;
     for (const button of targets.querySelectorAll("button")) button.disabled = true;
     note.textContent = `Skipping ahead ${label}…`;
+    const from = Math.max(0, Number(shownClock()) || 0);
+    const picture = overlay?.show(from, labelSeconds(label, from), label);
     try {
       const result = await api.skip(id);
-      note.textContent = `Skipped ${Math.round(result.skipped_seconds / 60)} minutes in every demo match; the story catches up over the next minutes.`;
+      overlay?.retarget(result.skipped_seconds);
+      const outcome = await (picture ?? "reached");
+      note.textContent = outcome === "timeout" ? "Still catching up; the clock will settle shortly."
+        : `Skipped to ${Math.round((from + result.skipped_seconds) / 60)}′ in every demo match.`;
     } catch (error) {
+      overlay?.fail();
       note.textContent = friendly(error, "Couldn't skip ahead. Try again shortly.");
     } finally {
       busy = false;

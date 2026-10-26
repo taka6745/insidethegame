@@ -56,8 +56,9 @@ pick.addEventListener('change', showBucket); showBucket();
 
 
 def _meta(model, prompt, tokens, extra=""):
-    total = (tokens or {}).get("total_tokens")
-    bits = [b for b in (model, prompt, f"{total} tokens" if total else None, extra) if b]
+    total, cached = (tokens or {}).get("total_tokens"), (tokens or {}).get("cached_tokens")
+    bits = [b for b in (model, prompt, f"{total} tokens" if total else None,
+                        f"{cached} cached" if cached else None, extra) if b]
     return f'<div class="meta">{escape(" · ".join(bits))}</div>'
 
 
@@ -101,6 +102,7 @@ def render(match_id, blocks, narratives):
 
     minutes = sum(1 for b in blocks if b.level == MINUTE)
     tokens = sum((x.tokens or {}).get("total_tokens", 0) for x in [*blocks, *narratives])
+    cached = sum((x.tokens or {}).get("cached_tokens") or 0 for x in [*blocks, *narratives])
     present = sorted({n.userType for n in narratives}, key=bucket_order_id)
     options = '<option value="all">all buckets</option>' + "".join(
         f'<option{" selected" if t == "neutral:casual" else ""}>{t}</option>' for t in present)
@@ -111,7 +113,7 @@ def render(match_id, blocks, narratives):
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Engine report {escape(match_id)}</title>
 <style>{STYLE}</style></head><body><header><h1>{escape(match_id)} <span class="kind">synthetic match</span></h1>
 <div class="stats">{minutes} minute summaries · {len(blocks) - minutes} compressions · {len(steps)} narrative steps ·
-{len(narratives)} narratives · {tokens:,} tokens</div>
+{len(narratives)} narratives · {tokens:,} tokens ({cached:,} cached)</div>
 <div class="controls">{checks}<label>bucket <select id="bucket">{options}</select></label></div></header>
 <main>{''.join(cards)}</main><script>{SCRIPT}</script></body></html>"""
 

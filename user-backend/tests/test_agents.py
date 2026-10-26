@@ -412,3 +412,12 @@ def test_reference_guard_respects_word_boundaries_and_unicode_antecedent():
     assert unresolved_player("Count his headers", {**CONTEXT, "conversation": [{"role": "user", "content": "Mbappé"}]}) is None
     context = {**CONTEXT, "players": CONTEXT['players'] + [{"id": "ashworth", "name": "Ashworth"}]}
     assert unresolved_player("Mbappé and Ashworth: count his headers", context).status == "clarification"
+
+
+def test_question_input_puts_stable_match_keys_first_and_the_question_last():
+    from backend.agents.question import cache_ordered
+    context = {"snapshot": {"t": 1}, "history": [], "teams": [], "trends": [], "players": [], "profile": {},
+               "data_reference": {}, "request_kind": "match"}
+    assert list(cache_ordered("who scored?", context)) == ["teams", "players", "data_reference", "profile", "trends",
+                                                          "request_kind", "history", "snapshot", "question"]
+    assert cache_ordered("who scored?", context)["question"] == "who scored?"

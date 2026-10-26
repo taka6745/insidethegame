@@ -90,6 +90,53 @@ def test_two_matches_never_cite_each_other(store):
         assert run.client.post(f'/lab/matches/{MATCH}/calculations', json={'rule': rule}).status_code == 422
 
 
+class Goals:
+    """Routes 'all games' to every match; each part replays that match's goals, or says it has none yet."""
+    mode = 'fixture'
+
+    async def answer(self, prompt, context, tools):
+        if not context.get('single_match'):
+            return QuestionDraft(answer_kind='match', status='answer', text='From each match:',
+                                 per_match=[m['match_id'] for m in context['live_matches']])
+        found = await tools.replay.find_events(action_types=['shot', 'shot_penalty', 'shot_freekick'], results=['success'])
+        items = [{'source_id': row['id'], 'kind': 'event', 'caption': 'Goal'} for row in found['listed']]
+        return QuestionDraft(answer_kind='replay', status='answer', text='Goals.' if items else 'No goals yet.',
+                             replay_items=items)
+
+
+def test_goals_across_all_games_are_one_reel_and_a_goalless_game_is_one_line(store):
+    from backend.adapters.hls_media import HlsMedia
+
+    class Media(HlsMedia):
+        async def published_edge(self, match_id):
+            return 10_000.0  # both feeds published past every clip
+    upstream = Upstream()
+    upstream.add(MATCH, timed(), video=True)
+    upstream.add(OTHER, timed(other_source()), video=True)
+    with Running(store, agent=Goals(), upstream=upstream, matches=(MATCH, OTHER), media=Media('http://feed/hls')) as run:
+        run.send(30, MATCH)
+        run.send(3, OTHER)  # before its first goal
+        token = start(run.client)['session_token']
+        reply = ask(run.client, token, 'show me all the goals across all games')
+        assert reply['parts'] == [] and reply['answer_kind'] == 'replay' and reply['other_match'] is None
+        clips = reply['replay']['clips']
+        assert clips and all(c['playlist'] == f'/media/hls/{MATCH}/live.m3u8' and c['other_match']['id'] == MATCH
+                             and c['playlist_start'] == c['start'] for c in clips)
+        assert reply['replay']['playlist'] is None and reply['replay']['total_items'] == len(clips)
+        assert reply['replay']['page_count'] == 1 and reply['replay']['seconds'] > 0
+        assert reply['text'] == (f"From each match: North FC v South United: No goals yet. "
+                                 f"{len(clips)} {'clip' if len(clips) == 1 else 'clips'} from Riverton Rovers v Madrid.")
+        assert reply['follow_offer'] is None and reply['usage'] is not None
+        # Both games scoring: one reel over two streams, each clip marked with its game.
+        run.send(27, OTHER)
+        reply = ask(run.client, token, 'show me all the goals across all games')
+        playlists = [c['playlist'] for c in reply['replay']['clips']]
+        assert set(playlists) == {f'/media/hls/{MATCH}/live.m3u8', f'/media/hls/{OTHER}/live.m3u8'}
+        assert playlists == sorted(playlists, key=playlists.index)  # grouped per game, in part order
+        assert {c['other_match']['teams'][0]['name'] for c in reply['replay']['clips']} == {'Riverton Rovers', 'North FC'}
+        assert reply['parts'] == [] and 'No goals' not in reply['text'] and 'from North FC v South United' in reply['text']
+
+
 def test_one_profile_in_two_tabs_on_two_matches(store):
     with Running(store, upstream=two_matches(), matches=(MATCH, OTHER)) as run:
         run.send(3, MATCH)

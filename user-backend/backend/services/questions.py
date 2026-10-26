@@ -115,7 +115,7 @@ class QuestionService:
                     # A request about several live matches: one answer from each, at each one's own position.
                     # One match at a time: three agent runs at once exceeded the model deployment's token rate
                     # (429 on Azure). A part that fails leaves the others standing, marked unavailable.
-                    parts = []
+                    parts, missing = [], []
                     for part_id in draft.per_match:
                         part_match, part_info = here, None
                         if part_id != here.match_id:
@@ -136,13 +136,25 @@ class QuestionService:
                                     'snapshot': part_payload.snapshot.model_dump(mode='json'), 'mode': self.agent.mode,
                                     'offers': [], 'evidence': [],
                                     'other_match': header(part_match, part_info) if part_info else None}
-                        parts.append({**part, 'usage': None})  # the whole answer's usage is receipted once, below
+                        label = ' v '.join(t['name'] for t in part_payload.teams)
+                        if part['answer_kind'] == 'replay' and not (part.get('replay') or {}).get('clips'):
+                            # A match with nothing to show is one line of the header, never an empty card.
+                            missing.append(f"{label}: {part['text']}" if part['status'] == 'answer'
+                                           else f'Nothing to show yet in {label}.')
+                            continue
+                        mark = part['other_match'] or header(here, await self.cross.info_of(here)
+                                                             or {'teams': part_payload.teams})
+                        # The whole answer's usage is receipted once, below.
+                        parts.append(({**part, 'usage': None}, label, mark))
                     # The parts carry their own match headers; the answer as a whole belongs to no one match.
-                    reply = {**reply, 'parts': parts, 'other_match': None,
-                             'usage': usage_dict(usage, time.perf_counter() - started)}
+                    reply = {**reply, 'parts': [part for part, _, _ in parts], 'other_match': None,
+                             'usage': usage_dict(usage, time.perf_counter() - started),
+                             'text': ' '.join([reply['text'], *missing])}
+                    if parts and all(part['answer_kind'] == 'replay' for part, _, _ in parts):
+                        reply = {**reply, **_merged_replay(parts, reply['text'])}
                     offers = []
             # Outside the answer's timeout: a slow offer check (its own timeout) never fails the answer.
-            reply['follow_offer'] = None if reply.get('parts') else await self._follow_offer(
+            reply['follow_offer'] = None if draft.per_match and self.cross else await self._follow_offer(
                 prompt, draft, offers, reply['other_match'])
             async with self._locks(match_id), here.guard():
                 # The match cannot be purged between this check and the database commit.
@@ -275,7 +287,7 @@ class QuestionService:
         turn = next((t for t in row['turns'] if t['id'] == turn_id and t['reply']), None)
         saved = turn and turn['reply'].get('replay')
         config = await self.config.get('replay-timing')
-        if not saved or not 0 <= page < saved.get('page_count', config.max_items):
+        if not saved or not saved.get('items') or not 0 <= page < saved.get('page_count', config.max_items):
             raise RuleError('replay_not_found', 'That replay page is not available.', 404)
         # A replay from another match's answer re-cuts against that match (404 once it is cleared).
         match = self.registry.get((turn['reply'].get('other_match') or {}).get('id') or match_id)
@@ -316,6 +328,20 @@ class QuestionService:
             async with here.guard():
                 await asyncio.to_thread(self.repository.tracked, token, offer_id, calculation['id'])
             return {'offer_id': str(offer_id), 'calculation': calculation, 'tracked': True}
+
+
+def _merged_replay(parts, text):
+    """Every match's replay as one reel: each clip stamped with its match's stream (`playlist`) and header
+    (`other_match`), so the stage can switch streams between clips. One page; the text counts clips per game."""
+    clips = [{**clip, 'playlist': part['replay']['playlist'], 'other_match': mark}
+             for part, _, mark in parts for clip in part['replay']['clips']]
+    counts = ', '.join(f"{len(part['replay']['clips'])} {'clip' if len(part['replay']['clips']) == 1 else 'clips'} "
+                       f"from {label}" for part, label, _ in parts)
+    first = parts[0][0]['replay']
+    replay = {'page': 0, 'page_size': len(clips), 'total_items': len(clips), 'page_count': 1, 'truncated': False,
+              'seconds': round(sum(part['replay']['seconds'] for part, _, _ in parts), 3), 'playlist': None,
+              'clips': clips, 'playback': first.get('playback'), 'items': [], 'refine_offer': None, 'derived': None}
+    return {'parts': [], 'replay': replay, 'answer_kind': 'replay', 'text': f"{text} {counts}."}
 
 
 def _chain(exc):

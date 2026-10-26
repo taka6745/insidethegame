@@ -92,11 +92,24 @@ class QuestionAgent:
             agent = Agent(name='match_question', client=chat, instructions=QUESTION_INSTRUCTIONS,
                           tools=[read_standard_stats, search_actions, read_cards, read_recaps, prepare_stat, lookup_spadl],
                           default_options={**chat_options(1600, effort),'allow_multiple_tool_calls':False})
-            response = await agent.run(json.dumps({'question':prompt, **context}),
+            response = await agent.run(json.dumps(cache_ordered(prompt, context)),
                                        options={'response_format':QuestionDecision})
         if response.finish_reason == 'length':
             raise ValueError('Truncated question answer')
         return QuestionDecision.model_validate_json(response.text).draft(tools)
+
+
+# Keys whose values change little between a match's questions go first, so follow-ups share a prompt prefix the
+# model API can cache; the question, snapshot, chat history and other per-turn values come last.
+STABLE_KEYS = ('teams', 'players', 'data_reference', 'football_reference', 'profile', 'standard_stats',
+               'live_matches', 'single_match')
+
+
+def cache_ordered(prompt, context):
+    stable = {k: context[k] for k in STABLE_KEYS if k in context}
+    volatile = {k: v for k, v in context.items() if k not in stable and k not in ('question', 'snapshot', 'history')}
+    tail = {k: context[k] for k in ('history', 'snapshot') if k in context}
+    return {**stable, **volatile, **tail, 'question': prompt}
 
 
 def match_scope(intent, context):

@@ -8,7 +8,8 @@ from backend.adapters.usage import UsageTransport, as_dict, start_usage
 
 def test_usage_counts_tokens_and_calls_per_question_without_model_identity():
     def reply(request):
-        return httpx.Response(200, json={"model": "served-model", "usage": {"prompt_tokens": 1200, "completion_tokens": 300}})
+        return httpx.Response(200, json={"model": "served-model", "usage": {"prompt_tokens": 1200, "completion_tokens": 300,
+                                                                      "prompt_tokens_details": {"cached_tokens": 1024}}})
 
     async def run():
         usage = start_usage()
@@ -18,7 +19,7 @@ def test_usage_counts_tokens_and_calls_per_question_without_model_identity():
         return usage
 
     summary = as_dict(asyncio.run(run()), 4.236)
-    assert summary == {"input_tokens": 2400, "output_tokens": 600, "calls": 2, "seconds": 4.24}
+    assert summary == {"input_tokens": 2400, "output_tokens": 600, "cached_tokens": 2048, "calls": 2, "seconds": 4.24}
     assert "served-model" not in json.dumps(summary)
 
 

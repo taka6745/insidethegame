@@ -184,6 +184,22 @@ test("paging, length and derived definitions are derived from the replay contrac
   assert.equal(duration(102.4), "01:42");
   assert.deepEqual(playableClips(replay({ playlist: null })), []);
   assert.deepEqual(playableClips(replay({ clips: [{ start: 1, end: 2 }] })), []);
+  assert.deepEqual(playableClips(replay()).map((c) => c.playlist), ["/media/hls/m1/live.m3u8", "/media/hls/m1/live.m3u8"]);
+});
+
+test("a reel across matches plays each clip on its own stream and names its game", () => {
+  const other = { id: "m2", teams: [{ name: "North FC" }, { name: "South United" }] };
+  const reel = replay({ playlist: null, clips: [
+    { ...clip(1, 9, "23′ Goal"), playlist: "/media/hls/m1/live.m3u8" },
+    { ...clip(12, 22, "31′ Goal"), playlist: "/media/hls/m2/live.m3u8", other_match: other },
+    clip(30, 40, "no stream"),
+  ] });
+  const clips = playableClips(reel);
+  assert.deepEqual(clips.map((c) => c.playlist), ["/media/hls/m1/live.m3u8", "/media/hls/m2/live.m3u8"]);
+  const player = new ReplayPlayer(clips);
+  assert.equal(player.caption(), "1/2 · 23′ Goal");
+  player.next();
+  assert.equal(player.caption(), "2/2 · North FC v South United · 31′ Goal");
   assert.equal(derivedText({ first: { event_types: ["pass"], outcome: "failed" },
     then: { event_types: ["touch"] }, within_seconds: 3, then_team: "opponent" }),
   "failed pass, then opponent touch within 3 s");

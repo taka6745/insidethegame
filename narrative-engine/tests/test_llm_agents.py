@@ -70,7 +70,7 @@ def test_templates_take_exactly_the_engine_variables(real_variables):
         rendered = render_template(prompt, real_variables[agent])
         assert not PLACEHOLDER.search(rendered.replace('{"summary"', ""))
     assert (shipped("narrative-author").label, shipped("minute-summary").label) == \
-        ("narrative-author.v7", "minute-summary.v3")
+        ("narrative-author.v8", "minute-summary.v3")
     analyst = set(PLACEHOLDER.findall(shipped("match-analyst").template))
     assert analyst == {"analysis_reason", "game_state_statistics", "key_event_ledger", "combined_match_context",
                        "match_trends", "storylines", "max_observations", "max_evidence", "confidence_levels",
@@ -84,17 +84,19 @@ def test_originals_are_unchanged_and_runtime_keeps_their_wording():
                               ("minute-summary", "minute-summary.v3"), ("context-compression", "context-compression.v2"),
                               ("narrative-author", "narrative-author.v2"), ("narrative-author", "narrative-author.v3"),
                               ("narrative-author", "narrative-author.v4"), ("narrative-author", "narrative-author.v5"),
-                              ("narrative-author", "narrative-author.v6"), ("narrative-author", "narrative-author.v7")]:
+                              ("narrative-author", "narrative-author.v6"), ("narrative-author", "narrative-author.v7"),
+                              ("narrative-author", "narrative-author.v8")]:
         first_paragraph = (PROMPTS.parents[2] / "docs" / "design" / "example-prompts" / f"{original}.txt").read_text().split("\n\n")[0]
         assert first_paragraph in (PROMPTS / f"{runtime}.txt").read_text()
 
 
 def test_summary_parses_json_and_records_model_prompt_and_tokens(real_variables):
-    api = FakeApi(reply('```json\n{"summary": "Home team (Riverside FC) kept the ball."}\n```'))
+    api = FakeApi(reply('```json\n{"summary": "Home team (Riverside FC) kept the ball."}\n```', usage={
+        "prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15, "prompt_tokens_details": {"cached_tokens": 8}}))
     result = asyncio.run(agents(api).summarise(real_variables["summarise"]))
     assert (result.text, result.model, result.promptVersion) == \
            ("Home team (Riverside FC) kept the ball.", "local-model", "minute-summary.v3")  # not Azure: no model id
-    assert result.tokens == {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15}
+    assert result.tokens == {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15, "cached_tokens": 8}
     request, body = api.requests[0]
     assert body["model"] == "m-summary" and request.url == "https://llm.example/v1/chat/completions"
     assert request.headers["authorization"] == f"Bearer {SECRET}" and "reasoning_effort" not in body
@@ -127,7 +129,7 @@ def test_auth_failures_stop_at_once_without_leaking_the_key():
 def test_author_sends_the_audience_framing_and_cleans_the_reply(real_variables):
     api = FakeApi(reply("   "), reply('<think>plan</think>\n"Mensah scores for Riverside!"'))
     result = asyncio.run(agents(api).author(real_variables["author"]))
-    assert result.text == "Mensah scores for Riverside!" and result.promptVersion == "narrative-author.v7"
+    assert result.text == "Mensah scores for Riverside!" and result.promptVersion == "narrative-author.v8"
     prompt = api.requests[0][1]["messages"][0]["content"]
     assert real_variables["author"]["user_type"] in prompt and "Home team: Riverside FC." in prompt
     edited = Prompt("narrative-author", "narrative-author@4", "Audience: {user_type}. Reason: {trigger_reason}.")

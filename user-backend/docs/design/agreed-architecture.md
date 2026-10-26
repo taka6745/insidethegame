@@ -1,3 +1,5 @@
+Historical design (pre-build); the shipped behaviour is in docs/components/.
+
 # Main user backend: agreed architecture
 
 > **In short:** historical (18–19 October 2026), no longer updated. The agreed architecture before multi-match. Superseded where it differs: ETL serves stats from Azure SQL (`statsAtSeq`), not Cosmos DB; audiences are config-only (no presence); chat replay is implemented. Current design: [architecture](../architecture.md) · [decisions](../decisions.md).

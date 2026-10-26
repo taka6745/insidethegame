@@ -340,3 +340,44 @@ test("footage ending early moves on a clip, a broken sting is skipped, closing r
   stage.close();
   assert.equal(video.playbackRate, 1);
 });
+
+test("a reel across matches switches streams between clips, under the sting, and ignores the old stream's time", async () => {
+  const { stage, get, streams, fire } = setup();
+  const other = { id: "m2", teams: [{ name: "North FC" }, { name: "South United" }] };
+  stage.open({ ...replay, playlist: null, clips: [
+    { ...replay.clips[0]!, playlist: "/media/hls/m1/live.m3u8" },
+    { ...replay.clips[1]!, playlist: "/media/hls/m2/live.m3u8", other_match: other },
+  ], playback: {
+    transitions: { enabled: true, hold_seconds: 0.6, asset: "builtin:league", asset_start_seconds: 0,
+      sting_seconds: 2.4, cut_seconds: 0.5, fade_seconds: 0.3 },
+    slow_motion: { enabled: false, rate: 0.5, ramp_seconds: 1, before_seconds: 1, after_seconds: 2 },
+  } });
+  await Promise.resolve();
+  const video = get("replay-video");
+  assert.equal(streams[0]!.url, "/media/hls/m1/live.m3u8");
+  video.paused = false;
+  video.currentTime = 11;
+  video.emit("timeupdate");
+  assert.equal(fire(), 600);  // hold, then the sting
+  assert.equal(fire(), 500);  // the cut, under the sting: the other match's stream attaches at the clip
+  assert.equal(streams[0]!.destroyed, true);
+  assert.equal(streams[1]!.url, "/media/hls/m2/live.m3u8");
+  assert.equal(streams[1]!.options.start, 14);
+  assert.equal(get("replay-caption").textContent, "2/2 · North FC v South United · 31′ Goal");
+  video.currentTime = 24;  // the old stream's last time update means nothing
+  video.emit("timeupdate");
+  assert.equal(stage.player!.index, 1);
+  assert.equal(stage.player!.ended, false);
+  await Promise.resolve();
+  assert.equal(fire(), 1600);
+  video.emit("loadedmetadata");
+  assert.equal(video.paused, false);
+  video.currentTime = 24;
+  video.emit("timeupdate");
+  assert.equal(get("replay-caption").textContent, "Replay finished");
+  // Replay again goes back to the first match's stream.
+  get("replay-again").emit("click");
+  assert.equal(streams[1]!.destroyed, true);
+  assert.equal(streams[2]!.url, "/media/hls/m1/live.m3u8");
+  assert.equal(streams.length, 3);
+});

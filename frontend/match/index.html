@@ -29,7 +29,9 @@
       /></a>
       <nav class="league-nav" aria-label="Elephant League">
         <a href="/?choose" class="active">Matches</a
-        ><span>Table</span><span>Statistics</span><span>Clubs</span>
+        ><span aria-disabled="true" title="Not part of this demo">Table</span
+        ><span aria-disabled="true" title="Not part of this demo">Statistics</span
+        ><span aria-disabled="true" title="Not part of this demo">Clubs</span>
       </nav>
       <div class="audience-controls" id="audience-controls" role="group" aria-label="Your match perspective" hidden>
         <label class="sr-only" for="audience-bucket">Your perspective</label>
@@ -293,6 +295,12 @@
       </div>
       </div>
     </main>
+    <div id="match-skip-overlay" class="skip-overlay" role="dialog" aria-modal="true" aria-live="polite" aria-labelledby="match-skip-title" hidden>
+      <p id="match-skip-title" class="skip-overlay-title"></p>
+      <p id="match-skip-clock" class="skip-overlay-clock">0:00</p>
+      <p id="match-skip-range" class="skip-overlay-range"></p>
+      <p class="skip-overlay-hint">Every demo match moves on together.</p>
+    </div>
     <footer><span>Hackathon demo · Simulated matches in a fictional league with AI-generated insights</span><span><a href="/lab/">Developer lab ↗</a> · <a href="/dev/">Config ↗</a></span></footer>
   </body>
 </html>

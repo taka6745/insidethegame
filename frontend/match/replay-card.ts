@@ -1,6 +1,6 @@
 import { eventName } from "./capture.ts";
 import { node } from "../shared/dom.ts";
-import { derivedText, duration, hasMore, pageCount, playableClips } from "./replay.ts";
+import { derivedText, duration, hasMore, matchName, pageCount, playableClips } from "./replay.ts";
 import type { Replay } from "./types.ts";
 
 export interface ReplayCardActions {
@@ -33,6 +33,14 @@ export function replayCard(document: Document, replay: Replay, actions: ReplayCa
     "replay-frame-caption"));
   card.append(play);
   if (playable) actions.frame?.(replay, still);
+  // A reel across matches: each clip named with its game.
+  if (replay.clips.some((clip) => matchName(clip.other_match))) {
+    const list = node(document, "ol", "", "replay-games");
+    for (const clip of replay.clips)
+      list.append(node(document, "li", [matchName(clip.other_match), (clip.captions || []).join(" / ")].filter(Boolean).join(" · "),
+        "replay-game"));
+    card.append(list);
+  }
   const derived = derivedText(replay.derived);
   if (derived) card.append(node(document, "p", `Derived: ${derived}`, "replay-note"));
   const refine = replay.refine_offer || actions.refineOffer;

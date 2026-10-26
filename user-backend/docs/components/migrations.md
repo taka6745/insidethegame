@@ -51,6 +51,8 @@
 | `047_model_roles_length_layer.py` | `backend_config.models` (model per role, live; empty deployments keep each service's own setting) and an audience `length` layer (Standard, Brief) in every template and catalogue: existing buckets keep their ids and select Standard, Brief twins are added disabled |
 | `049_league_sting.py` | The clip transition becomes the league's CSS sting (`builtin:league`) where `replay-timing.playback.transitions.asset` still holds the 037 video path |
 | `050_neutral_prompt_examples.py` | `minute-summary` and `context-compression` examples name "Team A"/"Team B": an active template still naming a retired or demo club gets a new version with the seed's examples (the rest of an edit kept) |
+| `051_brief_bucket.py` | Enables the `neutral:simple:brief` bucket wherever it exists; the Brief option asks for one sentence under 20 words |
+| `052_author_prompt_order.py` | `narrative-author` v8: the per-bucket segments move to the tail of the prompt so a step's buckets share a cacheable prefix (active over the unedited seed only) |
 | `accounts/001_demo_profiles.sql` | `demo_profiles` with three demo accounts |
 | `accounts/002_profile_editor.sql` | Profile revision row for the `/dev/` editor; drops the hard-coded team/style CHECK constraints |
 | `accounts/003_profile_selections.sql` | `team`/`fan_style` columns become a `selections` map (layer id → option id) |
@@ -69,8 +71,8 @@ There is no `048`. The runner keys the ledger by file name only. Configuration r
 | `context-compression.txt` | `context-compression.v2` (neutral example teams) | `050` (examples only) |
 | `match-analyst.txt` | `match-analyst.v4` (labels in plain words) | `030` |
 | `match-analyst.v3.txt`, `.v2.txt`, `.v1.txt` | `match-analyst.v3`, `.v2`, `.v1` | `029`, `025`, `023` |
-| `narrative-author.txt` | `narrative-author.v7` (one or two short sentences) | `042` |
-| `narrative-author.v6.txt`, `.v5.txt`, `.v4.txt` | `narrative-author.v6`, `.v5`, `.v4` | `025`, `023`, `021` |
+| `narrative-author.txt` | `narrative-author.v8` (per-bucket segments last, for prompt caching) | `052` |
+| `narrative-author.v7.txt`, `.v6.txt`, `.v5.txt`, `.v4.txt` | `narrative-author.v7`, `.v6`, `.v5`, `.v4` | `042`, `025`, `023`, `021` |
 | `subscription-decision.txt`, `.v1.txt` | `subscription-decision.v2`, `.v1` | `029`, `024` |
 | `subscription-author.txt` | `subscription-author.v1` | `024` |
 | `subscription-planner.txt`, `.v1.txt` | This service's own role (the follow chat's planner), v2 and v1 | `042`, `024` |

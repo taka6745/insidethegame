@@ -1,4 +1,4 @@
-import type { Playback, Replay, ReplayClip } from "./types.ts";
+import type { OtherMatch, Playback, Replay, ReplayClip } from "./types.ts";
 
 export type PlayableClip = ReplayClip & { playlist_start: number; playlist_end: number };
 /** What the stage does next: seek, pause or play the reel, show or hide the sting, and after `wait`
@@ -14,11 +14,18 @@ export interface ReplayAction {
 /** playing → (clip end) holding → sting, cut under it → playing; the last clip ends without a sting. */
 export type ReelPhase = "playing" | "holding" | "sting" | "ended";
 
-/** Clips the replay playlist can actually show. */
+/** Clips a stream can actually show: the replay's playlist, or each clip's own (a reel across matches). */
 export function playableClips(replay: Replay): PlayableClip[] {
-  if (!replay.playlist) return [];
-  return replay.clips.filter((clip): clip is PlayableClip =>
-    Number.isFinite(clip.playlist_start) && Number.isFinite(clip.playlist_end));
+  return replay.clips.flatMap((clip): PlayableClip[] => {
+    const playlist = clip.playlist || replay.playlist;
+    const { playlist_start, playlist_end } = clip;
+    return playlist && Number.isFinite(playlist_start) && Number.isFinite(playlist_end)
+      ? [{ ...clip, playlist, playlist_start: playlist_start!, playlist_end: playlist_end! }] : [];
+  });
+}
+/** "Riverton v Madrid" for a clip from a named match, else "". */
+export function matchName(other: OtherMatch | null | undefined): string {
+  return (other?.teams || []).map((team) => team.short_name || team.name || "").filter(Boolean).join(" v ");
 }
 export function hasMore(replay: Replay): boolean {
   return replay.page + 1 < pageCount(replay);
@@ -115,7 +122,9 @@ export class ReplayPlayer {
   }
   caption(): string {
     const clip = this.clip;
-    return clip ? `${this.index + 1}/${this.clips.length} · ${(clip.captions || []).join(" / ")}` : "";
+    if (!clip) return "";
+    const game = matchName(clip.other_match);
+    return [`${this.index + 1}/${this.clips.length}`, game, (clip.captions || []).join(" / ")].filter(Boolean).join(" · ");
   }
   go(index: number): ReplayAction {
     if (!this.clips.length) return { ended: true };

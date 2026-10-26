@@ -9,7 +9,7 @@ import { FollowView } from "./follow-view.ts";
 import { attachDemoVideo } from "./video.ts";
 import { queueStill, ReplayStage, replayStill } from "./replay-view.ts";
 import { cachePrices, validPrices } from "./receipt.ts";
-import { DemoControls, demoMatches, mainToOpen, showLiveFrom, showSkip } from "./demo.ts";
+import { DemoControls, SkipOverlay, demoMatches, mainToOpen, showLiveFrom, showSkip, withRunClocks } from "./demo.ts";
 import { DemoProgress } from "./demo-progress.ts";
 import { browserStorage, viewerId } from "./viewer-id.ts";
 
@@ -53,7 +53,7 @@ function showPicker(gone: string | null) {
       const matches = demoMatches(list, demo.live, demo.main, demo.runs, demo.recording);
       const main = mainToOpen(demo, matches, choosing);
       if (main) return location.assign(`/?match=${encodeURIComponent(main)}`);
-      picker.render(matches);
+      picker.render(withRunClocks(matches, demo.feedRuns));
     } catch (error) {
       startup = true;
       picker.notice(loaded ? friendly(error) : "Still starting up. Retrying…");
@@ -68,7 +68,6 @@ function showPicker(gone: string | null) {
 
 function openMatch() {
 void showLiveFrom(document, api.match);
-void showSkip(document, api.match);
 
 const view = new MatchView(document);
 const video = attachDemoVideo(document);
@@ -92,6 +91,16 @@ const controller = new MatchController({
   playhead: () => video.playhead(),
   onGone: () => location.replace(`/?gone=${encodeURIComponent(api.match)}`),
 });
+// Skip ahead blocks the whole page (nav, picker links, questions) while the clock runs to the target.
+const overlay = new SkipOverlay(document);
+overlay.onFreeze = (on) => {
+  const footage = byId<HTMLVideoElement>("match-video");
+  if (on) footage.pause();
+  else void footage.play().catch(() => undefined);
+  for (const region of document.querySelectorAll<HTMLElement>(".masthead, #match-main, footer")) region.inert = on;
+};
+controller.onShown = (snapshot) => overlay.clock(snapshot.match.clock_seconds);
+void showSkip(document, api.match, undefined, { overlay, clock: () => controller.shown?.match.clock_seconds });
 const followView = new FollowView(document);
 const follows = new FollowController({ api, view: followView, host: controller });
 controller.follows = follows;

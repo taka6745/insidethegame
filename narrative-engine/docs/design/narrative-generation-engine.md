@@ -1,3 +1,5 @@
+Historical design (pre-build); the shipped behaviour is in docs/components/.
+
 # Narrative Generation Engine: Design and Implementation Plan
 
 > **In short:** historical original design of the engine, no longer updated. Current behaviour: [overview](../overview.md) and [architecture](../architecture.md).

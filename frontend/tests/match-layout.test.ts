@@ -28,3 +28,10 @@ test("replay stage has its own player, a Replay badge, Back to live and a live c
   assert.match(html, /id="pip-return"[^>]*aria-label="Back to live"/);
   assert.match(html, /id="replay-close"[^>]*>Back to live</);
 });
+
+test("league nav placeholders are marked as outside the demo; Skip ahead has a page-wide clock picture", () => {
+  for (const label of ["Table", "Statistics", "Clubs"])
+    assert.match(html, new RegExp(`<span aria-disabled="true" title="Not part of this demo">${label}</span`));
+  assert.match(html, /id="match-skip-overlay"[^>]*role="dialog"[^>]*aria-modal="true"[^>]*hidden/);
+  assert.match(html, /id="match-skip-clock"/);
+});

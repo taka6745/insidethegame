@@ -10,6 +10,7 @@ import httpx
 class Usage:
     input_tokens: int = 0
     output_tokens: int = 0
+    cached_tokens: int = 0  # input tokens served from the provider's prompt cache (included in input_tokens)
     calls: int = 0
 
 
@@ -35,6 +36,8 @@ def record(content: bytes):
     # Chat Completions name them prompt/completion tokens; the Responses API input/output tokens.
     usage.input_tokens += int(counts.get("prompt_tokens") or counts.get("input_tokens") or 0)
     usage.output_tokens += int(counts.get("completion_tokens") or counts.get("output_tokens") or 0)
+    details = counts.get("prompt_tokens_details") or counts.get("input_tokens_details") or {}
+    usage.cached_tokens += int(details.get("cached_tokens") or 0)
 
 
 class UsageTransport(httpx.AsyncBaseTransport):

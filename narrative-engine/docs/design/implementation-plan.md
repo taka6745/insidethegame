@@ -1,3 +1,5 @@
+Historical design (pre-build); the shipped behaviour is in docs/components/.
+
 # Narrative engine: implementation plan
 
 > **In short:** historical implementation plan (18 October 2026), no longer updated. Current behaviour: [architecture](../architecture.md) and [decisions](../decisions.md).

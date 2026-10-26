@@ -26,6 +26,8 @@ export class ReplayStage {
   timers: NonNullable<ReplayStageOptions["timers"]>;
   timer: unknown = null;
   stingTimer: unknown = null;
+  url: string | null = null;  // the stream attached to the video
+  switching = false;  // a new stream is attaching: the old one's time updates mean nothing
   constructor(document: Document, {
     attach = attachStream,
     reducedMotion = () => Boolean(document.defaultView?.matchMedia?.("(prefers-reduced-motion: reduce)").matches),
@@ -37,6 +39,7 @@ export class ReplayStage {
     this.timers = timers;
     const video = this.video;
     video.addEventListener("timeupdate", () => {
+      if (this.switching) return;
       this.apply(this.player?.time(video.currentTime));
       this.pace();
     });
@@ -44,6 +47,7 @@ export class ReplayStage {
     video.addEventListener("ended", () => this.apply(this.player?.time(Number.POSITIVE_INFINITY)));
     // Only the first load seeks to the clip: hls.js media recovery reloads metadata mid-clip.
     video.addEventListener("loadedmetadata", () => {
+      this.switching = false;
       if (this.loaded) return;
       this.loaded = true;
       this.apply(this.player?.go(this.player.index));
@@ -69,7 +73,6 @@ export class ReplayStage {
     const clips = playableClips(replay);
     if (!clips.length) return;
     this.stop();
-    const generation = ++this.generation;
     this.opener = opener || null;
     this.player = new ReplayPlayer(clips, replay.playback ?? null, { reducedMotion: this.reducedMotion() });
     this.cueSting();
@@ -84,15 +87,22 @@ export class ReplayStage {
     this.show();
     this.get("replay-close").focus?.();
     // The replay plays the match's published stream; clip times are match video seconds.
-    this.attach(video, String(replay.playlist), {
+    this.source(String(clips[0]!.playlist), clips[0]!.playlist_start);
+  }
+  /** Attach a stream at `start`; a reel across matches switches streams between clips. */
+  source(url: string, start: number) {
+    const generation = ++this.generation;
+    this.stream?.destroy();
+    this.stream = null;
+    this.url = url;
+    this.attach(this.video, url, {
       live: false,
-      start: clips[0]!.playlist_start,
+      start,
       onError: () => this.caption("Footage unavailable"),
     }).then((stream) => {
-      if (generation === this.generation) {
-        this.stream = stream;
-        video.play().catch(() => {});
-      } else stream.destroy();
+      if (generation !== this.generation) return stream.destroy();
+      this.stream = stream;
+      if (this.player?.phase === "playing") this.video.play().catch(() => {});
     });
   }
   /** Back to live: restore the stage, release the player and return focus. */
@@ -113,6 +123,8 @@ export class ReplayStage {
     this.generation += 1;
     this.stream?.destroy();
     this.stream = null;
+    this.url = null;
+    this.switching = false;
     this.video.pause();
     this.video.playbackRate = 1;
     this.player = null;
@@ -123,7 +135,12 @@ export class ReplayStage {
     // A sting that failed to load would only cover the picture: cut straight to the next clip.
     if (action.sting === "in" && !this.builtin && this.stingVideo.error) return this.apply(this.player.skip());
     const video = this.video;
-    if (action.seek !== undefined && Math.abs(video.currentTime - action.seek) > 0.25) video.currentTime = action.seek;
+    const url = this.player.clip?.playlist;
+    if (action.seek !== undefined && url && url !== this.url) {
+      // The next clip is on another match's stream: cut to it (under the sting when there is one).
+      this.switching = true;
+      this.source(url, action.seek);
+    } else if (action.seek !== undefined && Math.abs(video.currentTime - action.seek) > 0.25) video.currentTime = action.seek;
     if (action.ended || action.pause) video.pause();
     else if ((action.play || action.seek !== undefined) && video.paused) video.play().catch(() => {});
     if (Object.keys(action).length) {  // Time updates return {} and change nothing.
@@ -271,5 +288,5 @@ export async function replayStill(replay: Replay, canvas: HTMLCanvasElement, {
 }: ReplayStageOptions = {}): Promise<boolean> {
   const clip = playableClips(replay)[0];
   if (!clip) return false;
-  return captureFrame(canvas, String(replay.playlist), (clip.playlist_start + clip.playlist_end) / 2, attach);
+  return captureFrame(canvas, String(clip.playlist), (clip.playlist_start + clip.playlist_end) / 2, attach);
 }

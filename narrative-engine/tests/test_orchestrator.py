@@ -216,6 +216,23 @@ def test_author_runs_are_serialised_per_bucket_and_capped():
                                   if v["bucket_id"] == user_type and "Penalty to" in v["trigger_reason"])
 
 
+def test_the_first_bucket_of_a_step_is_written_alone_to_warm_the_prompt_cache():
+    h = Harness(settings=Settings(author_concurrency=4), author_delay=0.01)
+    h.run([m for m in MESSAGES[:MESSAGES.index(KEYS[0])] if not isinstance(m, KeyEventDetected)])
+    real_author, started, done = h.agents.author, [], []
+
+    async def recording(variables, prompt=None, feedback=None):
+        started.append((variables["bucket_id"], list(done)))
+        result = await real_author(variables, prompt)
+        done.append(variables["bucket_id"])
+        return result
+    h.agents.author = recording
+    h.run([KEYS[0]])
+    assert [b for b, _ in started] == list(USER_TYPES)
+    assert started[0][1] == [] and all(before[0] == USER_TYPES[0] for _, before in started[1:])  # siblings wait for it
+    assert h.agents.max_running == 4  # then run together, within the cap
+
+
 def test_targets_limit_buckets_and_none_writes_nothing():
     targets = MutableTargets("home:casual", "away:analyst")
     h = Harness(targets=targets).run(MESSAGES[:MESSAGES.index(KEYS[0]) + 1])

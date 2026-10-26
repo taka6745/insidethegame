@@ -19,7 +19,7 @@
 | `minute-summariser` | Once per closed minute with events | `minute-summary.v3` | JSON `{"summary": ...}` |
 | `context-compressor` | When a compression rule fires | `context-compression.v2` | JSON `{"summary": ...}` |
 | `match-analyst` | Every 5 match minutes, half and full time ([analysis](analysis.md)) | `match-analyst.v4` | JSON observations citing trend numbers, checked by `analysis/validator.py` |
-| `narrative-author` | Once per bucket per step | `narrative-author.v7` | Plain text, one or two sentences |
+| `narrative-author` | Once per bucket per step | `narrative-author.v8` | Plain text, one or two sentences |
 
 Reasoning effort is sent only when `OPENAI_EFFORT` (or `OPENAI_EFFORT_{ROLE}`) is set; on Azure every role runs `gpt-6.1-sol` at `low`, its lowest effort (`infra/variables.tf` `agents`). Follow narratives use the `narrative-author` role with the `subscription-author` prompt ([follows](follows.md#4-authoring)).
 
@@ -60,11 +60,17 @@ Check the connection for all four roles: `python -m narrative_engine.agents.llm`
 
 Runtime templates live in `agents/prompts/` with `{placeholder}` variables (JSON braces are left alone). Their first paragraphs keep the original wording from [design/example-prompts](../design/example-prompts/), which a test checks. A new version gets a new file name, and every block and narrative records the version that produced it. Prompts describe inputs and outputs only; grounding is enforced in code (the validators and their repair turn), never by rules or phrase lists in the prompt.
 
-Current versions: `narrative-author.v7`, `match-analyst.v4`, `minute-summary.v3`, `context-compression.v2`, `subscription-decision.v2`, `subscription-author.v1`. Earlier versions stay in `agents/prompts/` and in the backend's `narrative_prompts` table, seeded by its prompt migrations ([migrations](../../../user-backend/docs/components/migrations.md)); a version with new placeholders is made active even over an edit, since the engine accepts only templates with the shipped placeholders.
+Current versions: `narrative-author.v8`, `match-analyst.v4`, `minute-summary.v3`, `context-compression.v2`, `subscription-decision.v2`, `subscription-author.v1`. Earlier versions stay in `agents/prompts/` and in the backend's `narrative_prompts` table, seeded by its prompt migrations ([migrations](../../../user-backend/docs/components/migrations.md)); a version with new placeholders is made active even over an edit, since the engine accepts only templates with the shipped placeholders.
 
 The service takes each role's active template from the backend's prompts API (`prompt_source.HttpPromptSource`), if its placeholders equal the shipped file's; otherwise the work pauses and `/health` is 503 ([core §4](core.md#4-audience-targets)). Only tests and devtools use the shipped files directly.
 
-## 5. Fakes (`tests/doubles/fake_agents.py`)
+## 5. Prompt caching
+
+*In short: the shared match material comes first, the per-bucket part last, and the first bucket warms the cache.*
+
+The model API caches prompt prefixes automatically once they pass its minimum length (1024 tokens on Azure OpenAI), so a prompt is cache-friendly only while everything that differs between calls sits at its tail. `narrative-author.v8` orders its segments that way: the static instructions, then the match material shared by every bucket of a step (`{trigger_reason}`, `{game_state_statistics}`, `{storylines}`, `{match_trends}`, `{key_event_ledger}`, `{combined_match_context}`, `{match_events}`), then the per-bucket `{user_type}` and `{narrative_excerpts}`. A `/dev/` edit that moves a per-bucket placeholder forward keeps working but loses the hits. The orchestrator awaits the first bucket's call before gathering the others (`_grounded`), so the siblings find the prefix cached: one call's latency per step. Not cacheable: the summariser and compressor (short, all-new prompts), the analyst's single call per analysis, and anything below the minimum length. `cache_read_input_token_count` from the framework's `usage_details` is recorded as `cached_tokens` beside `prompt_tokens` in every block's and narrative's `tokens` (summed over a step's rewrites), shown by `devtools/report.py` as `N cached`.
+
+## 6. Fakes (`tests/doubles/fake_agents.py`)
 
 *In short: deterministic text with no model calls, for tests and offline runs.*
 

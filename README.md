@@ -4,11 +4,30 @@ Live football, shared match narratives and a personal match companion.
 
 **Watch the match, and ask it anything.** Pick a live match. You get live stats and narratives framed for your team and style, and you can ask questions or request replays in chat. Code computes every number: ETL owns the statistics, and agents only choose what to show and how to explain it. One shared narrative pass serves every viewer in an audience, not one model call per viewer.
 
-![Five services and their data flows, with status](architecture.svg)
+![How the data flows: feed, Event Hubs, Stream Analytics, Azure SQL, narrative engine, Service Bus, user backend, frontend](architecture-overview.svg)
+
+[Detailed architecture](architecture.svg) with deployment status, demo build and seeds.
+
+## How it works
+
+- A simulated provider streams each match's Opta-style events into Event Hubs and its footage as HLS; our services never see anything else, so a real provider swaps in at that seam ([feed](data-generation/docs/components/feed.md)).
+- Stream Analytics turns the events into key events and minute stats in Azure SQL, a post-processor adds SPADL actions, and Data API builder serves it all as GraphQL ([ETL](etl/docs/architecture.md)).
+- The narrative engine runs one shared pass per audience bucket (team × style × length), not one model call per viewer: summarise, compress, find grounded trends, develop storylines ([engine](narrative-engine/docs/architecture.md)).
+- Match memory keeps full detail for the last minutes and compresses older ones into coarser blocks, so the prompt stays small over 90 minutes ([context](narrative-engine/docs/components/context.md#1-decaying-resolution-memory)); the author prompt puts the shared prefix first so Foundry can cache it, and cached tokens show in the metrics ([agents](narrative-engine/docs/components/agents.md)).
+- Microsoft Decision-1, a bounded classifier rather than a text model, decides whether a claim is supported, when a followed story moves and which moments earn a clip ([decisions](narrative-engine/docs/components/decisions.md)).
+- Viewer questions route to ETL stats, match context or replay clips; a custom stat is compiled into a validated rule DSL that code executes, never generated Python, and every answer carries its facts, tokens and cost ([question agent](user-backend/docs/components/agents.md)).
+- Mid-match starts restore a snapshot recorded on this pipeline and hold nothing past the start point; all footage is our own, rendered with Google Research Football ([data generation](data-generation/README.md)).
+
+## Where next
+
+- **Tap a player.** The feed already streams positions (POS), so player overlays on the footage and "who is that?" taps are a frontend step, not a data one.
+- **Real provider.** Replace the simulator at the Event Hubs + HLS seam; nothing downstream changes.
+- **More audiences and languages.** A bucket is configuration (team × style × length); a language is one more axis, with no engine change.
+- **Release build.** `./dev azure up --release` deploys without demo control and seeds; the remaining gaps are listed in [terraform decisions](terraform/docs/decisions.md#2-before-a-production-release).
 
 ## What works today
 
-> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Tested on the local stack; Azure status: [PLAN §11](PLAN.md#11-azure-judge-build); open checks: [PLAN §10.4](PLAN.md#104-azure-demo-acceptance-before-submission).
+> **In short:** a judge opens the URL, presses **Start demo**, picks a start point and watches three live matches with the story so far. Tested on the local stack and deployed on Azure; status and open checks: [PLAN §10–11](PLAN.md#11-azure-judge-build).
 
 | | |
 | --- | --- |
@@ -83,6 +102,6 @@ Deployed status: [PLAN §11](PLAN.md#11-azure-judge-build).
 
 **Boundaries.** Our services see the feed only through Event Hubs and HLS over HTTP. The backend reads match data only through ETL GraphQL. The backend owns audience definitions and prompts. The engine frames each narrative for its bucket, and the backend routes it unchanged. Viewer questions never trigger the shared narrative workflow. [Contracts](local/contracts/README.md).
 
-[Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md) · [Plan and open items](PLAN.md) · [Target plan (Excalidraw)](master-plan.excalidraw) · [Archived research](legacy/README.md) ([competitor refresh](legacy/research/competitors/2026-10-21/README.md))
+[Development practices](DEVELOPMENT-PRACTICES.md) · [Local Docker setup](local/README.md) · [Terraform](terraform/README.md) · [Plan and open items](PLAN.md) · [Target plan (Excalidraw)](master-plan.excalidraw)
 
-Render the diagrams with `python3 .github/scripts/render_architecture.py`, `render_development.py` and `render_master_plan.py` (then export the Excalidraw scene to `master-plan.svg`). The icons are local renders (`.github/diagram-assets/`) from the preserved [engineering library](legacy/docs/icon-libraries/README.md); its [sources](legacy/docs/icon-libraries/sources.json) and [licence](legacy/docs/icon-libraries/EXCALIDRAW-LIBRARIES-LICENSE) hold the provenance. They identify technologies, not endorsement.
+Render the diagrams with `python3 .github/scripts/render_architecture.py`, `render_development.py` and `render_master_plan.py` (then export the Excalidraw scene to `master-plan.svg`). The icons (`.github/diagram-assets/`) identify technologies, not endorsement.

@@ -141,7 +141,7 @@ def merge_usage(usages):
     usages = [u for u in usages if u]
     if not usages:
         return None
-    keys = ("prompt_tokens", "completion_tokens", "total_tokens")
+    keys = ("prompt_tokens", "completion_tokens", "total_tokens", "cached_tokens")
     return {k: sum(u.get(k) or 0 for u in usages) for k in keys}
 
 

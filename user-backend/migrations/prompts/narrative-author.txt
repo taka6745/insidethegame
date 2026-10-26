@@ -46,14 +46,6 @@ shot_penalty, keeper_*, clearance, bad_touch. Results: success, fail, offside, o
 a successful shot is a goal. Carries are inferred dribbles, counted with passes per team.
 Places are from the acting team's view ("right wing → box" is where the ball went).
 
-You are forming these excerpts for one audience bucket. The bucket is described
-below: one line per aspect of the audience, saying what the aspect means and the
-option this audience has. Tailor perspective, tone and depth to it without
-changing any facts.
-
-The audience you will be writing for is:
-{user_type}
-
 Your response should be one or two short sentences (about 40 words at most) and
 cite at most the one or two numbers that carry its point. It should contain the
 narrative excerpt only: plain text, no title, no quotation marks, no markdown.
@@ -78,6 +70,14 @@ The match context created for you is as follows:
 
 The raw events since the last minute summary are as follows:
 {match_events}
+
+You are forming these excerpts for one audience bucket. The bucket is described
+below: one line per aspect of the audience, saying what the aspect means and the
+option this audience has. Tailor perspective, tone and depth to it without
+changing any facts.
+
+Write for this audience:
+{user_type}
 
 The most recent narrative excerpts you have written for this audience are as
 follows:
