@@ -65,23 +65,22 @@ class Diagram:
 
 NOW='Solid: data / calls · Dashed: messages'
 
-# README overview: the data flow in one picture.
-d=Diagram('architecture-overview.svg','How the data flows','A simulated provider streams events and video; ETL computes the facts; one narrative pass per audience; a personal companion per viewer',1300,580,None)
-X=[30,290,550,810,1070];W=215;Y1,Y2,H=110,370,160
-d.card(X[0],Y1,W,H,'Match feed',['Simulated provider','Opta-style events + HLS'],'python',size=20)
-d.card(X[1],Y1,W,H,'Event Hubs',['match-events','partitioned by matchId'],'events',size=20)
-d.card(X[2],Y1,W,H,'Stream Analytics',['Events → key events,','minute stats'],'stream',size=20)
-d.card(X[3],Y1,W,H,'Azure SQL + DAB',['Facts, SPADL actions,','trends · GraphQL'],'sql',size=20)
-d.card(X[4],Y1,W,H,'Narrative engine',['Foundry gpt + Decision-1','Agent Framework · Cosmos DB'],'foundry',PURPLE,size=20)
-d.card(X[4],Y2,W,H,'Service Bus',['Narratives · clips','per audience bucket'],'bus',size=20)
-d.card(X[2],Y2,475,H,'User backend',['Question, replay and follow agents · custom-stat DSL','Postgres · follows · cross-game'],'containers',size=20)
-d.card(X[0],Y2,475,H,'Frontend + Cloudflare edge',['Viewer · chat · follow view · clips','Container Apps behind a Worker'],'screen',GREEN,size=20)
-for a,b in zip(X,X[1:]):d.arrow([(a+W,Y1+H/2),(b,Y1+H/2)])
-d.arrow([(X[4]+W/2,Y1+H),(X[4]+W/2,Y2)],'Narratives · clips',X[4]+W/2,Y1+H+56,dash=True)
-d.arrow([(X[4],Y2+H/2),(X[2]+475,Y2+H/2)],dash=True)
-d.arrow([(X[2]+200,Y2),(X[2]+200,Y1+H+50),(X[3]+W/2,Y1+H+50),(X[3]+W/2,Y1+H)],'Stats · GraphQL',X[3]-20,Y1+H+44)
-d.arrow([(X[2],Y2+H/2),(X[0]+475,Y2+H/2)],'REST + WebSocket',X[2]-22,Y2+H/2-14,both=True)
-d.arrow([(X[0]+W/2,Y1+H),(X[0]+W/2,Y2)],'HLS video',X[0]+W/2,Y1+H+56)
+# README overview: service boundaries only; implementation detail is in the full diagram.
+d=Diagram('architecture-overview.svg','Services at a glance','Five services: match feed, ETL, narrative engine, user backend and frontend. Video reaches the viewer; facts and actions come through ETL; the backend receives live events separately.',1580,490,None)
+xs=[30,345,660,975,1290];w=250;y=175;h=160
+for x,title,notes,icon,color in [
+    (xs[0],'Match feed',['Match events + video'],'python',BLUE),
+    (xs[1],'ETL',['History · stats · actions'],'sql',BLUE),
+    (xs[2],'Narrative engine',['Shared match stories','Audience framing'],'agent',PURPLE),
+    (xs[3],'User backend',['Questions · custom stats','Replays · follows · delivery'],'containers',BLUE),
+    (xs[4],'Frontend',['Watch · ask · follow'],'screen',GREEN),
+]:
+    d.card(x,y,w,h,title,notes,icon,color,size=22)
+for i in range(4):
+    d.arrow([(xs[i]+w,y+h/2),(xs[i+1],y+h/2)],both=i>=2)
+d.arrow([(xs[0]+w/2,y),(xs[0]+w/2,125),(xs[4]+w/2,125),(xs[4]+w/2,y)],'HLS video',790,119)
+d.arrow([(xs[1]+w/2,y+h),(xs[1]+w/2,380),(xs[3]+w/2,380),(xs[3]+w/2,y+h)],'Stats + actions · GraphQL',790,374)
+d.arrow([(xs[0]+w/2,y+h),(xs[0]+w/2,440),(xs[3]+w/2,440),(xs[3]+w/2,405),(xs[3]+w-35,405),(xs[3]+w-35,y+h)],'Live events · own consumer',610,434)
 d.save()
 
 # The feed simulates an external data and broadcast provider.

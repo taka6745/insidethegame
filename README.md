@@ -4,6 +4,8 @@
 
 [**Open app**](https://msft-hackathon.koda-software.com) · [**Full plan**](plan.excalidraw) · [Plan overview](master-plan.svg) · [Submission](docs/submission.md)
 
+![Services at a glance: match feed, ETL, narrative engine, user backend and frontend](architecture-overview.svg)
+
 ![Architecture: match feed, Azure data pipeline, shared narratives and personal match companion](architecture.svg)
 
 ## Try it
