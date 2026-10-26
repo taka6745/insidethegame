@@ -159,7 +159,7 @@ class GraphQLMatchData:
         return await self._at_seq("executeStatsAtSeq", STAT_FIELDS, match_id, seq)
 
     async def trends_at(self, match_id, seq):
-        """Trend indicators at `seq` (local/contracts/README.md §4b), normalised (`trend_rows`)."""
+        """Trend indicators at `seq` (local/README.md Contracts §4b), normalised (`trend_rows`)."""
         return trend_rows(await self._at_seq("executeTrendsAtSeq", TREND_FIELDS, match_id, seq))
 
     async def spells_at(self, match_id, seq):

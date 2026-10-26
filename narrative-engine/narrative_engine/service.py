@@ -1,6 +1,6 @@
 """The engine as a service: Service Bus in, Cosmos DB state, Service Bus out, GraphQL history.
 
-    python -m narrative_engine.service      # settings from the environment or .env (docs/components/service.md §2)
+    python -m narrative_engine.service      # settings from the environment or .env (README.md, Service)
 """
 import asyncio
 import contextlib

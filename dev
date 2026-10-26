@@ -78,7 +78,7 @@ usage() {
 
 ./dev azure up|down|status|plan|guard [--yes] [--release]
                          Deploy, destroy, inspect or plan the whole stack on Azure (your az login;
-                         asks first). See terraform/docs/deployment.md.
+                         asks first). See terraform/README.md.
 
 For backend or Azure emulators, first review local/README.md licence links, then run:
 ACCEPT_EULA=Y ./dev up backend
@@ -167,7 +167,7 @@ case "${1:-help}" in
         done'
     ;;
   azure)
-    # Real Azure (asks before up/down unless --yes). Terraform/az run in a toolbox image; see terraform/docs/deployment.md.
+    # Real Azure (asks before up/down unless --yes). Terraform/az run in a toolbox image; see terraform/README.md.
     docker_ready
     shift
     exec python3 terraform/azure/azure.py "$@"

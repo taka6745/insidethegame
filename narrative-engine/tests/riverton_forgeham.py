@@ -1,7 +1,7 @@
 """The checked-in Riverton Rovers–Forgeham United GRF recording (synthetic) as engine test data: its MA1/MA3 replay
 (data-generation/recordings), the ETL's SPADL fixture for it (etl/tests/fixtures; same canonical
 seqs as the replay's `eventSeq`), catalogue golden stats, and the ETL notifications and keyEvents
-rows the replay produces (etl/contracts/README.md: key event types, MinuteClosed per minute)."""
+rows the replay produces (etl/README.md Contracts: key event types, MinuteClosed per minute)."""
 import json
 from pathlib import Path
 

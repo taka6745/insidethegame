@@ -1,4 +1,4 @@
-"""Stamps one run's identity and wall-clock times onto a fixture's stream (etl/contracts/README.md)."""
+"""Stamps one run's identity and wall-clock times onto a fixture's stream (etl/README.md Contracts)."""
 from datetime import timedelta
 
 from grf_demo.opta_stream import schedule, stamp

@@ -1,7 +1,7 @@
 """The SPADL stat catalogue reference on a whole Riverton Rovers–Forgeham United run, against its recorded golden values.
 
 fixtures/catalogue-golden.json holds the full rows at the final seq and (statId, value, available) at 20
-prefixes; local/contracts/README.md §4 lists the full-time values. Regenerate after a deliberate definition change or a re-rendered recording:
+prefixes; local/README.md Contracts §4 lists the full-time values. Regenerate after a deliberate definition change or a re-rendered recording:
     python tests/test_catalogue.py --regenerate
 """
 import json

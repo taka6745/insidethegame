@@ -1,5 +1,5 @@
 """Followed topics and the follow tunables, from the user backend's `GET /matches/{matchId}/subscription-targets`
-(ETag; contracts/README.md#subscription-targets). The backend owns follows; the engine only reads them.
+(ETag; README.md Contracts (subscription targets)). The backend owns follows; the engine only reads them.
 Fixed topics for tests: tests/doubles/follows.py.
 """
 from dataclasses import dataclass

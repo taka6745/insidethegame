@@ -1,4 +1,4 @@
-"""Grounding checks for the analyst's reply and the author's excerpt (docs/components/analysis.md §1, §3).
+"""Grounding checks for the analyst's reply and the author's excerpt (README.md, Analysis).
 Never a pattern or phrase list: cited values must match served rows, text may use only numbers and names shown,
 and unsupported claims are bounded questions for the decision model. Limits come from the storyline policy."""
 import json

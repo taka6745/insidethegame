@@ -1,5 +1,5 @@
 """Story follows inside a match's orchestrator: read the followed topics, queue and run `subscriptionEval` and
-`subscriptionStart` steps (docs/components/follows.md). A decision is stored before its fired topics are pinned,
+`subscriptionStart` steps (README.md, Follows). A decision is stored before its fired topics are pinned,
 so a restart or backlog never asks again; a `FollowClip` is sent apart from the narratives."""
 import copy
 import logging

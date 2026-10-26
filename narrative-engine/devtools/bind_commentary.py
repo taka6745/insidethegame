@@ -2,7 +2,7 @@
 
 Input export: recording_hash, events (canonical, delivery order), video_times, teams.
 Authored text: provenance, minutes {id: {recap, narratives {bucket: text}}}, tiers, key_moments
-(see docs/components/fixtures.md). The caller must supply the hash reviewed while authoring.
+(see README.md, Fixtures). The caller must supply the hash reviewed while authoring.
 """
 import argparse
 import json

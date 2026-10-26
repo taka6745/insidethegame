@@ -1,4 +1,4 @@
-// Developer mock of the multi-match contracts (local/contracts/README.md §5, §7, §8, §8b) for headless UI checks.
+// Developer mock of the multi-match contracts (local/README.md Contracts §5, §7, §8, §8b) for headless UI checks.
 // Serves the built dist/ with the production CSP. Not a backend: data is synthetic and in memory.
 // Usage: npm run build && node devtools/mock-server.ts [port]
 import { createServer } from "node:http";

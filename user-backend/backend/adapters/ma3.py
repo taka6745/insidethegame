@@ -98,7 +98,7 @@ def score(rows, teams):
     return goals
 
 
-# Pivotal key moments (local/contracts/README.md §8): Opta types the feed shows everyone. 4 / 13–15 matter only with
+# Pivotal key moments (local/README.md Contracts §8): Opta types the feed shows everyone. 4 / 13–15 matter only with
 # qualifier 9 (penalty); 30 / 32 are period end / start (one row per team).
 FOUL, MISS, POST, ATTEMPT_SAVED, PERIOD_END, PERIOD_START = 4, 13, 14, 15, 30, 32
 PENALTY, RELATED = 9, 55
@@ -108,7 +108,7 @@ KEY_MOMENT_TYPES = (GOAL, CARD, VAR, FOUL, MISS, POST, ATTEMPT_SAVED, PERIOD_END
 def key_moment(row):
     """One MA3 row (DAB rawEvents) → a key-moment fact, or None. `kind`: goal, own_goal, red_card, second_yellow,
     penalty (awarded; `team_id` is the team that conceded it), penalty_missed, var_overturn, period_start, period_end.
-    Rules follow ETL's keyEvents (etl/contracts/README.md, key event types)."""
+    Rules follow ETL's keyEvents (etl/README.md Contracts, key event types)."""
     payload = json_value(row.get('payload'), {})
     qualifiers = {int(q['qualifierId']): q.get('value') for q in payload.get('qualifier') or []}
     kind, type_id = None, row['typeId']

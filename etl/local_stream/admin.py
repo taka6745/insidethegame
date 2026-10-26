@@ -1,4 +1,4 @@
-"""Owner admin API: health and the per-match purge (local/contracts/README.md §5). Locally it runs inside the
+"""Owner admin API: health and the per-match purge (local/README.md Contracts §5). Locally it runs inside the
 worker; on Azure (ETL_ROLE=admin) alone, against Azure SQL, behind a bearer token (ETL_ADMIN_TOKEN)."""
 import hmac
 import json

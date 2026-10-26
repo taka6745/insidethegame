@@ -1,5 +1,5 @@
 """Storyline reducer and focus choice: pure functions of the previous storylines and one validated analysis.
-Key events are linked by rule (`_link`), never by the model. Lifecycle: docs/components/analysis.md §2."""
+Key events are linked by rule (`_link`), never by the model. Lifecycle: README.md, Analysis."""
 import copy
 
 FADED = "Closed: no later analysis developed it."  # says nothing about the match, so no excerpt cites it as a trend

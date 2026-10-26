@@ -37,7 +37,7 @@ def subscription_router(service):
     @router.get('/matches/{match_id}/subscription-targets',
                 responses={304: {'description': 'Targets unchanged; reuse the cached revision'}})
     async def targets(match_id: str, if_none_match: str | None = Header(default=None)):
-        """Read-only, for the narrative engine (local/contracts/README.md §8b)."""
+        """Read-only, for the narrative engine (local/README.md Contracts §8b)."""
         return cached_json(*await service.targets(match_id), if_none_match)
 
     return router

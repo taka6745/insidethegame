@@ -1,4 +1,4 @@
-"""Executable schema of the authored commentary fixtures (docs/components/fixtures.md): schema v2, N broadcast
+"""Executable schema of the authored commentary fixtures (README.md, Fixtures): schema v2, N broadcast
 minutes x 12 bucket versions, tiers and key moments, plus the broadcast-clock helpers the binder uses.
 Developer tooling only: the engine never reads these fixtures.
 

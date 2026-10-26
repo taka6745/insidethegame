@@ -1,6 +1,6 @@
 """Decision models: bounded classifiers that answer typed questions (`Noul`, `Choice`, `Score`) about a state,
 with no free text. Adapters behind one protocol, chosen by DECISION_PROVIDER: `systemone` (Microsoft-Decision-1)
-or `llm` (a chat model constrained to a JSON schema of enums). See docs/components/decisions.md."""
+or `llm` (a chat model constrained to a JSON schema of enums). See README.md, Decisions."""
 import os
 from dataclasses import dataclass, field
 from typing import Mapping, Optional, Protocol, Union

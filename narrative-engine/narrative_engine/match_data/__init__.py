@@ -1,5 +1,5 @@
 """What the engine reads from the ETL, every read bounded so it never sees events the ETL has not announced
-or committed (docs/components/match-data.md). `etl_graphql.GraphQLMatchData` implements it against DAB."""
+or committed (README.md, Match data). `etl_graphql.GraphQLMatchData` implements it against DAB."""
 from typing import Optional, Protocol
 
 from narrative_engine.core.models import MatchClock
@@ -26,7 +26,7 @@ class MatchData(Protocol):
         Raises EtlBehind while they are not available."""
 
     async def trends_at(self, match_id, seq: int) -> list:
-        """Enabled trend rows (indicator x team x window, local/contracts/README.md §4b) at canonical `seq`, in the
+        """Enabled trend rows (indicator x team x window, local/README.md Contracts §4b) at canonical `seq`, in the
         engine's shape (etl_graphql.trend_rows); [] for no seq. Raises EtlBehind while behind."""
 
     async def spells_at(self, match_id, seq: int) -> list:

@@ -1,6 +1,6 @@
 """The four agents. Each takes its prompt's variables (prompts/*.txt) as strings and a prompt_source.Prompt
 (None = the shipped file); analyse and author also take `feedback` = (earlier reply, repair request).
-Variables per agent: docs/components/agents.md."""
+Variables per agent: README.md, Agents."""
 from typing import Protocol
 
 from narrative_engine.core.models import AgentResult

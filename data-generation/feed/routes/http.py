@@ -1,4 +1,4 @@
-"""Provider admin API (dev only, local/contracts/README.md §7) and the HLS origin (§6)."""
+"""Provider admin API (dev only, local/README.md Contracts §7) and the HLS origin (§6)."""
 import asyncio
 import re
 from pathlib import Path

@@ -1,6 +1,6 @@
--- Stat catalogue on SPADL (local/contracts/README.md §4): 42 kinds × 3 scopes. Replaces 004's canonical-event
+-- Stat catalogue on SPADL (local/README.md Contracts §4): 42 kinds × 3 scopes. Replaces 004's canonical-event
 -- definitions; kinds keep their ids where the concept is the same (the old → new mapping and every value
--- change are in local/contracts/README.md §4). statsAtSeq(@matchId, @seq) (009_spadl_stats_staged.sql) counts
+-- change are in local/README.md Contracts §4). statsAtSeq(@matchId, @seq) (009_spadl_stats_staged.sql) counts
 -- dbo.spadlActions with finalSeq <= @seq; cards and VAR overturns come from MA3 rows and possession from POS
 -- samples, outside SPADL. reference/catalogue.py reads the seed below and is the executable expectation.
 --

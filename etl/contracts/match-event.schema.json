@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://insidethegame.local/contracts/match-event.schema.json",
   "title": "Match stream message",
-  "description": "One Event Hubs message. MA1 = match info (sent once, first). MA3 = one Opta-style match event. POS = one possession sample. Partition key = matchId. Canonical MatchEvent v2 messages share the hub (local/contracts/README.md) and have no feed.",
+  "description": "One Event Hubs message. MA1 = match info (sent once, first). MA3 = one Opta-style match event. POS = one possession sample. Partition key = matchId. Canonical MatchEvent v2 messages share the hub (local/README.md Contracts) and have no feed.",
   "oneOf": [{ "$ref": "#/$defs/ma1" }, { "$ref": "#/$defs/ma3" }, { "$ref": "#/$defs/pos" }],
   "$defs": {
     "envelope": {

@@ -16,7 +16,7 @@ Style rule: this must read hand-written. No "multi-agent orchestration", "cloud 
 
 ## Video
 
-Rules: the demo video must be **under 2:00**. PLAN §8 records the rule as "under two minutes", so confirm it on the submission page before uploading a 2:30 cut; if only 2:00 counts, cut the tail.
+Rules: the demo video must be **under 2:00**. Confirm the limit on the submission page before uploading a 2:30 cut; if only 2:00 counts, cut the tail.
 
 Mechanism: screen-recorded Google Meet, both of us talking, unscripted from dot points. Demo and talking points inside 2:00; at 2:00 say "if you want to hang around, here's the architecture" and run the optional tail.
 
@@ -41,3 +41,7 @@ The build stays up until 10 Nov, 11:59 pm PT.
 - [ ] Video under 2:00 on public YouTube or Vimeo
 - [ ] Description names the Microsoft technologies; disclosure of synthetic data and AI
 - [ ] Demo URL opens for an anonymous viewer and Start demo works
+- [ ] Hackathon registration and team eligibility confirmed (registration closed 20 Oct)
+- [ ] Foundry quota in Australia East holds through judging (`gpt-6.1-sol` GlobalStandard 250K TPM: `writer` 120K + `questions` 130K; `gpt-6-luna` and `gpt-5-mini` 100K each; `Microsoft-Decision-1` DataZoneStandard 50 RPM)
+- [ ] `BUNDLE_DENYLIST` CI secret created
+- [ ] Decide whether to clean old provider and real-club names from git history

@@ -1,4 +1,4 @@
-"""Messages this service reads from Event Hubs `match-events` (local/contracts/README.md §2, ETL contracts)."""
+"""Messages this service reads from Event Hubs `match-events` (local/README.md Contracts §2, ETL contracts)."""
 from datetime import datetime
 from typing import Annotated, Literal
 

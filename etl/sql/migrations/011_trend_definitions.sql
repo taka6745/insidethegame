@@ -1,4 +1,4 @@
--- Trend definitions (local/contracts/README.md §4b): configuration for trendsAtSeq, trendSpellsAtSeq and
+-- Trend definitions (local/README.md Contracts §4b): configuration for trendsAtSeq, trendSpellsAtSeq and
 -- trendMinutesAtSeq (012_trends_at_seq.sql). Formulas are fixed in the procedures (and reference/trends.py);
 -- this table holds what is tunable: whether a trend may be claimed (enabled) and its thresholds.
 --

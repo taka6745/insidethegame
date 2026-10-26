@@ -2,7 +2,7 @@
 
 CLI (local): `purge` every match from every owner; `start [fixture…]` purges, then starts feed runs from 00:00.
 HTTP (`serve`, behind the frontend's public /demo-api/): start the configured demo, cancel it, read its state.
-Purge order (local/contracts/README.md): feed, ETL, engine, backend. Configuration stays."""
+Purge order (local/README.md Contracts): feed, ETL, engine, backend. Configuration stays."""
 import argparse
 import json
 import os

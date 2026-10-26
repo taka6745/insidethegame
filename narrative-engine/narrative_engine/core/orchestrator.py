@@ -1,5 +1,5 @@
 """Decides what runs when for one match: record each message in its checkpoint, then work through the
-checkpoint in match-time order, so a backlog gives the same output as live. See docs/components/core.md §3."""
+checkpoint in match-time order, so a backlog gives the same output as live. See README.md, Core."""
 import asyncio
 import hashlib
 import json

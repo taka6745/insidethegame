@@ -1,4 +1,4 @@
-"""Provider-side control: the catalogue, runs (N at once) and per-match purge (local/contracts/README.md §5, §7)."""
+"""Provider-side control: the catalogue, runs (N at once) and per-match purge (local/README.md Contracts §5, §7)."""
 import asyncio
 import logging
 import math

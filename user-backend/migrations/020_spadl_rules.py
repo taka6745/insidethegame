@@ -2,7 +2,7 @@
 
 Old rules filtered MatchEvent v2 fields (event_type, outcome, body_part); new rules filter SPADL
 (action_type, result, bodypart, shot_outcome, zones). This migration
-- seeds `rule_vocabulary_map`, the old → SPADL mapping (also docs/components/models.md §2);
+- seeds `rule_vocabulary_map`, the old → SPADL mapping (also README.md, Models);
 - rewrites each saved calculation and its tracked offers to the SPADL rule and new calculation_id,
   recording old → new in `calculation_id_map` so tracked cards follow;
 - keeps a rule with no SPADL equivalent (touches, cards, aerials, ...) as an unavailable tracked card:

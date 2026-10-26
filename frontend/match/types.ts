@@ -1,4 +1,4 @@
-/** Viewer API and live payloads, as used by the client (see docs/live-contract.md). */
+/** Viewer API and live payloads, as used by the client (see frontend/README.md). */
 export type StatNumber = number | string | null | undefined;
 
 /** Club presentation from the match's MA1 data, served by the backend. */
@@ -98,7 +98,7 @@ export interface KeyMoment {
   /** A goal a VAR review overturned. */
   overturned?: boolean;
 }
-/** What a follow is about (local/contracts/README.md §8b). */
+/** What a follow is about (local/README.md Contracts §8b). */
 export interface FollowSpec {
   kind: "storyline" | "team" | "player" | "theme";
   storyline_id?: string | null;

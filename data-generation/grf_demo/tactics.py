@@ -1,6 +1,6 @@
 """Scripted team tactics: a policy layer that steers the built-in AIs through engine knobs.
 
-Script format (tactics.json) and knobs: docs/components/grf-demo.md §4.
+Script format (tactics.json) and knobs: README.md, Grf demo.
 """
 
 import json

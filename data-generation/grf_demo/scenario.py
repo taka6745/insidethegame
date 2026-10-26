@@ -5,7 +5,7 @@ import os
 
 # Runtime knobs read by the prepare_realism engine patch. Tuned headless over full matches
 # towards top-flight norms (about 26 shots, 3 goals, 21 fouls and 4 offsides per match).
-# Each rendered match reports its own totals (data-generation/docs/components/recordings.md).
+# Each rendered match reports its own totals (data-generation/README.md, Recordings).
 REALISM = {
     "GRF_SKILL": 0.4,  # Lift every outfield stat 40% of the way to 1.0.
     "GRF_KEEPER_SKILL": 1.0,

@@ -1,5 +1,5 @@
 # Project name and host ports are overridable, so a throwaway project can run beside itg-local:
-#   docker compose -p itg-verify-x --env-file local/verify.env.example ... (see local/docs/development.md).
+#   docker compose -p itg-verify-x --env-file local/verify.env.example ... (see local/README.md).
 name: ${ITG_PROJECT_NAME:-itg-local}
 
 services:
@@ -304,7 +304,7 @@ services:
     volumes:
       - ../data-generation/recordings:/recordings:ro
       # Optional packaged media, one root: {fixture}/hls/match.m3u8, found per recording; a fixture
-      # without it plays with video: false. ./dev sets ITG_MEDIA_ROOT (see local/docs/architecture.md).
+      # without it plays with video: false. ./dev sets ITG_MEDIA_ROOT (see local/README.md).
       - {type: bind, source: "${ITG_MEDIA_ROOT:-./no-media}", target: /media-source, read_only: true,
          bind: {create_host_path: false}}
       - feed-media:/live-media

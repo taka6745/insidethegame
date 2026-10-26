@@ -29,7 +29,7 @@ resource "azurerm_cosmosdb_sql_database" "narrative" {
   account_name        = azurerm_cosmosdb_account.narrative.name
 }
 
-# All partitioned by matchId (docs/design/narrative-generation-engine.md section 8); analyses are
+# All partitioned by matchId (README.md, How it runs); analyses are
 # immutable storyline snapshots, storylines their current projection; subscriptionDecisions are the
 # immutable story-follow decisions, subscriptionNarratives the follow narratives. A purge deletes all but
 # the tombstones.

@@ -1,7 +1,7 @@
 """Discovers recordings and builds each fixture's provider stream.
 
 A recording is any `*.json` (not an `.opta-*` export) whose teams match a roster fixture; MatchEvent v2 bodies use
-the contract's field names (local/contracts/README.md §2). Media is optional: `{media_root}/{fixture}/hls/match.m3u8`.
+the contract's field names (local/README.md Contracts §2). Media is optional: `{media_root}/{fixture}/hls/match.m3u8`.
 """
 import hashlib
 import json

@@ -15,7 +15,7 @@ def doc_minutes(first, last):
     return [doc(MINUTE, m, m) for m in range(first, last + 1)]
 
 
-# docs/design/narrative-generation-engine.md §5.4: non-superseded blocks after each listed minute.
+# README.md, Context compression: non-superseded blocks after each listed minute.
 WORKED_EXAMPLE = {
     11: [doc(FIVE_MINUTE, 1, 5)] + doc_minutes(6, 11),
     16: [doc(FIVE_MINUTE, 1, 5), doc(FIVE_MINUTE, 6, 10)] + doc_minutes(11, 16),

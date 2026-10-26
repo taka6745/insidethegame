@@ -1,4 +1,4 @@
--- rawEvents.eventSeq: the canonical MatchEvent seq each MA3 row derives from (contracts/README.md), as a
+-- rawEvents.eventSeq: the canonical MatchEvent seq each MA3 row derives from (etl/README.md Contracts), as a
 -- column so snapshot reads (eventSeq <= seq) seek an index instead of parsing payloads. statsAtSeq (009's,
 -- changed in two places) reads that column for cards and VAR overturns, and treats undeclared MA1
 -- capabilities as unavailable: shotOutcomes only when declared true (was: unless declared false). Rerunnable.

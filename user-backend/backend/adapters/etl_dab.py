@@ -1,7 +1,7 @@
 """ETL GraphQL (Data API builder) reads: matches, watermarks, the stat catalogue at a seq, SPADL actions
 and MA3 card rows up to a seq, and canonical events for gap recovery.
 
-Allowlisted queries only (local/contracts/README.md §3); the model never supplies query text. Never
+Allowlisted queries only (local/README.md Contracts §3); the model never supplies query text. Never
 another service's database."""
 import asyncio
 import json
@@ -23,7 +23,7 @@ STATS = '''query ($m: String!, $s: Int!) { executeStatsAtSeq(matchId: $m, seq: $
 # Served trend indicators (multi-minute measures such as field tilt), plain labels and meanings, as of seq.
 TRENDS = '''query ($m: String!, $s: Int!) { executeTrendsAtSeq(matchId: $m, seq: $s) {
   trendId label meaning unit contestantId window minutes value enabled } }'''
-# Final SPADL actions a snapshot may read (local/contracts/README.md §3), paged in action order.
+# Final SPADL actions a snapshot may read (local/README.md Contracts §3), paged in action order.
 ACTIONS = '''query ($m: String!, $from: Int!, $s: Int!, $after: String) { spadlActions(
   filter: {matchId: {eq: $m}, finalSeq: {gt: $from, lte: $s}}, orderBy: {actionId: ASC}, first: 1000, after: $after) {
   items { actionId periodId teamId playerId typeName resultName bodypartName bodypartObserved startX startY endX endY

@@ -3,7 +3,7 @@
 BASE_EVENTS = ["touch", "pass", "shot", "goal"]
 NATIVE_V2_EVENTS = ["corner", "throw_in", "free_kick", "goal_kick", "kick_off", "penalty",
                     "offside", "foul", "foul_won", "card", "keeper_claim", "period_start", "period_end"]
-# Opta-style events derived from native tracking by documented rules (contracts/README.md).
+# Opta-style events derived from native tracking by documented rules (README.md, Event contract).
 DERIVED_EVENTS = ["save", "tackle", "dispossessed", "interception", "blocked_pass", "clearance",
                   "aerial", "take_on", "challenge", "ball_recovery", "out", "corner_awarded",
                   "keeper_pickup", "punch", "offside_provoked", "error", "ball_touch"]

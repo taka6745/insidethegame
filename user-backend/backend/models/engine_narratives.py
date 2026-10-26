@@ -1,4 +1,4 @@
-"""The narrative engine's messages (narrative-engine/contracts/README.md, Output 2): narratives and follow clips."""
+"""The narrative engine's messages (narrative-engine/README.md Contracts, Output 2): narratives and follow clips."""
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator

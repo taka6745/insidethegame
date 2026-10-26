@@ -1,4 +1,4 @@
-"""Decaying-resolution context rules (docs/design/narrative-generation-engine.md §5.3). Pure, no I/O.
+"""Decaying-resolution context rules (README.md, Context compression). Pure, no I/O.
 Levels: 0 = one-minute summary, 1 = five-minute block, 2 = earlier block. Blocks never span periods."""
 from dataclasses import dataclass
 

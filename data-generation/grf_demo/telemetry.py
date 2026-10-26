@@ -1,7 +1,7 @@
 """GRF adapter. Executed contacts and referee decisions are facts; animation starts are not events.
 
 Derived Opta-style events (shot outcomes, saves, tackles, interceptions, clearances, aerials,
-take-ons, recoveries, outs) follow the documented rules in contracts/README.md, applied to
+take-ons, recoveries, outs) follow the documented rules in README.md, Event contract, applied to
 native 100 Hz tracking. Pitch locations use Opta's 0-100 frame for the acting team.
 """
 

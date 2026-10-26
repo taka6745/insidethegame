@@ -1,5 +1,5 @@
 """Shared in-memory indexed calculations over final SPADL actions (each ingested once). No database,
-network or generated exec. Callers serialize mutations; invariants and costs: docs/components/services.md §3.
+network or generated exec. Callers serialize mutations; invariants and costs: README.md, Services.
 """
 from collections import defaultdict
 from decimal import Decimal
@@ -103,7 +103,7 @@ class FilterEngine:
                 value=self._formula_value(identifier), version=1)
             return self.get(identifier)
         # Decimal avoids ordinary binary-float accumulation drift, but its
-        # precision is bounded; see docs/components/services.md §3 for the contract.
+        # precision is bounded; see README.md, Services for the contract.
         value = sum((Decimal(str(rule.contribution(e))) for e in self._events.values()), Decimal(0))
         self._rules[identifier] = rule
         self._totals[identifier] = value

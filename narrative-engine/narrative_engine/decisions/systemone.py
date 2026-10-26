@@ -1,4 +1,4 @@
-"""Microsoft-Decision-1 on Azure AI Foundry over the SystemOne API (docs/components/decisions.md). The limit is
+"""Microsoft-Decision-1 on Azure AI Foundry over the SystemOne API (README.md, Decisions). The limit is
 requests per minute, so DECISION_REQUESTS_PER_MINUTE paces every request of the process and a 429 waits.
 
     python -m narrative_engine.decisions.systemone   # one smoke call; never prints the key

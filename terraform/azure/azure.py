@@ -3,7 +3,7 @@
 Runs on the host with the standard library only. Terraform, the Azure CLI and sqlcmd run in the
 toolbox image (Dockerfile here) with the developer's `az login`; images are built here with Docker.
 State: .local/terraform/<stack>/terraform.tfstate (git-ignored). Secrets are never printed.
-Runbook and costs: terraform/docs/deployment.md.
+Runbook and costs: terraform/README.md.
 """
 import argparse
 import json
@@ -412,7 +412,7 @@ def status(settings):
             print(f"  {r['type'].split('/', 1)[1]:<38} {r['name']:<36} {str(state or ''):<28} "
                   f"{'' if cost is None else f'~${cost}/mo'}")
     print(f"\nEstimated while running as now: ~${total}/month (~${total / 30:.2f}/day) plus usage: "
-          "model tokens, egress beyond 100 GB, SQL beyond the free offer. Details: terraform/docs/deployment.md")
+          "model tokens, egress beyond 100 GB, SQL beyond the free offer. Details: terraform/README.md")
 
 
 PLACEHOLDERS = {  # Outputs a not-yet-applied upstream would have; `plan` only.

@@ -1,12 +1,13 @@
 # Working in InsideTheGame
 
-This hackathon application has a runnable user backend and frontend, plus a simulated match feed and a local Stream Analytics stand-in for the local stack. The Azure ETL pipeline (`etl/`) and the narrative engine (`narrative-engine/narrative_engine/`) are implemented and deployed to Azure with `./dev azure up` (status: PLAN.md §11). The judge demo (PLAN.md §10: Start demo, seeds, clips, cross-game) runs through `local/demo_control.py`; the judge URL is served by `edge-proxy/`. Active areas: `data-generation/`, `etl/`, `narrative-engine/`, `user-backend/`, `frontend/`, `local/`, `edge-proxy/`. Read each service's README before changing it.
+A hackathon application: a simulated match feed, an Azure ETL pipeline (`etl/`), a narrative engine (`narrative-engine/`), a user backend, a frontend, the local stack and demo control (`local/`), Terraform (`terraform/`) and the edge proxy (`edge-proxy/`). Everything is implemented and deployed with `./dev azure up` (status: [README](README.md#status)). Read each service's README before changing it.
 
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
-- Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work. Deployed status lives only in PLAN.md (§11 is the record) and `terraform/docs/overview.md`; other pages state implemented/tested status and link there.
-- The detailed sections of `docs/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
-- Preserve original example prompts in `narrative-engine/docs/design/example-prompts/`. Resolve their output contracts before implementation.
+- Distinguish planned, implemented, tested and deployed work. Deployed status lives only in the root README's Status section and `terraform/README.md`.
+- Never name the local development LLM provider, its hosts or model families in files. Azure AI Foundry and Azure model names are welcome.
+- The detailed sections of `docs/design/plan.excalidraw`, plus later decisions in the READMEs, define the plan. Code and tests never cite plan sections or review tags.
+- Preserve the original example prompts in `narrative-engine/docs/design/example-prompts/`; runtime prompts get a new versioned file.
 - The user backend owns audience definitions and exposes a read-only configuration API. The narrative engine reads those definitions and owns bucket framing. The user backend receives already-bucketed narratives and routes them without rewriting.
 - User questions never trigger the shared narrative workflow. Narrative history uses the narrative service's GraphQL API; live narratives use Service Bus.
 - Live match events reach the user backend through its own Event Hubs consumer group, for every match. History and computed stats use ETL GraphQL.
@@ -16,34 +17,46 @@ This hackathon application has a runnable user backend and frontend, plus a simu
 - Label synthetic data and preserve provenance/licences.
 - Preserve ignored `.local/` runtime environments and assets; do not upload them.
 
-## Service layout and docs
+## Docs
 
-Each implemented service uses the same top-level folders where they apply: `contracts/` (what consumers can rely on), `infra/` (Terraform), `tests/`, `docs/`, plus one folder per component whose name says what it holds. Developer-only code goes in `devtools/`.
-
-Each service's `docs/` has the same pages: `README.md` (index tree), `overview.md`, `architecture.md`, `components/<one page per code folder>.md`, `development.md`, `deployment.md`, `decisions.md`, and `design/` (where it exists) for original design material that is no longer updated. Every page opens with an **In short** summary and a facts table; every numbered section opens with a one-line *In short*. See `etl/docs/` and `narrative-engine/docs/`. Docs live only in a service's `docs/` plus its one `README.md` (and `contracts/README.md`); root keeps `README.md`, `AGENTS.md`, `DEVELOPMENT.md`, `DEVELOPMENT-PRACTICES.md` and `PLAN.md`. Exceptions: `edge-proxy/` (one pass-through Worker) keeps a README only; runtime prompt files (`user-backend/backend/agents/skills/event-data/SKILL.md`) and asset provenance files (`frontend/assets/league/PROVENANCE.md`) stay beside the code that uses them.
+Thirteen tracked `.md` files, no more: the root `README.md` (judge-facing, with the Status section), `AGENTS.md`, `docs/submission.md`, one `README.md` per service (user-backend, narrative-engine, etl, frontend, data-generation, local, terraform, edge-proxy) holding what it is, a diagram, how to run and test it, its contracts and one-line decisions, plus the files code loads at runtime (`user-backend/backend/agents/skills/event-data/SKILL.md`, `frontend/assets/league/PROVENANCE.md`). The cross-service contracts live in `local/README.md` (cite them as "local/README.md Contracts §N"). No plan logs, design history, component pages, duplicated overviews or research notes; READMEs stay short and graphical (tables, the rendered `architecture.svg`), under 300 lines.
 
 ## Code organisation
 
-Follow [DEVELOPMENT-PRACTICES.md](DEVELOPMENT-PRACTICES.md). New code separates models, services, repositories, adapters and HTTP/view layers. Routes call application services; repositories own DB connections. Event vendor keys stay in a replaceable adapter. Structured model output is validated data, never executable Python.
+Each service uses the same folders where they apply: `contracts/` (JSON schemas), `infra/` (Terraform), `tests/`, one folder per component; developer-only code in `devtools/`.
 
-## Current tooling
+```text
+HTTP / UI view → application service → domain model / pure engine
+                         ↓
+                repository or adapter → database / external API
+```
 
-Start with [DEVELOPMENT.md](DEVELOPMENT.md) and each service's `docs/development.md`.
+| Layer | Owns | Must not do |
+| --- | --- | --- |
+| `models/` | Typed inputs, rules, events and invariants | Open databases or call models/APIs |
+| `services/` | Use cases, orchestration, state transitions | Depend on vendor JSON keys or HTTP route objects |
+| `repositories/` | SQL, persistence and transactions | Decide UI behaviour or interpret user requests |
+| `adapters/` | Translate external events, model APIs and replay sources | Leak provider-specific fields into the rule engine |
+| `routes/` / frontend views | Validate/translate requests, render responses | Open DB connections or implement calculations |
+| `agents/` | Define semantic goals; compile bounded rules; validate/repair | Execute arbitrary model output or bypass typed contracts |
 
-- `./dev doctor`: Docker/Compose preflight. `./dev up` starts Postgres + Cosmos and runs checks; `./dev test` reruns them.
-- `ACCEPT_EULA=Y ./dev up azure` / `./dev test azure`: Microsoft emulators, SQL and the ETL's DAB (read-only checks). Only set EULA acceptance with the developer's consent; see `local/README.md`.
-- `./dev terraform check`: format/schema validation and mock-provider tests in Docker; no real Azure calls.
-- `ACCEPT_EULA=Y ./dev up backend` / `./dev test backend`: real-Postgres API tests plus non-destructive probes (Event Hubs → etl-stream → SQL → ETL GraphQL and the backend, then purged). Microsoft emulator licences require each developer's acceptance. See `user-backend/docs/development.md`.
-- `./dev demo start [fixture…]` / `./dev demo purge`: purge every match from every owner (feed → ETL → engine → backend), then start one feed run per fixture (default `riverton-forgeham`; also `redcastle-portalbion`, `skybridge-whitmore`) at the next whole minute, from 00:00, several at once. Configuration (profiles, audience templates with their enabled buckets, prompts, presentation, prices) stays. The feed simulates an external provider: Event Hubs `match-events` (MA1, MA3, POS, MatchEvent v2) and played HLS over HTTP.
-- `./dev` mounts one media root (`ITG_MEDIA_ROOT`, default `.local/media/{fixture}/hls/`, hard-linked from `.local/grf-demo-{fixture}-90/hls/`) into the feed only; the feed has its own Postgres; the feed publishes played segments, nginx proxies `/media/hls/{matchId}/`. Media remains optional and ignored.
-- Judge demo: the viewer's **Start demo** / **Cancel demo** call `demo-control` (`local/demo_control.py serve`, public `/demo-api/{start,cancel,skip,state,status}`; see `local/docs/components/demo-control.md`): always three fixtures, main game (`main_fixture`, default `redcastle-portalbion`) first. Seeds: `docker compose -p itg-local exec demo-control python /checks/demo_control.py record {point} [--from {point}]`, then `capture {point}`, into `.local/seeds/` (Azure Files on Azure).
-- Demo-only seed adapter: export/restore routes on feed, ETL, engine and backend exist only with `DEMO_SEEDS=1` (local compose and the demo build). Core services never branch on a demo; `./dev azure up --release` leaves it off.
-- `./dev benchmark replay`: replay golden set against the local model (`--agent fixture` runs the benchmark double).
-- `./dev down`: stops only this Compose project, preserving database volumes.
-- `python3 .github/scripts/render_architecture.py`, `render_development.py` and `render_master_plan.py` (writes `master-plan.excalidraw`; export it to `master-plan.svg` through Excalidraw, padding 40): regenerate the diagrams, render to PNG and visually inspect.
+- One responsibility per file; split when reasons to change differ. No catch-all helpers or duplicated business rules.
+- Use Microsoft Agent Framework for agent orchestration; compile bounded goals deterministically; tests and benchmarks substitute agent doubles inside the same workflow.
+- Inject dependencies in one composition root. Runtime code has no fixture mode and never reads recordings; doubles live under `tests/` or `benchmarks/`.
+- Validate at boundaries: strict typed models; LLM output is untrusted data; never `eval`/`exec` a structured filter.
+- Repositories own transactions; never report a mutation before commit.
+- Test observable behaviour against real Postgres and the running API/UI; keep expensive benchmarks opt-in.
+- Model configuration stays local: generic variable names, an example file, URLs and keys in ignored files. With no model configured the service reports not ready and refuses model work; it never falls back to a double. Never commit request logs or provider dumps.
+- All browser and Node code is TypeScript; plain `.js` exists only as a generated build artifact.
 
-The feed and `etl-stream` are replaceable local stand-ins (for the provider and Stream Analytics), not production services. Older backend fixtures remain isolated test doubles, not the viewer's runtime upstreams. Never execute generated code inside the API; the local agent workflow interprets goals using Microsoft Agent Framework and compiles a bounded rule DSL deterministically; agent doubles live only in tests and benchmarks. An arbitrary-code isolated executor is still to build. Stream Analytics belongs to the ETL service. Keep Azure cloud deployment separate: `./dev azure up|down|status|plan [--release]` deploys every service with Terraform (see `terraform/docs/deployment.md`; production gaps in `terraform/docs/decisions.md` §2). Azure models: Foundry `gpt-6.1-sol` (deployments `writer` for the engine, `questions` for the backend, effort low; `gpt-6-luna` and `gpt-5-mini` selectable per role in `/dev/`) and `Microsoft-Decision-1` (claim checks, follow triggers, clips, follow offers). The spend guard (`terraform/guard`, applied first, kept by `down`) only emails on budgets, runs Stream Analytics only while events flow and has one last resort at 90 % of the credit. The edge proxy (`edge-proxy/`, `npx wrangler@4.151.3 deploy`) points `msft-hackathon.koda-software.com` at the frontend; update its `UPSTREAM` after a redeploy changes the FQDN. Do not run cloud apply as part of local setup.
+## Tooling
 
-Each service keeps its own Terraform (`terraform/guard`, `etl/infra/`, `narrative-engine/infra/`, `data-generation/infra/`, `terraform/` for the app and demo control); `./dev azure` applies them in order. Confirm with the developer before any `terraform apply`, and stop the ETL's Stream Analytics job after testing (it bills while running).
+- `./dev doctor`, `./dev up [azure|backend]`, `./dev test [azure|backend]`, `./dev down`: the local stack ([local/README.md](local/README.md)). Only set `ACCEPT_EULA=Y` with the developer's consent.
+- `./dev demo start [fixture…]` / `./dev demo purge`: purge every owner (feed → ETL → engine → backend), then start one feed run per fixture at the next whole minute. Configuration stays.
+- Judge demo: the viewer's **Start demo** / **Cancel demo** call demo control (`local/demo_control.py serve`, public `/demo-api/`): always three fixtures, main game first. Seeds: `docker compose -p itg-local exec demo-control python /checks/demo_control.py record {point} [--from {point}]`, then `capture {point}` ([demo control](local/README.md#demo-control)). Seed routes exist only with `DEMO_SEEDS=1`; core services never branch on a demo; `./dev azure up --release` leaves it off.
+- `./dev terraform check`: validation and mock-provider tests in Docker. `./dev azure up|down|status|plan [--release]` deploys every service ([terraform/README.md](terraform/README.md)). Confirm with the developer before any `terraform apply`; stop Stream Analytics after testing (it bills while running); do not run cloud apply as part of local setup. The spend guard (`terraform/guard`) is applied first and kept by `down`.
+- `./dev benchmark replay`: replay golden set against the local model.
+- `python3 .github/scripts/render_architecture.py`, `render_development.py`, `render_master_plan.py`: regenerate the diagrams and inspect them.
+- The edge proxy (`edge-proxy/`, `npx wrangler@4.151.3 deploy`) points `msft-hackathon.koda-software.com` at the frontend; `./dev azure up` rewrites its `UPSTREAM`.
 
-Recheck the official hackathon rules before submission. `.github/workflows/ci.yml` runs every service's tests (no cloud or model calls); no scheduled scraping is configured.
+Recheck the official hackathon rules before submission. `.github/workflows/ci.yml` runs every service's tests (no cloud or model calls).

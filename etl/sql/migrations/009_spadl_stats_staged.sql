@@ -1,4 +1,4 @@
--- SPADL save qualifiers, VAR overturns in goals and a staged statsAtSeq (local/contracts/README.md §3, §4).
+-- SPADL save qualifiers, VAR overturns in goals and a staged statsAtSeq (local/README.md Contracts §3, §4).
 -- Rerunnable on a database that already applied 007/008 with their first definitions.
 
 -- Opta qualifiers of the source MA3 row that tell a save apart: 190 (from a shot off target: the keeper

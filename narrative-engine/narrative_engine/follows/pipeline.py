@@ -1,5 +1,5 @@
 """The follow trigger rules: pure functions of the update, the pinned topics and the served tunables
-(prefilter, gap guard, one batched decision call, fire rule, clips; docs/components/follows.md §3)."""
+(prefilter, gap guard, one batched decision call, fire rule, clips; README.md, Follows)."""
 import json
 
 from narrative_engine.decisions import Noul, Score

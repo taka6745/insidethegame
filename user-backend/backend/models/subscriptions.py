@@ -1,4 +1,4 @@
-"""Story follows (local/contracts/README.md §8b): a viewer follows one story per match; identical follows share a topic."""
+"""Story follows (local/README.md Contracts §8b): a viewer follows one story per match; identical follows share a topic."""
 import hashlib
 import json
 from typing import Annotated, Literal

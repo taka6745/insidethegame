@@ -1,4 +1,4 @@
--- Trend indicators at a snapshot (local/contracts/README.md §3, §4b): trendMinutesAtSeq (per minute and team),
+-- Trend indicators at a snapshot (local/README.md Contracts §3, §4b): trendMinutesAtSeq (per minute and team),
 -- trendsAtSeq (indicator × team × window) and trendSpellsAtSeq (territory and pressure spells). Read-time: each
 -- call recomputes from the rows final at (matchId, seq), so a backlog read equals the live one. Empty for an
 -- unknown or purged match, or for a seq above the watermark or above spadlSeq (retry), never a partial set.

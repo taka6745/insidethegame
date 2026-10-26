@@ -1,6 +1,6 @@
 """The feed's published HLS for one match, read over HTTP like any broadcast origin.
 
-Only played segments are listed (local/contracts/README.md §6), so the playlist's end is the
+Only played segments are listed (local/README.md Contracts §6), so the playlist's end is the
 furthest point a replay may reach. Nothing is mounted or written here."""
 import os
 

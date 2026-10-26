@@ -1,4 +1,4 @@
-"""MA1/MA3 match stream for the ETL Event Hubs contract (etl/contracts/README.md).
+"""MA1/MA3 match stream for the ETL Event Hubs contract (etl/README.md Contracts).
 
 Converts the F24-style export one row per message: MA1 (teams, lineups, provenance, capabilities,
 branding) first, then one MA3 per F24 event in file order. Team set-up rows (type 34) become the MA1

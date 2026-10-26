@@ -1,4 +1,4 @@
--- Trend patterns (local/contracts/README.md §4b). Replaces 012's procedures:
+-- Trend patterns (local/README.md Contracts §4b). Replaces 012's procedures:
 -- - flanks (right_flank_share, left_flank_share), the late fade (territory_fade) and territory by game state
 --   (att_half_leading, att_half_trailing), with their minute components (attActions, rightActions, leftActions,
 --   goalsFor, leadAtStart);

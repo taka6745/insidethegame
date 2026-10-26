@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Disposable per-fixture GRF source: copy the installed instrumented source without build
-# output, apply the fixture's cosmetics plus telemetry/realism/tactics patches, build. See docs/components/grf-demo.md.
+# output, apply the fixture's cosmetics plus telemetry/realism/tactics patches, build. See README.md, Grf demo.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 fixture="${1:?usage: prepare-grf-source.sh <fixture> [dest]}"

@@ -1,4 +1,4 @@
-"""Story follows (local/contracts/README.md §8b): topics, subscriptions, delivered narratives, follow chat, tunables, prompts.
+"""Story follows (local/README.md Contracts §8b): topics, subscriptions, delivered narratives, follow chat, tunables, prompts.
 
 - `subscription_topics`: one generation unit per identical follow per match (shared by its followers).
 - `subscriptions`: a viewer's (conversation's) follows; at most one active per viewer (one per profile and match).

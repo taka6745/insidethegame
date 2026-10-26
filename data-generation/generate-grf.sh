@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Existing instrumented runtime, prepared by prepare-grf-source.sh for GRF_FIXTURE; see docs/components/grf-demo.md.
+# Existing instrumented runtime, prepared by prepare-grf-source.sh for GRF_FIXTURE; see README.md, Grf demo.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root"
