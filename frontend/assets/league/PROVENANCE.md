@@ -1,6 +1,6 @@
 # League visual assets
 
-> **In short:** the demo shows a fictional league, the **Elephant League**. Its wordmark, club crests and clip transition are original project artwork, drawn as plain SVG and CSS on 22–23 October 2026. Names, colours and crest paths come from one mapping, `data-generation/grf_demo/league.json`.
+The application shows a fictional league, the **Elephant League**. Its wordmark, club crests and clip transition are original project artwork, drawn as plain SVG and CSS on 22–23 October 2026. Names, colours and crest paths come from one mapping, `data-generation/grf_demo/league.json`.
 
 | File | Origin |
 |---|---|

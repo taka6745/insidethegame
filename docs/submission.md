@@ -1,47 +1,40 @@
-# Submission (Microsoft Innovate Studio)
+# Submission
 
-## Tagline
-
-Watch three live matches and ask any of them anything.
+**Watch three live matches and ask any of them anything.**
 
 ## Description
 
-**Plain paragraph.** Inside the Game is a match companion for live football. Press Start and three simulated matches kick off with video and a live event feed. Pick your team and your style, and each match's story is written for you as it happens. Ask a question ("who has had more shots since half time?") and you get the number, where it came from and what it cost; ask for a moment and you get the clip. Follow a storyline and it comes back when it moves, clip included. Built in two days on simulated feeds; swap the simulator for a real provider feed and it works.
+Inside the Game is for the questions that come up while you’re watching football. Who has had more shots since half time? Can I see that moment again? Watch, ask, replay or follow a developing story across three matches. Choose commentary to suit your team and style; answers include supporting facts and estimated model cost.
 
-**Technical paragraph.** A simulated provider streams Opta-style events into Azure Event Hubs, and footage as HLS. Azure Stream Analytics writes key events and minute stats to Azure SQL, served as GraphQL by Data API builder. A narrative engine on Microsoft Agent Framework keeps match memory in Azure Cosmos DB, runs one pass per audience bucket on Azure AI Foundry gpt models and publishes over Azure Service Bus. The Microsoft Decision-1 decision model checks claims and decides when a story moves and which moments become clips. The user backend answers questions from ETL stats or compiles a custom stat into a validated rule DSL, all on Azure Container Apps behind a Cloudflare edge Worker; the footage is ours, rendered with Google Research Football.
+The application uses fictional teams and synthetic footage rendered with Google Research Football. Recorded video and events stream at match pace; AI writes the commentary and answers.
 
-Decision-1, for the video: a model that answers typed yes/no, choice or score questions with probabilities and never writes free text. Here it decides when a story moves, which moments become clips, and whether a claim in a narrative is supported by the facts.
+Opta-style events flow through Azure Event Hubs and Stream Analytics into Azure SQL, with history and statistics served through Data API builder GraphQL. Microsoft Agent Framework coordinates narrative agents on Azure AI Foundry. They share match analysis, keep memory in Cosmos DB and write updates per audience group. Service Bus delivers the narratives; Microsoft Decision-1 checks claims, detects story developments and selects clip moments.
 
-Style rule: this must read hand-written. No "multi-agent orchestration", "cloud native", "scalable", "cost optimized".
+Questions take a separate backend path: standard statistics come from ETL; custom requests become validated, bounded rules executed by code. Answers use data available at the viewer’s position; other matches use their own positions. Services run on Azure Container Apps behind a Cloudflare Worker.
 
 ## Video
 
-Rules: the demo video must be **under 2:00**. Confirm the limit on the submission page before uploading a 2:30 cut; if only 2:00 counts, cut the tail.
+Screen-recorded conversation and product walkthrough, **under 2:00**. Recheck the official submission rules before uploading.
 
-Mechanism: screen-recorded Google Meet, both of us talking, unscripted from dot points. Demo and talking points inside 2:00; at 2:00 say "if you want to hang around, here's the architecture" and run the optional tail.
-
-| Time | Beat |
+| Time | Show |
 | --- | --- |
-| 0:00–0:15 | Hook: our own generated footage, three live matches starting; "every frame and every event here is ours, and the models have never seen the future" |
-| 0:15–0:35 | Ask a question in chat; the answer with its facts and receipt (tokens, time, cost) |
-| 0:35–0:55 | Ask for a moment; the clip plays, preview card, slow motion into the moment |
-| 0:55–1:15 | Follow a story; it moves and the follow narrative arrives with its clip; Decision-1 in one sentence |
-| 1:15–1:30 | Cross-game: ask about another live match from the same chat; yellow-outlined cards; "Follow this story?" |
-| 1:30–1:45 | Where we'd take it next: the feed already streams player positions, so tap-a-player overlays on the footage are the next step |
-| 1:45–2:00 | How it works in 20 s over the overview diagram: feed → Event Hubs → Stream Analytics → SQL → engine → Service Bus → backend → viewer; "built in two days, swap the simulator for a real feed" |
-| 2:00–2:30 | Optional tail: README and the detailed architecture diagram, the Microsoft stack, honest seeds, prompt caching |
-
-The build stays up until 10 Nov, 11:59 pm PT.
+| 0:00–0:15 | Three synthetic matches; explain the companion |
+| 0:15–0:35 | Question → facts and cost receipt |
+| 0:35–0:55 | Replay → clip |
+| 0:55–1:15 | Follow → story update; explain Decision-1 |
+| 1:15–1:35 | Cross-match question or all-goals reel |
+| 1:35–1:55 | [Architecture](../architecture.svg); next step: player overlays |
 
 ## Checklist
 
-- [ ] Repo public
-- [ ] Licence file at the root
-- [ ] Screenshots: start screen, match view with cards, chat answer with receipt, follow view with clip, cross-game card, `/dev/` screen
-- [ ] Video under 2:00 on public YouTube or Vimeo
-- [ ] Description names the Microsoft technologies; disclosure of synthetic data and AI
-- [ ] Demo URL opens for an anonymous viewer and Start demo works
-- [ ] Hackathon registration and team eligibility confirmed (registration closed 20 Oct)
-- [ ] Foundry quota in Australia East holds through judging (`gpt-6.1-sol` GlobalStandard 250K TPM: `writer` 120K + `questions` 130K; `gpt-6-luna` and `gpt-5-mini` 100K each; `Microsoft-Decision-1` DataZoneStandard 50 RPM)
+- [ ] Public repo and root licence
+- [ ] Screenshots: start, viewer, answer receipt, follow, cross-match, `/dev/`
+- [ ] Public YouTube/Vimeo video under 2:00
+- [ ] Description names Microsoft technologies and discloses synthetic data/AI
+- [ ] Viewer can open the application and watch a match
+- [ ] Registration, team eligibility and official rules confirmed
+- [ ] Foundry quota holds through judging ([configuration](../terraform/foundry.tf))
 - [ ] `BUNDLE_DENYLIST` CI secret created
-- [ ] Decide whether to clean old provider and real-club names from git history
+- [ ] Review git history for old provider and real-club names
+
+[Application status](../README.md#status) · [Full plan](../plan.excalidraw)

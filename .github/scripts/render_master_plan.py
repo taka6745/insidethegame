@@ -1,8 +1,10 @@
-"""Build the editable target-architecture board; render via the Excalidraw CLI."""
+"""Build the complete editable product architecture and its GitHub-safe SVGs."""
 import base64
 import functools
 import json
+import subprocess
 from pathlib import Path
+from diagram_icons import inline_export_icons
 
 ROOT = Path(__file__).resolve().parents[2]
 ELEMENTS, FILES, NODES, ZONES, LABELS = [], {}, {}, [], {}
@@ -176,14 +178,14 @@ def line(points,label=None,at=None,color=MUTED,dash=False,both=False,badge=None)
 
 text('INSIDE THE GAME',80,35,23,BLUE)
 text('Master architecture',80,78,48)
-text('TARGET DESIGN 19 OCT  ·  DEMO BUILD 22 OCT 2026',790,94,22,MUTED)
+text('PRODUCT ARCHITECTURE',790,94,22,MUTED)
 text('Shared match intelligence. Personal questions. One live experience.',80,146,25,MUTED)
 
-zone('grf',80,250,800,530,'GRF / data generation','Synthetic Riverton Rovers–Forgeham United match · one aligned timeline',ROSE,'#fdf0f3')
+zone('grf',80,250,800,530,'GRF / data generation','Synthetic footage + event feed · one aligned timeline',ROSE,'#fdf0f3')
 zone('etl',80,1050,800,1390,'ETL / match facts','Service-owned storage',ORANGE,'#fff7e9')
 zone('backend',1120,250,1320,1020,'Main user backend','Python · Azure Container Apps · Microsoft Agent Framework',BLUE,'#eaf5ff')
 zone('narrative',1120,1370,1320,1070,'Narrative engine','Python · Azure Container Apps · Microsoft Agent Framework',PURPLE,'#f5efff')
-zone('frontend',2660,250,700,2190,'Frontend / match experience','Static assets + CDN · one live connection per viewer',GREEN,'#eef9f0')
+zone('frontend',2660,250,700,2190,'Frontend / match experience','Cloudflare Worker → nginx / Azure Container Apps',GREEN,'#eef9f0')
 
 node('roster',130,370,450,155,'Match presentation','22 named players · numbered kits\nWider camera · no minimap','kit',ROSE)
 node('video',650,370,180,155,'Video + HLS','2 s segments','screen',ROSE)
@@ -197,21 +199,24 @@ line([(590,665),(650,665)])
 line([(230,590),(230,557),(740,557),(740,525)])
 line([(740,740),(740,805),(480,805),(480,835)],'Replay',(610,805),ROSE,True)
 line([(400,995),(400,1170)],color=INK,dash=True)
-line([(630,910),(1040,910),(1040,1065),(1190,1065)],'Live events',(910,910),INK,True)
+line([(630,910),(1040,910),(1040,1065),(1190,1065)],'Own consumer group',(910,910),INK,True)
 line([(830,447),(940,447),(940,205),(3430,205),(3430,1005),(3290,1005)],'HLS segments · CDN',(2780,205),ROSE)
 
 node('asa',130,1170,300,155,'Stream Analytics','Event time + windows','stream',ORANGE)
 node('key',650,1170,180,155,'Key events','Goals · reds · penalties · VAR','flag',ORANGE)
 node('raw',130,1430,200,155,'Raw passthrough','IDs · revisions','file',ORANGE)
 node('window',390,1430,200,155,'Stat projections','Minute + match','chart',ORANGE)
-node('sql',130,1690,200,170,'Azure SQL','Raw + key events','sql',ORANGE)
+node('sql',130,1690,200,170,'Azure SQL','History · key events · SPADL','sql',ORANGE)
 node('stats',390,1690,200,170,'Azure SQL','Standard stats','sql',ORANGE)
 node('etl-api',650,1690,180,170,'GraphQL API','History + stats','graphql',ORANGE)
-node('commit',130,2040,460,150,'Commit + notify','History + stats readable before triggers publish','check',ORANGE)
+node('spadl',650,1430,180,155,'SPADL processor','Final actions + watermark','python',ORANGE)
+node('commit',130,2040,460,150,'Readiness + notifications','Readers wait for SQL + SPADL watermarks','check',ORANGE)
 line([(430,1247),(650,1247)])
 line([(230,1325),(230,1430)])
 line([(350,1325),(350,1370),(490,1370),(490,1430)])
-line([(740,1325),(740,1630),(300,1630),(300,1690)],'Key ledger',(740,1500))
+line([(740,1325),(850,1325),(850,1630),(300,1630),(300,1690)],'Key ledger',(850,1380))
+line([(200,1690),(200,1660),(690,1660),(690,1585)],'MA3 rows',(420,1660))
+line([(790,1585),(790,1610),(330,1610),(330,1750)],'Final SPADL',(520,1610))
 line([(230,1585),(230,1690)])
 line([(490,1585),(490,1690)])
 line([(590,1775),(650,1775)])
@@ -225,19 +230,20 @@ text('STANDARD STATS',130,2230,20,ORANGE)
 text('Goals · attempts · passes · possession\nFouls · offsides · restarts · headed actions',130,2270,22,INK)
 text('ETL owns facts. Backend never opens these databases.',130,2355,21,ORANGE)
 
-node('models',1530,360,240,150,'Foundry models','Question + goal agents','foundry')
-node('profiles',1890,360,220,150,'Profiles + sessions','One active tab · takeover','users')
+node('models',1530,360,240,150,'Foundry models','Question · goal · replay · follow','foundry')
+node('profiles',1890,360,220,150,'Profiles + sessions','Per viewer + match','users')
 node('pg',2180,360,220,150,'PostgreSQL','Accounts · Match App','postgres')
-node('data-client',1190,540,220,150,'Data clients','ETL / narrative APIs','client')
-node('question',1530,540,240,150,'Question + replay','Stats · clip playlists','agent')
+node('data-client',1190,540,220,150,'Read-only data clients','ETL facts · narrative history','client')
+node('question',1530,540,240,150,'Question router','Stats · evidence · replay tools','agent')
 node('chat',1890,540,240,150,'Chat + action API','Answers · Track · audience','chat')
-node('compiler',1190,770,220,150,'Rule compiler','Validated structured DSL','code')
-node('coder',1530,770,240,150,'Goal / coding agent','Test · repair ≤ 3','agent')
-node('executor',1890,770,240,150,'Isolated executor','Separate container · read-only GraphQL helper','python')
-node('audience-api',2180,770,220,150,'Audience API','Layers · enabled targets','sliders')
-node('index',1190,1000,280,150,'Shared filter index','History backfill + live events\nShared results · Postgres state','grid')
+node('compiler',1190,770,220,150,'Rule compiler','Goal → typed rule DSL','code')
+node('coder',1530,770,240,150,'Goal agent','Typed goal · bounded repairs','agent')
+node('executor',1890,770,240,150,'Rule validation','Bounded DSL · deterministic checks','python')
+node('audience-api',2180,770,220,150,'Configuration API','Audiences · prompts · policy · roles','sliders')
+node('index',1190,1000,280,150,'Event ingest + snapshot','Ordered events · gap recovery\nmin(ETL, SPADL, received)','grid')
+node('rule-execution',1530,1000,240,150,'Rule execution','Final SPADL · shared rules\nCount / sum / composites','code')
 node('cards',1890,1000,220,150,'Cards + pins','Ranked defaults · pins','chart')
-node('live',2180,1000,220,150,'Live gateway','Bucket routing · backlog','fanout')
+node('live',2180,1000,220,150,'Live delivery','Bucket/topic routing\nREST + WebSocket','fanout')
 line([(1410,615),(1530,615)],both=True)
 line([(1770,615),(1890,615)],both=True)
 line([(1650,510),(1650,540)])
@@ -246,19 +252,21 @@ line([(2010,540),(2010,510)])
 line([(2110,435),(2180,435)],both=True)
 line([(1650,690),(1650,770)],both=True)
 line([(1530,845),(1410,845)],both=True)
-line([(1300,920),(1300,1000)],both=True)
+line([(1300,920),(1300,945),(1650,945),(1650,1000)])
 line([(1190,670),(1155,670),(1155,1020),(1190,1020)])
-line([(1470,1075),(1890,1075)],'Changed values',(1680,1052))
+line([(1770,1075),(1890,1075)],'Values',(1830,1062))
+line([(1470,1040),(1490,1040),(1490,1158),(2290,1158),(2290,1150)],'Snapshot gate',(1720,1158))
+line([(1410,650),(1450,650),(1450,980),(1570,980),(1570,1000)],'Final SPADL',(1450,870))
 line([(1410,665),(1470,665),(1470,965),(2250,965),(2250,1000)],'Snapshot: stats + backlog',(1635,945))
 line([(2000,965),(2000,1000)])  # stats branch to the cards
 # Filled dots mark deliberate branches.
-for bx,by,bc in [(2155,1020,MUTED),(1700,1910,MUTED),(2000,965,MUTED),(995,1795,ORANGE),(2610,1280,BLUE),(2610,1380,BLUE),(3430,1005,ROSE)]:
+for bx,by,bc in [(2155,1020,MUTED),(2000,965,MUTED),(995,1795,ORANGE),(2610,1280,BLUE),(2610,1380,BLUE),(3430,1005,ROSE)]:
     element('ellipse',bx-6,by-6,12,12,backgroundColor=bc,strokeColor=bc)
 line([(1390,690),(1390,735),(1910,735),(1910,770)],'Read-only',(1560,735))
 line([(2130,670),(2155,670),(2155,1050),(2110,1050)],'Pins · bucket',(2155,715))
 line([(2155,1020),(2180,1020)])  # bucket branch to gateway routing
-line([(1770,845),(1890,845)],'Tests',(1830,832),both=True)
-line([(1470,1125),(1800,1125),(1800,890),(1890,890)],'Code path',(1800,1000),both=True)
+line([(1770,845),(1890,845)],'Validate',(1830,832),both=True)
+line([(1770,1125),(1800,1125),(1800,890),(1890,890)],'Validated rule',(1800,1000),both=True)
 line([(2290,510),(2290,770)],'Catalogue · enabled flags',(2290,665),both=True)
 line([(2110,1110),(2180,1110)],both=True)
 line([(2130,625),(2730,625)],'Questions',(2550,612),GREEN,both=True)
@@ -266,26 +274,31 @@ line([(2730,470),(2640,470),(2640,585),(2130,585)],'Audience choice',(2540,572),
 line([(2400,1075),(2610,1075),(2610,1380),(2730,1380)],'Live UI',(2610,1180),BLUE)
 line([(2610,1380),(2610,1710),(2730,1710)],color=BLUE)
 line([(2610,1280),(2900,1280),(2900,1235)],'Clock',(2780,1280),BLUE)
-text('PHASE 2',1190,1170,18,GREY)
-for i,title in enumerate(['Question web search']):
-    x = 1190 + i * 615
-    box(x,1200,595,50,'#f7f8fa',GREY,True)
-    text(title,x+10,1214,20,GREY,575,'center')
+box(1190,1170,560,75,'white','#cbd9e7')
+text('Replay tools → code cuts published HLS',1210,1181,20,BLUE)
+text('Observed evidence · clip playlists · cross-match reels',1210,1215,16,MUTED)
+box(1800,1170,600,75,'white','#cbd9e7')
+text('Follow planner → viewer confirms → shared topic',1820,1181,20,BLUE)
+text('Postgres: sessions · questions · follows · calculations · config',1820,1215,16,MUTED)
+line([(940,447),(940,1210),(1190,1210)],'Published HLS',(940,1000),ROSE)
 
 node('listener',1190,1490,220,160,'Trigger listener','Service Bus · minute · key event','bolt',PURPLE)
 node('orchestrator',1530,1490,240,160,'Match orchestrator','Per match · clock · periods','clock',PURPLE)
-node('n-model',1890,1720,240,150,'Foundry models','Strong: author\nSmall: memory agents','foundry',PURPLE)
+node('claim-checks',1890,1490,240,160,'Microsoft-Decision-1','Analyst + author checks\nRepair or drop unsupported text','check',PURPLE)
+node('follow-topics',2180,1490,220,160,'Follow topics','Backend-owned config\nDeduplicated + confirmed','client',PURPLE)
+node('topic-author',2180,1720,220,150,'Follow decisions','Gap + novelty checks\nDecision-1 → topic author','agent',PURPLE)
+node('n-model',1890,1720,240,150,'Analyst + storylines','ETL trend evidence\nDecision-1 claim checks','foundry',PURPLE)
 node('match-client',1190,1720,220,150,'Match data client','Facts · key-event ledger','client',PURPLE)
-node('context',1530,1720,240,150,'Context builder','Active blocks · new facts\nLedger · prior narratives','layers',PURPLE)
+node('context',1530,1720,240,150,'Context builder','Facts · ledger · summaries\nPrior narratives','layers',PURPLE)
 node('summariser',1190,1950,220,150,'Minute summariser','Neutral · shared per match','agent',PURPLE)
 node('compressor',1530,1950,240,150,'Context compressor','1 → 5 min → earlier','agent',PURPLE)
-node('author',1890,1950,240,150,'Narrative author','Once per enabled bucket','agent',PURPLE)
+node('author',1890,1950,240,150,'Narrative author','Per enabled team × style × length','agent',PURPLE)
 node('buckets',2180,1950,220,150,'Enabled targets','Read-only catalogue · ETag cache','client',PURPLE)
-node('memory',1490,2200,380,160,'Cosmos DB / match memory','Blocks · narratives · checkpoints\nAll versions kept · active set gap-free','cosmos',PURPLE)
-node('n-api',1190,2200,220,160,'Narrative GraphQL','Recaps · bucket backlog · stat picks','graphql',PURPLE)
-node('publisher',2180,2200,220,160,'Bucket publisher','Dedupe · text + stat IDs','send',PURPLE)
+node('memory',1490,2200,380,160,'Cosmos DB / match memory','Summaries · storylines · narratives\nCheckpoints · persist before publish','cosmos',PURPLE)
+node('n-api',1190,2200,220,160,'Narrative GraphQL','Recaps · bucket backlog','graphql',PURPLE)
+node('publisher',2180,2200,220,160,'Bucket + topic publisher','Narratives · MomentClip · FollowClip','send',PURPLE)
 line([(1410,1560),(1530,1560)])
-line([(1650,1650),(1650,1720)],'Key event · 10 min',(1650,1665))
+line([(1650,1650),(1650,1720)],'Key events · story turns',(1650,1665))
 line([(1530,1610),(1460,1610),(1460,2000),(1410,2000)],'Minute',(1460,1680))
 line([(1300,1870),(1300,1950)])
 line([(1410,1795),(1530,1795)])
@@ -295,8 +308,7 @@ line([(1650,2100),(1650,2200)],both=True)
 line([(1810,2200),(1810,1840),(1770,1840)])
 line([(1770,1760),(1860,1760),(1860,2025),(1890,2025)])
 line([(2010,1870),(2010,1950)])
-line([(1920,1870),(1920,1910),(1390,1910),(1390,1950)],'Small model',(1580,1910))
-line([(1700,1910),(1700,1950)])
+line([(1770,1795),(1890,1795)],'Trends + context',(1830,1782))
 line([(2180,2025),(2130,2025)])
 line([(2010,2100),(2010,2160),(2250,2160),(2250,2200)])
 line([(1490,2280),(1410,2280)])
@@ -305,14 +317,18 @@ line([(2400,2280),(2560,2280),(2560,1110),(2400,1110)],'Service Bus',(2560,2150)
 line([(2400,845),(2470,845),(2470,2025),(2400,2025)],'Read config',(2470,1318),BLUE)
 line([(1190,2300),(1075,2300),(1075,640),(1190,640)],'Recaps · backlog',(1088,1330),PURPLE)
 
+line([(2010,1650),(2010,1720)],color=PURPLE,both=True)
+line([(2130,1570),(2150,1570),(2150,2010),(2130,2010)],color=PURPLE,both=True)
+line([(2290,1650),(2290,1720)],color=PURPLE)
+line([(2400,1795),(2510,1795),(2510,2240),(2400,2240)],'Follow updates + clips',(2510,2070),PURPLE)
+line([(2400,1205),(2525,1205),(2525,1530),(2400,1530)],'Confirmed topics',(2525,1340),BLUE)
+line([(1770,1760),(1810,1760),(1810,1695),(2290,1695),(2290,1720)],'Events + storylines',(2110,1695),PURPLE)
+line([(1650,1490),(1650,1470),(2590,1470),(2590,2320),(2400,2320)],'Shared MomentClip',(2350,1470),PURPLE,dash=True)
+text('Shared analysis per match · author per bucket · questions never trigger this workflow',1170,2400,19,PURPLE)
 # Graphical frontend: controls, chat, full-frame pitch, five cards, narrative feed.
 box(2730,370,560,135,'white','#cbd9e7');text('Audience selection',2750,385,25,GREEN)
-for row,(label,chips) in enumerate([('Team',['Riverton Rovers','Forgeham','Neither']),('Style',['Analytical','Simple','Casual','Experienced'])]):
-    y = 428 + row * 36
-    text(label,2750,y+5,16,MUTED)
-    for i,chip in enumerate(chips):
-        on = chip in ('Riverton Rovers','Casual')
-        box(2820+i*116,y,108,28,'#dcefe0' if on else '#f0f7f2','#bdd9c5');text(chip,2820+i*116,y+4,16,GREEN,108,'center')
+box(2750,435,520,45,'#f0f7f2','#bdd9c5')
+text('Enabled audience bucket                         ▾',2770,446,20,GREEN)
 box(2730,590,560,210,'white','#cbd9e7');text('Ask about the match',2750,610,25,GREEN)
 text('Short answer · as-of minute · clarification if needed',2750,652,19,MUTED)
 box(2930,688,340,34,'#e8f4ff','#c5d9ef');text('Riverton Rovers headed passes since 20′?',2945,695,16,BLUE)
@@ -325,9 +341,6 @@ box(2770,960,480,195,'#cfe6d5','#75a686')
 element('line',2800,1140,1,1,points=[[0,0],[80,-160],[340,-160],[420,0],[0,0]],strokeColor='#75a686',strokeWidth=2)
 element('line',3010,980,0,160,points=[[0,0],[0,160]],strokeColor='#75a686')
 element('ellipse',2950,1040,120,40,strokeColor='#75a686')
-# Scrub bar: the panel is the aligned match footage, played forward only.
-box(2770,1169,480,6,'#bdd9c5','#bdd9c5');box(2770,1169,300,6,GREEN,GREEN)
-element('ellipse',3062,1164,16,16,backgroundColor=GREEN,strokeColor=GREEN)
 for px,py,col in [(2890,1095,BLUE),(2950,1015,BLUE),(2990,1105,BLUE),(3060,1030,'#b34353'),(3110,1090,'#b34353'),(3150,1005,'#b34353')]:
     element('ellipse',px,py,13,13,backgroundColor=col,strokeColor=col)
 text('HLS live · data held to the picture',2760,1197,19,GREEN)
@@ -348,43 +361,23 @@ for x,title,detail in [(2755,'Clip playlist','In chat · show more'),(3020,'Expa
 line([(3430,1005),(3430,2165),(3290,2165)],color=ROSE)  # VOD replays reuse live segments
 text('No per-viewer narrative generation',2730,2360,21,GREEN)
 
-# Demo build: what the judge URL adds around the target design. Seed routes exist only with DEMO_SEEDS=1.
-DEMO = '#9a6500'
-zone('demo',80,2500,3280,300,'Demo build  ·  23 Oct','Judge URL · Start demo always runs three live matches · deployed on Azure, every start point checked as a viewer',DEMO,'#fffaf0')
-DW, DG, DY = 370, 36, 2610
-for i,(key,title,detail,ic,col) in enumerate([
-        ('edge','Edge proxy','Cloudflare Worker · msft-hackathon.koda-software.com','send',INK),
-        ('demo-control','Demo control','/demo-api/ start · cancel · status · main game first','sliders',INK),
-        ('seeds','Seeds','20′ · HT · 60′ · 85′ · nothing past the point','record',DEMO),
-        ('seed-adapter','Demo seed adapter','DEMO_SEEDS=1 only · export / restore per owner','layers',DEMO),
-        ('decision','Microsoft-Decision-1','Claim checks · follow triggers · clip Score · follow offers','check',PURPLE),
-        ('clips','Clips','Follow + key-event playlists · preview cards · sting · slow motion','screen',GREEN),
-        ('cross','Cross-game','Ask, pin and follow another live match','chat',BLUE),
-        ('guard','Spend guard','Budgets email · Stream Analytics only while events flow','bolt',ORANGE)]):
-    node(key,110+i*(DW+DG),DY,DW,160,title,detail,ic,col)
-for i in (1,2):
-    x = 110+i*(DW+DG)
-    line([(x+DW,DY+80),(x+DW+DG,DY+80)],color=DEMO)
-
 # Legend with drawn samples.
-line([(80,2881),(170,2881)])
-text('Data direction',185,2868,21,MUTED)
-line([(560,2881),(650,2881)],dash=True)
-text('Event Hubs / Service Bus message',665,2868,21,MUTED)
-line([(1080,2881),(1170,2881)],both=True)
-text('Two-way exchange',1185,2868,21,MUTED)
-box(1500,2864,90,34,'#f7f8fa',GREY,True)
-text('Phase 2',1605,2868,21,MUTED)
-element('ellipse',1774,2875,12,12,backgroundColor=MUTED,strokeColor=MUTED)
-text('Branch · a gap marks a crossing, not a join',1800,2868,21,MUTED)
+line([(80,2521),(170,2521)])
+text('Data direction',185,2508,21,MUTED)
+line([(560,2521),(650,2521)],dash=True)
+text('Event Hubs / Service Bus message',665,2508,21,MUTED)
+line([(1080,2521),(1170,2521)],both=True)
+text('Two-way exchange',1185,2508,21,MUTED)
+element('ellipse',1774,2515,12,12,backgroundColor=MUTED,strokeColor=MUTED)
+text('Branch · a gap marks a crossing, not a join',1800,2508,21,MUTED)
 # Colour swatches: arrows take the sending service's colour.
-text('Colour = sender:',80,2920,21,MUTED)
+text('Colour = sender:',80,2560,21,MUTED)
 sx = 80 + measure('Colour = sender:', 21) + 30
 for color,name in [(ROSE,'GRF'),(ORANGE,'ETL'),(BLUE,'Backend'),(PURPLE,'Narrative'),(GREEN,'Frontend'),(INK,'Shared stream'),(MUTED,'Within a service')]:
-    element('line',sx,2933,50,0,points=[[0,0],[50,0]],strokeColor=color,strokeWidth=4)
-    text(name,sx+62,2920,21,color)
+    element('line',sx,2573,50,0,points=[[0,0],[50,0]],strokeColor=color,strokeWidth=4)
+    text(name,sx+62,2560,21,color)
     sx += 62 + measure(name, 21) + 40
-text('Azure target architecture · service ownership preserved · no viewer prompts into shared narrative generation',80,2975,21,MUTED)
+text('Standard stats: ETL · audience configuration: backend · narrative framing: engine · all reads bounded to observed events',80,2615,21,MUTED)
 
 def hop_crossings():
     """Gap one connector at each crossing; the other is drawn over the gap.
@@ -432,7 +425,12 @@ def hop_crossings():
 
 
 hop_crossings()
-scene={'type':'excalidraw','version':2,'source':'InsideTheGame target architecture',
+scene={'type':'excalidraw','version':2,'source':'InsideTheGame product architecture',
        'elements':ELEMENTS,'appState':{'viewBackgroundColor':'#ffffff','theme':'light','gridSize':None,'zoom':{'value':.5}},'files':FILES}
 (ROOT/'master-plan.excalidraw').write_text(json.dumps(scene,separators=(',',':'))+'\n')
 print(f'Created {len(ELEMENTS)} editable elements, {len(FILES)} embedded icon assets')
+subprocess.run(['npx', '--yes', '--registry=https://registry.npmjs.org',
+                'mcp-excalidraw-server@2.1.2', 'render', str(ROOT/'master-plan.excalidraw'),
+                '--format', 'svg', '--no-embed-fonts', '--out', str(ROOT/'master-plan.svg')], check=True)
+inline_export_icons(ROOT/'master-plan.svg')
+(ROOT/'architecture.svg').write_bytes((ROOT/'master-plan.svg').read_bytes())

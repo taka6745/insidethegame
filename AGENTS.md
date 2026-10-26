@@ -1,12 +1,12 @@
 # Working in InsideTheGame
 
-A hackathon application: a simulated match feed, an Azure ETL pipeline (`etl/`), a narrative engine (`narrative-engine/`), a user backend, a frontend, the local stack and demo control (`local/`), Terraform (`terraform/`) and the edge proxy (`edge-proxy/`). Everything is implemented and deployed with `./dev azure up` (status: [README](README.md#status)). Read each service's README before changing it.
+Read the relevant service README before changing it. [Architecture and status](README.md) · [Full plan](plan.excalidraw) · [Contracts](local/README.md#contracts).
 
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
 - Distinguish planned, implemented, tested and deployed work. Deployed status lives only in the root README's Status section and `terraform/README.md`.
 - Never name the local development LLM provider, its hosts or model families in files. Azure AI Foundry and Azure model names are welcome.
-- The detailed sections of `docs/design/plan.excalidraw`, plus later decisions in the READMEs, define the plan. Code and tests never cite plan sections or review tags.
+- The detailed sections of `plan.excalidraw`, plus later decisions in the READMEs, define the plan. Code and tests never cite plan sections or review tags.
 - Preserve the original example prompts in `narrative-engine/docs/design/example-prompts/`; runtime prompts get a new versioned file.
 - The user backend owns audience definitions and exposes a read-only configuration API. The narrative engine reads those definitions and owns bucket framing. The user backend receives already-bucketed narratives and routes them without rewriting.
 - User questions never trigger the shared narrative workflow. Narrative history uses the narrative service's GraphQL API; live narratives use Service Bus.
@@ -19,7 +19,9 @@ A hackathon application: a simulated match feed, an Azure ETL pipeline (`etl/`),
 
 ## Docs
 
-Thirteen tracked `.md` files, no more: the root `README.md` (judge-facing, with the Status section), `AGENTS.md`, `docs/submission.md`, one `README.md` per service (user-backend, narrative-engine, etl, frontend, data-generation, local, terraform, edge-proxy) holding what it is, a diagram, how to run and test it, its contracts and one-line decisions, plus the files code loads at runtime (`user-backend/backend/agents/skills/event-data/SKILL.md`, `frontend/assets/league/PROVENANCE.md`). The cross-service contracts live in `local/README.md` (cite them as "local/README.md Contracts §N"). No plan logs, design history, component pages, duplicated overviews or research notes; READMEs stay short and graphical (tables, the rendered `architecture.svg`), under 300 lines.
+Thirteen tracked `.md` files only: this file, root `README.md`, `docs/submission.md`, the eight service READMEs, runtime `user-backend/backend/agents/skills/event-data/SKILL.md` and `frontend/assets/league/PROVENANCE.md`.
+
+Keep READMEs brief: diagram, purpose, run/test commands, contracts and one-line decisions. Aim for 60 lines per service; the canonical contract reference may be longer. Link source/config instead of duplicating catalogues. No extra histories, research notes or overview pages. Cross-service contracts live only in `local/README.md`; cite as "local/README.md Contracts §N". Put the full plan at root. Diagrams show the complete product flow, never dated deployment badges, demo controls or trial-account housekeeping.
 
 ## Code organisation
 
@@ -52,9 +54,7 @@ HTTP / UI view → application service → domain model / pure engine
 ## Tooling
 
 - `./dev doctor`, `./dev up [azure|backend]`, `./dev test [azure|backend]`, `./dev down`: the local stack ([local/README.md](local/README.md)). Only set `ACCEPT_EULA=Y` with the developer's consent.
-- `./dev demo start [fixture…]` / `./dev demo purge`: purge every owner (feed → ETL → engine → backend), then start one feed run per fixture at the next whole minute. Configuration stays.
-- Judge demo: the viewer's **Start demo** / **Cancel demo** call demo control (`local/demo_control.py serve`, public `/demo-api/`): always three fixtures, main game first. Seeds: `docker compose -p itg-local exec demo-control python /checks/demo_control.py record {point} [--from {point}]`, then `capture {point}` ([demo control](local/README.md#demo-control)). Seed routes exist only with `DEMO_SEEDS=1`; core services never branch on a demo; `./dev azure up --release` leaves it off.
-- `./dev terraform check`: validation and mock-provider tests in Docker. `./dev azure up|down|status|plan [--release]` deploys every service ([terraform/README.md](terraform/README.md)). Confirm with the developer before any `terraform apply`; stop Stream Analytics after testing (it bills while running); do not run cloud apply as part of local setup. The spend guard (`terraform/guard`) is applied first and kept by `down`.
+- `./dev terraform check`: validation and mock-provider tests in Docker. `./dev azure up|down|status|plan [--release]` deploys every service ([terraform/README.md](terraform/README.md)). Confirm with the developer before any `terraform apply`; stop Stream Analytics after testing (it bills while running); do not run cloud apply as part of local setup.
 - `./dev benchmark replay`: replay golden set against the local model.
 - `python3 .github/scripts/render_architecture.py`, `render_development.py`, `render_master_plan.py`: regenerate the diagrams and inspect them.
 - The edge proxy (`edge-proxy/`, `npx wrangler@4.151.3 deploy`) points `msft-hackathon.koda-software.com` at the frontend; `./dev azure up` rewrites its `UPSTREAM`.
