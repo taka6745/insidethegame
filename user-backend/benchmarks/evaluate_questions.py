@@ -15,7 +15,8 @@ def close(actual, expected):
 
 def check(case, body, match_id):
     """Deterministic checks only; prose still needs the saved review notes."""
-    offers = body.get('offers', [])
+    offers = [side for offer in body.get('offers', [])
+              for side in (offer['sides'] if offer.get('kind') == 'comparison' else [offer])]
     checks = {'snapshot': body.get('snapshot', {}).get('match_id') == match_id,
               'status': body.get('status') == case.get('status', 'answer')}
     if 'answer_kind' in case:

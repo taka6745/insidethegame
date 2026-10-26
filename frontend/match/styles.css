@@ -434,7 +434,7 @@ option {
 .stat-card {
   padding: 12px 13px;
   min-width: 0;
-  height: 88px;
+  height: 112px;
   position: relative;
 }
 .stat-card + .stat-card {
@@ -460,14 +460,25 @@ option {
   margin-top: 7px;
 }
 .stat-value.sides {
+  display: grid;
+  gap: 6px;
+}
+.stat-side {
   display: flex;
-  justify-content: space-between;
   align-items: baseline;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
 }
-.stat-side:last-child {
+.stat-team {
+  font-size: 10px;
+  font-weight: 500;
   color: #e0cfe8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+.stat-number { font-size: 20px; }
 .stat-card.tracked .stat-value {
   color: var(--mint);
 }
@@ -485,8 +496,8 @@ option {
 }
 .stat-tag {
   position: absolute;
-  bottom: 13px;
-  right: 9px;
+  top: 5px;
+  right: 26px;
   font-size: 9px;
   color: var(--mint);
 }

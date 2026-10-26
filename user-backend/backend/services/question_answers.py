@@ -1,7 +1,7 @@
 """Resolve the final declared source, never the last incidental tool invocation."""
 from backend.models.events import minute_label
 from backend.models.questions import QuestionDraft
-from backend.models.stat_offers import stat_answer
+from backend.models.stat_offers import comparison_offer, stat_answer
 from backend.agents.measurement_support import real_save_id
 from uuid import uuid4
 import re
@@ -118,12 +118,19 @@ def standard_answer(draft, rows, tools, formula=None):
         lead, rest = score_text(rows, text, getattr(tools, 'score', None))
     tools.offers = [{'id': str(uuid4()), 'kind': 'standard', 'standard_stat_id': item['id'],
                      'label': item['label'], 'value': item['value'],
+                     'team_id': item.get('team_id'),
                      'unit': item.get('unit', ''),
                      'snapshot_id': tools.payload.snapshot.id, 'match_id': tools.payload.snapshot.match_id}
                     for item in rows]
     tools.answer_teams = {row.get('team_id') for row in rows}
     shown = [] if formula else [offer for offer in tools.offers if offer['standard_stat_id'] in {r['id'] for r in rest}]
     tools.answer_text = ' '.join([lead or '', *(stat_answer(offer) for offer in shown)]).strip() if lead else None
+    if not formula and len(rows) == 2 and len({row.get('team_id') for row in rows} - {None}) == 2 \
+            and len({row['id'].split(':', 1)[-1] for row in rows}) == 1:
+        label = rows[0]['label']
+        for team in tools.payload.teams:
+            label = label.removeprefix(team['name'] + ' ')
+        tools.offers = [comparison_offer(tools.offers, label[:1].upper() + label[1:], tools.payload.teams)]
     return QuestionDraft(answer_kind='statistic',status='answer',standard_stat_id=requested,
                          statistic_request=draft.statistic_request,
                          text=tools.answer_text or ' '.join(stat_answer(offer) for offer in tools.offers),

@@ -5,6 +5,7 @@ from uuid import uuid4
 from typing import get_args
 from backend.models.actions import ActionType
 from backend.models.events import minute_label
+from backend.models.stat_offers import comparison_offer
 from backend.services.filter_engine import FilterEngine
 from backend.services.spadl_lookup import lookup
 from backend.services.rule_availability import unsupported_reason, observed_unattributed_events, incomplete_player_rule
@@ -157,6 +158,13 @@ class QuestionTools:
             if incomplete_player_rule(rule, observed_unattributed_events(observed)):
                 return {'status': 'unsupported', 'message': 'Some matching actions have no recorded player, so a complete player total is unavailable.'}
             offers.append(self._offer(goal, rule, engine.register(rule).value, request))
+        if len(offers) > 1:
+            sides = [{**offer, 'team_id': goal.team_ids[0]} for goal, offer in zip(goals, offers)]
+            offers = [comparison_offer(sides, outcome.goal.description, self.payload.teams,
+                                       outcome.goal.model_dump(mode='json'))]
+            identifier = offers[0]['id']
+            self.evidence['offer:' + identifier] = {'id': 'offer:' + identifier, 'kind': 'stat',
+                                                    'label': offers[0]['label']}
         self.offers.extend(offers)
         self.goal = offers[0]['goal']
         offer = offers[0]
@@ -225,10 +233,11 @@ def recap_label(row):
 
 
 def per_team(goal, request, teams):
-    """A count for "each team" (or several named teams) is one offer per team, never one sum."""
+    """Split a measure into independently evaluated team goals, never a combined total."""
     if goal is None or goal.inputs or goal.player_ids or len(teams) < 2:
         return None
-    if not (len(goal.team_ids) > 1 or (not goal.team_ids and PER_TEAM.search(f'{request} {goal.description}'))):
+    split = PER_TEAM.search(f'{request} {goal.description}') or re.search(r'\bboth (?:team|side)s\b', request, re.I)
+    if not (len(goal.team_ids) > 1 or (not goal.team_ids and split)):
         return None
     description = re.sub(r'\s*\b(?:split )?(?:for |by |per )?(?:each|both|every|per) (?:team|side)s?\b', '', goal.description).strip()
     return [goal.model_copy(update={'team_ids': (team['id'],), 'description': f"{team['name']}: {description}"[:500]})

@@ -41,7 +41,7 @@ def tools(prompt, rows, result=None):
     return SimpleNamespace(
         original_prompt=prompt, stats=rows, offers=[], goal=None, answer_text=None, evidence=evidence,
         prepared_results={}, prepare_original=prepare_original,
-        payload=SimpleNamespace(snapshot=SimpleNamespace(id='s', match_id='m'),
+        payload=SimpleNamespace(snapshot=SimpleNamespace(id='s', match_id='m'), teams=TEAMS,
                                 players=[{'id': 'forgeham-9', 'name': 'Callum Brightwell'}]),
         match_data=SimpleNamespace(cards=cards),
         _event_reference=lambda row: evidence.setdefault(row['id'], {**row, 'evidence_id': row['id']}))
@@ -74,7 +74,8 @@ def test_score_and_shots_per_team_are_split_and_scored():
 def test_each_team_splits_a_both_teams_row_but_a_plain_total_does_not():
     rows = stats(**ALL)
     _, toolkit = answer('Corners each team', rows, reuse(rows, 'all:corners'))
-    assert [(o['standard_stat_id'], o['value']) for o in toolkit.offers] == [('riverton:corners', 0), ('forgeham:corners', 3)]
+    assert len(toolkit.offers) == 1 and toolkit.offers[0]['kind'] == 'comparison'
+    assert [(o['standard_stat_id'], o['value']) for o in toolkit.offers[0]['sides']] == [('riverton:corners', 0), ('forgeham:corners', 3)]
     _, toolkit = answer('How many corners in the match?', rows, reuse(rows, 'all:corners'))
     assert [o['standard_stat_id'] for o in toolkit.offers] == ['all:corners']
 

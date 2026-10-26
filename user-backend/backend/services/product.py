@@ -13,7 +13,7 @@ from backend.domain import RuleError
 from backend.models.engine_narratives import EngineFollowClip, EngineMomentClip
 from backend.models.events import DETAIL_FIELDS
 from backend.models.questions import MatchSnapshot
-from backend.models.stat_offers import split_pin_id, viewer_pin_id
+from backend.models.stat_offers import pin_id, split_pin_id, viewer_pin_id
 from backend.models.viewer_audience import bucket_label, supported_side
 from backend.services.live_viewers import LiveViewers
 from backend.services.locks import KeyedLocks
@@ -192,6 +192,8 @@ class MatchProjection:
         for identifier, offer in list(pins.items())[-config.card_slots:]:
             if split_pin_id(identifier)[1]:
                 tracked.append(self.service.cross_card(identifier, offer))
+            elif offer.get('kind') == 'comparison':
+                tracked.append({**comparison_card(offer, shared['calculations'], available), 'pinned': True, 'pin_id': identifier})
             elif offer.get('kind') == 'standard':
                 stat_id = offer['standard_stat_id']
                 stat = available.get(stat_id, {'id': stat_id, 'label': offer['label'], 'value': None, 'available': False,
@@ -250,6 +252,18 @@ class MatchProjection:
             'key_moments': shared.get('key_moments', [])}
 
 
+def comparison_card(offer, calculations, available):
+    """Two live team values occupy one viewer card."""
+    sides = []
+    for side in offer['sides']:
+        result = (available.get(side['standard_stat_id'], {}) if side.get('kind') == 'standard'
+                  else calculations.get(pin_id(side), {}))
+        value = result.get('value') if result.get('available', True) and result.get('complete', True) else None
+        sides.append({'team_id': side['team_id'], 'name': side['name'], 'value': value})
+    return {'id': pin_id(offer), 'kind': 'custom', 'label': offer['label'], 'unit': offer.get('unit', ''),
+            'value': None, 'sides': sides}
+
+
 def paired(stat, available, teams):
     """A default card shows its kind for both teams (home, then away) in one slot: `sides` carries each team's value
     from the catalogue (None when that team's row is missing or incomplete); `value` stays the resolved stat's own."""
@@ -303,7 +317,9 @@ class ProductService:
         card = {'id': identifier, 'label': offer['label'], 'value': None, 'available': False, 'complete': False,
                 'unavailable_reason': 'That match is no longer live.'}
         if shared:
-            if offer.get('kind') == 'standard':
+            if offer.get('kind') == 'comparison':
+                stat = comparison_card(offer, shared['calculations'], {s['id']: s for s in shared['stats']})
+            elif offer.get('kind') == 'standard':
                 stat = next((s for s in shared['stats'] if s['id'] == offer['standard_stat_id']), None)
             else:
                 stat = shared['calculations'].get(base)
@@ -453,7 +469,7 @@ class ProductService:
     def _subscription(viewer):
         # Live delivery retains routing/pin IDs, never the viewer's chat transcript.
         return {key: viewer[key] for key in ('match_id', 'profile_id', 'viewer_id', 'profile', 'audience', 'follow') if key in viewer} | {
-            'offers': [{key: offer[key] for key in ('calculation_id', 'kind', 'standard_stat_id', 'label', 'unsupported')
+            'offers': [{key: offer[key] for key in ('calculation_id', 'kind', 'standard_stat_id', 'label', 'unsupported', 'sides', 'unit')
                         if key in offer} for offer in viewer['offers'] if offer.get('calculation_id')]}
 
     async def attach(self, match_id, token):
@@ -521,6 +537,14 @@ class ProductService:
             projection.live.update(str(token), self._subscription(viewer))
             await projection.refresh()
             return {**result, 'snapshot': projection.compose(viewer)}
+
+    async def clear_questions(self, match_id, token):
+        async with self._locks(match_id):
+            await self.questions.clear(match_id, token)
+            viewer = await self.bootstrap(match_id, token)
+            projection = self.projection(match_id)
+            projection.live.update(str(token), self._subscription(viewer))
+            return viewer
 
     async def untrack(self, match_id, token, calculation_id):
         async with self._locks(match_id):

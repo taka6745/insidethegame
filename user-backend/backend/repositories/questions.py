@@ -44,14 +44,28 @@ class QuestionRepository:
     def read(self, token):
         with self.store.connect() as conn:
             row = self._session(conn, token)
-            turns = conn.execute('SELECT id,request_id,prompt,status,reply,channel FROM question_turns WHERE conversation_id=%s ORDER BY id', (row['id'],)).fetchall()
+            turns = conn.execute("SELECT id,request_id,prompt,status,reply,channel FROM question_turns WHERE conversation_id=%s AND status<>'cleared' ORDER BY id", (row['id'],)).fetchall()
             offers = conn.execute('SELECT id,document,calculation_id FROM question_offers WHERE conversation_id=%s', (row['id'],)).fetchall()
         # Question and follow-chat turns share the table; each channel is its own conversation.
-        channel = lambda name: [{k: t[k] for k in t if k != 'channel'} for t in turns if t['channel'] == name]
+        channel = lambda name: [{k: t[k] for k in t if k != 'channel'} for t in turns
+                                if t['channel'] == name]
         return {'session_token': str(token), 'profile_id':row['profile_id'], 'viewer_id': row['viewer_id'],
                 'match_id':row['match_id'], 'audience': row['audience'], 'turns':channel('questions'),
                 'follow_turns': channel('follow'),
                 'offers':[{**r['document'],'id':str(r['id']),'calculation_id':r['calculation_id']} for r in offers]}
+
+    def clear(self, token):
+        """Reset Ask context while preserving tracked offers and the separate follow conversation."""
+        with self.store.connect() as conn:
+            row = self._session(conn, token, lock=True)
+            if conn.execute("SELECT 1 FROM question_turns WHERE conversation_id=%s AND channel='questions' "
+                            "AND status='pending'", (row['id'],)).fetchone():
+                raise RuleError('question_busy', 'Please wait for the current answer before clearing Ask.', 409)
+            conn.execute("DELETE FROM question_offers WHERE conversation_id=%s AND calculation_id IS NULL "
+                         "AND turn_id IN (SELECT id FROM question_turns WHERE conversation_id=%s AND channel='questions')",
+                         (row['id'], row['id']))
+            conn.execute("UPDATE question_turns SET status='cleared', prompt='', reply=NULL "
+                         "WHERE conversation_id=%s AND channel='questions'", (row['id'],))
 
     def set_audience(self, token, audience):
         with self.store.connect() as conn:

@@ -694,3 +694,8 @@ button.answer-receipt-line:focus-visible {
   flex-basis: 100%;
   margin-bottom: 0;
 }
+
+.ask-toolbar { display: flex; justify-content: flex-end; padding: 8px 18px 0; }
+.ask-toolbar button { padding: 4px 8px; font-size: 11px; color: #e0cfe8; background: transparent; }
+.offer .stat-value.sides { grid-column: 1 / -1; width: 100%; }
+.offer .stat-side .stat-team { font-size: 12px; }

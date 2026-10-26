@@ -219,7 +219,8 @@ def test_named_measure_is_never_a_plain_event_count(request_text, goal, status, 
 
 def tools_for(stats):
     return SimpleNamespace(stats=stats, offers=[], goal=None,
-                           payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', match_id='match')))
+                           payload=SimpleNamespace(snapshot=SimpleNamespace(id='snapshot', match_id='match'),
+                               teams=[{'id': 'riverton', 'name': 'Riverton Rovers'}, {'id': 'forgeham', 'name': 'Forgeham United'}]))
 
 
 def test_possession_split_answers_each_team_from_etl():
@@ -227,7 +228,8 @@ def test_possession_split_answers_each_team_from_etl():
     draft = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',
                                                      standard_stat_id='all:possession'), tools))
     assert draft.text == 'Riverton Rovers possession: 53.2%. Forgeham United possession: 46.8%.'
-    assert [offer['standard_stat_id'] for offer in tools.offers] == ['riverton:possession', 'forgeham:possession']
+    assert len(tools.offers) == 1 and tools.offers[0]['kind'] == 'comparison'
+    assert [offer['standard_stat_id'] for offer in tools.offers[0]['sides']] == ['riverton:possession', 'forgeham:possession']
     assert draft.evidence_ids == ['stat:riverton:possession', 'stat:forgeham:possession']
     # Overall pass accuracy is not the sum of team accuracies: one row.
     draft = asyncio.run(resolve_answer(QuestionDraft(answer_kind='statistic', status='answer', text='?',

@@ -79,6 +79,12 @@ class QuestionService:
             raise RuleError('session_not_found', 'This session belongs to another match.', 404)
         return {**row, 'mode': self.mode, 'synthetic': True}
 
+    async def clear(self, match_id, token):
+        async with self._locks(match_id):
+            await self.read(match_id, token)
+            async with self.registry.get(match_id).guard():
+                await asyncio.to_thread(self.repository.clear, token)
+
     async def ask(self, match_id, token, request_id, prompt, seq=None):
         """`seq`: the snapshot the viewer's picture shows; the answer never cites anything later."""
         if self.agent is None:
@@ -312,15 +318,15 @@ class QuestionService:
                 if self.cross is None:
                     raise RuleError('wrong_match', 'This offer belongs to another match.', 409)
                 match = await self.cross.other(match_id, document.get('match_id'))
-            if document.get('kind') == 'standard':
-                payload = await self.match_data.capture(match)
-                stats = await self.match_data.stats(payload.snapshot)
-                stat = next((s for s in stats['stats'] if s['id'] == document['standard_stat_id']), None)
-                if not stat or not stat.get('available') or not stat.get('complete'):
-                    raise RuleError('stat_unavailable', 'This statistic is temporarily unavailable.', 503)
-                calculation = {**stat, 'id': pin_id(document), 'kind': 'standard', 'standard_stat_id': stat['id']}
+            if document.get('kind') == 'comparison':
+                sides = []
+                for side in document['sides']:
+                    result = await self._calculation(match, side)
+                    sides.append({'team_id': side['team_id'], 'name': side['name'], 'value': result['value']})
+                calculation = {'id': pin_id(document), 'label': document['label'], 'value': None,
+                               'unit': document.get('unit', ''), 'sides': sides}
             else:
-                calculation = await match.register(Rule.model_validate(document['rule']), document['label'])
+                calculation = await self._calculation(match, document)
             if match is not here:
                 calculation = {**calculation, 'id': viewer_pin_id(document, match_id)}
             # Registration releases the match lock. Fence the durable link too: a purge in
@@ -328,6 +334,16 @@ class QuestionService:
             async with here.guard():
                 await asyncio.to_thread(self.repository.tracked, token, offer_id, calculation['id'])
             return {'offer_id': str(offer_id), 'calculation': calculation, 'tracked': True}
+
+    async def _calculation(self, match, document):
+        if document.get('kind') != 'standard':
+            return await match.register(Rule.model_validate(document['rule']), document['label'])
+        payload = await self.match_data.capture(match)
+        stats = await self.match_data.stats(payload.snapshot)
+        stat = next((s for s in stats['stats'] if s['id'] == document['standard_stat_id']), None)
+        if not stat or not stat.get('available') or not stat.get('complete'):
+            raise RuleError('stat_unavailable', 'This statistic is temporarily unavailable.', 503)
+        return {**stat, 'id': pin_id(document), 'kind': 'standard', 'standard_stat_id': stat['id']}
 
 
 def _merged_replay(parts, text):

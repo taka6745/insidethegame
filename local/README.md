@@ -58,7 +58,7 @@ Internal `feed:8000`, `/feed-api/` through developer auth. Recordings, runs and 
 
 ### 8. Backend product API
 
-[Product routes](../user-backend/backend/routes/product.py): matches, profiles, prices and sessions. Session identity is viewer + profile + match. Questions use `min(latest, shown seq)`; audience changes select an enabled bucket. WebSocket close codes: `4404` match gone, `4001` replaced session, `1013` overload. Snapshots include cards, narratives, follows and clips.
+[Product routes](../user-backend/backend/routes/product.py): matches, profiles, prices and sessions. Session identity is viewer + profile + match. Questions use `min(latest, shown seq)`; audience changes select an enabled bucket. WebSocket close codes: `4404` match gone, `4001` replaced session, `1013` overload. Snapshots include cards, narratives, follows and clips. Comparison cards use labelled `sides` for both teams in one slot. `DELETE …/messages` clears Ask history/context and untracked offers; pins and follows remain.
 
 Backend owns audience definitions, prompts, policy and model roles. Engine reads enabled `generation_targets`, frames each bucket, publishes over Service Bus; backend routes unchanged. History/reconnects use engine GraphQL. Viewers never enable buckets; questions never trigger shared narratives.
 

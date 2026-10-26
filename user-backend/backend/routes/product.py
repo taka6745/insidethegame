@@ -91,6 +91,10 @@ def product_router(service):
     async def ask(match_id: str, token: UUID, body: MessageRequest):
         return await service.questions.ask(match_id, token, body.request_id, body.prompt, body.seq)
 
+    @router.delete(session + '/messages')
+    async def clear_questions(match_id: str, token: UUID):
+        return await service.clear_questions(match_id, token)
+
     @router.get(session + '/turns/{turn_id}/replay/{page}')
     async def replay_page(match_id: str, token: UUID, turn_id: int, page: int):
         return await service.questions.replay_page(match_id, token, turn_id, page)

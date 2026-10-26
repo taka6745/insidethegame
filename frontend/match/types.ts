@@ -64,7 +64,7 @@ export interface StatCard {
   pin_id?: string;
   /** Pinned from another live match of the demo, at that match's own position. */
   other_match?: OtherMatch | null;
-  /** A default card: the kind's value for each team, home first (null when that side has no complete row). */
+  /** A comparison card: one labelled value per team (null for unavailable data). */
   sides?: StatSide[];
 }
 export interface StatSide { team_id: string; name?: string | null; value?: StatNumber }
@@ -177,6 +177,7 @@ export interface Snapshot {
   key_moments?: KeyMoment[];
 }
 export interface Offer {
+  sides?: StatSide[];
   id: string;
   label?: string;
   value?: StatNumber;

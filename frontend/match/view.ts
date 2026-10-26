@@ -1,3 +1,4 @@
+import { statDisplay } from "./stat-value.ts";
 import { applyBrand, clubBrand, monogram, teamBranding } from "./branding.ts";
 import { AudienceView } from "./audience-view.ts";
 import { node, keyedList } from "../shared/dom.ts";
@@ -10,7 +11,6 @@ import {
   isFinished,
   title,
   number,
-  statValue,
 } from "./format.ts";
 import type { ConnectionState, KeyMoment, Narrative, OtherMatch, Replay, Snapshot, StatCard, Team } from "./types.ts";
 
@@ -245,13 +245,8 @@ export class MatchView {
     }
     return markOtherMatch(this.document, element, card.other_match);
   }
-  /** One value, or a default card's two: home left and away right, as the scoreboard above. */
   statValue(card: StatCard): HTMLElement {
-    if (!card.sides?.length) return node(this.document, "strong", statValue(card), "stat-value");
-    const value = node(this.document, "strong", "", "stat-value sides");
-    value.title = card.sides.map((side) => `${side.name || side.team_id} ${statValue({ ...card, value: side.value })}`).join(" · ");
-    value.append(...card.sides.map((side) => node(this.document, "span", statValue({ ...card, value: side.value }), "stat-side")));
-    return value;
+    return statDisplay(this.document, card);
   }
   narrative(item: Narrative, tag?: string): HTMLElement {
     const article = node(this.document, "article", "", "narrative");

@@ -285,17 +285,18 @@ test("standard stat gains tracking controls and removes them after unpin", () =>
   assert.equal(fromElement(view.stat(card, asElement(element))).querySelector("button"), null);
 });
 
-test("a default card shows both teams' values in one slot, home left, and updates in place", () => {
+test("a comparison card labels each team beside its value and updates in place", () => {
   const view = new MatchView(asDocument(documentStub()));
   const sides = [{ team_id: "riverton", name: "Riverton Rovers", value: 12 }, { team_id: "forgeham", name: "Forgeham United", value: null }];
   const card: StatCard = { id: "riverton:passes", kind: "standard", label: "Passes", value: 12, sides };
   const element = fromElement(view.stat(card));
   const value = element.querySelector(".stat-value")!;
-  assert.deepEqual(value.children.map((side) => side.textContent), ["12", "—"]);
+  assert.deepEqual(value.children.map((side) => side.querySelector(".stat-number")!.textContent), ["12", "—"]);
   assert.equal(value.title, "Riverton Rovers 12 · Forgeham United —");
+  assert.deepEqual(value.children.map(side => side.querySelector(".stat-team")!.textContent), ["Riverton Rovers", "Forgeham United"]);
   const again = fromElement(view.stat({ ...card, sides: [{ ...sides[0]!, value: 13 }, { ...sides[1]!, value: 9 }] }, asElement(element)));
   assert.equal(again, element);
-  assert.deepEqual(element.querySelector(".stat-value")!.children.map((side) => side.textContent), ["13", "9"]);
+  assert.deepEqual(element.querySelector(".stat-value")!.children.map((side) => side.querySelector(".stat-number")!.textContent), ["13", "9"]);
 });
 
 test("club colours and crests come from the match data, never a club table", () => {
@@ -609,4 +610,15 @@ test("answers carry a compact receipt; facts expand and new prices re-cost it wi
   assert.ok(texts(facts).includes("Riverton Rovers shots"));
   view.setPrices({ input: 400, output: 1600 });
   assert.equal(line.textContent, "✓ 1 fact · 1.8k tok · 4.2s · $1.140");
+});
+
+
+test("Ask clear action is enabled only for an idle conversation with turns", () => {
+  const document = documentStub(), view = new QuestionView(asDocument(document));
+  view.render({ turns: [], offers: [] });
+  assert.equal(document.getElementById("question-clear").disabled, true);
+  view.render({ turns: [{ id: 1, prompt: "Shots?", status: "complete" }], offers: [] });
+  assert.equal(document.getElementById("question-clear").disabled, false);
+  view.status("Working", true);
+  assert.equal(document.getElementById("question-clear").disabled, true);
 });

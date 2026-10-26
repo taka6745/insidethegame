@@ -218,6 +218,10 @@ field.addEventListener("keydown", (event) => {
   event.preventDefault();
   byId<HTMLFormElement>("question-form").requestSubmit();
 });
+byId("question-clear").addEventListener("click", async () => {
+  if (await controller.clearQuestions()) field.value = "";
+  field.focus();
+});
 byId("question-form").addEventListener("submit", (event) => {
   event.preventDefault();
   const prompt = field.value.trim();

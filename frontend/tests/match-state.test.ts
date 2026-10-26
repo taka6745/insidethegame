@@ -570,3 +570,17 @@ test("a skip flushes held and received states and the chat's replay pages, then 
   assert.equal(f.renders.at(-1)?.match.clock_seconds, 3900);  // the same version renders again: it is the fresh state
   assert.equal(f.chats.length, 1);
 });
+
+
+test("clearing Ask uses the existing session and does not reconnect live delivery", async () => {
+  const calls: string[] = [];
+  const f = fixture({ clearQuestions: async (token: string) => {
+    calls.push(token); return { session_token: token, turns: [], offers: [], snapshot: snapshot() };
+  }});
+  f.controller.session = { turns: [{ id: 1, prompt: "Earlier", status: "complete" }], offers: [] };
+  await f.controller.clearQuestions();
+  assert.deepEqual(calls, ["t"]);
+  assert.equal(f.controller.token, "t");
+  assert.deepEqual(f.chats.at(-1)!.turns, []);
+  assert.equal(f.controller.busy, false);
+});

@@ -1,5 +1,6 @@
 import { node, keyedList } from "../shared/dom.ts";
-import { clock, statValue } from "./format.ts";
+import { statDisplay } from "./stat-value.ts";
+import { clock } from "./format.ts";
 import { ClarificationView } from "./clarification-view.ts";
 import { markOtherMatch } from "./other-match.ts";
 import { replayCard } from "./replay-card.ts";
@@ -19,6 +20,7 @@ export class QuestionView {
   onTrack: (id: string) => unknown;
   onClarify?: (text: string) => unknown;
   private busy = false;
+  private hasTurns = false;
   private clarifications = new Map<string, { view: ClarificationView; active: boolean }>();
   onReplayPage: (turnId: string | number, page: number) => Promise<Replay>;
   onReplayPlay: (replay: Replay, opener: HTMLElement) => unknown;
@@ -48,8 +50,16 @@ export class QuestionView {
   forget() {
     this.replayPages.clear();
   }
+  reset() {
+    this.forget();
+    this.askedAt.clear();
+    this.declined.clear();
+    this.clarifications.clear();
+    this.receipts.clear();
+  }
   status(text: string, busy = false) {
     this.busy = busy;
+    this.updateClear();
     this.updateClarifications();
     this.get("question-status").textContent = text;
     (this.get("question-send") as HTMLButtonElement).disabled = busy;
@@ -58,6 +68,8 @@ export class QuestionView {
       button.disabled = busy;
   }
   render(session: ChatSession) {
+    this.hasTurns = Boolean(session.turns?.length);
+    this.updateClear();
     const container = this.get("chat-messages");
     const atBottom =
       container.scrollHeight - container.scrollTop - container.clientHeight <
@@ -160,7 +172,7 @@ export class QuestionView {
       const card = node(this.document, "div", "", "offer");
       card.append(
         node(this.document, "span", offer.label),
-        node(this.document, "strong", statValue(offer)),
+        statDisplay(this.document, offer),
       );
       const button = node(
         this.document,
@@ -210,6 +222,10 @@ export class QuestionView {
     });
     card.append(follow, decline);
     return card;
+  }
+  private updateClear() {
+    const button = this.get("question-clear") as HTMLButtonElement | null;
+    if (button) button.disabled = this.busy || !this.hasTurns;
   }
   private updateClarifications() {
     for (const { view, active } of this.clarifications.values()) view.setEnabled(active && !this.busy);

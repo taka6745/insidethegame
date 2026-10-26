@@ -34,6 +34,7 @@ export type ControllerApi = Pick<
   | "restore"
   | "audience"
   | "ask"
+  | "clearQuestions"
   | "track"
   | "unpin"
   | "socketUrl"
@@ -43,7 +44,7 @@ export type ControllerView = Pick<MatchView, "render" | "error" | "connection" |
   audience: Pick<AudienceView, "setBusy" | "render">;
 };
 export type ControllerQuestions = Pick<QuestionView, "render" | "status" | "onTrack" | "onReplayPage" | "onClarify">
-  & Partial<Pick<QuestionView, "askedAt" | "forget">>;
+  & Partial<Pick<QuestionView, "askedAt" | "forget" | "reset">>;
 export interface ControllerOptions {
   api: ControllerApi;
   view: ControllerView;
@@ -416,6 +417,28 @@ export class MatchController {
       );
       this.view.error(friendly(error));
       this.onRetryPrompt?.(prompt);
+    } finally {
+      if (generation === this.generation) this.busy = false;
+    }
+  }
+  async clearQuestions() {
+    if (!this.token || this.busy || this.session?.turns?.some(turn => turn.status === "pending")) return;
+    const token = this.token, generation = this.generation;
+    this.busy = true;
+    this.questions.status("Clearing Ask…", true);
+    this.timers.clearTimeout(this.pendingTimer);
+    try {
+      const session = await this.api.clearQuestions(token);
+      if (generation !== this.generation) return;
+      this.retry = null;
+      this.questions.reset?.();
+      this.showChat(session);
+      this.view.error("");
+      return true;
+    } catch (error) {
+      if (generation !== this.generation) return;
+      this.showChat(this.session!);
+      this.view.error(friendly(error));
     } finally {
       if (generation === this.generation) this.busy = false;
     }

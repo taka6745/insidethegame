@@ -139,6 +139,9 @@ export class MatchApi {
       timeout: QUESTION_TIMEOUT_MS,
     });
   }
+  clearQuestions(token: string) {
+    return this.request<ViewerSession>(`${this.sessions(token)}/messages`, { method: "DELETE" });
+  }
   track(token: string, id: string) {
     return this.request<SnapshotResult>(
       `${this.sessions(token)}/offers/${encodeURIComponent(id)}/track`,
