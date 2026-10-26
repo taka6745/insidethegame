@@ -47,11 +47,11 @@ When finished: `./dev down`.
 
 ## Status
 
-Last recorded Azure check: **26 Oct 2026**, build `7208b2b`. These are recorded results, not continuous monitoring.
+Last recorded Azure check: **26 Oct 2026**, build `dedfb2d`. These are recorded results, not continuous monitoring.
 
 | | Recorded result |
 | --- | --- |
-| **Deployed** | Live matches, questions, cross-match follows, clips and all-goals reels. Foundry `gpt-6.1-sol` + `Microsoft-Decision-1` |
-| **Measured** | Questions ~6 s; narrative processing ~0.5 match minutes behind |
+| **Deployed** | Live matches, questions, follows and replays; labelled team values, both-team custom-stat cards and Clear chat (pins preserved). Foundry `gpt-6.1-sol` + `Microsoft-Decision-1` |
+| **Measured** | Live check: time-filtered custom-stat answer 8.4 s; both team values updated over WebSocket |
 | **Open** | Azure grounding sample; authentication, quotas and coordinated replicas ([production gaps](terraform/README.md#decisions-and-production-gaps)) |
 | **Limits** | Stream Analytics cold start 75–90 s; local narrative lag; no extra time/shoot-outs; momentum and fast-break claims disabled |
