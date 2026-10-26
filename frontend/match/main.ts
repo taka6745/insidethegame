@@ -99,8 +99,12 @@ overlay.onFreeze = (on) => {
   else void footage.play().catch(() => undefined);
   for (const region of document.querySelectorAll<HTMLElement>(".masthead, #match-main, footer")) region.inert = on;
 };
-controller.onShown = (snapshot) => overlay.clock(snapshot.match.clock_seconds);
-void showSkip(document, api.match, undefined, { overlay, clock: () => controller.shown?.match.clock_seconds });
+controller.onShown = (snapshot) => overlay.update(snapshot);
+void showSkip(document, api.match, undefined, {
+  overlay,
+  clock: () => controller.shown?.match.clock_seconds,
+  caches: { flush: () => { stage.close(); controller.flush(); }, resync: () => controller.resync() },
+});
 const followView = new FollowView(document);
 const follows = new FollowController({ api, view: followView, host: controller });
 controller.follows = follows;

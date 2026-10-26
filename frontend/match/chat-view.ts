@@ -44,6 +44,10 @@ export class QuestionView {
   get(id: string): HTMLElement {
     return this.document.getElementById(id) as HTMLElement;
   }
+  /** Drop cached replay pages (after a skip they describe the match before it). */
+  forget() {
+    this.replayPages.clear();
+  }
   status(text: string, busy = false) {
     this.busy = busy;
     this.updateClarifications();

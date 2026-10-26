@@ -554,3 +554,19 @@ test("questions wait longer than the backend's 240 s budget; other calls keep 75
   } finally { AbortSignal.timeout = original; }
   assert.deepEqual(asked, [QUESTION_TIMEOUT_MS, 75000]);
 });
+
+test("a skip flushes held and received states and the chat's replay pages, then re-reads the session", async () => {
+  const forgotten: string[] = [];
+  const fresh = { turns: [], offers: [], snapshot: { ...snapshot(3), match: { id: "r", clock_seconds: 3900 } } };
+  const f = fixture({ restore: async () => fresh });
+  f.controller.questions.forget = () => { forgotten.push("replay pages"); };
+  f.controller.receive({ ...snapshot(3), match: { id: "r", clock_seconds: 2700, media: { live: { url: "x.m3u8" }, seconds: 2700 } } });
+  f.controller.playhead = () => 0;  // the picture has not reached it: held
+  assert.equal(f.controller.held.size, 1);
+  f.controller.flush();
+  assert.deepEqual([f.controller.held.size, f.controller.snapshot, forgotten], [0, null, ["replay pages"]]);
+  await f.controller.resync();
+  f.frames.splice(0).forEach((frame) => frame());
+  assert.equal(f.renders.at(-1)?.match.clock_seconds, 3900);  // the same version renders again: it is the fresh state
+  assert.equal(f.chats.length, 1);
+});

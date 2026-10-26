@@ -248,6 +248,8 @@ export interface SkipTimers extends Timers {
   setInterval(callback: () => void, delay: number): TimerId;
   clearInterval(id: TimerId): void;
 }
+/** What the overlay reads from each state reaching the page: the match clock and the story's clocks. */
+export interface SkipState { match: { clock_seconds?: number | null }; narratives?: readonly { clock_seconds?: number | null }[] }
 /** Dismiss this close to the target: the last snapshots arrive as the pipeline settles. */
 const SKIP_NEAR_SECONDS = 30;
 const SKIP_MIN_TIMEOUT_MS = 90_000;
@@ -262,6 +264,8 @@ export class SkipOverlay {
   target: number | null = null;
   latest = 0;
   shown = 0;
+  /** The story for the skipped span has started arriving: an insight clocked past the click. */
+  story = false;
   onFreeze: (on: boolean) => void = () => {};
   private settle: ((outcome: SkipOutcome) => void) | null = null;
   private timeout: TimerId = null;
@@ -282,6 +286,7 @@ export class SkipOverlay {
     this.fail();
     this.from = this.latest = this.shown = from;
     this.target = null;
+    this.story = false;
     this.text("match-skip-title", `Skipping ahead ${label}…`);
     if (seconds !== null) this.retarget(seconds);
     else this.arm(SKIP_MIN_TIMEOUT_MS);
@@ -302,23 +307,29 @@ export class SkipOverlay {
     this.timers.clearTimeout(this.timeout);
     this.timeout = this.timers.setTimeout(() => this.finish("timeout"), ms);
   }
-  /** A state's clock reached the page. */
-  clock(seconds: number | null | undefined) {
-    if (!this.up || !Number.isFinite(Number(seconds))) return;
-    this.latest = Math.max(this.latest, Number(seconds));
+  /** A state reached the page: its clock runs the readout; an insight past the click means the story caught up. */
+  update(state: SkipState) {
+    if (!this.up) return;
+    const seconds = Number(state.match.clock_seconds);
+    if (Number.isFinite(seconds)) this.latest = Math.max(this.latest, seconds);
+    if ((state.narratives ?? []).some((n) => Number(n.clock_seconds) > this.from)) this.story = true;
   }
-  /** Run the readout towards the latest clock, fast when far behind; dismiss once it is near the target. */
+  /** Run the readout towards the latest clock, fast when far behind; dismiss once it is near the target and the
+   * story has caught up (the clock alone leaves the insights still trickling in). */
   tick() {
     if (!this.up) return;
     if (this.shown < this.latest)
       this.shown = Math.min(this.latest, this.shown + Math.max(1, Math.ceil((this.latest - this.shown) / 20)));
     this.render();
-    if (this.target !== null && this.shown >= this.target - SKIP_NEAR_SECONDS) this.finish("reached");
+    if (this.target !== null && this.story && this.shown >= this.target - SKIP_NEAR_SECONDS) this.finish("reached");
   }
   private render() {
     this.text("match-skip-clock", clock(this.shown));
     this.text("match-skip-range", this.target === null ? `from ${clock(this.from)}`
       : `${clock(this.from)} → ${clock(this.target)}`);
+    const fill = this.get("match-skip-fill");
+    const span = this.target === null ? 0 : this.target - this.from;
+    if (fill) fill.style.width = `${span > 0 ? Math.min(100, Math.round(100 * (this.shown - this.from) / span)) : 0}%`;
   }
   /** The request failed: take the picture down without a result. */
   fail() {
@@ -349,12 +360,15 @@ export interface SkipOptions {
   overlay?: SkipOverlay;
   /** The match clock shown now (null before kick-off). */
   clock?: () => number | null | undefined;
+  /** Client caches: `flush` once the skip is accepted (held states, replay pages, an open replay), `resync` after
+   * the overlay goes so the picture is fetched fresh. */
+  caches?: { flush(): void; resync(): Promise<void> | void };
 }
 
 /** In a demo match: Skip ahead to one of the operator's targets. The overlay blocks the page while the clock runs
  * from the clock at the click to the target; the video catches up to the new live edge by itself (liveCatchUp). */
 export async function showSkip(document: Document, matchId: string, api = new DemoApi(),
-  { overlay, clock: shownClock = () => null }: SkipOptions = {}) {
+  { overlay, clock: shownClock = () => null, caches }: SkipOptions = {}) {
   const box = document.getElementById("match-skip");
   const targets = document.getElementById("match-skip-targets");
   const note = document.getElementById("match-skip-note");
@@ -369,8 +383,10 @@ export async function showSkip(document: Document, matchId: string, api = new De
     const picture = overlay?.show(from, labelSeconds(label, from), label);
     try {
       const result = await api.skip(id);
+      caches?.flush();
       overlay?.retarget(result.skipped_seconds);
       const outcome = await (picture ?? "reached");
+      await caches?.resync();
       note.textContent = outcome === "timeout" ? "Still catching up; the clock will settle shortly."
         : `Skipped to ${Math.round((from + result.skipped_seconds) / 60)}′ in every demo match.`;
     } catch (error) {

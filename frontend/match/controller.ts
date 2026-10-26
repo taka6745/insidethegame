@@ -43,7 +43,7 @@ export type ControllerView = Pick<MatchView, "render" | "error" | "connection" |
   audience: Pick<AudienceView, "setBusy" | "render">;
 };
 export type ControllerQuestions = Pick<QuestionView, "render" | "status" | "onTrack" | "onReplayPage" | "onClarify">
-  & Partial<Pick<QuestionView, "askedAt">>;
+  & Partial<Pick<QuestionView, "askedAt" | "forget">>;
 export interface ControllerOptions {
   api: ControllerApi;
   view: ControllerView;
@@ -444,6 +444,31 @@ export class MatchController {
       const session = await this.api.restore(token);
       if (generation !== this.generation) return;
       this.showChat(session);
+      this.receive(session.snapshot);
+      this.view.error("");
+    } catch (error) {
+      if (generation === this.generation) this.view.error(friendly(error));
+    }
+  }
+  /** Skip ahead: nothing from before the skip may linger. Drops the held and last-received states and the chat's
+   * cached replay pages; the next state renders whatever its version. */
+  flush() {
+    this.timers.clearTimeout(this.holdTimer);
+    this.held.clear();
+    this.snapshot = null;
+    this.questions.forget?.();
+  }
+  /** After a skip: flush, then re-read the session so the picture, chat and follows are fetched fresh. */
+  async resync() {
+    this.flush();
+    const generation = this.generation, token = this.token;
+    if (!token) return;
+    try {
+      const session = await this.api.restore(token);
+      if (generation !== this.generation) return;
+      this.showChat(session);
+      this.follows?.reset();
+      this.follows?.open(session);
       this.receive(session.snapshot);
       this.view.error("");
     } catch (error) {

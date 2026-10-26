@@ -1202,6 +1202,28 @@ footer a {
   font-variant-numeric: tabular-nums;
   color: var(--mint);
 }
+.skip-overlay-bar {
+  width: min(420px, 80vw);
+  height: 4px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: #2a1f33;
+  overflow: hidden;
+}
+.skip-overlay-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--mint);
+  transition: width 0.1s linear;
+}
+.skip-overlay-ff {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mint);
+}
 .skip-overlay-range,
 .skip-overlay-hint {
   margin: 0;

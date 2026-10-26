@@ -17,6 +17,7 @@ class El {
   textContent = "";
   className = "";
   title = "";
+  style: Record<string, string> = {};
   replaceChildren(...children: El[]) { this.children = children; }
   listeners: Record<string, () => void> = {};
   addEventListener(name: string, fn: () => void) { this.listeners[name] = fn; }
@@ -264,13 +265,16 @@ test("Skip ahead shows in a playing demo's match, posts the target and says wher
     }
     return { ok: true, status: 200, json: async () => state };
   });
-  await showSkip(document, "m1", api, { clock: () => 2700 });
+  const caches: string[] = [];
+  await showSkip(document, "m1", api, { clock: () => 2700,
+    caches: { flush: () => caches.push("flush"), resync: async () => { caches.push("resync"); } } });
   assert.equal(nodes.get("match-skip")!.hidden, false);
   assert.deepEqual(targets.children.map((button) => button.textContent), ["+20′"]);  // one button per target
   targets.children[0]!.listeners.click!();
   await new Promise((done) => setTimeout(done, 0));
   assert.deepEqual(posted, [{ target: "20" }]);
   assert.equal(nodes.get("match-skip-note")!.textContent, "Skipped to 65′ in every demo match.");
+  assert.deepEqual(caches, ["flush", "resync"]);  // stale states dropped once skipped; a fresh picture after
   await showSkip(document, "other", api);  // not one of the demo's matches: no control
   assert.equal(nodes.get("match-skip")!.hidden, true);
 });
@@ -285,29 +289,36 @@ function timers() {
   };
 }
 
-test("the skip overlay runs the clock from the click to the target, blocking everything, and dismisses near it", async () => {
+test("the skip overlay runs the clock from the click to the target, blocking everything, and dismisses only once the story caught up", async () => {
   const { nodes, document } = doc();
   const clock = timers();
   const overlay = new SkipOverlay(document, clock);
   const frozen: boolean[] = [];
   overlay.onFreeze = (on) => frozen.push(on);
+  const at = (seconds: number, story: number[] = []) => ({ match: { clock_seconds: seconds }, narratives: story.map((clock_seconds) => ({ clock_seconds })) });
+  const fill = () => nodes.get("match-skip-fill")!.style.width;
   const shown = overlay.show(2700, 1200, "+20′");  // 45:00 → 65:00, the label's own guess
   assert.deepEqual([nodes.get("match-skip-overlay")!.hidden, frozen, overlay.up], [false, [true], true]);
   assert.equal(nodes.get("match-skip-title")!.textContent, "Skipping ahead to 65′");
-  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, nodes.get("match-skip-range")!.textContent], ["45:00", "45:00 → 65:00"]);
+  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, nodes.get("match-skip-range")!.textContent, fill()], ["45:00", "45:00 → 65:00", "0%"]);
   overlay.retarget(1800);  // the operator rounded up to 75′
   assert.equal(nodes.get("match-skip-title")!.textContent, "Skipping ahead to 75′");
-  overlay.clock(3000);
+  overlay.update(at(3000, [2650]));  // insights from before the click are not the skipped story
   clock.tick();
-  assert.equal(nodes.get("match-skip-clock")!.textContent, "45:15");  // runs towards the latest clock, never a jump
-  overlay.clock(2900);  // an older state never runs the clock back
-  overlay.clock(4000);
-  for (let i = 0; i < 500 && overlay.shown < 4000; i += 1) clock.tick();
-  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, overlay.up], ["66:40", true]);  // 4000 is not within 30 s of 4500
-  overlay.clock(4470);
-  for (let i = 0; i < 500 && overlay.up; i += 1) clock.tick();
+  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, fill()], ["45:15", "1%"]);  // runs towards the latest clock, never a jump
+  overlay.update(at(2900));  // an older state never runs the clock back
+  overlay.update(at(4500));
+  for (let i = 0; i < 500 && overlay.shown < 4500; i += 1) clock.tick();
+  assert.deepEqual([nodes.get("match-skip-clock")!.textContent, fill(), overlay.up], ["75:00", "100%", true]);  // the clock alone: insights still trickling in
+  overlay.update(at(4500, [2650, 3100]));  // the first insight of the skipped span
+  clock.tick();
   assert.equal(await shown, "reached");
   assert.deepEqual([nodes.get("match-skip-overlay")!.hidden, frozen, clock.armed, clock.ticking], [true, [true, false], false, false]);
+  // Near enough: the story arrived and the clock is within 30 s of the target.
+  const again = overlay.show(0, 600, "+10′");
+  overlay.update(at(575, [30]));
+  for (let i = 0; i < 500 && overlay.up; i += 1) clock.tick();
+  assert.equal(await again, "reached");
 });
 
 test("the skip overlay never traps a viewer: it times out with a note, and a failed request takes it down", async () => {
