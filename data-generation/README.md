@@ -14,6 +14,6 @@ The [feed](docs/components/feed.md) plays several matches at once, each with its
 | [`recordings/`](docs/components/recordings.md) | Three shipped 90-minute matches and their exports |
 | [`feed/`](docs/components/feed.md) | Live: MA1, `MatchEvent` v2, MA3 and POS to Event Hubs at video pace; played HLS over HTTP |
 
-Every message and recording is labelled `synthetic: true` with its provenance; none is Stats Perform data or an actual match. GRF is Apache-2.0; see the [archived simulator and provenance](../legacy/data/GoogleResearchFootball/README.md). Raw telemetry and video stay in ignored `.local/`.
+Every message and recording is labelled `synthetic: true` with its provenance; none is Stats Perform data or an actual match. GRF is Apache-2.0; see the [simulator provenance](docs/grf/README.md). Raw telemetry and video stay in ignored `.local/`.
 
 [Repository plan](../README.md)

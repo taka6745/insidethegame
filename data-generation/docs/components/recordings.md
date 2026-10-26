@@ -1,6 +1,6 @@
 # Recordings (`recordings/`)
 
-> **In short:** three rendered, tactically scripted 90-minute matches the [feed](feed.md) replays live. All are synthetic, simulated with [Google Research Football](../../../legacy/data/GoogleResearchFootball/README.md) (Apache-2.0), with invented players from [`league.json`](../../grf_demo/league.json). None is Stats Perform data or an actual match.
+> **In short:** three rendered, tactically scripted 90-minute matches the [feed](feed.md) replays live. All are synthetic, simulated with [Google Research Football](../grf/README.md) (Apache-2.0), with invented players from [`league.json`](../../grf_demo/league.json). None is Stats Perform data or an actual match.
 
 | | |
 | --- | --- |

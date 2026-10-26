@@ -1,8 +1,0 @@
-# Normalize line endings so shell scripts and container files work from any checkout,
-# including Windows machines with core.autocrlf=true.
-* text=auto eol=lf
-
-*.png binary
-*.jpg binary
-*.ico binary
-*.woff2 binary

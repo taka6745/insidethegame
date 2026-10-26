@@ -22,4 +22,4 @@ For the demo, data generation prepares and replays an existing generated match i
 
 The draft aligns kickoff with a wall-clock minute, uses event-time windows and allows for late arrivals. VAR corrections contribute negative goal deltas. These timing and correction contracts still need implementation and testing.
 
-The design board: [legacy/design/plan.excalidraw](../../../legacy/design/plan.excalidraw); this section exported as [design-board.svg](design-board.svg).
+The design board: [docs/design/plan.excalidraw](../../../docs/design/plan.excalidraw); this section exported as [design-board.svg](design-board.svg).

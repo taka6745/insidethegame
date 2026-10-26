@@ -44,7 +44,7 @@ Public [Stats Perform definitions](https://www.statsperform.com/opta-event-defin
 
 ## Native hooks and remaining extensions
 
-The following are verified in the installed source pinned to GRF commit `3d9e754720a95621bba6475c4d3b0d56fe919014`. Source links are references; active tools modify only a disposable runtime copy, never `legacy/`.
+The following are verified in the installed source pinned to GRF commit `3d9e754720a95621bba6475c4d3b0d56fe919014`. Source links are references; active tools modify only a disposable runtime copy.
 
 1. **Referee decisions:** emit once in [`Referee::CheckFoul`](https://github.com/google-research/football/blob/3d9e754720a95621bba6475c4d3b0d56fe919014/third_party/gfootball_engine/src/onthepitch/referee.cpp) when `hasBeenProcessed` changes. Capture offender, victim, decision time, foul position, awarded restart and card. `TripNotice` is only a candidate infringement: advantage can cancel the eventual whistle.
 2. **Offside:** record the specific `Referee::BallTouched` branch that stops play for an offside recipient. Do not reconstruct this from a free kick or an attacking player's location.

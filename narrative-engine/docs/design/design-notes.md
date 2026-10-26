@@ -8,7 +8,7 @@ Historical design (pre-build); the shipped behaviour is in docs/components/.
 | --- | --- |
 | **Status** | Historical design; implemented and since changed |
 
-Design notes transcribed from the [original board](../../../legacy/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
+Design notes transcribed from the [original board](../../../docs/design/plan.excalidraw), with the agreed service interfaces. The production agents remain planned; the standalone demo stub exercises the service boundary with authored commentary and factual recap history.
 
 ## Shared memory
 

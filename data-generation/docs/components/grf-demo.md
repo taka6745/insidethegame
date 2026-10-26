@@ -29,7 +29,7 @@ GRF_FIXTURE=redcastle-portalbion GRF_SEED=31 GRF_SOURCE="$PWD/.local/grf-demo-so
 
 Then ship it: copy `recording.json` to `recordings/<fixture>-grf.json` and `recording.opta-f24.json` to `recordings/<fixture>-grf.opta-f24.json`, and run `python -m grf_demo.opta_stream recordings/<fixture>-grf.json` from `data-generation/`. The feed picks up the recording on its next start and the HLS from `.local/media/<fixture>/hls/` (`./dev` links a packaged `.local/grf-demo-<fixture>-90/hls/` there).
 
-`GRF_PYTHON` selects a different installed instrumented Python runtime; `GRF_SEED` the seed (default 37). The native telemetry/render instrumentation is preserved as reference in `legacy/data/GoogleResearchFootball/{telemetry,render}.patch`; no archived scripts run.
+`GRF_PYTHON` selects a different installed instrumented Python runtime; `GRF_SEED` the seed (default 37). The native telemetry/render instrumentation is preserved as reference in `data-generation/docs/grf/{telemetry,render}.patch`; no archived scripts run.
 
 ## 2. Fixtures
 
@@ -39,7 +39,7 @@ Then ship it: copy `recording.json` to `recordings/<fixture>-grf.json` and `reco
 
 ## 3. Source patches
 
-*In short: patch a disposable copy, never `legacy/` or the installed runtime.*
+*In short: patch a disposable copy, never the installed runtime.*
 
 `prepare-grf-source.sh` copies the installed instrumented source without build output, runs `python -m grf_demo.prepare_cosmetics`, `prepare_telemetry`, `prepare_realism` and `prepare_tactics` on it and rebuilds the engine with CMake. Each patch validates its pinned-source anchors. The cosmetics patch changes names, team labels and kit textures; it does not assign real player abilities. Keep upstream licences with the source copy.
 

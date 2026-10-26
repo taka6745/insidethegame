@@ -1,6 +1,6 @@
 # Original design
 
-> **In short:** the data-generation plan from the design stage (`data-generation/README.md` at commit `7fd5838`, and the "Synthetic Match Generator" box on `legacy/design/plan.excalidraw`), kept unchanged for history. What was built is in [../decisions.md](../decisions.md).
+> **In short:** the data-generation plan from the design stage (`data-generation/README.md` at commit `7fd5838`, and the "Synthetic Match Generator" box on `docs/design/plan.excalidraw`), kept unchanged for history. What was built is in [../decisions.md](../decisions.md).
 
 | | |
 | --- | --- |

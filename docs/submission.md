@@ -35,7 +35,7 @@ The build stays up until 10 Nov, 11:59 pm PT.
 
 ## Checklist
 
-- [ ] Repo public; `legacy/` removed first
+- [ ] Repo public
 - [ ] Licence file at the root
 - [ ] Screenshots: start screen, match view with cards, chat answer with receipt, follow view with clip, cross-game card, `/dev/` screen
 - [ ] Video under 2:00 on public YouTube or Vimeo

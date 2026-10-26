@@ -5,7 +5,7 @@ This hackathon application has a runnable user backend and frontend, plus a simu
 - Keep code small, readable and reusable. Add implementation only when requested.
 - Preserve local changes. Keep credentials in ignored files or approved secrets; never print or commit them.
 - Keep READMEs short and graphical. Distinguish planned, implemented, tested and deployed work. Deployed status lives only in PLAN.md (§11 is the record) and `terraform/docs/overview.md`; other pages state implemented/tested status and link there.
-- The detailed sections of `legacy/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
+- The detailed sections of `docs/design/plan.excalidraw`, plus later decisions in active docs, define the plan. Older sketches are historical.
 - Preserve original example prompts in `narrative-engine/docs/design/example-prompts/`. Resolve their output contracts before implementation.
 - The user backend owns audience definitions and exposes a read-only configuration API. The narrative engine reads those definitions and owns bucket framing. The user backend receives already-bucketed narratives and routes them without rewriting.
 - User questions never trigger the shared narrative workflow. Narrative history uses the narrative service's GraphQL API; live narratives use Service Bus.
@@ -14,7 +14,6 @@ This hackathon application has a runnable user backend and frontend, plus a simu
 - User-specific code/calculations belong to `user-backend/` (bounded rule DSL; an isolated executor is not built), not ETL.
 - Test changed behaviour and inspect actual outputs. Design diagrams are not tested infrastructure.
 - Label synthetic data and preserve provenance/licences.
-- `legacy/` preserves research, scraping scripts, simulator code, earlier docs and outputs. It is inactive; do not revive its automation or overwrite it during application work.
 - Preserve ignored `.local/` runtime environments and assets; do not upload them.
 
 ## Service layout and docs
@@ -47,4 +46,4 @@ The feed and `etl-stream` are replaceable local stand-ins (for the provider and 
 
 Each service keeps its own Terraform (`terraform/guard`, `etl/infra/`, `narrative-engine/infra/`, `data-generation/infra/`, `terraform/` for the app and demo control); `./dev azure` applies them in order. Confirm with the developer before any `terraform apply`, and stop the ETL's Stream Analytics job after testing (it bills while running).
 
-Archived commands may use old paths. Recheck official hackathon rules in `legacy/research/` before submission. `.github/workflows/ci.yml` runs every service's tests (no cloud or model calls); no scheduled scraping is configured.
+Recheck the official hackathon rules before submission. `.github/workflows/ci.yml` runs every service's tests (no cloud or model calls); no scheduled scraping is configured.
